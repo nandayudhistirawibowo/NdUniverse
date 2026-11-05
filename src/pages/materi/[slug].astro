@@ -16,7 +16,6 @@ const progressKey = `progress_materi_${item.id}`;
 const notesKey = `catatan_materi_${item.id}`;
 const user = Astro.locals.user;
 const referer = Astro.request.headers.get('referer');
-let cameFromDashboard = false;
 let dashboardReturnHref = item.data.track === 'Alltagsdeutsch' ? '/dashboard/alltags' : '/dashboard/fach';
 
 if (referer) {
@@ -24,18 +23,17 @@ if (referer) {
     const source = new URL(referer);
     const sourcePath = source.pathname;
     if (source.origin === Astro.url.origin && (sourcePath === '/dashboard' || sourcePath.startsWith('/dashboard/'))) {
-      cameFromDashboard = true;
-      if (sourcePath === '/dashboard/katalog') dashboardReturnHref = '/dashboard/katalog';
-      else if (sourcePath === '/dashboard/alltags') dashboardReturnHref = '/dashboard/alltags';
-      else if (sourcePath === '/dashboard/fach') dashboardReturnHref = '/dashboard/fach';
+      if (['/dashboard', '/dashboard/katalog', '/dashboard/alltags', '/dashboard/fach', '/dashboard/profil'].includes(sourcePath)) {
+        dashboardReturnHref = sourcePath;
+      }
     }
   } catch {
-    cameFromDashboard = false;
+    // Keep the track-specific dashboard fallback when the referrer is invalid.
   }
 }
 
 const publicReturnHref = item.data.track === 'Alltagsdeutsch' ? '/alltagsdeutsch' : '/fachdeutsch';
-const returnHref = cameFromDashboard ? dashboardReturnHref : publicReturnHref;
+const returnHref = user ? dashboardReturnHref : publicReturnHref;
 const { data: savedProgress } = user
   ? await Astro.locals.supabase
     .from('user_progress')
@@ -68,7 +66,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
           {levelOrJurusan && <span class="pill soft">{levelOrJurusan}</span>}
         </div>
         {user ? (
-          <a href={returnHref}>{cameFromDashboard ? '← Kembali ke Dashboard' : '← Kembali ke Kurikulum'}</a>
+          <a href={returnHref}>← Kembali ke Dashboard</a>
         ) : (
           <div class="guest-actions">
             <a class="curriculum-back" href={returnHref}>← Kembali ke Kurikulum</a>
