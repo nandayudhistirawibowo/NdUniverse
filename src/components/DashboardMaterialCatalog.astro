@@ -1,0 +1,124 @@
+---
+import DashboardLayout from '../layouts/DashboardLayout.astro';
+import DashboardMaterialGrid from './DashboardMaterialGrid.astro';
+
+const {
+  title,
+  eyebrow,
+  description,
+  active,
+  user,
+  profile,
+  materials,
+  progressRows,
+} = Astro.props;
+---
+
+<DashboardLayout title={`${title} | siDeutsch`} active={active} user={user} profile={profile}>
+  <section class="catalog-page">
+    <header class="page-heading">
+      <p class="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <p>{description}</p>
+    </header>
+    {active === 'alltagsdeutsch' && (
+      <div class="level-filter">
+        <label for="cefr-level-filter">Filter level</label>
+        <select id="cefr-level-filter">
+          <option value="all">Semua level</option>
+          <option value="A1">A1</option>
+          <option value="A2">A2</option>
+          <option value="B1">B1</option>
+          <option value="B2">B2</option>
+          <option value="C1">C1</option>
+          <option value="C2">C2</option>
+        </select>
+        <span data-level-filter-count>{materials.length} materi</span>
+      </div>
+    )}
+    <DashboardMaterialGrid materials={materials} progressRows={progressRows} />
+  </section>
+</DashboardLayout>
+
+<style>
+  .catalog-page {
+    display: grid;
+    gap: 1.25rem;
+  }
+
+  .page-heading h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 2rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.4rem;
+    color: #966313;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .page-heading > p:last-child {
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+  }
+
+  .level-filter {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .level-filter select {
+    min-width: 150px;
+    min-height: 40px;
+    padding: 0.5rem 2rem 0.5rem 0.7rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--text-main);
+    font: inherit;
+    cursor: pointer;
+  }
+
+  .level-filter select:focus-visible {
+    outline: 3px solid rgba(229, 169, 59, 0.24);
+    border-color: var(--accent-gold);
+  }
+
+  .level-filter [data-level-filter-count] {
+    color: var(--muted);
+    font-size: 0.75rem;
+  }
+</style>
+
+<script>
+  const levelFilter = document.querySelector<HTMLSelectElement>('#cefr-level-filter');
+  const levelFilterCount = document.querySelector<HTMLElement>('[data-level-filter-count]');
+
+  if (levelFilter) {
+    const materialCards = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-material-level]'));
+    const updateMaterials = () => {
+      const selectedLevel = levelFilter.value;
+      let visibleCount = 0;
+
+      for (const card of materialCards) {
+        const matches = selectedLevel === 'all' || card.dataset.materialLevel === selectedLevel;
+        card.hidden = !matches;
+        if (matches) visibleCount += 1;
+      }
+
+      if (levelFilterCount) levelFilterCount.textContent = `${visibleCount} materi`;
+    };
+
+    levelFilter.addEventListener('change', updateMaterials);
+  }
+</script>

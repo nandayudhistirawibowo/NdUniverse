@@ -1,0 +1,125 @@
+---
+import Layout from '../../layouts/Layout.astro';
+
+const slugify = (value = '') =>
+  String(value)
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+
+const fakultas = [
+  {
+    nama: 'Teknik',
+    jurusan: ['Informatika', 'Teknik Elektro', 'Teknik Sipil'],
+  },
+  {
+    nama: 'Ekonomi',
+    jurusan: ['Manajemen', 'Akuntansi', 'Ekonomi Pembangunan'],
+  },
+  {
+    nama: 'Kesehatan',
+    jurusan: ['Keperawatan', 'Kebidanan', 'Farmasi'],
+  },
+];
+---
+
+<Layout
+  title="Fachdeutsch | siDeutsch"
+  description="Pilih fakultas dan jurusan untuk melihat materi Fachdeutsch yang relevan dengan bidang studi kamu."
+>
+  <section class="page-shell">
+    <p class="eyebrow">Fachdeutsch</p>
+    <h1>Pilih Fakultas dan Jurusan</h1>
+    <p class="lead">Belajar kosakata teknis dan formal yang sesuai dengan bidang studi kamu.</p>
+
+    <div class="faculty-grid">
+      {fakultas.map((fakultasItem) => (
+        <div class="faculty-card">
+          <h2>{fakultasItem.nama}</h2>
+          <ul>
+            {fakultasItem.jurusan.map((jurusan) => (
+              <li>
+                <a href={`/fachdeutsch/${slugify(jurusan)}`}>{jurusan}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-shell {
+    padding-top: 1rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .lead {
+    margin-top: 0.75rem;
+    max-width: 720px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .faculty-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .faculty-card {
+    padding: 1.3rem;
+    border-radius: 12px;
+    background: var(--card-bg);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+  }
+
+  h2 {
+    margin: 0 0 1rem;
+    font-size: 1.4rem;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 0.5rem 1.2rem;
+    border-radius: 999px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  li a:hover {
+    background: #F0B84F;
+    transform: scale(1.05);
+  }
+</style>

@@ -1,0 +1,603 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import { isAdminNim } from '../../lib/admin';
+
+const user = Astro.locals.user;
+const profile = Astro.locals.profile;
+if (!user) {
+  return Astro.redirect('/admin/login?redirect=%2Fadmin');
+}
+
+const nim = Astro.locals.profile?.nim;
+if (!isAdminNim(nim)) {
+  return Astro.redirect('/dashboard?error=admin-only');
+}
+---
+
+<DashboardLayout
+  title="Admin Panel | siDeutsch"
+  description="Panel administrasi akun mahasiswa siDeutsch."
+  variant="admin"
+  active="users"
+  user={user}
+  profile={profile}
+>
+  <section class="admin-page">
+    <header class="admin-header">
+      <div>
+        <p class="eyebrow">Administrasi Mahasiswa</p>
+        <h1>Admin Panel</h1>
+        <p>Kelola akun dan informasi dasar mahasiswa.</p>
+      </div>
+      <div class="admin-actions">
+        <form action="/logout" method="post">
+          <button class="admin-logout" type="submit">Keluar</button>
+        </form>
+        <button id="add-user-button" class="primary-button" type="button">Tambah User <span aria-hidden="true">＋</span></button>
+      </div>
+    </header>
+
+    <section class="user-panel" aria-labelledby="user-table-title">
+      <div class="table-heading">
+        <h2 id="user-table-title">Daftar User</h2>
+        <span id="user-count" aria-live="polite">Memuat...</span>
+      </div>
+      <p id="admin-message" class="admin-message" role="status" aria-live="polite"></p>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">NIM</th>
+              <th scope="col">Nama Lengkap</th>
+              <th scope="col">No. WhatsApp</th>
+              <th scope="col">Tanggal Daftar</th>
+              <th scope="col">Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="user-table-body">
+            <tr><td class="empty-cell" colspan="5">Memuat data user...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <dialog id="user-dialog" class="user-dialog">
+      <form id="user-form" class="user-form">
+        <div class="dialog-header">
+          <div>
+            <p class="eyebrow">Akun Mahasiswa</p>
+            <h2 id="dialog-title">Tambah User</h2>
+          </div>
+          <button id="close-dialog" class="icon-button" type="button" aria-label="Tutup">×</button>
+        </div>
+        <input id="form-mode" type="hidden" value="create" />
+        <input id="form-user-id" type="hidden" value="" />
+        <label for="user-nim">NIM</label>
+        <input id="user-nim" name="nim" type="text" pattern="[A-Za-z0-9._-]{3,32}" required />
+        <div id="password-field">
+          <label for="user-password">Password awal</label>
+          <input id="user-password" name="password" type="password" minlength="8" autocomplete="new-password" />
+        </div>
+        <label for="user-name">Nama Lengkap</label>
+        <input id="user-name" name="nama_lengkap" type="text" maxlength="160" required />
+        <label for="user-wa">Nomor WhatsApp</label>
+        <input id="user-wa" name="nomor_wa" type="tel" maxlength="32" />
+        <p id="dialog-message" class="dialog-message" role="status" aria-live="polite"></p>
+        <div class="dialog-actions">
+          <button class="cancel-button" id="cancel-dialog" type="button">Batal</button>
+          <button class="primary-button" id="save-user" type="submit">Simpan User</button>
+        </div>
+      </form>
+    </dialog>
+  </section>
+</DashboardLayout>
+
+<script>
+  type AdminUser = {
+    id: string;
+    nim: string;
+    nama_lengkap: string;
+    nomor_wa: string;
+    created_at: string;
+  };
+
+  const tableBody = document.querySelector<HTMLTableSectionElement>('#user-table-body');
+  const userCount = document.querySelector<HTMLElement>('#user-count');
+  const adminMessage = document.querySelector<HTMLElement>('#admin-message');
+  const dialog = document.querySelector<HTMLDialogElement>('#user-dialog');
+  const userForm = document.querySelector<HTMLFormElement>('#user-form');
+  const formMode = document.querySelector<HTMLInputElement>('#form-mode');
+  const formUserId = document.querySelector<HTMLInputElement>('#form-user-id');
+  const userNim = document.querySelector<HTMLInputElement>('#user-nim');
+  const userPassword = document.querySelector<HTMLInputElement>('#user-password');
+  const passwordField = document.querySelector<HTMLElement>('#password-field');
+  const userName = document.querySelector<HTMLInputElement>('#user-name');
+  const userWa = document.querySelector<HTMLInputElement>('#user-wa');
+  const dialogTitle = document.querySelector<HTMLElement>('#dialog-title');
+  const dialogMessage = document.querySelector<HTMLElement>('#dialog-message');
+  const saveButton = document.querySelector<HTMLButtonElement>('#save-user');
+
+  function makeCell(text: string) {
+    const cell = document.createElement('td');
+    cell.textContent = text;
+    return cell;
+  }
+
+  function createActionButton(label: string, action: string, user: AdminUser) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = action === 'delete' ? 'row-button delete-button' : 'row-button';
+    button.dataset.action = action;
+    button.dataset.id = user.id;
+    button.dataset.nim = user.nim;
+    button.dataset.name = user.nama_lengkap;
+    button.dataset.wa = user.nomor_wa;
+    button.textContent = label;
+    return button;
+  }
+
+  function renderUsers(users: AdminUser[]) {
+    if (!tableBody || !userCount) return;
+    tableBody.replaceChildren();
+    userCount.textContent = `${users.length} user`;
+
+    if (users.length === 0) {
+      const row = document.createElement('tr');
+      const cell = makeCell('Belum ada user.');
+      cell.colSpan = 5;
+      cell.className = 'empty-cell';
+      row.append(cell);
+      tableBody.append(row);
+      return;
+    }
+
+    for (const user of users) {
+      const row = document.createElement('tr');
+      row.append(
+        makeCell(user.nim || '—'),
+        makeCell(user.nama_lengkap || '—'),
+        makeCell(user.nomor_wa || '—'),
+        makeCell(new Intl.DateTimeFormat('id-ID', { dateStyle: 'medium' }).format(new Date(user.created_at)))
+      );
+      const actions = document.createElement('td');
+      actions.className = 'row-actions';
+      actions.append(createActionButton('Edit', 'edit', user), createActionButton('Hapus', 'delete', user));
+      row.append(actions);
+      tableBody.append(row);
+    }
+  }
+
+  async function loadUsers() {
+    if (!tableBody || !userCount || !adminMessage) return;
+    adminMessage.textContent = '';
+    const response = await fetch('/api/admin/users', { cache: 'no-store' });
+    const result = await response.json();
+    if (!response.ok) {
+      userCount.textContent = 'Gagal dimuat';
+      adminMessage.textContent = result.error ?? 'Daftar user gagal dimuat.';
+      adminMessage.dataset.state = 'error';
+      return;
+    }
+    renderUsers(result.users);
+  }
+
+  function openCreateDialog() {
+    if (!userForm || !dialog || !userNim || !userPassword || !formMode || !formUserId || !passwordField || !dialogTitle || !dialogMessage || !saveButton) return;
+    userForm.reset();
+    formMode.value = 'create';
+    formUserId.value = '';
+    userNim.disabled = false;
+    userPassword.required = true;
+    passwordField.hidden = false;
+    dialogTitle.textContent = 'Tambah User';
+    dialogMessage.textContent = '';
+    saveButton.textContent = 'Simpan User';
+    dialog.showModal();
+    userNim.focus();
+  }
+
+  function openEditDialog(user: AdminUser) {
+    if (!dialog || !formMode || !formUserId || !userNim || !userPassword || !passwordField || !userName || !userWa || !dialogTitle || !dialogMessage || !saveButton) return;
+    formMode.value = 'edit';
+    formUserId.value = user.id;
+    userNim.value = user.nim;
+    userNim.disabled = true;
+    userPassword.required = false;
+    userPassword.value = '';
+    passwordField.hidden = true;
+    userName.value = user.nama_lengkap;
+    userWa.value = user.nomor_wa;
+    dialogTitle.textContent = `Edit User · ${user.nim}`;
+    dialogMessage.textContent = '';
+    saveButton.textContent = 'Simpan Perubahan';
+    dialog.showModal();
+    userName.focus();
+  }
+
+  document.querySelector('#add-user-button')?.addEventListener('click', openCreateDialog);
+  document.querySelector('#close-dialog')?.addEventListener('click', () => dialog?.close());
+  document.querySelector('#cancel-dialog')?.addEventListener('click', () => dialog?.close());
+
+  tableBody?.addEventListener('click', async (event) => {
+    const button = (event.target as HTMLElement).closest<HTMLButtonElement>('[data-action]');
+    if (!button) return;
+
+    const user = {
+      id: button.dataset.id ?? '',
+      nim: button.dataset.nim ?? '',
+      nama_lengkap: button.dataset.name ?? '',
+      nomor_wa: button.dataset.wa ?? '',
+      created_at: '',
+    };
+
+    if (button.dataset.action === 'edit') {
+      openEditDialog(user);
+      return;
+    }
+
+    if (!window.confirm(`Hapus user ${user.nim}? Tindakan ini tidak bisa dibatalkan.`)) return;
+    const response = await fetch('/api/admin/users', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: user.id }),
+    });
+    const result = await response.json();
+    if (!response.ok && adminMessage) {
+      adminMessage.textContent = result.error ?? 'User gagal dihapus.';
+      adminMessage.dataset.state = 'error';
+      return;
+    }
+    await loadUsers();
+  });
+
+  userForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!userForm || !formMode || !formUserId || !userNim || !userPassword || !userName || !userWa || !dialogMessage || !saveButton || !dialog) return;
+
+    const mode = formMode.value;
+    const body = mode === 'create'
+      ? { nim: userNim.value.trim(), password: userPassword.value, nama_lengkap: userName.value.trim() }
+      : { id: formUserId.value, nama_lengkap: userName.value.trim(), nomor_wa: userWa.value.trim() };
+
+    saveButton.disabled = true;
+    dialogMessage.textContent = 'Menyimpan...';
+    dialogMessage.dataset.state = 'loading';
+
+    const response = await fetch('/api/admin/users', {
+      method: mode === 'create' ? 'POST' : 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const result = await response.json();
+    saveButton.disabled = false;
+
+    if (!response.ok) {
+      dialogMessage.textContent = result.error ?? 'Perubahan gagal disimpan.';
+      dialogMessage.dataset.state = 'error';
+      return;
+    }
+
+    dialog.close();
+    await loadUsers();
+  });
+
+  loadUsers().catch(() => {
+    if (adminMessage) {
+      adminMessage.textContent = 'Koneksi ke Admin API gagal.';
+      adminMessage.dataset.state = 'error';
+    }
+  });
+</script>
+
+<style>
+  .admin-page {
+    display: grid;
+    gap: 1.25rem;
+    padding-top: 0.5rem;
+  }
+
+  .admin-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.35rem 1.5rem;
+    border-radius: 12px;
+    background: var(--bg-dark);
+    color: #fff;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.4rem;
+    color: var(--accent-gold);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .admin-header h1 {
+    margin: 0;
+    color: #fff;
+    font-size: 2rem;
+  }
+
+  .admin-header > div > p:last-child {
+    margin: 0.45rem 0 0;
+    color: #d3d3d8;
+    font-size: 0.88rem;
+  }
+
+  .primary-button,
+  .cancel-button,
+  .admin-logout {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 0.9rem;
+    border: 0;
+    border-radius: 8px;
+    font: inherit;
+    font-size: 0.84rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .primary-button {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .primary-button:hover:not(:disabled) {
+    background: #F0B84F;
+  }
+
+  .primary-button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  .admin-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .admin-logout {
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: transparent;
+    color: #fff;
+  }
+
+  .admin-logout:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  .user-panel {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .table-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.15rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .table-heading h2 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.1rem;
+  }
+
+  .table-heading span {
+    color: #686873;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .admin-message {
+    margin: 0;
+    padding: 0 1.15rem;
+    color: #42774f;
+    font-size: 0.83rem;
+  }
+
+  .admin-message:not(:empty) {
+    padding-top: 0.8rem;
+  }
+
+  .admin-message[data-state='error'],
+  .dialog-message[data-state='error'] {
+    color: var(--accent-red);
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+  }
+
+  table {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid #eeedf0;
+    color: var(--text-main);
+    font-size: 0.84rem;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  th {
+    background: #F1F1F3;
+    color: #54545e;
+    font-size: 0.73rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .empty-cell {
+    height: 100px;
+    color: #686873;
+    text-align: center;
+  }
+
+  .row-actions {
+    display: flex;
+    gap: 0.45rem;
+  }
+
+  .row-button {
+    min-height: 32px;
+    padding: 0.35rem 0.6rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 7px;
+    background: #FFF4DC;
+    color: var(--text-main);
+    font: inherit;
+    font-size: 0.74rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .row-button:hover {
+    background: var(--accent-gold);
+  }
+
+  .row-button.delete-button {
+    border-color: #efb1b1;
+    background: #FCE7E7;
+    color: var(--accent-red);
+  }
+
+  .row-button.delete-button:hover {
+    background: var(--accent-red);
+    color: #fff;
+  }
+
+  .user-dialog {
+    width: min(100% - 2rem, 480px);
+    max-height: 90vh;
+    padding: 0;
+    border: 1px solid #4a4a50;
+    border-radius: 12px;
+    background: #fff;
+    color: var(--text-main);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+  }
+
+  .user-dialog::backdrop {
+    background: rgba(26, 26, 30, 0.72);
+  }
+
+  .user-form {
+    display: grid;
+    gap: 0.6rem;
+    padding: 1.25rem;
+  }
+
+  .dialog-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .dialog-header h2 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  .icon-button {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: #f1f1f3;
+    color: var(--text-main);
+    font-size: 1.2rem;
+    cursor: pointer;
+  }
+
+  .user-form label {
+    margin-top: 0.25rem;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .user-form input {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #c9c9cf;
+    border-radius: 7px;
+    background: #fff;
+    color: var(--text-main);
+    font: inherit;
+  }
+
+  .user-form input:focus-visible {
+    outline: 3px solid rgba(229, 169, 59, 0.24);
+    border-color: var(--accent-gold);
+  }
+
+  .user-form input:disabled {
+    background: #f1f1f3;
+    color: #686873;
+  }
+
+  .user-form > div:not(.dialog-header) {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  .dialog-message {
+    min-height: 1.1rem;
+    margin: 0.2rem 0;
+    color: #42774f;
+    font-size: 0.8rem;
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+    margin-top: 0.3rem;
+  }
+
+  .cancel-button {
+    border: 1px solid var(--border);
+    background: #f1f1f3;
+    color: var(--text-main);
+  }
+
+  @media (max-width: 640px) {
+    .admin-header {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+
+    .admin-actions {
+      width: 100%;
+      flex-wrap: wrap;
+    }
+  }
+</style>

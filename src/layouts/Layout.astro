@@ -1,0 +1,418 @@
+---
+const {
+  title = 'siDeutsch | Belajar Bahasa Jerman untuk Mahasiswa',
+  description = 'Platform belajar bahasa Jerman yang terstruktur untuk mahasiswa Indonesia, lengkap dengan materi berdasarkan fakultas dan jurusan.',
+  image = '/og-sideutsch.svg',
+  hideNavbar = false,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? 'https://www.sideutsch.id';
+const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
+const imageURL = new URL(image, siteUrl).toString();
+const user = Astro.locals.user;
+const profile = Astro.locals.profile;
+const accountName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Mahasiswa';
+const accountInitial = accountName.slice(0, 1).toUpperCase();
+const isAdminArea = Astro.url.pathname.startsWith('/admin');
+const isAdminLogin = Astro.url.pathname === '/admin/login';
+const isAdminAccount = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
+const accountHref = isAdminAccount ? '/admin' : '/dashboard';
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={imageURL} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageURL} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div class="site-shell">
+      {!hideNavbar && (
+        <header class="topbar">
+          <nav class="navbar" aria-label="Navigasi utama">
+            <a href="/" class="brand" aria-label="siDeutsch">
+              <img src="/logo.png" alt="siDeutsch" />
+            </a>
+            <div class="nav-links">
+              {isAdminArea ? (
+                <span class="nav-context">Administrasi</span>
+              ) : (
+                <>
+                  <a href="/">Home</a>
+                  <a href="/materi">Semua Materi</a>
+                </>
+              )}
+            </div>
+            <div class="nav-account" data-nav-account>
+              {!isAdminLogin && (user ? (
+                  <a class="account-link" href={accountHref} aria-label={`${isAdminAccount ? 'Admin Panel' : 'Dashboard mahasiswa'} ${accountName}`}>
+                    {profile?.avatar_url ? (
+                      <img src={profile.avatar_url} alt="" />
+                    ) : (
+                      <span class="account-initial" aria-hidden="true">{accountInitial}</span>
+                    )}
+                    <span class="account-name">{accountName}</span>
+                  </a>
+                ) : (
+                  <a class="login-link" href="/login">Login Mahasiswa</a>
+                ))}
+            </div>
+          </nav>
+        </header>
+      )}
+
+      <main class="page-content">
+        <slot />
+      </main>
+
+      <footer class="site-footer">
+        <div class="footer-inner">
+          <p>© 2026 siDeutsch. Dibuat untuk mahasiswa Indonesia.</p>
+          <a href="mailto:admin@ndhistira.my.id">Kontak Admin</a>
+          <span>ndhistira.my.id</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>
+
+<script>
+  import { createBrowserClient } from '@supabase/ssr';
+
+  const brandLogo = document.querySelector<HTMLImageElement>('.brand img');
+  brandLogo?.addEventListener('error', () => {
+    const fallback = document.createElement('span');
+    fallback.textContent = 'siDeutsch';
+    brandLogo.replaceWith(fallback);
+  }, { once: true });
+
+  const accountSlot = document.querySelector<HTMLElement>('[data-nav-account]');
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+  if (accountSlot && supabaseUrl && supabaseAnonKey) {
+    const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('nim, nama_lengkap, avatar_url')
+        .eq('id', user.id)
+        .maybeSingle();
+      const name = profile?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Mahasiswa';
+      const isAdmin = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
+      const accountLink = document.createElement('a');
+      accountLink.className = 'account-link';
+      accountLink.href = isAdmin ? '/admin' : '/dashboard';
+      accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard mahasiswa'} ${name}`);
+
+      if (profile?.avatar_url) {
+        const avatar = document.createElement('img');
+        avatar.src = profile.avatar_url;
+        avatar.alt = '';
+        accountLink.append(avatar);
+      } else {
+        const initial = document.createElement('span');
+        initial.className = 'account-initial';
+        initial.setAttribute('aria-hidden', 'true');
+        initial.textContent = name.slice(0, 1).toUpperCase();
+        accountLink.append(initial);
+      }
+
+      const accountName = document.createElement('span');
+      accountName.className = 'account-name';
+      accountName.textContent = name;
+      accountLink.append(accountName);
+      accountSlot.replaceChildren(accountLink);
+    }
+  }
+</script>
+
+<style is:global>
+  :root {
+    --bg-main: #F9F9FB;
+    --bg-dark: #1A1A1E;
+    --accent-gold: #E5A93B;
+    --accent-red: #D93838;
+    --text-main: #2B2D42;
+    --bg-light: var(--bg-main);
+    --card-bg: #ffffff;
+    --text-dark: var(--text-main);
+    --primary-blue: var(--accent-gold);
+    --primary-hover: #C98D23;
+    --bg: var(--bg-main);
+    --bg-soft: #FFF4DC;
+    --surface: var(--card-bg);
+    --text: var(--text-main);
+    --muted: #6B7280;
+    --primary: var(--accent-gold);
+    --primary-dark: var(--primary-hover);
+    --accent: var(--accent-gold);
+    --danger: var(--accent-red);
+    --border: rgba(43, 45, 66, 0.13);
+    --shadow: 0 18px 40px rgba(26, 26, 30, 0.08);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg-main);
+    color: var(--text);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    line-height: 1.6;
+  }
+
+  a,
+  button {
+    color: inherit;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease,
+      transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+  }
+
+  .site-shell {
+    min-height: 100vh;
+  }
+
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    backdrop-filter: blur(12px);
+    background: var(--bg-dark);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+  }
+
+  .navbar {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .brand {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .brand img {
+    display: block;
+    height: 40px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .brand span {
+    color: #fff;
+    font-size: 1.35rem;
+    font-weight: 800;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 600;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .nav-links a:hover {
+    color: var(--accent-gold);
+  }
+
+  .nav-context {
+    color: var(--accent-gold);
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+
+  .login-link {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem 0.9rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 8px;
+    background: var(--accent-gold);
+    color: var(--bg-dark);
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .login-link:hover {
+    background: #F0B84F;
+    border-color: #F0B84F;
+  }
+
+  .account-link {
+    display: inline-flex;
+    max-width: 220px;
+    min-height: 40px;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.25rem 0.65rem 0.25rem 0.3rem;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  .account-link img,
+  .account-initial {
+    display: grid;
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 50%;
+    object-fit: cover;
+    background: var(--accent-gold);
+    color: var(--bg-dark);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .account-name {
+    overflow: hidden;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .account-link:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.48);
+  }
+
+  .page-content {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  .site-footer {
+    background: var(--bg-dark);
+    color: #ffffff;
+  }
+
+  .footer-inner {
+    display: flex;
+    max-width: 1180px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 0 auto;
+    padding: 1.25rem;
+    font-size: 0.8rem;
+  }
+
+  .footer-inner p {
+    margin: 0;
+  }
+
+  .footer-inner a {
+    color: var(--accent-gold);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .footer-inner a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .footer-inner span {
+    color: rgba(255, 255, 255, 0.75);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  p {
+    margin-top: 0;
+  }
+
+  @media (max-width: 640px) {
+    .navbar {
+      padding: 0.85rem 1rem;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .nav-links {
+      width: 100%;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+
+    .nav-account {
+      align-self: flex-start;
+    }
+
+    .login-link,
+    .account-link {
+      margin-top: 0.1rem;
+    }
+
+    .footer-inner {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.45rem;
+      padding: 1.25rem 1rem;
+    }
+  }
+</style>

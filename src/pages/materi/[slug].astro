@@ -1,0 +1,807 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getEntry, render } from 'astro:content';
+
+export const prerender = false;
+
+const item = await getEntry('materi', Astro.params.slug ?? '');
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
+
+const { Content } = await render(item);
+const trackLabel = item.data.track === 'Alltagsdeutsch' ? 'Alltagsdeutsch' : 'Fachdeutsch';
+const levelOrJurusan = item.data.track === 'Alltagsdeutsch' ? item.data.level : item.data.jurusan;
+const batchSize = 5;
+const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
+const progressKey = `progress_materi_${item.id}`;
+const notesKey = `catatan_materi_${item.id}`;
+const user = Astro.locals.user;
+const referer = Astro.request.headers.get('referer');
+let cameFromDashboard = false;
+let dashboardReturnHref = item.data.track === 'Alltagsdeutsch' ? '/dashboard/alltags' : '/dashboard/fach';
+
+if (referer) {
+  try {
+    const source = new URL(referer);
+    const sourcePath = source.pathname;
+    if (source.origin === Astro.url.origin && (sourcePath === '/dashboard' || sourcePath.startsWith('/dashboard/'))) {
+      cameFromDashboard = true;
+      if (sourcePath === '/dashboard/katalog') dashboardReturnHref = '/dashboard/katalog';
+      else if (sourcePath === '/dashboard/alltags') dashboardReturnHref = '/dashboard/alltags';
+      else if (sourcePath === '/dashboard/fach') dashboardReturnHref = '/dashboard/fach';
+    }
+  } catch {
+    cameFromDashboard = false;
+  }
+}
+
+const publicReturnHref = item.data.track === 'Alltagsdeutsch' ? '/alltagsdeutsch' : '/fachdeutsch';
+const returnHref = cameFromDashboard ? dashboardReturnHref : publicReturnHref;
+const { data: savedProgress } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('sessions_passed, notes')
+    .eq('user_id', user.id)
+    .eq('material_slug', item.id)
+    .maybeSingle()
+  : { data: null };
+const passedSessions = Array.isArray(savedProgress?.sessions_passed)
+  ? [...new Set(savedProgress.sessions_passed.map(Number).filter((session) => Number.isInteger(session) && session > 0))]
+  : [];
+const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
+  sessionNumber: index + 1,
+  vocab: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize),
+}));
+---
+
+<Layout
+  title={`${item.data.judulMateri} | siDeutsch`}
+  description={item.data.deskripsi}
+  hideNavbar={true}
+>
+  <article class="page-shell">
+    <header class="page-header">
+      <p class="eyebrow">{item.data.fakultas ?? item.data.jurusan ?? 'Materi'} • {trackLabel}</p>
+      <h1>{item.data.judulMateri}</h1>
+      <div class="meta-row">
+        <div class="meta-badges">
+          <span class="pill">{trackLabel}</span>
+          {levelOrJurusan && <span class="pill soft">{levelOrJurusan}</span>}
+        </div>
+        {user ? (
+          <a href={returnHref}>{cameFromDashboard ? '← Kembali ke Dashboard' : '← Kembali ke Kurikulum'}</a>
+        ) : (
+          <div class="guest-actions">
+            <a class="curriculum-back" href={returnHref}>← Kembali ke Kurikulum</a>
+            <a class="login-cta" href="/login?redirect=%2Fdashboard">Mulai Belajar (Login) <span aria-hidden="true">→</span></a>
+          </div>
+        )}
+      </div>
+    </header>
+
+    <section class="content-panel">
+      <div class="lesson-copy prose">
+        <Content />
+      </div>
+
+      <section class="vocabulary-list" aria-labelledby="vocabulary-title">
+        <header class="vocabulary-heading">
+          <div>
+            <p class="eyebrow">Kosakata</p>
+            <h2 id="vocabulary-title">Semua Kosakata per Sesi</h2>
+          </div>
+          <span>{item.data.vocab.length} kata · maksimal {batchSize} per sesi</span>
+        </header>
+
+        {vocabSessions.map((session) => user || session.sessionNumber === 1 ? (
+          <section class="vocabulary-session" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
+            <h3 id={`session-vocab-${session.sessionNumber}`}>Sesi {session.sessionNumber}</h3>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Bahasa Jerman</th>
+                    <th scope="col">Bahasa Indonesia</th>
+                    <th scope="col">Contoh kalimat</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {session.vocab.map((entry) => (
+                    <tr>
+                      <td lang="de">{entry.german}</td>
+                      <td>{entry.indonesian}</td>
+                      <td lang="de">{entry.context}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        ) : (
+          <section class="vocabulary-session locked-vocabulary" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
+            <h3 id={`session-vocab-${session.sessionNumber}`}>Sesi {session.sessionNumber}</h3>
+            <div class="locked-session-message">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" /></svg>
+              <div>
+                <p>Login untuk membuka sesi ini.</p>
+                <span>{Math.min(batchSize, item.data.vocab.length - (session.sessionNumber - 1) * batchSize)} kosakata terkunci</span>
+              </div>
+              <a href="/login?redirect=%2Fdashboard">Login <span aria-hidden="true">→</span></a>
+            </div>
+          </section>
+        ))}
+      </section>
+    </section>
+
+    <section
+      class="session-picker"
+      data-session-picker
+      data-progress-key={progressKey}
+      data-authenticated={user ? 'true' : 'false'}
+      data-completed-sessions={passedSessions.join(',')}
+      aria-labelledby="session-title"
+    >
+      <div class="session-heading">
+        <div>
+          <p class="eyebrow">Belajar bertahap</p>
+          <h2 id="session-title">Pilih Sesi Kosakata</h2>
+        </div>
+        <span>{item.data.vocab.length} kosakata · {sessionCount} sesi</span>
+      </div>
+
+      <div class="session-grid">
+        {Array.from({ length: sessionCount }, (_, index) => {
+          const sessionNumber = index + 1;
+          const firstWord = index * batchSize + 1;
+          const lastWord = Math.min((index + 1) * batchSize, item.data.vocab.length);
+
+          const isPassed = passedSessions.includes(sessionNumber);
+          const isUnlocked = sessionNumber === 1 || passedSessions.includes(sessionNumber - 1);
+
+          return (
+            <a
+              class={`session-link ${isUnlocked ? '' : 'locked'}`}
+              href={`/materi/${item.id}/latihan?session=${sessionNumber}`}
+              data-session-link
+              data-session-number={sessionNumber}
+              aria-disabled={!isUnlocked ? 'true' : 'false'}
+              tabindex={!isUnlocked ? -1 : 0}
+            >
+              <span class="session-name">Sesi {sessionNumber}: Kosakata {firstWord}-{lastWord}</span>
+              <span class="session-status" data-session-status>
+                {isPassed ? 'Lulus' : isUnlocked ? 'Mulai' : 'Terkunci'}
+              </span>
+            </a>
+          );
+        })}
+      </div>
+
+      <p class="session-hint">Selesaikan sesi sebelumnya dengan minimal 80% jawaban benar untuk membuka sesi berikutnya.</p>
+    </section>
+
+    <a class="practice-button" href={`/materi/${item.id}/latihan?return=${encodeURIComponent(returnHref)}${user ? '' : '&session=1'}`}>
+      {user ? 'Latihan Materi Ini' : 'Coba Latihan Sesi 1'}
+    </a>
+
+    {user && (
+      <section class="notes-panel" aria-labelledby="notes-title">
+        <label id="notes-title" for="learning-notes">Catatan Belajar Lu</label>
+        <textarea
+          id="learning-notes"
+          data-learning-notes
+          data-notes-key={notesKey}
+          placeholder="Tulis catatan atau rangkuman lu di sini..."
+          rows="6"
+        >{savedProgress?.notes ?? ''}</textarea>
+        <p class="notes-status" data-notes-status aria-live="polite">Catatan tersimpan otomatis.</p>
+      </section>
+    )}
+  </article>
+</Layout>
+
+<script>
+  import {
+    fetchUserProgress,
+    getProgressClient,
+    normalizePassedSessions,
+    upsertUserProgress,
+  } from '../../lib/progress-client.js';
+
+  const sessionPicker = document.querySelector<HTMLElement>('[data-session-picker]');
+  const progressKey = sessionPicker?.dataset.progressKey;
+  const isAuthenticated = sessionPicker?.dataset.authenticated === 'true';
+  const initialPassedSessions = (sessionPicker?.dataset.completedSessions ?? '')
+    .split(',')
+    .map(Number)
+    .filter((session) => Number.isInteger(session) && session > 0);
+  let completedSessions = initialPassedSessions.length > 0 ? Math.max(...initialPassedSessions) : 0;
+
+  if (isAuthenticated) {
+    try {
+      const savedProgress = progressKey ? window.localStorage.getItem(progressKey) ?? '' : '';
+      const localCompleted = Number(savedProgress.match(/^Sesi (\d+) Lulus$/)?.[1] ?? 0);
+      completedSessions = Math.max(completedSessions, localCompleted);
+    } catch {
+      // The server-rendered progress remains available.
+    }
+  }
+
+  function renderSessionProgress() {
+    document.querySelectorAll<HTMLAnchorElement>('[data-session-link]').forEach((link) => {
+      const sessionNumber = Number(link.dataset.sessionNumber);
+      const isUnlocked = sessionNumber <= completedSessions + 1;
+      link.setAttribute('aria-disabled', String(!isUnlocked));
+      link.tabIndex = isUnlocked ? 0 : -1;
+      link.classList.toggle('locked', !isUnlocked);
+      link.onclick = isUnlocked ? null : (event) => event.preventDefault();
+
+      const status = link.querySelector<HTMLElement>('[data-session-status]');
+      if (status) {
+        status.textContent = sessionNumber <= completedSessions
+          ? 'Lulus'
+          : isUnlocked
+            ? 'Mulai'
+            : 'Terkunci';
+      }
+    });
+  }
+
+  renderSessionProgress();
+
+  const progressClient = isAuthenticated ? getProgressClient() : null;
+  if (progressClient && sessionPicker) {
+    void (async () => {
+      try {
+        const { data: { user } } = await progressClient.auth.getUser();
+        if (!user) return;
+        const materialSlug = progressKey?.replace('progress_materi_', '') ?? '';
+        const remoteProgress = await fetchUserProgress(progressClient, user.id, materialSlug);
+        const remoteSessions = normalizePassedSessions(remoteProgress?.sessions_passed);
+        const remoteCompleted = remoteSessions.at(-1) ?? 0;
+        const localCompleted = completedSessions;
+        completedSessions = Math.max(remoteCompleted, localCompleted);
+        renderSessionProgress();
+        if (completedSessions > 0 && progressKey) {
+          window.localStorage.setItem(progressKey, `Sesi ${completedSessions} Lulus`);
+        }
+
+        if (localCompleted > remoteCompleted) {
+          await upsertUserProgress(progressClient, user.id, materialSlug, {
+            sessions_passed: Array.from({ length: localCompleted }, (_, index) => index + 1),
+          });
+        }
+      } catch {
+        // The local session state remains available when Supabase is offline.
+      }
+    })();
+  }
+
+  const notesField = document.querySelector<HTMLTextAreaElement>('[data-learning-notes]');
+  const notesStatus = document.querySelector<HTMLElement>('[data-notes-status]');
+  const notesKey = notesField?.dataset.notesKey;
+  let notesUserId: string | null = null;
+  let notesEdited = false;
+  let notesSaveTimer = 0;
+
+  if (notesField && notesKey) {
+    try {
+      notesField.value = window.localStorage.getItem(notesKey) ?? '';
+    } catch {
+      if (notesStatus) notesStatus.textContent = 'Penyimpanan lokal tidak tersedia di browser ini.';
+    }
+
+    notesField.addEventListener('input', () => {
+      notesEdited = true;
+      try {
+        window.localStorage.setItem(notesKey, notesField.value);
+        if (notesStatus) notesStatus.textContent = 'Catatan tersimpan.';
+      } catch {
+        if (notesStatus) notesStatus.textContent = 'Catatan belum bisa disimpan di browser ini.';
+      }
+
+      if (notesUserId) {
+        window.clearTimeout(notesSaveTimer);
+        notesSaveTimer = window.setTimeout(async () => {
+          try {
+            await upsertUserProgress(progressClient, notesUserId, notesKey.replace('catatan_materi_', ''), {
+              notes: notesField.value,
+            });
+            if (notesStatus) notesStatus.textContent = 'Catatan tersimpan.';
+          } catch {
+            if (notesStatus) notesStatus.textContent = 'Catatan tersimpan di browser; sinkronisasi tertunda.';
+          }
+        }, 500);
+      }
+    });
+
+    if (progressClient) {
+      void (async () => {
+        try {
+          const { data: { user } } = await progressClient.auth.getUser();
+          if (!user) return;
+          const materialSlug = notesKey.replace('catatan_materi_', '');
+          const remoteProgress = await fetchUserProgress(progressClient, user.id, materialSlug);
+          notesUserId = user.id;
+
+          if (notesEdited) {
+            await upsertUserProgress(progressClient, user.id, materialSlug, { notes: notesField.value });
+          } else if (remoteProgress?.notes) {
+            notesField.value = remoteProgress.notes;
+            window.localStorage.setItem(notesKey, remoteProgress.notes);
+          } else if (notesField.value) {
+            await upsertUserProgress(progressClient, user.id, materialSlug, { notes: notesField.value });
+          }
+        } catch {
+          if (notesStatus) notesStatus.textContent = 'Catatan tetap tersedia di browser; sinkronisasi tertunda.';
+        }
+      })();
+    }
+  }
+</script>
+
+<style>
+  .page-shell {
+    padding-top: 1rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1.2;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: var(--accent-red);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .pill.soft {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .content-panel {
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .lesson-copy :global(table) {
+    display: none;
+  }
+
+  .lesson-copy :global(h1) {
+    display: none;
+  }
+
+  .vocabulary-list {
+    margin-top: 1.5rem;
+  }
+
+  .vocabulary-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .vocabulary-heading .eyebrow {
+    margin-bottom: 0.3rem;
+  }
+
+  .vocabulary-heading h2 {
+    margin: 0;
+    font-size: 1.45rem;
+  }
+
+  .vocabulary-heading > span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .vocabulary-session + .vocabulary-session {
+    margin-top: 1.5rem;
+  }
+
+  .locked-vocabulary {
+    padding: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: linear-gradient(110deg, #f1f1f3, #fff 62%, #f1f1f3);
+  }
+
+  .locked-session-message {
+    display: flex;
+    min-height: 84px;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    border: 1px dashed rgba(43, 45, 66, 0.2);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.76);
+  }
+
+  .locked-session-message > svg {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: #966313;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .locked-session-message > div {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .locked-session-message p {
+    margin: 0;
+    color: var(--text-main);
+    font-weight: 800;
+  }
+
+  .locked-session-message > div span {
+    color: var(--muted);
+    font-size: 0.76rem;
+  }
+
+  .locked-session-message a {
+    display: inline-flex;
+    min-height: 40px;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 6px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+  }
+
+  .locked-session-message a:hover,
+  .login-cta:hover {
+    transform: translateY(-2px);
+    background: #F0B84F;
+  }
+
+  .vocabulary-session h3 {
+    margin: 0 0 0.7rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  .vocabulary-session table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 580px;
+  }
+
+  .vocabulary-session th,
+  .vocabulary-session td {
+    padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .vocabulary-session th {
+    background: var(--bg-dark);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .vocabulary-session tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .vocabulary-session td:first-child {
+    font-weight: 700;
+  }
+
+  .practice-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    margin-top: 1.5rem;
+    padding: 0.9rem 1.5rem;
+    border-radius: 12px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .practice-button:hover {
+    background: #F0B84F;
+    transform: translateY(-2px);
+  }
+
+  .notes-panel {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card-bg);
+  }
+
+  .notes-panel label {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+
+  .notes-panel textarea {
+    width: 100%;
+    min-height: 150px;
+    resize: vertical;
+    padding: 0.85rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #fff;
+    color: var(--text-dark);
+    font: inherit;
+    line-height: 1.6;
+  }
+
+  .notes-panel textarea:focus-visible {
+    outline: 3px solid rgba(229, 169, 59, 0.24);
+    border-color: var(--accent-gold);
+  }
+
+  .notes-status {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .session-picker {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card-bg);
+  }
+
+  .session-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .session-heading .eyebrow {
+    margin-bottom: 0.3rem;
+  }
+
+  .session-heading h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .session-heading > span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .session-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 0.65rem;
+  }
+
+  .session-link {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 10px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .session-link:hover:not(.locked) {
+    transform: translateY(-2px);
+    border-color: #C98D23;
+    background: #F0B84F;
+  }
+
+  .session-link.locked {
+    border-color: var(--border);
+    background: #eeedf0;
+    color: var(--muted);
+    cursor: not-allowed;
+  }
+
+  .session-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .session-status {
+    flex: 0 0 auto;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .session-hint {
+    margin: 0.9rem 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .meta-row a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .guest-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .meta-row .login-cta {
+    display: inline-flex;
+    min-height: 42px;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 7px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    font-weight: 800;
+    transition: all 0.2s ease;
+  }
+
+  .meta-row .curriculum-back {
+    color: var(--text-main);
+    text-decoration: underline;
+    text-decoration-color: var(--accent-gold);
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 640px) {
+    .guest-actions {
+      justify-content: flex-start;
+    }
+
+    .locked-session-message {
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+
+    .locked-session-message a {
+      margin-left: 2.85rem;
+    }
+  }
+
+  .prose :global(h1),
+  .prose :global(h2),
+  .prose :global(h3) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .prose :global(p),
+  .prose :global(li) {
+    color: var(--text-main);
+    line-height: 1.8;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+    background: #fff;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    overflow: hidden;
+    border-radius: 0.75rem;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 0.8rem 0.9rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose :global(th) {
+    background: var(--bg-dark);
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.25rem;
+  }
+
+  @media (max-width: 640px) {
+    .session-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .vocabulary-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .content-panel,
+    .notes-panel {
+      padding: 1rem;
+    }
+  }
+</style>

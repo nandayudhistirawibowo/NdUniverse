@@ -1,0 +1,491 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+
+const user = Astro.locals.user!;
+const profile = Astro.locals.profile;
+const nim = profile?.nim ?? user.user_metadata?.nim ?? '';
+const displayName = profile?.nama_lengkap ?? '';
+const avatarUrl = profile?.avatar_url ?? '';
+---
+
+<DashboardLayout
+  title="Profil Mahasiswa | siDeutsch"
+  description="Kelola informasi profil mahasiswa siDeutsch."
+  active="profile"
+  user={user}
+  profile={profile}
+>
+  <section class="profile-content">
+      <header class="page-heading">
+        <p class="eyebrow">Akun Mahasiswa</p>
+        <h1>Profil</h1>
+        <p>Perbarui nama dan foto profilmu.</p>
+      </header>
+
+      <form
+        id="profile-form"
+        class="profile-form"
+        data-avatar-url={avatarUrl}
+      >
+        <div class="avatar-editor">
+          <div class="avatar-frame">
+            <div class="avatar-preview-wrap">
+              <img id="avatar-preview" class="avatar-preview" src={avatarUrl} alt="Foto profil" hidden={!avatarUrl} />
+              {!avatarUrl && (
+                <span id="avatar-preview-fallback" class="avatar-fallback" aria-hidden="true">
+                  {(displayName || nim || 'M').slice(0, 1).toUpperCase()}
+                </span>
+              )}
+            </div>
+            <input id="file-upload" class="avatar-file-input" name="avatar" type="file" accept="image/png,image/jpeg,image/webp" />
+            <label class="avatar-camera" for="file-upload" title="Ganti foto profil">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 5H8L6.5 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2.5L16 5h-2Z" />
+                <circle cx="12" cy="13" r="3.5" />
+              </svg>
+              <span class="visually-hidden">Pilih foto profil</span>
+            </label>
+          </div>
+          <div class="avatar-upload">
+            <span class="avatar-upload-title">Foto Profil</span>
+            <small>PNG, JPG, atau WebP. Maksimal 5 MB.</small>
+          </div>
+        </div>
+
+        <label for="nama-lengkap">Nama Lengkap</label>
+        <input
+          id="nama-lengkap"
+          name="nama_lengkap"
+          type="text"
+          value={displayName}
+          autocomplete="name"
+          placeholder="Masukkan nama lengkap"
+          required
+        />
+
+        <label for="nim">NIM</label>
+        <input id="nim" name="nim" type="text" value={nim} readonly />
+
+        <button id="profile-submit" type="submit">Simpan Perubahan</button>
+        <p id="profile-message" class="profile-message" role="status" aria-live="polite"></p>
+      </form>
+  </section>
+</DashboardLayout>
+
+<script>
+  import { createBrowserClient } from '@supabase/ssr';
+
+  const form = document.querySelector<HTMLFormElement>('#profile-form');
+  const fileInput = document.querySelector<HTMLInputElement>('#file-upload');
+  const avatarPreview = document.querySelector<HTMLImageElement>('#avatar-preview');
+  const avatarFallback = document.querySelector<HTMLElement>('#avatar-preview-fallback');
+  const submitButton = document.querySelector<HTMLButtonElement>('#profile-submit');
+  const message = document.querySelector<HTMLElement>('#profile-message');
+  let selectedAvatar: File | null = null;
+
+  fileInput?.addEventListener('change', () => {
+    selectedAvatar = fileInput.files?.[0] ?? null;
+    if (!selectedAvatar || !avatarPreview || !message) return;
+
+    if (!['image/png', 'image/jpeg', 'image/webp'].includes(selectedAvatar.type) || selectedAvatar.size > 5 * 1024 * 1024) {
+      selectedAvatar = null;
+      fileInput.value = '';
+      message.textContent = 'File harus berupa PNG, JPG, atau WebP dengan ukuran maksimal 5 MB.';
+      message.dataset.state = 'error';
+      return;
+    }
+
+    if (avatarPreview.src.startsWith('blob:')) URL.revokeObjectURL(avatarPreview.src);
+    avatarPreview.src = URL.createObjectURL(selectedAvatar);
+    avatarPreview.hidden = false;
+    if (avatarFallback) avatarFallback.hidden = true;
+    message.textContent = '';
+  });
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form || !submitButton || !message) return;
+
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnonKey) {
+      message.textContent = 'Konfigurasi Supabase belum tersedia.';
+      message.dataset.state = 'error';
+      return;
+    }
+
+    const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      message.textContent = 'Sesi login berakhir. Silakan login kembali.';
+      message.dataset.state = 'error';
+      return;
+    }
+
+    const formData = new FormData(form);
+    const namaLengkap = String(formData.get('nama_lengkap') ?? '').trim();
+    let nextAvatarUrl = form.dataset.avatarUrl ?? null;
+
+    submitButton.disabled = true;
+    message.textContent = 'Menyimpan profil...';
+    message.dataset.state = 'loading';
+
+    try {
+      if (selectedAvatar) {
+        const extensionByType: Record<string, string> = {
+          'image/png': 'png',
+          'image/jpeg': 'jpg',
+          'image/webp': 'webp',
+        };
+        const extension = extensionByType[selectedAvatar.type];
+        const storagePath = `${user.id}/avatar.${extension}`;
+        const { error: uploadError } = await supabase.storage
+          .from('avatars')
+          .upload(storagePath, selectedAvatar, {
+            cacheControl: '0',
+            contentType: selectedAvatar.type,
+            upsert: true,
+          });
+
+        if (uploadError) throw uploadError;
+
+        const publicUrl = supabase.storage.from('avatars').getPublicUrl(storagePath).data.publicUrl;
+        nextAvatarUrl = `${publicUrl}?v=${Date.now()}`;
+      }
+
+      const { data: savedProfile, error: saveError } = await supabase
+        .from('profiles')
+        .update({ nama_lengkap: namaLengkap, avatar_url: nextAvatarUrl })
+        .eq('id', user.id)
+        .select('id')
+        .maybeSingle();
+
+      if (saveError) throw saveError;
+      if (!savedProfile) throw new Error('Profil tidak ditemukan.');
+
+      form.dataset.avatarUrl = nextAvatarUrl ?? '';
+      if (nextAvatarUrl && avatarPreview) avatarPreview.src = nextAvatarUrl;
+      selectedAvatar = null;
+      if (fileInput) fileInput.value = '';
+      message.textContent = 'Profil berhasil disimpan.';
+      message.dataset.state = 'success';
+    } catch (error) {
+      message.textContent = error instanceof Error
+        ? `Profil gagal disimpan: ${error.message}`
+        : 'Profil gagal disimpan. Coba lagi.';
+      message.dataset.state = 'error';
+    } finally {
+      submitButton.disabled = false;
+    }
+  });
+</script>
+
+<style>
+  .profile-layout {
+    display: grid;
+    grid-template-columns: 230px minmax(0, 1fr);
+    gap: 2rem;
+    min-height: 640px;
+  }
+
+  .profile-sidebar {
+    display: flex;
+    flex-direction: column;
+    min-height: 640px;
+    padding: 1.25rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .sidebar-brand {
+    padding: 0.3rem 0.5rem 1.3rem;
+    color: var(--text-main);
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .sidebar-brand span {
+    color: var(--accent-gold);
+  }
+
+  .sidebar-nav {
+    display: grid;
+    gap: 0.35rem;
+    margin-top: 1rem;
+  }
+
+  .sidebar-nav a,
+  .logout-form button {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.6rem 0.7rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #475569;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .sidebar-nav a span,
+  .logout-form button span {
+    width: 1.2rem;
+    color: #64748b;
+    font-size: 1.05rem;
+    text-align: center;
+  }
+
+  .sidebar-nav a.active {
+    background: #F7E5C2;
+    color: var(--text-main);
+  }
+
+  .sidebar-nav a:hover,
+  .logout-form button:hover {
+    background: #F7E5C2;
+    color: var(--text-main);
+  }
+
+  .logout-form {
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .logout-form button {
+    width: 100%;
+  }
+
+  .profile-content {
+    max-width: 760px;
+    padding: 0.5rem 0;
+  }
+
+  .page-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.45rem;
+    color: var(--text-main);
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 2.2rem;
+  }
+
+  .page-heading > p:last-child {
+    margin: 0.6rem 0 0;
+    color: #64748b;
+  }
+
+  .profile-form {
+    display: grid;
+    gap: 0.65rem;
+    padding: 1.35rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+  }
+
+  .profile-form > label,
+  .avatar-upload label {
+    margin-top: 0.35rem;
+    color: #334155;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  .profile-form > input {
+    width: 100%;
+    min-height: 46px;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #fff;
+    color: var(--text-main);
+    font: inherit;
+  }
+
+  .profile-form > input:focus-visible,
+  .avatar-upload input:focus-visible {
+    outline: 3px solid rgba(229, 169, 59, 0.22);
+    border-color: var(--accent-gold);
+  }
+
+  .profile-form > input[readonly] {
+    background: #f1f5f9;
+    color: #64748b;
+  }
+
+  .avatar-editor {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .avatar-frame {
+    position: relative;
+    width: 88px;
+    height: 88px;
+    flex: 0 0 auto;
+  }
+
+  .avatar-preview-wrap {
+    width: 88px;
+    height: 88px;
+    overflow: hidden;
+    border: 3px solid var(--accent-gold);
+    border-radius: 50%;
+    background: #F7E5C2;
+    box-shadow: 0 4px 12px rgba(26, 26, 30, 0.1);
+  }
+
+  .avatar-preview {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .avatar-preview[hidden] {
+    display: none;
+  }
+
+  .avatar-fallback {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    place-items: center;
+    color: var(--text-main);
+    font-size: 1.8rem;
+    font-weight: 800;
+  }
+
+  .avatar-upload {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+  }
+
+  .avatar-file-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .avatar-camera {
+    position: absolute;
+    right: -3px;
+    bottom: -3px;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    place-items: center;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    color: var(--bg-dark);
+    box-shadow: 0 3px 9px rgba(26, 26, 30, 0.2);
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .avatar-camera:hover {
+    transform: scale(1.08);
+    background: #F0B84F;
+  }
+
+  .avatar-camera svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .avatar-file-input:focus-visible + .avatar-camera {
+    outline: 3px solid rgba(229, 169, 59, 0.38);
+    outline-offset: 3px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .avatar-upload-title {
+    color: #334155;
+    font-size: 0.84rem;
+    font-weight: 700;
+  }
+
+  .avatar-upload small {
+    color: #64748b;
+    font-size: 0.74rem;
+  }
+
+  .profile-form > button {
+    min-height: 48px;
+    margin-top: 0.5rem;
+    border: 0;
+    border-radius: 8px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    font: inherit;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .profile-form > button:hover:not(:disabled) {
+    background: #F0B84F;
+  }
+
+  .profile-form > button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  .profile-message {
+    min-height: 1.2rem;
+    margin: 0;
+    color: #15803d;
+    font-size: 0.82rem;
+  }
+
+  .profile-message[data-state='error'] {
+    color: var(--accent-red);
+  }
+
+  @media (max-width: 760px) {
+  }
+</style>

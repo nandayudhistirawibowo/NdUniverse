@@ -1,0 +1,1511 @@
+import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import {
+  fetchAllUserProgress,
+  getProgressClient,
+  normalizePassedSessions,
+  upsertUserProgress,
+} from '../lib/progress-client.js';
+
+const STORAGE_KEY = 'sideutsch-xp';
+const QUESTION_TYPES = ['arrange', 'matcher', 'cloze'];
+const SOUND_FILES = {
+  click: '/sounds/quiz-click.mp3',
+  success: '/sounds/quiz-success.mp3',
+  error: '/sounds/quiz-error.mp3',
+};
+
+function playSound(name) {
+  if (typeof Audio === 'undefined') return;
+
+  const sound = new Audio(SOUND_FILES[name]);
+  sound.volume = 0.45;
+  sound.play().catch(() => {});
+}
+
+function shuffle(items) {
+  const arr = [...items];
+
+  for (let i = arr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+
+  return arr;
+}
+
+function buildQuestionQueue(items) {
+  const types = shuffle(items.map((_, index) => QUESTION_TYPES[index % QUESTION_TYPES.length]));
+
+  return shuffle(items).map((item, index) => ({
+    ...item,
+    id: `${item.german}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+    type: types[index],
+    needsReview: false,
+    correctAfterWrong: 0,
+  }));
+}
+
+function buildMatcherSet(currentItem, items) {
+  if (!currentItem) return null;
+
+  const uniqueItems = [...new Map(items.map((item) => [item.german, item])).values()];
+  const pool = [
+    currentItem,
+    ...shuffle(uniqueItems.filter((item) => item.german !== currentItem.german && item.indonesian !== currentItem.indonesian)).slice(0, 3),
+  ];
+  const germanWords = shuffle(pool.map((item) => item.german));
+  const indonesianOptions = shuffle(pool.map((item) => item.indonesian));
+
+  return {
+    germanWords,
+    indonesianOptions,
+    correctMap: Object.fromEntries(pool.map((item) => [item.german, item.indonesian])),
+  };
+}
+
+function buildClozeSet(currentItem, items) {
+  if (!currentItem) return null;
+
+  const uniqueItems = [...new Map(items.map((item) => [item.german, item])).values()];
+  return {
+    options: shuffle([
+      currentItem.german,
+      ...shuffle(uniqueItems.filter((item) => item.german !== currentItem.german))
+        .slice(0, 3)
+        .map((item) => item.german),
+    ]),
+    answer: currentItem.german,
+  };
+}
+
+function readCompletedSessions(materialId) {
+  if (!materialId) return 0;
+
+  try {
+    const saved = window.localStorage.getItem(`progress_materi_${materialId}`) ?? '';
+    return Number(saved.match(/^Sesi (\d+) Lulus$/)?.[1] ?? 0);
+  } catch {
+    return 0;
+  }
+}
+
+/** @param {{ items?: Array<{ german: string, indonesian: string, context: string }>, track?: string, level?: string, jurusan?: string, returnHref?: string, startIndex?: number, batchSize?: number, sessionMode?: boolean, materialId?: string }} props */
+export default function Quiz(props) {
+  const {
+    items: suppliedItems,
+    track,
+    level,
+    jurusan,
+    returnHref = '/materi',
+    startIndex = 0,
+    batchSize,
+    sessionMode = false,
+    materialId,
+  } = props;
+  const items = suppliedItems ?? [];
+  const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
+  const [xp, setXp] = useState(0);
+  const [sessionXp, setSessionXp] = useState(0);
+  const [lives, setLives] = useState(3);
+  const [activeStartIndex, setActiveStartIndex] = useState(startIndex);
+  const [sessionInitialized, setSessionInitialized] = useState(!sessionMode);
+  const currentBatchItems = useMemo(
+    () => sessionMode ? items.slice(activeStartIndex, activeStartIndex + effectiveBatchSize) : items,
+    [items, activeStartIndex, effectiveBatchSize, sessionMode]
+  );
+  const sessionCount = Math.ceil(items.length / effectiveBatchSize);
+  const activeSessionNumber = Math.floor(activeStartIndex / effectiveBatchSize) + 1;
+  const [queue, setQueue] = useState(() => buildQuestionQueue(
+    sessionMode ? items.slice(startIndex, startIndex + effectiveBatchSize) : items
+  ));
+  const [attemptedCount, setAttemptedCount] = useState(0);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [wrongWords, setWrongWords] = useState([]);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const [arrangeSelected, setArrangeSelected] = useState([]);
+  const [arrangeOptions, setArrangeOptions] = useState([]);
+  const [matcherSelection, setMatcherSelection] = useState(null);
+  const [matcherMatches, setMatcherMatches] = useState({});
+  const [clozeSelection, setClozeSelection] = useState(null);
+  const [matcherWrongPair, setMatcherWrongPair] = useState(null);
+  const matcherWrongTimeoutRef = useRef(0);
+  const [checkedResult, setCheckedResult] = useState(null);
+  const [toast, setToast] = useState(null);
+  const [materialXp, setMaterialXp] = useState(0);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authResolved, setAuthResolved] = useState(false);
+  const progressClientRef = useRef(null);
+  const progressUserIdRef = useRef(null);
+  const progressWriteQueueRef = useRef(Promise.resolve());
+  const pendingProgressRef = useRef({ xpDelta: 0, sessions_passed: null });
+  const earnedXpRef = useRef(0);
+  const completedSessionsRef = useRef([]);
+  const hasAnsweredRef = useRef(false);
+
+  function queueProgressUpdate(updates) {
+    if (!materialId) return;
+
+    const userId = progressUserIdRef.current;
+    if (!userId) {
+      if (updates.xpDelta) pendingProgressRef.current.xpDelta += updates.xpDelta;
+      if (updates.sessions_passed) {
+        pendingProgressRef.current.sessions_passed = updates.sessions_passed;
+      }
+      return;
+    }
+
+    progressWriteQueueRef.current = progressWriteQueueRef.current
+      .then(() => upsertUserProgress(progressClientRef.current, userId, materialId, updates))
+      .catch(() => {});
+  }
+
+  useEffect(() => {
+    let cancelled = false;
+    const loadProgress = async () => {
+      const client = getProgressClient();
+      if (!client) {
+        setAuthResolved(true);
+        return;
+      }
+
+      const { data: { session }, error: authError } = await client.auth.getSession();
+      if (cancelled) return;
+      const user = session?.user;
+      if (authError || !user) {
+        setAuthResolved(true);
+        return;
+      }
+
+      progressClientRef.current = client;
+      progressUserIdRef.current = user.id;
+
+      let localXp = 0;
+      let localMaterialXp = 0;
+      try {
+        localXp = Number(window.localStorage.getItem(STORAGE_KEY) || '0');
+        localMaterialXp = materialId
+          ? Number(window.localStorage.getItem(`progress_xp_${materialId}`) || '0')
+          : 0;
+      } catch {
+        localXp = 0;
+        localMaterialXp = 0;
+      }
+
+      setXp(Number.isFinite(localXp) ? localXp : 0);
+      setMaterialXp(Number.isFinite(localMaterialXp) ? localMaterialXp : 0);
+      setIsAuthenticated(true);
+      setAuthResolved(true);
+
+      if (!materialId) return;
+
+      const rows = await fetchAllUserProgress(client, user.id);
+      if (cancelled) return;
+
+      const current = rows.find((row) => row.material_slug === materialId);
+      const currentMaterialXp = Math.max(0, Number(current?.xp) || 0);
+      const remoteTotalXp = rows.reduce((total, row) => total + Math.max(0, Number(row.xp) || 0), 0);
+      const legacyXp = remoteTotalXp === 0 && Number.isFinite(localXp)
+        ? Math.max(0, localXp - earnedXpRef.current)
+        : 0;
+      const offlineXp = remoteTotalXp > 0
+        ? Math.max(0, localMaterialXp - currentMaterialXp - earnedXpRef.current)
+        : 0;
+      const remoteSessions = normalizePassedSessions(current?.sessions_passed);
+      const localCompleted = readCompletedSessions(materialId);
+      const completed = Math.max(localCompleted, remoteSessions.at(-1) ?? 0);
+      const mergedSessions = Array.from({ length: completed }, (_, index) => index + 1);
+
+      setXp(remoteTotalXp + legacyXp + offlineXp + earnedXpRef.current);
+      setMaterialXp(currentMaterialXp + legacyXp + offlineXp + earnedXpRef.current);
+
+      if (completed > 0) {
+        completedSessionsRef.current = mergedSessions;
+        try {
+          window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completed} Lulus`);
+        } catch {
+          // Keep the remote progress available if local storage is unavailable.
+        }
+      }
+
+      const pending = pendingProgressRef.current;
+      pendingProgressRef.current = { xpDelta: 0, sessions_passed: null };
+      if (legacyXp > 0) queueProgressUpdate({ xp: (Number(current?.xp) || 0) + legacyXp });
+      if (offlineXp > 0) queueProgressUpdate({ xpDelta: offlineXp });
+      if (pending.xpDelta > 0) queueProgressUpdate({ xpDelta: pending.xpDelta });
+      const sessionsToSave = pending.sessions_passed
+        ?? (localCompleted > (remoteSessions.at(-1) ?? 0) ? mergedSessions : null);
+      if (sessionsToSave) queueProgressUpdate({ sessions_passed: sessionsToSave });
+
+      const requestedSession = Number(new URLSearchParams(window.location.search).get('session')) || 0;
+      if (sessionMode && !hasAnsweredRef.current) {
+        const totalSessions = Math.ceil(items.length / effectiveBatchSize);
+        const nextSession = requestedSession
+          ? Math.min(Math.max(requestedSession, 1), Math.min(completed + 1, totalSessions || 1))
+          : Math.min(completed + 1, totalSessions || 1);
+        const nextStartIndex = (nextSession - 1) * effectiveBatchSize;
+        if (nextStartIndex !== activeStartIndex) {
+          setActiveStartIndex(nextStartIndex);
+          setQueue(buildQuestionQueue(items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize)));
+        }
+      }
+    };
+
+    loadProgress().catch(() => {
+      if (!cancelled) setAuthResolved(true);
+    });
+    return () => { cancelled = true; };
+  }, [materialId, items, sessionMode, effectiveBatchSize]);
+
+  useEffect(() => {
+    if (!isAuthenticated) return;
+    try {
+      window.localStorage.setItem(STORAGE_KEY, String(xp));
+    } catch {
+      // ignore localStorage errors in restricted environments
+    }
+  }, [xp, isAuthenticated]);
+
+  useEffect(() => {
+    if (!isAuthenticated || !materialId) return;
+    try {
+      window.localStorage.setItem(`progress_xp_${materialId}`, String(materialXp));
+    } catch {
+      // Keep XP in memory if local storage is unavailable.
+    }
+  }, [materialXp, materialId, isAuthenticated]);
+
+  useEffect(() => {
+    if (!authResolved) return;
+
+    const totalSessions = Math.ceil(items.length / effectiveBatchSize);
+    const completed = sessionMode && isAuthenticated ? readCompletedSessions(materialId) : 0;
+    const requestedSession = sessionMode
+      ? Number(new URLSearchParams(window.location.search).get('session')) || 0
+      : 0;
+    const defaultSession = Math.min(completed + 1, totalSessions || 1);
+    const selectedSession = Math.min(
+      Math.max(requestedSession || defaultSession, 1),
+      Math.min(completed + 1, totalSessions || 1)
+    );
+    const nextStartIndex = sessionMode ? (selectedSession - 1) * effectiveBatchSize : startIndex;
+    const firstBatch = sessionMode
+      ? items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize)
+      : items;
+
+    setActiveStartIndex(nextStartIndex);
+    setSessionInitialized(true);
+    setQueue(buildQuestionQueue(firstBatch));
+    setLives(3);
+    setSessionXp(0);
+    setAttemptedCount(0);
+    setCorrectCount(0);
+    setWrongWords([]);
+    setIsGameOver(false);
+    setArrangeSelected([]);
+    setMatcherSelection(null);
+    setMatcherMatches({});
+    setClozeSelection(null);
+    setCheckedResult(null);
+    setToast(null);
+  }, [items, sessionMode, materialId, effectiveBatchSize, startIndex, authResolved, isAuthenticated]);
+
+  const currentQuestion = queue[0] ?? null;
+
+  useEffect(() => {
+    if (!currentQuestion) return;
+    window.clearTimeout(matcherWrongTimeoutRef.current);
+    setMatcherWrongPair(null);
+    if (currentQuestion.type === 'arrange') {
+      const tokens = currentQuestion.german.split(/\s+/).filter(Boolean);
+      setArrangeOptions(shuffle(tokens));
+      setArrangeSelected([]);
+    } else {
+      setMatcherSelection(null);
+      setMatcherMatches({});
+      setClozeSelection(null);
+    }
+  }, [currentQuestion]);
+
+  useEffect(() => {
+    if (!toast) return undefined;
+
+    const timeout = window.setTimeout(() => setToast(null), 3000);
+    return () => window.clearTimeout(timeout);
+  }, [toast]);
+
+  const matcherSet = useMemo(() => {
+    if (!currentQuestion || currentQuestion.type !== 'matcher') return null;
+    return buildMatcherSet(currentQuestion, currentBatchItems);
+  }, [currentQuestion, currentBatchItems]);
+
+  const clozeSet = useMemo(() => {
+    if (!currentQuestion || currentQuestion.type !== 'cloze') return null;
+    return buildClozeSet(currentQuestion, currentBatchItems);
+  }, [currentQuestion, currentBatchItems]);
+
+  const requiredCorrect = Math.ceil(currentBatchItems.length * 0.8);
+  const sessionPassed = sessionMode
+    && !isGameOver
+    && queue.length === 0
+    && correctCount >= requiredCorrect;
+  const sessionFailed = isGameOver || (sessionMode && queue.length === 0 && !sessionPassed);
+
+  useEffect(() => {
+    if (!sessionPassed || !materialId) return;
+
+    const savedCompleted = isAuthenticated ? readCompletedSessions(materialId) : 0;
+    const completed = Math.max(savedCompleted, activeSessionNumber);
+    const sessionsPassed = Array.from({ length: completed }, (_, index) => index + 1);
+    completedSessionsRef.current = sessionsPassed;
+    if (isAuthenticated) {
+      try {
+        window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completed} Lulus`);
+      } catch {
+        // The session still syncs to Supabase when available.
+      }
+    }
+    queueProgressUpdate({ sessions_passed: sessionsPassed });
+  }, [sessionPassed, materialId, activeSessionNumber, isAuthenticated]);
+
+  if (items.length === 0) {
+    return (
+      <div className="quiz-empty">
+        <p>Belum ada vocab untuk latihan saat ini.</p>
+      </div>
+    );
+  }
+
+  if (sessionMode && !sessionInitialized) {
+    return <p className="quiz-empty">Menyiapkan progress sesi...</p>;
+  }
+
+  function awardXp(amount) {
+    earnedXpRef.current += amount;
+    setXp((prev) => prev + amount);
+    setMaterialXp((prev) => prev + amount);
+    setSessionXp((prev) => prev + amount);
+    queueProgressUpdate({ xpDelta: amount });
+  }
+
+  function restartGame() {
+    const sessionItems = sessionMode
+      ? items.slice(activeStartIndex, activeStartIndex + effectiveBatchSize)
+      : items;
+    setQueue(buildQuestionQueue(sessionItems));
+    setLives(3);
+    setSessionXp(0);
+    setAttemptedCount(0);
+    setCorrectCount(0);
+    setWrongWords([]);
+    setIsGameOver(false);
+    setArrangeSelected([]);
+    setMatcherSelection(null);
+    setMatcherMatches({});
+    setMatcherWrongPair(null);
+    window.clearTimeout(matcherWrongTimeoutRef.current);
+    setClozeSelection(null);
+    setCheckedResult(null);
+    setToast(null);
+  }
+
+  function startSession(sessionNumber) {
+    const nextStartIndex = (sessionNumber - 1) * effectiveBatchSize;
+    const nextItems = items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize);
+    setActiveStartIndex(nextStartIndex);
+    setQueue(buildQuestionQueue(nextItems));
+    setLives(3);
+    setSessionXp(0);
+    setAttemptedCount(0);
+    setCorrectCount(0);
+    setWrongWords([]);
+    setIsGameOver(false);
+    setArrangeSelected([]);
+    setMatcherSelection(null);
+    setMatcherMatches({});
+    setMatcherWrongPair(null);
+    window.clearTimeout(matcherWrongTimeoutRef.current);
+    setClozeSelection(null);
+    setCheckedResult(null);
+    setToast(null);
+    window.history.replaceState(null, '', `${window.location.pathname}?session=${sessionNumber}`);
+  }
+
+  function showResult(isCorrect) {
+    if (checkedResult !== null || !currentQuestion) return;
+
+    hasAnsweredRef.current = true;
+    setCheckedResult(isCorrect);
+    setAttemptedCount((count) => count + 1);
+    if (isCorrect) {
+      setCorrectCount((count) => count + 1);
+      awardXp(10);
+      setToast({ type: 'success', message: 'Jawaban Tepat! +10 XP' });
+      playSound('success');
+    } else {
+      setLives((remaining) => Math.max(remaining - 1, 0));
+      setWrongWords((words) => [...words, currentQuestion]);
+      if (lives <= 1) setIsGameOver(true);
+      setToast({ type: 'error', message: 'Kurang tepat, coba lagi!' });
+      playSound('error');
+    }
+  }
+
+  function advanceQuestion() {
+    if (!currentQuestion || checkedResult === null) return;
+
+    setQueue((currentQueue) => currentQueue.slice(1));
+    setArrangeSelected([]);
+    setMatcherSelection(null);
+    setMatcherMatches({});
+    setMatcherWrongPair(null);
+    window.clearTimeout(matcherWrongTimeoutRef.current);
+    setClozeSelection(null);
+    setCheckedResult(null);
+    setToast(null);
+  }
+
+  function handleArrangeSubmit() {
+    if (arrangeSelected.length === 0) return;
+
+    const answer = arrangeSelected.map((index) => arrangeOptions[index]).join(' ');
+    const isCorrect = answer === currentQuestion.german;
+    showResult(isCorrect);
+  }
+
+  function handleMatcherSubmit() {
+    if (!matcherSet) return;
+
+    const isCorrect = Object.entries(matcherSet.correctMap).every(
+      ([german, meaning]) => matcherMatches[german] === meaning
+    );
+
+    showResult(isCorrect);
+  }
+
+  function handleClozeSubmit() {
+    if (!clozeSet || !clozeSelection) return;
+    showResult(clozeSelection === clozeSet.answer);
+  }
+
+  function addArrangeToken(index) {
+    setArrangeSelected((prev) => [...prev, index]);
+    playSound('click');
+  }
+
+  function removeArrangeToken() {
+    setArrangeSelected((prev) => prev.slice(0, -1));
+  }
+
+  function resetArrange() {
+    setArrangeSelected([]);
+  }
+
+  function handleMatcherPick(indonesianWord) {
+    if (!matcherSet || checkedResult !== null || !matcherSelection) return;
+
+    const selectedGerman = matcherSelection;
+    setMatcherSelection(null);
+
+    if (matcherSet.correctMap[selectedGerman] === indonesianWord) {
+      setMatcherMatches((matches) => ({ ...matches, [selectedGerman]: indonesianWord }));
+      playSound('success');
+      return;
+    }
+
+    window.clearTimeout(matcherWrongTimeoutRef.current);
+    setMatcherWrongPair({ german: selectedGerman, indonesian: indonesianWord });
+    matcherWrongTimeoutRef.current = window.setTimeout(() => setMatcherWrongPair(null), 700);
+    playSound('error');
+  }
+
+  function selectMatcherWord(word) {
+    if (checkedResult !== null || Object.prototype.hasOwnProperty.call(matcherMatches, word)) return;
+
+    setMatcherSelection((selected) => selected === word ? null : word);
+    playSound('click');
+  }
+
+  function handleQuestionAction() {
+    if (checkedResult !== null) {
+      advanceQuestion();
+      return;
+    }
+
+    if (currentQuestion.type === 'arrange') handleArrangeSubmit();
+    else if (currentQuestion.type === 'matcher') handleMatcherSubmit();
+    else handleClozeSubmit();
+  }
+
+  const questionNumber = Math.min(attemptedCount + (checkedResult === null ? 1 : 0), currentBatchItems.length);
+  const progress = currentBatchItems.length === 0 ? 0 : Math.round((attemptedCount / currentBatchItems.length) * 100);
+  const accuracy = attemptedCount === 0 ? 0 : Math.round((correctCount / attemptedCount) * 100);
+  const showSummary = isGameOver || queue.length === 0;
+  const matcherIsComplete = matcherSet && Object.keys(matcherMatches).length === matcherSet.germanWords.length;
+  const canCheckAnswer = currentQuestion?.type === 'arrange'
+    ? arrangeSelected.length > 0
+    : currentQuestion?.type === 'matcher'
+      ? matcherIsComplete
+      : clozeSelection !== null;
+
+  return (
+    <div className="quiz-shell">
+      {toast && (
+        <div className={`quiz-toast ${toast.type}`} role={toast.type === 'error' ? 'alert' : 'status'}>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            {toast.type === 'success'
+              ? <path d="m5 12 4 4L19 6" />
+              : <path d="m6 6 12 12M18 6 6 18" />}
+          </svg>
+          <span className="toast-message">{toast.message}</span>
+        </div>
+      )}
+
+      <div className="quiz-header">
+        <span className="track-tag">{track ?? 'Track'}</span>
+        <span className="xp-badge">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></svg>
+          <span>XP sesi: {sessionXp} · Total: {xp}</span>
+        </span>
+        <div className="game-controls">
+          <div className="hearts" role="img" aria-label={`Nyawa: ${lives} dari 3`}>
+            {Array.from({ length: 3 }, (_, index) => (
+              <span key={index} className={index < lives ? 'heart-active' : 'heart-empty'} aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M20.8 4.8a5.3 5.3 0 0 0-7.5 0L12 6.1l-1.3-1.3a5.3 5.3 0 0 0-7.5 7.5l1.3 1.3L12 21l7.5-7.4 1.3-1.3a5.3 5.3 0 0 0 0-7.5Z" />
+                </svg>
+              </span>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="restart-btn"
+            onClick={restartGame}
+            aria-label="Ulangi kuis dari awal"
+            title="Ulangi kuis"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 7v5h-5M4 17v-5h5" />
+              <path d="M6.1 9a7 7 0 0 1 11.6-2L20 12M4 12l2.3 5a7 7 0 0 0 11.6-2" />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {!showSummary && currentQuestion && (
+        <>
+          <div className="progress-section">
+            <div className="progress-label">
+              <span>
+                {sessionMode && `Sesi ${activeSessionNumber} dari ${sessionCount} · `}
+                Soal {questionNumber} dari {currentBatchItems.length}
+              </span>
+              <span>{progress}%</span>
+            </div>
+            <div
+              className="progress-track"
+              role="progressbar"
+              aria-label="Progress kuis"
+              aria-valuemin="0"
+              aria-valuemax={currentBatchItems.length}
+              aria-valuenow={attemptedCount}
+            >
+              <span style={{ width: `${progress}%` }} />
+            </div>
+          </div>
+
+              <div className="question-card">
+                {currentQuestion.type === 'arrange' ? (
+                  <>
+                    <p className="question-label">Tipe A · Susun kata</p>
+                    <h3>Susun dalam Bahasa Jerman: {currentQuestion.indonesian}</h3>
+                    <div className="answer-box">
+                      <div className="answer-content">
+                        {arrangeSelected.length === 0 && <span className="placeholder">Pilih kata untuk menyusun</span>}
+                        {arrangeSelected.map((optionIndex, index) => (
+                          <span key={`${optionIndex}-${index}`} className="answer-token">
+                            {arrangeOptions[optionIndex]}
+                          </span>
+                        ))}
+                      </div>
+                      <button type="button" className="reset-btn" onClick={resetArrange} disabled={checkedResult !== null}>
+                        Reset
+                      </button>
+                    </div>
+                    <div className="tokens-wrap">
+                      {arrangeOptions.map((token, index) => !arrangeSelected.includes(index) && (
+                        <button key={`${token}-${index}`} type="button" className="token-chip" onClick={() => addArrangeToken(index)} disabled={checkedResult !== null}>
+                          {token}
+                        </button>
+                      ))}
+                    </div>
+                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.german}</p>}
+                  </>
+                ) : currentQuestion.type === 'matcher' ? (
+                  <>
+                    <p className="question-label">Tipe B · Word matcher</p>
+                    <h3>Hubungkan kata dengan artinya</h3>
+                    <div className="matcher-board">
+                      <div className="matcher-grid">
+                        <div className="matcher-column">
+                          <p className="column-title">Bahasa Jerman</p>
+                          {matcherSet?.germanWords.map((word) => {
+                            const isMatched = Object.prototype.hasOwnProperty.call(matcherMatches, word);
+                            const isWrong = matcherWrongPair?.german === word;
+                            return (
+                              <button
+                                key={word}
+                                type="button"
+                                className={`match-choice ${matcherSelection === word ? 'active' : ''} ${isMatched ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
+                                onClick={() => selectMatcherWord(word)}
+                                disabled={checkedResult !== null || isMatched}
+                                aria-pressed={matcherSelection === word}
+                              >
+                                {word}
+                              </button>
+                            );
+                          })}
+                        </div>
+                        <div className="matcher-column">
+                          <p className="column-title">Bahasa Indonesia</p>
+                          {matcherSet?.indonesianOptions.map((word) => {
+                            const matchedGerman = Object.keys(matcherMatches).find((german) => matcherMatches[german] === word);
+                            const isWrong = matcherWrongPair?.indonesian === word;
+                            return (
+                              <button
+                                key={word}
+                                type="button"
+                                className={`match-choice ${matcherSelection ? 'selectable' : ''} ${matchedGerman ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
+                                onClick={() => handleMatcherPick(word)}
+                                disabled={checkedResult !== null || Boolean(matchedGerman) || !matcherSelection}
+                                aria-pressed={Boolean(matcherSelection)}
+                              >
+                                {word}
+                              </button>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    </div>
+                    {checkedResult === false && (
+                      <p className="correct-answer">
+                        Jawaban yang benar: {Object.entries(matcherSet.correctMap).map(([german, indonesian]) => `${german} = ${indonesian}`).join(', ')}
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <p className="question-label">Tipe C · Lengkapi kalimat</p>
+                    <h3>Ich lerne das deutsche Wort für „{currentQuestion.indonesian}“: _____.</h3>
+                    <div className="cloze-options">
+                      {clozeSet?.options.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`cloze-choice ${clozeSelection === option ? 'selected' : ''} ${checkedResult === true && option === clozeSet.answer ? 'correct' : ''} ${checkedResult === false && option === clozeSelection ? 'wrong' : ''}`}
+                          onClick={() => {
+                            if (checkedResult !== null) return;
+                            setClozeSelection(option);
+                            playSound('click');
+                          }}
+                          disabled={checkedResult !== null}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {clozeSet.answer}</p>}
+                  </>
+                )}
+
+                <div className="action-row">
+                  {currentQuestion.type === 'arrange' && checkedResult === null && (
+                    <button type="button" className="secondary-btn" onClick={removeArrangeToken} disabled={arrangeSelected.length === 0}>
+                      Hapus Terakhir
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    className="primary-btn"
+                    onClick={handleQuestionAction}
+                    disabled={checkedResult === null && !canCheckAnswer}
+                  >
+                    {checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Lanjutkan' : 'Periksa'}
+                  </button>
+                </div>
+              </div>
+        </>
+      )}
+
+      {showSummary && (
+        <div className="quiz-overlay">
+          <section className="summary-modal" role="dialog" aria-modal="true" aria-labelledby="summary-title">
+            <p className={`summary-status ${sessionFailed ? 'game-over' : 'complete'}`}>
+              {sessionMode ? (sessionPassed ? 'Sesi LULUS' : 'Sesi GAGAL') : (isGameOver ? 'Game Over' : 'Sesi selesai')}
+            </p>
+            <h2 id="summary-title">
+              {sessionMode
+                ? (sessionPassed ? 'Target akurasi tercapai!' : 'Belum mencapai 80%')
+                : (isGameOver ? 'Nyawa kamu habis' : 'Latihan tuntas!')}
+            </h2>
+            {sessionMode && (
+              <p className="session-result-copy">
+                Sesi {activeSessionNumber} dari {sessionCount}: {correctCount} benar dari {currentBatchItems.length} soal (butuh {requiredCorrect}).
+              </p>
+            )}
+            <div className="summary-stats">
+              <div>
+                <span>Total XP didapat</span>
+                <strong>{sessionXp} XP</strong>
+              </div>
+              <div>
+                <span>Akurasi</span>
+                <strong>{accuracy}%</strong>
+              </div>
+              <div>
+                <span>Jawaban benar</span>
+                <strong>{correctCount} / {attemptedCount}</strong>
+              </div>
+            </div>
+
+            <div className="review-panel">
+              <h3>Review Kata Sulit</h3>
+              {wrongWords.length === 0 ? (
+                <p>Belum ada kata yang perlu diulang. Keren!</p>
+              ) : (
+                <ul>
+                  {wrongWords.map((word, index) => (
+                    <li key={`${word.german}-${index}`}>
+                      <strong>{word.german}</strong>
+                      <span>{word.indonesian}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+
+            <div className="summary-actions">
+              {sessionMode && sessionPassed && activeSessionNumber < sessionCount ? (
+                <button type="button" className="primary-btn" onClick={() => startSession(activeSessionNumber + 1)}>
+                  Lanjut ke Sesi Berikutnya
+                </button>
+              ) : (
+                <button type="button" className="primary-btn" onClick={restartGame}>
+                  {sessionMode ? 'Ulangi Sesi Ini' : (isGameOver ? 'Coba Lagi' : 'Ulangi Kuis')}
+                </button>
+              )}
+              <a className="secondary-btn" href={returnHref}>Kembali ke Materi</a>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {!showSummary && (
+        <div className="meta-stack">
+        <span>{track ?? 'Track'} • {level ?? jurusan ?? 'Materi'}</span>
+        </div>
+      )}
+
+      <style>
+        {`
+          .quiz-shell {
+            display: grid;
+            gap: 0.9rem;
+            min-width: 0;
+            position: relative;
+          }
+
+          .quiz-toast {
+            display: flex;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            width: max-content;
+            max-width: min(400px, calc(100vw - 32px));
+            padding: 12px 24px;
+            border: 1px solid;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            font-weight: 800;
+            text-align: center;
+            animation: toast-slide-fade 3s ease forwards;
+            pointer-events: none;
+            align-items: center;
+            justify-content: center;
+            gap: 0.55rem;
+          }
+
+          .quiz-toast.success {
+            border-color: #22c55e;
+            background: #dcfce7;
+            color: #166534;
+          }
+
+          .quiz-toast.error {
+            border-color: #ef4444;
+            background: #fee2e2;
+            color: #991b1b;
+          }
+
+          .quiz-toast svg {
+            width: 18px;
+            height: 18px;
+            flex: 0 0 auto;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2.4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+
+          .toast-message {
+            min-width: 0;
+            overflow-wrap: anywhere;
+          }
+
+          @keyframes toast-slide-fade {
+            0% { opacity: 0; transform: translate(-50%, -12px); }
+            12%, 78% { opacity: 1; transform: translate(-50%, 0); }
+            100% { opacity: 0; transform: translate(-50%, -4px); }
+          }
+
+          .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+          }
+
+          .track-tag {
+            color: var(--text-main);
+          }
+
+          .xp-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            min-height: 36px;
+            padding: 0.4rem 0.7rem;
+            border: 1px solid rgba(229, 169, 59, 0.55);
+            border-radius: 8px;
+            background: #FFF4DC;
+            color: var(--text-main);
+            font-size: 0.75rem;
+            letter-spacing: 0;
+          }
+
+          .xp-badge svg {
+            width: 16px;
+            height: 16px;
+            flex: 0 0 auto;
+            fill: none;
+            stroke: #966313;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+
+          .game-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+          }
+
+          .hearts {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            letter-spacing: 0;
+          }
+
+          .hearts span {
+            display: grid;
+            width: 24px;
+            height: 28px;
+            place-items: center;
+          }
+
+          .hearts svg {
+            width: 21px;
+            height: 21px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+
+          .heart-active {
+            color: var(--accent-red);
+          }
+
+          .heart-empty {
+            color: #A7A7B0;
+          }
+
+          .restart-btn {
+            display: inline-grid;
+            width: 38px;
+            height: 38px;
+            place-items: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text-main);
+            cursor: pointer;
+          }
+
+          .restart-btn:hover {
+            border-color: var(--accent-gold);
+            background: #FFF4DC;
+            color: #966313;
+            transform: rotate(-18deg);
+          }
+
+          .restart-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+
+          .progress-section {
+            display: grid;
+            gap: 0.45rem;
+          }
+
+          .progress-label {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            color: var(--text-main);
+            font-size: 0.78rem;
+            font-weight: 700;
+          }
+
+          .progress-track {
+            height: 10px;
+            overflow: hidden;
+            border-radius: 999px;
+            background: #F7E5C2;
+          }
+
+          .progress-track > span {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: var(--accent-gold);
+            transition: width 0.35s ease;
+          }
+
+          .question-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: clamp(1rem, 2.5vw, 1.6rem);
+            box-shadow: 0 12px 30px rgba(26, 26, 30, 0.07);
+          }
+
+          .question-label {
+            margin: 0 0 0.5rem;
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: var(--text-main);
+            text-transform: uppercase;
+          }
+
+          h3 {
+            margin: 0 0 1rem;
+            font-size: 1.15rem;
+            line-height: 1.5;
+          }
+
+          .answer-box {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            min-width: 0;
+            min-height: 52px;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px dashed rgba(148, 163, 184, 0.7);
+          }
+
+          .answer-content {
+            display: flex;
+            flex: 1;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            min-width: 0;
+          }
+
+          .placeholder {
+            color: #94a3b8;
+            font-size: 0.85rem;
+          }
+
+          .answer-token,
+          .summary-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.45rem 0.75rem;
+            border-radius: 999px;
+            background: #F7E5C2;
+            color: var(--text-main);
+            font-weight: 700;
+          }
+
+          .tokens-wrap {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+          }
+
+          .token-chip,
+          .match-choice {
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text-main);
+            padding: 0.65rem 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.18s ease;
+          }
+
+          .token-chip:hover,
+          .match-choice:hover {
+            border-color: var(--accent-gold);
+          }
+
+          .token-chip:disabled,
+          .match-choice:disabled,
+          .primary-btn:disabled,
+          .secondary-btn:disabled,
+          .reset-btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.55;
+          }
+
+          .reset-btn {
+            flex: 0 0 auto;
+            padding: 0.35rem 0.65rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 999px;
+            background: #fff;
+            color: #334155;
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+          }
+
+          .match-choice.active {
+            background: #F7E5C2;
+            border-color: var(--accent-gold);
+            color: var(--text-main);
+          }
+
+          .match-choice.correct,
+          .cloze-choice.correct {
+            background: #dcfce7;
+            border-color: #16a34a;
+            color: #166534;
+            animation: choice-pop 0.28s ease-out;
+          }
+
+          .match-choice.wrong,
+          .cloze-choice.wrong {
+            background: #fee2e2;
+            border-color: var(--accent-red);
+            color: #991b1b;
+            animation: choice-shake 0.28s ease-in-out;
+          }
+
+          @keyframes choice-pop {
+            50% { transform: scale(1.04); }
+          }
+
+          @keyframes choice-shake {
+            25% { transform: translateX(-3px); }
+            75% { transform: translateX(3px); }
+          }
+
+          .matcher-board {
+            margin-bottom: 1rem;
+          }
+
+          .matcher-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: clamp(0.65rem, 3vw, 1.5rem);
+            padding: 0.2rem 0;
+          }
+
+          .matcher-column {
+            display: grid;
+            align-content: start;
+            gap: 0.5rem;
+          }
+
+          .matcher-column:last-child {
+            justify-items: stretch;
+          }
+
+          .matcher-column .match-choice {
+            width: 100%;
+            max-width: 100%;
+            min-height: 48px;
+            overflow-wrap: anywhere;
+            text-align: left;
+            background: #fff;
+          }
+
+          .matcher-column .match-choice.active {
+            background: #F7E5C2;
+            border-color: var(--accent-gold);
+            color: var(--text-main);
+          }
+
+          .matcher-column .match-choice.correct {
+            background: #dcfce7;
+          }
+
+          .matcher-column .match-choice.wrong {
+            background: #fee2e2;
+          }
+
+          .match-choice.selectable:not(:disabled) {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 0 3px rgba(229, 169, 59, 0.2);
+          }
+
+          .cloze-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+            gap: 0.65rem;
+            margin: 1rem 0;
+          }
+
+          .cloze-choice {
+            min-height: 48px;
+            padding: 0.7rem 0.9rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #fff;
+            color: #1e293b;
+            font-weight: 700;
+            text-align: left;
+            cursor: pointer;
+            transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+          }
+
+          .cloze-choice.selected:not(.correct):not(.wrong) {
+            border-color: var(--accent-gold);
+            background: #FFF4DC;
+            color: var(--text-main);
+          }
+
+          .cloze-choice:hover:not(:disabled) {
+            border-color: var(--accent-gold);
+            transform: translateY(-1px);
+          }
+
+          .column-title {
+            margin: 0 0 0.2rem;
+            color: #475569;
+            font-size: 0.74rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+          }
+
+          .match-summary {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+          }
+
+          .action-row {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+          }
+
+          .primary-btn,
+          .secondary-btn {
+            border: 0;
+            border-radius: 999px;
+            padding: 0.7rem 1rem;
+            font-weight: 700;
+            cursor: pointer;
+          }
+
+          .primary-btn {
+            background: var(--accent-gold);
+            color: var(--text-main);
+            flex: 1;
+          }
+
+          .primary-btn:hover:not(:disabled),
+          .next-btn:hover {
+            background: #F0B84F;
+          }
+
+          .secondary-btn {
+            background: rgba(148, 163, 184, 0.12);
+            color: #0f172a;
+          }
+
+          .correct-answer {
+            margin: 0.9rem 0 0;
+            padding: 0.75rem 0.9rem;
+            border-radius: 10px;
+            background: #FCE7E7;
+            color: var(--accent-red);
+            font-weight: 600;
+            line-height: 1.5;
+          }
+
+          .next-btn {
+            width: 100%;
+            min-height: 52px;
+            margin-top: 1rem;
+            padding: 0.8rem 1rem;
+            border: 0;
+            border-radius: 10px;
+            background: var(--accent-gold);
+            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+          }
+
+          .meta-stack {
+            text-align: right;
+            font-size: 0.75rem;
+            color: #475569;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+          }
+
+          .quiz-empty {
+            padding: 1rem;
+            border: 1px dashed rgba(148, 163, 184, 0.6);
+            border-radius: 0.8rem;
+            color: #475569;
+            text-align: center;
+          }
+
+          .quiz-complete {
+            display: grid;
+            justify-items: start;
+            gap: 0.5rem;
+            padding: 1rem;
+          }
+
+          .quiz-complete h3,
+          .quiz-complete p {
+            margin: 0;
+          }
+
+          .quiz-complete .primary-btn {
+            min-height: 44px;
+            margin-top: 0.5rem;
+            padding: 0.65rem 1rem;
+            border: 0;
+            border-radius: 999px;
+            font: inherit;
+            font-weight: 700;
+            cursor: pointer;
+          }
+
+          .quiz-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            display: grid;
+            place-items: center;
+            overflow-y: auto;
+            padding: 1rem;
+            background: rgba(26, 26, 30, 0.72);
+          }
+
+          .summary-modal {
+            width: min(100%, 560px);
+            max-height: min(92vh, 780px);
+            overflow-y: auto;
+            padding: 1.4rem;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background: #fff;
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+          }
+
+          .summary-status {
+            display: inline-flex;
+            margin: 0 0 0.7rem;
+            padding: 0.3rem 0.65rem;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 800;
+          }
+
+          .summary-status.game-over {
+            background: var(--accent-red);
+            color: #ffffff;
+          }
+
+          .summary-status.complete {
+            background: #dcfce7;
+            color: #166534;
+          }
+
+          .summary-modal h2 {
+            margin: 0 0 1rem;
+            font-size: 1.6rem;
+          }
+
+          .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 0.6rem;
+          }
+
+          .summary-stats > div {
+            display: grid;
+            gap: 0.25rem;
+            align-content: start;
+            padding: 0.75rem;
+            border-radius: 10px;
+            background: #FFF4DC;
+          }
+
+          .summary-stats span {
+            color: #475569;
+            font-size: 0.72rem;
+            line-height: 1.4;
+          }
+
+          .summary-stats strong {
+            color: var(--text-main);
+            font-size: 1rem;
+          }
+
+          .review-panel {
+            margin-top: 1.1rem;
+            padding: 0.9rem;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+          }
+
+          .review-panel h3 {
+            margin: 0 0 0.65rem;
+            font-size: 1rem;
+          }
+
+          .review-panel p {
+            margin: 0;
+            color: #475569;
+            font-size: 0.9rem;
+          }
+
+          .review-panel ul {
+            display: grid;
+            max-height: 180px;
+            gap: 0.5rem;
+            overflow-y: auto;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+          }
+
+          .review-panel li {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            padding-bottom: 0.45rem;
+            border-bottom: 1px solid var(--border);
+            color: #475569;
+            font-size: 0.88rem;
+          }
+
+          .review-panel li:last-child {
+            padding-bottom: 0;
+            border-bottom: 0;
+          }
+
+          .review-panel li strong {
+            color: var(--text-main);
+          }
+
+          .summary-actions {
+            display: flex;
+            gap: 0.65rem;
+            margin-top: 1rem;
+          }
+
+          .summary-actions .primary-btn,
+          .summary-actions .secondary-btn {
+            display: inline-flex;
+            min-height: 46px;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 0.85rem;
+            border: 0;
+            border-radius: 10px;
+            font: inherit;
+            font-weight: 700;
+            text-align: center;
+            text-decoration: none;
+            cursor: pointer;
+          }
+
+          .summary-actions .secondary-btn {
+            flex: 1;
+            background: #ECECF0;
+            color: var(--text-main);
+          }
+
+          @media (max-width: 520px) {
+            .summary-modal {
+              padding: 1rem;
+            }
+
+            .summary-stats {
+              grid-template-columns: 1fr 1fr;
+            }
+
+            .summary-actions {
+              flex-direction: column;
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .quiz-toast {
+              animation: none;
+            }
+
+            .progress-track > span {
+              transition: none;
+          }
+        `}
+      </style>
+    </div>
+  );
+}

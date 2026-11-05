@@ -1,0 +1,17 @@
+---
+import AuthPortal from '../components/AuthPortal.astro';
+import { isAdminNim } from '../lib/admin';
+
+if (Astro.locals.user) {
+  return Astro.redirect(isAdminNim(Astro.locals.profile?.nim) ? '/admin' : '/dashboard');
+}
+---
+
+<AuthPortal
+  portal="student"
+  title="Login Mahasiswa | siDeutsch"
+  eyebrow="Akun Mahasiswa"
+  heading="Selamat datang"
+  description="Gunakan NIM untuk melanjutkan ke portal belajar."
+  buttonText="Masuk ke Portal"
+/>

@@ -1,16 +1,230 @@
 ---
+import Layout from '../layouts/Layout.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout
+  title="siDeutsch | Belajar Bahasa Jerman"
+  description="Platform pembelajaran bahasa Jerman yang terstruktur sesuai kurikulum: Alltagsdeutsch dan Fachdeutsch."
+>
+  <section class="hero">
+    <div class="hero-copy">
+      <p class="eyebrow">Kurikulum bahasa Jerman</p>
+      <h1>siDeutsch</h1>
+      <p class="lead">
+        Belajar bahasa Jerman dengan struktur yang jelas: dasar komunikasi sehari-hari
+        dan kosakata spesifik jurusan sesuai kebutuhan kampus.
+      </p>
+      <div class="hero-actions">
+        <a class="primary" href="/alltagsdeutsch">Alltagsdeutsch</a>
+        <a class="secondary" href="/fachdeutsch">Fachdeutsch</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features-section" aria-labelledby="features-title">
+    <header class="section-heading">
+      <p class="eyebrow">Belajar lebih terarah</p>
+      <h2 id="features-title">Kenapa siDeutsch?</h2>
+    </header>
+    <div class="feature-grid">
+      <article class="feature-item">
+        <span class="feature-number">01</span>
+        <h3>Kosakata Spesifik Jurusan</h3>
+        <p>Pelajari istilah Jerman yang dekat dengan bidang studi dan kebutuhan kampusmu.</p>
+      </article>
+      <article class="feature-item">
+        <span class="feature-number">02</span>
+        <h3>Kuis Interaktif</h3>
+        <p>Latihan susun kata, mencocokkan istilah, dan melengkapi kalimat secara aktif.</p>
+      </article>
+      <article class="feature-item">
+        <span class="feature-number">03</span>
+        <h3>Sistem XP &amp; Nyawa</h3>
+        <p>Pantau progres sesi dan ulangi kosakata sulit dengan ritme yang nyaman.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="faq-section" aria-labelledby="faq-title">
+    <header class="section-heading">
+      <p class="eyebrow">Info singkat</p>
+      <h2 id="faq-title">Pertanyaan Umum</h2>
+    </header>
+    <div class="faq-list">
+      <details>
+        <summary>Apa itu siDeutsch?</summary>
+        <p>siDeutsch adalah ruang belajar bahasa Jerman dengan materi sehari-hari dan kosakata yang relevan dengan bidang studi.</p>
+      </details>
+      <details>
+        <summary>Apakah saya harus bayar?</summary>
+        <p>Materi belajar yang tersedia saat ini dapat diakses tanpa biaya.</p>
+      </details>
+      <details>
+        <summary>Bagaimana cara login?</summary>
+        <p>Gunakan NIM pada tombol Login Mahasiswa. Untuk login pertama, ikuti informasi akun yang diberikan oleh pengelola kampus.</p>
+      </details>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .hero {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52vh;
+    text-align: center;
+  }
+
+  .hero-copy {
+    max-width: 760px;
+    padding: 2rem 0;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.75rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 0.95;
+  }
+
+  .lead {
+    margin-top: 1rem;
+    color: var(--muted);
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .primary,
+  .secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    padding: 0.85rem 1.5rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 700;
+    transition: transform 0.2s ease;
+  }
+
+  .primary {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .secondary {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--text-main);
+  }
+
+  .primary:hover,
+  .secondary:hover {
+    transform: translateY(-1px);
+  }
+
+  .primary:hover {
+    background: #F0B84F;
+  }
+
+  .features-section,
+  .faq-section {
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .section-heading {
+    margin-bottom: 1.15rem;
+  }
+
+  .section-heading .eyebrow {
+    margin-bottom: 0.4rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+    gap: 0.85rem;
+  }
+
+  .feature-item {
+    min-height: 175px;
+    padding: 1.1rem;
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--accent-gold);
+    border-radius: 10px;
+    background: var(--card-bg);
+  }
+
+  .feature-number {
+    color: #966313;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .feature-item h3 {
+    margin: 0.8rem 0 0.45rem;
+    color: var(--text-main);
+    font-size: 1rem;
+  }
+
+  .feature-item p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.86rem;
+    line-height: 1.65;
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  .faq-list details {
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--card-bg);
+  }
+
+  .faq-list summary {
+    padding: 0.85rem 1rem;
+    color: var(--text-main);
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .faq-list details[open] summary {
+    color: #966313;
+  }
+
+  .faq-list details p {
+    margin: 0;
+    padding: 0 1rem 1rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+</style>

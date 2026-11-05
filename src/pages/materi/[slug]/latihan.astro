@@ -1,0 +1,189 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import Quiz from '../../../components/Quiz.jsx';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const materi = await getCollection('materi');
+
+  return materi.map((item) => ({
+    params: { slug: item.id },
+    props: { item },
+  }));
+}
+
+const { item } = Astro.props;
+const batchSize = 5;
+const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
+---
+
+<Layout
+  title={`Latihan: ${item.data.judulMateri} | siDeutsch`}
+  description={`Latihan kosakata dari materi ${item.data.judulMateri}.`}
+  hideNavbar={true}
+>
+  <main class="practice-page">
+    <a class="back-link" href={`/materi/${item.id}`} data-track={item.data.track} data-practice-back>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 18-6-6 6-6M8 12h12" /></svg>
+      <span data-back-label>Kembali ke Materi</span>
+    </a>
+    <header class="page-heading">
+      <p class="eyebrow">Latihan Materi</p>
+      <h1>Latihan: {item.data.judulMateri}</h1>
+      <p>{sessionCount} sesi singkat, maksimal {batchSize} kosakata per sesi.</p>
+    </header>
+
+    <section class="practice-panel" aria-label={`Kuis ${item.data.judulMateri}`}>
+      <Quiz
+        client:load
+        items={item.data.vocab}
+        track={item.data.track}
+        level={item.data.level}
+        jurusan={item.data.jurusan}
+        returnHref={`/materi/${item.id}`}
+        startIndex={0}
+        batchSize={batchSize}
+        sessionMode={true}
+        materialId={item.id}
+      />
+    </section>
+  </main>
+</Layout>
+
+<script>
+  const backLink = document.querySelector<HTMLAnchorElement>('[data-practice-back]');
+  const backLabel = backLink?.querySelector<HTMLElement>('[data-back-label]');
+
+  if (backLink) {
+    const publicDestination = backLink.dataset.track === 'Alltagsdeutsch' ? '/alltagsdeutsch' : '/fachdeutsch';
+    const dashboardDestination = backLink.dataset.track === 'Alltagsdeutsch' ? '/dashboard/alltags' : '/dashboard/fach';
+    const allowedDestinations = new Set([
+      '/dashboard',
+      '/dashboard/katalog',
+      '/dashboard/alltags',
+      '/dashboard/fach',
+      '/alltagsdeutsch',
+      '/fachdeutsch',
+    ]);
+    const requestedDestination = new URLSearchParams(window.location.search).get('return');
+    const safeRequestedDestination = requestedDestination && allowedDestinations.has(requestedDestination)
+      ? requestedDestination
+      : null;
+
+    let referrerDestination = null;
+    try {
+      const source = new URL(document.referrer);
+      if (source.origin === window.location.origin) {
+        if (source.pathname === '/dashboard/katalog') referrerDestination = '/dashboard/katalog';
+        else if (source.pathname === '/dashboard/alltags') referrerDestination = '/dashboard/alltags';
+        else if (source.pathname === '/dashboard/fach') referrerDestination = '/dashboard/fach';
+        else if (source.pathname === '/dashboard' || source.pathname.startsWith('/dashboard/')) {
+          referrerDestination = dashboardDestination;
+        } else if (source.pathname.startsWith('/alltagsdeutsch')) {
+          referrerDestination = '/alltagsdeutsch';
+        } else if (source.pathname.startsWith('/fachdeutsch')) {
+          referrerDestination = '/fachdeutsch';
+        }
+      }
+    } catch {
+      referrerDestination = null;
+    }
+
+    const destination = safeRequestedDestination ?? referrerDestination ?? publicDestination;
+    backLink.href = destination;
+    if (backLabel) {
+      backLabel.textContent = destination.startsWith('/dashboard')
+        ? destination === '/dashboard/katalog'
+          ? 'Kembali ke Katalog'
+          : destination === '/dashboard/alltags'
+            ? 'Kembali ke Alltagsdeutsch'
+            : destination === '/dashboard/fach'
+              ? 'Kembali ke Fachdeutsch'
+              : 'Kembali ke Dashboard'
+        : 'Kembali ke Kurikulum';
+    }
+  }
+</script>
+
+<style>
+  .practice-page {
+    display: grid;
+    max-width: 1000px;
+    min-height: calc(100svh - 8.5rem);
+    align-content: center;
+    gap: 0.9rem;
+    margin: 0 auto;
+    padding: 1.25rem 0;
+  }
+
+  .back-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.2rem;
+    color: var(--text-main);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .back-link svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .back-link:hover {
+    color: var(--text-main);
+    transform: translateX(-2px);
+  }
+
+  .page-heading {
+    margin-bottom: 0.25rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.45rem);
+  }
+
+  .page-heading > p:last-child {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .practice-panel {
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    box-shadow: 0 20px 50px rgba(26, 26, 30, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .practice-page {
+      min-height: calc(100svh - 7rem);
+      padding: 0.75rem 0;
+    }
+
+    .practice-panel {
+      padding: 0.85rem;
+    }
+  }
+</style>

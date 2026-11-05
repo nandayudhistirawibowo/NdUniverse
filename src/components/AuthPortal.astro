@@ -1,0 +1,513 @@
+---
+const {
+  portal = 'student',
+  title = 'Login Mahasiswa | siDeutsch',
+  eyebrow = 'Portal Mahasiswa',
+  heading = 'Selamat datang',
+  description = 'Gunakan NIM untuk melanjutkan ke portal belajar.',
+  buttonText = 'Masuk ke Portal',
+} = Astro.props;
+const isAdminPortal = portal === 'admin';
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content={description} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+  </head>
+  <body>
+    <main class={`auth-screen ${isAdminPortal ? 'admin-portal' : 'student-portal'}`}>
+      <section class="auth-story" aria-label="siDeutsch">
+        <a class="brand" href="/">siDeutsch<span>.</span></a>
+        <div class="story-copy">
+          <p class="story-kicker">{isAdminPortal ? 'Akses terbatas' : 'Ruang belajar bahasa Jerman'}</p>
+          {isAdminPortal && <p class="portal-stamp">ADMIN PORTAL</p>}
+          <h1>Belajar Jerman,<br />satu sesi lebih dekat.</h1>
+          <p class="story-detail">
+            {isAdminPortal
+              ? 'Kelola ruang belajar dan akun mahasiswa siDeutsch.'
+              : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.'}
+          </p>
+        </div>
+        <p class="story-footer">siDeutsch · Belajar dengan ritme sendiri</p>
+      </section>
+
+      <section class="auth-side" aria-labelledby="auth-title">
+        <div class="auth-panel">
+          <div class="panel-topline">
+            <span class="panel-mark" aria-hidden="true">{isAdminPortal ? 'A' : 'S'}</span>
+            <span class="portal-label">{eyebrow}</span>
+          </div>
+          <h2 id="auth-title">{heading}</h2>
+          <p class="panel-description">{description}</p>
+
+          <form id="auth-form" class="auth-form" data-portal={portal}>
+            <label for="nim">Nomor Induk Mahasiswa</label>
+            <input
+              id="nim"
+              name="nim"
+              type="text"
+              inputmode="text"
+              autocomplete="username"
+              placeholder="Masukkan NIM"
+              pattern="[A-Za-z0-9._-]{3,32}"
+              required
+            />
+
+            <label for="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Masukkan password"
+              required
+            />
+
+            {!isAdminPortal && <p class="first-login-note">Login pertama? Password awal adalah NIM kamu.</p>}
+            <button id="auth-submit" type="submit">
+              <span>{buttonText}</span>
+              <span aria-hidden="true">→</span>
+            </button>
+            <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
+          </form>
+          {!isAdminPortal && <a class="back-link" href="/">Kembali ke siDeutsch</a>}
+        </div>
+      </section>
+    </main>
+  </body>
+</html>
+
+<script>
+  import { createBrowserClient } from '@supabase/ssr';
+
+  const form = document.querySelector<HTMLFormElement>('#auth-form');
+  const nimInput = document.querySelector<HTMLInputElement>('#nim');
+  const passwordInput = document.querySelector<HTMLInputElement>('#password');
+  const submitButton = document.querySelector<HTMLButtonElement>('#auth-submit');
+  const message = document.querySelector<HTMLElement>('#auth-message');
+  const isAdminPortal = form?.dataset.portal === 'admin';
+  const adminNims = new Set(['admin', '000000']);
+
+  function showMessage(text: string, state: 'error' | 'loading') {
+    if (!message) return;
+    message.textContent = text;
+    message.dataset.state = state;
+  }
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!nimInput || !passwordInput || !submitButton || !message) return;
+
+    const nim = nimInput.value.trim();
+    const normalizedNim = nim.toLowerCase();
+    const isPrivilegedNim = adminNims.has(normalizedNim);
+
+    if (!/^[A-Za-z0-9._-]{3,32}$/.test(nim)) {
+      showMessage('Format NIM tidak valid. Gunakan 3-32 karakter huruf atau angka.', 'error');
+      return;
+    }
+
+    if (!isAdminPortal && isPrivilegedNim) {
+      showMessage('Akses ditolak. Silakan login melalui portal admin.', 'error');
+      return;
+    }
+
+    if (isAdminPortal && !isPrivilegedNim) {
+      showMessage('Akses ditolak. Gunakan NIM admin untuk masuk ke portal ini.', 'error');
+      return;
+    }
+
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnonKey) {
+      showMessage('Konfigurasi Supabase belum tersedia.', 'error');
+      return;
+    }
+
+    const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    const email = `${nim}@student.sideutsch.com`;
+    const redirect = new URLSearchParams(window.location.search).get('redirect');
+    const safeRedirect = isAdminPortal
+      ? (redirect?.startsWith('/admin') && !redirect.startsWith('//') && redirect !== '/admin/login' ? redirect : '/admin')
+      : (redirect?.startsWith('/dashboard') && !redirect.startsWith('//') ? redirect : '/dashboard');
+
+    submitButton.disabled = true;
+    showMessage('Memeriksa akun...', 'loading');
+
+    try {
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password: passwordInput.value });
+
+      if (!signInError && signInData.user) {
+        if (isAdminPortal) {
+          const { data: profile, error: profileError } = await supabase
+            .from('profiles')
+            .select('nim')
+            .eq('id', signInData.user.id)
+            .maybeSingle();
+
+          if (profileError || !adminNims.has(String(profile?.nim ?? '').trim().toLowerCase())) {
+            await supabase.auth.signOut();
+            submitButton.disabled = false;
+            showMessage('Akses ditolak. Akun ini tidak terdaftar sebagai admin.', 'error');
+            return;
+          }
+        }
+
+        window.location.assign(safeRedirect);
+        return;
+      }
+
+      if (isAdminPortal || isPrivilegedNim) {
+        submitButton.disabled = false;
+        showMessage(isAdminPortal
+          ? 'Login admin gagal. Periksa NIM dan password admin.'
+          : 'Akun admin belum tersedia. Hubungi pengelola Supabase.', 'error');
+        return;
+      }
+
+      showMessage('Akun belum ditemukan. Menyiapkan akun mahasiswa...', 'loading');
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email,
+        password: nim,
+        options: { data: { nim } },
+      });
+
+      if (signUpError || !data.user || data.user.identities?.length === 0) {
+        submitButton.disabled = false;
+        showMessage('Login gagal. Periksa NIM dan password, lalu coba lagi.', 'error');
+        return;
+      }
+
+      if (!data.session) {
+        submitButton.disabled = false;
+        showMessage('Akun tercatat, tetapi konfirmasi email masih aktif di Supabase. Nonaktifkan konfirmasi email untuk memakai NIM dengan email fiktif.', 'error');
+        return;
+      }
+
+      await supabase.from('profiles').upsert(
+        { id: data.user.id, nim, nama_lengkap: nim },
+        { onConflict: 'id' }
+      );
+      window.location.assign(safeRedirect);
+    } catch {
+      submitButton.disabled = false;
+      showMessage('Koneksi login gagal. Periksa jaringan lalu coba lagi.', 'error');
+    }
+  });
+</script>
+
+<style>
+  :root {
+    --bg-dark: #1A1A1E;
+    --gold: #E5A93B;
+    --red: #D93838;
+    --paper: #F9F9FB;
+    --muted: #A7A7B0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    min-width: 320px;
+    min-height: 100%;
+    margin: 0;
+  }
+
+  body {
+    background: var(--bg-dark);
+    color: var(--paper);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  a,
+  button {
+    transition: all 0.2s ease;
+  }
+
+  .auth-screen {
+    display: grid;
+    min-height: 100vh;
+    min-height: 100svh;
+    grid-template-columns: minmax(0, 1.05fr) minmax(390px, 0.95fr);
+    background: var(--bg-dark);
+  }
+
+  .auth-story {
+    position: relative;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: hidden;
+    padding: clamp(2rem, 6vw, 6rem);
+    background:
+      linear-gradient(135deg, rgba(229, 169, 59, 0.07), transparent 38%),
+      repeating-linear-gradient(135deg, transparent 0 42px, rgba(255, 255, 255, 0.018) 43px 44px),
+      #202024;
+  }
+
+  .brand {
+    width: fit-content;
+    color: var(--paper);
+    font-size: 1.3rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .brand span {
+    color: var(--gold);
+  }
+
+  .story-copy {
+    max-width: 650px;
+    padding: 3rem 0;
+  }
+
+  .story-kicker,
+  .portal-label {
+    margin: 0;
+    color: var(--gold);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .portal-stamp {
+    display: table;
+    margin: 1rem 0 0;
+    padding: 0.38rem 0.62rem;
+    border: 1px solid rgba(229, 169, 59, 0.46);
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  .story-copy h1 {
+    margin: 1rem 0 0;
+    color: var(--paper);
+    font-size: clamp(2.7rem, 5vw, 5.3rem);
+    line-height: 1.07;
+  }
+
+  .story-detail {
+    max-width: 410px;
+    margin: 1.3rem 0 0;
+    color: #B5B5BD;
+    font-size: 0.98rem;
+    line-height: 1.75;
+  }
+
+  .story-footer {
+    margin: 0;
+    color: #85858F;
+    font-size: 0.75rem;
+  }
+
+  .auth-side {
+    display: grid;
+    min-height: 100vh;
+    place-items: center;
+    padding: clamp(1.25rem, 4vw, 4rem);
+    background: #17171A;
+  }
+
+  .auth-panel {
+    width: min(100%, 440px);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    background: var(--bg-dark);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+  }
+
+  .panel-topline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.55rem;
+  }
+
+  .panel-mark {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 1px solid rgba(229, 169, 59, 0.42);
+    border-radius: 8px;
+    background: rgba(229, 169, 59, 0.12);
+    color: var(--gold);
+    font-weight: 800;
+  }
+
+  .auth-panel h2 {
+    margin: 0;
+    color: var(--paper);
+    font-size: 1.8rem;
+  }
+
+  .panel-description {
+    margin: 0.5rem 0 1.6rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .auth-form {
+    display: grid;
+    gap: 0.62rem;
+  }
+
+  .auth-form label {
+    margin-top: 0.25rem;
+    color: #E2E2E6;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .auth-form input {
+    width: 100%;
+    min-height: 48px;
+    padding: 0.72rem 0.85rem;
+    border: 1px solid #44444C;
+    border-radius: 7px;
+    outline: none;
+    background: #222226;
+    color: var(--paper);
+    font: inherit;
+  }
+
+  .auth-form input::placeholder {
+    color: #777780;
+  }
+
+  .auth-form input:focus-visible {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(229, 169, 59, 0.17);
+  }
+
+  .first-login-note {
+    margin: 0.05rem 0 0.35rem;
+    color: #92929B;
+    font-size: 0.73rem;
+  }
+
+  .auth-form button {
+    display: flex;
+    min-height: 50px;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.3rem;
+    padding: 0.75rem 1rem;
+    border: 0;
+    border-radius: 7px;
+    background: var(--gold);
+    color: #1A1A1E;
+    font: inherit;
+    font-size: 0.86rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .auth-form button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    background: #F0B84F;
+    box-shadow: 0 9px 22px rgba(229, 169, 59, 0.2);
+  }
+
+  .auth-form button:disabled {
+    cursor: wait;
+    opacity: 0.65;
+  }
+
+  .auth-message {
+    min-height: 1.25rem;
+    margin: 0;
+    color: var(--gold);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  .auth-message[data-state='error'] {
+    color: #F28A8A;
+  }
+
+  .back-link {
+    display: inline-flex;
+    margin-top: 1rem;
+    color: #A7A7B0;
+    font-size: 0.78rem;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--paper);
+  }
+
+  @media (max-width: 900px) {
+    .auth-screen {
+      grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
+    }
+
+    .auth-story {
+      padding: 2rem;
+    }
+
+    .story-copy h1 {
+      font-size: clamp(2.3rem, 5vw, 3.8rem);
+    }
+  }
+
+  @media (max-width: 700px) {
+    .auth-screen {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .auth-story {
+      min-height: auto;
+      padding: 1.4rem 1.25rem 0;
+    }
+
+    .story-copy {
+      padding: 2.5rem 0 1.4rem;
+    }
+
+    .story-copy h1 {
+      font-size: clamp(2rem, 9vw, 3.1rem);
+    }
+
+    .story-detail {
+      margin-top: 0.8rem;
+      font-size: 0.88rem;
+    }
+
+    .story-footer {
+      display: none;
+    }
+
+    .auth-side {
+      min-height: auto;
+      padding: 1.25rem;
+    }
+
+    .auth-panel {
+      padding: 1.4rem;
+    }
+  }
+</style>

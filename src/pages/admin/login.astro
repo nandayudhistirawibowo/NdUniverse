@@ -1,0 +1,17 @@
+---
+import AuthPortal from '../../components/AuthPortal.astro';
+import { isAdminNim } from '../../lib/admin';
+
+if (Astro.locals.user) {
+  return Astro.redirect(isAdminNim(Astro.locals.profile?.nim) ? '/admin' : '/dashboard?error=admin-only');
+}
+---
+
+<AuthPortal
+  portal="admin"
+  title="Admin Portal | siDeutsch"
+  eyebrow="ADMIN PORTAL"
+  heading="Masuk sebagai admin"
+  description="Portal khusus pengelola siDeutsch. Login mahasiswa tidak berlaku di sini."
+  buttonText="Masuk ke Admin Portal"
+/>

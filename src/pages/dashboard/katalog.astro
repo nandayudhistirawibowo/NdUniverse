@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import DashboardMaterialCatalog from '../../components/DashboardMaterialCatalog.astro';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+const materials = (await getCollection('materi')).toSorted((left, right) =>
+  left.data.judulMateri.localeCompare(right.data.judulMateri, 'id')
+);
+const { data } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('material_slug, sessions_passed')
+    .eq('user_id', user.id)
+  : { data: [] };
+---
+
+<DashboardMaterialCatalog
+  title="Katalog Materi"
+  eyebrow="Jelajahi materi"
+  description="Pilih materi dan lanjutkan belajar bahasa Jerman sesuai ritmemu."
+  active="catalog"
+  user={user}
+  profile={Astro.locals.profile}
+  materials={materials}
+  progressRows={data ?? []}
+/>

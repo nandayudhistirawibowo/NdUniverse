@@ -1,0 +1,135 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const slugify = (value = '') =>
+    String(value)
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+
+  const materi = await getCollection('materi');
+  const jurusanList = [...new Set(materi.filter((item) => item.data.track === 'Fachdeutsch').map((item) => item.data.jurusan).filter(Boolean))];
+
+  return jurusanList.map((jurusan) => ({
+    params: { jurusan: slugify(jurusan) },
+    props: { jurusan },
+  }));
+}
+
+const { jurusan } = Astro.props;
+const materi = await getCollection('materi');
+const items = materi.filter((item) => item.data.track === 'Fachdeutsch' && item.data.jurusan === jurusan);
+---
+
+<Layout
+  title={`${jurusan} | Fachdeutsch`}
+  description={`Materi Fachdeutsch untuk jurusan ${jurusan}.`}
+>
+  <section class="page-shell">
+    <p class="eyebrow">Fachdeutsch</p>
+    <h1>{jurusan}</h1>
+
+    <div class="back-link-wrap">
+      <a href="/fachdeutsch">← Kembali ke jurusan</a>
+    </div>
+
+    {items.length === 0 ? (
+      <div class="empty-state">
+        <p>Belum ada materi untuk jurusan {jurusan}.</p>
+      </div>
+    ) : (
+      <div class="list-grid">
+        {items.map((item) => (
+          <a class="materi-card" href={`/materi/${item.id}`}>
+            <span class="meta">{item.data.jurusan}</span>
+            <h2>{item.data.judulMateri}</h2>
+            <p>{item.data.deskripsi}</p>
+          </a>
+        ))}
+      </div>
+    )}
+  </section>
+</Layout>
+
+<style>
+  .page-shell {
+    padding-top: 1rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+  }
+
+  .back-link-wrap {
+    margin-top: 1rem;
+  }
+
+  .back-link-wrap a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .materi-card {
+    display: block;
+    padding: 1.2rem;
+    border-radius: 1rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    text-decoration: none;
+    color: inherit;
+    box-shadow: var(--shadow);
+  }
+
+  .meta {
+    display: inline-flex;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: var(--accent-red);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  h2 {
+    margin: 0.8rem 0 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .materi-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .empty-state {
+    margin-top: 2rem;
+    padding: 1rem 1.2rem;
+    border-radius: 1rem;
+    background: var(--card-bg);
+    border: 1px dashed rgba(148, 163, 184, 0.5);
+  }
+</style>

@@ -1,0 +1,205 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+type ProgressRow = {
+  material_slug: string;
+  sessions_passed: unknown;
+};
+
+interface Props {
+  materials: CollectionEntry<'materi'>[];
+  progressRows: ProgressRow[];
+}
+
+const { materials = [], progressRows = [] } = Astro.props;
+const progressBySlug = new Map<string, ProgressRow>(
+  progressRows.map((row) => [row.material_slug, row])
+);
+const cards = materials.map((material) => {
+  const totalSessions = Math.ceil(material.data.vocab.length / 5);
+  const savedSessions = progressBySlug.get(material.id)?.sessions_passed;
+  const passedSessions = new Set<number>(
+    Array.isArray(savedSessions)
+      ? savedSessions.map(Number).filter((session) => Number.isInteger(session) && session > 0)
+      : []
+  );
+  const passedCount = Array.from({ length: totalSessions }, (_, index) => index + 1)
+    .filter((session) => passedSessions.has(session)).length;
+
+  return {
+    material,
+    totalSessions,
+    passedCount,
+    percentage: totalSessions > 0 ? Math.round((passedCount / totalSessions) * 100) : 0,
+  };
+});
+---
+
+<div class="material-grid">
+  {cards.map(({ material, totalSessions, passedCount, percentage }) => (
+    <a class="material-card" href={`/materi/${material.id}`} data-material-level={material.data.level ?? ''}>
+      <div class="material-topline">
+        <span class="material-track">{material.data.track}</span>
+        <span class="material-percent">{percentage}%</span>
+      </div>
+      <h2>{material.data.judulMateri}</h2>
+      <p class="material-description">{material.data.deskripsi}</p>
+      <div class="material-meta">
+        {material.data.level && <span>{material.data.level}</span>}
+        {material.data.jurusan && <span>{material.data.jurusan}</span>}
+      </div>
+      <div class="progress-copy">
+        <span>{passedCount === 0 ? 'Belum dimulai' : `${passedCount} dari ${totalSessions} sesi lulus`}</span>
+        <span>{material.data.vocab.length} kosakata</span>
+      </div>
+      <div
+        class="progress-track"
+        role="progressbar"
+        aria-label={`Progress ${material.data.judulMateri}`}
+        aria-valuemin="0"
+        aria-valuemax="100"
+        aria-valuenow={percentage}
+      >
+        <span style={`width: ${percentage}%`} />
+      </div>
+      <span class="material-action">Buka materi <span aria-hidden="true">→</span></span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .material-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .material-card[hidden] {
+    display: none;
+  }
+
+  .material-card {
+    display: flex;
+    min-width: 0;
+    min-height: 250px;
+    flex-direction: column;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(26, 26, 30, 0.05);
+    transition: all 0.2s ease;
+  }
+
+  .material-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 14px 28px rgba(26, 26, 30, 0.14);
+  }
+
+  .material-topline,
+  .progress-copy {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .material-track {
+    color: #966313;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .material-percent {
+    color: var(--accent-red);
+    font-size: 0.78rem;
+    font-weight: 800;
+  }
+
+  .material-card h2 {
+    margin: 0.75rem 0 0.4rem;
+    font-size: 1rem;
+    line-height: 1.4;
+  }
+
+  .material-description {
+    display: -webkit-box;
+    overflow: hidden;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+    line-height: 1.55;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .material-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.75rem;
+  }
+
+  .material-meta span {
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    background: #FFF4DC;
+    color: #704b0e;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .progress-copy {
+    margin-top: auto;
+    padding-top: 0.9rem;
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+
+  .progress-track {
+    overflow: hidden;
+    height: 6px;
+    margin-top: 0.4rem;
+    border-radius: 999px;
+    background: rgba(43, 45, 66, 0.1);
+  }
+
+  .progress-track span {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--accent-gold);
+    transition: width 0.2s ease;
+  }
+
+  .material-action {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.75rem;
+    color: var(--text-main);
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  @media (max-width: 1120px) {
+    .material-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 760px) {
+    .material-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 520px) {
+    .material-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
