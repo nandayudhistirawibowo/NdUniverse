@@ -55,18 +55,32 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
             <a href="/" class="brand" aria-label="siDeutsch">
               <img src="/logo.png" alt="siDeutsch" />
             </a>
-            <div class="nav-links">
-              {isAdminArea ? (
-                <span class="nav-context">Administrasi</span>
-              ) : (
-                <>
-                  <a href="/">Home</a>
-                  <a href="/materi">Semua Materi</a>
-                </>
-              )}
-            </div>
-            <div class="nav-account" data-nav-account>
-              {!isAdminLogin && (user ? (
+            <button
+              class="menu-toggle"
+              type="button"
+              aria-label="Buka menu"
+              aria-expanded="false"
+              aria-controls="primary-navigation"
+            >
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 6h16" />
+                <path d="M4 12h16" />
+                <path d="M4 18h16" />
+              </svg>
+            </button>
+            <div class="nav-panel" id="primary-navigation">
+              <div class="nav-links">
+                {isAdminArea ? (
+                  <span class="nav-context">Administrasi</span>
+                ) : (
+                  <>
+                    <a href="/">Home</a>
+                    <a href="/materi">Semua Materi</a>
+                  </>
+                )}
+              </div>
+              <div class="nav-account" data-nav-account>
+                {!isAdminLogin && (user ? (
                   <a class="account-link" href={accountHref} aria-label={`${isAdminAccount ? 'Admin Panel' : 'Dashboard mahasiswa'} ${accountName}`}>
                     {profile?.avatar_url ? (
                       <img src={profile.avatar_url} alt="" />
@@ -78,6 +92,7 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
                 ) : (
                   <a class="login-link" href="/login">Login Mahasiswa</a>
                 ))}
+              </div>
             </div>
           </nav>
         </header>
@@ -109,6 +124,37 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
     fallback.textContent = 'siDeutsch';
     brandLogo.replaceWith(fallback);
   }, { once: true });
+
+  const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+  const navPanel = document.querySelector<HTMLElement>('#primary-navigation');
+  const topbar = document.querySelector<HTMLElement>('.topbar');
+
+  const closeMenu = () => {
+    menuToggle?.setAttribute('aria-expanded', 'false');
+    menuToggle?.setAttribute('aria-label', 'Buka menu');
+    topbar?.classList.remove('menu-open');
+  };
+
+  menuToggle?.addEventListener('click', () => {
+    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+    menuToggle.setAttribute('aria-expanded', String(!isOpen));
+    menuToggle.setAttribute('aria-label', isOpen ? 'Buka menu' : 'Tutup menu');
+    topbar?.classList.toggle('menu-open', !isOpen);
+  });
+
+  navPanel?.addEventListener('click', (event) => {
+    if ((event.target as HTMLElement).closest('a')) closeMenu();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (menuToggle?.getAttribute('aria-expanded') === 'true' && !topbar?.contains(event.target as Node)) {
+      closeMenu();
+    }
+  });
 
   const accountSlot = document.querySelector<HTMLElement>('[data-nav-account]');
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
@@ -219,9 +265,11 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
     backdrop-filter: blur(12px);
     background: var(--bg-dark);
     border-bottom: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
   }
 
   .navbar {
+    position: relative;
     max-width: 1180px;
     margin: 0 auto;
     padding: 1rem 1.25rem;
@@ -229,6 +277,7 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
+    font-style: normal;
   }
 
   .brand {
@@ -255,18 +304,91 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
   .nav-links {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 1.75rem;
+  }
+
+  .nav-panel {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    width: 44px;
+    height: 44px;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .menu-toggle:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+  }
+
+  .menu-toggle svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .menu-toggle path {
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    transform-box: fill-box;
+    transform-origin: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .menu-toggle[aria-expanded='true'] path:first-child {
+    transform: translateY(6px) rotate(45deg);
+  }
+
+  .menu-toggle[aria-expanded='true'] path:nth-child(2) {
+    opacity: 0;
+  }
+
+  .menu-toggle[aria-expanded='true'] path:last-child {
+    transform: translateY(-6px) rotate(-45deg);
   }
 
   .nav-links a {
+    position: relative;
+    padding: 0.4rem 0;
     text-decoration: none;
     color: rgba(255, 255, 255, 0.9);
     font-weight: 600;
-    transition: opacity 0.2s ease, color 0.2s ease;
+    transition: color 0.2s ease;
   }
 
-  .nav-links a:hover {
+  .nav-links a::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--accent-gold);
+    content: '';
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.2s ease;
+  }
+
+  .nav-links a:hover,
+  .nav-links a:focus-visible {
     color: var(--accent-gold);
+  }
+
+  .nav-links a:hover::after,
+  .nav-links a:focus-visible::after {
+    transform: scaleX(1);
   }
 
   .nav-context {
@@ -392,25 +514,76 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
 
   @media (max-width: 640px) {
     .navbar {
-      padding: 0.85rem 1rem;
-      flex-direction: column;
-      align-items: flex-start;
+      padding: 0.7rem 1rem;
       gap: 0.75rem;
     }
 
+    .menu-toggle {
+      display: grid;
+      margin-left: auto;
+    }
+
+    .nav-panel {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      left: 0;
+      z-index: 21;
+      display: flex;
+      max-height: 0;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      overflow: hidden;
+      padding: 0 1rem;
+      border-bottom: 1px solid transparent;
+      background: var(--bg-dark);
+      box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: max-height 0.28s ease, padding 0.2s ease, opacity 0.2s ease,
+        transform 0.2s ease, visibility 0.2s ease;
+      visibility: hidden;
+    }
+
+    .topbar.menu-open .nav-panel {
+      max-height: 260px;
+      padding: 0.65rem 1rem 1rem;
+      border-bottom-color: rgba(255, 255, 255, 0.14);
+      opacity: 1;
+      transform: translateY(0);
+      visibility: visible;
+    }
+
     .nav-links {
-      width: 100%;
-      flex-wrap: wrap;
-      justify-content: flex-start;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.15rem;
+    }
+
+    .nav-links a {
+      padding: 0.7rem 0.25rem;
+    }
+
+    .nav-links a::after {
+      right: auto;
+      width: 2.5rem;
     }
 
     .nav-account {
-      align-self: flex-start;
+      width: 100%;
+      padding-top: 0.7rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
 
-    .login-link,
+    .login-link {
+      width: 100%;
+      min-height: 44px;
+    }
+
     .account-link {
-      margin-top: 0.1rem;
+      max-width: 100%;
+      min-height: 44px;
     }
 
     .footer-inner {
