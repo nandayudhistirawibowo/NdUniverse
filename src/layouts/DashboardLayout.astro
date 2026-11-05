@@ -36,6 +36,7 @@ const logoFallback = 'siDeutsch';
     <title>{title}</title>
   </head>
   <body>
+    <div id="navigation-progress" class="navigation-progress" transition:persist="navigation-progress" aria-hidden="true"></div>
     <div class={`private-shell ${isAdmin ? 'admin-shell' : 'student-shell'}`}>
       <aside class="private-sidebar" id="dashboard-sidebar" aria-label={isAdmin ? 'Navigasi admin' : 'Navigasi mahasiswa'}>
         <div class="sidebar-top-row">
@@ -141,13 +142,29 @@ const logoFallback = 'siDeutsch';
     if (!isOpen && restoreFocus) sidebarToggle?.focus();
   };
 
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape') setSidebarOpen(false, true);
-  });
+  let sidebarEventsInitialized = false;
+  const initializeSidebar = () => {
+    if (sidebarEventsInitialized) return;
+    sidebarEventsInitialized = true;
 
-  window.matchMedia('(min-width: 821px)').addEventListener('change', (event) => {
-    if (event.matches) setSidebarOpen(false);
-  });
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      if (event.target.closest('.sidebar-toggle')) setSidebarOpen(true);
+      else if (event.target.closest('.sidebar-close, .sidebar-overlay')) setSidebarOpen(false, true);
+      else if (event.target.closest('.private-sidebar a')) setSidebarOpen(false);
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') setSidebarOpen(false, true);
+    });
+
+    window.matchMedia('(min-width: 821px)').addEventListener('change', (event) => {
+      if (event.matches) setSidebarOpen(false);
+    });
+  };
+
+  document.addEventListener('astro:page-load', initializeSidebar);
+  initializeSidebar();
 
   document.addEventListener('astro:page-load', () => {
     const logo = document.querySelector<HTMLImageElement>('.sidebar-logo img');
@@ -156,18 +173,30 @@ const logoFallback = 'siDeutsch';
       if (fallback) fallback.hidden = false;
       logo.hidden = true;
     }, { once: true });
-
-    const sidebarToggle = document.querySelector<HTMLButtonElement>('.sidebar-toggle');
-    const sidebarClose = document.querySelector<HTMLButtonElement>('.sidebar-close');
-    const sidebarOverlay = document.querySelector<HTMLButtonElement>('.sidebar-overlay');
-
-    sidebarToggle?.addEventListener('click', () => setSidebarOpen(true));
-    sidebarClose?.addEventListener('click', () => setSidebarOpen(false, true));
-    sidebarOverlay?.addEventListener('click', () => setSidebarOpen(false, true));
-    document.querySelectorAll<HTMLAnchorElement>('.private-sidebar a').forEach((link) => {
-      link.addEventListener('click', () => setSidebarOpen(false));
-    });
   });
+
+  const progressWindow = window as Window & { __sideDeutschProgressInitialized?: boolean };
+  if (!progressWindow.__sideDeutschProgressInitialized) {
+    progressWindow.__sideDeutschProgressInitialized = true;
+    let progressResetTimer: number | undefined;
+
+    document.addEventListener('astro:before-preparation', () => {
+      window.clearTimeout(progressResetTimer);
+      const progress = document.querySelector<HTMLElement>('#navigation-progress');
+      progress?.classList.remove('is-complete');
+      progress?.classList.add('is-loading');
+    });
+
+    document.addEventListener('astro:page-load', () => {
+      const progress = document.querySelector<HTMLElement>('#navigation-progress');
+      if (!progress?.classList.contains('is-loading')) return;
+
+      progress.classList.add('is-complete');
+      progressResetTimer = window.setTimeout(() => {
+        progress.classList.remove('is-loading', 'is-complete');
+      }, 240);
+    });
+  }
 </script>
 
 <style is:global>
@@ -199,6 +228,37 @@ const logoFallback = 'siDeutsch';
     color: var(--text-main);
     font-family: 'Plus Jakarta Sans', sans-serif;
     line-height: 1.6;
+  }
+
+  .navigation-progress {
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--accent-gold);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, width 0.18s ease;
+  }
+
+  .navigation-progress.is-loading {
+    opacity: 1;
+    width: 78%;
+    transition: opacity 0.08s linear, width 0.9s ease-out;
+  }
+
+  .navigation-progress.is-complete {
+    opacity: 1;
+    width: 100%;
+    transition: opacity 0.12s ease, width 0.12s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .navigation-progress {
+      transition-duration: 0.01ms;
+    }
   }
 
   a,
@@ -553,6 +613,10 @@ const logoFallback = 'siDeutsch';
 
     .sidebar-toggle {
       display: grid;
+      position: relative;
+      z-index: 1;
+      min-width: 44px;
+      touch-action: manipulation;
       border-color: rgba(26, 26, 30, 0.16);
       background: var(--bg-dark);
     }

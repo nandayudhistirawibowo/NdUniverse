@@ -9,6 +9,10 @@ import vercel from '@astrojs/vercel';
 export default defineConfig({
   site: 'https://www.sideutsch.id',
   output: 'server',
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: 'hover'
+  },
   integrations: [preact()],
   adapter: vercel()
 });

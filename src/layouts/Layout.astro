@@ -51,6 +51,7 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
     <title>{title}</title>
   </head>
   <body>
+    <div id="navigation-progress" class="navigation-progress" transition:persist="navigation-progress" aria-hidden="true"></div>
     <div class="site-shell">
       {!hideNavbar && (
         <header class="topbar">
@@ -119,8 +120,6 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
 </html>
 
 <script>
-  import { createBrowserClient } from '@supabase/ssr';
-
   const closeMenu = () => {
     const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
     const topbar = document.querySelector<HTMLElement>('.topbar');
@@ -141,7 +140,87 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
     }
   });
 
-  document.addEventListener('astro:page-load', async () => {
+  const progressWindow = window as Window & { __sideDeutschProgressInitialized?: boolean };
+  if (!progressWindow.__sideDeutschProgressInitialized) {
+    progressWindow.__sideDeutschProgressInitialized = true;
+    let progressResetTimer: number | undefined;
+
+    document.addEventListener('astro:before-preparation', () => {
+      window.clearTimeout(progressResetTimer);
+      const progress = document.querySelector<HTMLElement>('#navigation-progress');
+      progress?.classList.remove('is-complete');
+      progress?.classList.add('is-loading');
+    });
+
+    document.addEventListener('astro:page-load', () => {
+      const progress = document.querySelector<HTMLElement>('#navigation-progress');
+      if (!progress?.classList.contains('is-loading')) return;
+
+      progress.classList.add('is-complete');
+      progressResetTimer = window.setTimeout(() => {
+        progress.classList.remove('is-loading', 'is-complete');
+      }, 240);
+    });
+  }
+
+  const refreshAccount = async () => {
+    const accountSlot = document.querySelector<HTMLElement>('[data-nav-account]');
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+    if (!accountSlot || !supabaseUrl || !supabaseAnonKey) return;
+
+    const { createBrowserClient } = await import('@supabase/ssr');
+    const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (user && accountSlot.isConnected) {
+      const { data: profile } = await supabase
+        .from('profiles')
+        .select('nim, nama_lengkap, avatar_url')
+        .eq('id', user.id)
+        .maybeSingle();
+      const name = profile?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Mahasiswa';
+      const isAdmin = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
+      const accountLink = document.createElement('a');
+      accountLink.className = 'account-link';
+      accountLink.href = isAdmin ? '/admin' : '/dashboard';
+      accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard mahasiswa'} ${name}`);
+
+      if (profile?.avatar_url) {
+        const avatar = document.createElement('img');
+        avatar.src = profile.avatar_url;
+        avatar.alt = '';
+        accountLink.append(avatar);
+      } else {
+        const initial = document.createElement('span');
+        initial.className = 'account-initial';
+        initial.setAttribute('aria-hidden', 'true');
+        initial.textContent = name.slice(0, 1).toUpperCase();
+        accountLink.append(initial);
+      }
+
+      const accountName = document.createElement('span');
+      accountName.className = 'account-name';
+      accountName.textContent = name;
+      accountLink.append(accountName);
+      accountSlot.replaceChildren(accountLink);
+    }
+  };
+
+  const scheduleAccountRefresh = () => {
+    const idleWindow = window as Window & {
+      requestIdleCallback?: (callback: () => void, options?: { timeout: number }) => number;
+    };
+
+    if (idleWindow.requestIdleCallback) {
+      idleWindow.requestIdleCallback(() => void refreshAccount(), { timeout: 1500 });
+    } else {
+      window.setTimeout(() => void refreshAccount(), 0);
+    }
+  };
+
+  document.addEventListener('astro:page-load', () => {
     const brandLogo = document.querySelector<HTMLImageElement>('.brand img');
     brandLogo?.addEventListener('error', () => {
       const fallback = document.createElement('span');
@@ -164,47 +243,7 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
       if ((event.target as HTMLElement).closest('a')) closeMenu();
     });
 
-    const accountSlot = document.querySelector<HTMLElement>('[data-nav-account]');
-    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
-
-    if (accountSlot && supabaseUrl && supabaseAnonKey) {
-      const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
-      const { data: { user } } = await supabase.auth.getUser();
-
-      if (user && accountSlot.isConnected) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('nim, nama_lengkap, avatar_url')
-          .eq('id', user.id)
-          .maybeSingle();
-        const name = profile?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Mahasiswa';
-        const isAdmin = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
-        const accountLink = document.createElement('a');
-        accountLink.className = 'account-link';
-        accountLink.href = isAdmin ? '/admin' : '/dashboard';
-        accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard mahasiswa'} ${name}`);
-
-        if (profile?.avatar_url) {
-          const avatar = document.createElement('img');
-          avatar.src = profile.avatar_url;
-          avatar.alt = '';
-          accountLink.append(avatar);
-        } else {
-          const initial = document.createElement('span');
-          initial.className = 'account-initial';
-          initial.setAttribute('aria-hidden', 'true');
-          initial.textContent = name.slice(0, 1).toUpperCase();
-          accountLink.append(initial);
-        }
-
-        const accountName = document.createElement('span');
-        accountName.className = 'account-name';
-        accountName.textContent = name;
-        accountLink.append(accountName);
-        accountSlot.replaceChildren(accountLink);
-      }
-    }
+    scheduleAccountRefresh();
   });
 </script>
 
@@ -247,6 +286,37 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
     color: var(--text);
     font-family: 'Plus Jakarta Sans', sans-serif;
     line-height: 1.6;
+  }
+
+  .navigation-progress {
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 3px;
+    background: var(--accent-gold);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, width 0.18s ease;
+  }
+
+  .navigation-progress.is-loading {
+    opacity: 1;
+    width: 78%;
+    transition: opacity 0.08s linear, width 0.9s ease-out;
+  }
+
+  .navigation-progress.is-complete {
+    opacity: 1;
+    width: 100%;
+    transition: opacity 0.12s ease, width 0.12s ease-out;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .navigation-progress {
+      transition-duration: 0.01ms;
+    }
   }
 
   a,
