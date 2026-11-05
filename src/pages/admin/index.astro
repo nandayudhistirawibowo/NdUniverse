@@ -93,6 +93,7 @@ if (!isAdminNim(nim)) {
 </DashboardLayout>
 
 <script>
+  document.addEventListener('astro:page-load', () => {
   type AdminUser = {
     id: string;
     nim: string;
@@ -286,6 +287,7 @@ if (!isAdminNim(nim)) {
       adminMessage.textContent = 'Koneksi ke Admin API gagal.';
       adminMessage.dataset.state = 'error';
     }
+  });
   });
 </script>
 

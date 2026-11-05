@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+
 const {
   title = 'siDeutsch | Belajar Bahasa Jerman untuk Mahasiswa',
   description = 'Platform belajar bahasa Jerman yang terstruktur untuk mahasiswa Indonesia, lengkap dengan materi berdasarkan fakultas dan jurusan.',
@@ -45,6 +47,7 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+      <ClientRouter />
     <title>{title}</title>
   </head>
   <body>
@@ -118,85 +121,91 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
 <script>
   import { createBrowserClient } from '@supabase/ssr';
 
-  const brandLogo = document.querySelector<HTMLImageElement>('.brand img');
-  brandLogo?.addEventListener('error', () => {
-    const fallback = document.createElement('span');
-    fallback.textContent = 'siDeutsch';
-    brandLogo.replaceWith(fallback);
-  }, { once: true });
-
-  const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
-  const navPanel = document.querySelector<HTMLElement>('#primary-navigation');
-  const topbar = document.querySelector<HTMLElement>('.topbar');
-
   const closeMenu = () => {
+    const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const topbar = document.querySelector<HTMLElement>('.topbar');
     menuToggle?.setAttribute('aria-expanded', 'false');
     menuToggle?.setAttribute('aria-label', 'Buka menu');
     topbar?.classList.remove('menu-open');
   };
-
-  menuToggle?.addEventListener('click', () => {
-    const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
-    menuToggle.setAttribute('aria-expanded', String(!isOpen));
-    menuToggle.setAttribute('aria-label', isOpen ? 'Buka menu' : 'Tutup menu');
-    topbar?.classList.toggle('menu-open', !isOpen);
-  });
-
-  navPanel?.addEventListener('click', (event) => {
-    if ((event.target as HTMLElement).closest('a')) closeMenu();
-  });
 
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') closeMenu();
   });
 
   document.addEventListener('click', (event) => {
+    const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const topbar = document.querySelector<HTMLElement>('.topbar');
     if (menuToggle?.getAttribute('aria-expanded') === 'true' && !topbar?.contains(event.target as Node)) {
       closeMenu();
     }
   });
 
-  const accountSlot = document.querySelector<HTMLElement>('[data-nav-account]');
-  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+  document.addEventListener('astro:page-load', async () => {
+    const brandLogo = document.querySelector<HTMLImageElement>('.brand img');
+    brandLogo?.addEventListener('error', () => {
+      const fallback = document.createElement('span');
+      fallback.textContent = 'siDeutsch';
+      brandLogo.replaceWith(fallback);
+    }, { once: true });
 
-  if (accountSlot && supabaseUrl && supabaseAnonKey) {
-    const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
-    const { data: { user } } = await supabase.auth.getUser();
+    const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+    const navPanel = document.querySelector<HTMLElement>('#primary-navigation');
+    const topbar = document.querySelector<HTMLElement>('.topbar');
 
-    if (user) {
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('nim, nama_lengkap, avatar_url')
-        .eq('id', user.id)
-        .maybeSingle();
-      const name = profile?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Mahasiswa';
-      const isAdmin = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
-      const accountLink = document.createElement('a');
-      accountLink.className = 'account-link';
-      accountLink.href = isAdmin ? '/admin' : '/dashboard';
-      accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard mahasiswa'} ${name}`);
+    menuToggle?.addEventListener('click', () => {
+      const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+      menuToggle.setAttribute('aria-expanded', String(!isOpen));
+      menuToggle.setAttribute('aria-label', isOpen ? 'Buka menu' : 'Tutup menu');
+      topbar?.classList.toggle('menu-open', !isOpen);
+    });
 
-      if (profile?.avatar_url) {
-        const avatar = document.createElement('img');
-        avatar.src = profile.avatar_url;
-        avatar.alt = '';
-        accountLink.append(avatar);
-      } else {
-        const initial = document.createElement('span');
-        initial.className = 'account-initial';
-        initial.setAttribute('aria-hidden', 'true');
-        initial.textContent = name.slice(0, 1).toUpperCase();
-        accountLink.append(initial);
+    navPanel?.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) closeMenu();
+    });
+
+    const accountSlot = document.querySelector<HTMLElement>('[data-nav-account]');
+    const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+    const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+    if (accountSlot && supabaseUrl && supabaseAnonKey) {
+      const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user && accountSlot.isConnected) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('nim, nama_lengkap, avatar_url')
+          .eq('id', user.id)
+          .maybeSingle();
+        const name = profile?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Mahasiswa';
+        const isAdmin = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
+        const accountLink = document.createElement('a');
+        accountLink.className = 'account-link';
+        accountLink.href = isAdmin ? '/admin' : '/dashboard';
+        accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard mahasiswa'} ${name}`);
+
+        if (profile?.avatar_url) {
+          const avatar = document.createElement('img');
+          avatar.src = profile.avatar_url;
+          avatar.alt = '';
+          accountLink.append(avatar);
+        } else {
+          const initial = document.createElement('span');
+          initial.className = 'account-initial';
+          initial.setAttribute('aria-hidden', 'true');
+          initial.textContent = name.slice(0, 1).toUpperCase();
+          accountLink.append(initial);
+        }
+
+        const accountName = document.createElement('span');
+        accountName.className = 'account-name';
+        accountName.textContent = name;
+        accountLink.append(accountName);
+        accountSlot.replaceChildren(accountLink);
       }
-
-      const accountName = document.createElement('span');
-      accountName.className = 'account-name';
-      accountName.textContent = name;
-      accountLink.append(accountName);
-      accountSlot.replaceChildren(accountLink);
     }
-  }
+  });
 </script>
 
 <style is:global>

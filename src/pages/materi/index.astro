@@ -57,6 +57,7 @@ const sortedMateri = materi.toSorted((first, second) =>
 </Layout>
 
 <script>
+  document.addEventListener('astro:page-load', () => {
   const searchInput = document.querySelector<HTMLInputElement>('#material-search');
   const materialCards = Array.from(document.querySelectorAll<HTMLElement>('[data-material-card]'));
   const searchStatus = document.querySelector<HTMLElement>('#search-status');
@@ -79,6 +80,7 @@ const sortedMateri = materi.toSorted((first, second) =>
     if (noResults) {
       noResults.hidden = visibleCount > 0;
     }
+  });
   });
 </script>
 

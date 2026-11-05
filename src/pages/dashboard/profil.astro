@@ -75,6 +75,7 @@ const avatarUrl = profile?.avatar_url ?? '';
 <script>
   import { createBrowserClient } from '@supabase/ssr';
 
+  document.addEventListener('astro:page-load', () => {
   const form = document.querySelector<HTMLFormElement>('#profile-form');
   const fileInput = document.querySelector<HTMLInputElement>('#file-upload');
   const avatarPreview = document.querySelector<HTMLImageElement>('#avatar-preview');
@@ -177,6 +178,7 @@ const avatarUrl = profile?.avatar_url ?? '';
     } finally {
       submitButton.disabled = false;
     }
+  });
   });
 </script>
 

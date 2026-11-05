@@ -204,6 +204,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     upsertUserProgress,
   } from '../../lib/progress-client.js';
 
+  document.addEventListener('astro:page-load', () => {
   const sessionPicker = document.querySelector<HTMLElement>('[data-session-picker]');
   const progressKey = sessionPicker?.dataset.progressKey;
   const isAuthenticated = sessionPicker?.dataset.authenticated === 'true';
@@ -334,6 +335,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
       })();
     }
   }
+  });
 </script>
 
 <style>

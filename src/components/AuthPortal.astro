@@ -1,4 +1,6 @@
 ---
+import { ClientRouter } from 'astro:transitions';
+
 const {
   portal = 'student',
   title = 'Login Mahasiswa | siDeutsch',
@@ -23,6 +25,7 @@ const isAdminPortal = portal === 'admin';
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+    <ClientRouter />
     <title>{title}</title>
   </head>
   <body>
@@ -60,7 +63,7 @@ const isAdminPortal = portal === 'admin';
               inputmode="text"
               autocomplete="username"
               placeholder="Masukkan NIM"
-              pattern="[A-Za-z0-9._-]{3,32}"
+              pattern="[A-Za-z0-9._\\-]{3,32}"
               required
             />
 
@@ -91,6 +94,7 @@ const isAdminPortal = portal === 'admin';
 <script>
   import { createBrowserClient } from '@supabase/ssr';
 
+  document.addEventListener('astro:page-load', () => {
   const form = document.querySelector<HTMLFormElement>('#auth-form');
   const nimInput = document.querySelector<HTMLInputElement>('#nim');
   const passwordInput = document.querySelector<HTMLInputElement>('#password');
@@ -204,6 +208,7 @@ const isAdminPortal = portal === 'admin';
       submitButton.disabled = false;
       showMessage('Koneksi login gagal. Periksa jaringan lalu coba lagi.', 'error');
     }
+  });
   });
 </script>
 

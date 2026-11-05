@@ -101,6 +101,7 @@ const {
 </style>
 
 <script>
+  document.addEventListener('astro:page-load', () => {
   const levelFilter = document.querySelector<HTMLSelectElement>('#cefr-level-filter');
   const levelFilterCount = document.querySelector<HTMLElement>('[data-level-filter-count]');
 
@@ -121,4 +122,5 @@ const {
 
     levelFilter.addEventListener('change', updateMaterials);
   }
+  });
 </script>
