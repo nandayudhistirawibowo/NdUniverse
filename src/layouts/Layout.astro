@@ -87,8 +87,10 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
       <footer class="site-footer">
         <div class="footer-inner">
           <p>© 2026 siDeutsch. Dibuat untuk mahasiswa Indonesia.</p>
-          <a href="mailto:admin@ndhistira.my.id">Kontak Admin</a>
-          <span>ndhistira.my.id</span>
+          <span class="footer-separator" aria-hidden="true">·</span>
+          <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Kontak Admin (WhatsApp)</a>
+          <span class="footer-separator" aria-hidden="true">·</span>
+          <a href="https://ndhistira.my.id" target="_blank" rel="noopener noreferrer">Created by Nanda Yudhistira · Lihat Portofolio</a>
         </div>
       </footer>
     </div>
@@ -413,6 +415,10 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
       flex-direction: column;
       gap: 0.45rem;
       padding: 1.25rem 1rem;
+    }
+
+    .footer-separator {
+      display: none;
     }
   }
 </style>
