@@ -58,7 +58,7 @@ Pengelola yang membuat, melihat, memperbarui, dan menghapus akun mahasiswa melal
 
 - Tipe soal: susun kata (Tap & Arrange), Word Matcher, dan Fill in the Blanks/cloze.
 - Soal digenerate langsung dari array `vocab` materi; perubahan isi kosakata otomatis mengubah sumber soal, tanpa bank soal terpisah.
-- User memulai dengan tiga nyawa. Jawaban salah mengurangi nyawa; jawaban benar memberikan 10 XP.
+- User memulai dengan tiga nyawa. Jawaban salah mengurangi nyawa; jawaban benar menambah 10 XP sementara. XP baru ditambahkan ke total dan disimpan setelah semua soal sesi selesai; game over menghapus XP sementara sesi tersebut.
 - Sesi dianggap lulus jika akurasi mencapai minimal 80% (empat dari lima jawaban benar untuk sesi penuh).
 - Kuis menampilkan ringkasan skor dan kata yang perlu diulang.
 - Untuk user login, XP dan sesi disimpan per materi di `user_progress` Supabase. `localStorage` menjadi fallback lokal.

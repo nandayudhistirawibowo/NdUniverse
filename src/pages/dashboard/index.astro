@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import { normalizePassedSessions } from '../../lib/progress-client.js';
 import { getCollection } from 'astro:content';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
@@ -32,31 +33,34 @@ const totalSessions = materials.reduce((total, material) => total + Math.ceil(ma
 const materialBySlug = new Map(materials.map((item) => [item.id, item]));
 const totalPoints = progressRows.reduce((total, row) => {
   const material = materialBySlug.get(row.material_slug);
-  if (!material || !material.data.level || !Array.isArray(row.sessions_passed)) return total;
+  if (!material || !material.data.level) return total;
 
   const levelPoints = POINTS_PER_LEVEL[material.data.level];
   if (!levelPoints) return total;
 
   const totalMaterialSessions = Math.ceil(material.data.vocab.length / 5);
   const passedSessions = new Set(
-    row.sessions_passed
-      .map(Number)
-      .filter((session) => Number.isInteger(session) && session > 0 && session <= totalMaterialSessions)
+    normalizePassedSessions(row.sessions_passed)
+      .filter((session) => session <= totalMaterialSessions)
   );
   return total + passedSessions.size * levelPoints;
 }, 0);
 const currentLevel = [...LEVEL_STEPS].reverse().find((step) => totalPoints >= step.threshold) ?? LEVEL_STEPS[0];
 const levelProgressPercent = currentLevel.nextThreshold
-  ? Math.min(100, Math.round((totalPoints / currentLevel.nextThreshold) * 100))
+  ? Math.min(
+    100,
+    Math.floor(
+      ((totalPoints - currentLevel.threshold)
+        / (currentLevel.nextThreshold - currentLevel.threshold)) * 100
+    )
+  )
   : 100;
 const completedMaterials = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material) return [];
 
   const totalSessions = Math.ceil(material.data.vocab.length / 5);
-  const passedSessions = Array.isArray(row.sessions_passed)
-    ? new Set(row.sessions_passed.map(Number).filter(Number.isInteger))
-    : new Set();
+  const passedSessions = new Set(normalizePassedSessions(row.sessions_passed));
   const isComplete = totalSessions > 0
     && Array.from({ length: totalSessions }, (_, index) => index + 1).every((session) => passedSessions.has(session));
 

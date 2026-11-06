@@ -7,7 +7,7 @@ import {
 } from '../lib/progress-client.js';
 
 const STORAGE_KEY = 'sideutsch-xp';
-const QUESTION_TYPES = ['arrange', 'matcher', 'cloze'];
+const QUESTION_TYPES = ['arrange', 'matcher', 'text'];
 const SOUND_FILES = {
   click: '/sounds/quiz-click.mp3',
   success: '/sounds/quiz-success.mp3',
@@ -33,8 +33,27 @@ function shuffle(items) {
   return arr;
 }
 
-function buildQuestionQueue(items) {
-  const types = shuffle(items.map((_, index) => QUESTION_TYPES[index % QUESTION_TYPES.length]));
+function getSessionQuestionType(sessionNumber) {
+  return QUESTION_TYPES[(sessionNumber - 1) % QUESTION_TYPES.length];
+}
+
+function normalizeAnswer(answer) {
+  return answer.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function getAcceptedAnswers(answer) {
+  const normalized = normalizeAnswer(answer);
+  const withoutLeadingMarkers = normalized.replace(/^(?:(?:der|die|das|sich)\s+)+/, '');
+  return withoutLeadingMarkers === normalized
+    ? [normalized]
+    : [normalized, withoutLeadingMarkers];
+}
+
+function buildQuestionQueue(items, sessionNumber = 1, useSessionType = false) {
+  const sessionType = useSessionType ? getSessionQuestionType(sessionNumber) : null;
+  const types = sessionType
+    ? items.map(() => sessionType)
+    : shuffle(items.map((_, index) => QUESTION_TYPES[index % QUESTION_TYPES.length]));
 
   return shuffle(items).map((item, index) => ({
     ...item,
@@ -60,21 +79,6 @@ function buildMatcherSet(currentItem, items) {
     germanWords,
     indonesianOptions,
     correctMap: Object.fromEntries(pool.map((item) => [item.german, item.indonesian])),
-  };
-}
-
-function buildClozeSet(currentItem, items) {
-  if (!currentItem) return null;
-
-  const uniqueItems = [...new Map(items.map((item) => [item.german, item])).values()];
-  return {
-    options: shuffle([
-      currentItem.german,
-      ...shuffle(uniqueItems.filter((item) => item.german !== currentItem.german))
-        .slice(0, 3)
-        .map((item) => item.german),
-    ]),
-    answer: currentItem.german,
   };
 }
 
@@ -116,7 +120,9 @@ export default function Quiz(props) {
   const sessionCount = Math.ceil(items.length / effectiveBatchSize);
   const activeSessionNumber = Math.floor(activeStartIndex / effectiveBatchSize) + 1;
   const [queue, setQueue] = useState(() => buildQuestionQueue(
-    sessionMode ? items.slice(startIndex, startIndex + effectiveBatchSize) : items
+    sessionMode ? items.slice(startIndex, startIndex + effectiveBatchSize) : items,
+    Math.floor(startIndex / effectiveBatchSize) + 1,
+    sessionMode
   ));
   const [attemptedCount, setAttemptedCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -126,7 +132,7 @@ export default function Quiz(props) {
   const [arrangeOptions, setArrangeOptions] = useState([]);
   const [matcherSelection, setMatcherSelection] = useState(null);
   const [matcherMatches, setMatcherMatches] = useState({});
-  const [clozeSelection, setClozeSelection] = useState(null);
+  const [userAnswer, setUserAnswer] = useState('');
   const [matcherWrongPair, setMatcherWrongPair] = useState(null);
   const matcherWrongTimeoutRef = useRef(0);
   const [checkedResult, setCheckedResult] = useState(null);
@@ -139,6 +145,7 @@ export default function Quiz(props) {
   const progressWriteQueueRef = useRef(Promise.resolve());
   const pendingProgressRef = useRef({ xpDelta: 0, sessions_passed: null });
   const earnedXpRef = useRef(0);
+  const finalizedXpRef = useRef(false);
   const completedSessionsRef = useRef([]);
   const hasAnsweredRef = useRef(false);
 
@@ -244,8 +251,13 @@ export default function Quiz(props) {
           : Math.min(completed + 1, totalSessions || 1);
         const nextStartIndex = (nextSession - 1) * effectiveBatchSize;
         if (nextStartIndex !== activeStartIndex) {
+          finalizedXpRef.current = false;
           setActiveStartIndex(nextStartIndex);
-          setQueue(buildQuestionQueue(items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize)));
+          setQueue(buildQuestionQueue(
+            items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize),
+            nextSession,
+            sessionMode
+          ));
         }
       }
     };
@@ -292,9 +304,10 @@ export default function Quiz(props) {
       ? items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize)
       : items;
 
+    finalizedXpRef.current = false;
     setActiveStartIndex(nextStartIndex);
     setSessionInitialized(true);
-    setQueue(buildQuestionQueue(firstBatch));
+    setQueue(buildQuestionQueue(firstBatch, selectedSession, sessionMode));
     setLives(3);
     setSessionXp(0);
     setAttemptedCount(0);
@@ -304,7 +317,7 @@ export default function Quiz(props) {
     setArrangeSelected([]);
     setMatcherSelection(null);
     setMatcherMatches({});
-    setClozeSelection(null);
+    setUserAnswer('');
     setCheckedResult(null);
     setToast(null);
   }, [items, sessionMode, materialId, effectiveBatchSize, startIndex, authResolved, isAuthenticated]);
@@ -322,8 +335,8 @@ export default function Quiz(props) {
     } else {
       setMatcherSelection(null);
       setMatcherMatches({});
-      setClozeSelection(null);
     }
+    setUserAnswer('');
   }, [currentQuestion]);
 
   useEffect(() => {
@@ -336,11 +349,6 @@ export default function Quiz(props) {
   const matcherSet = useMemo(() => {
     if (!currentQuestion || currentQuestion.type !== 'matcher') return null;
     return buildMatcherSet(currentQuestion, currentBatchItems);
-  }, [currentQuestion, currentBatchItems]);
-
-  const clozeSet = useMemo(() => {
-    if (!currentQuestion || currentQuestion.type !== 'cloze') return null;
-    return buildClozeSet(currentQuestion, currentBatchItems);
   }, [currentQuestion, currentBatchItems]);
 
   const requiredCorrect = Math.ceil(currentBatchItems.length * 0.8);
@@ -367,6 +375,18 @@ export default function Quiz(props) {
     queueProgressUpdate({ sessions_passed: sessionsPassed });
   }, [sessionPassed, materialId, activeSessionNumber, isAuthenticated]);
 
+  useEffect(() => {
+    if (queue.length > 0 || isGameOver || finalizedXpRef.current) return;
+
+    finalizedXpRef.current = true;
+    if (sessionXp <= 0) return;
+
+    earnedXpRef.current += sessionXp;
+    setXp((total) => total + sessionXp);
+    setMaterialXp((total) => total + sessionXp);
+    queueProgressUpdate({ xpDelta: sessionXp });
+  }, [queue.length, isGameOver, sessionXp]);
+
   if (items.length === 0) {
     return (
       <div className="quiz-empty">
@@ -380,18 +400,15 @@ export default function Quiz(props) {
   }
 
   function awardXp(amount) {
-    earnedXpRef.current += amount;
-    setXp((prev) => prev + amount);
-    setMaterialXp((prev) => prev + amount);
     setSessionXp((prev) => prev + amount);
-    queueProgressUpdate({ xpDelta: amount });
   }
 
   function restartGame() {
     const sessionItems = sessionMode
       ? items.slice(activeStartIndex, activeStartIndex + effectiveBatchSize)
       : items;
-    setQueue(buildQuestionQueue(sessionItems));
+    finalizedXpRef.current = false;
+    setQueue(buildQuestionQueue(sessionItems, activeSessionNumber, sessionMode));
     setLives(3);
     setSessionXp(0);
     setAttemptedCount(0);
@@ -403,7 +420,7 @@ export default function Quiz(props) {
     setMatcherMatches({});
     setMatcherWrongPair(null);
     window.clearTimeout(matcherWrongTimeoutRef.current);
-    setClozeSelection(null);
+    setUserAnswer('');
     setCheckedResult(null);
     setToast(null);
   }
@@ -411,8 +428,9 @@ export default function Quiz(props) {
   function startSession(sessionNumber) {
     const nextStartIndex = (sessionNumber - 1) * effectiveBatchSize;
     const nextItems = items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize);
+    finalizedXpRef.current = false;
     setActiveStartIndex(nextStartIndex);
-    setQueue(buildQuestionQueue(nextItems));
+    setQueue(buildQuestionQueue(nextItems, sessionNumber, sessionMode));
     setLives(3);
     setSessionXp(0);
     setAttemptedCount(0);
@@ -424,7 +442,7 @@ export default function Quiz(props) {
     setMatcherMatches({});
     setMatcherWrongPair(null);
     window.clearTimeout(matcherWrongTimeoutRef.current);
-    setClozeSelection(null);
+    setUserAnswer('');
     setCheckedResult(null);
     setToast(null);
     window.history.replaceState(null, '', `${window.location.pathname}?session=${sessionNumber}`);
@@ -439,12 +457,15 @@ export default function Quiz(props) {
     if (isCorrect) {
       setCorrectCount((count) => count + 1);
       awardXp(10);
-      setToast({ type: 'success', message: 'Jawaban Tepat! +10 XP' });
+      setToast({ type: 'success', message: 'Jawaban Tepat! +10 XP setelah sesi selesai' });
       playSound('success');
     } else {
       setLives((remaining) => Math.max(remaining - 1, 0));
       setWrongWords((words) => [...words, currentQuestion]);
-      if (lives <= 1) setIsGameOver(true);
+      if (lives <= 1) {
+        setIsGameOver(true);
+        setSessionXp(0);
+      }
       setToast({ type: 'error', message: 'Kurang tepat, coba lagi!' });
       playSound('error');
     }
@@ -459,7 +480,7 @@ export default function Quiz(props) {
     setMatcherMatches({});
     setMatcherWrongPair(null);
     window.clearTimeout(matcherWrongTimeoutRef.current);
-    setClozeSelection(null);
+    setUserAnswer('');
     setCheckedResult(null);
     setToast(null);
   }
@@ -482,9 +503,10 @@ export default function Quiz(props) {
     showResult(isCorrect);
   }
 
-  function handleClozeSubmit() {
-    if (!clozeSet || !clozeSelection) return;
-    showResult(clozeSelection === clozeSet.answer);
+  function handleTextSubmit() {
+    if (!currentQuestion || !userAnswer.trim()) return;
+    const acceptedAnswers = getAcceptedAnswers(currentQuestion.german);
+    showResult(acceptedAnswers.includes(normalizeAnswer(userAnswer)));
   }
 
   function addArrangeToken(index) {
@@ -533,7 +555,7 @@ export default function Quiz(props) {
 
     if (currentQuestion.type === 'arrange') handleArrangeSubmit();
     else if (currentQuestion.type === 'matcher') handleMatcherSubmit();
-    else handleClozeSubmit();
+    else handleTextSubmit();
   }
 
   const questionNumber = Math.min(attemptedCount + (checkedResult === null ? 1 : 0), currentBatchItems.length);
@@ -545,7 +567,10 @@ export default function Quiz(props) {
     ? arrangeSelected.length > 0
     : currentQuestion?.type === 'matcher'
       ? matcherIsComplete
-      : clozeSelection !== null;
+      : userAnswer.trim().length > 0;
+  const textArticleHint = currentQuestion?.type === 'text'
+    ? currentQuestion.german.match(/^(der|die|das)\s+(.+)$/i)
+    : null;
 
   return (
     <div className="quiz-shell">
@@ -694,26 +719,57 @@ export default function Quiz(props) {
                   </>
                 ) : (
                   <>
-                    <p className="question-label">Tipe C · Lengkapi kalimat</p>
-                    <h3>Ich lerne das deutsche Wort für „{currentQuestion.indonesian}“: _____.</h3>
-                    <div className="cloze-options">
-                      {clozeSet?.options.map((option) => (
-                        <button
-                          key={option}
-                          type="button"
-                          className={`cloze-choice ${clozeSelection === option ? 'selected' : ''} ${checkedResult === true && option === clozeSet.answer ? 'correct' : ''} ${checkedResult === false && option === clozeSelection ? 'wrong' : ''}`}
-                          onClick={() => {
-                            if (checkedResult !== null) return;
-                            setClozeSelection(option);
-                            playSound('click');
+                    <p className="question-label">Tipe C · Text Box</p>
+                    <h3>Bagaimana mengatakan „{currentQuestion.indonesian}“ dalam Bahasa Jerman?</h3>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', margin: '0.25rem 0 1rem' }}>
+                      {textArticleHint && (
+                        <span
+                          aria-label={`Artikel: ${textArticleHint[1]}`}
+                          style={{
+                            flex: '0 0 auto',
+                            padding: '0.7rem 0.85rem',
+                            border: '1px solid var(--border)',
+                            borderRadius: '10px',
+                            background: 'var(--card-bg)',
+                            color: 'var(--text-main)',
+                            fontWeight: 700,
                           }}
-                          disabled={checkedResult !== null}
                         >
-                          {option}
-                        </button>
-                      ))}
+                          {textArticleHint[1]}
+                        </span>
+                      )}
+                      <input
+                        type="text"
+                        value={userAnswer}
+                        onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Enter' && userAnswer.trim()) {
+                            event.preventDefault();
+                            handleQuestionAction();
+                          }
+                        }}
+                        placeholder={textArticleHint ? textArticleHint[2] : 'Ketik jawaban dalam Bahasa Jerman'}
+                        aria-label="Jawaban dalam Bahasa Jerman"
+                        autoComplete="off"
+                        autoCapitalize="none"
+                        spellCheck={false}
+                        disabled={checkedResult !== null}
+                        style={{
+                          boxSizing: 'border-box',
+                          flex: '1 1 auto',
+                          width: '100%',
+                          minWidth: 0,
+                          minHeight: '48px',
+                          padding: '0.7rem 0.9rem',
+                          border: '1px solid var(--border)',
+                          borderRadius: '10px',
+                          background: 'var(--bg-main)',
+                          color: 'var(--text-main)',
+                          font: 'inherit',
+                        }}
+                      />
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {clozeSet.answer}</p>}
+                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.german}</p>}
                   </>
                 )}
 
