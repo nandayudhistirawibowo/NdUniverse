@@ -5,6 +5,7 @@ const vocabItemSchema = z.object({
   german: z.string(),
   indonesian: z.string(),
   context: z.string(),
+  contextIndonesian: z.string().optional(),
 });
 
 const materi = defineCollection({

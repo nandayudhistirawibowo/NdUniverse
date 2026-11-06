@@ -126,7 +126,10 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
                       <td>{entry.indonesian}</td>
                       <td lang="de">
                         <div class="vocab-context-cell">
-                          <span>{entry.context}</span>
+                          <div class="vocab-context-copy">
+                            <span>{entry.context}</span>
+                            {entry.contextIndonesian && <small lang="id">({entry.contextIndonesian})</small>}
+                          </div>
                           <button
                             class="vocab-speech-button"
                             type="button"
@@ -619,6 +622,20 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   .vocab-context-cell > span {
     min-width: 0;
     flex: 1;
+  }
+
+  .vocab-context-copy {
+    display: grid;
+    min-width: 0;
+    flex: 1;
+    gap: 0.2rem;
+  }
+
+  .vocab-context-copy small {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 400;
+    line-height: 1.45;
   }
 
   .vocab-speech-button {
