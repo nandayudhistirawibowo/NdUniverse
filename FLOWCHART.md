@@ -1,120 +1,131 @@
 # siDeutsch — Alur Aplikasi
 
-## Login Mahasiswa dan Admin
+## Login dan Proteksi Rute
 
 ```mermaid
 flowchart TD
-    A[Pengguna membuka portal login] --> B{Portal yang dipilih?}
+    A[Pengguna membuka portal login] --> B{Portal?}
     B -->|Mahasiswa /login| C[Masukkan NIM dan password]
     C --> D{NIM valid dan bukan NIM admin?}
-    D -->|Tidak| E[Tampilkan penolakan / validasi]
-    D -->|Ya| F[Email Supabase dibentuk dari NIM]
+    D -->|Tidak| E[Tampilkan penolakan atau validasi]
+    D -->|Ya| F[Bentuk email Supabase dari NIM]
     F --> G{Sign-in berhasil?}
     G -->|Ya| H[Dashboard mahasiswa]
-    G -->|Tidak| I{Akun mahasiswa belum ada?}
-    I -->|Ya| J[Signup mahasiswa; password awal = NIM]
+    G -->|Tidak| I{Akun belum ada?}
+    I -->|Ya| J[Signup mahasiswa]
     J --> H
     I -->|Tidak| E
 
     B -->|Admin /admin/login| K[Masukkan NIM dan password]
-    K --> L{NIM admin yang diizinkan?}
-    L -->|Tidak| M[Tolak sebelum sign-in]
+    K --> L{NIM admin diizinkan?}
+    L -->|Tidak| M[Tolak akses]
     L -->|Ya| N[Sign-in Supabase]
-    N --> O{Profil terautentikasi punya NIM admin?}
+    N --> O{Profil terautentikasi adalah admin?}
     O -->|Tidak| P[Sign-out dan tolak akses]
-    O -->|Ya| Q[Admin panel /admin]
+    O -->|Ya| Q[Panel admin /admin]
 
-    R[Request ke /admin tanpa sesi] --> S[Middleware mengarahkan ke /admin/login]
-    T[Request ke /dashboard tanpa sesi] --> U[Middleware mengarahkan ke /login]
+    R[Request tanpa sesi ke /dashboard atau /career] --> S[Middleware mengarahkan ke /login]
+    T[Request tanpa sesi ke /admin] --> U[Middleware mengarahkan ke /admin/login]
 ```
 
-NIM admin di helper saat ini adalah `admin` dan `000000`. Otorisasi admin dilakukan kembali di middleware dan Admin API; path login terpisah bukan pengganti pemeriksaan hak akses.
-
-## Alur Belajar dan Kuis
+## Kuis Materi Utama, XP, dan Progress
 
 ```mermaid
 flowchart TD
-    A[Masuk ke katalog Alltagsdeutsch atau Fachdeutsch] --> B[Pilih materi]
+    A[Pilih Alltagsdeutsch atau Fachdeutsch] --> B[Pilih materi]
     B --> C[Halaman detail materi]
     C --> D{Login?}
-    D -->|Ya| E[Lihat materi lengkap dan progress]
-    D -->|Guest| F[Lihat preview dan kosakata Sesi 1]
+    D -->|Ya| E[Lihat materi dan progress]
+    D -->|Guest| F[Lihat preview dan kosakata sesi pertama]
     E --> G[Pilih sesi, maksimal 5 kata]
-    F --> H[Mulai kuis Sesi 1]
+    F --> H[Mulai sesi pertama]
     G --> I[Mulai kuis]
     H --> I
-    I --> J[Pilih tipe soal: susun, matcher, atau cloze]
+    I --> J[Pilih tipe: Arrange, Matcher, atau Text Box]
     J --> K{Jawaban benar?}
-    K -->|Ya| L[Tambah 10 XP]
+    K -->|Ya| L[Tambah 10 XP ke state sementara sesi]
     K -->|Tidak| M[Kurangi 1 nyawa dan catat kata sulit]
     L --> N{Masih ada soal?}
-    M --> O{Nyawa tersisa?}
-    O -->|Tidak| P[Ringkasan / game over]
-    O -->|Ya| N
+    M --> O{Nyawa habis?}
+    O -->|Ya| P[Game Over: reset XP sementara, jangan komit]
+    O -->|Tidak| N
     N -->|Ya| J
-    N -->|Tidak| Q{Akurasi sesi minimal 80%?}
-    Q -->|Ya| S[Tandai sesi lulus]
-    Q -->|Tidak| P
-    S --> T[User login: sinkronkan XP dan sesi]
-    S --> U[Guest: progress tetap di memori]
-    T --> V[Hitung level dari sesi CEFR yang lulus]
+    N -->|Tidak| Q[Kuis selesai]
+    Q --> R[Guard finalisasi: komit XP sementara sekali untuk run ini]
+    R --> S{Login?}
+    S -->|Ya| T[Perbarui total XP dan antrekan upsert Supabase]
+    S -->|Tidak| U[Progress guest tetap di memori]
+    Q --> V{Akurasi minimal 80%?}
+    V -->|Ya| W[Tandai sesi lulus]
+    V -->|Tidak| X[Sesi gagal; XP kuis selesai tetap dapat dikomit]
+    W --> Y[Level dashboard dihitung dari sesi lulus CEFR]
 ```
 
-## Guest Mode
+XP dikomit setelah kuis selesai, tidak saat setiap jawaban benar. Game Over membuang XP sementara. Guard mencegah finalisasi ganda pada satu run, tetapi implementasi saat ini tidak membatasi perolehan XP saat pengguna memainkan ulang kuis yang sudah selesai.
+
+## Review Kata Sulit dan Bookmark
 
 ```mermaid
-flowchart TD
-    A[Guest membuka detail materi] --> B[Tampilkan tabel Sesi 1 saja]
-    B --> C[Tampilkan sesi 2+ sebagai terkunci]
-    C --> D[Guest dapat kembali ke kurikulum publik]
-    C --> E[Guest dapat mencoba kuis Sesi 1]
-    E --> F[XP dan status kuis disimpan di state komponen]
-    F --> G{Halaman dimuat ulang?}
-    G -->|Ya| H[State hilang, mulai dari 0]
-    G -->|Tidak| I[Guest lanjut bermain]
-    C --> J[CTA login untuk membuka materi/progress]
+flowchart LR
+    A[Kuis selesai atau Game Over] --> B[Review Kata Sulit]
+    B --> C[Klik ikon Bookmark pada kata]
+    C --> D{Kata sudah tersimpan?}
+    D -->|Belum| E[Simpan german, indonesian, context]
+    D -->|Sudah| F[Tidak menambahkan duplikat]
+    E --> G[localStorage: sideutsch-bookmarks]
+    F --> G
+    G --> H[Buka /dashboard/bookmark]
+    H --> I[Tampilkan daftar bookmark]
+    I --> J[Hapus kata]
+    J --> G
 ```
+
+Bookmark adalah data client-side di browser; bookmark tidak disimpan atau disinkronkan ke Supabase.
+
+## Career
+
+```mermaid
+flowchart LR
+    A[Klik menu Career] --> B[Katalog /career]
+    B --> C[Pilih materi Career]
+    C --> D[Halaman detail kosakata Career]
+    D -. "kuis Career belum tersedia" .-> E[Latihan Career: pengembangan mendatang]
+```
+
+Collection Career dan halaman detail vocab telah tersedia dan rute `/career` dilindungi login. Kuis Career belum diimplementasikan pada codebase saat ini.
 
 ## Sinkronisasi Progress Supabase
 
 ```mermaid
 flowchart TD
-    A[Kuis atau catatan dibuka] --> B{Ada sesi Supabase?}
-    B -->|Tidak| C[Guest: tidak menulis localStorage/sessionStorage progress]
-    C --> D[Progress berada di memori saja]
-    B -->|Ya| E[Muat user_progress untuk user dan material]
-    E --> F[Gabungkan data server dengan localStorage fallback]
-    F --> G[Jawaban benar / sesi lulus / catatan berubah]
-    G --> H[Simpan fallback lokal untuk user login]
-    H --> I[Antrekan upsert per user_id + material_slug]
-    I --> J{Request Supabase berhasil?}
-    J -->|Ya| K[Perbarui user_progress dan updated_at]
-    J -->|Tidak| L[Fallback lokal tetap tersedia]
-    L --> M[Merge dicoba kembali saat progress dimuat pada sesi berikutnya]
+    A[Kuis dimulai atau catatan dibuka] --> B{Ada sesi Supabase?}
+    B -->|Tidak| C[Guest: progress kuis berada di memori]
+    B -->|Ya| D[Muat user_progress untuk user dan materi]
+    D --> E[Gabungkan progress server dan fallback lokal]
+    E --> F[Kuis selesai, sesi lulus, atau catatan berubah]
+    F --> G[Simpan fallback lokal untuk pengguna login]
+    G --> H[Antrekan upsert user_id + material_slug]
+    H --> I{Upsert berhasil?}
+    I -->|Ya| J[Perbarui xp, sessions_passed, notes, updated_at]
+    I -->|Tidak| K[Fallback lokal tetap tersedia]
 ```
 
-`user_progress.sessions_passed` disimpan sebagai array JSONB nomor sesi, `xp` per materi, dan `notes` per materi. RLS membatasi baris ke pemilik berdasarkan `auth.uid() = user_id`.
+`user_progress.sessions_passed` disimpan sebagai array JSONB nomor sesi. RLS membatasi baris ke pemilik melalui `auth.uid() = user_id`.
 
-## Navigasi, TTS, dan Konten Publik
+## Navigasi dan Audio
 
 ```mermaid
 flowchart TD
-    A[Pengguna membuka link internal] --> B[Hover atau fokus pada link]
-    B --> C[Astro prefetch halaman tujuan]
-    A --> D[Klik link / navigasi dimulai]
-    D --> E[astro:before-preparation: tampilkan loading bar]
-    E --> F[Astro mengambil halaman SSR dan menukar DOM]
-    F --> G[astro:page-load: sembunyikan loading bar dan inisialisasi script halaman]
+    A[Hover atau fokus pada link internal] --> B[Astro prefetch]
+    A --> C[Klik link]
+    C --> D[Tampilkan loading progress]
+    D --> E[Ambil halaman SSR dan tukar DOM]
+    E --> F[Inisialisasi script pada astro:page-load]
 
-    H[Pengguna menekan tombol speaker] --> I{Web Speech API tersedia?}
-    I -->|Tidak| J[Tombol disabled]
-    I -->|Ya| K[Buat SpeechSynthesisUtterance]
-    K --> L[Set lang de-DE]
-    L --> M[window.speechSynthesis mengucapkan teks Jerman]
-
-    N[Konten belajar publik] --> O[Panduan Pengucapan /grammar]
-    N --> P[Detail materi: kosakata + context + contextIndonesian opsional]
-    P --> Q[Contoh Jerman tampil dengan arti kecil jika tersedia]
+    G[Tekan tombol speaker] --> H{Web Speech API tersedia?}
+    H -->|Tidak| I[Tombol disabled]
+    H -->|Ya| J[Atur lang de-DE]
+    J --> K[Ucapkan kata atau kalimat Jerman]
 ```
 
-Prefetch menggunakan strategi hover/focus dan membantu menghangatkan halaman internal, tetapi tidak menjamin SSR selesai sebelum klik. TTS menggunakan voice Jerman yang tersedia di browser/OS; tombol dimatikan jika Web Speech API tidak didukung.
+Prefetch membantu menghangatkan halaman internal, tetapi tidak menjamin SSR selesai sebelum klik. Audio bergantung pada Web Speech API dan voice Jerman browser/OS.

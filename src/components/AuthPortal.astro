@@ -55,15 +55,14 @@ const isAdminPortal = portal === 'admin';
           <p class="panel-description">{description}</p>
 
           <form id="auth-form" class="auth-form" data-portal={portal}>
-            <label for="nim">Nomor Induk Mahasiswa</label>
+            <label for="identifier">{isAdminPortal ? 'Nomor Induk Mahasiswa' : 'Email / NIM'}</label>
             <input
-              id="nim"
-              name="nim"
+              id="identifier"
+              name="identifier"
               type="text"
               inputmode="text"
               autocomplete="username"
-              placeholder="Masukkan NIM"
-              pattern="[A-Za-z0-9._\\-]{3,32}"
+              placeholder={isAdminPortal ? 'Masukkan NIM admin' : 'Masukkan email atau NIM'}
               required
             />
 
@@ -77,13 +76,17 @@ const isAdminPortal = portal === 'admin';
               required
             />
 
-            {!isAdminPortal && <p class="first-login-note">Login pertama? Password awal adalah NIM kamu.</p>}
             <button id="auth-submit" type="submit">
               <span>{buttonText}</span>
               <span aria-hidden="true">→</span>
             </button>
             <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
           </form>
+          {!isAdminPortal && (
+            <p class="first-login-note">
+              Belum punya akun? Masukkan email dan password baru, lalu klik Masuk. Akun akan dibuat otomatis.
+            </p>
+          )}
           {!isAdminPortal && <a class="back-link" href="/">Kembali ke siDeutsch</a>}
         </div>
       </section>
@@ -96,7 +99,7 @@ const isAdminPortal = portal === 'admin';
 
   document.addEventListener('astro:page-load', () => {
   const form = document.querySelector<HTMLFormElement>('#auth-form');
-  const nimInput = document.querySelector<HTMLInputElement>('#nim');
+  const identifierInput = document.querySelector<HTMLInputElement>('#identifier');
   const passwordInput = document.querySelector<HTMLInputElement>('#password');
   const submitButton = document.querySelector<HTMLButtonElement>('#auth-submit');
   const message = document.querySelector<HTMLElement>('#auth-message');
@@ -111,16 +114,32 @@ const isAdminPortal = portal === 'admin';
 
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
-    if (!nimInput || !passwordInput || !submitButton || !message) return;
+    if (!identifierInput || !passwordInput || !submitButton || !message) return;
 
-    const nim = nimInput.value.trim();
-    const normalizedNim = nim.toLowerCase();
-    const isPrivilegedNim = adminNims.has(normalizedNim);
+    const identifier = identifierInput.value.trim();
+    const isEmail = identifier.includes('@');
+    const isValidNim = /^[A-Za-z0-9._-]{3,32}$/.test(identifier);
 
-    if (!/^[A-Za-z0-9._-]{3,32}$/.test(nim)) {
-      showMessage('Format NIM tidak valid. Gunakan 3-32 karakter huruf atau angka.', 'error');
+    if (isAdminPortal && !isValidNim) {
+      showMessage('Format NIM admin tidak valid.', 'error');
       return;
     }
+
+    if (!isAdminPortal && !isEmail && !isValidNim) {
+      showMessage('Masukkan email yang valid atau NIM 3-32 karakter.', 'error');
+      return;
+    }
+
+    const email = isEmail ? identifier.toLowerCase() : `${identifier}@student.sideutsch.com`;
+    if (isEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showMessage('Format email tidak valid.', 'error');
+      return;
+    }
+
+    const studentNim = email.endsWith('@student.sideutsch.com')
+      ? email.slice(0, email.indexOf('@'))
+      : (!isEmail ? identifier : null);
+    const isPrivilegedNim = adminNims.has(String(studentNim ?? '').toLowerCase());
 
     if (!isAdminPortal && isPrivilegedNim) {
       showMessage('Akses ditolak. Silakan login melalui portal admin.', 'error');
@@ -140,7 +159,6 @@ const isAdminPortal = portal === 'admin';
     }
 
     const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
-    const email = `${nim}@student.sideutsch.com`;
     const redirect = new URLSearchParams(window.location.search).get('redirect');
     const safeRedirect = isAdminPortal
       ? (redirect?.startsWith('/admin') && !redirect.startsWith('//') && redirect !== '/admin/login' ? redirect : '/admin')
@@ -149,8 +167,37 @@ const isAdminPortal = portal === 'admin';
     submitButton.disabled = true;
     showMessage('Memeriksa akun...', 'loading');
 
+    async function prepareProfile(user: { id: string; user_metadata?: Record<string, unknown> }) {
+      const { data: profile, error: profileError } = await supabase
+        .from('profiles')
+        .select('id, nim')
+        .eq('id', user.id)
+        .maybeSingle();
+
+      if (profileError) throw new Error('Profil akun gagal diperiksa.');
+      if (profile && adminNims.has(String(profile.nim ?? '').trim().toLowerCase())) {
+        await supabase.auth.signOut();
+        throw new Error('Akses ditolak. Silakan login melalui portal admin.');
+      }
+
+      if (!profile) {
+        const profileNim = studentNim
+          ?? (typeof user.user_metadata?.nim === 'string' ? user.user_metadata.nim : null);
+        const { error: saveProfileError } = await supabase.from('profiles').upsert({
+          id: user.id,
+          nim: profileNim,
+          nama_lengkap: profileNim || 'Member',
+        }, { onConflict: 'id' });
+
+        if (saveProfileError) throw new Error('Profil akun gagal dibuat. Coba lagi atau hubungi admin.');
+      }
+    }
+
     try {
-      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({ email, password: passwordInput.value });
+      const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+        email,
+        password: passwordInput.value,
+      });
 
       if (!signInError && signInData.user) {
         if (isAdminPortal) {
@@ -162,51 +209,65 @@ const isAdminPortal = portal === 'admin';
 
           if (profileError || !adminNims.has(String(profile?.nim ?? '').trim().toLowerCase())) {
             await supabase.auth.signOut();
-            submitButton.disabled = false;
-            showMessage('Akses ditolak. Akun ini tidak terdaftar sebagai admin.', 'error');
-            return;
+            throw new Error('Akses ditolak. Akun ini tidak terdaftar sebagai admin.');
           }
+        } else {
+          await prepareProfile(signInData.user);
         }
 
         window.location.assign(safeRedirect);
         return;
       }
 
-      if (isAdminPortal || isPrivilegedNim) {
-        submitButton.disabled = false;
-        showMessage(isAdminPortal
+      const invalidCredentials = signInError?.code === 'invalid_credentials'
+        || signInError?.message === 'Invalid login credentials';
+
+      if (!invalidCredentials || isAdminPortal || isPrivilegedNim) {
+        throw new Error(isAdminPortal
           ? 'Login admin gagal. Periksa NIM dan password admin.'
-          : 'Akun admin belum tersedia. Hubungi pengelola Supabase.', 'error');
-        return;
+          : 'Login gagal. Periksa koneksi dan format email atau NIM.');
       }
 
-      showMessage('Akun belum ditemukan. Menyiapkan akun mahasiswa...', 'loading');
-      const { data, error: signUpError } = await supabase.auth.signUp({
+      showMessage('Akun belum ditemukan. Membuat akun...', 'loading');
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
-        password: nim,
-        options: { data: { nim } },
+        password: passwordInput.value,
+        options: {
+          data: {
+            nim: studentNim,
+            nama_lengkap: studentNim || 'Member',
+          },
+        },
       });
 
-      if (signUpError || !data.user || data.user.identities?.length === 0) {
-        submitButton.disabled = false;
-        showMessage('Login gagal. Periksa NIM dan password, lalu coba lagi.', 'error');
-        return;
+      const accountAlreadyExists = signUpError?.code === 'user_already_exists'
+        || /already registered|already exists/i.test(signUpError?.message ?? '')
+        || signUpData.user?.identities?.length === 0;
+      if (accountAlreadyExists) {
+        throw new Error('Email/NIM sudah terdaftar, tetapi password salah.');
+      }
+      if (signUpError || !signUpData.user) {
+        throw new Error('Akun gagal dibuat. Periksa email dan password, lalu coba lagi.');
       }
 
-      if (!data.session) {
-        submitButton.disabled = false;
-        showMessage('Akun tercatat, tetapi konfirmasi email masih aktif di Supabase. Nonaktifkan konfirmasi email untuk memakai NIM dengan email fiktif.', 'error');
-        return;
+      showMessage('Akun dibuat. Menyiapkan sesi login...', 'loading');
+      const { data: newSignInData, error: newSignInError } = await supabase.auth.signInWithPassword({
+        email,
+        password: passwordInput.value,
+      });
+
+      if (newSignInError || !newSignInData.user) {
+        throw new Error('Akun berhasil dibuat, tetapi belum dapat digunakan. Periksa konfirmasi email atau coba lagi.');
       }
 
-      await supabase.from('profiles').upsert(
-        { id: data.user.id, nim, nama_lengkap: nim },
-        { onConflict: 'id' }
-      );
+      await prepareProfile(newSignInData.user);
       window.location.assign(safeRedirect);
-    } catch {
+    } catch (error) {
       submitButton.disabled = false;
-      showMessage('Koneksi login gagal. Periksa jaringan lalu coba lagi.', 'error');
+      showMessage(
+        error instanceof Error ? error.message : 'Koneksi login gagal. Periksa jaringan lalu coba lagi.',
+        'error'
+      );
     }
   });
   });

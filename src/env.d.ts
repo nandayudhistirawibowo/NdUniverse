@@ -4,7 +4,7 @@ import type { SupabaseClient, User } from '@supabase/supabase-js';
 
 interface StudentProfile {
   id: string;
-  nim: string;
+  nim: string | null;
   nama_lengkap: string | null;
   nomor_wa: string | null;
   avatar_url: string | null;

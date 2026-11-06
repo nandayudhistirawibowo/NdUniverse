@@ -17,8 +17,8 @@ const LEVEL_STEPS = [
 
 const user = Astro.locals.user;
 const profile = Astro.locals.profile;
-const nim = profile?.nim ?? user?.user_metadata?.nim ?? 'Mahasiswa';
-const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || nim;
+const nim = profile?.nim || user?.user_metadata?.nim || '';
+const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || nim || 'Member';
 const accessDenied = Astro.url.searchParams.get('error') === 'admin-only';
 const { data: progressData } = user
   ? await Astro.locals.supabase
