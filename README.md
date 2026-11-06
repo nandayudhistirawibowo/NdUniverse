@@ -26,8 +26,6 @@ Koleksi saat ini berisi **425 file materi dan sekitar 8.500 vocab**: 411 Alltags
 - [PRD](PRD.md)
 - [ERD](ERD.md)
 - [Flowchart](FLOWCHART.md)
-- [Handover DeepSeek](HANDOVER_DEEPSEEK.md)
-- [Handover Copilot](HANDOVER_COPILOT.md)
 
 ## 🏃 Cara Menjalankan
 ```bash
