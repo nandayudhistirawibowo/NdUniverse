@@ -241,6 +241,8 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     upsertUserProgress,
   } from '../../lib/progress-client.js';
 
+  let speechUnlocked = false;
+
   document.addEventListener('astro:page-load', () => {
   const speechSupported =
     'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
@@ -249,9 +251,18 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     if (!speechSupported) return;
 
     button.addEventListener('click', () => {
+      if (speechUnlocked) {
+        window.speechSynthesis.cancel();
+      } else {
+        const unlockUtterance = new SpeechSynthesisUtterance('');
+        unlockUtterance.lang = 'de-DE';
+        window.speechSynthesis.speak(unlockUtterance);
+        speechUnlocked = true;
+      }
+
       const utterance = new SpeechSynthesisUtterance(button.dataset.speech ?? '');
       utterance.lang = 'de-DE';
-      window.speechSynthesis.cancel();
+      utterance.onerror = (error) => console.error('German speech playback failed:', error.error);
       window.speechSynthesis.speak(utterance);
     });
   });

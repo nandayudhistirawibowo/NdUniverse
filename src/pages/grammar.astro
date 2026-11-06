@@ -335,6 +335,8 @@ const caseExamples = [
 </Layout>
 
   <script>
+    let grammarSpeechUnlocked = false;
+
     const grammarSpeechSupported = () =>
       'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
 
@@ -353,9 +355,18 @@ const caseExamples = [
       const button = event.target.closest<HTMLButtonElement>('.grammar-speech-button');
       if (!button || button.disabled || !grammarSpeechSupported()) return;
 
+      if (grammarSpeechUnlocked) {
+        window.speechSynthesis.cancel();
+      } else {
+        const unlockUtterance = new SpeechSynthesisUtterance('');
+        unlockUtterance.lang = 'de-DE';
+        window.speechSynthesis.speak(unlockUtterance);
+        grammarSpeechUnlocked = true;
+      }
+
       const utterance = new SpeechSynthesisUtterance(button.dataset.grammarSpeech ?? '');
       utterance.lang = 'de-DE';
-      window.speechSynthesis.cancel();
+      utterance.onerror = (error) => console.error('German speech playback failed:', error.error);
       window.speechSynthesis.speak(utterance);
     });
   </script>

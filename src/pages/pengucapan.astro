@@ -189,6 +189,8 @@ const diphthongs = [
 </Layout>
 
 <script>
+  let speechUnlocked = false;
+
   const speechSupported = () =>
     'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
 
@@ -207,9 +209,18 @@ const diphthongs = [
     const button = event.target.closest<HTMLButtonElement>('.speech-button');
     if (!button || button.disabled || !speechSupported()) return;
 
+    if (speechUnlocked) {
+      window.speechSynthesis.cancel();
+    } else {
+      const unlockUtterance = new SpeechSynthesisUtterance('');
+      unlockUtterance.lang = 'de-DE';
+      window.speechSynthesis.speak(unlockUtterance);
+      speechUnlocked = true;
+    }
+
     const utterance = new SpeechSynthesisUtterance(button.dataset.speech ?? '');
     utterance.lang = 'de-DE';
-    window.speechSynthesis.cancel();
+    utterance.onerror = (error) => console.error('German speech playback failed:', error.error);
     window.speechSynthesis.speak(utterance);
   });
 </script>
