@@ -1,11 +1,13 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import { createAvatarSignedUrl, getAvatarStoragePath } from '../../lib/avatar';
 
 const user = Astro.locals.user!;
 const profile = Astro.locals.profile;
 const nim = profile?.nim || user.user_metadata?.nim || '';
 const displayName = profile?.nama_lengkap ?? '';
-const avatarUrl = profile?.avatar_url ?? '';
+const avatarPath = getAvatarStoragePath(profile?.avatar_url);
+const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath);
 ---
 
 <DashboardLayout
@@ -26,17 +28,15 @@ const avatarUrl = profile?.avatar_url ?? '';
       <form
         id="profile-form"
         class="profile-form"
-        data-avatar-url={avatarUrl}
+        data-avatar-path={avatarPath ?? ''}
       >
         <div class="avatar-editor">
           <div class="avatar-frame">
             <div class="avatar-preview-wrap">
-              <img id="avatar-preview" class="avatar-preview" src={avatarUrl} alt="Foto profil" hidden={!avatarUrl} />
-              {!avatarUrl && (
-                <span id="avatar-preview-fallback" class="avatar-fallback" aria-hidden="true">
-                  {(displayName || nim || 'M').slice(0, 1).toUpperCase()}
-                </span>
-              )}
+              <img id="avatar-preview" class="avatar-preview" src={avatarUrl ?? ''} alt="Foto profil" hidden={!avatarUrl} />
+              <span id="avatar-preview-fallback" class="avatar-fallback" aria-hidden="true" hidden={!!avatarUrl}>
+                {(displayName || nim || 'M').slice(0, 1).toUpperCase()}
+              </span>
             </div>
             <input id="file-upload" class="avatar-file-input" name="avatar" type="file" accept="image/png,image/jpeg,image/webp" />
             <label class="avatar-camera" for="file-upload" title="Ganti foto profil">
@@ -157,6 +157,15 @@ const avatarUrl = profile?.avatar_url ?? '';
     }, 4000);
   };
 
+  avatarPreview?.addEventListener('error', () => {
+    avatarPreview.hidden = true;
+    if (avatarFallback) avatarFallback.hidden = false;
+  });
+  if (avatarPreview?.complete && avatarPreview.naturalWidth === 0 && avatarPreview.src) {
+    avatarPreview.hidden = true;
+    if (avatarFallback) avatarFallback.hidden = false;
+  }
+
   document.querySelectorAll<HTMLButtonElement>('[data-password-toggle]').forEach((toggle) => {
     toggle.addEventListener('click', () => {
       const target = document.getElementById(toggle.dataset.passwordToggle ?? '');
@@ -258,7 +267,9 @@ const avatarUrl = profile?.avatar_url ?? '';
 
     const formData = new FormData(form);
     const namaLengkap = String(formData.get('nama_lengkap') ?? '').trim();
-    let nextAvatarUrl = form.dataset.avatarUrl ?? null;
+    let nextAvatarPath = form.dataset.avatarPath || null;
+    let nextAvatarSignedUrl: string | null = null;
+    let avatarSignedUrlError: string | null = null;
 
     submitButton.disabled = true;
     message.textContent = 'Menyimpan profil...';
@@ -283,13 +294,21 @@ const avatarUrl = profile?.avatar_url ?? '';
 
         if (uploadError) throw uploadError;
 
-        const publicUrl = supabase.storage.from('avatars').getPublicUrl(storagePath).data.publicUrl;
-        nextAvatarUrl = `${publicUrl}?v=${Date.now()}`;
+        nextAvatarPath = storagePath;
+        const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+          .from('avatars')
+          .createSignedUrl(storagePath, 60 * 60);
+        if (signedUrlError) {
+          console.error('Failed to create avatar signed URL:', signedUrlError.message);
+          avatarSignedUrlError = signedUrlError.message;
+        } else {
+          nextAvatarSignedUrl = signedUrlData.signedUrl;
+        }
       }
 
       const { data: savedProfile, error: saveError } = await supabase
         .from('profiles')
-        .update({ nama_lengkap: namaLengkap, avatar_url: nextAvatarUrl })
+        .update({ nama_lengkap: namaLengkap, avatar_url: nextAvatarPath })
         .eq('id', user.id)
         .select('id')
         .maybeSingle();
@@ -297,11 +316,23 @@ const avatarUrl = profile?.avatar_url ?? '';
       if (saveError) throw saveError;
       if (!savedProfile) throw new Error('Profil tidak ditemukan.');
 
-      form.dataset.avatarUrl = nextAvatarUrl ?? '';
-      if (nextAvatarUrl && avatarPreview) avatarPreview.src = nextAvatarUrl;
+      form.dataset.avatarPath = nextAvatarPath ?? '';
+      if (avatarPreview && avatarFallback) {
+        if (selectedAvatar && nextAvatarSignedUrl) {
+          avatarPreview.src = nextAvatarSignedUrl;
+          avatarPreview.hidden = false;
+          avatarFallback.hidden = true;
+        } else if (selectedAvatar) {
+          avatarPreview.removeAttribute('src');
+          avatarPreview.hidden = true;
+          avatarFallback.hidden = false;
+        }
+      }
       selectedAvatar = null;
       if (fileInput) fileInput.value = '';
-      message.textContent = 'Profil berhasil disimpan.';
+      message.textContent = avatarSignedUrlError
+        ? `Profil berhasil disimpan, tetapi foto belum dapat ditampilkan: ${avatarSignedUrlError}`
+        : 'Profil berhasil disimpan.';
       message.dataset.state = 'success';
     } catch (error) {
       message.textContent = error instanceof Error

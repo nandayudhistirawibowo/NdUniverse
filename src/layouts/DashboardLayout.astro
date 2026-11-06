@@ -1,4 +1,6 @@
 ---
+import { createAvatarSignedUrl } from '../lib/avatar';
+
 const {
   title = 'Dashboard | siDeutsch',
   description = 'Portal mahasiswa siDeutsch.',
@@ -14,6 +16,7 @@ const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap |
 const nim = profile?.nim || user?.user_metadata?.nim || '';
 const accountInitial = displayName.slice(0, 1).toUpperCase();
 const logoFallback = 'siDeutsch';
+const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.avatar_url);
 ---
 
 <!doctype html>
@@ -121,11 +124,8 @@ const logoFallback = 'siDeutsch';
           {user && (
             <details class="account-dropdown">
               <summary class="account-trigger">
-                {profile?.avatar_url ? (
-                  <img class="account-avatar" src={profile.avatar_url} alt="" />
-                ) : (
-                  <span class="account-avatar avatar-initial" aria-hidden="true">{accountInitial}</span>
-                )}
+                <img class="account-avatar" data-avatar-image src={avatarUrl ?? ''} alt="" hidden={!avatarUrl} />
+                <span class="account-avatar avatar-initial" data-avatar-fallback aria-hidden="true" hidden={!!avatarUrl}>{accountInitial}</span>
                 <span class="account-copy">
                   <strong>{displayName}</strong>
                   <span>{nim ? `NIM ${nim}` : 'Umum'}</span>
@@ -170,6 +170,17 @@ const logoFallback = 'siDeutsch';
   const initializeSidebar = () => {
     if (sidebarEventsInitialized) return;
     sidebarEventsInitialized = true;
+
+    document.querySelectorAll<HTMLImageElement>('.account-dropdown [data-avatar-image]').forEach((image) => {
+      const showFallback = () => {
+        image.hidden = true;
+        const fallback = image.parentElement?.querySelector<HTMLElement>('[data-avatar-fallback]');
+        if (fallback) fallback.hidden = false;
+      };
+
+      image.addEventListener('error', showFallback, { once: true });
+      if (image.complete && image.naturalWidth === 0) showFallback();
+    });
 
     document.addEventListener('click', (event) => {
       if (!(event.target instanceof Element)) return;

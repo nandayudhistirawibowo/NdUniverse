@@ -1,5 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
+import { createAvatarSignedUrl } from '../lib/avatar';
 
 const {
   title = 'siDeutsch - Belajar Bahasa Jerman A1-C2 & Persiapan Kerja',
@@ -15,6 +16,7 @@ const user = Astro.locals.user;
 const profile = Astro.locals.profile;
 const accountName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
 const accountInitial = accountName.slice(0, 1).toUpperCase();
+const accountAvatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.avatar_url);
 const isAdminArea = Astro.url.pathname.startsWith('/admin');
 const isAdminLogin = Astro.url.pathname === '/admin/login';
 const isAdminAccount = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
@@ -93,17 +95,15 @@ const organizationSchema = {
                     <a href="/materi">Semua Materi</a>
                     <a href="/pengucapan">Panduan Pengucapan</a>
                     <a href="/grammar">Tata Bahasa</a>
+                    <a href="/bantuan">Bantuan</a>
                   </>
                 )}
               </div>
               <div class="nav-account" data-nav-account>
                 {!isAdminLogin && (user ? (
                   <a class="account-link" href={accountHref} aria-label={`${isAdminAccount ? 'Admin Panel' : 'Dashboard pengguna'} ${accountName}`}>
-                    {profile?.avatar_url ? (
-                      <img src={profile.avatar_url} alt="" />
-                    ) : (
-                      <span class="account-initial" aria-hidden="true">{accountInitial}</span>
-                    )}
+                    <img src={accountAvatarUrl ?? ''} alt="" data-avatar-image hidden={!accountAvatarUrl} />
+                    <span class="account-initial" data-avatar-fallback aria-hidden="true" hidden={!!accountAvatarUrl}>{accountInitial}</span>
                     <span class="account-name">{accountName}</span>
                   </a>
                 ) : (
@@ -153,6 +153,8 @@ const organizationSchema = {
     }
   });
 
+  import { createAvatarSignedUrl } from '../lib/avatar';
+
   const progressWindow = window as Window & { __sideDeutschProgressInitialized?: boolean };
   if (!progressWindow.__sideDeutschProgressInitialized) {
     progressWindow.__sideDeutschProgressInitialized = true;
@@ -200,10 +202,19 @@ const organizationSchema = {
       accountLink.href = isAdmin ? '/admin' : '/dashboard';
       accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard pengguna'} ${name}`);
 
-      if (profile?.avatar_url) {
+      const avatarUrl = await createAvatarSignedUrl(supabase, profile?.avatar_url);
+      if (avatarUrl) {
         const avatar = document.createElement('img');
-        avatar.src = profile.avatar_url;
+        avatar.src = avatarUrl;
         avatar.alt = '';
+        avatar.dataset.avatarImage = '';
+        avatar.addEventListener('error', () => {
+          const fallback = document.createElement('span');
+          fallback.className = 'account-initial';
+          fallback.setAttribute('aria-hidden', 'true');
+          fallback.textContent = name.slice(0, 1).toUpperCase();
+          avatar.replaceWith(fallback);
+        }, { once: true });
         accountLink.append(avatar);
       } else {
         const initial = document.createElement('span');
@@ -244,6 +255,13 @@ const organizationSchema = {
       menuToggle.setAttribute('aria-label', isOpen ? 'Buka menu' : 'Tutup menu');
       topbar?.classList.toggle('menu-open', !isOpen);
     });
+
+    document.addEventListener('error', (event) => {
+      if (!(event.target instanceof HTMLImageElement) || !event.target.matches('[data-avatar-image]')) return;
+      event.target.hidden = true;
+      const fallback = event.target.parentElement?.querySelector<HTMLElement>('[data-avatar-fallback]');
+      if (fallback) fallback.hidden = false;
+    }, true);
 
     navPanel?.addEventListener('click', (event) => {
       if ((event.target as HTMLElement).closest('a')) closeMenu();
