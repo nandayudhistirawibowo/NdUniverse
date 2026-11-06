@@ -334,43 +334,6 @@ const caseExamples = [
   </div>
 </Layout>
 
-  <script>
-    let grammarSpeechUnlocked = false;
-
-    const grammarSpeechSupported = () =>
-      'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
-
-    const configureGrammarSpeechButtons = () => {
-      const supported = grammarSpeechSupported();
-      document.querySelectorAll<HTMLButtonElement>('.grammar-speech-button').forEach((button) => {
-        button.disabled = !supported;
-      });
-    };
-
-    document.addEventListener('astro:page-load', configureGrammarSpeechButtons);
-    configureGrammarSpeechButtons();
-
-    document.addEventListener('click', (event) => {
-      if (!(event.target instanceof Element)) return;
-      const button = event.target.closest<HTMLButtonElement>('.grammar-speech-button');
-      if (!button || button.disabled || !grammarSpeechSupported()) return;
-
-      if (grammarSpeechUnlocked) {
-        window.speechSynthesis.cancel();
-      } else {
-        const unlockUtterance = new SpeechSynthesisUtterance('');
-        unlockUtterance.lang = 'de-DE';
-        window.speechSynthesis.speak(unlockUtterance);
-        grammarSpeechUnlocked = true;
-      }
-
-      const utterance = new SpeechSynthesisUtterance(button.dataset.grammarSpeech ?? '');
-      utterance.lang = 'de-DE';
-      utterance.onerror = (error) => console.error('German speech playback failed:', error.error);
-      window.speechSynthesis.speak(utterance);
-    });
-  </script>
-
 <style>
   .grammar-page {
     display: grid;

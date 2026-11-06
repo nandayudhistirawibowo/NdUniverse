@@ -234,6 +234,8 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 </Layout>
 
 <script>
+  import { speakGerman } from '../../lib/german-speech.js';
+
   import {
     fetchUserProgress,
     getProgressClient,
@@ -260,10 +262,9 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
         speechUnlocked = true;
       }
 
-      const utterance = new SpeechSynthesisUtterance(button.dataset.speech ?? '');
-      utterance.lang = 'de-DE';
-      utterance.onerror = (error) => console.error('German speech playback failed:', error.error);
-      window.speechSynthesis.speak(utterance);
+      speakGerman(button.dataset.speech ?? '', (error) => {
+        console.error('German speech playback failed:', error.error);
+      });
     });
   });
 
