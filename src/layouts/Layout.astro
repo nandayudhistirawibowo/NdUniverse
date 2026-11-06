@@ -650,7 +650,8 @@ const organizationSchema = {
     }
 
     .topbar.menu-open .nav-panel {
-      max-height: 260px;
+      max-height: min(70vh, 420px);
+      overflow-y: auto;
       padding: 0.65rem 1rem 1rem;
       border-bottom-color: rgba(255, 255, 255, 0.14);
       opacity: 1;
