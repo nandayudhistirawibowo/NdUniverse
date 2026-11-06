@@ -1,0 +1,318 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const alphabet = [
+  { letter: 'A', reading: 'Ah', example: 'Apfel' },
+  { letter: 'B', reading: 'Beh', example: 'Buch' },
+  { letter: 'C', reading: 'Tseh', example: 'Café' },
+  { letter: 'D', reading: 'Deh', example: 'Danke' },
+  { letter: 'E', reading: 'Eh', example: 'Ei' },
+  { letter: 'F', reading: 'Ef', example: 'Fisch' },
+  { letter: 'G', reading: 'Geh', example: 'Garten' },
+  { letter: 'H', reading: 'Hah', example: 'Haus' },
+  { letter: 'I', reading: 'I', example: 'Insel' },
+  { letter: 'J', reading: 'Yot', example: 'Jahr' },
+  { letter: 'K', reading: 'Kah', example: 'Kind' },
+  { letter: 'L', reading: 'El', example: 'Lampe' },
+  { letter: 'M', reading: 'Em', example: 'Mutter' },
+  { letter: 'N', reading: 'En', example: 'Nacht' },
+  { letter: 'O', reading: 'Oh', example: 'Orange' },
+  { letter: 'P', reading: 'Peh', example: 'Papier' },
+  { letter: 'Q', reading: 'Kuh', example: 'Quelle' },
+  { letter: 'R', reading: 'Er (R tenggorokan)', example: 'Reise' },
+  { letter: 'S', reading: 'Es', example: 'Sonne' },
+  { letter: 'T', reading: 'Teh', example: 'Tisch' },
+  { letter: 'U', reading: 'Uh', example: 'Uhr' },
+  { letter: 'V', reading: 'Fau', example: 'Vater' },
+  { letter: 'W', reading: 'Veh', example: 'Wasser' },
+  { letter: 'X', reading: 'Iks', example: 'Xylofon' },
+  { letter: 'Y', reading: 'Ypsilon', example: 'Yoga' },
+  { letter: 'Z', reading: 'Tset', example: 'Zeit' },
+];
+
+const specialLetters = [
+  {
+    letter: 'Ä ä',
+    name: 'A-Umlaut',
+    sound: 'Mirip bunyi “e” pada kata “enak”, dengan mulut terbuka lebih lebar.',
+    example: 'Mädchen',
+  },
+  {
+    letter: 'Ö ö',
+    name: 'O-Umlaut',
+    sound: 'Bentuk bibir membulat seperti “o”, lalu ucapkan bunyi “e”.',
+    example: 'Öl',
+  },
+  {
+    letter: 'Ü ü',
+    name: 'U-Umlaut',
+    sound: 'Bentuk bibir membulat seperti “u”, lalu ucapkan bunyi “i”.',
+    example: 'Tür',
+  },
+  {
+    letter: 'ß',
+    name: 'Eszett',
+    sound: 'Dibaca seperti “ss” yang tajam. Dalam huruf kapital, ß dapat ditulis SS atau ẞ.',
+    example: 'Straße',
+  },
+];
+---
+
+<Layout
+  title="Panduan Pengucapan (Aussprache) | siDeutsch"
+  description="Panduan pengucapan abjad bahasa Jerman, umlaut Ä, Ö, Ü, dan Eszett ß untuk pemula."
+>
+  <div class="pronunciation-page">
+    <header class="page-heading">
+      <p class="eyebrow">Panduan Pemula</p>
+      <h1>Panduan Pengucapan (Aussprache)</h1>
+      <p class="intro-copy">Kenali nama huruf bahasa Jerman dan bunyi khas yang sering muncul saat membaca kata.</p>
+    </header>
+
+    <section class="alphabet-section" aria-labelledby="alphabet-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">01 / Alfabet</p>
+          <h2 id="alphabet-heading">Abjad A-Z</h2>
+        </div>
+        <p class="section-note">Ejaan bunyi di bawah ini adalah pendekatan agar mudah dibaca penutur Indonesia.</p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel pengucapan abjad Jerman" tabindex="0">
+        <table class="alphabet-table">
+          <thead>
+            <tr>
+              <th scope="col">Huruf</th>
+              <th scope="col">Cara baca</th>
+              <th scope="col">Contoh kata</th>
+            </tr>
+          </thead>
+          <tbody>
+            {alphabet.map(({ letter, reading, example }) => (
+              <tr>
+                <th scope="row" class="letter-cell">{letter}</th>
+                <td>{reading}</td>
+                <td><span lang="de">{example}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="special-section" aria-labelledby="special-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">02 / Bunyi khas</p>
+          <h2 id="special-heading">Umlaut & Eszett</h2>
+        </div>
+        <p class="section-note">Tanda titik pada umlaut mengubah bunyi huruf vokalnya.</p>
+      </div>
+
+      <div class="special-grid">
+        {specialLetters.map(({ letter, name, sound, example }) => (
+          <article class="special-item">
+            <div class="special-topline">
+              <span class="special-letter" lang="de">{letter}</span>
+              <h3>{name}</h3>
+            </div>
+            <p>{sound}</p>
+            <p class="example-line">Contoh: <span lang="de">{example}</span></p>
+          </article>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .pronunciation-page {
+    display: grid;
+    gap: 2.8rem;
+    padding-top: 0.5rem;
+  }
+
+  .page-heading {
+    max-width: 780px;
+  }
+
+  .alphabet-section {
+    min-width: 0;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    margin: 0 0 0.55rem;
+    color: #806018;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    margin-bottom: 0;
+    color: var(--text-main);
+    font-size: 2.35rem;
+    line-height: 1.15;
+  }
+
+  .intro-copy {
+    max-width: 660px;
+    margin: 0.85rem 0 0;
+    color: var(--muted);
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.45rem;
+  }
+
+  .section-note {
+    max-width: 430px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+
+  .table-scroll {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    border: 1px solid rgba(43, 45, 66, 0.16);
+    border-radius: 8px;
+    background: var(--bg-main);
+    scrollbar-color: var(--accent-gold) rgba(43, 45, 66, 0.08);
+  }
+
+  .alphabet-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .alphabet-table th,
+  .alphabet-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid rgba(43, 45, 66, 0.09);
+  }
+
+  .alphabet-table thead th {
+    background: var(--bg-dark);
+    color: #fff;
+    font-size: 0.77rem;
+    font-weight: 700;
+  }
+
+  .alphabet-table tbody tr:nth-child(even) {
+    background: rgba(229, 169, 59, 0.1);
+  }
+
+  .alphabet-table tbody tr:last-child th,
+  .alphabet-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .alphabet-table tbody th,
+  .alphabet-table tbody td {
+    font-size: 0.9rem;
+  }
+
+  .letter-cell {
+    width: 18%;
+    color: var(--text-main);
+    font-size: 1rem !important;
+    font-weight: 800;
+  }
+
+  .alphabet-table td:last-child,
+  .example-line span {
+    color: #76520d;
+    font-weight: 700;
+  }
+
+  .special-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .special-item {
+    min-width: 0;
+    padding: 1rem 1.1rem;
+    border: 1px solid rgba(43, 45, 66, 0.13);
+    border-left: 4px solid var(--accent-gold);
+    border-radius: 6px;
+    background: #fff;
+  }
+
+  .special-topline {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+  }
+
+  .special-letter {
+    color: #76520d;
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  .special-topline h3 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 0.95rem;
+  }
+
+  .special-item p {
+    margin-bottom: 0.55rem;
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .special-item .example-line {
+    margin-bottom: 0;
+    color: var(--text-main);
+  }
+
+  @media (max-width: 640px) {
+    .pronunciation-page {
+      gap: 2.1rem;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+    }
+
+    .section-heading {
+      display: block;
+    }
+
+    .section-note {
+      margin-top: 0.6rem;
+    }
+
+    .special-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
