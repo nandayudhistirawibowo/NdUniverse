@@ -94,3 +94,27 @@ flowchart TD
 ```
 
 `user_progress.sessions_passed` disimpan sebagai array JSONB nomor sesi, `xp` per materi, dan `notes` per materi. RLS membatasi baris ke pemilik berdasarkan `auth.uid() = user_id`.
+
+## Navigasi, TTS, dan Konten Publik
+
+```mermaid
+flowchart TD
+    A[Pengguna membuka link internal] --> B[Hover atau fokus pada link]
+    B --> C[Astro prefetch halaman tujuan]
+    A --> D[Klik link / navigasi dimulai]
+    D --> E[astro:before-preparation: tampilkan loading bar]
+    E --> F[Astro mengambil halaman SSR dan menukar DOM]
+    F --> G[astro:page-load: sembunyikan loading bar dan inisialisasi script halaman]
+
+    H[Pengguna menekan tombol speaker] --> I{Web Speech API tersedia?}
+    I -->|Tidak| J[Tombol disabled]
+    I -->|Ya| K[Buat SpeechSynthesisUtterance]
+    K --> L[Set lang de-DE]
+    L --> M[window.speechSynthesis mengucapkan teks Jerman]
+
+    N[Konten belajar publik] --> O[Panduan Pengucapan /grammar]
+    N --> P[Detail materi: kosakata + context + contextIndonesian opsional]
+    P --> Q[Contoh Jerman tampil dengan arti kecil jika tersedia]
+```
+
+Prefetch menggunakan strategi hover/focus dan membantu menghangatkan halaman internal, tetapi tidak menjamin SSR selesai sebelum klik. TTS menggunakan voice Jerman yang tersedia di browser/OS; tombol dimatikan jika Web Speech API tidak didukung.

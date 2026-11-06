@@ -13,12 +13,17 @@ Mahasiswa membutuhkan jalur belajar bahasa Jerman yang terstruktur, relevan deng
 - Menyediakan Alltagsdeutsch untuk bahasa sehari-hari dan Fachdeutsch untuk kosakata bidang studi.
 - Membentuk kebiasaan belajar lewat sesi pendek, kuis, XP, nyawa, dan progress yang tersimpan untuk user login.
 - Memberi admin jalur khusus untuk mengelola akun mahasiswa.
+- Membantu pemula memahami pengucapan, artikel, konjugasi, susunan kalimat, pertanyaan, plural, dan kasus bahasa Jerman.
 
 ## Target User
 
 ### Mahasiswa
 
 Mahasiswa Indonesia yang ingin belajar bahasa Jerman secara mandiri, dari dasar hingga tingkat lanjut, termasuk kosakata yang berhubungan dengan jurusan.
+
+### Guest
+
+Pengunjung tanpa akun yang ingin melihat kurikulum, panduan pengucapan/tata bahasa, preview materi, dan mencoba latihan Sesi 1.
 
 ### Admin
 
@@ -39,12 +44,20 @@ Pengelola yang membuat, melihat, memperbarui, dan menghapus akun mahasiswa melal
 - **Alltagsdeutsch:** materi umum berlabel CEFR A1, A2, B1, B2, C1, atau C2.
 - **Fachdeutsch:** kosakata bidang studi/jurusan. Metadata level CEFR bersifat opsional dan belum tersedia pada semua materi Fachdeutsch.
 - Materi didefinisikan sebagai Astro Content Collection dengan `track`, `judulMateri`, `deskripsi`, dan array `vocab`.
-- Setiap kosakata memiliki `german`, `indonesian`, dan `context` (contoh kalimat).
+- Setiap kosakata memiliki `german`, `indonesian`, dan `context` (contoh kalimat Jerman); `contextIndonesian` opsional berisi terjemahan kalimat untuk ditampilkan di bawah contoh.
 - Detail materi dibagi menjadi sesi berisi maksimal lima kata.
+
+### Panduan Bahasa dan Pengucapan
+
+- Route publik `/pengucapan` menyediakan nama huruf A–Z, pendekatan pelafalan Indonesia, contoh kata dan spelling, umlaut/ß, serta kombinasi vokal.
+- Route publik `/grammar` menyediakan artikel, konjugasi, susunan kalimat, pertanyaan, plural, dan kasus dasar.
+- Tombol speaker memakai Web Speech API browser dengan locale `de-DE`. Tombol dinonaktifkan bila API tidak didukung; fitur ini membutuhkan browser/OS yang menyediakan suara Jerman.
+- Tabel kosakata materi menyediakan TTS pada kata dan kalimat contoh bahasa Jerman.
 
 ### Kuis dan Progress
 
-- Tipe soal: susun kata, tap-to-select word matcher, dan cloze.
+- Tipe soal: susun kata (Tap & Arrange), Word Matcher, dan Fill in the Blanks/cloze.
+- Soal digenerate langsung dari array `vocab` materi; perubahan isi kosakata otomatis mengubah sumber soal, tanpa bank soal terpisah.
 - User memulai dengan tiga nyawa. Jawaban salah mengurangi nyawa; jawaban benar memberikan 10 XP.
 - Sesi dianggap lulus jika akurasi mencapai minimal 80% (empat dari lima jawaban benar untuk sesi penuh).
 - Kuis menampilkan ringkasan skor dan kata yang perlu diulang.
@@ -94,6 +107,8 @@ Progress bar menunjukkan rasio poin saat ini terhadap threshold level berikutnya
 | Styling | CSS murni, CSS variables; tanpa Tailwind dan Alpine.js |
 | Auth dan database | Supabase Auth, `@supabase/ssr`, `@supabase/supabase-js` |
 | Konten | Astro Content Collections, Markdown frontmatter tervalidasi Zod |
+| Navigasi client-side | Astro `ClientRouter`, hover prefetch, loading progress |
+| Audio pengucapan | Web Speech API (`speechSynthesis`, `de-DE`) |
 | Runtime proyek | Node.js `>=22.23.4` |
 
 Tema utama menggunakan `--bg-main`, `--bg-dark`, `--accent-gold`, `--accent-red`, `--text-main`, `--card-bg`, `--border`, dan `--muted`.
@@ -113,3 +128,5 @@ Tema utama menggunakan `--bg-main`, `--bg-dark`, `--accent-gold`, `--accent-red`
 - Bucket Storage `avatars`, kebijakan akses Storage, RLS, serta SQL Supabase harus sudah diterapkan untuk mengaktifkan alur produksi.
 - Build produksi: `npm run build`.
 - Belum ada script test otomatis di `package.json`; verifikasi utama saat ini adalah build dan uji manual/browser.
+- Prefetch menghangatkan halaman internal saat hover/focus; hasilnya bergantung cache/browser dan tidak menghilangkan SSR.
+- Audio pengucapan memerlukan dukungan Web Speech API dan voice Jerman pada browser/OS. Tombol dinonaktifkan ketika API tidak tersedia.

@@ -8,7 +8,7 @@ const {
   hideNavbar = false,
 } = Astro.props;
 
-const siteUrl = Astro.site ?? 'https://www.sideutsch.id';
+const siteUrl = Astro.site ?? 'https://sideutsch.ndhistira.my.id';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
 const imageURL = new URL(image, siteUrl).toString();
 const user = Astro.locals.user;
@@ -19,6 +19,15 @@ const isAdminArea = Astro.url.pathname.startsWith('/admin');
 const isAdminLogin = Astro.url.pathname === '/admin/login';
 const isAdminAccount = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
 const accountHref = isAdminAccount ? '/admin' : '/dashboard';
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'EducationalOrganization',
+  name: 'siDeutsch',
+  description: 'Platform belajar bahasa Jerman untuk mahasiswa Indonesia dengan materi Alltagsdeutsch dan Fachdeutsch.',
+  url: siteUrl,
+  logo: new URL('/logo.png', siteUrl).toString(),
+  sameAs: ['https://www.sideutsch.id'],
+};
 ---
 
 <!doctype html>
@@ -40,6 +49,7 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageURL} />
+    <meta property="og:site_name" content="siDeutsch" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -47,7 +57,8 @@ const accountHref = isAdminAccount ? '/admin' : '/dashboard';
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
-      <ClientRouter />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+    <ClientRouter />
     <title>{title}</title>
   </head>
   <body>
