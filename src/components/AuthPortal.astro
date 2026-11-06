@@ -51,9 +51,8 @@ const isAdminPortal = portal === 'admin';
       <section class="auth-side" aria-labelledby="auth-title">
         <div class="auth-panel">
           {!isAdminPortal && (
-            <a class="back-link" href="/">
-              <span class="motion-arrow" aria-hidden="true">←</span>
-              <span>Kembali ke siDeutsch</span>
+            <a class="back-link-top" href="/">
+              <span class="arrow-anim" aria-hidden="true">←</span> Kembali ke siDeutsch
             </a>
           )}
           <div class="panel-topline">
@@ -314,6 +313,7 @@ const isAdminPortal = portal === 'admin';
   :root {
     --bg-dark: #1A1A1E;
     --gold: #E5A93B;
+    --accent-gold: var(--gold);
     --red: #D93838;
     --paper: #F9F9FB;
     --muted: #A7A7B0;
@@ -446,19 +446,28 @@ const isAdminPortal = portal === 'admin';
     margin-bottom: 1.55rem;
   }
 
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    margin: 0 0 1.4rem;
-    color: var(--gold);
+  .back-link-top {
+    display: block;
+    margin-bottom: 1.5rem;
+    color: var(--accent-gold);
     font-size: 0.78rem;
     font-weight: 700;
     text-decoration: none;
   }
 
-  .back-link:hover {
+  .back-link-top:hover {
     color: #F0B84F;
+    text-decoration: underline;
+  }
+
+  .arrow-anim {
+    display: inline-block;
+    animation: arrow-move 1.4s ease-in-out infinite;
+  }
+
+  @keyframes arrow-move {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-4px); }
   }
 
   .motion-arrow {
@@ -469,15 +478,6 @@ const isAdminPortal = portal === 'admin';
   @keyframes arrow-drift {
     0%, 100% { transform: translateX(0); }
     50% { transform: translateX(4px); }
-  }
-
-  .back-link .motion-arrow {
-    animation-name: arrow-drift-back;
-  }
-
-  @keyframes arrow-drift-back {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(-4px); }
   }
 
   .panel-mark {
@@ -657,7 +657,8 @@ const isAdminPortal = portal === 'admin';
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .motion-arrow {
+    .motion-arrow,
+    .arrow-anim {
       animation: none;
     }
   }
