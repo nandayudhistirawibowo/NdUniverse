@@ -1,0 +1,298 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const articles = [
+  { article: 'der', gender: 'Maskulin', example: 'der Mann', meaning: 'pria' },
+  { article: 'die', gender: 'Feminin', example: 'die Frau', meaning: 'wanita' },
+  { article: 'das', gender: 'Netral', example: 'das Kind', meaning: 'anak' },
+];
+
+const conjugations = [
+  { pronoun: 'ich', sein: 'bin', haben: 'habe' },
+  { pronoun: 'du', sein: 'bist', haben: 'hast' },
+  { pronoun: 'er / sie / es', sein: 'ist', haben: 'hat' },
+  { pronoun: 'wir', sein: 'sind', haben: 'haben' },
+  { pronoun: 'ihr', sein: 'seid', haben: 'habt' },
+  { pronoun: 'sie / Sie', sein: 'sind', haben: 'haben' },
+];
+
+const sentenceExamples = [
+  { sentence: 'Ich lerne Deutsch.', structure: 'Subjek + Verb + Objek', meaning: 'Saya belajar bahasa Jerman.' },
+  { sentence: 'Heute lerne ich Deutsch.', structure: 'Keterangan + Verb + Subjek + Objek', meaning: 'Hari ini saya belajar bahasa Jerman.' },
+];
+---
+
+<Layout
+  title="Tata Bahasa (Grammatik) | siDeutsch"
+  description="Panduan tata bahasa Jerman untuk pemula: artikel der, die, das, konjugasi sein dan haben, serta susunan kalimat dasar."
+>
+  <div class="grammar-page">
+    <header class="page-heading">
+      <p class="eyebrow">Panduan Pemula</p>
+      <h1>Tata Bahasa (Grammatik)</h1>
+      <p class="intro-copy">Dasar-dasar tata bahasa Jerman dalam contoh singkat.</p>
+    </header>
+
+    <section class="grammar-section" aria-labelledby="articles-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">01 / Kata sandang</p>
+          <h2 id="articles-heading">Artikel: der, die, das</h2>
+        </div>
+        <p class="section-note">Setiap nomina bahasa Jerman memiliki gender gramatikal.</p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel artikel bahasa Jerman" tabindex="0">
+        <table class="grammar-table">
+          <thead>
+            <tr>
+              <th scope="col">Artikel</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Contoh</th>
+            </tr>
+          </thead>
+          <tbody>
+            {articles.map(({ article, gender, example, meaning }) => (
+              <tr>
+                <th scope="row" lang="de">{article}</th>
+                <td>{gender}</td>
+                <td><span lang="de">{example}</span> ({meaning})</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grammar-section" aria-labelledby="verbs-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">02 / Kata kerja</p>
+          <h2 id="verbs-heading">Konjugasi sein & haben</h2>
+        </div>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel konjugasi sein dan haben" tabindex="0">
+        <table class="grammar-table conjugation-table">
+          <thead>
+            <tr>
+              <th scope="col">Pronoun</th>
+              <th scope="col">sein (menjadi / ada)</th>
+              <th scope="col">haben (memiliki)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {conjugations.map(({ pronoun, sein, haben }) => (
+              <tr>
+                <th scope="row" lang="de">{pronoun}</th>
+                <td lang="de">{sein}</td>
+                <td lang="de">{haben}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grammar-section" aria-labelledby="sentence-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">03 / Susunan kalimat</p>
+          <h2 id="sentence-heading">Kalimat utama</h2>
+        </div>
+      </div>
+
+      <p class="rule-summary">Pola dasar: <strong>Subjek + Predikat (kata kerja) + Objek</strong>. Dalam kalimat utama, kata kerja yang dikonjugasikan menempati posisi kedua.</p>
+
+      <div class="table-scroll" role="region" aria-label="Contoh susunan kalimat Jerman" tabindex="0">
+        <table class="grammar-table sentence-table">
+          <thead>
+            <tr>
+              <th scope="col">Contoh kalimat</th>
+              <th scope="col">Susunan</th>
+              <th scope="col">Arti</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sentenceExamples.map(({ sentence, structure, meaning }) => (
+              <tr>
+                <th scope="row" lang="de">{sentence}</th>
+                <td>{structure}</td>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="position-note"><span lang="de">Heute</span> mengisi posisi pertama, jadi kata kerja <span lang="de">lerne</span> tetap berada di posisi kedua.</p>
+    </section>
+  </div>
+</Layout>
+
+<style>
+  .grammar-page {
+    display: grid;
+    gap: 2.8rem;
+    padding-top: 0.5rem;
+  }
+
+  .page-heading {
+    max-width: 780px;
+  }
+
+  .grammar-section {
+    min-width: 0;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    margin: 0 0 0.55rem;
+    color: #806018;
+    font-size: 0.76rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    margin-bottom: 0;
+    color: var(--text-main);
+    font-size: 2.35rem;
+    line-height: 1.15;
+  }
+
+  .intro-copy {
+    margin: 0.85rem 0 0;
+    color: var(--muted);
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.45rem;
+  }
+
+  .section-note {
+    max-width: 430px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+
+  .table-scroll {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    border: 1px solid rgba(43, 45, 66, 0.16);
+    border-radius: 8px;
+    background: var(--bg-main);
+    scrollbar-color: var(--accent-gold) rgba(43, 45, 66, 0.08);
+  }
+
+  .grammar-table {
+    width: 100%;
+    min-width: 520px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .grammar-table th,
+  .grammar-table td {
+    padding: 0.72rem 1rem;
+    border-bottom: 1px solid rgba(43, 45, 66, 0.09);
+    vertical-align: top;
+  }
+
+  .grammar-table thead th {
+    background: var(--bg-dark);
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .grammar-table tbody tr:nth-child(even) {
+    background: rgba(229, 169, 59, 0.1);
+  }
+
+  .grammar-table tbody tr:last-child th,
+  .grammar-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .grammar-table tbody th,
+  .grammar-table tbody td {
+    font-size: 0.9rem;
+  }
+
+  .grammar-table tbody th {
+    color: var(--text-main);
+    font-weight: 800;
+  }
+
+  .grammar-table td span {
+    color: #76520d;
+    font-weight: 700;
+  }
+
+  .conjugation-table tbody td[lang='de'] {
+    color: #76520d;
+    font-weight: 700;
+  }
+
+  .rule-summary {
+    max-width: 820px;
+    margin: 0 0 1rem;
+    color: var(--text-main);
+    line-height: 1.7;
+  }
+
+  .rule-summary strong {
+    color: #76520d;
+  }
+
+  .sentence-table {
+    min-width: 650px;
+  }
+
+  .position-note {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+    font-size: 0.84rem;
+  }
+
+  .position-note span {
+    color: var(--text-main);
+    font-weight: 700;
+  }
+
+  @media (max-width: 640px) {
+    .grammar-page {
+      gap: 2.1rem;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+    }
+
+    .section-heading {
+      display: block;
+    }
+
+    .section-note {
+      margin-top: 0.6rem;
+    }
+  }
+</style>

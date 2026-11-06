@@ -2,32 +2,32 @@
 import Layout from '../layouts/Layout.astro';
 
 const alphabet = [
-  { letter: 'A', reading: 'Ah', example: 'Apfel' },
-  { letter: 'B', reading: 'Beh', example: 'Buch' },
-  { letter: 'C', reading: 'Tseh', example: 'Café' },
-  { letter: 'D', reading: 'Deh', example: 'Danke' },
-  { letter: 'E', reading: 'Eh', example: 'Ei' },
-  { letter: 'F', reading: 'Ef', example: 'Fisch' },
-  { letter: 'G', reading: 'Geh', example: 'Garten' },
-  { letter: 'H', reading: 'Hah', example: 'Haus' },
-  { letter: 'I', reading: 'I', example: 'Insel' },
-  { letter: 'J', reading: 'Yot', example: 'Jahr' },
-  { letter: 'K', reading: 'Kah', example: 'Kind' },
-  { letter: 'L', reading: 'El', example: 'Lampe' },
-  { letter: 'M', reading: 'Em', example: 'Mutter' },
-  { letter: 'N', reading: 'En', example: 'Nacht' },
-  { letter: 'O', reading: 'Oh', example: 'Orange' },
-  { letter: 'P', reading: 'Peh', example: 'Papier' },
-  { letter: 'Q', reading: 'Kuh', example: 'Quelle' },
-  { letter: 'R', reading: 'Er (R tenggorokan)', example: 'Reise' },
-  { letter: 'S', reading: 'Es', example: 'Sonne' },
-  { letter: 'T', reading: 'Teh', example: 'Tisch' },
-  { letter: 'U', reading: 'Uh', example: 'Uhr' },
-  { letter: 'V', reading: 'Fau', example: 'Vater' },
-  { letter: 'W', reading: 'Veh', example: 'Wasser' },
-  { letter: 'X', reading: 'Iks', example: 'Xylofon' },
-  { letter: 'Y', reading: 'Ypsilon', example: 'Yoga' },
-  { letter: 'Z', reading: 'Tset', example: 'Zeit' },
+  { letter: 'A', name: 'Ah', example: 'Apfel', translation: 'apel', spelling: 'Ah - Peh - Ef - Eh - El' },
+  { letter: 'B', name: 'Beh', example: 'Buch', translation: 'buku', spelling: 'Beh - Uh - Tseh - Ha' },
+  { letter: 'C', name: 'Tseh', example: 'Computer', spelling: 'Tseh - Oh - Em - Peh - Uh - Teh - Eh - Er' },
+  { letter: 'D', name: 'Deh', example: 'Danke', spelling: 'Deh - Ah - En - Kah - Eh' },
+  { letter: 'E', name: 'Eh', example: 'Elefant', spelling: 'Eh - El - Eh - Ef - Ah - En - Teh' },
+  { letter: 'F', name: 'Ef', example: 'Fisch', spelling: 'Ef - Ih - Es - Tseh - Ha' },
+  { letter: 'G', name: 'Geh', example: 'Garten', spelling: 'Geh - Ah - Er - Teh - Eh - En' },
+  { letter: 'H', name: 'Ha', example: 'Haus', spelling: 'Ha - Ah - Uh - Es' },
+  { letter: 'I', name: 'Ih', example: 'Insel', spelling: 'Ih - En - Es - Eh - El' },
+  { letter: 'J', name: 'Yot', example: 'Jahr', spelling: 'Yot - Ah - Ha - Er' },
+  { letter: 'K', name: 'Kah', example: 'Kind', spelling: 'Kah - Ih - En - Deh' },
+  { letter: 'L', name: 'El', example: 'Liebe', spelling: 'El - Ih - Eh - Beh - Eh' },
+  { letter: 'M', name: 'Em', example: 'Mutter', spelling: 'Em - Uh - Teh - Teh - Eh - Er' },
+  { letter: 'N', name: 'En', example: 'Nacht', spelling: 'En - Ah - Tseh - Ha - Teh' },
+  { letter: 'O', name: 'Oh', example: 'Orange', spelling: 'Oh - Er - Ah - En - Geh - Eh' },
+  { letter: 'P', name: 'Peh', example: 'Pferd', spelling: 'Peh - Ef - Eh - Er - Deh' },
+  { letter: 'Q', name: 'Kuh', example: 'Quelle', spelling: 'Kuh - Uh - Eh - El - El - Eh' },
+  { letter: 'R', name: 'Er', example: 'Rot', spelling: 'Er - Oh - Teh' },
+  { letter: 'S', name: 'Es', example: 'Sonne', spelling: 'Es - Oh - En - En - Eh' },
+  { letter: 'T', name: 'Teh', example: 'Tisch', spelling: 'Teh - Ih - Es - Tseh - Ha' },
+  { letter: 'U', name: 'Uh', example: 'Uhr', spelling: 'Uh - Ha - Er' },
+  { letter: 'V', name: 'Fau', example: 'Vater', spelling: 'Fau - Ah - Teh - Eh - Er' },
+  { letter: 'W', name: 'Weh', example: 'Wasser', spelling: 'Weh - Ah - Es - Es - Eh - Er' },
+  { letter: 'X', name: 'Iks', example: 'Xylophon', spelling: 'Iks - Ypsilon - El - Oh - Peh - Ha - Oh - En' },
+  { letter: 'Y', name: 'Ypsilon', example: 'Yoga', spelling: 'Ypsilon - Oh - Geh - Ah' },
+  { letter: 'Z', name: 'Tset', example: 'Zug', spelling: 'Tset - Uh - Geh' },
 ];
 
 const specialLetters = [
@@ -59,14 +59,11 @@ const specialLetters = [
 
 const diphthongs = [
   { combination: 'au', reading: 'au', example: 'Haus', meaning: 'rumah' },
-  { combination: 'eu', reading: 'oi', example: 'Feuer', meaning: 'api' },
-  { combination: 'äu', reading: 'oi', example: 'Häuser', meaning: 'rumah-rumah' },
-  { combination: 'ie', reading: 'ii', example: 'Liebe', meaning: 'cinta' },
-  { combination: 'ai', reading: 'ai', example: 'Mai', meaning: 'Mei' },
   { combination: 'ei', reading: 'ai', example: 'mein', meaning: 'punyaku' },
-  { combination: 'io', reading: 'io', example: 'Union', meaning: 'persatuan' },
-  { combination: 'ia', reading: 'ia', example: 'Familie', meaning: 'keluarga' },
-  { combination: 'ea', reading: 'ea', example: 'Realisieren', meaning: 'merealisasikan' },
+  { combination: 'ai', reading: 'ai', example: 'Mai', meaning: 'Mei' },
+  { combination: 'eu', reading: 'oi', example: 'Feuer', pronunciation: 'Foi-er', meaning: 'api' },
+  { combination: 'äu', reading: 'oi', example: 'Häuser', meaning: 'rumah-rumah' },
+  { combination: 'ie', reading: 'ii panjang', example: 'Liebe', pronunciation: 'Lii-be', meaning: 'cinta' },
 ];
 ---
 
@@ -91,20 +88,22 @@ const diphthongs = [
       </div>
 
       <div class="table-scroll" role="region" aria-label="Tabel pengucapan abjad Jerman" tabindex="0">
-        <table class="alphabet-table">
+        <table class="alphabet-table spelling-table">
           <thead>
             <tr>
               <th scope="col">Huruf</th>
-              <th scope="col">Cara baca</th>
-              <th scope="col">Contoh kata</th>
+              <th scope="col">Ejaan Huruf</th>
+              <th scope="col">Contoh Kata</th>
+              <th scope="col">Cara Ngeja (Spelling)</th>
             </tr>
           </thead>
           <tbody>
-            {alphabet.map(({ letter, reading, example }) => (
+            {alphabet.map(({ letter, name, example, translation, spelling }) => (
               <tr>
                 <th scope="row" class="letter-cell">{letter}</th>
-                <td>{reading}</td>
-                <td><span lang="de">{example}</span></td>
+                <td lang="de">{name}</td>
+                <td><span lang="de">{example}</span>{translation && <> ({translation})</>}</td>
+                <td lang="de">{spelling}</td>
               </tr>
             ))}
           </tbody>
@@ -139,7 +138,7 @@ const diphthongs = [
       <div class="section-heading">
         <div>
           <p class="section-kicker">03 / Kombinasi vokal</p>
-          <h2 id="diphthong-heading">Kombinasi Vokal / Diphthong</h2>
+          <h2 id="diphthong-heading">Kombinasi Vokal dan Diphthong</h2>
         </div>
       </div>
 
@@ -153,16 +152,19 @@ const diphthongs = [
             </tr>
           </thead>
           <tbody>
-            {diphthongs.map(({ combination, reading, example, meaning }) => (
+            {diphthongs.map(({ combination, reading, example, pronunciation, meaning }) => (
               <tr>
                 <th scope="row" class="letter-cell" lang="de">{combination}</th>
                 <td>{reading}</td>
-                <td><span lang="de">{example}</span> ({meaning})</td>
+                <td>
+                  <span lang="de">{example}</span>{pronunciation && <> ({pronunciation})</>} ({meaning})
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <p class="section-note diphthong-note"><span lang="de">ie</span> bukan diftong; gabungan ini menandai bunyi vokal <em>i</em> panjang, seperti pada <span lang="de">Liebe</span>.</p>
     </section>
   </div>
 </Layout>
@@ -248,6 +250,15 @@ const diphthongs = [
     border-collapse: collapse;
     text-align: left;
   }
+
+  .spelling-table {
+    min-width: 900px;
+  }
+
+  .spelling-table th:nth-child(1) { width: 7%; }
+  .spelling-table th:nth-child(2) { width: 12%; }
+  .spelling-table th:nth-child(3) { width: 19%; }
+  .spelling-table th:nth-child(4) { width: 62%; }
 
   .alphabet-table th,
   .alphabet-table td {
