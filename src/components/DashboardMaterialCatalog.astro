@@ -16,6 +16,10 @@ const {
 
 <DashboardLayout title={`${title} | siDeutsch`} active={active} user={user} profile={profile}>
   <section class="catalog-page">
+    <a class="back-link" href="/dashboard" aria-label="Kembali ke Dashboard utama">
+      <span aria-hidden="true">←</span>
+      <span>Kembali ke Dashboard</span>
+    </a>
     <header class="page-heading">
       <p class="eyebrow">{eyebrow}</p>
       <h1>{title}</h1>
@@ -44,6 +48,34 @@ const {
   .catalog-page {
     display: grid;
     gap: 1.25rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.6rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: border-color 0.18s ease, color 0.18s ease, background-color 0.18s ease, transform 0.18s ease;
+  }
+
+  .back-link:hover {
+    border-color: var(--accent-gold);
+    background: rgba(229, 169, 59, 0.08);
+    color: var(--accent-gold);
+    transform: translateX(-2px);
+  }
+
+  .back-link span:first-child {
+    font-size: 1rem;
+    line-height: 1;
   }
 
   .page-heading h1 {

@@ -86,7 +86,12 @@ const completedMaterials = progressRows.flatMap((row) => {
           <p>Pilih materi, pelajari kosakata, lalu selesaikan latihan bertahap.</p>
           <a href="/materi">Buka katalog <span aria-hidden="true">→</span></a>
         </div>
-        <div class="welcome-mark" aria-hidden="true">DE</div>
+        <a class="welcome-mark" href="/materi" aria-label="Buka katalog materi">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 17.5v-11Z" />
+            <path d="M8 8h8M8 12h8M8 16h5" />
+          </svg>
+        </a>
       </section>
 
       <section class="dynamic-level-card" aria-labelledby="dynamic-level-title">
@@ -284,9 +289,26 @@ const completedMaterials = progressRows.flatMap((row) => {
     place-items: center;
     border: 1px solid rgba(229, 169, 59, 0.4);
     border-radius: 50%;
+    background: rgba(229, 169, 59, 0.08);
     color: var(--accent-gold);
-    font-size: 1.7rem;
-    font-weight: 800;
+    text-decoration: none;
+    transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .welcome-mark:hover {
+    background: rgba(229, 169, 59, 0.16);
+    border-color: rgba(229, 169, 59, 0.7);
+    transform: translateY(-2px);
+  }
+
+  .welcome-mark svg {
+    width: 38px;
+    height: 38px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
 
   .dynamic-level-card {
@@ -596,7 +618,11 @@ const completedMaterials = progressRows.flatMap((row) => {
     .welcome-mark {
       width: 62px;
       height: 62px;
-      font-size: 1.2rem;
+    }
+
+    .welcome-mark svg {
+      width: 24px;
+      height: 24px;
     }
 
     .learning-heading {
