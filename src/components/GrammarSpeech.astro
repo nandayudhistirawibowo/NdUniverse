@@ -1,0 +1,73 @@
+---
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+---
+
+<span class="grammar-speech-unit">
+  <span lang="de">{text}</span>
+  <button
+    class="grammar-speech-button"
+    type="button"
+    data-grammar-speech={text}
+    aria-label={`Dengarkan ${text}`}
+    title={`Dengarkan ${text}`}
+    disabled
+  >
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
+      <path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" />
+    </svg>
+  </button>
+</span>
+
+<style>
+  .grammar-speech-unit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    vertical-align: middle;
+  }
+
+  .grammar-speech-button {
+    display: inline-grid;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(229, 169, 59, 0.55);
+    border-radius: 6px;
+    background: rgba(229, 169, 59, 0.12);
+    color: var(--accent-gold);
+    cursor: pointer;
+    transition: transform 0.16s ease, color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .grammar-speech-button svg {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .grammar-speech-button:hover:not(:disabled) {
+    transform: scale(1.08);
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .grammar-speech-button:focus-visible {
+    outline: 3px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
+  .grammar-speech-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
+  }
+</style>

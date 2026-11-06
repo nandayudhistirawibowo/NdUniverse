@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import GrammarSpeech from '../components/GrammarSpeech.astro';
 
 const articles = [
   { article: 'der', gender: 'Maskulin', example: 'der Mann', meaning: 'pria' },
@@ -51,8 +52,8 @@ const caseArticles = [
 ];
 
 const caseExamples = [
-  { sentence: 'Der Mann sieht den Hund.', nominativ: 'der Mann', object: 'den Hund (Akkusativ)', translation: 'Pria itu melihat anjing itu.' },
-  { sentence: 'Ich helfe dem Mann.', nominativ: 'ich', object: 'dem Mann (Dativ)', translation: 'Saya membantu pria itu.' },
+  { sentence: 'Der Mann sieht den Hund.', nominativ: 'der Mann', object: 'den Hund', objectCase: 'Akkusativ', translation: 'Pria itu melihat anjing itu.' },
+  { sentence: 'Ich helfe dem Mann.', nominativ: 'ich', object: 'dem Mann', objectCase: 'Dativ', translation: 'Saya membantu pria itu.' },
 ];
 ---
 
@@ -90,7 +91,7 @@ const caseExamples = [
               <tr>
                 <th scope="row" lang="de">{article}</th>
                 <td>{gender}</td>
-                <td><span lang="de">{example}</span> ({meaning})</td>
+                <td><GrammarSpeech text={example} /> ({meaning})</td>
               </tr>
             ))}
           </tbody>
@@ -111,16 +112,16 @@ const caseExamples = [
           <thead>
             <tr>
               <th scope="col">Pronoun</th>
-              <th scope="col">sein (menjadi / ada)</th>
-              <th scope="col">haben (memiliki)</th>
+              <th scope="col"><GrammarSpeech text="sein" /> (menjadi / ada)</th>
+              <th scope="col"><GrammarSpeech text="haben" /> (memiliki)</th>
             </tr>
           </thead>
           <tbody>
             {conjugations.map(({ pronoun, sein, haben }) => (
               <tr>
                 <th scope="row" lang="de">{pronoun}</th>
-                <td lang="de">{sein}</td>
-                <td lang="de">{haben}</td>
+                <td><GrammarSpeech text={sein} /></td>
+                <td><GrammarSpeech text={haben} /></td>
               </tr>
             ))}
           </tbody>
@@ -150,7 +151,7 @@ const caseExamples = [
           <tbody>
             {sentenceExamples.map(({ sentence, structure, meaning }) => (
               <tr>
-                <th scope="row" lang="de">{sentence}</th>
+                <th scope="row"><GrammarSpeech text={sentence} /></th>
                 <td>{structure}</td>
                 <td>{meaning}</td>
               </tr>
@@ -187,7 +188,7 @@ const caseExamples = [
               <tr>
                 <th scope="row" lang="de">{word}</th>
                 <td>{meaning}</td>
-                <td lang="de">{example}</td>
+                <td><GrammarSpeech text={example} /></td>
                 <td>{translation}</td>
               </tr>
             ))}
@@ -208,7 +209,7 @@ const caseExamples = [
           <tbody>
             <tr>
               <th scope="row">Verb + Subjek + ...</th>
-              <td lang="de">Sprichst du Deutsch?</td>
+              <td><GrammarSpeech text="Sprichst du Deutsch?" /></td>
               <td>Apakah kamu bicara bahasa Jerman?</td>
             </tr>
           </tbody>
@@ -237,7 +238,7 @@ const caseExamples = [
           <tbody>
             {pluralExamples.map(({ singular, plural, pattern }) => (
               <tr>
-                <th scope="row" lang="de">{singular}</th>
+                <th scope="row"><GrammarSpeech text={singular} /></th>
                 <td lang="de">{plural}</td>
                 <td>{pattern}</td>
               </tr>
@@ -291,11 +292,11 @@ const caseExamples = [
             </tr>
           </thead>
           <tbody>
-            {caseExamples.map(({ sentence, nominativ, object, translation }) => (
+            {caseExamples.map(({ sentence, nominativ, object, objectCase, translation }) => (
               <tr>
-                <th scope="row" lang="de">{sentence}</th>
+                <th scope="row"><GrammarSpeech text={sentence} /></th>
                 <td lang="de">{nominativ}</td>
-                <td lang="de">{object}</td>
+                <td lang="de">{object} ({objectCase})</td>
                 <td>{translation}</td>
               </tr>
             ))}
@@ -305,6 +306,32 @@ const caseExamples = [
     </section>
   </div>
 </Layout>
+
+  <script>
+    const grammarSpeechSupported = () =>
+      'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+
+    const configureGrammarSpeechButtons = () => {
+      const supported = grammarSpeechSupported();
+      document.querySelectorAll<HTMLButtonElement>('.grammar-speech-button').forEach((button) => {
+        button.disabled = !supported;
+      });
+    };
+
+    document.addEventListener('astro:page-load', configureGrammarSpeechButtons);
+    configureGrammarSpeechButtons();
+
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest<HTMLButtonElement>('.grammar-speech-button');
+      if (!button || button.disabled || !grammarSpeechSupported()) return;
+
+      const utterance = new SpeechSynthesisUtterance(button.dataset.grammarSpeech ?? '');
+      utterance.lang = 'de-DE';
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    });
+  </script>
 
 <style>
   .grammar-page {
