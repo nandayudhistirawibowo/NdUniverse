@@ -46,7 +46,7 @@ vocab:
     contextIndonesian: "Rekan kerja perempuan saya bekerja dari rumah hari ini."
   - german: "der Chef"
     indonesian: "atasan laki-laki"
-    context: "Der Chef geht den Plan mit dem Team durch."
+    context: "Der Chef bespricht den Plan mit dem Team."
     contextIndonesian: "Atasan laki-laki itu membahas rencana bersama tim."
   - german: "die Chefin"
     indonesian: "atasan perempuan"
