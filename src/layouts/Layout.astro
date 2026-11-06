@@ -2,8 +2,8 @@
 import { ClientRouter } from 'astro:transitions';
 
 const {
-  title = 'siDeutsch | Belajar Bahasa Jerman untuk Mahasiswa',
-  description = 'Platform belajar bahasa Jerman yang terstruktur untuk mahasiswa Indonesia, lengkap dengan materi berdasarkan fakultas dan jurusan.',
+  title = 'siDeutsch - Belajar Bahasa Jerman A1-C2 & Persiapan Kerja',
+  description = 'Platform belajar bahasa Jerman interaktif untuk siapa saja. 8.000+ kosakata, kuis A1-C2, Alltagsdeutsch, Fachdeutsch, dan persiapan karir.',
   image = '/og-sideutsch.svg',
   hideNavbar = false,
 } = Astro.props;
@@ -13,7 +13,7 @@ const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
 const imageURL = new URL(image, siteUrl).toString();
 const user = Astro.locals.user;
 const profile = Astro.locals.profile;
-const accountName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Mahasiswa';
+const accountName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
 const accountInitial = accountName.slice(0, 1).toUpperCase();
 const isAdminArea = Astro.url.pathname.startsWith('/admin');
 const isAdminLogin = Astro.url.pathname === '/admin/login';
@@ -23,7 +23,7 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
   name: 'siDeutsch',
-  description: 'Platform belajar bahasa Jerman untuk mahasiswa Indonesia dengan materi Alltagsdeutsch dan Fachdeutsch.',
+  description: 'Platform belajar bahasa Jerman interaktif untuk siapa saja. 8.000+ kosakata, kuis A1-C2, Alltagsdeutsch, Fachdeutsch, dan persiapan karir.',
   url: siteUrl,
   logo: new URL('/logo.png', siteUrl).toString(),
   sameAs: ['https://www.sideutsch.id'],
@@ -68,7 +68,7 @@ const organizationSchema = {
         <header class="topbar">
           <nav class="navbar" aria-label="Navigasi utama">
             <a href="/" class="brand" aria-label="siDeutsch">
-              <img src="/logo.png" alt="siDeutsch" />
+              <span>siDeutsch</span>
             </a>
             <button
               class="menu-toggle"
@@ -98,7 +98,7 @@ const organizationSchema = {
               </div>
               <div class="nav-account" data-nav-account>
                 {!isAdminLogin && (user ? (
-                  <a class="account-link" href={accountHref} aria-label={`${isAdminAccount ? 'Admin Panel' : 'Dashboard mahasiswa'} ${accountName}`}>
+                  <a class="account-link" href={accountHref} aria-label={`${isAdminAccount ? 'Admin Panel' : 'Dashboard pengguna'} ${accountName}`}>
                     {profile?.avatar_url ? (
                       <img src={profile.avatar_url} alt="" />
                     ) : (
@@ -107,7 +107,7 @@ const organizationSchema = {
                     <span class="account-name">{accountName}</span>
                   </a>
                 ) : (
-                  <a class="login-link" href="/login">Login Mahasiswa</a>
+                  <a class="login-link" href="/login">Login</a>
                 ))}
               </div>
             </div>
@@ -121,7 +121,7 @@ const organizationSchema = {
 
       <footer class="site-footer">
         <div class="footer-inner">
-          <p>© 2026 siDeutsch. Dibuat untuk mahasiswa Indonesia.</p>
+          <p>© 2026 siDeutsch. Dibuat untuk siapa saja yang ingin belajar bahasa Jerman.</p>
           <span class="footer-separator" aria-hidden="true">·</span>
           <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Kontak Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>
@@ -193,12 +193,12 @@ const organizationSchema = {
         .select('nim, nama_lengkap, avatar_url')
         .eq('id', user.id)
         .maybeSingle();
-      const name = profile?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Mahasiswa';
+      const name = profile?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Member';
       const isAdmin = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
       const accountLink = document.createElement('a');
       accountLink.className = 'account-link';
       accountLink.href = isAdmin ? '/admin' : '/dashboard';
-      accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard mahasiswa'} ${name}`);
+      accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard pengguna'} ${name}`);
 
       if (profile?.avatar_url) {
         const avatar = document.createElement('img');
@@ -234,13 +234,6 @@ const organizationSchema = {
   };
 
   document.addEventListener('astro:page-load', () => {
-    const brandLogo = document.querySelector<HTMLImageElement>('.brand img');
-    brandLogo?.addEventListener('error', () => {
-      const fallback = document.createElement('span');
-      fallback.textContent = 'siDeutsch';
-      brandLogo.replaceWith(fallback);
-    }, { once: true });
-
     const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
     const navPanel = document.querySelector<HTMLElement>('#primary-navigation');
     const topbar = document.querySelector<HTMLElement>('.topbar');

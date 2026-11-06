@@ -13,6 +13,7 @@ const sortedMateri = materi.toSorted((first, second) =>
   description="Jelajahi seluruh materi Alltagsdeutsch dan Fachdeutsch siDeutsch."
 >
   <main class="catalog-page">
+    <a class="dashboard-back-link" href="/dashboard">← Kembali ke Dashboard</a>
     <header class="page-hero">
       <p class="eyebrow">Katalog pembelajaran</p>
       <h1>Semua Materi</h1>
@@ -85,6 +86,24 @@ const sortedMateri = materi.toSorted((first, second) =>
 </script>
 
 <style>
+  .dashboard-back-link {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 1.1rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .dashboard-back-link:hover {
+    border-color: var(--accent-gold);
+    background: rgba(229, 169, 59, 0.1);
+  }
+
   .catalog-page {
     padding-top: 1rem;
   }

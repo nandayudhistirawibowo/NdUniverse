@@ -1,27 +1,29 @@
 # siDeutsch — Product Requirements Document
 
 **Status:** Dokumentasi kondisi implementasi saat ini  
-**Produk:** Platform belajar bahasa Jerman untuk mahasiswa Indonesia
+**Produk:** Platform belajar bahasa Jerman untuk siapa saja
 
 ## Ringkasan
 
-siDeutsch menyediakan materi bahasa Jerman sehari-hari dan kosakata bidang studi, latihan interaktif, serta progress belajar untuk mahasiswa Indonesia. Koleksi saat ini mencakup **411 materi Alltagsdeutsch A1–C2 (8.220 vocab)**, **13 materi Fachdeutsch (260 vocab)**, dan **1 materi Career (20 vocab)**: total **425 file materi dan sekitar 8.500 entri vocab**.
+siDeutsch menyediakan materi bahasa Jerman sehari-hari dan kosakata berbagai bidang, latihan interaktif, serta progress belajar untuk pengguna umum. Koleksi saat ini mencakup **411 materi Alltagsdeutsch A1–C2 (8.220 vocab)**, **13 materi Fachdeutsch (260 vocab)**, dan **1 materi Career (20 vocab)**: total **425 file materi dan sekitar 8.500 entri vocab**.
 
 ## Tujuan dan Pengguna
 
-- Membantu mahasiswa belajar bahasa Jerman dari A1 hingga C2.
+- Membantu siapa saja belajar bahasa Jerman dari A1 hingga C2.
 - Menyediakan Alltagsdeutsch, Fachdeutsch, dan materi Career untuk komunikasi dunia kerja.
 - Mendukung sesi belajar singkat, kuis, XP, bookmark kosakata, dan sinkronisasi progress bagi pengguna login.
 - Memberi guest akses preview materi dan latihan terbatas, serta menyediakan portal admin terproteksi.
 
-Pengguna utama adalah mahasiswa, guest yang ingin melihat atau mencoba materi, dan admin yang mengelola akun mahasiswa.
+Pengguna utama adalah pelajar dan pengguna umum, termasuk guest yang ingin melihat atau mencoba materi, serta admin yang mengelola platform.
 
 ## Fitur Utama
 
 ### Autentikasi dan Akses
 
-- Mahasiswa masuk menggunakan NIM; email Supabase dibentuk dari NIM.
-- Portal mahasiswa berada di `/login`; admin menggunakan `/admin/login`.
+- Pengguna masuk dari `/login` menggunakan email atau NIM; NIM lama tetap dipetakan ke email Supabase berbentuk `NIM@student.sideutsch.com`.
+- Jika kredensial tidak cocok karena akun belum tersedia, form mencoba membuat akun otomatis dengan email dan password yang dimasukkan, lalu masuk kembali setelah akun dibuat.
+- Akun yang sudah terdaftar tidak dibuat ulang; jika password salah, pengguna mendapat pesan agar memeriksa password.
+- Admin menggunakan `/admin/login` dengan alur autentikasi khusus admin.
 - Middleware memeriksa autentikasi untuk `/dashboard` dan `/career`, serta otorisasi admin untuk `/admin`.
 - Guest dapat mengakses materi publik dan mencoba latihan terbatas.
 
@@ -82,7 +84,7 @@ Bobot poin per sesi lulus:
 
 - `/pengucapan` dan `/grammar` menyediakan panduan bahasa.
 - Web Speech API browser (`de-DE`) membacakan kosakata dan kalimat bila tersedia.
-- Profil mahasiswa menampilkan informasi akun dan avatar; berkas avatar disimpan di Supabase Storage bucket `avatars`.
+- Profil pengguna menampilkan informasi akun dan avatar; berkas avatar disimpan di Supabase Storage bucket `avatars`.
 - Admin mengelola akun lewat `/admin` dan Admin API yang terproteksi.
 
 ## Tech Stack
@@ -103,7 +105,7 @@ Bobot poin per sesi lulus:
 ## Model Data Tingkat Tinggi
 
 - Supabase Auth mengelola identitas akun.
-- `profiles` menyimpan data profil yang digunakan aplikasi: NIM, nama, nomor WhatsApp, dan URL avatar.
+- `profiles` menyimpan data profil yang digunakan aplikasi: NIM opsional, nama, nomor WhatsApp, dan URL avatar.
 - `user_progress` menyimpan XP, sesi lulus, dan catatan per kombinasi user dan slug materi; akses dibatasi oleh RLS.
 - Konten materi tetap di Markdown Astro, bukan tabel Supabase.
 - Bookmark disimpan di `localStorage`, bukan entitas database.

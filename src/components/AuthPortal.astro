@@ -3,10 +3,10 @@ import { ClientRouter } from 'astro:transitions';
 
 const {
   portal = 'student',
-  title = 'Login Mahasiswa | siDeutsch',
-  eyebrow = 'Portal Mahasiswa',
-  heading = 'Selamat datang',
-  description = 'Gunakan NIM untuk melanjutkan ke portal belajar.',
+  title = 'Login | siDeutsch',
+  eyebrow = 'Portal Belajar',
+  heading = 'Halo! Selamat datang kembali.',
+  description = 'Masuk dengan email atau NIM kamu.',
   buttonText = 'Masuk ke Portal',
 } = Astro.props;
 const isAdminPortal = portal === 'admin';
@@ -19,6 +19,9 @@ const isAdminPortal = portal === 'admin';
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <meta name="description" content={description} />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link
@@ -49,32 +52,50 @@ const isAdminPortal = portal === 'admin';
         <div class="auth-panel">
           <div class="panel-topline">
             <span class="panel-mark" aria-hidden="true">{isAdminPortal ? 'A' : 'S'}</span>
-            <span class="portal-label">{eyebrow}</span>
+            <span class="portal-label">{isAdminPortal ? eyebrow : 'Portal Belajar'}</span>
           </div>
           <h2 id="auth-title">{heading}</h2>
           <p class="panel-description">{description}</p>
 
           <form id="auth-form" class="auth-form" data-portal={portal}>
-            <label for="identifier">{isAdminPortal ? 'Nomor Induk Mahasiswa' : 'Email / NIM'}</label>
+            <label for="identifier">{isAdminPortal ? 'Nomor Induk Mahasiswa' : 'Email / Username'}</label>
             <input
               id="identifier"
               name="identifier"
               type="text"
               inputmode="text"
               autocomplete="username"
-              placeholder={isAdminPortal ? 'Masukkan NIM admin' : 'Masukkan email atau NIM'}
+              placeholder={isAdminPortal ? 'Masukkan NIM admin' : 'Masukkan username atau email'}
               required
             />
 
-            <label for="password">Password</label>
-            <input
-              id="password"
-              name="password"
-              type="password"
-              autocomplete="current-password"
-              placeholder="Masukkan password"
-              required
-            />
+            <label for="password">Kata Sandi</label>
+            <div class="password-field">
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Masukkan kata sandi"
+                required
+              />
+              <button
+                class="password-toggle"
+                type="button"
+                aria-label="Tampilkan kata sandi"
+                aria-pressed="false"
+                data-password-toggle="password"
+              >
+                <svg class="eye-open" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
+                  <circle cx="12" cy="12" r="2.7" />
+                </svg>
+                <svg class="eye-closed" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m3 3 18 18M10.6 6.2A10.7 10.7 0 0 1 12 6c6.1 0 9.5 6 9.5 6a16 16 0 0 1-3.1 3.7M6.2 6.3C3.8 7.8 2.5 12 2.5 12s3.4 6 9.5 6c.8 0 1.5-.1 2.2-.3" />
+                  <path d="M9.9 9.9a3 3 0 0 0 4.2 4.2" />
+                </svg>
+              </button>
+            </div>
 
             <button id="auth-submit" type="submit">
               <span>{buttonText}</span>
@@ -84,7 +105,7 @@ const isAdminPortal = portal === 'admin';
           </form>
           {!isAdminPortal && (
             <p class="first-login-note">
-              Belum punya akun? Masukkan email dan password baru, lalu klik Masuk. Akun akan dibuat otomatis.
+              Belum punya akun? Masukkan email dan kata sandi baru, klik Masuk, akun akan dibuat otomatis.
             </p>
           )}
           {!isAdminPortal && <a class="back-link" href="/">Kembali ke siDeutsch</a>}
@@ -105,6 +126,17 @@ const isAdminPortal = portal === 'admin';
   const message = document.querySelector<HTMLElement>('#auth-message');
   const isAdminPortal = form?.dataset.portal === 'admin';
   const adminNims = new Set(['admin', '000000']);
+
+  form?.querySelectorAll<HTMLButtonElement>('[data-password-toggle]').forEach((toggle) => {
+    toggle.addEventListener('click', () => {
+      const target = document.getElementById(toggle.dataset.passwordToggle ?? '');
+      if (!(target instanceof HTMLInputElement)) return;
+      const isVisible = target.type === 'text';
+      target.type = isVisible ? 'password' : 'text';
+      toggle.setAttribute('aria-pressed', String(!isVisible));
+      toggle.setAttribute('aria-label', isVisible ? 'Tampilkan kata sandi' : 'Sembunyikan kata sandi');
+    });
+  });
 
   function showMessage(text: string, state: 'error' | 'loading') {
     if (!message) return;
@@ -459,6 +491,58 @@ const isAdminPortal = portal === 'admin';
     font: inherit;
   }
 
+  .password-field {
+    position: relative;
+  }
+
+  .auth-form .password-field input {
+    padding-right: 3.1rem;
+  }
+
+  .password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.55rem;
+    display: grid;
+    width: 36px;
+    height: 36px;
+    place-items: center;
+    padding: 0;
+    transform: translateY(-50%);
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: #A7A7B0;
+    cursor: pointer;
+  }
+
+  .password-toggle:hover {
+    color: var(--gold);
+  }
+
+  .password-toggle:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 1px;
+  }
+
+  .password-toggle svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .password-toggle .eye-closed,
+  .password-toggle[aria-pressed='true'] .eye-open {
+    display: none;
+  }
+
+  .password-toggle[aria-pressed='true'] .eye-closed {
+    display: block;
+  }
+
   .auth-form input::placeholder {
     color: #777780;
   }
@@ -500,6 +584,25 @@ const isAdminPortal = portal === 'admin';
   .auth-form button:disabled {
     cursor: wait;
     opacity: 0.65;
+  }
+
+  .auth-form button.password-toggle {
+    display: grid;
+    min-height: 36px;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    transform: translateY(-50%);
+    background: transparent;
+    color: #A7A7B0;
+    box-shadow: none;
+  }
+
+  .auth-form button.password-toggle:hover:not(:disabled) {
+    transform: translateY(-50%);
+    background: transparent;
+    color: var(--gold);
+    box-shadow: none;
   }
 
   .auth-message {

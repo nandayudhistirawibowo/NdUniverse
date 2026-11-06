@@ -9,6 +9,7 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
   description="Pilih level CEFR untuk memulai belajar bahasa Jerman sehari-hari."
 >
   <section class="page-shell">
+    <a class="dashboard-back-link" href="/dashboard">← Kembali ke Dashboard</a>
     <p class="eyebrow">Alltagsdeutsch</p>
     <h1>Pilih Level Kamu</h1>
     <p class="lead">Mulai dari percakapan dasar hingga komunikasi lanjutan dalam kehidupan sehari-hari.</p>
@@ -33,6 +34,24 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 </Layout>
 
 <style>
+  .dashboard-back-link {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 1.1rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .dashboard-back-link:hover {
+    border-color: var(--accent-gold);
+    background: rgba(229, 169, 59, 0.1);
+  }
+
   .page-shell {
     padding-top: 1rem;
   }

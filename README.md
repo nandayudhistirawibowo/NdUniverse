@@ -1,6 +1,6 @@
 # siDeutsch
 
-Platform belajar bahasa Jerman interaktif untuk mahasiswa Indonesia.
+Platform untuk siapa saja yang ingin belajar bahasa Jerman.
 
 ## 🚀 Fitur Utama
 - **Dual-Track Learning:** Alltagsdeutsch (Bahasa Sehari-hari, A1-C2) & Fachdeutsch (Kosakata Jurusan).
@@ -9,7 +9,7 @@ Platform belajar bahasa Jerman interaktif untuk mahasiswa Indonesia.
 - **Bookmark:** Simpan kosakata sulit secara lokal di browser.
 - **Web Speech API:** Dengerin pengucapan kata & kalimat langsung dari browser.
 - **Panduan Pengucapan & Tata Bahasa:** Lengkap dengan tabel dan penjelasan.
-- **Dashboard Mahasiswa & Admin:** Login pakai NIM, sinkronisasi progress ke Supabase.
+- **Dashboard Pengguna & Admin:** Login dengan email atau NIM lama, auto-signup untuk akun baru, dan sinkronisasi progress ke Supabase.
 - **Guest Mode:** Coba materi & kuis tanpa login (progress terbatas).
 
 Koleksi saat ini berisi **425 file materi dan sekitar 8.500 vocab**: 411 Alltagsdeutsch A1–C2, 13 Fachdeutsch, dan 1 Career.

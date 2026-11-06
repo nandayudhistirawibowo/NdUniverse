@@ -76,7 +76,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   const isCareerRoute = context.url.pathname === '/career' || context.url.pathname.startsWith('/career/');
-  if ((context.url.pathname.startsWith('/dashboard') || isCareerRoute) && !user) {
+  const isHelpRoute = context.url.pathname === '/bantuan';
+  if ((context.url.pathname.startsWith('/dashboard') || isCareerRoute || isHelpRoute) && !user) {
     const returnTo = `${context.url.pathname}${context.url.search}`;
     return context.redirect(`/login?redirect=${encodeURIComponent(returnTo)}`);
   }

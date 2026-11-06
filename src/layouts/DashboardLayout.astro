@@ -10,7 +10,7 @@ const {
 import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
-const displayName = profile?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Mahasiswa';
+const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
 const nim = profile?.nim || user?.user_metadata?.nim || '';
 const accountInitial = displayName.slice(0, 1).toUpperCase();
 const logoFallback = 'siDeutsch';
@@ -49,20 +49,6 @@ const logoFallback = 'siDeutsch';
           </button>
         </div>
 
-        {!isAdmin && (
-          <div class="sidebar-profile">
-            {profile?.avatar_url ? (
-              <img class="sidebar-avatar" src={profile.avatar_url} alt="" />
-            ) : (
-              <span class="sidebar-avatar avatar-initial" aria-hidden="true">{accountInitial}</span>
-            )}
-            <div class="profile-copy">
-              <strong>{displayName}</strong>
-              <span>{nim || 'Umum'}</span>
-            </div>
-          </div>
-        )}
-
         <nav class="private-nav">
           {isAdmin ? (
             <a class={`nav-item ${active === 'users' ? 'active' : ''}`} href="/admin" aria-current={active === 'users' ? 'page' : undefined}>
@@ -87,13 +73,13 @@ const logoFallback = 'siDeutsch';
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 8 9-5 9 5-9 5-9-5Z" /><path d="M7 10.2V16c2.8 2.4 7.2 2.4 10 0v-5.8M21 8v7" /></svg>
                 <span>Fachdeutsch</span>
               </a>
-              <a class={`nav-item ${active === 'profile' ? 'active' : ''}`} href="/dashboard/profil" aria-current={active === 'profile' ? 'page' : undefined}>
-                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5" /><path d="M5 21a7 7 0 0 1 14 0" /></svg>
-                <span>Profil</span>
-              </a>
               <a class={`nav-item ${active === 'bookmark' ? 'active' : ''}`} href="/dashboard/bookmark" aria-current={active === 'bookmark' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4V4.5Z" /></svg>
                 <span>Bookmark</span>
+              </a>
+              <a class={`nav-item ${active === 'help' ? 'active' : ''}`} href="/bantuan" aria-current={active === 'help' ? 'page' : undefined}>
+                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M9.6 9a2.5 2.5 0 1 1 4.4 1.6c-1.1 1.1-2 1.4-2 3M12 17.5h.01" /></svg>
+                <span>Bantuan</span>
               </a>
               <a class="nav-item" href="/pengucapan">
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 19h16M7 5v14M17 5v14" /><path d="m10 10 2 4 2-4" /></svg>
@@ -106,20 +92,18 @@ const logoFallback = 'siDeutsch';
               <a class={`nav-item ${active === 'career' ? 'active' : ''}`} href="/career" aria-current={active === 'career' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" /></svg>
                 <span>Career</span>
+                <span class="coming-soon-badge">Coming Soon</span>
               </a>
             </>
           )}
         </nav>
 
-        <form class="sidebar-logout" action="/logout" method="post">
-          <button type="submit"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M10 17l5-5-5-5M15 12H3" /><path d="M12 3h7a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-7" /></svg><span>Logout</span></button>
-        </form>
       </aside>
 
       <button class="sidebar-overlay" type="button" aria-label="Tutup navigasi"></button>
 
       <div class="private-main-column">
-        <header class="mobile-dashboard-header">
+        <header class="dashboard-header">
           <button
             class="sidebar-toggle"
             type="button"
@@ -134,10 +118,34 @@ const logoFallback = 'siDeutsch';
           <a href={isAdmin ? '/admin' : '/dashboard'} aria-label="siDeutsch">
             <img src="/logo.png" alt="siDeutsch" />
           </a>
+          {user && (
+            <details class="account-dropdown">
+              <summary class="account-trigger">
+                {profile?.avatar_url ? (
+                  <img class="account-avatar" src={profile.avatar_url} alt="" />
+                ) : (
+                  <span class="account-avatar avatar-initial" aria-hidden="true">{accountInitial}</span>
+                )}
+                <span class="account-copy">
+                  <strong>{displayName}</strong>
+                  <span>{nim ? `NIM ${nim}` : 'Umum'}</span>
+                </span>
+                <svg class="account-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <div class="account-menu">
+                {!isAdmin && <a href="/dashboard/profil">Profil Saya</a>}
+                <form action="/logout" method="post">
+                  <button type="submit">Logout</button>
+                </form>
+              </div>
+            </details>
+          )}
         </header>
         <main class="private-content"><slot /></main>
         <footer class="private-footer">
-          <span>© 2026 siDeutsch. Dibuat untuk mahasiswa Indonesia.</span>
+          <span>© 2026 siDeutsch. Dibuat untuk siapa saja yang ingin belajar bahasa Jerman.</span>
           <span class="footer-separator" aria-hidden="true">·</span>
           <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Kontak Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>
@@ -168,10 +176,23 @@ const logoFallback = 'siDeutsch';
       if (event.target.closest('.sidebar-toggle')) setSidebarOpen(true);
       else if (event.target.closest('.sidebar-close, .sidebar-overlay')) setSidebarOpen(false, true);
       else if (event.target.closest('.private-sidebar a')) setSidebarOpen(false);
+      if (!event.target.closest('.account-dropdown')) {
+        document.querySelectorAll<HTMLDetailsElement>('.account-dropdown[open]').forEach((dropdown) => {
+          dropdown.open = false;
+        });
+      }
     });
 
     document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') setSidebarOpen(false, true);
+      if (event.key === 'Escape') {
+        const openDropdown = document.querySelector<HTMLDetailsElement>('.account-dropdown[open]');
+        if (openDropdown) {
+          openDropdown.open = false;
+          openDropdown.querySelector<HTMLElement>('summary')?.focus();
+        } else {
+          setSidebarOpen(false, true);
+        }
+      }
     });
 
     window.matchMedia('(min-width: 821px)').addEventListener('change', (event) => {
@@ -361,10 +382,6 @@ const logoFallback = 'siDeutsch';
     display: none;
   }
 
-  .mobile-dashboard-header {
-    display: none;
-  }
-
   .sidebar-logo img {
     display: block;
     width: auto;
@@ -387,60 +404,14 @@ const logoFallback = 'siDeutsch';
     letter-spacing: 0.02em;
   }
 
-  .sidebar-profile {
-    display: flex;
-    min-width: 0;
-    align-items: center;
-    gap: 0.7rem;
-    margin: 1rem 0 1.2rem;
-    padding: 0.85rem 0.55rem 1rem;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.13);
-  }
-
-  .sidebar-avatar {
-    display: grid;
-    width: 42px;
-    height: 42px;
-    flex: 0 0 auto;
-    place-items: center;
-    border-radius: 50%;
-    object-fit: cover;
-    background: var(--accent-gold);
-    color: var(--bg-dark);
-    font-weight: 800;
-  }
-
-  .profile-copy {
-    display: grid;
-    min-width: 0;
-    gap: 0.1rem;
-  }
-
-  .profile-copy strong,
-  .profile-copy span {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .profile-copy strong {
-    color: #fff;
-    font-size: 0.84rem;
-  }
-
-  .profile-copy span {
-    color: rgba(255, 255, 255, 0.63);
-    font-size: 0.72rem;
-  }
-
   .private-nav {
     display: grid;
     gap: 0.3rem;
     align-content: start;
+    overflow-y: auto;
   }
 
-  .nav-item,
-  .sidebar-logout button {
+  .nav-item {
     display: flex;
     min-height: 44px;
     align-items: center;
@@ -470,15 +441,13 @@ const logoFallback = 'siDeutsch';
     stroke-linejoin: round;
   }
 
-  .nav-item:hover,
-  .sidebar-logout button:hover {
+  .nav-item:hover {
     background: rgba(255, 255, 255, 0.08);
     color: #fff;
     transform: translateX(3px);
   }
 
   .nav-item:focus-visible,
-  .sidebar-logout button:focus-visible,
   .sidebar-close:focus-visible,
   .sidebar-toggle:focus-visible {
     outline: 3px solid var(--accent-gold);
@@ -499,14 +468,181 @@ const logoFallback = 'siDeutsch';
     color: var(--accent-gold);
   }
 
-  .sidebar-logout {
-    margin-top: auto;
-    padding-top: 0.9rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.13);
+  .coming-soon-badge {
+    margin-left: auto;
+    padding: 0.12rem 0.38rem;
+    border: 1px solid rgba(229, 169, 59, 0.35);
+    border-radius: 999px;
+    color: var(--accent-gold);
+    font-size: 0.58rem;
+    font-weight: 800;
+    line-height: 1.5;
+    white-space: nowrap;
   }
 
-  .sidebar-logout button {
+  .dashboard-header {
+    position: sticky;
+    z-index: 20;
+    top: 0;
+    display: flex;
+    min-height: 72px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.65rem clamp(1.25rem, 3vw, 2.5rem);
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+  }
+
+  .dashboard-header > a {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .dashboard-header > a img {
+    display: block;
+    width: auto;
+    height: 36px;
+    object-fit: contain;
+  }
+
+  .account-dropdown {
+    position: relative;
+    margin-left: auto;
+  }
+
+  .account-trigger {
+    display: flex;
+    min-width: 170px;
+    align-items: center;
+    gap: 0.65rem;
+    padding: 0.42rem 0.65rem;
+    border: 1px solid transparent;
+    border-radius: 12px;
+    background: transparent;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .account-trigger::-webkit-details-marker {
+    display: none;
+  }
+
+  .account-trigger:hover,
+  .account-dropdown[open] .account-trigger {
+    border-color: var(--border);
+    background: var(--bg-main);
+  }
+
+  .account-trigger:focus-visible {
+    outline: 3px solid rgba(229, 169, 59, 0.45);
+    outline-offset: 2px;
+  }
+
+  .account-avatar {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 auto;
+    place-items: center;
+    border: 2px solid rgba(229, 169, 59, 0.55);
+    border-radius: 50%;
+    object-fit: cover;
+    background: #F7E5C2;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 800;
+  }
+
+  .account-copy {
+    display: grid;
+    min-width: 0;
+    flex: 1;
+    gap: 0.05rem;
+    text-align: left;
+  }
+
+  .account-copy strong,
+  .account-copy span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .account-copy strong {
+    color: var(--text-main);
+    font-size: 0.79rem;
+    line-height: 1.35;
+  }
+
+  .account-copy span {
+    color: var(--muted);
+    font-size: 0.68rem;
+  }
+
+  .account-chevron {
+    width: 17px;
+    height: 17px;
+    flex: 0 0 auto;
+    stroke: var(--muted);
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.18s ease;
+  }
+
+  .account-dropdown[open] .account-chevron {
+    transform: rotate(180deg);
+  }
+
+  .account-menu {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 0.45rem);
+    right: 0;
+    display: grid;
+    width: 210px;
+    gap: 0.25rem;
+    padding: 0.45rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: var(--shadow);
+  }
+
+  .account-menu a,
+  .account-menu button {
+    display: block;
     width: 100%;
+    padding: 0.65rem 0.7rem;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .account-menu a:hover {
+    background: var(--bg-main);
+  }
+
+  .account-menu form {
+    padding-top: 0.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .account-menu button {
+    color: var(--accent-red);
+  }
+
+  .account-menu button:hover {
+    background: rgba(217, 56, 56, 0.08);
   }
 
   .private-main-column {
@@ -634,17 +770,10 @@ const logoFallback = 'siDeutsch';
       visibility: visible;
     }
 
-    .mobile-dashboard-header {
-      position: sticky;
-      z-index: 20;
-      top: 0;
-      display: flex;
-      min-height: 60px;
-      align-items: center;
-      gap: 0.75rem;
-      padding: 0.5rem 1rem;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-main);
+    .dashboard-header {
+      min-height: 62px;
+      gap: 0.5rem;
+      padding: 0.45rem 0.75rem;
     }
 
     .sidebar-toggle {
@@ -657,21 +786,36 @@ const logoFallback = 'siDeutsch';
       background: var(--bg-dark);
     }
 
-    .mobile-dashboard-header img {
-      display: block;
-      width: auto;
-      height: 32px;
-      object-fit: contain;
+    .dashboard-header > a img {
+      height: 30px;
     }
 
-    .sidebar-profile {
-      margin: 0.55rem 0 0.6rem;
-      padding: 0.55rem 0.4rem 0.7rem;
+    .account-trigger {
+      min-width: 0;
+      gap: 0.4rem;
+      padding: 0.32rem;
     }
 
-    .sidebar-avatar {
-      width: 34px;
-      height: 34px;
+    .account-avatar {
+      width: 36px;
+      height: 36px;
+    }
+
+    .account-copy {
+      max-width: min(28vw, 140px);
+    }
+
+    .account-copy strong {
+      font-size: 0.72rem;
+    }
+
+    .account-copy span {
+      font-size: 0.64rem;
+    }
+
+    .account-chevron {
+      width: 14px;
+      height: 14px;
     }
 
     .private-nav {
@@ -679,8 +823,7 @@ const logoFallback = 'siDeutsch';
       gap: 0.25rem;
     }
 
-    .nav-item,
-    .sidebar-logout button {
+    .nav-item {
       min-height: 40px;
       padding: 0.5rem;
       font-size: 0.78rem;

@@ -5,16 +5,21 @@
 ```mermaid
 flowchart TD
     A[Pengguna membuka portal login] --> B{Portal?}
-    B -->|Mahasiswa /login| C[Masukkan NIM dan password]
-    C --> D{NIM valid dan bukan NIM admin?}
-    D -->|Tidak| E[Tampilkan penolakan atau validasi]
-    D -->|Ya| F[Bentuk email Supabase dari NIM]
-    F --> G{Sign-in berhasil?}
-    G -->|Ya| H[Dashboard mahasiswa]
-    G -->|Tidak| I{Akun belum ada?}
-    I -->|Ya| J[Signup mahasiswa]
-    J --> H
-    I -->|Tidak| E
+    B -->|Pengguna /login| C[Masukkan email atau NIM dan kata sandi]
+    C --> D{Email atau NIM valid?}
+    D -->|Tidak| E[Tampilkan pesan validasi]
+    D -->|Ya| F{Input berupa email?}
+    F -->|Ya| G[Gunakan email]
+    F -->|NIM| H[Bentuk email Supabase dari NIM lama]
+    G --> I[Cek akun: sign-in dengan email dan kata sandi]
+    H --> I
+    I -->|Berhasil| J[Dashboard pengguna]
+    I -->|Invalid login credentials| K[Coba auto-signup dengan email dan kata sandi]
+    I -->|Error lain| E
+    K -->|Akun baru berhasil dibuat| L[Sign-in ulang]
+    L -->|Berhasil| M[Buat profil dengan NIM nullable bila perlu]
+    M --> J
+    K -->|Akun sudah terdaftar atau signup gagal| E
 
     B -->|Admin /admin/login| K[Masukkan NIM dan password]
     K --> L{NIM admin diizinkan?}

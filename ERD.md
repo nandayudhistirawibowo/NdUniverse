@@ -39,8 +39,8 @@ Bookmark tidak ditampilkan sebagai entitas relasional: data bookmark berada di b
 
 | Tabel | Kolom yang digunakan aplikasi | Constraint / catatan |
 | --- | --- | --- |
-| `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Email mahasiswa dibentuk dari NIM. |
-| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | Aplikasi mengupsert profil memakai `id = auth.users.id`. DDL lengkap `profiles` tidak tersedia di repo; verifikasi schema Supabase aktual sebelum migrasi. |
+| `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Pengguna dapat memakai email atau NIM lama yang dipetakan ke alamat `NIM@student.sideutsch.com`. |
+| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | Kolom `nim` nullable (boleh `NULL`) untuk pengguna umum tanpa NIM. Aplikasi mengupsert profil memakai `id = auth.users.id`. Terapkan `supabase/profiles_nim_nullable.sql` pada database yang kolomnya masih `NOT NULL`; verifikasi schema aktual sebelum migrasi. |
 | `public.user_progress` | `id`, `user_id`, `material_slug`, `xp`, `sessions_passed`, `notes`, `updated_at` | Didefinisikan di `supabase/user_progress.sql`; `(user_id, material_slug)` unik, FK ke `auth.users(id)` dengan cascade delete, dan RLS membatasi akses ke pemilik baris. |
 
 ## Relasi dan Makna Data

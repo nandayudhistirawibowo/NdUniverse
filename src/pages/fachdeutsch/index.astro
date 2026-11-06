@@ -30,6 +30,7 @@ const fakultas = [
   description="Pilih fakultas dan jurusan untuk melihat materi Fachdeutsch yang relevan dengan bidang studi kamu."
 >
   <section class="page-shell">
+    <a class="dashboard-back-link" href="/dashboard">← Kembali ke Dashboard</a>
     <p class="eyebrow">Fachdeutsch</p>
     <h1>Pilih Fakultas dan Jurusan</h1>
     <p class="lead">Belajar kosakata teknis dan formal yang sesuai dengan bidang studi kamu.</p>
@@ -52,6 +53,24 @@ const fakultas = [
 </Layout>
 
 <style>
+  .dashboard-back-link {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 1.1rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .dashboard-back-link:hover {
+    border-color: var(--accent-gold);
+    background: rgba(229, 169, 59, 0.1);
+  }
+
   .page-shell {
     padding-top: 1rem;
   }
