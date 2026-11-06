@@ -3,64 +3,67 @@
 **Status:** Dokumentasi kondisi implementasi saat ini  
 **Produk:** Platform belajar bahasa Jerman untuk siapa saja
 
-## Ringkasan
+## Latar Belakang
 
-siDeutsch menyediakan materi bahasa Jerman sehari-hari dan kosakata berbagai bidang, latihan interaktif, serta progress belajar untuk pengguna umum. Koleksi saat ini mencakup **411 materi Alltagsdeutsch A1–C2 (8.220 vocab)**, **13 materi Fachdeutsch (260 vocab)**, dan **1 materi Career (20 vocab)**: total **425 file materi dan sekitar 8.500 entri vocab**.
+siDeutsch adalah platform belajar bahasa Jerman interaktif untuk siapa saja yang ingin meningkatkan kemampuan bahasa, dari komunikasi sehari-hari hingga kosakata bidang profesional. Produk menyediakan materi bertingkat A1–C2, kuis, progress, bookmark kosakata, dan materi persiapan kerja.
+
+Koleksi saat ini terdiri dari **411 materi Alltagsdeutsch A1–C2 (8.220 vocab)**, **13 materi Fachdeutsch (260 vocab)**, dan **1 materi Career (20 vocab)**: total **425 file materi dan sekitar 8.500 entri vocab**.
 
 ## Tujuan dan Pengguna
 
-- Membantu siapa saja belajar bahasa Jerman dari A1 hingga C2.
+- Membantu pelajar/pengguna umum belajar bahasa Jerman dari A1 hingga C2.
 - Menyediakan Alltagsdeutsch, Fachdeutsch, dan materi Career untuk komunikasi dunia kerja.
-- Mendukung sesi belajar singkat, kuis, XP, bookmark kosakata, dan sinkronisasi progress bagi pengguna login.
-- Memberi guest akses preview materi dan latihan terbatas, serta menyediakan portal admin terproteksi.
+- Memberikan sesi kuis singkat, XP, bookmark kosakata, dan progress tersinkron untuk pengguna yang masuk.
+- Menjaga area profil, dashboard, Career, Bantuan, dan admin tetap terproteksi autentikasi.
 
-Pengguna utama adalah pelajar dan pengguna umum, termasuk guest yang ingin melihat atau mencoba materi, serta admin yang mengelola platform.
+Target utama adalah **pelajar dan pengguna umum**. Admin mengelola akun dan platform melalui portal terpisah.
 
 ## Fitur Utama
 
 ### Autentikasi dan Akses
 
-- Pengguna masuk dari `/login` menggunakan email atau NIM; NIM lama tetap dipetakan ke email Supabase berbentuk `NIM@student.sideutsch.com`.
-- Jika kredensial tidak cocok karena akun belum tersedia, form mencoba membuat akun otomatis dengan email dan password yang dimasukkan, lalu masuk kembali setelah akun dibuat.
-- Akun yang sudah terdaftar tidak dibuat ulang; jika password salah, pengguna mendapat pesan agar memeriksa password.
-- Admin menggunakan `/admin/login` dengan alur autentikasi khusus admin.
-- Middleware memeriksa autentikasi untuk `/dashboard` dan `/career`, serta otorisasi admin untuk `/admin`.
-- Guest dapat mengakses materi publik dan mencoba latihan terbatas.
+- Halaman `/login` menerima email atau NIM lama. NIM lama dipetakan ke alamat Supabase `NIM@student.sideutsch.com`; alamat email digunakan langsung.
+- Pengguna baru tidak memerlukan tombol Daftar. Jika upaya login mendapat `Invalid login credentials`, aplikasi mencoba membuat akun otomatis (*auto-signup*) menggunakan email dan password yang dimasukkan, lalu mencoba masuk kembali.
+- Profil pengguna umum dibuat dengan `nim` nullable jika pengguna tidak memiliki NIM. Akun NIM lama tetap dapat digunakan.
+- Jika akun sudah terdaftar tetapi password salah, pengguna menerima pesan yang menjelaskan kondisi tersebut. Konfirmasi email Supabase yang aktif dapat menghalangi login otomatis hingga email dikonfirmasi.
+- Admin menggunakan `/admin/login` dengan validasi dan otorisasi khusus.
+- Middleware melindungi `/dashboard`, `/career`, dan `/bantuan`; rute admin memerlukan hak admin.
+- Materi publik dapat dilihat tanpa login; dashboard dan sinkronisasi progress memerlukan akun yang masuk.
 
-### Track Materi
+### Materi dan Jalur Belajar
 
-- **Alltagsdeutsch:** materi umum berlevel CEFR A1–C2.
-- **Fachdeutsch:** kosakata berdasarkan bidang studi.
-- **Career:** content collection terpisah untuk persiapan dunia kerja, seperti wawancara, CV, dan komunikasi profesional. `/career` menampilkan katalog; `/career/[slug]` menampilkan vocab dan konteks. Kuis Career belum terimplementasikan.
-- Alltagsdeutsch dan Fachdeutsch menggunakan collection `materi`; Career menggunakan collection `career`.
-- Materi utama berisi `track`, `judulMateri`, `deskripsi`, dan vocab. Setiap vocab memuat kata Jerman, arti Indonesia, kalimat konteks Jerman, dan terjemahan konteks opsional.
-- Latihan materi utama membagi vocab menjadi sesi maksimal lima kata.
+- **Alltagsdeutsch:** materi bahasa umum berdasarkan level CEFR A1–C2.
+- **Fachdeutsch:** kosakata dan konteks berbagai bidang studi/profesional.
+- **Career:** track persiapan kerja terpisah tanpa level CEFR. Halaman katalog `/career` saat ini menampilkan pemberitahuan Coming Soon; kuis Career belum tersedia.
+- Materi Alltagsdeutsch dan Fachdeutsch berada di content collection `materi`; Career berada di collection `career`.
+- Materi utama memuat track, level atau bidang bila sesuai, judul, deskripsi, dan vocab. Vocab menyediakan kata Jerman, arti Indonesia, kalimat konteks Jerman, dan terjemahan konteks.
+- Vocab materi utama dibagi ke sesi latihan maksimal lima kata.
 
 ### Kuis, XP, dan Progress
 
-- Kuis materi utama menyediakan Tap & Arrange, Word Matcher, dan Text Box; tipe soal bervariasi berdasarkan sesi.
-- Pemain memulai dengan tiga nyawa. Jawaban benar menambah 10 XP ke state XP sementara sesi; jawaban salah mengurangi nyawa dan memasukkan kata ke Review Kata Sulit.
-- XP sesi baru ditambahkan ke total dan antrean sinkronisasi setelah kuis berakhir dengan seluruh soal selesai. Saat Game Over, XP sesi direset menjadi nol dan tidak dikomit.
-- Guard `finalizedXpRef` mencegah satu run kuis dikomit berulang oleh efek Preact. Namun, tidak ada ledger yang mencegah XP didapat lagi dengan mengulang kuis yang telah selesai; jangan menganggap ini sebagai batas anti-replay lintas sesi.
-- Akurasi minimal 80% menandai sesi lulus. XP dan status lulus adalah data terpisah: kuis yang selesai tetapi tidak memenuhi akurasi tetap dapat menyimpan XP.
-- Pengguna login menyimpan progress per material ke Supabase `user_progress`; nilai total XP juga dicache di `localStorage`. Guest tidak menyimpan progress kuis secara persisten.
-- Total XP dashboard menjumlahkan XP dari seluruh progress materi. Level CEFR dihitung dari sesi lulus dan bobot level pada materi berlevel di collection `materi`; Career berada di collection terpisah dan tidak ikut menghitung level.
-- Catatan materi tersedia bagi pengguna login dan disimpan pada progress material.
+- Kuis materi utama menggunakan variasi Tap & Arrange (Susun Kata), Word Matcher, dan Text Box.
+- Setiap kuis dimulai dengan tiga nyawa. Jawaban salah mengurangi nyawa dan menambahkan kata terkait ke Review Kata Sulit.
+- Jawaban benar menambah 10 XP ke state XP sementara. XP baru ditambahkan ke total setelah semua soal sesi selesai; jika Game Over, XP sementara dibuang dan tidak dikomit. Mekanisme ini mencegah XP dari sesi yang tidak diselesaikan.
+- `finalizedXpRef` mencegah finalisasi ganda untuk satu run kuis. Implementasi saat ini belum memiliki ledger anti-replay yang mencegah pengguna mendapat XP lagi dengan mengulang sesi yang sudah selesai; anti-farming di sini tidak berarti replay diblokir.
+- Akurasi minimal 80% menandai sesi lulus. XP sesi yang selesai dan status lulus merupakan hal berbeda: sesi yang selesai tetapi tidak mencapai akurasi tersebut masih dapat mengomit XP.
+- Pengguna login menyimpan progress per material ke Supabase `user_progress`; cache progress/XP juga menggunakan `localStorage`. Materi yang dimainkan tanpa login tidak memiliki sinkronisasi progress akun.
+- Total XP menggabungkan XP seluruh materi. Level CEFR dihitung dari sesi lulus materi berlevel di collection `materi`; Career yang terpisah tidak ikut perhitungan ini.
+- Catatan belajar disimpan per pengguna dan material.
 
 ### Bookmark Kosakata
 
-- Kata dari Review Kata Sulit dapat disimpan dari ringkasan kuis.
-- Data bookmark berisi `german`, `indonesian`, dan `context`, disimpan di browser pada key `sideutsch-bookmarks`.
-- Duplikasi kata Jerman dicegah dengan perbandingan huruf kecil; bookmark dapat dihapus di `/dashboard/bookmark`.
+- Dari Review Kata Sulit pada ringkasan kuis, pengguna dapat menambahkan kata ke bookmark.
+- Bookmark berisi `german`, `indonesian`, dan `context`, disimpan di browser pada key `sideutsch-bookmarks`.
+- Duplikat kata Jerman dicegah; bookmark dapat dilihat dan dihapus pada `/dashboard/bookmark`.
 - Bookmark bersifat client-side per browser dan tidak disimpan atau disinkronkan ke Supabase.
 
-### Dashboard, Level, dan Tooltip XP
+### Dashboard, Level, dan Tooltip
 
-Dashboard menampilkan total XP, progress level CEFR, pencapaian materi, dan akses ke jalur belajar. Tooltip/teks pada kartu Progress Belajar menerangkan bahwa XP berasal dari semua materi, sedangkan level CEFR hanya dihitung dari materi Alltagsdeutsch berlevel yang sedang digunakan untuk perhitungan level.
+Dashboard menampilkan total XP, level CEFR, progress menuju level berikutnya, dan pencapaian materi. Tooltip/keterangan pada kartu Progress Belajar menerangkan bahwa XP berasal dari semua materi, sementara level CEFR dihitung dari sesi lulus Alltagsdeutsch berlevel.
 
-Bobot poin per sesi lulus:
+Bobot poin per sesi lulus menurut level materi:
 
-| Level materi | Poin |
+| Level materi | Poin per sesi lulus |
 | --- | ---: |
 | A1 | 10 |
 | A2 | 20 |
@@ -68,6 +71,8 @@ Bobot poin per sesi lulus:
 | B2 | 40 |
 | C1 | 50 |
 | C2 | 60 |
+
+Threshold total poin untuk label level dashboard:
 
 | Total poin | Level dashboard |
 | --- | --- |
@@ -83,9 +88,9 @@ Bobot poin per sesi lulus:
 ### Fitur Pendukung
 
 - `/pengucapan` dan `/grammar` menyediakan panduan bahasa.
-- Web Speech API browser (`de-DE`) membacakan kosakata dan kalimat bila tersedia.
-- Profil pengguna menampilkan informasi akun dan avatar; berkas avatar disimpan di Supabase Storage bucket `avatars`.
-- Admin mengelola akun lewat `/admin` dan Admin API yang terproteksi.
+- Web Speech API browser (`de-DE`) membacakan kosakata dan konteks bila tersedia.
+- Profil pengguna menyediakan pengaturan nama, foto, dan penggantian password.
+- Admin mengelola akun melalui `/admin` dan Admin API yang terproteksi.
 
 ## Tech Stack
 
@@ -104,17 +109,17 @@ Bobot poin per sesi lulus:
 
 ## Model Data Tingkat Tinggi
 
-- Supabase Auth mengelola identitas akun.
-- `profiles` menyimpan data profil yang digunakan aplikasi: NIM opsional, nama, nomor WhatsApp, dan URL avatar.
-- `user_progress` menyimpan XP, sesi lulus, dan catatan per kombinasi user dan slug materi; akses dibatasi oleh RLS.
-- Konten materi tetap di Markdown Astro, bukan tabel Supabase.
-- Bookmark disimpan di `localStorage`, bukan entitas database.
+- Supabase Auth mengelola akun dan sesi.
+- `profiles` menyimpan NIM opsional, nama, nomor WhatsApp, dan URL avatar.
+- `user_progress` menyimpan XP, sesi lulus, dan catatan per kombinasi pengguna dan slug materi; akses dibatasi oleh RLS.
+- Konten materi tersimpan sebagai Markdown di Astro Content Collections, bukan tabel Supabase.
+- Bookmark tersimpan di `localStorage`, bukan entitas database.
 
 Skema dan batasan relasi dirinci dalam [ERD.md](./ERD.md).
 
 ## Operasional
 
 - Variabel lingkungan: `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, dan `SUPABASE_SERVICE_ROLE_KEY`. Jangan commit nilai rahasia.
-- Terapkan SQL Supabase, RLS, dan bucket Storage `avatars` sesuai deployment.
+- Terapkan SQL Supabase, RLS, migrasi nullable `profiles.nim`, dan bucket Storage `avatars` sesuai deployment.
 - Jalankan `npm run build` sebelum perubahan siap dipush.
 - Belum ada script test otomatis khusus dalam `package.json`; build dan uji manual tetap diperlukan.
