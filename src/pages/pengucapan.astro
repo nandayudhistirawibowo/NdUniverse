@@ -56,6 +56,18 @@ const specialLetters = [
     example: 'Straße',
   },
 ];
+
+const diphthongs = [
+  { combination: 'au', reading: 'au', example: 'Haus', meaning: 'rumah' },
+  { combination: 'eu', reading: 'oi', example: 'Feuer', meaning: 'api' },
+  { combination: 'äu', reading: 'oi', example: 'Häuser', meaning: 'rumah-rumah' },
+  { combination: 'ie', reading: 'ii', example: 'Liebe', meaning: 'cinta' },
+  { combination: 'ai', reading: 'ai', example: 'Mai', meaning: 'Mei' },
+  { combination: 'ei', reading: 'ai', example: 'mein', meaning: 'punyaku' },
+  { combination: 'io', reading: 'io', example: 'Union', meaning: 'persatuan' },
+  { combination: 'ia', reading: 'ia', example: 'Familie', meaning: 'keluarga' },
+  { combination: 'ea', reading: 'ea', example: 'Realisieren', meaning: 'merealisasikan' },
+];
 ---
 
 <Layout
@@ -120,6 +132,36 @@ const specialLetters = [
             <p class="example-line">Contoh: <span lang="de">{example}</span></p>
           </article>
         ))}
+      </div>
+    </section>
+
+    <section class="alphabet-section" aria-labelledby="diphthong-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">03 / Kombinasi vokal</p>
+          <h2 id="diphthong-heading">Kombinasi Vokal / Diphthong</h2>
+        </div>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel kombinasi vokal bahasa Jerman" tabindex="0">
+        <table class="alphabet-table">
+          <thead>
+            <tr>
+              <th scope="col">Kombinasi</th>
+              <th scope="col">Dibaca</th>
+              <th scope="col">Contoh Kata</th>
+            </tr>
+          </thead>
+          <tbody>
+            {diphthongs.map(({ combination, reading, example, meaning }) => (
+              <tr>
+                <th scope="row" class="letter-cell" lang="de">{combination}</th>
+                <td>{reading}</td>
+                <td><span lang="de">{example}</span> ({meaning})</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   </div>
