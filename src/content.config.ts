@@ -31,6 +31,24 @@ const materi = defineCollection({
   }),
 });
 
+const career = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/career' }),
+  schema: z.object({
+    track: z.literal('Career'),
+    judulMateri: z.string(),
+    deskripsi: z.string(),
+    vocab: z.array(
+      z.object({
+        german: z.string(),
+        indonesian: z.string(),
+        context: z.string().optional(),
+        contextIndonesian: z.string().optional(),
+      })
+    ),
+  }),
+});
+
 export const collections = {
   materi,
+  career,
 };
