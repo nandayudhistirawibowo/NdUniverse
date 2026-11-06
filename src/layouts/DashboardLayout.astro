@@ -124,8 +124,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
           {user && (
             <details class="account-dropdown">
               <summary class="account-trigger">
-                <img class="account-avatar" data-avatar-image src={avatarUrl ?? ''} alt="" hidden={!avatarUrl} />
-                <span class="account-avatar avatar-initial" data-avatar-fallback aria-hidden="true" hidden={!!avatarUrl}>{accountInitial}</span>
+                {avatarUrl ? (
+                  <img class="account-avatar" data-avatar-image data-avatar-initial={accountInitial} src={avatarUrl} alt="" />
+                ) : (
+                  <span class="account-avatar avatar-initial" aria-hidden="true">{accountInitial}</span>
+                )}
                 <span class="account-copy">
                   <strong>{displayName}</strong>
                   <span>{nim ? `NIM ${nim}` : 'Umum'}</span>
@@ -173,9 +176,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 
     document.querySelectorAll<HTMLImageElement>('.account-dropdown [data-avatar-image]').forEach((image) => {
       const showFallback = () => {
-        image.hidden = true;
-        const fallback = image.parentElement?.querySelector<HTMLElement>('[data-avatar-fallback]');
-        if (fallback) fallback.hidden = false;
+        const fallback = document.createElement('span');
+        fallback.className = 'account-avatar avatar-initial';
+        fallback.setAttribute('aria-hidden', 'true');
+        fallback.textContent = image.dataset.avatarInitial ?? '';
+        image.replaceWith(fallback);
       };
 
       image.addEventListener('error', showFallback, { once: true });
