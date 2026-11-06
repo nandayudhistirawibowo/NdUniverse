@@ -20,6 +20,40 @@ const sentenceExamples = [
   { sentence: 'Ich lerne Deutsch.', structure: 'Subjek + Verb + Objek', meaning: 'Saya belajar bahasa Jerman.' },
   { sentence: 'Heute lerne ich Deutsch.', structure: 'Keterangan + Verb + Subjek + Objek', meaning: 'Hari ini saya belajar bahasa Jerman.' },
 ];
+
+const questionWords = [
+  { word: 'Wer', meaning: 'Siapa', example: 'Wer bist du?', translation: 'Siapa kamu?' },
+  { word: 'Was', meaning: 'Apa', example: 'Was lernst du?', translation: 'Apa yang kamu pelajari?' },
+  { word: 'Wo', meaning: 'Di mana', example: 'Wo wohnst du?', translation: 'Kamu tinggal di mana?' },
+  { word: 'Wann', meaning: 'Kapan', example: 'Wann beginnt der Kurs?', translation: 'Kapan kursus dimulai?' },
+  { word: 'Warum', meaning: 'Mengapa', example: 'Warum lernst du Deutsch?', translation: 'Mengapa kamu belajar bahasa Jerman?' },
+  { word: 'Wie', meaning: 'Bagaimana', example: 'Wie heißt du?', translation: 'Siapa namamu?' },
+  { word: 'Woher', meaning: 'Dari mana', example: 'Woher kommst du?', translation: 'Kamu berasal dari mana?' },
+  { word: 'Wohin', meaning: 'Ke mana', example: 'Wohin gehst du?', translation: 'Kamu pergi ke mana?' },
+];
+
+const pluralExamples = [
+  { singular: 'das Kind', plural: 'die Kinder', pattern: '-er' },
+  { singular: 'der Mann', plural: 'die Männer', pattern: 'Umlaut + -er' },
+  { singular: 'die Frau', plural: 'die Frauen', pattern: '-en' },
+  { singular: 'das Buch', plural: 'die Bücher', pattern: 'Umlaut + -er' },
+  { singular: 'der Tisch', plural: 'die Tische', pattern: '-e' },
+  { singular: 'die Lampe', plural: 'die Lampen', pattern: '-n' },
+  { singular: 'das Auto', plural: 'die Autos', pattern: '-s' },
+  { singular: 'der Lehrer', plural: 'die Lehrer', pattern: 'Tidak berubah' },
+];
+
+const caseArticles = [
+  { gender: 'Maskulin', nominativ: 'der', akkusativ: 'den', dativ: 'dem' },
+  { gender: 'Feminin', nominativ: 'die', akkusativ: 'die', dativ: 'der' },
+  { gender: 'Netral', nominativ: 'das', akkusativ: 'das', dativ: 'dem' },
+  { gender: 'Plural', nominativ: 'die', akkusativ: 'die', dativ: 'den (+n)' },
+];
+
+const caseExamples = [
+  { sentence: 'Der Mann sieht den Hund.', nominativ: 'der Mann', object: 'den Hund (Akkusativ)', translation: 'Pria itu melihat anjing itu.' },
+  { sentence: 'Ich helfe dem Mann.', nominativ: 'ich', object: 'dem Mann (Dativ)', translation: 'Saya membantu pria itu.' },
+];
 ---
 
 <Layout
@@ -125,6 +159,149 @@ const sentenceExamples = [
         </table>
       </div>
       <p class="position-note"><span lang="de">Heute</span> mengisi posisi pertama, jadi kata kerja <span lang="de">lerne</span> tetap berada di posisi kedua.</p>
+    </section>
+
+    <section class="grammar-section" aria-labelledby="questions-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">04 / Kalimat tanya</p>
+          <h2 id="questions-heading">Penyusunan Kalimat Tanya (Fragen)</h2>
+        </div>
+      </div>
+
+      <p class="rule-summary">W-Fragen dimulai dengan kata tanya, lalu kata kerja. Ja/Nein-Fragen dimulai dengan kata kerja terkonjugasi dan dijawab dengan “Ja” atau “Nein”.</p>
+
+      <h3 class="subsection-title">W-Fragen</h3>
+      <div class="table-scroll" role="region" aria-label="Tabel W-Fragen bahasa Jerman" tabindex="0">
+        <table class="grammar-table question-table">
+          <thead>
+            <tr>
+              <th scope="col">Kata tanya</th>
+              <th scope="col">Arti</th>
+              <th scope="col">Contoh</th>
+              <th scope="col">Terjemahan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {questionWords.map(({ word, meaning, example, translation }) => (
+              <tr>
+                <th scope="row" lang="de">{word}</th>
+                <td>{meaning}</td>
+                <td lang="de">{example}</td>
+                <td>{translation}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="subsection-title subsection-spaced">Ja/Nein-Fragen</h3>
+      <div class="table-scroll" role="region" aria-label="Contoh Ja/Nein-Frage bahasa Jerman" tabindex="0">
+        <table class="grammar-table question-table">
+          <thead>
+            <tr>
+              <th scope="col">Pola</th>
+              <th scope="col">Contoh</th>
+              <th scope="col">Terjemahan</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Verb + Subjek + ...</th>
+              <td lang="de">Sprichst du Deutsch?</td>
+              <td>Apakah kamu bicara bahasa Jerman?</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grammar-section" aria-labelledby="plural-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">05 / Kata benda</p>
+          <h2 id="plural-heading">Pluralisasi Nomina (Plural)</h2>
+        </div>
+        <p class="section-note">Bentuk jamak bervariasi: akhiran dapat berupa -e, -en, -er, -s, perubahan Umlaut, atau tanpa perubahan.</p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel bentuk singular dan plural bahasa Jerman" tabindex="0">
+        <table class="grammar-table plural-table">
+          <thead>
+            <tr>
+              <th scope="col">Singular</th>
+              <th scope="col">Plural</th>
+              <th scope="col">Pola</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pluralExamples.map(({ singular, plural, pattern }) => (
+              <tr>
+                <th scope="row" lang="de">{singular}</th>
+                <td lang="de">{plural}</td>
+                <td>{pattern}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="grammar-section" aria-labelledby="cases-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">06 / Kasus</p>
+          <h2 id="cases-heading">Kasus Dasar</h2>
+        </div>
+      </div>
+
+      <p class="rule-summary"><strong>Nominativ</strong> menandai subjek, <strong>Akkusativ</strong> objek langsung, dan <strong>Dativ</strong> objek tidak langsung.</p>
+
+      <div class="table-scroll" role="region" aria-label="Perubahan artikel menurut kasus" tabindex="0">
+        <table class="grammar-table case-table">
+          <thead>
+            <tr>
+              <th scope="col">Gender</th>
+              <th scope="col">Nominativ</th>
+              <th scope="col">Akkusativ</th>
+              <th scope="col">Dativ</th>
+            </tr>
+          </thead>
+          <tbody>
+            {caseArticles.map(({ gender, nominativ, akkusativ, dativ }) => (
+              <tr>
+                <th scope="row">{gender}</th>
+                <td lang="de">{nominativ}</td>
+                <td lang="de">{akkusativ}</td>
+                <td lang="de">{dativ}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="table-scroll case-examples-scroll" role="region" aria-label="Contoh kalimat dengan kasus" tabindex="0">
+        <table class="grammar-table sentence-table">
+          <thead>
+            <tr>
+              <th scope="col">Contoh kalimat</th>
+              <th scope="col">Nominativ</th>
+              <th scope="col">Objek</th>
+              <th scope="col">Arti</th>
+            </tr>
+          </thead>
+          <tbody>
+            {caseExamples.map(({ sentence, nominativ, object, translation }) => (
+              <tr>
+                <th scope="row" lang="de">{sentence}</th>
+                <td lang="de">{nominativ}</td>
+                <td lang="de">{object}</td>
+                <td>{translation}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   </div>
 </Layout>
@@ -263,8 +440,31 @@ const sentenceExamples = [
     color: #76520d;
   }
 
+  .subsection-title {
+    margin: 1.25rem 0 0.75rem;
+    color: var(--text-main);
+    font-size: 1rem;
+  }
+
+  .subsection-spaced {
+    margin-top: 1.5rem;
+  }
+
   .sentence-table {
     min-width: 650px;
+  }
+
+  .question-table {
+    min-width: 680px;
+  }
+
+  .plural-table,
+  .case-table {
+    min-width: 560px;
+  }
+
+  .case-examples-scroll {
+    margin-top: 0.85rem;
   }
 
   .position-note {
