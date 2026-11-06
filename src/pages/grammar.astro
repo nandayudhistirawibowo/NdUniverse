@@ -9,15 +9,15 @@ const articles = [
 ];
 
 const conjugations = [
-  { pronoun: 'ich', sein: 'bin', haben: 'habe' },
-  { pronoun: 'du', sein: 'bist', haben: 'hast' },
-  { pronoun: 'er', sein: 'ist', haben: 'hat' },
-  { pronoun: 'sie', sein: 'ist', haben: 'hat' },
-  { pronoun: 'es', sein: 'ist', haben: 'hat' },
-  { pronoun: 'wir', sein: 'sind', haben: 'haben' },
-  { pronoun: 'ihr', sein: 'seid', haben: 'habt' },
-  { pronoun: 'sie', sein: 'sind', haben: 'haben' },
-  { pronoun: 'Sie', sein: 'sind', haben: 'haben' },
+  { pronoun: 'ich', sein: 'bin', haben: 'habe', seinExample: 'Ich bin Student.', seinMeaning: 'Saya mahasiswa.', habenExample: 'Ich habe ein Buch.', habenMeaning: 'Saya punya sebuah buku.' },
+  { pronoun: 'du', sein: 'bist', haben: 'hast', seinExample: 'Du bist nett.', seinMeaning: 'Kamu baik.', habenExample: 'Du hast Zeit.', habenMeaning: 'Kamu punya waktu.' },
+  { pronoun: 'er', sein: 'ist', haben: 'hat', seinExample: 'Er ist Lehrer.', seinMeaning: 'Dia guru.', habenExample: 'Er hat ein Auto.', habenMeaning: 'Dia punya mobil.' },
+  { pronoun: 'sie', sein: 'ist', haben: 'hat', seinExample: 'Sie ist Ärztin.', seinMeaning: 'Dia dokter.', habenExample: 'Sie hat Hunger.', habenMeaning: 'Dia lapar.' },
+  { pronoun: 'es', sein: 'ist', haben: 'hat', seinExample: 'Es ist kalt.', seinMeaning: 'Cuacanya dingin.', habenExample: 'Es hat Spaß.', habenMeaning: 'Itu menyenangkan.' },
+  { pronoun: 'wir', sein: 'sind', haben: 'haben', seinExample: 'Wir sind Freunde.', seinMeaning: 'Kami berteman.', habenExample: 'Wir haben Zeit.', habenMeaning: 'Kami punya waktu.' },
+  { pronoun: 'ihr', sein: 'seid', haben: 'habt', seinExample: 'Ihr seid laut.', seinMeaning: 'Kalian berisik.', habenExample: 'Ihr habt Glück.', habenMeaning: 'Kalian beruntung.' },
+  { pronoun: 'sie', sein: 'sind', haben: 'haben', seinExample: 'Sie sind Studenten.', seinMeaning: 'Mereka mahasiswa.', habenExample: 'Sie haben Geld.', habenMeaning: 'Mereka punya uang.' },
+  { pronoun: 'Sie', sein: 'sind', haben: 'haben', seinExample: 'Sie sind willkommen.', seinMeaning: 'Anda dipersilakan.', habenExample: 'Sie haben Fragen.', habenMeaning: 'Anda punya pertanyaan.' },
 ];
 
 const sentenceExamples = [
@@ -118,14 +118,28 @@ const caseExamples = [
               <th scope="col">Pronoun</th>
               <th scope="col">sein (menjadi / ada)</th>
               <th scope="col">haben (memiliki)</th>
+              <th scope="col">Contoh Kalimat (sein)</th>
+              <th scope="col">Contoh Kalimat (haben)</th>
             </tr>
           </thead>
           <tbody>
-            {conjugations.map(({ pronoun, sein, haben }) => (
+            {conjugations.map(({ pronoun, sein, haben, seinExample, seinMeaning, habenExample, habenMeaning }) => (
               <tr>
                 <th scope="row" lang="de">{pronoun}</th>
                 <td><GrammarSpeech text={sein} /></td>
                 <td><GrammarSpeech text={haben} /></td>
+                <td>
+                  <div class="conjugation-example">
+                    <GrammarSpeech text={seinExample} />
+                    <span class="conjugation-translation">{seinMeaning}</span>
+                  </div>
+                </td>
+                <td>
+                  <div class="conjugation-example">
+                    <GrammarSpeech text={habenExample} />
+                    <span class="conjugation-translation">{habenMeaning}</span>
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
@@ -422,13 +436,27 @@ const caseExamples = [
   }
 
   .conjugation-table {
-    min-width: 680px;
+    min-width: 1120px;
     table-layout: fixed;
   }
 
-  .conjugation-table tr > :nth-child(1) { width: 34%; }
-  .conjugation-table tr > :nth-child(2) { width: 33%; }
-  .conjugation-table tr > :nth-child(3) { width: 33%; }
+  .conjugation-table tr > :nth-child(1) { width: 12%; }
+  .conjugation-table tr > :nth-child(2) { width: 13%; }
+  .conjugation-table tr > :nth-child(3) { width: 13%; }
+  .conjugation-table tr > :nth-child(4) { width: 31%; }
+  .conjugation-table tr > :nth-child(5) { width: 31%; }
+
+  .conjugation-example {
+    display: grid;
+    justify-items: start;
+    gap: 0.3rem;
+  }
+
+  .conjugation-translation {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 400;
+  }
 
   .grammar-table th,
   .grammar-table td {
