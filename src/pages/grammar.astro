@@ -97,6 +97,7 @@ const caseExamples = [
           </tbody>
         </table>
       </div>
+      <p class="concept-note">Dalam bahasa Jerman, setiap kata benda (nomina) memiliki gender gramatikal: Maskulin (der), Feminin (die), dan Netral (das). Gender ini ga selalu sesuai sama jenis kelamin makhluk hidup. Contohnya, “<span lang="de">das Mädchen</span>” (anak perempuan) itu Netral, bukan Feminin. Jadi, lu harus hafalin artikelnya bareng sama katanya, karena ga ada aturan mutlak.</p>
     </section>
 
     <section class="grammar-section" aria-labelledby="verbs-heading">
@@ -127,6 +128,7 @@ const caseExamples = [
           </tbody>
         </table>
       </div>
+      <p class="concept-note">Kata kerja “<span lang="de">sein</span>” (menjadi) dan “<span lang="de">haben</span>” (memiliki) adalah dua kata kerja paling penting di bahasa Jerman. Keduanya sering dipake buat bikin kalimat dasar atau ngebantu kata kerja lain (sebagai kata kerja bantu). Konjugasinya berubah tergantung subjeknya (<span lang="de">ich, du, er/sie/es, wir, ihr, sie/Sie</span>).</p>
     </section>
 
     <section class="grammar-section" aria-labelledby="sentence-heading">
@@ -159,7 +161,7 @@ const caseExamples = [
           </tbody>
         </table>
       </div>
-      <p class="position-note"><span lang="de">Heute</span> mengisi posisi pertama, jadi kata kerja <span lang="de">lerne</span> tetap berada di posisi kedua.</p>
+      <p class="concept-note">Dalam kalimat utama (<span lang="de">Hauptsatz</span>), kata kerja yang udah dikonjugasi <strong>wajib</strong> berada di posisi kedua. Kalau lu mulai kalimatnya pake keterangan waktu (kayak “<span lang="de">Heute</span>”), kata kerjanya tetep di posisi kedua, dan subjeknya geser ke posisi ketiga. Ini namanya aturan V2 (Verb Second).</p>
     </section>
 
     <section class="grammar-section" aria-labelledby="questions-heading">
@@ -215,6 +217,7 @@ const caseExamples = [
           </tbody>
         </table>
       </div>
+      <p class="concept-note">W-Fragen (kalimat tanya pake kata tanya) itu dimulai dengan kata tanya, lalu diikuti kata kerja. Sedangkan Ja/Nein-Fragen (kalimat tanya yang jawabannya Ya/Tidak) itu dimulai langsung dengan kata kerja, tanpa kata tanya. Contoh: “<span lang="de">Sprichst du Deutsch?</span>” (Apakah kamu bicara Jerman?).</p>
     </section>
 
     <section class="grammar-section" aria-labelledby="plural-heading">
@@ -246,6 +249,7 @@ const caseExamples = [
           </tbody>
         </table>
       </div>
+      <p class="concept-note">Di bahasa Jerman, membentuk kata jamak (Plural) itu ga semudah nambahin “-s” kayak di bahasa Inggris. Ada banyak pola: nambah -e, -en, -er, -s, atau malah ngubah vokal (Umlaut) tanpa nambah akhiran. Karena itu, cara paling aman adalah menghafal bentuk jamaknya bareng sama kata tunggalnya.</p>
     </section>
 
     <section class="grammar-section" aria-labelledby="cases-heading">
@@ -303,6 +307,7 @@ const caseExamples = [
           </tbody>
         </table>
       </div>
+      <p class="concept-note">Bahasa Jerman punya 4 kasus (Fall). Tiga yang paling dasar adalah Nominativ (buat subjek), Akkusativ (buat objek langsung), dan Dativ (buat objek tidak langsung). Artikel (der/die/das) bakal berubah tergantung kasusnya. Contoh: “<span lang="de">der Mann</span>” (Nominativ) berubah jadi “<span lang="de">den Mann</span>” (Akkusativ). Jadi, lu harus tau peran kata dalam kalimat buat milih artikel yang bener.</p>
     </section>
   </div>
 </Layout>
@@ -494,15 +499,19 @@ const caseExamples = [
     margin-top: 0.85rem;
   }
 
-  .position-note {
-    margin: 0.75rem 0 0;
-    color: var(--muted);
-    font-size: 0.84rem;
+  .concept-note {
+    margin: 0.9rem 0 0;
+    padding: 1rem 1.1rem;
+    border-left: 3px solid var(--accent-gold);
+    border-radius: 6px;
+    background: var(--bg-light, #f1f2f4);
+    color: var(--text-main);
+    font-size: 0.92rem;
+    line-height: 1.6;
   }
 
-  .position-note span {
-    color: var(--text-main);
-    font-weight: 700;
+  .concept-note strong {
+    color: #76520d;
   }
 
   @media (max-width: 640px) {
