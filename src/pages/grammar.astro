@@ -11,10 +11,13 @@ const articles = [
 const conjugations = [
   { pronoun: 'ich', sein: 'bin', haben: 'habe' },
   { pronoun: 'du', sein: 'bist', haben: 'hast' },
-  { pronoun: 'er / sie / es', sein: 'ist', haben: 'hat' },
+  { pronoun: 'er', sein: 'ist', haben: 'hat' },
+  { pronoun: 'sie', sein: 'ist', haben: 'hat' },
+  { pronoun: 'es', sein: 'ist', haben: 'hat' },
   { pronoun: 'wir', sein: 'sind', haben: 'haben' },
   { pronoun: 'ihr', sein: 'seid', haben: 'habt' },
-  { pronoun: 'sie / Sie', sein: 'sind', haben: 'haben' },
+  { pronoun: 'sie', sein: 'sind', haben: 'haben' },
+  { pronoun: 'Sie', sein: 'sind', haben: 'haben' },
 ];
 
 const sentenceExamples = [
@@ -113,8 +116,8 @@ const caseExamples = [
           <thead>
             <tr>
               <th scope="col">Pronoun</th>
-              <th scope="col"><GrammarSpeech text="sein" /> (menjadi / ada)</th>
-              <th scope="col"><GrammarSpeech text="haben" /> (memiliki)</th>
+              <th scope="col">sein (menjadi / ada)</th>
+              <th scope="col">haben (memiliki)</th>
             </tr>
           </thead>
           <tbody>
@@ -417,6 +420,15 @@ const caseExamples = [
     border-collapse: collapse;
     text-align: left;
   }
+
+  .conjugation-table {
+    min-width: 680px;
+    table-layout: fixed;
+  }
+
+  .conjugation-table tr > :nth-child(1) { width: 34%; }
+  .conjugation-table tr > :nth-child(2) { width: 33%; }
+  .conjugation-table tr > :nth-child(3) { width: 33%; }
 
   .grammar-table th,
   .grammar-table td {
