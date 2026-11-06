@@ -1,0 +1,21 @@
+---
+import Layout from '../layouts/Layout.astro';
+import HelpContent from '../components/HelpContent.astro';
+---
+
+<Layout
+  title="Panduan Penggunaan | siDeutsch"
+  description="Panduan publik siDeutsch: cara membuat akun, bermain kuis, memahami XP, menggunakan Bookmark, dan mengganti password."
+>
+  <div class="guide-shell">
+    <HelpContent />
+  </div>
+</Layout>
+
+<style>
+  .guide-shell {
+    width: min(100% - 2rem, 1080px);
+    margin: 0 auto;
+    padding: clamp(2.5rem, 6vw, 5rem) 0;
+  }
+</style>

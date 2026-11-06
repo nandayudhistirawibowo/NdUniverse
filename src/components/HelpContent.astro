@@ -1,0 +1,233 @@
+---
+const { showPublicLink = false } = Astro.props;
+---
+
+<section class="help-page">
+  <header class="help-heading">
+    <p class="eyebrow">Pusat Bantuan</p>
+    <h1>Bagaimana kami bisa membantu?</h1>
+    <p>Panduan singkat untuk mulai belajar dan menggunakan fitur siDeutsch.</p>
+  </header>
+
+  {showPublicLink && (
+    <p class="public-guide-link"><a href="/panduan">Lihat Panduan Publik <span aria-hidden="true">→</span></a></p>
+  )}
+
+  <div class="help-list">
+    <details class="help-card" open>
+      <summary>
+        <span class="help-number">01</span>
+        <span>Cara Daftar dan Login</span>
+        <span class="help-chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="help-answer">
+        <p>Kamu tidak perlu mencari tombol “Daftar”. Untuk membuat akun, buka halaman Login, masukkan email dan password baru, lalu klik “Masuk”. Akun akan dibuat otomatis (auto-signup), kemudian kamu akan masuk ke dashboard.</p>
+        <p>Kalau sudah punya akun, masukkan email atau NIM yang terdaftar beserta password-nya, lalu klik “Masuk”. Akun lama berbasis NIM tetap bisa menggunakan NIM dan password yang sudah dimiliki.</p>
+        <a href="/login">Buka halaman Login <span aria-hidden="true">→</span></a>
+      </div>
+    </details>
+
+    <details class="help-card">
+      <summary>
+        <span class="help-number">02</span>
+        <span>Cara Main Kuis</span>
+        <span class="help-chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="help-answer">
+        <p>Setiap sesi kuis berisi beberapa kosakata dan memberikan tiga nyawa. Jawaban salah mengurangi satu nyawa; jika semua nyawa habis, sesi berakhir sebagai Game Over.</p>
+        <ul>
+          <li><strong>Susun Kata (Tap &amp; Arrange):</strong> pilih blok kata dalam urutan yang membentuk jawaban.</li>
+          <li><strong>Matcher (Word Matcher):</strong> cocokkan kosakata bahasa Jerman dengan artinya dalam bahasa Indonesia.</li>
+          <li><strong>Text Box:</strong> ketik jawaban bahasa Jerman di kotak yang tersedia.</li>
+        </ul>
+        <p>Tipe soal dapat berbeda menurut sesi. Ikuti petunjuk di layar untuk menjawab.</p>
+      </div>
+    </details>
+
+    <details class="help-card">
+      <summary>
+        <span class="help-number">03</span>
+        <span>Sistem XP dan Level CEFR</span>
+        <span class="help-chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="help-answer">
+        <p>Jawaban benar menambah XP sementara selama kuis. XP baru disimpan setelah seluruh kuis selesai; jika Game Over, XP sementara pada sesi itu dibuang.</p>
+        <p>Level CEFR dihitung dari sesi Alltagsdeutsch yang berhasil kamu lewati. XP total dapat berasal dari berbagai materi, tetapi XP dari Fachdeutsch atau Career tidak otomatis menaikkan level CEFR.</p>
+      </div>
+    </details>
+
+    <details class="help-card">
+      <summary>
+        <span class="help-number">04</span>
+        <span>Fitur Bookmark</span>
+        <span class="help-chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="help-answer">
+        <p>Setelah kuis selesai atau Game Over, buka bagian “Review Kata Sulit”. Tekan ikon bookmark di samping kata untuk menyimpannya. Buka menu “Bookmark” untuk melihat atau menghapus kata yang tersimpan.</p>
+        <p>Bookmark tersimpan di browser yang kamu gunakan, jadi tidak otomatis tersinkron ke perangkat lain.</p>
+      </div>
+    </details>
+
+    <details class="help-card">
+      <summary>
+        <span class="help-number">05</span>
+        <span>Ganti Password</span>
+        <span class="help-chevron" aria-hidden="true">⌄</span>
+      </summary>
+      <div class="help-answer">
+        <p>Buka menu akun di bagian atas, pilih “Profil Saya”, lalu isi password baru dan konfirmasinya. Password minimal enam karakter dan kedua isian harus sama.</p>
+        <p>Tekan “Simpan Password Baru”. Jika berhasil, notifikasi sukses akan tampil sebelum kamu diarahkan kembali ke dashboard.</p>
+        <a href="/dashboard/profil">Buka Profil Saya <span aria-hidden="true">→</span></a>
+      </div>
+    </details>
+  </div>
+</section>
+
+<style>
+  .help-page {
+    width: min(100%, 900px);
+    margin: 0 auto;
+  }
+
+  .help-heading {
+    margin-bottom: 1.5rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.45rem;
+    color: #966313;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    line-height: 1.2;
+  }
+
+  .help-heading > p:last-child {
+    margin: 0.65rem 0 0;
+    color: var(--muted);
+  }
+
+  .public-guide-link {
+    margin: -0.75rem 0 1.25rem;
+    text-align: right;
+  }
+
+  .public-guide-link a,
+  .help-answer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    color: #80530d;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .public-guide-link a:hover,
+  .help-answer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .help-list {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  .help-card {
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card-bg);
+    box-shadow: 0 6px 20px rgba(26, 26, 30, 0.04);
+  }
+
+  .help-card[open] {
+    border-color: rgba(229, 169, 59, 0.52);
+  }
+
+  .help-card summary {
+    display: flex;
+    min-height: 68px;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.9rem 1rem;
+    color: var(--text-main);
+    font-size: 0.95rem;
+    font-weight: 800;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .help-card summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .help-card summary:focus-visible {
+    outline: 3px solid rgba(229, 169, 59, 0.4);
+    outline-offset: -3px;
+  }
+
+  .help-number {
+    display: grid;
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(229, 169, 59, 0.16);
+    color: #80530d;
+    font-size: 0.72rem;
+  }
+
+  .help-chevron {
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 1.25rem;
+    transition: transform 0.2s ease;
+  }
+
+  .help-card[open] .help-chevron {
+    transform: rotate(180deg);
+  }
+
+  .help-answer {
+    padding: 0 1.1rem 1.15rem 4.2rem;
+    color: #4b5563;
+    font-size: 0.88rem;
+    line-height: 1.75;
+  }
+
+  .help-answer p {
+    margin: 0.2rem 0 0.75rem;
+  }
+
+  .help-answer ul {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0.55rem 0 0.8rem;
+    padding-left: 1.2rem;
+  }
+
+  .help-answer strong {
+    color: var(--text-main);
+  }
+
+  @media (max-width: 560px) {
+    .help-card summary {
+      gap: 0.65rem;
+      padding: 0.8rem;
+      font-size: 0.86rem;
+    }
+
+    .help-answer {
+      padding: 0 0.9rem 1rem;
+    }
+  }
+</style>
