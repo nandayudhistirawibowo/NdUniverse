@@ -107,7 +107,7 @@ const diphthongs = [
                 <td>
                   <div class="example-with-speech">
                     <span lang="de">{example}</span>{translation && <> ({translation})</>}
-                    <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`} disabled>
+                    <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
                       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z" /><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" /></svg>
                     </button>
                   </div>
@@ -139,7 +139,7 @@ const diphthongs = [
             <p>{sound}</p>
             <p class="example-line">
               <span>Contoh: <span lang="de">{example}</span></span>
-              <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`} disabled>
+              <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
                 <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z" /><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" /></svg>
               </button>
             </p>
@@ -173,7 +173,7 @@ const diphthongs = [
                 <td>
                   <div class="example-with-speech">
                     <span><span lang="de">{example}</span>{pronunciation && <> ({pronunciation})</>} ({meaning})</span>
-                    <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`} disabled>
+                    <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
                       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z" /><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" /></svg>
                     </button>
                   </div>
@@ -189,27 +189,14 @@ const diphthongs = [
 </Layout>
 
 <script>
-  import { speakGerman } from '../lib/german-speech.js';
-
-  const speechSupported = () =>
-    'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
-
-  const configureSpeechButtons = () => {
-    const supported = speechSupported();
-    document.querySelectorAll<HTMLButtonElement>('.speech-button').forEach((button) => {
-      button.disabled = !supported;
-    });
-  };
-
-  document.addEventListener('astro:page-load', configureSpeechButtons);
-  configureSpeechButtons();
+  import { playAudioTTS } from '../lib/german-speech.js';
 
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
     const button = event.target.closest<HTMLButtonElement>('.speech-button');
-    if (!button || button.disabled || !speechSupported()) return;
+    if (!button) return;
 
-    speakGerman(button.dataset.speech ?? '');
+    playAudioTTS(button.dataset.speech ?? '', button);
   });
 </script>
 
@@ -383,14 +370,14 @@ const diphthongs = [
     color: var(--text-main);
   }
 
+  .speech-button.is-playing {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
   .speech-button:focus-visible {
     outline: 3px solid var(--accent-gold);
     outline-offset: 2px;
-  }
-
-  .speech-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.42;
   }
 
   .special-grid {

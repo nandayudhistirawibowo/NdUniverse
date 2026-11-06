@@ -14,7 +14,6 @@ const { text } = Astro.props;
     data-grammar-speech={text}
     aria-label={`Dengarkan ${text}`}
     title={`Dengarkan ${text}`}
-    disabled
   >
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
@@ -24,27 +23,14 @@ const { text } = Astro.props;
 </span>
 
 <script>
-  import { speakGerman } from '../lib/german-speech.js';
-
-  const grammarSpeechSupported = () =>
-    'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
-
-  const configureGrammarSpeechButtons = () => {
-    const supported = grammarSpeechSupported();
-    document.querySelectorAll<HTMLButtonElement>('.grammar-speech-button').forEach((button) => {
-      button.disabled = !supported;
-    });
-  };
-
-  document.addEventListener('astro:page-load', configureGrammarSpeechButtons);
-  configureGrammarSpeechButtons();
+  import { playAudioTTS } from '../lib/german-speech.js';
 
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;
     const button = event.target.closest<HTMLButtonElement>('.grammar-speech-button');
-    if (!button || button.disabled || !grammarSpeechSupported()) return;
+    if (!button) return;
 
-    speakGerman(button.dataset.grammarSpeech ?? '');
+    playAudioTTS(button.dataset.grammarSpeech ?? '', button);
   });
 </script>
 
@@ -86,13 +72,14 @@ const { text } = Astro.props;
     color: var(--text-main);
   }
 
+  .grammar-speech-button.is-playing {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
   .grammar-speech-button:focus-visible {
     outline: 3px solid var(--accent-gold);
     outline-offset: 2px;
   }
 
-  .grammar-speech-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.42;
-  }
 </style>

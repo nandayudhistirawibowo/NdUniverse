@@ -114,7 +114,6 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
                             data-speech={entry.german}
                             aria-label={`Dengarkan ${entry.german}`}
                             title={`Dengarkan ${entry.german}`}
-                            disabled
                           >
                             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                               <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
@@ -136,7 +135,6 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
                             data-speech={entry.context}
                             aria-label={`Dengarkan contoh: ${entry.context}`}
                             title="Dengarkan contoh kalimat"
-                            disabled
                           >
                             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
                               <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
@@ -234,7 +232,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 </Layout>
 
 <script>
-  import { speakGerman } from '../../lib/german-speech.js';
+  import { playAudioTTS } from '../../lib/german-speech.js';
 
   import {
     fetchUserProgress,
@@ -244,14 +242,9 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   } from '../../lib/progress-client.js';
 
   document.addEventListener('astro:page-load', () => {
-  const speechSupported =
-    'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
-  document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {
-    button.disabled = !speechSupported;
-    if (!speechSupported) return;
-
-    button.addEventListener('click', () => {
-      speakGerman(button.dataset.speech ?? '');
+    document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {
+      button.addEventListener('click', () => {
+        playAudioTTS(button.dataset.speech ?? '', button);
     });
   });
 
@@ -667,14 +660,14 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     color: var(--text-main);
   }
 
+  .vocab-speech-button.is-playing {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
   .vocab-speech-button:focus-visible {
     outline: 3px solid var(--accent-gold);
     outline-offset: 2px;
-  }
-
-  .vocab-speech-button:disabled {
-    cursor: not-allowed;
-    opacity: 0.42;
   }
 
   .practice-button {
