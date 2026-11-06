@@ -7,6 +7,7 @@ import {
 } from '../lib/progress-client.js';
 
 const STORAGE_KEY = 'sideutsch-xp';
+const BOOKMARKS_KEY = 'sideutsch-bookmarks';
 const QUESTION_TYPES = ['arrange', 'matcher', 'text'];
 const SOUND_FILES = {
   click: '/sounds/quiz-click.mp3',
@@ -47,6 +48,19 @@ function getAcceptedAnswers(answer) {
   return withoutLeadingMarkers === normalized
     ? [normalized]
     : [normalized, withoutLeadingMarkers];
+}
+
+function readBookmarks() {
+  const saved = window.localStorage.getItem(BOOKMARKS_KEY);
+  if (!saved) return [];
+
+  const bookmarks = JSON.parse(saved);
+  if (!Array.isArray(bookmarks) || bookmarks.some((word) =>
+    !word || typeof word.german !== 'string' || typeof word.indonesian !== 'string' || typeof word.context !== 'string'
+  )) {
+    throw new Error('Data bookmark tidak valid.');
+  }
+  return bookmarks;
 }
 
 function buildQuestionQueue(items, sessionNumber = 1, useSessionType = false) {
@@ -127,6 +141,7 @@ export default function Quiz(props) {
   const [attemptedCount, setAttemptedCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
   const [wrongWords, setWrongWords] = useState([]);
+  const [bookmarkedWords, setBookmarkedWords] = useState(() => new Set());
   const [isGameOver, setIsGameOver] = useState(false);
   const [arrangeSelected, setArrangeSelected] = useState([]);
   const [arrangeOptions, setArrangeOptions] = useState([]);
@@ -323,6 +338,7 @@ export default function Quiz(props) {
   }, [items, sessionMode, materialId, effectiveBatchSize, startIndex, authResolved, isAuthenticated]);
 
   const currentQuestion = queue[0] ?? null;
+  const showSummary = isGameOver || queue.length === 0;
 
   useEffect(() => {
     if (!currentQuestion) return;
@@ -345,6 +361,16 @@ export default function Quiz(props) {
     const timeout = window.setTimeout(() => setToast(null), 3000);
     return () => window.clearTimeout(timeout);
   }, [toast]);
+
+  useEffect(() => {
+    if (!showSummary) return;
+
+    try {
+      setBookmarkedWords(new Set(readBookmarks().map((word) => word.german)));
+    } catch (error) {
+      setToast({ type: 'error', message: error instanceof Error ? error.message : 'Bookmark tidak dapat dibaca.' });
+    }
+  }, [showSummary]);
 
   const matcherSet = useMemo(() => {
     if (!currentQuestion || currentQuestion.type !== 'matcher') return null;
@@ -401,6 +427,30 @@ export default function Quiz(props) {
 
   function awardXp(amount) {
     setSessionXp((prev) => prev + amount);
+  }
+
+  function bookmarkWord(word) {
+    try {
+      const bookmarks = readBookmarks();
+      const alreadySaved = bookmarks.some((saved) =>
+        saved.german.trim().toLocaleLowerCase() === word.german.trim().toLocaleLowerCase()
+      );
+      if (!alreadySaved) {
+        bookmarks.push({
+          german: word.german,
+          indonesian: word.indonesian,
+          context: word.context ?? '',
+        });
+        window.localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(bookmarks));
+      }
+      setBookmarkedWords((saved) => new Set([...saved, word.german]));
+      setToast({
+        type: 'success',
+        message: alreadySaved ? 'Kata sudah ada di Bookmark.' : 'Kata disimpan ke Bookmark.',
+      });
+    } catch (error) {
+      setToast({ type: 'error', message: error instanceof Error ? error.message : 'Bookmark tidak dapat disimpan.' });
+    }
   }
 
   function restartGame() {
@@ -561,7 +611,6 @@ export default function Quiz(props) {
   const questionNumber = Math.min(attemptedCount + (checkedResult === null ? 1 : 0), currentBatchItems.length);
   const progress = currentBatchItems.length === 0 ? 0 : Math.round((attemptedCount / currentBatchItems.length) * 100);
   const accuracy = attemptedCount === 0 ? 0 : Math.round((correctCount / attemptedCount) * 100);
-  const showSummary = isGameOver || queue.length === 0;
   const matcherIsComplete = matcherSet && Object.keys(matcherMatches).length === matcherSet.germanWords.length;
   const canCheckAnswer = currentQuestion?.type === 'arrange'
     ? arrangeSelected.length > 0
@@ -831,8 +880,21 @@ export default function Quiz(props) {
                 <ul>
                   {wrongWords.map((word, index) => (
                     <li key={`${word.german}-${index}`}>
-                      <strong>{word.german}</strong>
-                      <span>{word.indonesian}</span>
+                      <div className="review-word">
+                        <strong>{word.german}</strong>
+                        <span>{word.indonesian}</span>
+                      </div>
+                      <button
+                        type="button"
+                        className={`bookmark-btn ${bookmarkedWords.has(word.german) ? 'saved' : ''}`}
+                        aria-label={`${bookmarkedWords.has(word.german) ? 'Tersimpan di' : 'Simpan ke'} Bookmark: ${word.german}`}
+                        title={bookmarkedWords.has(word.german) ? 'Sudah tersimpan' : 'Simpan ke Bookmark'}
+                        onClick={() => bookmarkWord(word)}
+                      >
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                          <path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4V4.5Z" />
+                        </svg>
+                      </button>
                     </li>
                   ))}
                 </ul>
@@ -1493,6 +1555,7 @@ export default function Quiz(props) {
 
           .review-panel li {
             display: flex;
+            align-items: center;
             justify-content: space-between;
             gap: 0.75rem;
             padding-bottom: 0.45rem;
@@ -1508,6 +1571,44 @@ export default function Quiz(props) {
 
           .review-panel li strong {
             color: var(--text-main);
+          }
+
+          .review-word {
+            display: grid;
+            gap: 0.15rem;
+          }
+
+          .bookmark-btn {
+            display: inline-grid;
+            width: 34px;
+            height: 34px;
+            flex: 0 0 auto;
+            place-items: center;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            cursor: pointer;
+          }
+
+          .bookmark-btn:hover,
+          .bookmark-btn.saved {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+          }
+
+          .bookmark-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+          }
+
+          .bookmark-btn.saved svg {
+            fill: currentColor;
           }
 
           .summary-actions {
