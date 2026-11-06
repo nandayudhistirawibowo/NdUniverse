@@ -2,32 +2,32 @@
 import Layout from '../layouts/Layout.astro';
 
 const alphabet = [
-  { letter: 'A', name: 'Ah', example: 'Apfel', translation: 'apel', spelling: 'Ah - Peh - Ef - Eh - El' },
-  { letter: 'B', name: 'Beh', example: 'Buch', translation: 'buku', spelling: 'Beh - Uh - Tseh - Ha' },
-  { letter: 'C', name: 'Tseh', example: 'Computer', spelling: 'Tseh - Oh - Em - Peh - Uh - Teh - Eh - Er' },
-  { letter: 'D', name: 'Deh', example: 'Danke', spelling: 'Deh - Ah - En - Kah - Eh' },
-  { letter: 'E', name: 'Eh', example: 'Elefant', spelling: 'Eh - El - Eh - Ef - Ah - En - Teh' },
-  { letter: 'F', name: 'Ef', example: 'Fisch', spelling: 'Ef - Ih - Es - Tseh - Ha' },
-  { letter: 'G', name: 'Geh', example: 'Garten', spelling: 'Geh - Ah - Er - Teh - Eh - En' },
-  { letter: 'H', name: 'Ha', example: 'Haus', spelling: 'Ha - Ah - Uh - Es' },
-  { letter: 'I', name: 'Ih', example: 'Insel', spelling: 'Ih - En - Es - Eh - El' },
-  { letter: 'J', name: 'Yot', example: 'Jahr', spelling: 'Yot - Ah - Ha - Er' },
-  { letter: 'K', name: 'Kah', example: 'Kind', spelling: 'Kah - Ih - En - Deh' },
-  { letter: 'L', name: 'El', example: 'Liebe', spelling: 'El - Ih - Eh - Beh - Eh' },
-  { letter: 'M', name: 'Em', example: 'Mutter', spelling: 'Em - Uh - Teh - Teh - Eh - Er' },
-  { letter: 'N', name: 'En', example: 'Nacht', spelling: 'En - Ah - Tseh - Ha - Teh' },
-  { letter: 'O', name: 'Oh', example: 'Orange', spelling: 'Oh - Er - Ah - En - Geh - Eh' },
-  { letter: 'P', name: 'Peh', example: 'Pferd', spelling: 'Peh - Ef - Eh - Er - Deh' },
-  { letter: 'Q', name: 'Kuh', example: 'Quelle', spelling: 'Kuh - Uh - Eh - El - El - Eh' },
-  { letter: 'R', name: 'Er', example: 'Rot', spelling: 'Er - Oh - Teh' },
-  { letter: 'S', name: 'Es', example: 'Sonne', spelling: 'Es - Oh - En - En - Eh' },
-  { letter: 'T', name: 'Teh', example: 'Tisch', spelling: 'Teh - Ih - Es - Tseh - Ha' },
-  { letter: 'U', name: 'Uh', example: 'Uhr', spelling: 'Uh - Ha - Er' },
-  { letter: 'V', name: 'Fau', example: 'Vater', spelling: 'Fau - Ah - Teh - Eh - Er' },
-  { letter: 'W', name: 'Weh', example: 'Wasser', spelling: 'Weh - Ah - Es - Es - Eh - Er' },
-  { letter: 'X', name: 'Iks', example: 'Xylophon', spelling: 'Iks - Ypsilon - El - Oh - Peh - Ha - Oh - En' },
-  { letter: 'Y', name: 'Ypsilon', example: 'Yoga', spelling: 'Ypsilon - Oh - Geh - Ah' },
-  { letter: 'Z', name: 'Tset', example: 'Zug', spelling: 'Tset - Uh - Geh' },
+  { letter: 'A', orthography: 'A', reading: 'Ah', example: 'Apfel', translation: 'apel', spelling: 'Ah - Peh - Ef - Eh - El' },
+  { letter: 'B', orthography: 'Be', reading: 'Beh', example: 'Buch', translation: 'buku', spelling: 'Beh - Uh - Tseh - Ha' },
+  { letter: 'C', orthography: 'Ce', reading: 'Tseh', example: 'Computer', spelling: 'Tseh - Oh - Em - Peh - Uh - Teh - Eh - Er' },
+  { letter: 'D', orthography: 'De', reading: 'Deh', example: 'Danke', spelling: 'Deh - Ah - En - Kah - Eh' },
+  { letter: 'E', orthography: 'E', reading: 'Eh', example: 'Elefant', spelling: 'Eh - El - Eh - Ef - Ah - En - Teh' },
+  { letter: 'F', orthography: 'Ef', reading: 'Ef', example: 'Fisch', spelling: 'Ef - Ih - Es - Tseh - Ha' },
+  { letter: 'G', orthography: 'Ge', reading: 'Geh', example: 'Garten', spelling: 'Geh - Ah - Er - Teh - Eh - En' },
+  { letter: 'H', orthography: 'Ha', reading: 'Ha', example: 'Haus', spelling: 'Ha - Ah - Uh - Es' },
+  { letter: 'I', orthography: 'I', reading: 'Ih', example: 'Insel', spelling: 'Ih - En - Es - Eh - El' },
+  { letter: 'J', orthography: 'Jot', reading: 'Yot', example: 'Jahr', spelling: 'Yot - Ah - Ha - Er' },
+  { letter: 'K', orthography: 'Ka', reading: 'Kah', example: 'Kind', spelling: 'Kah - Ih - En - Deh' },
+  { letter: 'L', orthography: 'El', reading: 'El', example: 'Liebe', spelling: 'El - Ih - Eh - Beh - Eh' },
+  { letter: 'M', orthography: 'Em', reading: 'Em', example: 'Mutter', spelling: 'Em - Uh - Teh - Teh - Eh - Er' },
+  { letter: 'N', orthography: 'En', reading: 'En', example: 'Nacht', spelling: 'En - Ah - Tseh - Ha - Teh' },
+  { letter: 'O', orthography: 'O', reading: 'Oh', example: 'Orange', spelling: 'Oh - Er - Ah - En - Geh - Eh' },
+  { letter: 'P', orthography: 'Pe', reading: 'Peh', example: 'Pferd', spelling: 'Peh - Ef - Eh - Er - Deh' },
+  { letter: 'Q', orthography: 'Qu', reading: 'Kuh', example: 'Quelle', spelling: 'Kuh - Uh - Eh - El - El - Eh' },
+  { letter: 'R', orthography: 'Er', reading: 'Er', example: 'Rot', spelling: 'Er - Oh - Teh' },
+  { letter: 'S', orthography: 'Es', reading: 'Es', example: 'Sonne', spelling: 'Es - Oh - En - En - Eh' },
+  { letter: 'T', orthography: 'Te', reading: 'Teh', example: 'Tisch', spelling: 'Teh - Ih - Es - Tseh - Ha' },
+  { letter: 'U', orthography: 'U', reading: 'Uh', example: 'Uhr', spelling: 'Uh - Ha - Er' },
+  { letter: 'V', orthography: 'Vau', reading: 'Fau', example: 'Vater', spelling: 'Fau - Ah - Teh - Eh - Er' },
+  { letter: 'W', orthography: 'We', reading: 'Weh', example: 'Wasser', spelling: 'Weh - Ah - Es - Es - Eh - Er' },
+  { letter: 'X', orthography: 'Ix', reading: 'Iks', example: 'Xylophon', spelling: 'Iks - Ypsilon - El - Oh - Peh - Ha - Oh - En' },
+  { letter: 'Y', orthography: 'Ypsilon', reading: 'Ypsilon', example: 'Yoga', spelling: 'Ypsilon - Oh - Geh - Ah' },
+  { letter: 'Z', orthography: 'Zet', reading: 'Tset', example: 'Zug', spelling: 'Tset - Uh - Geh' },
 ];
 
 const specialLetters = [
@@ -84,7 +84,7 @@ const diphthongs = [
           <p class="section-kicker">01 / Alfabet</p>
           <h2 id="alphabet-heading">Abjad A-Z</h2>
         </div>
-        <p class="section-note">Ejaan bunyi di bawah ini adalah pendekatan agar mudah dibaca penutur Indonesia.</p>
+        <p class="section-note">Ejaan huruf mengikuti bahasa Jerman; kolom “Dibaca” memakai pendekatan bunyi untuk penutur Indonesia.</p>
       </div>
 
       <div class="table-scroll" role="region" aria-label="Tabel pengucapan abjad Jerman" tabindex="0">
@@ -93,15 +93,17 @@ const diphthongs = [
             <tr>
               <th scope="col">Huruf</th>
               <th scope="col">Ejaan Huruf</th>
+              <th scope="col">Dibaca</th>
               <th scope="col">Contoh Kata</th>
               <th scope="col">Cara Ngeja (Spelling)</th>
             </tr>
           </thead>
           <tbody>
-            {alphabet.map(({ letter, name, example, translation, spelling }) => (
+            {alphabet.map(({ letter, orthography, reading, example, translation, spelling }) => (
               <tr>
                 <th scope="row" class="letter-cell">{letter}</th>
-                <td lang="de">{name}</td>
+                <td lang="de">{orthography}</td>
+                <td>{reading}</td>
                 <td>
                   <div class="example-with-speech">
                     <span lang="de">{example}</span>{translation && <> ({translation})</>}
@@ -295,13 +297,14 @@ const diphthongs = [
   }
 
   .spelling-table {
-    min-width: 900px;
+    min-width: 1040px;
   }
 
-  .spelling-table th:nth-child(1) { width: 7%; }
-  .spelling-table th:nth-child(2) { width: 12%; }
-  .spelling-table th:nth-child(3) { width: 19%; }
-  .spelling-table th:nth-child(4) { width: 62%; }
+  .spelling-table th:nth-child(1) { width: 6%; }
+  .spelling-table th:nth-child(2) { width: 11%; }
+  .spelling-table th:nth-child(3) { width: 12%; }
+  .spelling-table th:nth-child(4) { width: 17%; }
+  .spelling-table th:nth-child(5) { width: 54%; }
 
   .alphabet-table th,
   .alphabet-table td {
