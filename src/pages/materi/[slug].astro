@@ -124,7 +124,24 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
                         </div>
                       </td>
                       <td>{entry.indonesian}</td>
-                      <td lang="de">{entry.context}</td>
+                      <td lang="de">
+                        <div class="vocab-context-cell">
+                          <span>{entry.context}</span>
+                          <button
+                            class="vocab-speech-button"
+                            type="button"
+                            data-speech={entry.context}
+                            aria-label={`Dengarkan contoh: ${entry.context}`}
+                            title="Dengarkan contoh kalimat"
+                            disabled
+                          >
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
+                              <path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" />
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -589,6 +606,19 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     align-items: center;
     justify-content: space-between;
     gap: 0.6rem;
+  }
+
+  .vocab-context-cell {
+    display: flex;
+    min-width: 220px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
+
+  .vocab-context-cell > span {
+    min-width: 0;
+    flex: 1;
   }
 
   .vocab-speech-button {
