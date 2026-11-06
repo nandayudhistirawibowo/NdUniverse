@@ -105,7 +105,24 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
                 <tbody>
                   {session.vocab.map((entry) => (
                     <tr>
-                      <td lang="de">{entry.german}</td>
+                      <td lang="de">
+                        <div class="vocab-german-cell">
+                          <span>{entry.german}</span>
+                          <button
+                            class="vocab-speech-button"
+                            type="button"
+                            data-speech={entry.german}
+                            aria-label={`Dengarkan ${entry.german}`}
+                            title={`Dengarkan ${entry.german}`}
+                            disabled
+                          >
+                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                              <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
+                              <path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" />
+                            </svg>
+                          </button>
+                        </div>
+                      </td>
                       <td>{entry.indonesian}</td>
                       <td lang="de">{entry.context}</td>
                     </tr>
@@ -205,6 +222,20 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   } from '../../lib/progress-client.js';
 
   document.addEventListener('astro:page-load', () => {
+  const speechSupported =
+    'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+  document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {
+    button.disabled = !speechSupported;
+    if (!speechSupported) return;
+
+    button.addEventListener('click', () => {
+      const utterance = new SpeechSynthesisUtterance(button.dataset.speech ?? '');
+      utterance.lang = 'de-DE';
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utterance);
+    });
+  });
+
   const sessionPicker = document.querySelector<HTMLElement>('[data-session-picker]');
   const progressKey = sessionPicker?.dataset.progressKey;
   const isAuthenticated = sessionPicker?.dataset.authenticated === 'true';
@@ -550,6 +581,54 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 
   .vocabulary-session td:first-child {
     font-weight: 700;
+  }
+
+  .vocabulary-session .vocab-german-cell {
+    display: flex;
+    min-width: 150px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .vocab-speech-button {
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(229, 169, 59, 0.55);
+    border-radius: 6px;
+    background: rgba(229, 169, 59, 0.12);
+    color: var(--accent-gold);
+    cursor: pointer;
+    transition: transform 0.16s ease, color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .vocab-speech-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .vocab-speech-button:hover:not(:disabled) {
+    transform: scale(1.08);
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .vocab-speech-button:focus-visible {
+    outline: 3px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
+  .vocab-speech-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
   }
 
   .practice-button {

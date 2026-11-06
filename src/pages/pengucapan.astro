@@ -102,7 +102,14 @@ const diphthongs = [
               <tr>
                 <th scope="row" class="letter-cell">{letter}</th>
                 <td lang="de">{name}</td>
-                <td><span lang="de">{example}</span>{translation && <> ({translation})</>}</td>
+                <td>
+                  <div class="example-with-speech">
+                    <span lang="de">{example}</span>{translation && <> ({translation})</>}
+                    <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`} disabled>
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z" /><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" /></svg>
+                    </button>
+                  </div>
+                </td>
                 <td lang="de">{spelling}</td>
               </tr>
             ))}
@@ -128,7 +135,12 @@ const diphthongs = [
               <h3>{name}</h3>
             </div>
             <p>{sound}</p>
-            <p class="example-line">Contoh: <span lang="de">{example}</span></p>
+            <p class="example-line">
+              <span>Contoh: <span lang="de">{example}</span></span>
+              <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`} disabled>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z" /><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" /></svg>
+              </button>
+            </p>
           </article>
         ))}
       </div>
@@ -157,7 +169,12 @@ const diphthongs = [
                 <th scope="row" class="letter-cell" lang="de">{combination}</th>
                 <td>{reading}</td>
                 <td>
-                  <span lang="de">{example}</span>{pronunciation && <> ({pronunciation})</>} ({meaning})
+                  <div class="example-with-speech">
+                    <span><span lang="de">{example}</span>{pronunciation && <> ({pronunciation})</>} ({meaning})</span>
+                    <button class="speech-button" type="button" data-speech={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`} disabled>
+                      <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z" /><path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" /></svg>
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -168,6 +185,32 @@ const diphthongs = [
     </section>
   </div>
 </Layout>
+
+<script>
+  const speechSupported = () =>
+    'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
+
+  const configureSpeechButtons = () => {
+    const supported = speechSupported();
+    document.querySelectorAll<HTMLButtonElement>('.speech-button').forEach((button) => {
+      button.disabled = !supported;
+    });
+  };
+
+  document.addEventListener('astro:page-load', configureSpeechButtons);
+  configureSpeechButtons();
+
+  document.addEventListener('click', (event) => {
+    if (!(event.target instanceof Element)) return;
+    const button = event.target.closest<HTMLButtonElement>('.speech-button');
+    if (!button || button.disabled || !speechSupported()) return;
+
+    const utterance = new SpeechSynthesisUtterance(button.dataset.speech ?? '');
+    utterance.lang = 'de-DE';
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  });
+</script>
 
 <style>
   .pronunciation-page {
@@ -298,6 +341,54 @@ const diphthongs = [
   .example-line span {
     color: #76520d;
     font-weight: 700;
+  }
+
+  .example-with-speech,
+  .example-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
+
+  .speech-button {
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(229, 169, 59, 0.55);
+    border-radius: 6px;
+    background: rgba(229, 169, 59, 0.12);
+    color: var(--accent-gold);
+    cursor: pointer;
+    transition: transform 0.16s ease, color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .speech-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .speech-button:hover:not(:disabled) {
+    transform: scale(1.08);
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .speech-button:focus-visible {
+    outline: 3px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
+  .speech-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.42;
   }
 
   .special-grid {
