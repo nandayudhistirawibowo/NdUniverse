@@ -79,7 +79,7 @@ const completedMaterials = progressRows.flatMap((row) => {
       {accessDenied && <p class="access-notice" role="alert">Akses Admin ditolak. Akun ini tidak memiliki izin administrator.</p>}
       <header class="dashboard-heading">
         <p class="eyebrow">Portal Mahasiswa</p>
-        <h1>Halo, {displayName}</h1>
+        <h1>Halo, {displayName} <span class="greeting-wave" aria-hidden="true">👋</span></h1>
         <p>Siap melanjutkan perjalanan belajar bahasa Jerman?</p>
       </header>
 
@@ -206,6 +206,25 @@ const completedMaterials = progressRows.flatMap((row) => {
 </DashboardLayout>
 
 <style>
+  .greeting-wave {
+    display: inline-block;
+    transform-origin: 70% 70%;
+    animation: greeting-wave 1.8s ease-in-out infinite;
+  }
+
+  @keyframes greeting-wave {
+    0%, 60%, 100% { transform: rotate(0deg); }
+    10%, 30% { transform: rotate(14deg); }
+    20%, 40% { transform: rotate(-8deg); }
+    50% { transform: rotate(10deg); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .greeting-wave {
+      animation: none;
+    }
+  }
+
   .dashboard-content {
     min-width: 0;
     padding: 0.5rem 0;
