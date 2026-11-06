@@ -191,8 +191,6 @@ const diphthongs = [
 <script>
   import { speakGerman } from '../lib/german-speech.js';
 
-  let speechUnlocked = false;
-
   const speechSupported = () =>
     'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
 
@@ -211,18 +209,7 @@ const diphthongs = [
     const button = event.target.closest<HTMLButtonElement>('.speech-button');
     if (!button || button.disabled || !speechSupported()) return;
 
-    if (speechUnlocked) {
-      window.speechSynthesis.cancel();
-    } else {
-      const unlockUtterance = new SpeechSynthesisUtterance('');
-      unlockUtterance.lang = 'de-DE';
-      window.speechSynthesis.speak(unlockUtterance);
-      speechUnlocked = true;
-    }
-
-    speakGerman(button.dataset.speech ?? '', (error) => {
-      console.error('German speech playback failed:', error.error);
-    });
+    speakGerman(button.dataset.speech ?? '');
   });
 </script>
 

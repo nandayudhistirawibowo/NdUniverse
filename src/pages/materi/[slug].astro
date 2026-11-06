@@ -243,8 +243,6 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     upsertUserProgress,
   } from '../../lib/progress-client.js';
 
-  let speechUnlocked = false;
-
   document.addEventListener('astro:page-load', () => {
   const speechSupported =
     'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined';
@@ -253,18 +251,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     if (!speechSupported) return;
 
     button.addEventListener('click', () => {
-      if (speechUnlocked) {
-        window.speechSynthesis.cancel();
-      } else {
-        const unlockUtterance = new SpeechSynthesisUtterance('');
-        unlockUtterance.lang = 'de-DE';
-        window.speechSynthesis.speak(unlockUtterance);
-        speechUnlocked = true;
-      }
-
-      speakGerman(button.dataset.speech ?? '', (error) => {
-        console.error('German speech playback failed:', error.error);
-      });
+      speakGerman(button.dataset.speech ?? '');
     });
   });
 
