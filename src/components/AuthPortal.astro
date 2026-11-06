@@ -50,6 +50,12 @@ const isAdminPortal = portal === 'admin';
 
       <section class="auth-side" aria-labelledby="auth-title">
         <div class="auth-panel">
+          {!isAdminPortal && (
+            <a class="back-link" href="/">
+              <span class="motion-arrow" aria-hidden="true">←</span>
+              <span>Kembali ke siDeutsch</span>
+            </a>
+          )}
           <div class="panel-topline">
             <span class="panel-mark" aria-hidden="true">{isAdminPortal ? 'A' : 'S'}</span>
             <span class="portal-label">{isAdminPortal ? eyebrow : 'Portal Belajar'}</span>
@@ -99,7 +105,7 @@ const isAdminPortal = portal === 'admin';
 
             <button id="auth-submit" type="submit">
               <span>{buttonText}</span>
-              <span aria-hidden="true">→</span>
+              <span class="motion-arrow" aria-hidden="true">→</span>
             </button>
             <p id="auth-message" class="auth-message" role="status" aria-live="polite"></p>
           </form>
@@ -108,7 +114,6 @@ const isAdminPortal = portal === 'admin';
               Belum punya akun? Masukkan email dan kata sandi baru, klik Masuk, akun akan dibuat otomatis.
             </p>
           )}
-          {!isAdminPortal && <a class="back-link" href="/">Kembali ke siDeutsch</a>}
         </div>
       </section>
     </main>
@@ -441,6 +446,40 @@ const isAdminPortal = portal === 'admin';
     margin-bottom: 1.55rem;
   }
 
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 1.4rem;
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: #F0B84F;
+  }
+
+  .motion-arrow {
+    display: inline-block;
+    animation: arrow-drift 1.4s ease-in-out infinite;
+  }
+
+  @keyframes arrow-drift {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(4px); }
+  }
+
+  .back-link .motion-arrow {
+    animation-name: arrow-drift-back;
+  }
+
+  @keyframes arrow-drift-back {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(-4px); }
+  }
+
   .panel-mark {
     display: grid;
     width: 40px;
@@ -617,16 +656,10 @@ const isAdminPortal = portal === 'admin';
     color: #F28A8A;
   }
 
-  .back-link {
-    display: inline-flex;
-    margin-top: 1rem;
-    color: #A7A7B0;
-    font-size: 0.78rem;
-    text-decoration: none;
-  }
-
-  .back-link:hover {
-    color: var(--paper);
+  @media (prefers-reduced-motion: reduce) {
+    .motion-arrow {
+      animation: none;
+    }
   }
 
   @media (max-width: 900px) {
