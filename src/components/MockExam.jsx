@@ -32,7 +32,7 @@ function fuzzyMatch(answer, expected) {
   return distance <= threshold;
 }
 
-export default function MockExam({ level, tasks }) {
+export default function MockExam({ level, tasks = [], unavailable = false }) {
   const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
   const [answers, setAnswers] = useState({});
   const [finished, setFinished] = useState(false);
@@ -121,6 +121,14 @@ export default function MockExam({ level, tasks }) {
         <span class="exam-status">Target kelulusan: 60%</span>
       </header>
 
+      {unavailable || tasks.length === 0 ? (
+        <section class="exam-result failed" role="alert">
+          <h2>Soal untuk level ini belum tersedia.</h2>
+          <p>Silakan hubungi admin atau coba level lain setelah materi ditambahkan.</p>
+        </section>
+      ) : (
+        <>
+
       <ol class="exam-list">
         {tasks.map((task, index) => (
           <li class="exam-task" key={`${task.kind}-${index}`}>
@@ -204,6 +212,8 @@ export default function MockExam({ level, tasks }) {
           )}
         </section>
       )}
+            </>
+          )}
     </section>
   );
 }

@@ -63,7 +63,7 @@ function formatTime(seconds) {
   return `${minutes}:${String(remaining).padStart(2, '0')}`;
 }
 
-export default function GoetheExam({ level, tasks }) {
+export default function GoetheExam({ level, tasks, available = true }) {
   const storageKey = `sideutsch-goethe-${level.toLowerCase()}`;
   const [activeModule, setActiveModule] = useState('lesen');
   const [answers, setAnswers] = useState({});
@@ -217,6 +217,21 @@ export default function GoetheExam({ level, tasks }) {
   }
 
   const failedModules = result?.modules.filter((module) => !module.passed) ?? [];
+
+  const hasTasks = available !== false && MODULES.some((module) =>
+    Array.isArray(tasks?.[module.id]) && tasks[module.id].length > 0
+  );
+
+  if (!hasTasks) {
+    return (
+      <section class="goethe-exam">
+        <div class="goethe-task" role="alert">
+          <h1>Soal untuk level ini belum tersedia.</h1>
+          <p>Silakan hubungi admin.</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section class="goethe-exam">

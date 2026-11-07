@@ -17,7 +17,10 @@ const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
 
 const materials = (await getCollection('materi'))
-  .filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level);
+  .filter((item) =>
+    String(item.data.track ?? '').toLowerCase() === 'alltagsdeutsch'
+    && String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
+  );
 const vocabPool = materials.flatMap((material) => material.data.vocab ?? []);
 
 function shuffle(items) {
@@ -33,49 +36,79 @@ function makeOptions(correct) {
   const alternatives = shuffle(
     [...new Set(vocabPool.map((item) => item.indonesian).filter((value) => value && value !== correct))]
   ).slice(0, 3);
+  if (!correct || alternatives.length === 0) return [];
   return shuffle([correct, ...alternatives]);
 }
 
-const readingItems = shuffle(vocabPool).slice(0, 10);
-const listeningItems = shuffle(vocabPool).slice(0, 10);
-const writingItem = shuffle(vocabPool).find((item) => item.schreiben_instruksi) ?? vocabPool[0];
-const speakingItem = shuffle(vocabPool).find((item) => item.sprechen_pertanyaan) ?? vocabPool[0];
+function makeGermanOptions(correct) {
+  const alternatives = shuffle(
+    [...new Set(vocabPool.map((item) => item.german).filter((value) => value && value !== correct))]
+  ).slice(0, 3);
+  if (!correct || alternatives.length === 0) return [];
+  return shuffle([correct, ...alternatives]);
+}
 
-const tasks = [
-  ...readingItems.map((item) => ({
-    kind: 'reading',
-    kindLabel: 'Lesen',
-    passage: item.lesen_teks || item.contextIndonesian || item.context || '',
-    prompt: item.lesen_pertanyaan || `Pilih arti yang tepat untuk "${item.german}".`,
-    answer: item.indonesian || item.german,
-    options: makeOptions(item.indonesian || item.german),
-  })),
-  ...listeningItems.map((item) => ({
-    kind: 'listening',
-    kindLabel: 'Hören',
-    audio: item.hoeren_audio || item.context || item.german,
-    audioFallback: item.context || item.german || '',
-    prompt: 'Dengarkan audio, lalu pilih arti kata atau kalimat yang tepat.',
-    answer: item.indonesian || item.contextIndonesian || item.german,
-    options: makeOptions(item.indonesian || item.contextIndonesian || item.german),
-  })),
-  {
+const readingItems = shuffle(vocabPool.filter((item) =>
+  Boolean(item.lesen_teks || item.context)
+)).slice(0, 10);
+const listeningItems = shuffle(vocabPool.filter((item) =>
+  item.hoeren_audio || item.context || item.german
+)).slice(0, 10);
+const writingItem = shuffle(vocabPool).find((item) =>
+  item.schreiben_instruksi && item.german
+) || shuffle(vocabPool).find((item) => item.german && item.indonesian);
+const speakingItem = shuffle(vocabPool).find((item) =>
+  item.sprechen_pertanyaan && item.german
+) || shuffle(vocabPool).find((item) => item.german && (item.context || item.indonesian));
+
+const tasks = vocabPool.length === 0 ? [] : [
+  ...readingItems.map((item) => {
+    const passage = item.lesen_teks || item.context;
+    const correct = item.lesen_pertanyaan ? item.german : (item.contextIndonesian || item.indonesian);
+    return {
+      kind: 'reading',
+      kindLabel: 'Lesen',
+      passage,
+      prompt: item.lesen_pertanyaan || `Pilih terjemahan yang tepat untuk teks: "${passage}"`,
+      answer: correct,
+      options: item.lesen_pertanyaan
+        ? makeGermanOptions(item.german)
+        : makeOptions(correct),
+    };
+  }),
+  ...listeningItems.map((item) => {
+    const audioText = item.hoeren_audio || item.context || item.german;
+    const correct = item.contextIndonesian || item.indonesian;
+    return {
+      kind: 'listening',
+      kindLabel: 'Hören',
+      audio: audioText,
+      audioFallback: item.context || item.german,
+      prompt: `Dengarkan teks dan pilih arti yang tepat untuk bagian: "${item.german}".`,
+      answer: item.indonesian,
+      options: makeOptions(item.indonesian),
+    };
+  }),
+  ...(writingItem ? [{
     kind: 'writing',
     kindLabel: 'Schreiben',
-    prompt: writingItem?.schreiben_instruksi || `Tulis dalam bahasa Jerman: ${writingItem?.indonesian || ''}`,
-    answer: writingItem?.german || '',
-  },
-  {
+    prompt: writingItem.schreiben_instruksi
+      || `Tulis dalam bahasa Jerman: "${writingItem.indonesian}".`,
+    answer: writingItem.german,
+  }] : []),
+  ...(speakingItem ? [{
     kind: 'speaking',
     kindLabel: 'Sprechen',
-    prompt: speakingItem?.sprechen_pertanyaan || `Sebutkan dalam bahasa Jerman: ${speakingItem?.indonesian || ''}`,
-    answer: speakingItem?.german || '',
-  },
+    prompt: speakingItem.sprechen_pertanyaan
+      || `Sebutkan kosakata bahasa Jerman untuk "${speakingItem.indonesian}".`,
+    answer: speakingItem.german,
+  }] : []),
 ];
-
-if (tasks.length < 22 || vocabPool.length === 0) {
-  return new Response(`Materi level ${level} belum cukup untuk membuat Mock Exam.`, { status: 404 });
-}
+const hasCompleteMockExam = tasks.length === 22
+  && tasks.filter((task) => task.kind === 'reading').length === 10
+  && tasks.filter((task) => task.kind === 'listening').length === 10
+  && tasks.filter((task) => task.kind === 'writing').length === 1
+  && tasks.filter((task) => task.kind === 'speaking').length === 1;
 ---
 
 <Layout
@@ -83,7 +116,12 @@ if (tasks.length < 22 || vocabPool.length === 0) {
   description={`Mock Exam Goethe-Zertifikat ${level} untuk Alltagsdeutsch.`}
 >
   <main class="exam-shell">
-    <MockExam client:load level={level} tasks={tasks} />
+    <MockExam
+      client:load
+      level={level}
+      tasks={hasCompleteMockExam ? tasks : []}
+      unavailable={!hasCompleteMockExam}
+    />
   </main>
 </Layout>
 

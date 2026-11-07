@@ -17,9 +17,13 @@ const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
 
 const materials = (await getCollection('materi'))
-  .filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level);
+  .filter((item) =>
+    String(item.data.track ?? '').toLowerCase() === 'alltagsdeutsch'
+    && String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
+  );
 const vocabPool = materials.flatMap((material) => material.data.vocab ?? []);
-const taskCount = ['A1', 'A2'].includes(level) ? 10 : 5;
+const counts = { A1: 10, A2: 15, B1: 25, B2: 25, C1: 25, C2: 25 };
+const readingListeningCount = counts[level] ?? 10;
 
 function shuffle(items) {
   const copy = [...items];
@@ -30,99 +34,82 @@ function shuffle(items) {
   return copy;
 }
 
-function repeatToCount(items, count) {
-  if (items.length === 0) return [];
-  const output = [];
-  for (let index = 0; index < count; index += 1) {
-    output.push(items[index % items.length]);
-  }
-  return output;
-}
-
 function makeOptions(correct) {
   const alternatives = shuffle(
     [...new Set(vocabPool.map((item) => item.indonesian).filter((value) => value && value !== correct))]
   ).slice(0, 3);
-  if (alternatives.length === 0) {
-    alternatives.push(correct === 'benar' ? 'salah' : 'benar');
-  }
+  if (!correct) return [];
   return shuffle([correct, ...alternatives]);
 }
 
-const selectedVocab = repeatToCount(shuffle(vocabPool), taskCount);
-const keyWords = selectedVocab
-  .slice(0, 5)
-  .map((item) => item.german)
-  .filter(Boolean);
-const keyParagraph = selectedVocab[0]?.lesen_teks
-  || 'Anna freut sich auf den Tag. Sie beginnt morgens um sieben Uhr. Danach trifft sie Freunde in der Stadt, kauft Lebensmittel und erzählt von ihrem Alltag.';
-const readingPassage = `${keyParagraph}
+function makeGermanOptions(correct) {
+  const alternatives = shuffle(
+    [...new Set(vocabPool.map((item) => item.german).filter((value) => value && value !== correct))]
+  ).slice(0, 3);
+  if (!correct || alternatives.length === 0) return [];
+  return shuffle([correct, ...alternatives]);
+}
 
-Am frühen Morgen steht Anna auf, öffnet das Fenster und sieht auf die Straße. Die Nachbarn gehen zur Arbeit, Kinder fahren mit dem Bus zur Schule, und in einem kleinen Café werden Frühstück und Kaffee vorbereitet. Anna bereitet ihren Tag vor. Sie schreibt zuerst eine Liste, damit sie Einkäufe, Termine und wichtige Aufgaben nicht vergisst. Danach frühstückt sie ruhig, hört eine Nachricht aus der Nachbarschaft und entscheidet, wann sie zum Markt gehen möchte.
+const readingItems = shuffle(vocabPool.filter((item) =>
+  (item.lesen_teks || item.context) && item.german
+)).slice(0, readingListeningCount);
+const listeningItems = shuffle(vocabPool.filter((item) => item.hoeren_audio || item.context || item.german)).slice(0, readingListeningCount);
+const keyWords = readingItems.slice(0, 5).map((item) => item.german).filter(Boolean);
+const reading = readingItems.map((item) => {
+  const passage = item.lesen_teks || item.context;
+  const hasReadingQuestion = Boolean(item.lesen_pertanyaan);
+  const fallbackAnswer = item.indonesian || item.contextIndonesian;
+  return {
+    passage,
+    keyParagraph: passage,
+    prompt: item.lesen_pertanyaan || `Pilih arti yang tepat untuk "${item.german}".`,
+    answer: hasReadingQuestion ? item.german : fallbackAnswer,
+    options: hasReadingQuestion
+      ? makeGermanOptions(item.german)
+      : makeOptions(fallbackAnswer),
+    keywords: keyWords,
+  };
+});
+const listening = listeningItems.map((item) => {
+  const audioText = item.hoeren_audio || item.context || item.german;
+  return {
+    audio: audioText,
+    audioFallback: item.context || item.german,
+    prompt: `Dengarkan audio, lalu pilih arti yang tepat untuk "${item.german}".`,
+    answer: item.indonesian || item.contextIndonesian || item.german,
+    options: makeOptions(item.indonesian || item.contextIndonesian || item.german),
+    transcript: audioText,
+  };
+});
 
-Auf dem Markt gibt es Obst, Gemüse, Brot und Blumen. Anna spricht mit der Verkäuferin. Die Verkäuferin erklärt ihr, dass frisches Gemüse heute besonders günstig ist. Anna vergleicht die Preise, fragt nach dem Preis für Äpfel und entscheidet sich schließlich für Äpfel, Kartoffeln und Brot. Danach besucht sie eine Freundin. Gemeinsam planen sie einen Spaziergang durch den Park. Wenn das Wetter gut ist, nehmen sie einen Kaffee mit und setzen sich auf eine Bank.
-
-Am Nachmittag fährt Anna mit der Straßenbahn in das Stadtzentrum. Dort besucht sie eine Ausstellung über das Leben in der Stadt. Die Ausstellung zeigt Fotos, Karten und kurze Texte zu verschiedenen Orten. Anna liest einige Informationen über die Geschichte des Viertels und erfährt, dass viele Familien dort schon seit vielen Jahren wohnen. Anschließend kauft sie ein Geschenk für die Geburtstagsfeier ihrer Schwester.
-
-Später kehrt Anna nach Hause zurück. In der Küche kocht sie Suppe und bereitet einen einfachen Salat zu. Während sie kocht, telefoniert sie mit ihrer Mutter. Beide sprechen über die Woche, über kleine Probleme und über schöne Erlebnisse. Am Abend schreibt Anna einen kurzen Bericht in ihr Tagebuch. Sie beschreibt die Begegnungen, Erinnerungen und Pläne für den nächsten Tag.
-
-Am Ende des Tages ist Anna zufrieden. Sie hat ihre Aufgaben erledigt, Zeit mit Freunden verbracht und neue Informationen kennengelernt. Obwohl der Tag nicht perfekt war, war er abwechslungsreich und angenehm. Anna beschließt, morgen früher aufzustehen, noch einmal zum Markt zu gehen und den Nachmittag draußen zu verbringen.`;
-const reading = selectedVocab.map((item, index) => ({
-  passage: readingPassage,
-  keyParagraph: index === 0 ? keyParagraph : `Schlüsseltext: ${keyParagraph}`,
-  prompt: item.lesen_pertanyaan || `Pilih arti yang tepat untuk "${item.german}".`,
-  answer: item.indonesian || item.german,
-  options: makeOptions(item.indonesian || item.german),
-  keywords: keyWords,
-}));
-const listeningTranscript = `Guten Morgen. Hier sind wichtige Informationen für unseren Alltag.
-${selectedVocab.slice(0, 3).map((item, index) =>
-  `${item.context || item.german}. Bitte merken Sie sich die Nummer ${index + 1}.`
-).join(' ')}
-Unsere Veranstaltung beginnt am Dienstag um acht Uhr dreißig am Hauptbahnhof. Bitte kommen Sie zehn Minuten früher. Die Teilnehmer bringen einen Personalausweis, einen Kugelschreiber und ihre Anmeldung mit. An der Information erhalten Sie außerdem eine Übersicht über alle Räume.
-In der ersten Stunde begrüßen wir alle Gäste. Danach erklärt die Lehrerin den Ablauf des Tages. In der Pause können Sie Getränke und Snacks kaufen. Für Menschen mit Fragen gibt es am Ende eine eigene Gesprächszeit.
-Bitte beachten Sie auch den Wetterbericht. Wenn es am Morgen regnet, tragen Sie bitte einen Regenschirm. Wenn die Straßenbahn verspätet ist, können Sie den Bus zum Bahnhof nehmen. Der Bus fährt vor dem Rathaus ab und hält direkt am Eingang des Veranstaltungszentrums.`;
-const listening = selectedVocab.map((item, index) => ({
-  audio: listeningTranscript,
-  audioFallback: listeningTranscript,
-  prompt: index === 0
-    ? 'Dengarkan Begrüßung dan pilih informasi utama yang disebutkan.'
-    : 'Dengarkan audio, lalu pilih arti kata atau kalimat yang tepat.',
-  answer: item.indonesian || item.contextIndonesian || item.german,
-  options: makeOptions(item.indonesian || item.contextIndonesian || item.german),
-  transcript: listeningTranscript,
-}));
-
-const writingPool = shuffle(vocabPool).filter((item) => item.schreiben_instruksi).concat(shuffle(vocabPool));
-const speakingPool = shuffle(vocabPool).filter((item) => item.sprechen_pertanyaan).concat(shuffle(vocabPool));
+const writingPool = shuffle(vocabPool.filter((item) => item.schreiben_instruksi));
+const speakingPool = shuffle(vocabPool.filter((item) => item.sprechen_pertanyaan));
 const textTaskCount = ['A1', 'A2'].includes(level) ? 1 : 2;
-const writing = Array.from({ length: textTaskCount }, (_, index) => {
-  const item = writingPool[index % Math.max(writingPool.length, 1)];
-  return item
-    ? {
-        prompt: item.schreiben_instruksi || `Tulis dalam bahasa Jerman: ${item.indonesian}`,
-        answer: item.german || item.indonesian,
-        keywords: [item.german, item.indonesian].filter(Boolean),
-      }
-    : { prompt: 'Tulis satu kalimat sederhana dalam bahasa Jerman.', answer: 'Hallo' };
-});
-const speaking = Array.from({ length: textTaskCount }, (_, index) => {
-  const item = speakingPool[index % Math.max(speakingPool.length, 1)];
-  return item
-    ? {
-        prompt: item.sprechen_pertanyaan || `Sebutkan dalam bahasa Jerman: ${item.indonesian}`,
-        answer: item.german || item.indonesian,
-        keywords: [item.german, item.indonesian].filter(Boolean),
-      }
-    : { prompt: 'Sebutkan salam sederhana dalam bahasa Jerman.', answer: 'Hallo' };
-});
+const writing = writingPool.slice(0, textTaskCount).map((item) => ({
+    prompt: item.schreiben_instruksi,
+    answer: item.german || item.indonesian,
+    keywords: [item.german, item.indonesian].filter(Boolean),
+}));
+const speaking = speakingPool.slice(0, textTaskCount).map((item) => ({
+    prompt: item.sprechen_pertanyaan,
+    answer: item.german || item.indonesian,
+    keywords: [item.german, item.indonesian].filter(Boolean),
+}));
 
-const tasks = { lesen: reading, hoeren: listening, schreiben: writing, sprechen: speaking };
+const tasks = {
+  lesen: reading,
+  hoeren: listening,
+  schreiben: writing,
+  sprechen: speaking,
+};
+const available = vocabPool.length > 0
+  && reading.length > 0
+  && listening.length > 0;
 ---
 
 <Layout title={`Simulate Goethe-Zertifikat ${level} | siDeutsch`} description={`Simulasi resmi Goethe-Zertifikat level ${level}.`}>
   <main class="goethe-shell">
-    <GoetheExam client:load level={level} tasks={tasks} />
+    <GoetheExam client:load level={level} tasks={tasks} available={available} />
   </main>
 </Layout>
 
