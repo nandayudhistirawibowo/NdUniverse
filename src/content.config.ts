@@ -42,6 +42,12 @@ const career = defineCollection({
     track: z.literal('Career'),
     judulMateri: z.string(),
     deskripsi: z.string(),
+    boss_questions: z.array(
+      z.object({
+        question: z.string(),
+        keywords: z.array(z.string()),
+      })
+    ).optional(),
     vocab: z.array(
       z.object({
         german: z.string(),

@@ -1,13 +1,13 @@
 # siDeutsch — Product Requirements Document
 
-**Status:** Dokumentasi implementasi V2.0
+**Status:** Dokumentasi implementasi V3.0
 **Produk:** Platform belajar bahasa Jerman universal A1–C2
 
 ## Ringkasan Produk
 
 siDeutsch adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Produk mendukung mode tamu serta akun login yang menyinkronkan progress ke Supabase.
 
-Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, mencakup Alltagsdeutsch A1–C2, Fachdeutsch, dan materi Career yang masih bertahap hadir sebagai Coming Soon.
+Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, mencakup Alltagsdeutsch A1–C2, Fachdeutsch, dan empat rumpun Career.
 
 ## Tujuan dan Pengguna
 
@@ -22,7 +22,7 @@ Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, men
 
 - Alltagsdeutsch: materi bahasa Jerman sehari-hari untuk A1–C2.
 - Fachdeutsch: materi kosakata untuk bidang akademik dan profesional.
-- Career: katalog persiapan dunia kerja dengan status Coming Soon.
+- Career: katalog persiapan dunia kerja dengan empat rumpun profesi.
 - Setiap materi memiliki kosakata Jerman, terjemahan Indonesia, konteks Jerman, dan terjemahan konteks.
 - Kosakata dibagi menjadi **4 sesi**, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20.
 - Detail materi menampilkan tabel kosakata per sesi beserta tombol speaker dan tombol latihan keempat pilar.
@@ -48,6 +48,21 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - Jika Game Over, XP sementara dibuang dan tidak disimpan.
 - `finalizedXpRef` mencegah finalisasi ganda untuk run kuis yang sama.
 - Sistem anti-farming saat ini secara khusus membatalkan XP dari sesi yang berakhir Game Over dan menjaga XP tidak difinalisasi dua kali dalam satu run.
+
+### Career dan Boss Fight
+
+Katalog `/career` menyediakan empat profesi:
+
+1. IT & Software Engineering melalui `/career/it`
+2. Digital Business & E-Commerce melalui `/career/business`
+3. Pflege & Gesundheitswesen melalui `/career/health`
+4. Gizi & Kebidanan melalui `/career/nutrition`
+
+Setiap profesi memiliki **50 kosakata** pada Astro Content Collections Markdown. Halaman materi menampilkan Latihan Kosakata lima kata dasar per batch, kuis pilihan ganda sederhana, dan card Boss Fight.
+
+Boss Fight dipisahkan ke route `/career/[profesi]/boss`. Pengalaman end-to-end dimulai dengan layar visual novel ruangan kantor: pintu terbuka dengan animasi, Boss HRD masuk, lalu ucapan salam `"Guten Tag! Bitte setzen Sie sich..."` ditampilkan. User kemudian menjawab **10 pertanyaan wawancara bertahap** melalui text box atau Speech Recognition/microphone. Jawaban dinilai secara fuzzy sederhana terhadap keywords yang berasal dari frontmatter Markdown `boss_questions`. Pertanyaan berikutnya baru muncul setelah jawaban dikirim.
+
+Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wawancara Selesai!** beserta status kelulusan, badge profesi, dan tombol kembali ke materi profesi. Konten Career disimpan di `src/content/career/*.md`, bukan database Supabase.
 
 ### Progress dan Pilar Lulus
 
@@ -84,6 +99,8 @@ Route `/ujian/[level]` menyediakan Mock Exam mini:
 - Status kelulusan disimpan browser pada `localStorage` dengan key `sideutsch-ujian-[level]`.
 - Tombol melihat sertifikat ditampilkan apabila lulus.
 
+Komposisi Mini-Mock tetap 22 soal: 10 Lesen, 10 Hören, 1 Schreiben, dan 1 Sprechen. Schreiben dan Sprechen dinilai persentase berdasarkan kecocokan kata kunci sehingga jawaban parsial tidak langsung bernilai 0 atau 25. Skor total akhir ditampilkan dalam skala 0–100 persen.
+
 ### Simulasi Goethe-Zertifikat
 
 Route `/ujian/goethe/[level]` menyediakan simulasi resmi yang dibagi menjadi empat modul terpisah:
@@ -92,6 +109,8 @@ Route `/ujian/goethe/[level]` menyediakan simulasi resmi yang dibagi menjadi emp
 - Hören: audio TTS, pilihan ganda, dan pembatasan audio maksimal satu kali per soal.
 - Schreiben: instruksi spesifik dan text box besar.
 - Sprechen: topic lisan dan Mic to Text.
+
+Skor Lesen maksimal menggunakan jumlah jawaban pilihan ganda yang benar; Hören mengikuti jumlah jawaban benar. Schreiben dan Sprechen dinilai parsial dengan kata kunci: artikel Jerman di-normalisasi, keyword di-tokenisasi, dan persentase token/keyword yang cocok menentukan poin modul. Jadi satu jawaban esai tidak pernah bernilai penuh atau 0 hanya karena satu kalimat tidak sama persis dengan kunci jawaban.
 
 Timer standar:
 

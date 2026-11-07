@@ -5,63 +5,66 @@ export const prerender = false;
 
 ---
 <DashboardLayout
-  title="Career Segera Hadir | siDeutsch"
-  description="Fitur Career siDeutsch sedang dalam tahap pengembangan."
+  title="Career | siDeutsch"
+  description="Katalog profesi untuk mempersiapkan karir berbahasa Jerman."
   active="career"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
-  <section class="career-coming-soon">
-    <span class="career-icon" aria-hidden="true">
-      <svg viewBox="0 0 24 24" fill="none">
-        <rect x="3" y="7" width="18" height="14" rx="2" />
-        <path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" />
-      </svg>
-    </span>
-    <p class="eyebrow">Persiapan dunia kerja</p>
-    <h1>Career</h1>
-    <p class="coming-soon-message">
-      Fitur Career sedang dalam tahap pengembangan. Nantikan segera!
-    </p>
-    <a class="back-link" href="/dashboard">Kembali ke Dashboard</a>
+  <section class="career-catalog">
+    <header class="page-heading">
+      <p class="eyebrow">Persiapan dunia kerja</p>
+      <h1>Career</h1>
+      <p>Pilih rumpun profesi untuk mempersiapkan karir berbahasa Jerman.</p>
+    </header>
+
+    <div class="career-grid">
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">💻</span>
+        <h2>IT &amp; Software Engineering</h2>
+        <p>Siapkan dirimu untuk wawancara kerja sebagai Software Engineer di Jerman.</p>
+        <a href="/career/it">Mulai Belajar</a>
+      </article>
+
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">📈</span>
+        <h2>Digital Business &amp; E-Commerce</h2>
+        <p>Pelajari kosakata pemasaran digital &amp; bisnis untuk karir di Eropa.</p>
+        <a href="/career/business">Mulai Belajar</a>
+      </article>
+
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">🏥</span>
+        <h2>Pflege &amp; Gesundheitswesen</h2>
+        <p>Persiapkan bahasa Jerman medis untuk bekerja di rumah sakit Jerman.</p>
+        <a href="/career/health">Mulai Belajar</a>
+      </article>
+
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">🧑‍🍼</span>
+        <h2>Gizi &amp; Kebidanan</h2>
+        <p>Kosakata khusus untuk ahli gizi dan bidan dalam dunia kerja Jerman.</p>
+        <a href="/career/nutrition">Mulai Belajar</a>
+      </article>
+    </div>
   </section>
 </DashboardLayout>
 
 <style>
-  .career-coming-soon {
+  .career-catalog {
     display: grid;
-    justify-items: center;
-    max-width: 720px;
-    margin: clamp(2rem, 8vh, 6rem) auto;
-    padding: clamp(2rem, 6vw, 4rem);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    background:
-      radial-gradient(circle at top, rgba(229, 169, 59, 0.13), transparent 55%),
-      var(--card-bg);
-    box-shadow: var(--shadow);
-    text-align: center;
+    gap: 1.5rem;
   }
 
-  .career-icon {
-    display: grid;
-    width: 68px;
-    height: 68px;
-    place-items: center;
-    margin-bottom: 1.25rem;
-    border: 1px solid rgba(229, 169, 59, 0.4);
-    border-radius: 20px;
-    background: rgba(229, 169, 59, 0.14);
-    color: #966313;
+  .page-heading h1 {
+    margin: 0.35rem 0 0;
+    color: var(--text-main);
+    font-size: clamp(2rem, 5vw, 3rem);
   }
 
-  .career-icon svg {
-    width: 32px;
-    height: 32px;
-    stroke: currentColor;
-    stroke-width: 1.7;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .page-heading > p:last-child {
+    margin: 0.5rem 0 0;
+    color: var(--muted);
   }
 
   .eyebrow {
@@ -73,36 +76,65 @@ export const prerender = false;
     text-transform: uppercase;
   }
 
-  h1 {
-    margin: 0.35rem 0 0;
+  .career-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .career-card {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+    min-height: 220px;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+  }
+
+  .career-icon {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(229, 169, 59, 0.14);
+    font-size: 1.5rem;
+  }
+
+  .career-card h2 {
+    margin: 0;
     color: var(--text-main);
-    font-size: clamp(2.2rem, 6vw, 3.2rem);
+    font-size: 1.15rem;
   }
 
-  .coming-soon-message {
-    max-width: 470px;
-    margin: 0.85rem 0 1.5rem;
+  .career-card p {
+    margin: 0;
     color: var(--muted);
-    font-size: 1rem;
-    line-height: 1.7;
+    line-height: 1.6;
   }
 
-  .back-link {
+  .career-card a {
     display: inline-flex;
+    width: fit-content;
     min-height: 44px;
     align-items: center;
     justify-content: center;
     padding: 0.65rem 1rem;
-    border: 1px solid var(--border);
+    border: 0;
     border-radius: 999px;
-    color: var(--text-main);
+    background: var(--accent-red);
+    color: #fff;
     font-size: 0.84rem;
     font-weight: 700;
     text-decoration: none;
   }
 
-  .back-link:hover {
-    border-color: var(--accent-gold);
-    background: rgba(229, 169, 59, 0.1);
+  @media (max-width: 700px) {
+    .career-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

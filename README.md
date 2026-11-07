@@ -1,6 +1,6 @@
 # siDeutsch
 
-Platform belajar bahasa Jerman universal untuk level A1–C2 dengan kuis empat pilar CEFR: **Reading, Listening, Writing, dan Speaking**.
+Platform belajar bahasa Jerman universal untuk level A1–C2 dengan kuis empat pilar CEFR **Reading, Listening, Writing, dan Speaking**, Career profesional, dan Boss Fight Visual Novel.
 
 ## Fitur Unggulan
 
@@ -11,7 +11,8 @@ Platform belajar bahasa Jerman universal untuk level A1–C2 dengan kuis empat p
 - **Mic to Text:** Speech Recognition browser untuk latihan Speaking.
 - **XP dan Anti-Farming:** jawaban benar memberi 10 XP sesi sementara; XP dibatalkan saat Game Over dan tidak difinalisasi dua kali.
 - **Dual Track:** Alltagsdeutsch untuk bahasa sehari-hari dan Fachdeutsch untuk kosakata bidang profesional.
-- **Career:** halaman dan katalog yang tersedia; materi kuis berstatus **Coming Soon**.
+- **Career:** empat rumpun profesi IT, Digital Business, Kesehatan, serta Gizi & Kebidanan, masing-masing memiliki 50 kosakata dan 10 pertanyaan Boss Fight.
+- **Boss Fight Visual Novel:** Intro ruangan kantor dan pintu animasi, salam HRD, chat interview bertahap, dukungan Mic Speech API, serta layar kemenangan.
 - **Bookmark:** menyimpan kosakata sulit secara lokal di browser.
 - **Dashboard CEFR:** progress, profil, avatar Private, dan pencapaian 4 pilar.
 
@@ -34,6 +35,7 @@ Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**.
 - [PRD](PRD.md)
 - [ERD](ERD.md)
 - [Flowchart](FLOWCHART.md)
+- [Handover](HANDOVER.md)
 
 ## Menjalankan Proyek
 

@@ -1,0 +1,50 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import BossFight from '../../../components/BossFight.jsx';
+import { getEntry } from 'astro:content';
+
+export const prerender = false;
+
+const profesi = String(Astro.params.profesi ?? '').toLowerCase();
+const titles = {
+  it: ['IT & Software Engineering', 'IT'],
+  business: ['Digital Business & E-Commerce', 'Business'],
+  health: ['Pflege & Gesundheitswesen', 'Pflege'],
+  nutrition: ['Gizi & Kebidanan', 'Gizi dan Kebidanan'],
+};
+const titleData = titles[profesi];
+if (!titleData) return new Response('Profesi tidak ditemukan.', { status: 404 });
+
+const entry = await getEntry('career', profesi);
+const questions = entry?.data.boss_questions ?? [];
+---
+
+<DashboardLayout
+  title={`Boss Fight ${titleData[0]} | siDeutsch`}
+  description={`Simulasi wawancara kerja untuk ${titleData[0]}.`}
+  active="career"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <section class="boss-page">
+    <a class="back-link" href={`/career/${profesi}`}>← Kembali ke Materi</a>
+    <header>
+      <p class="eyebrow">Boss Fight</p>
+      <h1>{titleData[0]}</h1>
+    </header>
+    <BossFight
+      client:load
+      questions={questions}
+      badge={titleData[1]}
+      profession={titleData[0]}
+      returnHref={`/career/${profesi}`}
+    />
+  </section>
+</DashboardLayout>
+
+<style>
+  .boss-page { display:grid; gap:1rem; }
+  .back-link { width:fit-content; color:var(--text-main); text-decoration:none; font-weight:700; }
+  .eyebrow { margin:0; color:#966313; font-size:.72rem; font-weight:800; text-transform:uppercase; }
+  header h1 { margin:.35rem 0 0; color:var(--text-main); }
+</style>

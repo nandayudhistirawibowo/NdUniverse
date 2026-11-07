@@ -1,0 +1,38 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import CareerQuiz from '../../components/CareerQuiz.jsx';
+
+export const prerender = false;
+
+const words = [
+  { german: 'die Ernährung', indonesian: 'Gizi/Pola makan', options: ['Gizi/Pola makan', 'Persalinan', 'Kehamilan', 'Imunisasi'] },
+  { german: 'die Schwangere', indonesian: 'Ibu hamil', options: ['Bidan', 'Ibu hamil', 'Bayi', 'Ahli gizi'] },
+  { german: 'die Hebamme', indonesian: 'Bidan', options: ['Dokter anak', 'Bidan', 'Psikolog', 'Perawat'] },
+  { german: 'die Beratung', indonesian: 'Konseling', options: ['Operasi', 'Konseling', 'Resep', 'Vaksinasi'] },
+  { german: 'das Neugeborene', indonesian: 'Bayi baru lahir', options: ['Balita', 'Bayi baru lahir', 'Ibu hamil', 'Nutrisi'] },
+];
+---
+
+<DashboardLayout
+  title="Gizi & Kebidanan | Career | siDeutsch"
+  description="Materi Career Gizi dan Kebidanan."
+  active="career"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <section class="career-profession">
+    <a href="/career">← Kembali ke Career</a>
+    <h1>Gizi &amp; Kebidanan</h1>
+    <CareerQuiz client:load words={words} profession="Gizi dan Kebidanan" />
+    <article class="boss-card"><span aria-hidden="true">⚔️</span><div><p>Boss Fight</p><h2>Boss Fight: HRD Interview</h2><p>Berlatih menjawab wawancara kerja dalam bahasa Jerman.</p></div><a href="/career/nutrition/boss">Mulai Wawancara</a></article>
+  </section>
+</DashboardLayout>
+
+<style>
+  .career-profession { display:grid; gap:1rem; }
+  .career-profession > a { width:fit-content; color:var(--text-main); text-decoration:none; font-weight:700; }
+  .career-profession > h1 { margin:0; color:var(--text-main); }
+  .boss-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:var(--card-bg); }
+  .boss-card span { font-size:1.8rem; }.boss-card p,.boss-card h2 { margin:.1rem 0; }.boss-card div > p:first-child { color:#966313;font-size:.72rem;font-weight:800;text-transform:uppercase; }
+  .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
+</style>

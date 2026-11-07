@@ -1,0 +1,41 @@
+---
+import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import CareerQuiz from '../../components/CareerQuiz.jsx';
+
+export const prerender = false;
+
+const words = [
+  { german: 'das Marketing', indonesian: 'Pemasaran', options: ['Pemasaran', 'Penjualan', 'Akuntansi', 'Logistik'] },
+  { german: 'der Vertrieb', indonesian: 'Penjualan', options: ['Keuangan', 'Penjualan', 'Produksi', 'Strategi'] },
+  { german: 'die Kundschaft', indonesian: 'Pelanggan', options: ['Pelanggan', 'Pemasok', 'Karyawan', 'Investor'] },
+  { german: 'die Kampagne', indonesian: 'Kampanye', options: ['Kampanye', 'Kontrak', 'Laporan', 'Stok'] },
+  { german: 'der Online-Shop', indonesian: 'Toko daring', options: ['Gudang', 'Toko daring', 'Pasar saham', 'Bank'] },
+];
+---
+
+<DashboardLayout
+  title="Digital Business & E-Commerce | Career | siDeutsch"
+  description="Materi Career Digital Business dan E-Commerce."
+  active="career"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <section class="career-profession">
+    <a href="/career">← Kembali ke Career</a>
+    <h1>Digital Business &amp; E-Commerce</h1>
+    <CareerQuiz client:load words={words} profession="Business" />
+    <article class="boss-card">
+      <span aria-hidden="true">⚔️</span><div><p>Boss Fight</p><h2>Boss Fight: HRD Interview</h2><p>Berlatih menjawab wawancara kerja dalam bahasa Jerman.</p></div>
+      <a href="/career/business/boss">Mulai Wawancara</a>
+    </article>
+  </section>
+</DashboardLayout>
+
+<style>
+  .career-profession { display:grid; gap:1rem; }
+  .career-profession > a { width:fit-content; color:var(--text-main); text-decoration:none; font-weight:700; }
+  .career-profession > h1 { margin:0; color:var(--text-main); }
+  .boss-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:var(--card-bg); }
+  .boss-card span { font-size:1.8rem; }.boss-card p,.boss-card h2 { margin:.1rem 0; }.boss-card div > p:first-child{color:#966313;font-size:.72rem;font-weight:800;text-transform:uppercase}
+  .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
+</style>

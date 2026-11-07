@@ -65,6 +65,9 @@ Materi baru dianggap lulus hanya jika keempat pilar ada setelah normalisasi. Mat
 ## Data di Luar Database
 
 - Konten materi dan vocab disimpan dalam Markdown/Astro Content Collections, bukan tabel SQL.
+- Konten Career disimpan di `src/content/career/*.md` dan diambil melalui koleksi Astro `career`, bukan Supabase.
+- Setiap file Career berisi **50 entri `vocab`** dengan `german`, `indonesian`, dan `context`, serta **10 entri `boss_questions`**.
+- Setiap `boss_questions` berisi satu `question` berbahasa Jerman dan array `keywords` 2–3 kata kunci untuk penilaian wawancara.
 - Bookmark kosakata disimpan di browser pada `localStorage` key `sideutsch-bookmarks` dan tidak disinkronkan ke Supabase.
 - Status kelulusan Mock Exam disimpan pada `localStorage` key `sideutsch-ujian-[level]`.
 - Status kelulusan Simulasi Goethe disimpan pada `localStorage` key `sideutsch-goethe-[level]`.

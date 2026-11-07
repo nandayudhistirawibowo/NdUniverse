@@ -22,17 +22,16 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[Buka detail materi] --> B[Pilih sesi 1 sampai 4]
-    B --> C[Pilih satu dari empat pilar]
-    C --> D{Pilar dipilih}
-    D -->|Reading| E[Buka kuis type reading]
-    D -->|Listening| F[Buka kuis type listening]
-    D -->|Writing| G[Buka kuis type writing]
-    D -->|Speaking| H[Buka kuis type speaking]
-    E --> I[Filter lima kosakata sesi]
-    F --> I
-    G --> I
-    H --> I
+    A[Buka detail materi] --> B[Pilih Reading atau Listening atau Writing atau Speaking]
+    B --> C{Pilar dipilih}
+    C -->|Reading| D[Buka kuis type reading]
+    C -->|Listening| E[Buka kuis type listening]
+    C -->|Writing| F[Buka kuis type writing]
+    C -->|Speaking| G[Buka kuis type speaking]
+    D --> H[Filter maksimal lima kosakata dari data pilar]
+    E --> H
+    F --> H
+    G --> H
 ```
 
 ## Alur Kuis 4 Pilar
@@ -82,6 +81,41 @@ flowchart TD
     I -->|Tidak| K[Fachdeutsch atau Career tidak menambah level]
     E --> L[Upsert JSON array ke Supabase]
 ```
+
+## Alur Career dan Boss Fight Visual Novel
+
+```mermaid
+flowchart TD
+    A[User membuka /career] --> B[Pilih salah satu profesi]
+    B --> C[IT atau Business atau Health atau Nutrition]
+    C --> D[Buka Materi 50 kosakata dan kuis kosakata]
+    D --> E[Klik Mulai Wawancara]
+    E --> F[Masuk /career/profesi/boss]
+    F --> G[Tampilkan layar intro ruangan kantor]
+    G --> H[User klik Ketuk Pintu]
+    H --> I[Animasi pintu terbuka dan Boss masuk]
+    I --> J[Boss menyampaikan salam HRD]
+    J --> K[User klik Mulai Wawancara]
+    K --> L[Game state berubah ke interview]
+    L --> M[Tampilkan pertanyaan 1 dari 10 sebagai chat HRD]
+    M --> N[User menjawab melalui text box atau mic Speech API]
+    N --> O{Jawaban cocok keyword pertanyaan?}
+    O -->|Ya| P[Tambah jumlah jawaban cocok]
+    O -->|Tidak| Q[Simpan sebagai jawaban belum cocok]
+    P --> R{Masih ada pertanyaan berikutnya?}
+    Q --> R
+    R -->|Ya| S[Tampilkan pertanyaan berikutnya]
+    S --> N
+    R -->|Tidak| T[Game state berubah ke finished]
+    T --> U[Hitung jawaban cocok]
+    U --> V{Mencapai ambang kelulusan?}
+    V -->|Ya| W[Tampilkan Wawancara Selesai dan layar kemenangan]
+    V -->|Tidak| X[Tampilkan hasil wawancara belum lulus]
+    W --> Y[Klik Kembali ke Materi]
+    X --> Y
+```
+
+Data Career diambil dari Markdown pada `src/content/career/*.md`. Pertanyaan disimpan pada `boss_questions` dan jawaban dinilai berdasarkan `keywords` dari pertanyaan aktif. Boss Fight tidak menyimpan progress ke Supabase; badge dan hasil ditampilkan state-side di browser.
 
 ## Alur Mock Exam 22 Soal
 
