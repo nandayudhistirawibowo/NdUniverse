@@ -1,80 +1,67 @@
 # siDeutsch — Product Requirements Document
 
-**Status:** Dokumentasi kondisi implementasi saat ini  
-**Produk:** Platform belajar bahasa Jerman untuk pengguna umum
+**Status:** Dokumentasi implementasi V2.0
+**Produk:** Platform belajar bahasa Jerman universal A1–C2
 
-## Latar Belakang
+## Ringkasan Produk
 
-siDeutsch adalah platform belajar bahasa Jerman interaktif untuk **Pengguna Umum**, dari komunikasi sehari-hari hingga kosakata bidang profesional. Produk menyediakan materi bertingkat A1–C2, kuis, progress, bookmark kosakata, pengucapan, grammar, dan materi persiapan kerja.
+siDeutsch adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Produk mendukung mode tamu serta akun login yang menyinkronkan progress ke Supabase.
 
-Koleksi saat ini mencakup **424 file materi Alltagsdeutsch dan Fachdeutsch** (411 Alltagsdeutsch A1–C2 dan 13 Fachdeutsch), serta 1 file Career. Jumlah kosakata sekitar **8.500 entri**: 8.220 Alltagsdeutsch, 260 Fachdeutsch, dan 20 Career.
+Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, mencakup Alltagsdeutsch A1–C2, Fachdeutsch, dan materi Career yang masih bertahap hadir sebagai Coming Soon.
 
 ## Tujuan dan Pengguna
 
-- Membantu **Pengguna Umum**, termasuk pelajar, belajar bahasa Jerman dari A1 hingga C2.
-- Menyediakan Alltagsdeutsch, Fachdeutsch, serta halaman Career yang saat ini berstatus Coming Soon.
-- Memberikan sesi kuis, XP, bookmark kosakata, dan sinkronisasi progress bagi pengguna yang masuk.
-- Menyediakan halaman Bantuan, profil, dashboard, dan area admin.
-
-Admin mengelola akun dan platform melalui portal terpisah.
+- Membantu pengguna belajar bahasa Jerman dari level A1 hingga C2.
+- Membagi pembelajaran materi menjadi empat keterampilan CEFR: Reading/Lesen, Listening/Hören, Writing/Schreiben, dan Speaking/Sprechen.
+- Menyediakan latihan berbasis sesi, umpan balik pengucapan dan audio, progress XP, serta materi profesi.
+- Menjaga fitur guest tetap dapat digunakan tanpa login; sinkronisasi progress berlaku bagi pengguna login.
 
 ## Fitur Utama
 
-### Autentikasi dan Akses
+### Materi dan Struktur Sesi
 
-- Halaman `/login` menerima email atau NIM. NIM dipetakan ke alamat Supabase `NIM@student.sideutsch.com`; alamat email digunakan langsung.
-- Pengguna baru tidak memerlukan tombol daftar. Jika login gagal dengan `Invalid login credentials`, aplikasi mencoba membuat akun otomatis (*auto-signup*), lalu mencoba masuk kembali.
-- Profil pengguna umum dapat memiliki kolom `nim` kosong (`NULL`). Akun NIM lama tetap dapat digunakan.
-- Jika akun sudah terdaftar tetapi password salah, pengguna menerima pesan yang menjelaskan kondisi tersebut. Konfirmasi email Supabase yang aktif dapat menghalangi login otomatis hingga email dikonfirmasi.
-- Admin menggunakan `/admin/login` dengan validasi dan otorisasi khusus.
-- Middleware melindungi `/dashboard`, `/career`, dan `/bantuan`; rute admin memerlukan hak admin. Materi publik dapat dilihat tanpa login.
+- Alltagsdeutsch: materi bahasa Jerman sehari-hari untuk A1–C2.
+- Fachdeutsch: materi kosakata untuk bidang akademik dan profesional.
+- Career: katalog persiapan dunia kerja dengan status Coming Soon.
+- Setiap materi memiliki kosakata Jerman, terjemahan Indonesia, konteks Jerman, dan terjemahan konteks.
+- Kosakata dibagi menjadi **4 sesi**, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20.
+- Detail materi menampilkan tabel kosakata per sesi beserta tombol speaker dan tombol latihan keempat pilar.
+- Route guest menggunakan `/materi/[slug]` dan `/materi/[slug]/latihan`; route login menggunakan `/dashboard/materi/[slug]` dan `/dashboard/materi/[slug]/latihan`.
 
-### Materi dan Jalur Belajar
+### Kuis 4 Pilar CEFR
 
-- **Alltagsdeutsch:** materi bahasa umum berdasarkan level CEFR A1–C2.
-- **Fachdeutsch:** kosakata dan konteks berbagai bidang studi/profesional.
-- **Career:** track persiapan kerja tanpa level CEFR. Halaman katalog `/career` menampilkan pemberitahuan Coming Soon; kuis Career belum tersedia.
-- Materi Alltagsdeutsch dan Fachdeutsch berada di content collection `materi`; Career berada di collection `career`.
-- Materi memuat judul, deskripsi, dan kosakata. Setiap entri kosakata menyediakan kata Jerman, arti Indonesia, kalimat konteks Jerman, dan terjemahan konteks.
-- Kosakata materi utama dibagi ke sesi latihan maksimal lima kata.
+Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai query `session`.
 
-### Kuis, XP, dan Progress
+- **Reading / Lesen:** menampilkan teks atau konteks, kemudian meminta jawaban pilihan ganda atau fallback Word Matcher bila data Reading tidak tersedia.
+- **Listening / Hören:** memutar audio kata atau konteks, kemudian menggunakan pilihan ganda. Fallback memakai Word Matcher.
+- **Writing / Schreiben:** menampilkan instruksi atau kata Indonesia dan meminta jawaban bahasa Jerman melalui text box. Validasi memakai fuzzy matching tanpa hint artikel.
+- **Speaking / Sprechen:** menampilkan pertanyaan Jerman, menyediakan text box, dan mic-to-text menggunakan Web Speech API.
+- Pada setiap pilar, maksimal lima kosakata dari sesi aktif diproses sebagai lima soal.
+- Tipe soal lama bukan lagi generator acak global; tipe soal disesuaikan dengan pilar aktif.
 
-- Kuis materi utama menggunakan variasi Tap & Arrange (Susun Kata), Word Matcher, dan Text Box.
-- Setiap kuis dimulai dengan tiga nyawa. Jawaban salah mengurangi nyawa dan menambahkan kata terkait ke Review Kata Sulit.
-- **Anti-Farming XP:** jawaban benar menambah 10 XP ke state sesi sementara. XP baru ditambahkan ke total setelah sesi selesai; jika nyawa habis (*Game Over*), XP sementara hangus dan tidak disimpan.
-- `finalizedXpRef` mencegah finalisasi ganda untuk satu run kuis. Implementasi belum memiliki ledger anti-replay yang mencegah pengguna mendapat XP lagi dengan mengulang sesi yang sudah selesai; mekanisme anti-farming ini khusus membatalkan XP sesi yang berakhir Game Over.
-- Akurasi minimal 80% menandai sesi lulus. Sesi yang selesai tetapi tidak mencapai akurasi tersebut tetap dapat mengomit XP.
-- Pengguna yang login menyimpan progress per materi ke Supabase `user_progress`; cache progress/XP juga menggunakan `localStorage`. Materi yang dimainkan tanpa login tidak tersinkron ke akun.
-- Total XP menggabungkan XP seluruh materi. Level CEFR dihitung dari sesi lulus materi berlevel di collection `materi`; Career tidak ikut perhitungan ini.
-- Catatan belajar disimpan per pengguna dan material.
+### Sistem Nyawa, XP, dan Anti-Farming
 
-### Text-to-Speech (TTS)
+- Kuis dimulai dengan tiga nyawa.
+- Jawaban salah mengurangi nyawa dan menambahkan kata terkait ke Review Kata Sulit.
+- Jawaban benar menambah 10 XP ke state sesi sementara.
+- XP baru tidak dikomit secara final sebelum sesi mencapai penyelesaian.
+- Jika Game Over, XP sementara dibuang dan tidak disimpan.
+- `finalizedXpRef` mencegah finalisasi ganda untuk run kuis yang sama.
+- Sistem anti-farming saat ini secara khusus membatalkan XP dari sesi yang berakhir Game Over dan menjaga XP tidak difinalisasi dua kali dalam satu run.
 
-- TTS menggunakan **8.372 file MP3 statis** hasil generate Edge TTS, disimpan di `public/audio/tts/`. `manifest.json` memetakan teks ke file audio.
-- Saat pengguna menekan tombol speaker, aplikasi mencari teks di manifest dan memutar file MP3 jika tersedia.
-- Jika file tidak ditemukan atau audio gagal diputar, aplikasi menggunakan Web Speech API browser (`de-DE`) sebagai fallback.
+### Progress dan Pilar Lulus
 
-### Avatar Profil
+- Progress disimpan dalam `user_progress.sessions_passed` sebagai JSONB.
+- Format baru menggunakan string `reading`, `listening`, `writing`, dan `speaking`.
+- Materi baru dianggap selesai hanya jika keempat pilar terdapat pada progress.
+- Data lama berupa `[1, 2, 3, 4]` dinormalisasi ke empat nama pilar saat dibaca.
+- Peserta menerima XP kuis per jawaban benar, tetapi kartu materi menampilkan kemajuan 0/4 hingga 4/4 pilar.
 
-- Foto profil disimpan di bucket Supabase Storage `avatars` yang bersifat **Private**.
-- Kolom `profiles.avatar_url` menyimpan path objek Storage. Aplikasi membuat dan merender *Signed URL* yang berlaku selama **1 jam**.
-- Kebijakan Storage membatasi akses file kepada pemilik dan admin yang berwenang.
+### Level CEFR
 
-### Bookmark Kosakata
+Bobot poin materi Alltagsdeutsch yang lulus keempat pilarnya:
 
-- Dari Review Kata Sulit pada ringkasan kuis, pengguna dapat menyimpan kata ke bookmark.
-- Bookmark berisi `german`, `indonesian`, dan `context`, disimpan di browser pada key `sideutsch-bookmarks`.
-- Duplikat kata Jerman dicegah; bookmark dapat dilihat dan dihapus pada `/dashboard/bookmark`.
-- Bookmark bersifat client-side per browser dan tidak disimpan atau disinkronkan ke Supabase.
-
-### Dashboard, Level, dan Tooltip
-
-Dashboard menampilkan total XP, level CEFR, progress menuju level berikutnya, dan pencapaian materi. Tooltip/keterangan pada kartu Progress Belajar menerangkan bahwa XP berasal dari semua materi, sementara level CEFR dihitung dari sesi lulus Alltagsdeutsch berlevel.
-
-Bobot poin per sesi lulus menurut level materi:
-
-| Level materi | Poin per sesi lulus |
+| Level | Poin |
 | --- | ---: |
 | A1 | 10 |
 | A2 | 20 |
@@ -83,55 +70,91 @@ Bobot poin per sesi lulus menurut level materi:
 | C1 | 50 |
 | C2 | 60 |
 
-Threshold total poin untuk label level dashboard:
+Total level dihitung berdasarkan materi yang sudah lulus seluruh pilar. Materi Fachdeutsch dan Career tidak menambah poin Level CEFR.
 
-| Total poin | Level dashboard |
-| --- | --- |
-| 0–199 | A1 Pemula |
-| 200–399 | A1 Lanjut |
-| 400–699 | A2 Pemula |
-| 700–999 | A2 Lanjut |
-| 1000–1399 | B1 |
-| 1400–1799 | B2 |
-| 1800–2199 | C1 |
-| 2200 ke atas | C2 (Mastery) |
+### Mock Exam 22 Soal
 
-### Fitur Pendukung
+Route `/ujian/[level]` menyediakan Mock Exam mini:
 
-- `/pengucapan` dan `/grammar` menyediakan panduan bahasa.
-- **Career** tersedia sebagai halaman Coming Soon; kuis Career belum tersedia.
-- **Halaman Bantuan** tersedia di `/bantuan`.
-- Profil pengguna menyediakan pengaturan nama, foto, dan penggantian password.
-- Admin mengelola akun melalui `/admin` dan Admin API yang terproteksi.
+- 10 Lesen
+- 10 Hören
+- 1 Schreiben
+- 1 Sprechen
+- Kelulusan keseluruhan jika skor minimal 60%.
+- Status kelulusan disimpan browser pada `localStorage` dengan key `sideutsch-ujian-[level]`.
+- Tombol melihat sertifikat ditampilkan apabila lulus.
+
+### Simulasi Goethe-Zertifikat
+
+Route `/ujian/goethe/[level]` menyediakan simulasi resmi yang dibagi menjadi empat modul terpisah:
+
+- Lesen: teks panjang, pilihan ganda, dan timer modul.
+- Hören: audio TTS, pilihan ganda, dan pembatasan audio maksimal satu kali per soal.
+- Schreiben: instruksi spesifik dan text box besar.
+- Sprechen: topic lisan dan Mic to Text.
+
+Timer standar:
+
+| Level | Lesen | Hören | Schreiben | Sprechen |
+| --- | ---: | ---: | ---: | ---: |
+| A1 | 25 menit | 20 menit | 20 menit | 15 menit |
+| A2 | 30 menit | 30 menit | 30 menit | 15 menit |
+| B1 | 65 menit | 40 menit | 60 menit | 15 menit |
+
+Level B2 ke atas mengikuti durasi yang dikonfigurasi pada implementasi halaman dan setiap modul tetap menggunakan countdown serta penyelesaian otomatis saat waktu habis.
+
+Kelulusan seluruh simulasi mensyaratkan **skor minimal 60% pada setiap modul**, bukan hanya rata-rata. Hasil menampilkan skor, rating, paragraf kunci untuk Lesen, transkrip untuk Hören, serta kata kunci dan umpan balik untuk Writing/Speaking.
+
+Status `sideutsch-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus dapat dibuka dan diunduh sebagai PDF melalui `html2pdf.js`.
+
+### Audio TTS dan Microphone
+
+- Sistem TTS mencari teks pada `public/audio/tts/manifest.json`.
+- Terdapat **8.372 file MP3 statis** hasil Edge TTS.
+- Jika manifest atau MP3 gagal, aplikasi memakai Web Speech API dengan bahasa `de-DE`.
+- Speaking memakai browser Speech Recognition untuk mengubah rekaman suara menjadi teks sebelum fuzzy matching.
+
+### Autentikasi dan Profil
+
+- Login mendukung email atau NIM lama yang dipetakan ke akun Supabase.
+- Akun baru dapat dibuat melalui auto-signup bila kredensial belum ada.
+- `profiles.nim` bersifat nullable.
+- Avatar disimpan sebagai objek Private di bucket Supabase Storage `avatars`.
+- Avatar menggunakan Signed URL dengan masa berlaku satu jam dan tidak dapat diakses publik secara langsung.
+
+### Bookmark dan Penyimpanan Client
+
+- Bookmark kosakata disimpan di `localStorage` dengan key `sideutsch-bookmarks`.
+- Duplikat kata Jerman dicegah.
+- Status Mock Exam, hasil Simulasi Goethe, dan data sertifikat disimpan client-side.
+- Sertifikat PDF bukan entitas database.
+
+### Dashboard, Bantuan, dan Admin
+
+- Dashboard menampilkan XP, kemajuan level CEFR, progress materi, dan pencapaian pilar.
+- Materi Fachdeutsch dan Career tidak menambah poin Level CEFR.
+- Halaman Bantuan, profil, bookmark, dan dashboard dilindungi middleware sesuai akses.
+- Admin mengelola akun melalui portal admin terproteksi.
 
 ## Tech Stack
 
 | Area | Teknologi |
 | --- | --- |
-| Framework / rendering | Astro 7, SSR (`output: "server"`) |
-| Hosting | Vercel melalui `@astrojs/vercel` |
+| Framework / rendering | Astro 7, SSR |
 | Komponen interaktif | Preact 11, `@astrojs/preact` |
-| Styling | CSS murni dan CSS variables; tanpa Tailwind |
-| Auth, database, storage | Supabase Auth, PostgreSQL, Supabase Storage, `@supabase/ssr`, `@supabase/supabase-js` |
-| Konten | Astro Content Collections, Markdown, Zod |
-| Navigasi | Astro `ClientRouter` |
-| Audio TTS | 8.372 file MP3 statis hasil generate Edge TTS di `public/audio/tts/`; fallback Web Speech API |
-| Penyimpanan browser | `localStorage` untuk cache progress/XP dan bookmark |
-| Runtime | Node.js `>=22.23.4` |
+| Database dan auth | Supabase PostgreSQL/Auth/Storage |
+| Content | Astro Content Collections, Markdown, Zod |
+| Styling | CSS murni dan CSS variables |
+| Audio | 8.372 MP3 Edge TTS, Web Speech API, Speech Recognition API |
+| PDF | html2pdf.js |
+| Hosting | Vercel |
+| Penyimpanan browser | localStorage |
 
-## Model Data Tingkat Tinggi
+## Model Data
 
-- Supabase Auth mengelola akun dan sesi.
-- `profiles` menyimpan NIM opsional, nama, nomor WhatsApp, dan path avatar.
-- `user_progress` menyimpan XP, sesi lulus, dan catatan per kombinasi pengguna dan slug materi; akses dibatasi oleh RLS.
-- Konten materi tersimpan sebagai Markdown di Astro Content Collections, bukan tabel Supabase.
-- Bookmark tersimpan di `localStorage`; file TTS statis beserta manifest tersimpan di `public/audio/tts/`.
+- Konten materi tersimpan sebagai file Markdown di `src/content/materi/` dan collection Career.
+- `profiles` menyimpan identitas dan avatar pengguna.
+- `user_progress` menyimpan XP, JSONB `sessions_passed`, dan catatan per pengguna serta slug materi.
+- Bookmark, status ujian, dan sertifikat tidak disimpan sebagai tabel Supabase.
 
-Skema dan batasan relasi dirinci dalam [ERD.md](./ERD.md).
-
-## Operasional
-
-- Variabel lingkungan: `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, dan `SUPABASE_SERVICE_ROLE_KEY`. Jangan commit nilai rahasia.
-- Terapkan SQL Supabase, RLS, migrasi nullable `profiles.nim`, dan bucket Storage `avatars` sesuai deployment.
-- Jalankan `npm run build` sebelum perubahan siap dipush.
-- Belum ada script test otomatis khusus dalam `package.json`; build dan uji manual tetap diperlukan.
+Skema relasi detail tersedia di [ERD.md](./ERD.md) dan alur aplikasi tersedia di [FLOWCHART.md](./FLOWCHART.md).

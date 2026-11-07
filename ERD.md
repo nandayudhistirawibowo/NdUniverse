@@ -1,6 +1,6 @@
 # siDeutsch — Entity Relationship Diagram
 
-## Entitas Relasional
+## Entitas Utama
 
 ```mermaid
 erDiagram
@@ -19,7 +19,7 @@ erDiagram
         text nim "nullable"
         text nama_lengkap
         text nomor_wa
-        text avatar_url "path objek Storage"
+        text avatar_url "path objek Private Storage"
     }
 
     USER_PROGRESS {
@@ -33,30 +33,45 @@ erDiagram
     }
 ```
 
-*Fitur Bookmark dan antrean TTS tidak disimpan di database, melainkan di localStorage (Bookmark) dan public/audio (File Statis).*
-
-## Tabel
+## Tabel Database
 
 | Tabel | Kolom yang digunakan aplikasi | Constraint / catatan |
 | --- | --- | --- |
-| `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Pengguna masuk dengan email atau NIM lama yang dipetakan ke alamat `NIM@student.sideutsch.com`; pengguna baru dapat dibuat lewat auto-signup. |
-| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | Aplikasi menggunakan `id` yang sama dengan `auth.users.id`. Kolom `nim` **nullable** (`NULL` diperbolehkan) untuk pengguna umum tanpa NIM. `avatar_url` menyimpan path objek di bucket Storage, bukan URL publik. Terapkan `supabase/profiles_nim_nullable.sql` pada database yang kolomnya masih `NOT NULL`. Definisi lengkap tabel profiles tidak tersedia di repo; cocokkan constraint lain dengan Supabase aktual. |
-| `public.user_progress` | `id`, `user_id`, `material_slug`, `xp`, `sessions_passed`, `notes`, `updated_at` | Didefinisikan di `supabase/user_progress.sql`; `(user_id, material_slug)` unik, `user_id` FK ke `auth.users(id)` dengan cascade delete, dan RLS membatasi akses ke baris milik pengguna. `xp` bernilai non-negatif; `sessions_passed` berupa array JSONB. |
+| `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Login menerima email atau NIM lama yang dinormalisasi ke email akun. |
+| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | `id` sama dengan `auth.users.id`. `nim` bersifat **nullable** karena pengguna email umum tidak selalu memiliki NIM. `avatar_url` menyimpan path objek, bukan URL publik. |
+| `public.user_progress` | `id`, `user_id`, `material_slug`, `xp`, `sessions_passed`, `notes`, `updated_at` | Kombinasi `(user_id, material_slug)` unik; `sessions_passed` harus JSON array melalui check JSONB; `xp` tidak boleh negatif; RLS membatasi akses ke pemilik baris. |
 
-## Relasi dan Makna Data
+## Relasi dan Makna Kolom
 
-- Satu `auth.users` memiliki nol atau satu profil dengan UUID yang sama; detail constraint foreign key `profiles` perlu dicocokkan dengan Supabase karena DDL lengkap tabel tersebut tidak ada di repo.
-- Satu pengguna dapat memiliki banyak baris `user_progress`, satu per slug materi.
-- `material_slug` mengacu secara logis pada ID content collection Astro; ia bukan FK ke tabel materi PostgreSQL.
-- `xp` adalah nilai kumulatif per materi yang disimpan setelah kuis selesai.
-- `sessions_passed` adalah array JSONB nomor sesi yang lulus, misalnya `[1, 2]`.
-- `notes` menyimpan catatan belajar per materi dan `updated_at` diperbarui saat upsert.
-- Level dashboard dihitung dari sesi lulus dan metadata level CEFR di materi, bukan dari kolom database `current_level`.
-- `supabase/profile_current_level.sql` menambahkan kolom legacy `profiles.current_level`; level dashboard saat ini tidak membacanya.
+- Satu pengguna Supabase memiliki nol atau satu profil.
+- Satu pengguna dapat memiliki banyak baris progress, satu baris per `material_slug`.
+- `material_slug` mengacu logis ke ID Astro Content Collection dan bukan foreign key SQL.
+- `xp` menyimpan progres XP kumulatif yang sudah dikomit.
+- `notes` menyimpan catatan belajar pengguna untuk materi tertentu.
+- `updated_at` diperbarui setiap upsert progress.
+- Level dashboard tidak berasal dari satu kolom database; dihitung dari material CEFR yang telah menyelesaikan keempat pilar.
 
-## Data di Luar ERD
+## Format `sessions_passed`
 
-- Materi Alltagsdeutsch dan Fachdeutsch berada di `src/content/materi/`; track Career berada di `src/content/career/`. Vocab dan konteks disimpan sebagai Markdown.
-- Bookmark memuat `german`, `indonesian`, dan `context` di `localStorage` dengan key `sideutsch-bookmarks`. Bookmark bersifat client-side per browser, tidak disinkronkan dengan Supabase, dan tidak memiliki relasi SQL.
-- Audio TTS terdiri dari 8.372 file MP3 statis di `public/audio/tts/`, dengan `manifest.json` untuk pemetaan teks ke file audio. File serta pemetaan tersebut tidak disimpan di database.
-- Avatar disimpan di bucket Supabase Storage `avatars` yang **Private**. `profiles.avatar_url` menyimpan path objek; foto dirender melalui *Signed URL* yang berlaku selama 1 jam. Metadata objek Storage tidak dimodelkan sebagai tabel relasional aplikasi.
+Kolom JSONB mendukung dua format:
+
+- Format baru: `['reading', 'listening', 'writing', 'speaking']`
+- Format lama: `[1, 2, 3, 4]`
+
+Data lama wajib dinormalisasi saat dibaca menjadi nama pilar. Data lama lengkap `[1, 2, 3, 4]` diperlakukan sebagai keempat pilar lulus. Saat upsert, array yang dikirim dapat berupa string pilar JSONB yang kompatibel dengan PostgreSQL/Supabase tanpa mengubah tipe kolom.
+
+Materi baru dianggap lulus hanya jika keempat pilar ada setelah normalisasi. Materi Fachdeutsch dan Career tidak dihitung sebagai poin level CEFR meskipun progress pilar tersimpan.
+
+## Data di Luar Database
+
+- Konten materi dan vocab disimpan dalam Markdown/Astro Content Collections, bukan tabel SQL.
+- Bookmark kosakata disimpan di browser pada `localStorage` key `sideutsch-bookmarks` dan tidak disinkronkan ke Supabase.
+- Status kelulusan Mock Exam disimpan pada `localStorage` key `sideutsch-ujian-[level]`.
+- Status kelulusan Simulasi Goethe disimpan pada `localStorage` key `sideutsch-goethe-[level]`.
+- **Sertifikat PDF adalah artefak client-side** yang dibuat melalui `html2pdf.js`; sertifikat tidak disimpan sebagai entitas atau blob database.
+- Avatar disimpan di bucket Private `avatars` pada Supabase Storage. Aplikasi membuat Signed URL untuk ditampilkan. Bookmark dan sertifikat tidak memiliki tabel SQL.
+- Manifest dan file Audio TTS berjumlah 8.372 MP3 disimpan sebagai aset statis pada `public/audio/tts/`.
+
+## RLS dan Keamanan
+
+`user_progress` mengaktifkan Row Level Security. Pengguna hanya dapat membaca dan mengubah baris milik `auth.uid()` melalui kebijakan select, insert, dan update. Bucket avatar bersifat Private; akses file memerlukan pemeriksaan kepemilikan/admin dan Signed URL.
