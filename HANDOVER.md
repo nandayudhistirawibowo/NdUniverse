@@ -25,6 +25,21 @@ Setiap materi Career berisi tepat 50 entri `vocab` dan 10 entri `boss_questions`
 
 ## Perbaikan dan Fitur yang Selesai
 
+### [C] Feedback via WhatsApp
+
+- Tombol **Kirim Feedback** tersedia pada navbar guest dan dashboard.
+- Modal responsif menyediakan kategori `Bug`, `Saran Fitur`, dan `Lainnya`.
+- Pesan dikirim ke WhatsApp Admin `081288951254` melalui URL WhatsApp dengan kategori, pesan, dan URL halaman saat ini.
+- Modal mendukung tombol Batal, backdrop, Escape, scroll lock, dan layout aman untuk layar kecil.
+
+### [C] Responsive UI Mobile & Desktop
+
+- Layout Career memakai grid responsif: satu kolom di HP, dua kolom pada tablet, dan empat kolom pada desktop lebar.
+- Navbar Guest dan Dashboard tetap dapat digunakan pada layar kecil; Dashboard memiliki sidebar hamburger, sedangkan identitas akun dipadatkan bila ruang terbatas.
+- Modal Feedback memakai `100dvh`, max-width, padding aman, tombol full-width di mobile, dan penyesuaian orientation/height kecil.
+- Boss Fight memiliki wrapping teks, chat scroll terbatas, ruangan intro, tombol aksi, dan textarea yang tidak meluber pada layar HP.
+- Halaman Mini-Mock dan Goethe memakai satu kolom pilihan serta modul hasil yang bertumpuk pada layar kecil.
+
 ### [C] Ujian A1–C2
 
 - Mini-Mock Exam dipisahkan sebagai `/ujian/[level]` dengan komposisi 22 soal.
@@ -61,7 +76,9 @@ Setiap materi Career berisi tepat 50 entri `vocab` dan 10 entri `boss_questions`
 
 ## Checklist Sisa Pekerjaan
 
-- [ ] Implementasi UI Animasi Ruangan & Pintu di Boss Fight (jika belum sempurna).
+- [x] Implementasi UI Animasi Ruangan & Pintu di Boss Fight.
+- [x] Implementasi Responsive Mobile & Desktop pada Career, Navbar, Feedback, Boss Fight, serta halaman ujian.
+- [x] Implementasi fitur Feedback via WhatsApp untuk Guest dan Dashboard.
 - [ ] Implementasi RLS Policy yang rapi di Supabase (tabel `user_progress`).
 - [ ] Cek manual End-to-End alur Boss Fight di live site Vercel.
 - [D] / [C] Lanjutkan pengembangan V3.0 jika diperlukan.

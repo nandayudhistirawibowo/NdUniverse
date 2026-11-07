@@ -1,5 +1,6 @@
 ---
 import { createAvatarSignedUrl } from '../lib/avatar';
+import FeedbackModal from '../components/FeedbackModal.jsx';
 
 const {
   title = 'Dashboard | siDeutsch',
@@ -98,6 +99,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" /></svg>
                 <span>Career</span>
               </a>
+              <FeedbackModal client:load variant="sidebar" />
             </>
           )}
         </nav>
@@ -426,6 +428,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     gap: 0.3rem;
     align-content: start;
     overflow-y: auto;
+  }
+
+  .private-nav > astro-island {
+    display: block;
+    width: 100%;
   }
 
   .nav-item {
@@ -864,5 +871,17 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 
   @media (max-width: 420px) {
     .private-nav { grid-template-columns: 1fr; }
+    .account-copy,
+    .account-chevron {
+      display: none;
+    }
+    .account-trigger {
+      min-height: 44px;
+      border: 0;
+    }
+    .account-avatar {
+      width: 40px;
+      height: 40px;
+    }
   }
 </style>

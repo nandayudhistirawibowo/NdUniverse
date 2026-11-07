@@ -154,6 +154,9 @@ const hasCompleteMockExam = tasks.length === 22
   .exam-result a { display:inline-flex; margin-top:.5rem; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
   @media (max-width:700px) {
     .exam-heading { flex-direction:column; }
+    .exam-shell { width:min(100% - 1rem,980px); margin:1rem auto 2rem; }
+    .exam-task { padding:.9rem; }
     .options { grid-template-columns:1fr; }
+    .exam-status { white-space:normal; }
   }
 </style>

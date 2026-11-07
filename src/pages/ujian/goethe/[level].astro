@@ -169,5 +169,14 @@ const available = vocabPool.length > 0
   @media(max-width:700px) {
     .module-progress,.module-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .options { grid-template-columns:1fr; }
+    .goethe-heading { align-items:flex-start; flex-direction:column; }
+    .exam-timer { min-width:0;width:100%; }
+    .goethe-task { padding:.9rem; }
+    .text-answer textarea { min-height:140px;font-size:16px; }
+    .result-navigation a { width:100%;box-sizing:border-box;text-align:center; }
+  }
+  @media(max-width:420px) {
+    .module-progress,.module-results { grid-template-columns:minmax(0,1fr); }
+    .module-progress button { min-height:58px; }
   }
 </style>

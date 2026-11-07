@@ -215,7 +215,7 @@ export default function BossFight({
         .boss-chat-game { display:grid; gap:.75rem; }
         .boss-progress { color:var(--muted); font-size:.82rem; font-weight:800; }
         .boss-chat { display:grid; gap:.55rem; max-height:320px; overflow-y:auto; padding:.75rem; border:1px solid var(--border); border-radius:.65rem; background:var(--bg-main); }
-        .chat-message { max-width:82%; padding:.65rem .75rem; border-radius:.75rem; line-height:1.45; }
+        .chat-message { max-width:82%; padding:.65rem .75rem; border-radius:.75rem; line-height:1.45; overflow-wrap:anywhere; word-break:break-word; }
         .chat-message.hrd { justify-self:start; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
         .chat-message.user { justify-self:end; background:var(--accent-red); color:#fff; }
         .chat-message.system { justify-self:center; color:#b42318; }
@@ -230,7 +230,30 @@ export default function BossFight({
         .boss-victory { border:1px solid #9bd0a5; background:linear-gradient(135deg,#edf8ef,var(--bg-main)); }
         .finished-icon { font-size:64px; animation:bossVictory 1s ease both; }
         @keyframes bossVictory { from{opacity:0;transform:translateY(20px) scale(.6)} to{opacity:1;transform:translateY(0) scale(1)} }
-        @media(max-width:700px){ .office-room{height:240px}.office-window{left:18px;width:82px}.office-board{right:18px;width:95px}.office-desk{left:22%;right:12%}.chat-message{max-width:92%}.intro-dialog{align-items:flex-start}.boss-speech{grid-template-columns:auto 1fr} }
+        @media(max-width:700px){
+          .boss-fight{padding:.85rem;border-radius:12px}
+          .office-room{height:240px}
+          .office-window{left:18px;width:82px}
+          .office-board{right:18px;width:95px}
+          .office-desk{left:22%;right:12%}
+          .chat-message{max-width:92%}
+          .boss-chat{max-height:min(42vh,320px)}
+          .intro-dialog{align-items:flex-start;flex-wrap:wrap}
+          .boss-speech{display:grid;grid-template-columns:auto minmax(0,1fr)}
+          .boss-actions{display:grid;grid-template-columns:minmax(0,1fr)}
+          .boss-mic-button,.boss-finish-button{width:100%;justify-content:center}
+          .boss-interview textarea{min-height:120px;font-size:16px}
+        }
+        @media(max-width:420px){
+          .boss-fight{padding:.65rem}
+          .office-room{height:220px}
+          .office-window{width:68px;height:68px}
+          .office-board{width:78px;height:66px}
+          .office-door{right:10px;width:72px;height:145px}
+          .desk-laptop{right:14px}
+          .boss-speech{grid-template-columns:32px minmax(0,1fr)}
+          .boss-avatar{font-size:30px}
+        }
       `}</style>
     </section>
   );

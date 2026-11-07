@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import { createAvatarSignedUrl } from '../lib/avatar';
+import FeedbackModal from '../components/FeedbackModal.jsx';
 
 const {
   title = 'siDeutsch - Belajar Bahasa Jerman A1-C2 & Persiapan Kerja',
@@ -98,6 +99,9 @@ const organizationSchema = {
                     <a href="/panduan">Bantuan</a>
                   </>
                 )}
+              </div>
+              <div class="mobile-feedback">
+                {!isAdminLogin && <FeedbackModal client:load variant="mobile" />}
               </div>
               <div class="nav-account" data-nav-account>
                 {!isAdminLogin && (user ? (
@@ -416,6 +420,16 @@ const organizationSchema = {
     gap: 1.75rem;
   }
 
+  .nav-account {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .mobile-feedback {
+    display: none;
+  }
+
   .menu-toggle {
     display: none;
     width: 44px;
@@ -674,8 +688,18 @@ const organizationSchema = {
       width: 2.5rem;
     }
 
+    .mobile-feedback {
+      display: block;
+      width: 100%;
+      padding: 0.25rem 0 0.55rem;
+    }
+
     .nav-account {
       width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.65rem;
       padding-top: 0.7rem;
       border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
