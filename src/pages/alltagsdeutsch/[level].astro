@@ -8,13 +8,21 @@ export async function getStaticPaths() {
   const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 
   return levels.map((level) => ({
-    params: { level },
+    params: { level: level.toLowerCase() },
   }));
 }
 
-const { level } = Astro.params;
+const levelParam = String(Astro.params.level ?? '').toUpperCase();
+const level = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  .find((allowedLevel) => allowedLevel.toLowerCase() === levelParam.toLowerCase())
+  ?? '';
+const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
 const materi = await getCollection('materi');
-const items = materi.filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level);
+const items = materi.filter((item) =>
+  String(item.data.track ?? '').toLowerCase() === 'alltagsdeutsch'
+  && String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
+);
 ---
 
 <Layout

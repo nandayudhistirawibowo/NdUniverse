@@ -208,7 +208,10 @@ export default function MockExam({ level, tasks = [], unavailable = false }) {
           <h2>{score.percent}%</h2>
           <p>{score.correct} dari {score.total} task benar. {score.passed ? 'Anda memenuhi standar kelulusan 60%.' : 'Silakan ulangi latihan dan coba lagi.'}</p>
           {score.passed && (
-            <a href={`/sertifikat/${level.toLowerCase()}`}>Lihat Sertifikat</a>
+            <>
+              <a href={`/sertifikat/${level.toLowerCase()}`}>Lihat Sertifikat</a>
+              <a href="/dashboard">Kembali ke Dashboard</a>
+            </>
           )}
         </section>
       )}

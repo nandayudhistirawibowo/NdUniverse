@@ -89,11 +89,17 @@ const writing = writingPool.slice(0, textTaskCount).map((item) => ({
     prompt: item.schreiben_instruksi,
     answer: item.german || item.indonesian,
     keywords: [item.german, item.indonesian].filter(Boolean),
+    keywordGroups: [
+      [item.german, item.indonesian].filter(Boolean),
+    ],
 }));
 const speaking = speakingPool.slice(0, textTaskCount).map((item) => ({
     prompt: item.sprechen_pertanyaan,
     answer: item.german || item.indonesian,
     keywords: [item.german, item.indonesian].filter(Boolean),
+    keywordGroups: [
+      [item.german, item.indonesian].filter(Boolean),
+    ],
 }));
 
 const tasks = {
@@ -157,6 +163,7 @@ const available = vocabPool.length > 0
   .module-results article.failed strong { color:#b42318; }
   .module-results article.passed strong { color:#218838; }
   .retry-message { margin:0; font-weight:700; }
+  .result-navigation { display:flex; justify-content:center; flex-wrap:wrap; gap:.75rem; }
   .certificate-link { justify-self:center; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
   .failure-link { background:#966313; }
   @media(max-width:700px) {

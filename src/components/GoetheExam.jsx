@@ -34,6 +34,45 @@ function fuzzyMatch(answer, expected) {
   return matrix[a.length][b.length] <= threshold;
 }
 
+function tokenizeAnswer(answer) {
+  const articles = new Set(['der', 'die', 'das', 'den', 'dem']);
+  return normalizeAnswer(answer)
+    .split(/\s+/)
+    .filter((token) => token && !articles.has(token));
+}
+
+function partialTextScore(answer, task) {
+  const answerTokens = tokenizeAnswer(answer);
+  if (answerTokens.length === 0) return 0;
+
+  const rawGroups = Array.isArray(task?.keywordGroups) ? task.keywordGroups : [];
+  const keywordGroups = rawGroups.length > 0
+    ? rawGroups
+    : [Array.isArray(task?.keywords) ? task.keywords : []];
+  const usableGroups = keywordGroups.filter((group) =>
+    Array.isArray(group) && group.some((keyword) => normalizeAnswer(keyword))
+  );
+  if (usableGroups.length === 0) return 0;
+
+  let matchedGroups = 0;
+  usableGroups.forEach((group) => {
+    const matched = group.some((keyword) => {
+      const keywordTokens = tokenizeAnswer(keyword);
+      if (keywordTokens.length === 0) return false;
+      return keywordTokens.every((keywordToken) =>
+        answerTokens.some((answerToken) =>
+          answerToken === keywordToken
+          || answerToken.includes(keywordToken)
+          || keywordToken.includes(answerToken)
+          || fuzzyMatch(answerToken, keywordToken)
+        )
+      );
+    });
+    if (matched) matchedGroups += 1;
+  });
+  return matchedGroups / usableGroups.length;
+}
+
 const MODULES = [
   { id: 'lesen', label: 'Lesen', english: 'Reading' },
   { id: 'hoeren', label: 'Hören', english: 'Listening' },
@@ -138,20 +177,23 @@ export default function GoetheExam({ level, tasks, available = true }) {
         const answer = currentAnswers[`${module.id}-${index}`];
         if (module.id === 'lesen' || module.id === 'hoeren') {
           if (normalizeAnswer(answer) === normalizeAnswer(task.answer)) correct += 1;
-        } else if (typeof answer === 'string' && fuzzyMatch(answer, task.answer)) {
-          correct += 1;
+        } else if (typeof answer === 'string') {
+          correct += partialTextScore(answer, task);
         }
       });
-      const percent = moduleTasks.length ? Math.round((correct / moduleTasks.length) * 100) : 0;
+      const ratio = moduleTasks.length ? correct / moduleTasks.length : 0;
+      const percent = Math.round(ratio * 100);
       return {
         id: module.id,
         label: module.label,
-        correct,
+        correct: Math.round(correct * 100) / 100,
         total: moduleTasks.length,
         percent,
-        points: Math.round(percent * 0.25),
+        points: Math.round(ratio * 25),
         passed: percent >= 60,
         rating: rating(percent),
+        answers: moduleTasks.map((task, index) => String(currentAnswers[`${module.id}-${index}`] ?? '').trim()),
+        keywords: moduleTasks.map((task) => task.keywords ?? task.answer ?? []),
       };
     });
     const totalPoints = moduleResults.reduce((sum, module) => sum + module.points, 0);
@@ -350,11 +392,16 @@ export default function GoetheExam({ level, tasks, available = true }) {
           <h2>🏆 Total Skor: {result.totalPoints}/100 ({result.passed ? 'LULUS' : 'GAGAL'})</h2>
           <div class="module-results">
             {result.modules.map((module) => {
-              let feedback = `${module.correct}/${module.total} tugas sesuai kriteria.`;
+              let feedback = `${module.percent}% skor modul (${module.correct}/${module.total} rasio kecocokan).`;
               if (module.id === 'lesen') feedback = `Paragraf kunci: ${result.readingKeyParagraph}`;
               if (module.id === 'hoeren') feedback = `Transkrip: ${result.listeningTranscript}`;
-              if (module.id === 'schreiben') feedback = 'Periksa artikel, Akkusativ, dan kata kunci bahasa Jerman pada jawaban Anda.';
-              if (module.id === 'sprechen') feedback = 'Latih pengucapan kata kunci dan gunakan kalimat yang lebih percaya diri.';
+              if (module.id === 'schreiben' || module.id === 'sprechen') {
+                feedback = module.answers.map((answer, index) => {
+                  const keywords = module.keywords[index];
+                  const keywordText = Array.isArray(keywords) ? keywords.join(' atau ') : String(keywords ?? '');
+                  return `Jawaban Anda: "${answer || '-'}" · Kata kunci yang dinilai: "${keywordText}"`;
+                }).join(' | ');
+              }
               return (
                 <article key={module.id} class={module.passed ? 'passed' : 'failed'}>
                   <h3>{module.id === 'lesen' ? '📖 Lesen' : module.id === 'hoeren' ? '🎧 Hören' : module.id === 'schreiben' ? '✍️ Schreiben' : '🗣️ Sprechen'}</h3>
@@ -370,7 +417,10 @@ export default function GoetheExam({ level, tasks, available = true }) {
               <a class="certificate-link failure-link" href={`/dashboard/alltags/${level.toLowerCase()}`}>Perbaiki Skillku</a>
             </>
           ) : (
-            <a class="certificate-link" href={`/sertifikat/goethe/${level.toLowerCase()}`}>Ambil Sertifikat</a>
+            <div class="result-navigation">
+              <a class="certificate-link" href={`/sertifikat/goethe/${level.toLowerCase()}`}>Ambil Sertifikat</a>
+              <a class="certificate-link" href="/dashboard">Kembali ke Dashboard</a>
+            </div>
           )}
         </section>
       )}

@@ -18,7 +18,7 @@ const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
 ---
 
 <Layout title={`Sertifikat ${level} | siDeutsch`} description={`Sertifikat Mock Exam level ${level} siDeutsch.`}>
-  <main class="certificate-shell">
+  <main class="certificate-shell" data-certificate-level={level}>
     <section id="certificate" class="certificate">
       <div class="certificate-border">
         <p class="brand">siDeutsch</p>
@@ -34,12 +34,17 @@ const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
     <div class="certificate-actions">
       <p id="certificate-status">Memeriksa status kelulusan...</p>
       <button id="download-certificate" type="button" disabled>Download PDF</button>
-      <a href={`/ujian/${level.toLowerCase()}`}>Kembali ke Ujian</a>
+      <a href="/dashboard">Kembali ke Dashboard</a>
     </div>
   </main>
 </Layout>
 
-<script define:vars={{ storageKey, level }}>
+<script>
+  import html2pdfModule from 'html2pdf.js';
+
+  const certificateRoot = document.querySelector('[data-certificate-level]');
+  const level = certificateRoot?.dataset.certificateLevel?.toUpperCase() || 'A1';
+  const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
   const statusElement = document.querySelector('#certificate-status');
   const downloadButton = document.querySelector('#download-certificate');
   const dateElement = document.querySelector('[data-certificate-date]');
@@ -65,18 +70,36 @@ const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
 
   downloadButton?.addEventListener('click', async () => {
     if (!savedResult?.passed) return;
-    const html2pdfModule = await import('html2pdf.js');
-    const html2pdf = html2pdfModule.default;
-    await html2pdf()
-      .set({
-        margin: 8,
-        filename: `Sertifikat-${level}-siDeutsch.pdf`,
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2, useCORS: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
-      })
-      .from(document.querySelector('#certificate'))
-      .save();
+    const certificateElement = document.querySelector('#certificate');
+    if (!certificateElement) {
+      console.error('Certificate element #certificate was not found.');
+      alert('Gagal mengunduh PDF. Silakan coba lagi.');
+      return;
+    }
+
+    downloadButton.disabled = true;
+    const previousStatus = statusElement.textContent;
+    statusElement.textContent = 'Sedang menyiapkan PDF...';
+    try {
+      const html2pdf = html2pdfModule.default ?? html2pdfModule;
+      await html2pdf()
+        .set({
+          margin: 8,
+          filename: `Sertifikat-${level}-siDeutsch.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+        })
+        .from(certificateElement)
+        .save();
+      statusElement.textContent = previousStatus;
+    } catch (error) {
+      console.error('Gagal mengunduh sertifikat PDF.', error);
+      statusElement.textContent = previousStatus;
+      alert('Gagal mengunduh PDF. Silakan coba lagi.');
+    } finally {
+      downloadButton.disabled = false;
+    }
   });
 </script>
 

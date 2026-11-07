@@ -4,13 +4,19 @@ import DashboardMaterialCatalog from '../../../components/DashboardMaterialCatal
 
 export const prerender = false;
 
-const { level } = Astro.params;
+const levelParam = String(Astro.params.level ?? '').toUpperCase();
+const level = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  .find((allowedLevel) => allowedLevel.toLowerCase() === levelParam.toLowerCase())
+  ?? '';
 const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-if (!allowedLevels.includes(level ?? '')) return new Response('Level tidak ditemukan.', { status: 404 });
+if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
 
 const user = Astro.locals.user;
 const materials = (await getCollection('materi'))
-  .filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level)
+  .filter((item) =>
+    String(item.data.track ?? '').toLowerCase() === 'alltagsdeutsch'
+    && String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
+  )
   .toSorted((left, right) => left.data.judulMateri.localeCompare(right.data.judulMateri, 'id'));
 const { data } = user
   ? await Astro.locals.supabase
