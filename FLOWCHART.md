@@ -4,19 +4,19 @@
 
 ```mermaid
 flowchart TD
-    A[Pengguna membuka /login] --> B[Masukkan Email/NIM dan Password]
+    A[Pengguna membuka /login] --> B[Masukkan Email atau NIM dan Password]
     B --> C{Format input valid?}
     C -->|Tidak| D[Tampilkan pesan validasi]
-    C -->|Ya| E[Normalisasi Email atau ubah NIM lama menjadi email]
-    E --> F[Sistem cek akun ke Supabase: signInWithPassword]
-    F -->|Berhasil| G[Siapkan atau periksa profil]
+    C -->|Ya| E[Normalisasi Email atau ubah NIM menjadi email]
+    E --> F[Cek kredensial ke Supabase]
+    F -->|Login berhasil| G[Siapkan atau periksa profil]
     G --> H[Masuk ke Dashboard]
-    F -->|Invalid login credentials| I[Coba auto-signup dengan email dan password]
-    F -->|Error lain| J[Tampilkan pesan error yang sesuai]
-    I -->|Akun berhasil dibuat dan dapat langsung masuk| K[Sign-in ulang ke Supabase]
-    K --> L[Buat profil; nim boleh NULL untuk akun umum]
+    F -->|Invalid login credentials| I[Auto-Signup dengan email dan password]
+    F -->|Error lain| J[Tampilkan pesan error]
+    I -->|Akun berhasil dibuat| K[Sign-in ulang ke Supabase]
+    K --> L[Buat atau siapkan profil dengan nim nullable]
     L --> H
-    I -->|Akun sudah terdaftar, konfirmasi diperlukan, atau signup gagal| J
+    I -->|Signup gagal atau konfirmasi email diperlukan| J
 
     M[Admin membuka /admin/login] --> N[Masukkan NIM dan Password admin]
     N --> O[Sign-in dan validasi profil admin]
@@ -27,7 +27,7 @@ flowchart TD
     T[Pengguna belum login membuka /admin] --> U[Middleware mengarahkan ke /admin/login]
 ```
 
-NIM lama tetap diterjemahkan ke alamat Supabase `NIM@student.sideutsch.com`; email pengguna umum dipakai langsung. Materi publik dapat dilihat tanpa login, tetapi dashboard dan rute privat memerlukan autentikasi.
+NIM lama dipetakan ke alamat Supabase `NIM@student.sideutsch.com`; email pengguna umum dipakai langsung. Materi publik dapat dilihat tanpa login, tetapi dashboard dan rute privat memerlukan autentikasi.
 
 ## Kuis, XP, dan Progress
 
@@ -41,28 +41,47 @@ flowchart TD
     E -->|Tidak| G[Kurangi satu nyawa dan catat kata sulit]
     F --> H{Masih ada soal?}
     G --> I{Nyawa habis?}
-    I -->|Ya| J[Game Over: buang XP sementara]
+    I -->|Ya| J[Game Over: hanguskan XP sementara]
     I -->|Tidak| H
     H -->|Ya| D
     H -->|Tidak| K[Sesi selesai]
     K --> L[Finalisasi XP sesi satu kali untuk run ini]
-    L --> M{Pengguna login?}
-    M -->|Ya| N[Simpan XP ke total dan sinkronkan user_progress di Supabase]
-    M -->|Tidak| O[Progress tidak tersinkron ke akun]
-    K --> P{Akurasi minimal 80 persen?}
-    P -->|Ya| Q[Tandai sesi lulus]
-    P -->|Tidak| R[Sesi tidak lulus; XP sesi selesai tetap dikomit]
-    Q --> S[Hitung poin level dari sesi CEFR yang lulus]
+    L --> M[Simpan XP ke total dan cache lokal]
+    M --> N{Pengguna login?}
+    N -->|Ya| O[Sinkronkan user_progress ke Supabase]
+    N -->|Tidak| P[Progress tidak tersinkron ke akun]
+    K --> Q{Akurasi minimal 80 persen?}
+    Q -->|Ya| R[Tandai sesi lulus dan simpan status progress]
+    Q -->|Tidak| S[Sesi tidak lulus; XP sesi selesai tetap dikomit]
+    R --> T[Hitung poin level dari sesi CEFR yang lulus]
 ```
 
-XP jawaban benar hanya disimpan sementara sampai sesi selesai; Game Over membuang XP yang belum dikomit. Guard finalisasi mencegah run yang sama disimpan dua kali. Implementasi belum mencegah XP didapat lagi dari replay sesi yang telah selesai, sehingga ini bukan pembatas replay lintas sesi.
+XP jawaban benar hanya disimpan sementara sampai sesi selesai; Game Over membuang XP yang belum dikomit. Guard finalisasi mencegah run yang sama disimpan dua kali. Implementasi belum mencegah XP didapat lagi dari replay sesi yang telah selesai, sehingga anti-farming di sini hanya membatalkan XP sesi yang berakhir Game Over. Kelulusan sesi (akurasi minimal 80%) terpisah dari komit XP.
+
+## Text-to-Speech (TTS)
+
+```mermaid
+flowchart TD
+    A[Pengguna klik tombol Speaker] --> B[Cari teks pada manifest.json]
+    B --> C{Path MP3 ditemukan?}
+    C -->|Ya| D[Putar file MP3 statis dari public/audio/tts]
+    C -->|Tidak| E[Fallback ke Web Speech API]
+    D --> F{Audio berhasil diputar?}
+    F -->|Ya| G[Selesai]
+    F -->|Tidak| E
+    E --> H{Web Speech API tersedia?}
+    H -->|Ya| I[Bacakan teks dengan suara de-DE]
+    H -->|Tidak| J[Hentikan indikator audio dan catat error]
+```
+
+Manifest memetakan teks Jerman ke 8.372 file MP3 hasil generate Edge TTS. Jika file tidak tersedia atau gagal diputar, aplikasi mencoba Web Speech API browser.
 
 ## Review Kata Sulit dan Bookmark
 
 ```mermaid
 flowchart LR
-    A[Sesi kuis selesai atau Game Over] --> B[Tampilkan Review Kata Sulit]
-    B --> C[Klik ikon Bookmark pada kata]
+    A[Kuis selesai atau Game Over] --> B[Tampilkan Review Kata Sulit]
+    B --> C[Klik Simpan pada kata]
     C --> D{Kata sudah tersimpan?}
     D -->|Belum| E[Simpan german, indonesian, dan context]
     D -->|Sudah| F[Jangan buat duplikat]
