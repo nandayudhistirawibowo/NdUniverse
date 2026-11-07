@@ -9,10 +9,15 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
   description="Pilih level CEFR untuk memulai belajar bahasa Jerman sehari-hari."
 >
   <section class="page-shell">
-    <a class="dashboard-back-link" href="/dashboard">← Kembali ke Dashboard</a>
-    <p class="eyebrow">Alltagsdeutsch</p>
-    <h1>Pilih Level Kamu</h1>
-    <p class="lead">Mulai dari percakapan dasar hingga komunikasi lanjutan dalam kehidupan sehari-hari.</p>
+    <a class="dashboard-back-link" href="/">← Kembali ke Beranda</a>
+    <div class="level-heading">
+      <div>
+        <p class="eyebrow">Alltagsdeutsch</p>
+        <h1>Pilih Level Kamu</h1>
+        <p class="lead">Mulai dari percakapan dasar hingga komunikasi lanjutan dalam kehidupan sehari-hari.</p>
+      </div>
+      <a class="goethe-button" href="/ujian/goethe">Simulate Goethe-Zertifikat</a>
+    </div>
 
     <div class="level-grid">
       {levels.map((level) => (
@@ -68,6 +73,26 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
   h1 {
     margin: 0;
     font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .level-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .goethe-button {
+    flex: 0 0 auto;
+    padding: 0.72rem 1rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 0.65rem;
+    background: var(--accent-gold);
+    color: #4b3508;
+    font-weight: 900;
+    text-decoration: none;
+    box-shadow: 0 8px 20px rgba(229, 169, 59, 0.18);
   }
 
   .lead {

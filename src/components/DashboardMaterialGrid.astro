@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { normalizePassedPillars } from '../lib/progress-client.js';
 
 type ProgressRow = {
   material_slug: string;
@@ -9,22 +10,17 @@ type ProgressRow = {
 interface Props {
   materials: CollectionEntry<'materi'>[];
   progressRows: ProgressRow[];
+  materialHrefPrefix?: string;
 }
 
-const { materials = [], progressRows = [] } = Astro.props;
+const { materials = [], progressRows = [], materialHrefPrefix = '/materi' } = Astro.props;
 const progressBySlug = new Map<string, ProgressRow>(
   progressRows.map((row) => [row.material_slug, row])
 );
 const cards = materials.map((material) => {
-  const totalSessions = Math.ceil(material.data.vocab.length / 5);
   const savedSessions = progressBySlug.get(material.id)?.sessions_passed;
-  const passedSessions = new Set<number>(
-    Array.isArray(savedSessions)
-      ? savedSessions.map(Number).filter((session) => Number.isInteger(session) && session > 0)
-      : []
-  );
-  const passedCount = Array.from({ length: totalSessions }, (_, index) => index + 1)
-    .filter((session) => passedSessions.has(session)).length;
+  const passedCount = normalizePassedPillars(savedSessions).length;
+  const totalSessions = 4;
 
   return {
     material,
@@ -37,7 +33,7 @@ const cards = materials.map((material) => {
 
 <div class="material-grid">
   {cards.map(({ material, totalSessions, passedCount, percentage }) => (
-    <a class="material-card" href={`/materi/${material.id}`} data-material-level={material.data.level ?? ''}>
+    <a class="material-card" href={`${materialHrefPrefix}/${material.id}`} data-material-level={material.data.level ?? ''}>
       <div class="material-topline">
         <span class="material-track">{material.data.track}</span>
         <span class="material-percent">{percentage}%</span>
@@ -49,7 +45,7 @@ const cards = materials.map((material) => {
         {material.data.jurusan && <span>{material.data.jurusan}</span>}
       </div>
       <div class="progress-copy">
-        <span>{passedCount === 0 ? 'Belum dimulai' : `${passedCount} dari ${totalSessions} sesi lulus`}</span>
+        <span>{passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`}</span>
         <span>{material.data.vocab.length} kosakata</span>
       </div>
       <div
@@ -81,9 +77,9 @@ const cards = materials.map((material) => {
   .material-card {
     display: flex;
     min-width: 0;
-    min-height: 250px;
+    min-height: 300px;
     flex-direction: column;
-    padding: 1rem;
+    padding: 1.5rem;
     border: 1px solid var(--border);
     border-radius: 8px;
     background: var(--card-bg);
@@ -98,6 +94,8 @@ const cards = materials.map((material) => {
     border-color: var(--accent-gold);
     box-shadow: 0 14px 28px rgba(26, 26, 30, 0.14);
   }
+
+  .material-card h2 { font-size: 1.35rem; }
 
   .material-topline,
   .progress-copy {

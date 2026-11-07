@@ -1,0 +1,95 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level) => ({
+    params: { level: level.toLowerCase() },
+  }));
+}
+
+const { level: levelParam } = Astro.params;
+const level = String(levelParam ?? '').toUpperCase();
+const user = Astro.locals.user;
+const profile = Astro.locals.profile;
+const userName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Peserta siDeutsch';
+---
+
+<Layout title={`Sertifikat Goethe ${level} | siDeutsch`} description={`Sertifikat Simulate Goethe-Zertifikat ${level}.`}>
+  <main class="certificate-shell">
+    <section id="certificate" class="certificate">
+      <div class="certificate-border">
+        <p class="brand">siDeutsch</p>
+        <p class="eyebrow">Sertifikat Kelulusan Goethe Simulation</p>
+        <h1>Simulate Goethe-Zertifikat {level}</h1>
+        <p class="presented">Dengan ini menyatakan bahwa</p>
+        <p class="recipient">{userName}</p>
+        <p class="result">telah lulus seluruh modul Lesen, Hören, Schreiben, dan Sprechen.</p>
+        <p class="date">Tanggal kelulusan: <strong data-certificate-date>-</strong></p>
+        <p class="signature">siDeutsch Learning Platform</p>
+      </div>
+    </section>
+    <div class="certificate-actions">
+      <p id="certificate-status">Memeriksa status kelulusan...</p>
+      <button id="download-certificate" type="button" disabled>Download PDF</button>
+      <a href={`/ujian/goethe/${level.toLowerCase()}`}>Kembali ke Ujian</a>
+    </div>
+  </main>
+</Layout>
+
+<script define:vars={{ level }}>
+  const storageKey = `sideutsch-goethe-${level.toLowerCase()}`;
+  const statusElement = document.querySelector('#certificate-status');
+  const downloadButton = document.querySelector('#download-certificate');
+  const dateElement = document.querySelector('[data-certificate-date]');
+  let savedResult = null;
+  try {
+    savedResult = JSON.parse(localStorage.getItem(storageKey) || 'null');
+  } catch {
+    savedResult = null;
+  }
+
+  if (!savedResult?.passed) {
+    statusElement.textContent = 'Sertifikat hanya tersedia jika keempat modul lulus.';
+    downloadButton.disabled = true;
+  } else {
+    statusElement.textContent = 'Status: Lulus seluruh modul';
+    downloadButton.disabled = false;
+    const completedAt = savedResult.completedAt ? new Date(savedResult.completedAt) : new Date();
+    dateElement.textContent = Number.isNaN(completedAt.getTime())
+      ? new Date().toLocaleDateString('id-ID')
+      : completedAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+  }
+
+  downloadButton?.addEventListener('click', async () => {
+    if (!savedResult?.passed) return;
+    const html2pdfModule = await import('html2pdf.js');
+    await html2pdfModule.default()
+      .set({
+        margin: 8,
+        filename: `Sertifikat-Goethe-${level}-siDeutsch.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2, useCORS: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+      })
+      .from(document.querySelector('#certificate'))
+      .save();
+  });
+</script>
+
+<style>
+  .certificate-shell { width:min(1000px,calc(100% - 2rem)); margin:2rem auto 4rem; }
+  .certificate { width:100%; aspect-ratio:1.414/1; box-sizing:border-box; padding:1.25rem; background:#f9f4e7; border:1px solid #d9c58e; }
+  .certificate-border { height:100%; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:3rem; border:4px double var(--accent-gold); color:#2d2a24; background:linear-gradient(135deg,#fff 0%,#fffaf0 100%); }
+  .brand { margin:0 0 1rem; font-size:1.4rem; font-weight:800; color:var(--accent-red); }
+  .eyebrow { margin:.25rem 0; text-transform:uppercase; letter-spacing:.12em; font-weight:800; color:#966313; }
+  .certificate h1 { margin:.75rem 0 1.25rem; font-size:clamp(1.7rem,4vw,3rem); }
+  .presented,.result,.date { margin:.35rem 0; line-height:1.55; }
+  .recipient { margin:.5rem 0; min-width:55%; padding:.25rem 1rem; border-bottom:2px solid var(--accent-gold); font-family:Georgia,serif; font-size:clamp(1.5rem,3vw,2.4rem); font-weight:700; }
+  .signature { margin-top:2rem; font-weight:800; }
+  .certificate-actions { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
+  .certificate-actions button,.certificate-actions a { border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; cursor:pointer; }
+  .certificate-actions button:disabled { opacity:.55; cursor:not-allowed; }
+  @media(max-width:700px){ .certificate { aspect-ratio:auto; min-height:520px; } .certificate-border { padding:1.25rem; } }
+</style>

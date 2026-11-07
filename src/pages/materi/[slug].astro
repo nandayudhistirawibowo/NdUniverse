@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getEntry, render } from 'astro:content';
+import { normalizePassedPillars } from '../../lib/progress-client.js';
 
 export const prerender = false;
 
@@ -45,6 +46,7 @@ const { data: savedProgress } = user
 const passedSessions = Array.isArray(savedProgress?.sessions_passed)
   ? [...new Set(savedProgress.sessions_passed.map(Number).filter((session) => Number.isInteger(session) && session > 0))]
   : [];
+const passedPillars = normalizePassedPillars(savedProgress?.sessions_passed);
 const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   sessionNumber: index + 1,
   vocab: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize),
@@ -81,139 +83,62 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
         <Content />
       </div>
 
-      <section class="vocabulary-list" aria-labelledby="vocabulary-title">
+      <section class="session-list" aria-labelledby="vocabulary-title">
         <header class="vocabulary-heading">
           <div>
-            <p class="eyebrow">Kosakata</p>
-            <h2 id="vocabulary-title">Semua Kosakata per Sesi</h2>
+            <p class="eyebrow">Bantuan</p>
+            <h2 id="vocabulary-title">Kosakata per Sesi</h2>
+            <p>Hafalkan kosakata berikut sebelum memulai latihan.</p>
           </div>
-          <span>{item.data.vocab.length} kata · maksimal {batchSize} per sesi</span>
+          <span>{item.data.vocab.length} kosakata</span>
         </header>
 
-        {vocabSessions.map((session) => user || session.sessionNumber === 1 ? (
-          <section class="vocabulary-session" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
-            <h3 id={`session-vocab-${session.sessionNumber}`}>Sesi {session.sessionNumber}</h3>
+        {vocabSessions.map((session) => (
+          <section class="sesi-card" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
+            <div class="sesi-heading">
+              <h3 id={`session-vocab-${session.sessionNumber}`}>
+                Sesi {session.sessionNumber}: Kosakata {((session.sessionNumber - 1) * batchSize) + 1}-{Math.min(session.sessionNumber * batchSize, item.data.vocab.length)}
+              </h3>
+              <span>{session.vocab.length} kata</span>
+            </div>
             <div class="table-scroll">
               <table>
                 <thead>
                   <tr>
                     <th scope="col">Bahasa Jerman</th>
                     <th scope="col">Bahasa Indonesia</th>
-                    <th scope="col">Contoh kalimat</th>
+                    <th scope="col">Dengar</th>
                   </tr>
                 </thead>
                 <tbody>
                   {session.vocab.map((entry) => (
                     <tr>
-                      <td lang="de">
-                        <div class="vocab-german-cell">
-                          <span>{entry.german}</span>
-                          <button
-                            class="vocab-speech-button"
-                            type="button"
-                            data-speech={entry.german}
-                            aria-label={`Dengarkan ${entry.german}`}
-                            title={`Dengarkan ${entry.german}`}
-                          >
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                              <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
-                              <path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" />
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
+                      <td lang="de">{entry.german}</td>
                       <td>{entry.indonesian}</td>
-                      <td lang="de">
-                        <div class="vocab-context-cell">
-                          <div class="vocab-context-copy">
-                            <span>{entry.context}</span>
-                            {entry.contextIndonesian && <small lang="id">({entry.contextIndonesian})</small>}
-                          </div>
-                          <button
-                            class="vocab-speech-button"
-                            type="button"
-                            data-speech={entry.context}
-                            aria-label={`Dengarkan contoh: ${entry.context}`}
-                            title="Dengarkan contoh kalimat"
-                          >
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                              <path d="M4 10v4h4l5 4V6l-5 4H4Z" />
-                              <path d="M17 9a5 5 0 0 1 0 6M19.5 6.5a9 9 0 0 1 0 11" />
-                            </svg>
-                          </button>
-                        </div>
+                      <td>
+                        <button
+                          class="vocab-speech-button"
+                          type="button"
+                          data-speech={entry.german}
+                          aria-label={`Dengarkan ${entry.german}`}
+                          title={`Dengarkan ${entry.german}`}
+                        >🔊</button>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-          </section>
-        ) : (
-          <section class="vocabulary-session locked-vocabulary" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
-            <h3 id={`session-vocab-${session.sessionNumber}`}>Sesi {session.sessionNumber}</h3>
-            <div class="locked-session-message">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2" /><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3" /></svg>
-              <div>
-                <p>Login untuk membuka sesi ini.</p>
-                <span>{Math.min(batchSize, item.data.vocab.length - (session.sessionNumber - 1) * batchSize)} kosakata terkunci</span>
-              </div>
-              <a href="/login?redirect=%2Fdashboard">Login <span aria-hidden="true">→</span></a>
+            <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
+              <a href={`/materi/${item.id}/latihan?type=reading&session=${session.sessionNumber}`}>Reading</a>
+              <a href={`/materi/${item.id}/latihan?type=listening&session=${session.sessionNumber}`}>Listening</a>
+              <a href={`/materi/${item.id}/latihan?type=writing&session=${session.sessionNumber}`}>Writing</a>
+              <a href={`/materi/${item.id}/latihan?type=speaking&session=${session.sessionNumber}`}>Speaking</a>
             </div>
           </section>
         ))}
       </section>
     </section>
-
-    <section
-      class="session-picker"
-      data-session-picker
-      data-progress-key={progressKey}
-      data-authenticated={user ? 'true' : 'false'}
-      data-completed-sessions={passedSessions.join(',')}
-      aria-labelledby="session-title"
-    >
-      <div class="session-heading">
-        <div>
-          <p class="eyebrow">Belajar bertahap</p>
-          <h2 id="session-title">Pilih Sesi Kosakata</h2>
-        </div>
-        <span>{item.data.vocab.length} kosakata · {sessionCount} sesi</span>
-      </div>
-
-      <div class="session-grid">
-        {Array.from({ length: sessionCount }, (_, index) => {
-          const sessionNumber = index + 1;
-          const firstWord = index * batchSize + 1;
-          const lastWord = Math.min((index + 1) * batchSize, item.data.vocab.length);
-
-          const isPassed = passedSessions.includes(sessionNumber);
-          const isUnlocked = sessionNumber === 1 || passedSessions.includes(sessionNumber - 1);
-
-          return (
-            <a
-              class={`session-link ${isUnlocked ? '' : 'locked'}`}
-              href={`/materi/${item.id}/latihan?session=${sessionNumber}`}
-              data-session-link
-              data-session-number={sessionNumber}
-              aria-disabled={!isUnlocked ? 'true' : 'false'}
-              tabindex={!isUnlocked ? -1 : 0}
-            >
-              <span class="session-name">Sesi {sessionNumber}: Kosakata {firstWord}-{lastWord}</span>
-              <span class="session-status" data-session-status>
-                {isPassed ? 'Lulus' : isUnlocked ? 'Mulai' : 'Terkunci'}
-              </span>
-            </a>
-          );
-        })}
-      </div>
-
-      <p class="session-hint">Selesaikan sesi sebelumnya dengan minimal 80% jawaban benar untuk membuka sesi berikutnya.</p>
-    </section>
-
-    <a class="practice-button" href={`/materi/${item.id}/latihan?return=${encodeURIComponent(returnHref)}${user ? '' : '&session=1'}`}>
-      {user ? 'Latihan Materi Ini' : 'Coba Latihan Sesi 1'}
-    </a>
 
     {user && (
       <section class="notes-panel" aria-labelledby="notes-title">
@@ -243,10 +168,11 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 
   document.addEventListener('astro:page-load', () => {
     document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {
-      button.addEventListener('click', () => {
-        playAudioTTS(button.dataset.speech ?? '', button);
+      button.onclick = () => {
+        const speechText = String(button.dataset.speech ?? '').replace(/\s+/g, ' ').trim();
+        playAudioTTS(speechText, button);
+      };
     });
-  });
 
   const sessionPicker = document.querySelector<HTMLElement>('[data-session-picker]');
   const progressKey = sessionPicker?.dataset.progressKey;
@@ -689,6 +615,29 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     transform: translateY(-2px);
   }
 
+  .session-list { display: grid; gap: 1rem; margin-top: 1rem; }
+  .vocabulary-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .vocabulary-heading h2 { margin: 0; }
+  .vocabulary-heading div > p:last-child { margin: 0.35rem 0 0; color: var(--muted); }
+  .vocabulary-heading > span { color: var(--muted); font-weight: 700; }
+  .sesi-card { padding: 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }
+  .sesi-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .sesi-heading h3 { margin: 0; }
+  .sesi-heading span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+  .sesi-card table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+  .sesi-card th, .sesi-card td { padding: 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .sesi-card .vocab-speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
+  .pillar-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; margin-top: 1rem; }
+  .pillar-buttons a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
+  .pillar-buttons a:hover { border-color: var(--accent-gold); }
+
+  .vocabulary-table-panel { padding: 1.25rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }
+  .vocabulary-table-panel header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+  .vocabulary-table-panel header p { color: var(--muted); }
+  .vocabulary-table-panel table { width: 100%; border-collapse: collapse; }
+  .vocabulary-table-panel th, .vocabulary-table-panel td { padding: 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .vocabulary-table-panel .vocab-speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
+
   .notes-panel {
     display: grid;
     gap: 0.65rem;
@@ -846,6 +795,11 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   }
 
   @media (max-width: 640px) {
+    .pillar-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pillar-grid {
+      grid-template-columns: 1fr;
+    }
+
     .guest-actions {
       justify-content: flex-start;
     }
@@ -902,6 +856,77 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   .prose :global(ul),
   .prose :global(ol) {
     padding-left: 1.25rem;
+  }
+
+  .pillar-picker {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card-bg);
+  }
+
+  .pillar-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .pillar-heading h2 {
+    margin: 0;
+  }
+
+  .pillar-heading > span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .pillar-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 130px;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-main);
+    text-decoration: none;
+    background: var(--bg-main);
+  }
+
+  .pillar-card:hover {
+    border-color: var(--accent-gold);
+    transform: translateY(-2px);
+  }
+
+  .pillar-card.passed {
+    border-color: rgba(76, 151, 111, 0.55);
+  }
+
+  .pillar-card h3 {
+    margin: 0.35rem 0;
+  }
+
+  .pillar-card p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .pillar-status {
+    color: var(--accent-red);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
   }
 
   @media (max-width: 640px) {

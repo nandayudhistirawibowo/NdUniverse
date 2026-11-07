@@ -11,36 +11,37 @@ const {
   profile,
   materials,
   progressRows,
+  backHref = '/dashboard',
+  backLabel = 'Kembali ke Dashboard',
+  materialHrefPrefix = '/materi',
+  examHref,
+  examLabel,
 } = Astro.props;
 ---
 
 <DashboardLayout title={`${title} | siDeutsch`} active={active} user={user} profile={profile}>
   <section class="catalog-page">
-    <a class="back-link" href="/dashboard" aria-label="Kembali ke Dashboard utama">
+    <a class="back-link" href={backHref} aria-label="Kembali ke halaman sebelumnya">
       <span aria-hidden="true">←</span>
-      <span>Kembali ke Dashboard</span>
+      <span>{backLabel}</span>
     </a>
     <header class="page-heading">
-      <p class="eyebrow">{eyebrow}</p>
-      <h1>{title}</h1>
-      <p>{description}</p>
-    </header>
-    {active === 'alltagsdeutsch' && (
-      <div class="level-filter">
-        <label for="cefr-level-filter">Filter level</label>
-        <select id="cefr-level-filter">
-          <option value="all">Semua level</option>
-          <option value="A1">A1</option>
-          <option value="A2">A2</option>
-          <option value="B1">B1</option>
-          <option value="B2">B2</option>
-          <option value="C1">C1</option>
-          <option value="C2">C2</option>
-        </select>
-        <span data-level-filter-count>{materials.length} materi</span>
+      <div>
+        <p class="eyebrow">{eyebrow}</p>
+        <h1>{title}</h1>
+        <p>{description}</p>
       </div>
-    )}
-    <DashboardMaterialGrid materials={materials} progressRows={progressRows} />
+      <div class="heading-actions">
+        {examHref && (
+          <a class="exam-button" href={examHref}>{examLabel ?? `Mulai Ujian ${title.split(' ').at(-1)}`}</a>
+        )}
+      </div>
+    </header>
+    <DashboardMaterialGrid
+      materials={materials}
+      progressRows={progressRows}
+      materialHrefPrefix={materialHrefPrefix}
+    />
   </section>
 </DashboardLayout>
 
@@ -82,6 +83,36 @@ const {
     margin: 0;
     color: var(--text-main);
     font-size: 2rem;
+  }
+
+  .page-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .exam-button {
+    flex: 0 0 auto;
+    padding: 0.72rem 1rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 0.65rem;
+    color: #966313;
+    background: rgba(229, 169, 59, 0.09);
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .heading-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.65rem;
+  }
+
+
+  @media (max-width: 700px) {
+    .page-heading { align-items: flex-start; flex-direction: column; }
   }
 
   .eyebrow {
@@ -131,28 +162,3 @@ const {
     font-size: 0.75rem;
   }
 </style>
-
-<script>
-  document.addEventListener('astro:page-load', () => {
-  const levelFilter = document.querySelector<HTMLSelectElement>('#cefr-level-filter');
-  const levelFilterCount = document.querySelector<HTMLElement>('[data-level-filter-count]');
-
-  if (levelFilter) {
-    const materialCards = Array.from(document.querySelectorAll<HTMLAnchorElement>('[data-material-level]'));
-    const updateMaterials = () => {
-      const selectedLevel = levelFilter.value;
-      let visibleCount = 0;
-
-      for (const card of materialCards) {
-        const matches = selectedLevel === 'all' || card.dataset.materialLevel === selectedLevel;
-        card.hidden = !matches;
-        if (matches) visibleCount += 1;
-      }
-
-      if (levelFilterCount) levelFilterCount.textContent = `${visibleCount} materi`;
-    };
-
-    levelFilter.addEventListener('change', updateMaterials);
-  }
-  });
-</script>

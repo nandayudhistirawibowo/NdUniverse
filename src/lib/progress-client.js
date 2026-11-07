@@ -27,6 +27,33 @@ export function normalizePassedSessions(value) {
   return [];
 }
 
+export function normalizePassedPillars(value) {
+  const pillars = ['reading', 'listening', 'writing', 'speaking'];
+  const legacyPillarMap = [null, 'reading', 'listening', 'writing', 'speaking'];
+
+  const entries = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? (() => {
+        const match = value.match(/^Sesi\s([1-4])(?:\sLulus)?$/i);
+        return match ? Array.from({ length: Number(match[1]) }, (_, index) => index + 1) : [];
+      })()
+      : [];
+
+  const converted = entries.map((entry) => {
+    if (typeof entry === 'string') {
+      const normalizedEntry = entry.trim().toLowerCase();
+      return pillars.includes(normalizedEntry) ? normalizedEntry : '';
+    }
+    const legacyIndex = Number(entry);
+    return Number.isInteger(legacyIndex) ? legacyPillarMap[legacyIndex] ?? '' : '';
+  });
+  const normalized = new Set(
+    converted.filter((entry) => pillars.includes(entry))
+  );
+  return pillars.filter((pillar) => normalized.has(pillar));
+}
+
 export async function fetchUserProgress(client, userId, materialSlug) {
   const { data, error } = await client
     .from('user_progress')
@@ -52,12 +79,22 @@ export async function fetchAllUserProgress(client, userId) {
 async function writeUserProgress(client, userId, materialSlug, updates) {
   const existing = await fetchUserProgress(client, userId, materialSlug);
   const xpDelta = Number(updates.xpDelta ?? 0);
+  const normalizedExistingSessions = normalizePassedPillars(existing?.sessions_passed);
+  const existingSessions = Array.isArray(updates.sessions_passed)
+    ? normalizePassedPillars(updates.sessions_passed)
+    : normalizePassedPillars(existing?.sessions_passed);
+  const mergedSessions = Array.isArray(updates.sessions_passed)
+    ? [...new Set([
+      ...normalizedExistingSessions,
+      ...normalizePassedPillars(updates.sessions_passed),
+    ])]
+    : existingSessions;
   const payload = {
     ...(existing?.id !== undefined ? { id: existing.id } : {}),
     user_id: userId,
     material_slug: materialSlug,
     xp: Math.max(0, Number(updates.xp ?? existing?.xp ?? 0) + xpDelta),
-    sessions_passed: updates.sessions_passed ?? normalizePassedSessions(existing?.sessions_passed),
+    sessions_passed: mergedSessions,
     notes: updates.notes ?? existing?.notes ?? '',
     updated_at: new Date().toISOString(),
   };

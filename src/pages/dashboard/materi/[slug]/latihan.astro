@@ -1,0 +1,62 @@
+---
+import DashboardLayout from '../../../../layouts/DashboardLayout.astro';
+import Quiz from '../../../../components/Quiz.jsx';
+import { getEntry } from 'astro:content';
+
+export const prerender = false;
+
+const item = await getEntry('materi', Astro.params.slug ?? '');
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
+
+const type = Astro.url.searchParams.get('type') ?? '';
+const labels = {
+  reading: 'Reading / Lesen',
+  listening: 'Listening / Hören',
+  writing: 'Writing / Schreiben',
+  speaking: 'Speaking / Sprechen',
+};
+const label = labels[type] ?? 'Latihan Materi';
+const batchSize = 5;
+const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
+const startIndex = (sessionNumber - 1) * batchSize;
+---
+
+<DashboardLayout
+  title={`${label}: ${item.data.judulMateri} | siDeutsch`}
+  active={item.data.track === 'Alltagsdeutsch' ? 'alltagsdeutsch' : 'fachdeutsch'}
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="practice-page">
+    <a class="back-link" href={`/dashboard/materi/${item.id}`}>
+      ← Kembali ke Detail Materi
+    </a>
+    <header>
+      <p class="eyebrow">Latihan Materi</p>
+      <h1>{label}: {item.data.judulMateri}</h1>
+    </header>
+    <section aria-label={`Kuis ${item.data.judulMateri}`}>
+      <Quiz
+        client:load
+        items={item.data.vocab}
+        track={item.data.track}
+        level={item.data.level}
+        jurusan={item.data.jurusan}
+        returnHref={`/dashboard/materi/${item.id}`}
+        startIndex={startIndex}
+        session={sessionNumber}
+        batchSize={batchSize}
+        sessionMode={true}
+        materialId={item.id}
+        type={type}
+      />
+    </section>
+  </main>
+</DashboardLayout>
+
+<style>
+  .practice-page { display: grid; gap: 1rem; }
+  .back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
+  .eyebrow { margin: 0; color: var(--muted); font-weight: 800; text-transform: uppercase; }
+  h1 { margin: 0.35rem 0 0; }
+</style>

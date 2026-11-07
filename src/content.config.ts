@@ -6,6 +6,11 @@ const vocabItemSchema = z.object({
   indonesian: z.string(),
   context: z.string(),
   contextIndonesian: z.string().optional(),
+  lesen_teks: z.string().optional(),
+  lesen_pertanyaan: z.string().optional(),
+  hoeren_audio: z.string().optional(),
+  schreiben_instruksi: z.string().optional(),
+  sprechen_pertanyaan: z.string().optional(),
 });
 
 const materi = defineCollection({
@@ -43,6 +48,11 @@ const career = defineCollection({
         indonesian: z.string(),
         context: z.string().optional(),
         contextIndonesian: z.string().optional(),
+        lesen_teks: z.string().optional(),
+        lesen_pertanyaan: z.string().optional(),
+        hoeren_audio: z.string().optional(),
+        schreiben_instruksi: z.string().optional(),
+        sprechen_pertanyaan: z.string().optional(),
       })
     ),
   }),

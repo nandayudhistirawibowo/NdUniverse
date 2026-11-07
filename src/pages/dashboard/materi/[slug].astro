@@ -1,0 +1,111 @@
+---
+import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import { getEntry } from 'astro:content';
+
+export const prerender = false;
+
+const item = await getEntry('materi', Astro.params.slug ?? '');
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
+const batchSize = 5;
+const vocabSessions = Array.from({ length: Math.ceil(item.data.vocab.length / batchSize) }, (_, index) => ({
+  sessionNumber: index + 1,
+  vocab: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize),
+}));
+
+---
+
+<DashboardLayout
+  title={`${item.data.judulMateri} | siDeutsch`}
+  active={item.data.track === 'Alltagsdeutsch' ? 'alltagsdeutsch' : 'fachdeutsch'}
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <section class="detail-page">
+    <a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? `/dashboard/alltags/${item.data.level}` : '/dashboard/fach'}>
+      ← Kembali
+    </a>
+    <header>
+      <p class="eyebrow">{item.data.track} · {item.data.level ?? item.data.jurusan}</p>
+      <h1>{item.data.judulMateri}</h1>
+      <p>{item.data.deskripsi}</p>
+    </header>
+
+    <section class="session-list" aria-labelledby="vocabulary-title">
+      <header>
+        <div>
+          <p class="eyebrow">Bantuan</p>
+          <h2 id="vocabulary-title">Kosakata per Sesi</h2>
+          <p>Hafalkan kosakata berikut sebelum memulai latihan.</p>
+        </div>
+        <span>{item.data.vocab.length} kosakata</span>
+      </header>
+      {vocabSessions.map((session) => (
+        <section class="sesi-card" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
+          <div class="sesi-heading">
+            <h3 id={`session-vocab-${session.sessionNumber}`}>
+              Sesi {session.sessionNumber}: Kosakata {((session.sessionNumber - 1) * batchSize) + 1}-{Math.min(session.sessionNumber * batchSize, item.data.vocab.length)}
+            </h3>
+            <span>{session.vocab.length} kata</span>
+          </div>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th scope="col">Bahasa Jerman</th><th scope="col">Bahasa Indonesia</th><th scope="col">Dengar</th></tr></thead>
+              <tbody>
+                {session.vocab.map((entry) => (
+                  <tr>
+                    <td lang="de">{entry.german}</td>
+                    <td>{entry.indonesian}</td>
+                    <td><button class="speech-button" type="button" data-speech={entry.german} aria-label={`Dengarkan ${entry.german}`}>🔊</button></td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
+            <a href={`/dashboard/materi/${item.id}/latihan?type=reading&session=${session.sessionNumber}`}>Reading</a>
+            <a href={`/dashboard/materi/${item.id}/latihan?type=listening&session=${session.sessionNumber}`}>Listening</a>
+            <a href={`/dashboard/materi/${item.id}/latihan?type=writing&session=${session.sessionNumber}`}>Writing</a>
+            <a href={`/dashboard/materi/${item.id}/latihan?type=speaking&session=${session.sessionNumber}`}>Speaking</a>
+          </div>
+        </section>
+      ))}
+    </section>
+  </section>
+</DashboardLayout>
+
+<script>
+  import { playAudioTTS } from '../../../lib/german-speech.js';
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLButtonElement>('.speech-button').forEach((button) => {
+      button.onclick = () => {
+        const speechText = String(button.dataset.speech ?? '').replace(/\s+/g, ' ').trim();
+        playAudioTTS(speechText, button);
+      };
+    });
+  });
+</script>
+
+<style>
+  .detail-page { display: grid; gap: 1.25rem; }
+  .back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
+  .eyebrow { margin: 0; color: var(--muted); font-weight: 800; text-transform: uppercase; }
+  h1 { margin: 0.35rem 0; }
+  header > p:last-child { margin: 0; color: var(--muted); }
+  .session-list { display: grid; gap: 1rem; }
+  .session-list > header { display: flex; justify-content: space-between; align-items: center; }
+  .session-list > header > div > p:last-child { margin: 0.35rem 0 0; color: var(--muted); }
+  .session-list > header > span { color: var(--muted); font-weight: 700; }
+  .sesi-card { padding: 1rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); }
+  .sesi-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .sesi-heading h3 { margin: 0; }
+  .sesi-heading span { color: var(--muted); font-size: 0.82rem; }
+  .table-scroll { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
+  .pillar-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; margin-top: 1rem; }
+  .pillar-buttons a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; border-radius: 8px; border: 1px solid var(--border); color: var(--text-main); text-decoration: none; font-weight: 800; }
+  .pillar-buttons a:hover { border-color: var(--accent-gold); }
+  @media (max-width: 640px) { .pillar-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

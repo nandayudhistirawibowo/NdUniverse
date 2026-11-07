@@ -1,4 +1,5 @@
 let manifestPromise;
+let currentAudio = null;
 
 function getManifest() {
   if (!manifestPromise) {
@@ -29,6 +30,7 @@ function getManifest() {
 if (typeof window !== 'undefined') getManifest();
 
 function speakGerman(text, button) {
+  if (typeof window === 'undefined') return;
   if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') {
     console.error('Neither generated TTS audio nor browser speech synthesis is available.');
     button?.classList.remove('is-playing');
@@ -48,26 +50,81 @@ function speakGerman(text, button) {
   window.speechSynthesis.speak(utterance);
 }
 
-export async function playAudioTTS(text, button) {
+function normalizeText(text) {
+  return String(text ?? '').replace(/\s+/g, ' ').trim();
+}
+
+export async function playAudioTTS(text, button, fallbackText = text) {
+  const spokenText = normalizeText(text);
+  const spokenFallback = normalizeText(fallbackText) || spokenText;
+
+  if (!spokenText) {
+    button?.classList.remove('is-playing');
+    return;
+  }
+
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+  if (currentAudio) {
+    currentAudio.pause();
+    currentAudio.removeAttribute('src');
+    currentAudio.load();
+    currentAudio = null;
+  }
+
+  if (/^(\/|https?:\/\/)/i.test(spokenText)) {
+    if (typeof Audio === 'undefined') {
+      speakGerman(spokenFallback, button);
+      return;
+    }
+    const directAudio = new Audio(spokenText);
+    currentAudio = directAudio;
+    button?.classList.add('is-playing');
+    directAudio.onended = () => {
+      button?.classList.remove('is-playing');
+      if (currentAudio === directAudio) currentAudio = null;
+    };
+    directAudio.onerror = () => {
+      button?.classList.remove('is-playing');
+      if (currentAudio === directAudio) currentAudio = null;
+      speakGerman(spokenFallback, button);
+    };
+    try {
+      await directAudio.play();
+    } catch (error) {
+      console.error(`Unable to play direct TTS audio: ${spokenText}`, error);
+      button?.classList.remove('is-playing');
+      if (currentAudio === directAudio) currentAudio = null;
+      speakGerman(spokenFallback, button);
+    }
+    return;
+  }
+
   const manifest = await getManifest();
-  const audioPath = manifest?.[text];
+  const audioPath = manifest?.[spokenText];
 
   if (typeof audioPath !== 'string' || !audioPath.startsWith('/audio/tts/')) {
-    speakGerman(text, button);
+    speakGerman(spokenText, button);
     return;
   }
 
   const audio = new Audio(audioPath);
+  currentAudio = audio;
   let fellBackToSpeech = false;
   const fallBack = () => {
     if (fellBackToSpeech) return;
     fellBackToSpeech = true;
+    if (currentAudio === audio) currentAudio = null;
     button?.classList.remove('is-playing');
-    speakGerman(text, button);
+    speakGerman(spokenText, button);
   };
 
   button?.classList.add('is-playing');
-  audio.onended = () => button?.classList.remove('is-playing');
+  audio.onended = () => {
+    button?.classList.remove('is-playing');
+    if (currentAudio === audio) currentAudio = null;
+  };
   audio.onerror = () => {
     console.error(`Unable to play generated TTS audio: ${audioPath}`, audio.error);
     fallBack();

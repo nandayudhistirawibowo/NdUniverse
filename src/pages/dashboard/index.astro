@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import { normalizePassedSessions } from '../../lib/progress-client.js';
+import { normalizePassedPillars } from '../../lib/progress-client.js';
 import { getCollection } from 'astro:content';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
@@ -33,36 +33,32 @@ const totalSessions = materials.reduce((total, material) => total + Math.ceil(ma
 const materialBySlug = new Map(materials.map((item) => [item.id, item]));
 const totalPoints = progressRows.reduce((total, row) => {
   const material = materialBySlug.get(row.material_slug);
-  if (!material || !material.data.level) return total;
+  if (!material || material.data.track !== 'Alltagsdeutsch' || !material.data.level) return total;
 
   const levelPoints = POINTS_PER_LEVEL[material.data.level];
   if (!levelPoints) return total;
-
-  const totalMaterialSessions = Math.ceil(material.data.vocab.length / 5);
-  const passedSessions = new Set(
-    normalizePassedSessions(row.sessions_passed)
-      .filter((session) => session <= totalMaterialSessions)
-  );
-  return total + passedSessions.size * levelPoints;
+  const pillarsPassed = normalizePassedPillars(row.sessions_passed).length;
+  return total + (pillarsPassed === 4 ? levelPoints : 0);
 }, 0);
 const currentLevel = [...LEVEL_STEPS].reverse().find((step) => totalPoints >= step.threshold) ?? LEVEL_STEPS[0];
-const levelProgressPercent = currentLevel.nextThreshold
-  ? Math.min(
-    100,
-    Math.floor(
-      ((totalPoints - currentLevel.threshold)
-        / (currentLevel.nextThreshold - currentLevel.threshold)) * 100
+const levelProgressPercent = currentLevel.nextThreshold !== null
+  && Number.isFinite(currentLevel.nextThreshold)
+  && currentLevel.nextThreshold > currentLevel.threshold
+  ? Math.max(
+    0,
+    Math.min(
+      100,
+      Math.floor(
+        ((totalPoints - currentLevel.threshold)
+          / (currentLevel.nextThreshold - currentLevel.threshold)) * 100
+      )
     )
   )
   : 100;
 const completedMaterials = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
-  if (!material) return [];
-
-  const totalSessions = Math.ceil(material.data.vocab.length / 5);
-  const passedSessions = new Set(normalizePassedSessions(row.sessions_passed));
-  const isComplete = totalSessions > 0
-    && Array.from({ length: totalSessions }, (_, index) => index + 1).every((session) => passedSessions.has(session));
+  if (!material || material.data.track !== 'Alltagsdeutsch' || !material.data.level) return [];
+  const isComplete = normalizePassedPillars(row.sessions_passed).length === 4;
 
   return isComplete ? [{ slug: row.material_slug, title: material.data.judulMateri }] : [];
 });
@@ -103,7 +99,7 @@ const completedMaterials = progressRows.flatMap((row) => {
           <p class="level-eyebrow">Level Bahasa Jerman</p>
           <p class="level-caption">Level Saat Ini</p>
           <h2 id="dynamic-level-title">{currentLevel.label}</h2>
-          <p class="level-points">{totalPoints} poin terkumpul dari sesi yang lulus</p>
+          <p class="level-points">{totalPoints} poin terkumpul dari materi yang menyelesaikan 4 pilar</p>
         </div>
         <div class="level-next-step">
           {currentLevel.nextThreshold ? (
@@ -151,7 +147,7 @@ const completedMaterials = progressRows.flatMap((row) => {
             <p>Jelajahi seluruh materi bahasa Jerman.</p>
             <span class="learning-arrow" aria-hidden="true">→</span>
           </a>
-          <a class="learning-card" href="/alltagsdeutsch">
+          <a class="learning-card" href="/dashboard/alltags">
             <span class="learning-index">02</span>
             <h3>Alltagsdeutsch</h3>
             <p>Bangun komunikasi sehari-hari dari A1 sampai C2.</p>

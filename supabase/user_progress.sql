@@ -3,6 +3,8 @@ create table if not exists public.user_progress (
   user_id uuid not null references auth.users (id) on delete cascade,
   material_slug text not null,
   xp integer not null default 0 check (xp >= 0),
+  -- Backward-compatible JSON array; values may be numeric legacy session IDs or
+  -- CEFR pillar strings: reading, listening, writing, speaking.
   sessions_passed jsonb not null default '[]'::jsonb
     check (jsonb_typeof(sessions_passed) = 'array'),
   notes text not null default '',

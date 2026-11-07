@@ -22,8 +22,20 @@ const items = materi.filter((item) => item.data.track === 'Alltagsdeutsch' && it
   description={`Daftar materi Alltagsdeutsch untuk level ${level}.`}
 >
   <section class="page-shell">
-    <p class="eyebrow">Alltagsdeutsch</p>
-    <h1>Level {level}</h1>
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/alltagsdeutsch">Alltagsdeutsch</a>
+      <span aria-hidden="true">›</span>
+      <span>{level}</span>
+    </nav>
+    <div class="level-heading">
+      <div>
+        <p class="eyebrow">Alltagsdeutsch</p>
+        <h1>Level {level}</h1>
+      </div>
+      <a class="exam-button" href={`/ujian/${String(level).toLowerCase()}`}>
+        Mulai Ujian {level}
+      </a>
+    </div>
 
     <div class="back-link-wrap">
       <a href="/alltagsdeutsch">← Kembali ke semua level</a>
@@ -48,6 +60,8 @@ const items = materi.filter((item) => item.data.track === 'Alltagsdeutsch' && it
 </Layout>
 
 <style>
+  .breadcrumb { display: flex; align-items: center; gap: 0.45rem; margin-bottom: 0.75rem; color: var(--muted); }
+  .breadcrumb a { color: var(--text-main); font-weight: 700; text-decoration: none; }
   .page-shell {
     padding-top: 1rem;
   }
@@ -66,6 +80,30 @@ const items = materi.filter((item) => item.data.track === 'Alltagsdeutsch' && it
     font-size: clamp(2rem, 4vw, 2.8rem);
   }
 
+  .level-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .exam-button {
+    flex: 0 0 auto;
+    padding: 0.72rem 1rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 0.65rem;
+    background: rgba(229, 169, 59, 0.09);
+    color: #966313;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+
+  @media (max-width: 700px) {
+    .level-heading { align-items: flex-start; flex-direction: column; }
+  }
+
   .back-link-wrap {
     margin-top: 1rem;
   }
@@ -78,14 +116,15 @@ const items = materi.filter((item) => item.data.track === 'Alltagsdeutsch' && it
 
   .list-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
     margin-top: 2rem;
   }
 
   .materi-card {
     display: block;
-    padding: 1.2rem;
+    min-height: 280px;
+    padding: 1.75rem;
     border-radius: 1rem;
     background: var(--card-bg);
     border: 1px solid var(--border);
@@ -106,7 +145,7 @@ const items = materi.filter((item) => item.data.track === 'Alltagsdeutsch' && it
 
   h2 {
     margin: 0.8rem 0 0.5rem;
-    font-size: 1.2rem;
+    font-size: 1.45rem;
   }
 
   .materi-card p {

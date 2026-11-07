@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { playAudioTTS } from '../lib/german-speech.js';
 import {
   fetchAllUserProgress,
   getProgressClient,
@@ -8,7 +9,7 @@ import {
 
 const STORAGE_KEY = 'sideutsch-xp';
 const BOOKMARKS_KEY = 'sideutsch-bookmarks';
-const QUESTION_TYPES = ['arrange', 'matcher', 'text'];
+const PILLAR_TYPES = ['reading', 'listening', 'writing', 'speaking'];
 const SOUND_FILES = {
   click: '/sounds/quiz-click.mp3',
   success: '/sounds/quiz-success.mp3',
@@ -34,12 +35,44 @@ function shuffle(items) {
   return arr;
 }
 
-function getSessionQuestionType(sessionNumber) {
-  return QUESTION_TYPES[(sessionNumber - 1) % QUESTION_TYPES.length];
+function getPillarQuestionType(pillar, item) {
+  const hasText = (value) => typeof value === 'string' && value.trim().length > 0;
+  if (pillar === 'reading') {
+    return hasText(item?.lesen_teks) && hasText(item?.lesen_pertanyaan) ? 'reading' : 'matcher';
+  }
+  if (pillar === 'listening') {
+    const canPlayAudio = hasText(item?.hoeren_audio) || hasText(item?.context) || hasText(item?.german);
+    return canPlayAudio ? 'listening' : 'matcher';
+  }
+  if (pillar === 'writing') return 'writing';
+  if (pillar === 'speaking') return 'speaking';
+  return null;
 }
 
 function normalizeAnswer(answer) {
   return answer.trim().toLowerCase().replace(/\s+/g, ' ');
+}
+
+function fuzzyMatch(answer, expected) {
+  const a = normalizeAnswer(answer).replace(/[^\p{L}\p{N}\s]/gu, '');
+  const b = normalizeAnswer(expected).replace(/[^\p{L}\p{N}\s]/gu, '');
+  if (!a || !b) return false;
+  if (a === b || a.includes(b) || b.includes(a)) return true;
+
+  const matrix = Array.from({ length: a.length + 1 }, (_, row) =>
+    Array.from({ length: b.length + 1 }, (_, column) =>
+      row === 0 ? column : column === 0 ? row : 0
+    )
+  );
+  for (let i = 1; i <= a.length; i += 1) {
+    for (let j = 1; j <= b.length; j += 1) {
+      const substitution = matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1);
+      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, substitution);
+    }
+  }
+  const distance = matrix[a.length][b.length];
+  const threshold = Math.max(1, Math.floor(Math.max(a.length, b.length) * 0.25));
+  return distance <= threshold;
 }
 
 function getAcceptedAnswers(answer) {
@@ -63,16 +96,15 @@ function readBookmarks() {
   return bookmarks;
 }
 
-function buildQuestionQueue(items, sessionNumber = 1, useSessionType = false) {
-  const sessionType = useSessionType ? getSessionQuestionType(sessionNumber) : null;
-  const types = sessionType
-    ? items.map(() => sessionType)
-    : shuffle(items.map((_, index) => QUESTION_TYPES[index % QUESTION_TYPES.length]));
-
-  return shuffle(items).map((item, index) => ({
+function buildQuestionQueue(items, sessionNumber = 1, useSessionType = false, pillarType = null) {
+  return items.map((item, index) => ({
     ...item,
     id: `${item.german}-${index}-${Math.random().toString(36).slice(2, 8)}`,
-    type: types[index],
+    type: pillarType
+      ? getPillarQuestionType(pillarType, item)
+      : useSessionType
+        ? (getPillarQuestionType(pillarType, item) ?? 'matcher')
+        : 'matcher',
     needsReview: false,
     correctAfterWrong: 0,
   }));
@@ -96,6 +128,19 @@ function buildMatcherSet(currentItem, items) {
   };
 }
 
+function buildMultipleChoiceOptions(currentItem, items) {
+  if (!currentItem) return [];
+
+  const uniqueItems = [...new Map(items.map((item) => [item.indonesian, item])).values()];
+  const distractors = shuffle(
+    uniqueItems
+      .filter((item) => item.indonesian !== currentItem.indonesian)
+      .map((item) => item.indonesian)
+  ).slice(0, 3);
+
+  return shuffle([currentItem.indonesian, ...distractors]);
+}
+
 function readCompletedSessions(materialId) {
   if (!materialId) return 0;
 
@@ -107,7 +152,12 @@ function readCompletedSessions(materialId) {
   }
 }
 
-/** @param {{ items?: Array<{ german: string, indonesian: string, context: string }>, track?: string, level?: string, jurusan?: string, returnHref?: string, startIndex?: number, batchSize?: number, sessionMode?: boolean, materialId?: string }} props */
+function filterPillarItems(items, pillarType, startIndex = 0, batchSize = 5) {
+  if (!PILLAR_TYPES.includes(pillarType)) return items.slice(startIndex, startIndex + batchSize);
+  return items.slice(startIndex, startIndex + batchSize);
+}
+
+/** @param {{ items?: Array<{ german: string, indonesian: string, context: string, lesen_teks?: string, lesen_pertanyaan?: string, hoeren_audio?: string, schreiben_instruksi?: string, sprechen_pertanyaan?: string }>, track?: string, level?: string, jurusan?: string, returnHref?: string, startIndex?: number, batchSize?: number, sessionMode?: boolean, session?: number, materialId?: string, type?: string }} props */
 export default function Quiz(props) {
   const {
     items: suppliedItems,
@@ -118,25 +168,43 @@ export default function Quiz(props) {
     startIndex = 0,
     batchSize,
     sessionMode = false,
+    session = 0,
     materialId,
+    type: pillarType,
   } = props;
   const items = suppliedItems ?? [];
+  const pillarMode = PILLAR_TYPES.includes(pillarType);
   const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
+  const selectedSession = Math.max(1, Number(session) || Math.floor(startIndex / effectiveBatchSize) + 1);
+  const sessionStartIndex = (selectedSession - 1) * effectiveBatchSize;
+  const [activeStartIndex, setActiveStartIndex] = useState(sessionStartIndex);
+  const pillarItems = useMemo(
+    () => filterPillarItems(items, pillarType, activeStartIndex, effectiveBatchSize),
+    [items, pillarType, activeStartIndex, effectiveBatchSize]
+  );
   const [xp, setXp] = useState(0);
   const [sessionXp, setSessionXp] = useState(0);
   const [lives, setLives] = useState(3);
-  const [activeStartIndex, setActiveStartIndex] = useState(startIndex);
   const [sessionInitialized, setSessionInitialized] = useState(!sessionMode);
   const currentBatchItems = useMemo(
-    () => sessionMode ? items.slice(activeStartIndex, activeStartIndex + effectiveBatchSize) : items,
-    [items, activeStartIndex, effectiveBatchSize, sessionMode]
+    () => pillarMode
+      ? pillarItems
+      : sessionMode
+        ? items.slice(activeStartIndex, activeStartIndex + effectiveBatchSize)
+        : items,
+    [pillarItems, pillarMode, items, activeStartIndex, effectiveBatchSize, sessionMode]
   );
   const sessionCount = Math.ceil(items.length / effectiveBatchSize);
   const activeSessionNumber = Math.floor(activeStartIndex / effectiveBatchSize) + 1;
   const [queue, setQueue] = useState(() => buildQuestionQueue(
-    sessionMode ? items.slice(startIndex, startIndex + effectiveBatchSize) : items,
-    Math.floor(startIndex / effectiveBatchSize) + 1,
-    sessionMode
+    pillarMode
+      ? filterPillarItems(items, pillarType, sessionStartIndex, effectiveBatchSize)
+      : sessionMode
+        ? items.slice(sessionStartIndex, sessionStartIndex + effectiveBatchSize)
+        : items,
+    selectedSession,
+    sessionMode,
+    pillarType
   ));
   const [attemptedCount, setAttemptedCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -148,6 +216,8 @@ export default function Quiz(props) {
   const [matcherSelection, setMatcherSelection] = useState(null);
   const [matcherMatches, setMatcherMatches] = useState({});
   const [userAnswer, setUserAnswer] = useState('');
+  const [choiceAnswer, setChoiceAnswer] = useState('');
+  const [isListening, setIsListening] = useState(false);
   const [matcherWrongPair, setMatcherWrongPair] = useState(null);
   const matcherWrongTimeoutRef = useRef(0);
   const [checkedResult, setCheckedResult] = useState(null);
@@ -304,6 +374,29 @@ export default function Quiz(props) {
   useEffect(() => {
     if (!authResolved) return;
 
+    if (pillarMode) {
+      const firstStartIndex = sessionStartIndex;
+      const firstBatch = filterPillarItems(items, pillarType, firstStartIndex, effectiveBatchSize);
+      finalizedXpRef.current = false;
+      setActiveStartIndex(firstStartIndex);
+      setSessionInitialized(true);
+      setQueue(buildQuestionQueue(firstBatch, 1, true, pillarType));
+      setLives(3);
+      setSessionXp(0);
+      setAttemptedCount(0);
+      setCorrectCount(0);
+      setWrongWords([]);
+      setIsGameOver(false);
+      setArrangeSelected([]);
+      setMatcherSelection(null);
+      setMatcherMatches({});
+      setUserAnswer('');
+      setChoiceAnswer('');
+      setCheckedResult(null);
+      setToast(null);
+      return;
+    }
+
     const totalSessions = Math.ceil(items.length / effectiveBatchSize);
     const completed = sessionMode && isAuthenticated ? readCompletedSessions(materialId) : 0;
     const requestedSession = sessionMode
@@ -333,9 +426,10 @@ export default function Quiz(props) {
     setMatcherSelection(null);
     setMatcherMatches({});
     setUserAnswer('');
+    setChoiceAnswer('');
     setCheckedResult(null);
     setToast(null);
-  }, [items, sessionMode, materialId, effectiveBatchSize, startIndex, authResolved, isAuthenticated]);
+  }, [items, sessionMode, materialId, effectiveBatchSize, startIndex, sessionStartIndex, authResolved, isAuthenticated, pillarMode, pillarType]);
 
   const currentQuestion = queue[0] ?? null;
   const showSummary = isGameOver || queue.length === 0;
@@ -353,6 +447,7 @@ export default function Quiz(props) {
       setMatcherMatches({});
     }
     setUserAnswer('');
+    setChoiceAnswer('');
   }, [currentQuestion]);
 
   useEffect(() => {
@@ -377,8 +472,13 @@ export default function Quiz(props) {
     return buildMatcherSet(currentQuestion, currentBatchItems);
   }, [currentQuestion, currentBatchItems]);
 
+  const multipleChoiceOptions = useMemo(() => {
+    if (!currentQuestion || !['reading', 'listening'].includes(currentQuestion.type)) return [];
+    return buildMultipleChoiceOptions(currentQuestion, currentBatchItems);
+  }, [currentQuestion, currentBatchItems]);
+
   const requiredCorrect = Math.ceil(currentBatchItems.length * 0.8);
-  const sessionPassed = sessionMode
+  const sessionPassed = (sessionMode || pillarMode)
     && !isGameOver
     && queue.length === 0
     && correctCount >= requiredCorrect;
@@ -386,6 +486,26 @@ export default function Quiz(props) {
 
   useEffect(() => {
     if (!sessionPassed || !materialId) return;
+
+    if (pillarMode && pillarType) {
+      let savedPillars = [];
+      const key = `progress_pillar_${materialId}_${pillarType}`;
+      try {
+        const saved = window.localStorage.getItem(key);
+        savedPillars = saved ? JSON.parse(saved) : [];
+      } catch {
+        savedPillars = [];
+      }
+      const pillarsPassed = [...new Set([...savedPillars, pillarType])];
+      completedSessionsRef.current = pillarsPassed;
+      try {
+        window.localStorage.setItem(key, JSON.stringify(pillarsPassed));
+      } catch {
+        // Progress tetap dapat disimpan melalui Supabase saat tersedia.
+      }
+      queueProgressUpdate({ sessions_passed: pillarsPassed });
+      return;
+    }
 
     const savedCompleted = isAuthenticated ? readCompletedSessions(materialId) : 0;
     const completed = Math.max(savedCompleted, activeSessionNumber);
@@ -399,7 +519,7 @@ export default function Quiz(props) {
       }
     }
     queueProgressUpdate({ sessions_passed: sessionsPassed });
-  }, [sessionPassed, materialId, activeSessionNumber, isAuthenticated]);
+  }, [sessionPassed, materialId, activeSessionNumber, isAuthenticated, pillarMode, pillarType]);
 
   useEffect(() => {
     if (queue.length > 0 || isGameOver || finalizedXpRef.current) return;
@@ -457,8 +577,11 @@ export default function Quiz(props) {
     const sessionItems = sessionMode
       ? items.slice(activeStartIndex, activeStartIndex + effectiveBatchSize)
       : items;
+    const restartItems = pillarMode
+      ? filterPillarItems(items, pillarType, activeStartIndex, effectiveBatchSize)
+      : sessionItems;
     finalizedXpRef.current = false;
-    setQueue(buildQuestionQueue(sessionItems, activeSessionNumber, sessionMode));
+    setQueue(buildQuestionQueue(restartItems, activeSessionNumber, sessionMode, pillarType));
     setLives(3);
     setSessionXp(0);
     setAttemptedCount(0);
@@ -471,6 +594,7 @@ export default function Quiz(props) {
     setMatcherWrongPair(null);
     window.clearTimeout(matcherWrongTimeoutRef.current);
     setUserAnswer('');
+    setChoiceAnswer('');
     setCheckedResult(null);
     setToast(null);
   }
@@ -480,7 +604,12 @@ export default function Quiz(props) {
     const nextItems = items.slice(nextStartIndex, nextStartIndex + effectiveBatchSize);
     finalizedXpRef.current = false;
     setActiveStartIndex(nextStartIndex);
-    setQueue(buildQuestionQueue(nextItems, sessionNumber, sessionMode));
+    setQueue(buildQuestionQueue(
+      pillarMode ? nextItems : nextItems,
+      sessionNumber,
+      sessionMode,
+      pillarMode ? pillarType : null
+    ));
     setLives(3);
     setSessionXp(0);
     setAttemptedCount(0);
@@ -493,9 +622,12 @@ export default function Quiz(props) {
     setMatcherWrongPair(null);
     window.clearTimeout(matcherWrongTimeoutRef.current);
     setUserAnswer('');
+    setChoiceAnswer('');
     setCheckedResult(null);
     setToast(null);
-    window.history.replaceState(null, '', `${window.location.pathname}?session=${sessionNumber}`);
+    const params = new URLSearchParams(window.location.search);
+    params.set('session', String(sessionNumber));
+    window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
   }
 
   function showResult(isCorrect) {
@@ -531,6 +663,7 @@ export default function Quiz(props) {
     setMatcherWrongPair(null);
     window.clearTimeout(matcherWrongTimeoutRef.current);
     setUserAnswer('');
+    setChoiceAnswer('');
     setCheckedResult(null);
     setToast(null);
   }
@@ -557,6 +690,65 @@ export default function Quiz(props) {
     if (!currentQuestion || !userAnswer.trim()) return;
     const acceptedAnswers = getAcceptedAnswers(currentQuestion.german);
     showResult(acceptedAnswers.includes(normalizeAnswer(userAnswer)));
+  }
+
+  function handleMultipleChoiceSubmit() {
+    if (!choiceAnswer) return;
+    showResult(choiceAnswer === currentQuestion.indonesian);
+  }
+
+  function handleFuzzySubmit() {
+    if (!currentQuestion || !userAnswer.trim()) return;
+    const acceptedAnswers = [currentQuestion.german];
+    const isCorrect = acceptedAnswers.some((answer) => fuzzyMatch(userAnswer, answer));
+    showResult(isCorrect);
+  }
+
+  function startSpeechRecognition() {
+    if (checkedResult !== null || isListening) return;
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      setToast({ type: 'error', message: 'Speech recognition tidak didukung browser ini.' });
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'de-DE';
+    recognition.interimResults = false;
+    recognition.maxAlternatives = 1;
+    recognition.onstart = () => setIsListening(true);
+    recognition.onresult = (event) => {
+      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
+      setUserAnswer(transcript);
+    };
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => {
+      setIsListening(false);
+      setToast({ type: 'error', message: 'Suara tidak berhasil dikenali. Coba lagi.' });
+    };
+    recognition.start();
+  }
+
+  function playListeningAudio(event) {
+    const audioSource = currentQuestion?.hoeren_audio?.trim()
+      || currentQuestion?.context?.trim()
+      || currentQuestion?.german?.trim();
+    if (!audioSource) return;
+
+    if (/^(\/|https?:\/\/)/i.test(audioSource)) {
+      const button = event.currentTarget;
+      button.classList.add('is-playing');
+      if (typeof Audio === 'undefined') return;
+      const audio = new Audio(audioSource);
+      audio.onended = () => button.classList.remove('is-playing');
+      audio.onerror = () => {
+        button.classList.remove('is-playing');
+      };
+      audio.play().catch(() => button.classList.remove('is-playing'));
+      return;
+    }
+
+    playAudioTTS(audioSource, event.currentTarget);
   }
 
   function addArrangeToken(index) {
@@ -605,6 +797,8 @@ export default function Quiz(props) {
 
     if (currentQuestion.type === 'arrange') handleArrangeSubmit();
     else if (currentQuestion.type === 'matcher') handleMatcherSubmit();
+    else if (currentQuestion.type === 'reading' || currentQuestion.type === 'listening') handleMultipleChoiceSubmit();
+    else if (currentQuestion.type === 'writing' || currentQuestion.type === 'speaking') handleFuzzySubmit();
     else handleTextSubmit();
   }
 
@@ -616,10 +810,9 @@ export default function Quiz(props) {
     ? arrangeSelected.length > 0
     : currentQuestion?.type === 'matcher'
       ? matcherIsComplete
+      : ['reading', 'listening'].includes(currentQuestion?.type)
+        ? Boolean(choiceAnswer)
       : userAnswer.trim().length > 0;
-  const textArticleHint = currentQuestion?.type === 'text'
-    ? currentQuestion.german.match(/^(der|die|das)\s+(.+)$/i)
-    : null;
 
   return (
     <div className="quiz-shell">
@@ -766,27 +959,134 @@ export default function Quiz(props) {
                       </p>
                     )}
                   </>
+                ) : currentQuestion.type === 'reading' ? (
+                  <>
+                    <p className="question-label">Tipe D · Reading / Lesen</p>
+                    <h3>Bacalah teks berikut</h3>
+                    <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
+                      {currentQuestion.lesen_teks}
+                    </div>
+                    <h3 style={{ marginTop: '1rem' }}>{currentQuestion.lesen_pertanyaan}</h3>
+                    <div style={{ display: 'grid', gap: '0.65rem' }}>
+                      {multipleChoiceOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.indonesian ? 'correct' : ''}`}
+                          onClick={() => setChoiceAnswer(option)}
+                          disabled={checkedResult !== null}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.indonesian}</p>}
+                  </>
+                ) : currentQuestion.type === 'listening' ? (
+                  <>
+                    <p className="question-label">Tipe E · Listening / Hören</p>
+                    <h3>Dengarkan audio, lalu pilih arti yang tepat</h3>
+                    <button
+                      type="button"
+                      className="vocab-speech-button"
+                      onClick={playListeningAudio}
+                      aria-label={`Putar audio: ${currentQuestion.hoeren_audio}`}
+                      title="Putar audio"
+                      style={{ width: '52px', height: '52px', fontSize: '1.35rem' }}
+                    >
+                      🔊
+                    </button>
+                    <div style={{ display: 'grid', gap: '0.65rem', marginTop: '1rem' }}>
+                      {multipleChoiceOptions.map((option) => (
+                        <button
+                          key={option}
+                          type="button"
+                          className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.indonesian ? 'correct' : ''}`}
+                          onClick={() => setChoiceAnswer(option)}
+                          disabled={checkedResult !== null}
+                        >
+                          {option}
+                        </button>
+                      ))}
+                    </div>
+                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.indonesian}</p>}
+                  </>
+                ) : currentQuestion.type === 'writing' ? (
+                  <>
+                    <p className="question-label">Tipe F · Writing / Schreiben</p>
+                    <h3>{currentQuestion.schreiben_instruksi || `Tulis dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
+                    <textarea
+                      value={userAnswer}
+                      onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                      placeholder="Tulis jawabanmu di sini"
+                      aria-label="Jawaban tulisan"
+                      disabled={checkedResult !== null}
+                      rows={5}
+                      style={{
+                        boxSizing: 'border-box',
+                        width: '100%',
+                        padding: '0.85rem 0.9rem',
+                        border: '1px solid var(--border)',
+                        borderRadius: '10px',
+                        background: 'var(--bg-main)',
+                        color: 'var(--text-main)',
+                        font: 'inherit',
+                        resize: 'vertical',
+                      }}
+                    />
+                    {checkedResult === false && <p className="correct-answer">Jawaban yang mendekati: {currentQuestion.german}</p>}
+                  </>
+                ) : currentQuestion.type === 'speaking' ? (
+                  <>
+                    <p className="question-label">Tipe G · Speaking / Sprechen</p>
+                    <h3>{currentQuestion.sprechen_pertanyaan || `Ucapkan dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
+                    <button
+                      type="button"
+                      onClick={startSpeechRecognition}
+                      disabled={checkedResult !== null || isListening}
+                      aria-label="Mulai rekaman suara"
+                      title="Ucapkan jawaban"
+                      style={{
+                        width: '64px',
+                        height: '64px',
+                        borderRadius: '50%',
+                        border: '1px solid var(--border)',
+                        background: isListening ? '#e5484d' : 'var(--card-bg)',
+                        color: isListening ? '#fff' : 'var(--text-main)',
+                        fontSize: '1.5rem',
+                        cursor: 'pointer',
+                        marginBottom: '0.75rem',
+                      }}
+                    >
+                      🎤
+                    </button>
+                    <input
+                      type="text"
+                      value={userAnswer}
+                      onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                      placeholder="Ketik kata kunci jawabannya"
+                      aria-label="Jawaban kata kunci"
+                      disabled={checkedResult !== null}
+                      autoComplete="off"
+                      style={{
+                        boxSizing: 'border-box',
+                        width: '100%',
+                        minHeight: '48px',
+                        padding: '0.7rem 0.9rem',
+                        border: '1px solid var(--border)',
+                        borderRadius: '10px',
+                        background: 'var(--bg-main)',
+                        color: 'var(--text-main)',
+                        font: 'inherit',
+                      }}
+                    />
+                    {checkedResult === false && <p className="correct-answer">Kata kunci: {currentQuestion.german}</p>}
+                  </>
                 ) : (
                   <>
                     <p className="question-label">Tipe C · Text Box</p>
                     <h3>Bagaimana mengatakan „{currentQuestion.indonesian}“ dalam Bahasa Jerman?</h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', margin: '0.25rem 0 1rem' }}>
-                      {textArticleHint && (
-                        <span
-                          aria-label={`Artikel: ${textArticleHint[1]}`}
-                          style={{
-                            flex: '0 0 auto',
-                            padding: '0.7rem 0.85rem',
-                            border: '1px solid var(--border)',
-                            borderRadius: '10px',
-                            background: 'var(--card-bg)',
-                            color: 'var(--text-main)',
-                            fontWeight: 700,
-                          }}
-                        >
-                          {textArticleHint[1]}
-                        </span>
-                      )}
                       <input
                         type="text"
                         value={userAnswer}
@@ -797,7 +1097,7 @@ export default function Quiz(props) {
                             handleQuestionAction();
                           }
                         }}
-                        placeholder={textArticleHint ? textArticleHint[2] : 'Ketik jawaban dalam Bahasa Jerman'}
+                        placeholder="Ketik jawaban dalam Bahasa Jerman"
                         aria-label="Jawaban dalam Bahasa Jerman"
                         autoComplete="off"
                         autoCapitalize="none"

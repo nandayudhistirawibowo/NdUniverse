@@ -1,0 +1,179 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import GoetheExam from '../../../components/GoetheExam.jsx';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level) => ({
+    params: { level: level.toLowerCase() },
+  }));
+}
+
+const { level: levelParam } = Astro.params;
+const level = String(levelParam ?? '').toUpperCase();
+const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
+
+const materials = (await getCollection('materi'))
+  .filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level);
+const vocabPool = materials.flatMap((material) => material.data.vocab ?? []);
+const taskCount = ['A1', 'A2'].includes(level) ? 10 : 5;
+
+function shuffle(items) {
+  const copy = [...items];
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+  }
+  return copy;
+}
+
+function repeatToCount(items, count) {
+  if (items.length === 0) return [];
+  const output = [];
+  for (let index = 0; index < count; index += 1) {
+    output.push(items[index % items.length]);
+  }
+  return output;
+}
+
+function makeOptions(correct) {
+  const alternatives = shuffle(
+    [...new Set(vocabPool.map((item) => item.indonesian).filter((value) => value && value !== correct))]
+  ).slice(0, 3);
+  if (alternatives.length === 0) {
+    alternatives.push(correct === 'benar' ? 'salah' : 'benar');
+  }
+  return shuffle([correct, ...alternatives]);
+}
+
+const selectedVocab = repeatToCount(shuffle(vocabPool), taskCount);
+const keyWords = selectedVocab
+  .slice(0, 5)
+  .map((item) => item.german)
+  .filter(Boolean);
+const keyParagraph = selectedVocab[0]?.lesen_teks
+  || 'Anna freut sich auf den Tag. Sie beginnt morgens um sieben Uhr. Danach trifft sie Freunde in der Stadt, kauft Lebensmittel und erzählt von ihrem Alltag.';
+const readingPassage = `${keyParagraph}
+
+Am frühen Morgen steht Anna auf, öffnet das Fenster und sieht auf die Straße. Die Nachbarn gehen zur Arbeit, Kinder fahren mit dem Bus zur Schule, und in einem kleinen Café werden Frühstück und Kaffee vorbereitet. Anna bereitet ihren Tag vor. Sie schreibt zuerst eine Liste, damit sie Einkäufe, Termine und wichtige Aufgaben nicht vergisst. Danach frühstückt sie ruhig, hört eine Nachricht aus der Nachbarschaft und entscheidet, wann sie zum Markt gehen möchte.
+
+Auf dem Markt gibt es Obst, Gemüse, Brot und Blumen. Anna spricht mit der Verkäuferin. Die Verkäuferin erklärt ihr, dass frisches Gemüse heute besonders günstig ist. Anna vergleicht die Preise, fragt nach dem Preis für Äpfel und entscheidet sich schließlich für Äpfel, Kartoffeln und Brot. Danach besucht sie eine Freundin. Gemeinsam planen sie einen Spaziergang durch den Park. Wenn das Wetter gut ist, nehmen sie einen Kaffee mit und setzen sich auf eine Bank.
+
+Am Nachmittag fährt Anna mit der Straßenbahn in das Stadtzentrum. Dort besucht sie eine Ausstellung über das Leben in der Stadt. Die Ausstellung zeigt Fotos, Karten und kurze Texte zu verschiedenen Orten. Anna liest einige Informationen über die Geschichte des Viertels und erfährt, dass viele Familien dort schon seit vielen Jahren wohnen. Anschließend kauft sie ein Geschenk für die Geburtstagsfeier ihrer Schwester.
+
+Später kehrt Anna nach Hause zurück. In der Küche kocht sie Suppe und bereitet einen einfachen Salat zu. Während sie kocht, telefoniert sie mit ihrer Mutter. Beide sprechen über die Woche, über kleine Probleme und über schöne Erlebnisse. Am Abend schreibt Anna einen kurzen Bericht in ihr Tagebuch. Sie beschreibt die Begegnungen, Erinnerungen und Pläne für den nächsten Tag.
+
+Am Ende des Tages ist Anna zufrieden. Sie hat ihre Aufgaben erledigt, Zeit mit Freunden verbracht und neue Informationen kennengelernt. Obwohl der Tag nicht perfekt war, war er abwechslungsreich und angenehm. Anna beschließt, morgen früher aufzustehen, noch einmal zum Markt zu gehen und den Nachmittag draußen zu verbringen.`;
+const reading = selectedVocab.map((item, index) => ({
+  passage: readingPassage,
+  keyParagraph: index === 0 ? keyParagraph : `Schlüsseltext: ${keyParagraph}`,
+  prompt: item.lesen_pertanyaan || `Pilih arti yang tepat untuk "${item.german}".`,
+  answer: item.indonesian || item.german,
+  options: makeOptions(item.indonesian || item.german),
+  keywords: keyWords,
+}));
+const listeningTranscript = `Guten Morgen. Hier sind wichtige Informationen für unseren Alltag.
+${selectedVocab.slice(0, 3).map((item, index) =>
+  `${item.context || item.german}. Bitte merken Sie sich die Nummer ${index + 1}.`
+).join(' ')}
+Unsere Veranstaltung beginnt am Dienstag um acht Uhr dreißig am Hauptbahnhof. Bitte kommen Sie zehn Minuten früher. Die Teilnehmer bringen einen Personalausweis, einen Kugelschreiber und ihre Anmeldung mit. An der Information erhalten Sie außerdem eine Übersicht über alle Räume.
+In der ersten Stunde begrüßen wir alle Gäste. Danach erklärt die Lehrerin den Ablauf des Tages. In der Pause können Sie Getränke und Snacks kaufen. Für Menschen mit Fragen gibt es am Ende eine eigene Gesprächszeit.
+Bitte beachten Sie auch den Wetterbericht. Wenn es am Morgen regnet, tragen Sie bitte einen Regenschirm. Wenn die Straßenbahn verspätet ist, können Sie den Bus zum Bahnhof nehmen. Der Bus fährt vor dem Rathaus ab und hält direkt am Eingang des Veranstaltungszentrums.`;
+const listening = selectedVocab.map((item, index) => ({
+  audio: listeningTranscript,
+  audioFallback: listeningTranscript,
+  prompt: index === 0
+    ? 'Dengarkan Begrüßung dan pilih informasi utama yang disebutkan.'
+    : 'Dengarkan audio, lalu pilih arti kata atau kalimat yang tepat.',
+  answer: item.indonesian || item.contextIndonesian || item.german,
+  options: makeOptions(item.indonesian || item.contextIndonesian || item.german),
+  transcript: listeningTranscript,
+}));
+
+const writingPool = shuffle(vocabPool).filter((item) => item.schreiben_instruksi).concat(shuffle(vocabPool));
+const speakingPool = shuffle(vocabPool).filter((item) => item.sprechen_pertanyaan).concat(shuffle(vocabPool));
+const textTaskCount = ['A1', 'A2'].includes(level) ? 1 : 2;
+const writing = Array.from({ length: textTaskCount }, (_, index) => {
+  const item = writingPool[index % Math.max(writingPool.length, 1)];
+  return item
+    ? {
+        prompt: item.schreiben_instruksi || `Tulis dalam bahasa Jerman: ${item.indonesian}`,
+        answer: item.german || item.indonesian,
+        keywords: [item.german, item.indonesian].filter(Boolean),
+      }
+    : { prompt: 'Tulis satu kalimat sederhana dalam bahasa Jerman.', answer: 'Hallo' };
+});
+const speaking = Array.from({ length: textTaskCount }, (_, index) => {
+  const item = speakingPool[index % Math.max(speakingPool.length, 1)];
+  return item
+    ? {
+        prompt: item.sprechen_pertanyaan || `Sebutkan dalam bahasa Jerman: ${item.indonesian}`,
+        answer: item.german || item.indonesian,
+        keywords: [item.german, item.indonesian].filter(Boolean),
+      }
+    : { prompt: 'Sebutkan salam sederhana dalam bahasa Jerman.', answer: 'Hallo' };
+});
+
+const tasks = { lesen: reading, hoeren: listening, schreiben: writing, sprechen: speaking };
+---
+
+<Layout title={`Simulate Goethe-Zertifikat ${level} | siDeutsch`} description={`Simulasi resmi Goethe-Zertifikat level ${level}.`}>
+  <main class="goethe-shell">
+    <GoetheExam client:load level={level} tasks={tasks} />
+  </main>
+</Layout>
+
+<style is:global>
+  .goethe-shell { width:min(980px,calc(100% - 2rem)); margin:2rem auto 4rem; }
+  .goethe-exam { display:grid; gap:1.25rem; }
+  .goethe-heading { padding:1.4rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
+  .goethe-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .exam-timer { flex:0 0 auto; min-width:110px; display:grid; gap:.15rem; text-align:center; padding:.65rem .8rem; border:1px solid var(--accent-gold); border-radius:.75rem; background:#fffaf0; }
+  .exam-timer span { font-size:.72rem; font-weight:800; text-transform:uppercase; color:var(--muted); }
+  .exam-timer strong { font-size:1.35rem; color:#966313; font-variant-numeric:tabular-nums; }
+  .goethe-heading h1 { margin:.15rem 0 .35rem; }
+  .goethe-heading p { margin:.25rem 0; color:var(--muted); }
+  .module-progress { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
+  .module-progress button { display:grid; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:.75rem; background:var(--card-bg); color:var(--text-main); text-align:left; cursor:pointer; }
+  .module-progress button.active { border-color:var(--accent-gold); box-shadow:0 0 0 3px rgba(229,169,59,.12); }
+  .module-progress strong { font-size:.78rem; color:var(--muted); }
+  .module-track { height:5px; overflow:hidden; border-radius:999px; background:#e8e8e8; }
+  .module-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-gold); }
+  .module-panel { display:grid; gap:1rem; }
+  .module-panel > header { padding:.75rem 0; }
+  .module-panel > header p { margin:0; color:#966313; font-weight:800; text-transform:uppercase; }
+  .module-panel > header h2 { margin:.25rem 0 0; }
+  .goethe-task { display:grid; gap:.8rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
+  .task-meta { color:var(--muted); font-size:.82rem; font-weight:800; text-transform:uppercase; }
+  .goethe-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); background:#fffaf0; line-height:1.65; }
+  .prompt { margin:0; font-weight:700; }
+  .audio-button,.mic-button { width:fit-content; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
+  .audio-button:disabled { opacity:.65; cursor:not-allowed; }
+  .audio-controls { display:flex; }
+  .text-answer small { color:var(--muted); line-height:1.5; }
+  .options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; }
+  .option { display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; cursor:pointer; }
+  .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); }
+  .text-answer { display:grid; gap:.75rem; }
+  .text-answer textarea { width:100%; box-sizing:border-box; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; resize:vertical; font:inherit; }
+  .submit-button { justify-self:center; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
+  .goethe-result { display:grid; gap:1rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; text-align:center; }
+  .goethe-result.passed { background:#edf8ef; border-color:#9bd0a5; }
+  .goethe-result.failed { background:#fff2f2; border-color:#e6a3a3; }
+  .result-label { margin:0; font-size:.78rem; font-weight:900; letter-spacing:.08em; }
+  .module-results { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
+  .module-results article { padding:.75rem; border-radius:.65rem; border:1px solid var(--border); background:#fff; }
+  .module-results article p { margin:.25rem 0 0; color:var(--muted); }
+  .module-results article.failed strong { color:#b42318; }
+  .module-results article.passed strong { color:#218838; }
+  .retry-message { margin:0; font-weight:700; }
+  .certificate-link { justify-self:center; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
+  .failure-link { background:#966313; }
+  @media(max-width:700px) {
+    .module-progress,.module-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .options { grid-template-columns:1fr; }
+  }
+</style>

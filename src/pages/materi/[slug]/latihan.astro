@@ -1,21 +1,19 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import Quiz from '../../../components/Quiz.jsx';
-import { getCollection } from 'astro:content';
+import { getEntry } from 'astro:content';
 
-export const prerender = true;
+export const prerender = false;
 
-export async function getStaticPaths() {
-  const materi = await getCollection('materi');
+const item = await getEntry('materi', Astro.params.slug ?? '');
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 
-  return materi.map((item) => ({
-    params: { slug: item.id },
-    props: { item },
-  }));
-}
-
-const { item } = Astro.props;
+const type = Astro.url.searchParams.get('type') ?? '';
+const pillarLabels = { reading: 'Reading / Lesen', listening: 'Listening / Hören', writing: 'Writing / Schreiben', speaking: 'Speaking / Sprechen' };
+const pillarLabel = pillarLabels[type] ?? 'Latihan Materi';
 const batchSize = 5;
+const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
+const startIndex = (sessionNumber - 1) * batchSize;
 const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
 ---
 
@@ -31,8 +29,8 @@ const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
     </a>
     <header class="page-heading">
       <p class="eyebrow">Latihan Materi</p>
-      <h1>Latihan: {item.data.judulMateri}</h1>
-      <p>{sessionCount} sesi singkat, maksimal {batchSize} kosakata per sesi.</p>
+      <h1>{pillarLabel}: {item.data.judulMateri}</h1>
+      <p>Maksimal {batchSize} soal untuk pilar ini.</p>
     </header>
 
     <section class="practice-panel" aria-label={`Kuis ${item.data.judulMateri}`}>
@@ -43,71 +41,16 @@ const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
         level={item.data.level}
         jurusan={item.data.jurusan}
         returnHref={`/materi/${item.id}`}
-        startIndex={0}
+        startIndex={startIndex}
+        session={sessionNumber}
         batchSize={batchSize}
         sessionMode={true}
         materialId={item.id}
+        type={type}
       />
     </section>
   </main>
 </Layout>
-
-<script>
-  document.addEventListener('astro:page-load', () => {
-  const backLink = document.querySelector<HTMLAnchorElement>('[data-practice-back]');
-  const backLabel = backLink?.querySelector<HTMLElement>('[data-back-label]');
-
-  if (backLink) {
-    const publicDestination = backLink.dataset.track === 'Alltagsdeutsch' ? '/alltagsdeutsch' : '/fachdeutsch';
-    const dashboardDestination = backLink.dataset.track === 'Alltagsdeutsch' ? '/dashboard/alltags' : '/dashboard/fach';
-    const allowedDestinations = new Set([
-      '/dashboard',
-      '/dashboard/katalog',
-      '/dashboard/alltags',
-      '/dashboard/fach',
-      '/alltagsdeutsch',
-      '/fachdeutsch',
-    ]);
-    const requestedDestination = new URLSearchParams(window.location.search).get('return');
-    const safeRequestedDestination = requestedDestination && allowedDestinations.has(requestedDestination)
-      ? requestedDestination
-      : null;
-
-    let referrerDestination = null;
-    try {
-      const source = new URL(document.referrer);
-      if (source.origin === window.location.origin) {
-        if (source.pathname === '/dashboard/katalog') referrerDestination = '/dashboard/katalog';
-        else if (source.pathname === '/dashboard/alltags') referrerDestination = '/dashboard/alltags';
-        else if (source.pathname === '/dashboard/fach') referrerDestination = '/dashboard/fach';
-        else if (source.pathname === '/dashboard' || source.pathname.startsWith('/dashboard/')) {
-          referrerDestination = dashboardDestination;
-        } else if (source.pathname.startsWith('/alltagsdeutsch')) {
-          referrerDestination = '/alltagsdeutsch';
-        } else if (source.pathname.startsWith('/fachdeutsch')) {
-          referrerDestination = '/fachdeutsch';
-        }
-      }
-    } catch {
-      referrerDestination = null;
-    }
-
-    const destination = safeRequestedDestination ?? referrerDestination ?? publicDestination;
-    backLink.href = destination;
-    if (backLabel) {
-      backLabel.textContent = destination.startsWith('/dashboard')
-        ? destination === '/dashboard/katalog'
-          ? 'Kembali ke Katalog'
-          : destination === '/dashboard/alltags'
-            ? 'Kembali ke Alltagsdeutsch'
-            : destination === '/dashboard/fach'
-              ? 'Kembali ke Fachdeutsch'
-              : 'Kembali ke Dashboard'
-        : 'Kembali ke Kurikulum';
-    }
-  }
-  });
-</script>
 
 <style>
   .practice-page {
