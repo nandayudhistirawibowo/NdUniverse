@@ -13,7 +13,9 @@ import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
 const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
-const nim = profile?.nim || user?.user_metadata?.nim || '';
+const nimValue = profile?.nim || user?.user_metadata?.nim || '';
+const nim = typeof nimValue === 'string' ? nimValue.trim() : '';
+const hasNim = Boolean(nim && (/^\d+$/.test(nim) || nim !== displayName));
 const accountInitial = displayName.slice(0, 1).toUpperCase();
 const logoFallback = 'siDeutsch';
 const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.avatar_url);
@@ -131,7 +133,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 )}
                 <span class="account-copy">
                   <strong>{displayName}</strong>
-                  <span>{nim ? `NIM ${nim}` : 'Umum'}</span>
+                  <span>{hasNim ? `NIM ${nim}` : 'Umum'}</span>
                 </span>
                 <svg class="account-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="m6 9 6 6 6-6" />

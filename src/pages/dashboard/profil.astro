@@ -4,8 +4,10 @@ import { createAvatarSignedUrl, getAvatarStoragePath } from '../../lib/avatar';
 
 const user = Astro.locals.user!;
 const profile = Astro.locals.profile;
-const nim = profile?.nim || user.user_metadata?.nim || '';
-const displayName = profile?.nama_lengkap ?? '';
+const nimValue = profile?.nim || user.user_metadata?.nim || '';
+const nim = typeof nimValue === 'string' ? nimValue.trim() : '';
+const displayName = profile?.nama_lengkap || user.user_metadata?.nama_lengkap || profile?.nim || user.user_metadata?.nim || 'Member';
+const hasNim = Boolean(nim && (/^\d+$/.test(nim) || nim !== displayName));
 const avatarPath = getAvatarStoragePath(profile?.avatar_url);
 const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath);
 ---
@@ -64,8 +66,8 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
           required
         />
 
-        <label for="nim">{nim ? 'NIM' : 'Status Akun'}</label>
-        <input id="nim" name="nim" type="text" value={nim || 'Umum'} readonly />
+        <label for="nim">{hasNim ? 'NIM' : 'Status Akun'}</label>
+        <input id="nim" name="nim" type="text" value={hasNim ? nim : 'Umum'} readonly />
 
         <button id="profile-submit" type="submit">Simpan Perubahan</button>
         <p id="profile-message" class="profile-message" role="status" aria-live="polite"></p>
