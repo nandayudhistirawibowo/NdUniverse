@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import HelpHint from '../../components/HelpHint.jsx';
 
 const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 ---
@@ -13,7 +14,10 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
     <div class="level-heading">
       <div>
         <p class="eyebrow">Alltagsdeutsch</p>
-        <h1>Pilih Level Kamu</h1>
+        <div class="heading-title">
+          <h1>Pilih Level Kamu</h1>
+          <HelpHint title="Belajar Bertahap" text="Pilih materi, pelajari kosakata per sesi, lalu latih 4 pilar CEFR (Reading, Listening, Writing, Speaking)." client:load />
+        </div>
         <p class="lead">Mulai dari percakapan dasar hingga komunikasi lanjutan dalam kehidupan sehari-hari.</p>
       </div>
       <a class="goethe-button" href="/ujian/goethe">Simulate Goethe-Zertifikat</a>
@@ -73,6 +77,13 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
   h1 {
     margin: 0;
     font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .level-heading {

@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import HelpHint from '../../components/HelpHint.jsx';
 import { getCollection } from 'astro:content';
 
 export const prerender = true;
@@ -33,7 +34,10 @@ const items = materi.filter((item) => item.data.track === 'Fachdeutsch' && item.
 >
   <section class="page-shell">
     <p class="eyebrow">Fachdeutsch</p>
-    <h1>{jurusan}</h1>
+    <div class="heading-title">
+      <h1>{jurusan}</h1>
+      <HelpHint title="Belajar Bertahap" text="Pilih materi Fachdeutsch untuk mempelajari kosakata teknis yang relevan dengan bidang studimu." client:load />
+    </div>
 
     <div class="back-link-wrap">
       <a href="/fachdeutsch">← Kembali ke jurusan</a>
@@ -74,6 +78,13 @@ const items = materi.filter((item) => item.data.track === 'Fachdeutsch' && item.
   h1 {
     margin: 0;
     font-size: clamp(2rem, 4vw, 2.8rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .back-link-wrap {

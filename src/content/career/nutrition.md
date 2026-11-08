@@ -5,24 +5,24 @@ deskripsi: "Kosakata dan simulasi wawancara untuk gizi dan pelayanan kesehatan i
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Ausbildung"]
-  - question: "Warum möchten Sie in Deutschland arbeiten?"
-    keywords: ["Karriere", "Gesundheit", "Chancen"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Empathie", "Geduld", "Teamarbeit"]
-  - question: "Welche Erfahrungen haben Sie mit Schwangeren?"
-    keywords: ["Schwangere", "Beratung", "Erfahrung"]
+  - question: "Was sind Ihre Schwächen?"
+    keywords: ["Perfektionismus", "Ungeduld", "Verbesserung"]
+  - question: "Welche Fähigkeiten bringen Sie mit?"
+    keywords: ["Ernährungsberatung", "Kommunikation", "Empathie"]
+  - question: "Welche Erfahrungen haben Sie?"
+    keywords: ["Ernährung", "Beratung", "Berufserfahrung"]
+  - question: "Was sind Ihre Gehaltsvorstellungen?"
+    keywords: ["Gehalt", "Vergütung", "Euro"]
+  - question: "Warum möchten Sie bei uns arbeiten?"
+    keywords: ["Motivation", "Unternehmen", "Entwicklung"]
   - question: "Wie beraten Sie eine Mutter zur Ernährung?"
     keywords: ["Ernährung", "Mutter", "Beratung"]
-  - question: "Wie unterstützen Sie eine Geburt?"
-    keywords: ["Geburt", "Hebamme", "Sicherheit"]
-  - question: "Wie erkennen Sie Warnzeichen beim Neugeborenen?"
-    keywords: ["Neugeborenes", "Warnzeichen", "Kontrolle"]
-  - question: "Wie arbeiten Sie mit Ärztinnen zusammen?"
-    keywords: ["Team", "Zusammenarbeit", "Kommunikation"]
-  - question: "Wie planen Sie die Ernährung eines Säuglings?"
-    keywords: ["Säugling", "Ernährungsplan", "Entwicklung"]
-  - question: "Wo möchten Sie sich fachlich weiterentwickeln?"
-    keywords: ["Weiterbildung", "Wissen", "Spezialisierung"]
+  - question: "Wie unterstützen Sie eine Schwangere während der Schwangerschaft?"
+    keywords: ["Schwangere", "Beratung", "Sicherheit"]
+  - question: "Haben Sie Fragen an uns?"
+    keywords: ["Fragen", "Aufgaben", "Unternehmen"]
 vocab:
   - { german: "die Ernährung", indonesian: "gizi atau pola makan", context: "Die Ernährung beeinflusst die Gesundheit." }
   - { german: "die Schwangere", indonesian: "ibu hamil", context: "Die Schwangere erhält eine Beratung." }

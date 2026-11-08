@@ -1,5 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
+import HelpHint from '../../components/HelpHint.jsx';
 
 const slugify = (value = '') =>
   String(value)
@@ -32,7 +33,10 @@ const fakultas = [
   <section class="page-shell">
     <a class="dashboard-back-link" href="/dashboard">← Kembali ke Dashboard</a>
     <p class="eyebrow">Fachdeutsch</p>
-    <h1>Pilih Fakultas dan Jurusan</h1>
+    <div class="heading-title">
+      <h1>Pilih Fakultas dan Jurusan</h1>
+      <HelpHint title="Belajar Bertahap" text="Pilih materi Fachdeutsch untuk mempelajari kosakata teknis yang relevan dengan bidang studimu." client:load />
+    </div>
     <p class="lead">Belajar kosakata teknis dan formal yang sesuai dengan bidang studi kamu.</p>
 
     <div class="faculty-grid">
@@ -87,6 +91,13 @@ const fakultas = [
   h1 {
     margin: 0;
     font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .lead {

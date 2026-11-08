@@ -32,7 +32,9 @@ function fuzzyMatch(answer, expected) {
   return distance <= threshold;
 }
 
-export default function MockExam({ level, tasks = [], unavailable = false }) {
+/** @param {{ level: string; tasks?: Array<any>; unavailable?: boolean }} props */
+export default function MockExam({ level, tasks, unavailable = false }) {
+  const examTasks = tasks ?? [];
   const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
   const [answers, setAnswers] = useState({});
   const [finished, setFinished] = useState(false);
@@ -85,7 +87,7 @@ export default function MockExam({ level, tasks = [], unavailable = false }) {
   const submitExam = () => {
     playSound('click');
     let correct = 0;
-    tasks.forEach((task, index) => {
+    examTasks.forEach((task, index) => {
       const answer = answers[index];
       if (task.kind === 'reading' || task.kind === 'listening') {
         if (normalizeAnswer(answer) === normalizeAnswer(task.answer)) correct += 1;
@@ -93,9 +95,9 @@ export default function MockExam({ level, tasks = [], unavailable = false }) {
         correct += 1;
       }
     });
-    const percent = Math.round((correct / tasks.length) * 100);
+    const percent = Math.round((correct / examTasks.length) * 100);
     const passed = percent >= 60;
-    setScore({ correct, total: tasks.length, percent, passed });
+    setScore({ correct, total: examTasks.length, percent, passed });
     setFinished(true);
     if (passed) {
       playSound('success');
@@ -121,7 +123,7 @@ export default function MockExam({ level, tasks = [], unavailable = false }) {
         <span class="exam-status">Target kelulusan: 60%</span>
       </header>
 
-      {unavailable || tasks.length === 0 ? (
+      {unavailable || examTasks.length === 0 ? (
         <section class="exam-result failed" role="alert">
           <h2>Soal untuk level ini belum tersedia.</h2>
           <p>Silakan hubungi admin atau coba level lain setelah materi ditambahkan.</p>
@@ -130,7 +132,7 @@ export default function MockExam({ level, tasks = [], unavailable = false }) {
         <>
 
       <ol class="exam-list">
-        {tasks.map((task, index) => (
+        {examTasks.map((task, index) => (
           <li class="exam-task" key={`${task.kind}-${index}`}>
             <div class="task-meta">
               <span>{task.kindLabel}</span>

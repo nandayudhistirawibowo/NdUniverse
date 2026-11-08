@@ -1,4 +1,5 @@
 ---
+// @ts-nocheck
 import Layout from '../../../layouts/Layout.astro';
 import GoetheExam from '../../../components/GoetheExam.jsx';
 import { getCollection } from 'astro:content';
@@ -22,10 +23,10 @@ const materials = (await getCollection('materi'))
     && String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
   );
 const vocabPool = materials.flatMap((material) => material.data.vocab ?? []);
-const counts = { A1: 10, A2: 15, B1: 25, B2: 25, C1: 25, C2: 25 };
+const counts: Record<string, number> = { A1: 10, A2: 15, B1: 25, B2: 25, C1: 25, C2: 25 };
 const readingListeningCount = counts[level] ?? 10;
 
-function shuffle(items) {
+function shuffle(items: any[]) {
   const copy = [...items];
   for (let index = copy.length - 1; index > 0; index -= 1) {
     const randomIndex = Math.floor(Math.random() * (index + 1));
@@ -34,7 +35,7 @@ function shuffle(items) {
   return copy;
 }
 
-function makeOptions(correct) {
+function makeOptions(correct: string) {
   const alternatives = shuffle(
     [...new Set(vocabPool.map((item) => item.indonesian).filter((value) => value && value !== correct))]
   ).slice(0, 3);
@@ -42,7 +43,7 @@ function makeOptions(correct) {
   return shuffle([correct, ...alternatives]);
 }
 
-function makeGermanOptions(correct) {
+function makeGermanOptions(correct: string) {
   const alternatives = shuffle(
     [...new Set(vocabPool.map((item) => item.german).filter((value) => value && value !== correct))]
   ).slice(0, 3);
@@ -120,10 +121,11 @@ const available = vocabPool.length > 0
 </Layout>
 
 <style is:global>
-  .goethe-shell { width:min(980px,calc(100% - 2rem)); margin:2rem auto 4rem; }
+  .goethe-shell { width:min(980px,calc(100% - 2rem)); min-width:0; margin:2rem auto 4rem; }
   .goethe-exam { display:grid; gap:1.25rem; }
   .goethe-heading { padding:1.4rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
-  .goethe-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .goethe-heading { display:flex; min-width:0; align-items:center; justify-content:space-between; gap:1rem; }
+  .goethe-heading > div { min-width:0; }
   .exam-timer { flex:0 0 auto; min-width:110px; display:grid; gap:.15rem; text-align:center; padding:.65rem .8rem; border:1px solid var(--accent-gold); border-radius:.75rem; background:#fffaf0; }
   .exam-timer span { font-size:.72rem; font-weight:800; text-transform:uppercase; color:var(--muted); }
   .exam-timer strong { font-size:1.35rem; color:#966313; font-variant-numeric:tabular-nums; }
@@ -141,9 +143,9 @@ const available = vocabPool.length > 0
   .module-panel > header h2 { margin:.25rem 0 0; }
   .goethe-task { display:grid; gap:.8rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
   .task-meta { color:var(--muted); font-size:.82rem; font-weight:800; text-transform:uppercase; }
-  .goethe-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); background:#fffaf0; line-height:1.65; }
-  .prompt { margin:0; font-weight:700; }
-  .audio-button,.mic-button { width:fit-content; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
+  .goethe-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); background:#fffaf0; line-height:1.65; overflow-wrap:anywhere; }
+  .prompt { margin:0; font-weight:700; overflow-wrap:anywhere; }
+  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
   .audio-button:disabled { opacity:.65; cursor:not-allowed; }
   .audio-controls { display:flex; }
   .text-answer small { color:var(--muted); line-height:1.5; }
@@ -152,7 +154,7 @@ const available = vocabPool.length > 0
   .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); }
   .text-answer { display:grid; gap:.75rem; }
   .text-answer textarea { width:100%; box-sizing:border-box; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; resize:vertical; font:inherit; }
-  .submit-button { justify-self:center; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
+  .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
   .goethe-result { display:grid; gap:1rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; text-align:center; }
   .goethe-result.passed { background:#edf8ef; border-color:#9bd0a5; }
   .goethe-result.failed { background:#fff2f2; border-color:#e6a3a3; }
@@ -166,7 +168,7 @@ const available = vocabPool.length > 0
   .result-navigation { display:flex; justify-content:center; flex-wrap:wrap; gap:.75rem; }
   .certificate-link { justify-self:center; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
   .failure-link { background:#966313; }
-  @media(max-width:700px) {
+  @media(max-width:768px) {
     .module-progress,.module-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .options { grid-template-columns:1fr; }
     .goethe-heading { align-items:flex-start; flex-direction:column; }
@@ -174,6 +176,7 @@ const available = vocabPool.length > 0
     .goethe-task { padding:.9rem; }
     .text-answer textarea { min-height:140px;font-size:16px; }
     .result-navigation a { width:100%;box-sizing:border-box;text-align:center; }
+    .submit-button { width:100%; }
   }
   @media(max-width:420px) {
     .module-progress,.module-results { grid-template-columns:minmax(0,1fr); }

@@ -1,13 +1,15 @@
 import { useState } from 'preact/hooks';
 
-export default function CareerQuiz({ words = [], profession = 'Profesi' }) {
+/** @param {{ words?: Array<{ german: string; indonesian: string; options: string[] }>; profession?: string }} props */
+export default function CareerQuiz({ words, profession = 'Profesi' }) {
+  const vocab = words ?? [];
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [selected, setSelected] = useState('');
   const [finished, setFinished] = useState(false);
 
-  const current = words[index];
+  const current = vocab[index];
 
   const start = () => {
     setStarted(true);
@@ -24,7 +26,7 @@ export default function CareerQuiz({ words = [], profession = 'Profesi' }) {
   };
 
   const next = () => {
-    if (index + 1 >= words.length) {
+    if (index + 1 >= vocab.length) {
       setFinished(true);
       return;
     }
@@ -38,7 +40,7 @@ export default function CareerQuiz({ words = [], profession = 'Profesi' }) {
         <>
           <p class="career-section-label">Latihan Kosakata</p>
           <div class="career-word-list">
-            {words.map((word) => (
+            {vocab.map((word) => (
               <article key={word.german}>
                 <strong lang="de">{word.german}</strong>
                 <span>{word.indonesian}</span>
@@ -50,13 +52,13 @@ export default function CareerQuiz({ words = [], profession = 'Profesi' }) {
       ) : finished ? (
         <div class="career-quiz-result">
           <p class="career-section-label">Hasil Kuis</p>
-          <h3>{score}/{words.length} jawaban benar</h3>
+          <h3>{score}/{vocab.length} jawaban benar</h3>
           <p>Kosakata {profession} berhasil dilatih.</p>
           <button class="career-secondary-button" type="button" onClick={start}>Ulangi Kuis</button>
         </div>
       ) : (
         <div>
-          <p class="career-section-label">Kuis {index + 1}/{words.length}</p>
+          <p class="career-section-label">Kuis {index + 1}/{vocab.length}</p>
           <h3>Arti dari <span lang="de">{current.german}</span> adalah...</h3>
           <div class="career-options">
             {current.options.map((option) => (
@@ -73,7 +75,7 @@ export default function CareerQuiz({ words = [], profession = 'Profesi' }) {
           </div>
           {selected && (
             <button class="career-primary-button" type="button" onClick={next}>
-              {index + 1 >= words.length ? 'Lihat Hasil' : 'Lanjut'}
+              {index + 1 >= vocab.length ? 'Lihat Hasil' : 'Lanjut'}
             </button>
           )}
         </div>
@@ -81,8 +83,9 @@ export default function CareerQuiz({ words = [], profession = 'Profesi' }) {
       <style>{`
         .career-quiz { display:grid; gap:.9rem; padding:1.25rem; border:1px solid var(--border); border-radius:14px; background:var(--card-bg); }
         .career-section-label { margin:0; color:#966313; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
-        .career-word-list { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:.65rem; }
-        .career-word-list article { display:grid; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:10px; }
+        .career-word-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
+        .career-word-list article { display:grid; min-width:0; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:10px; }
+        .career-word-list strong,.career-word-list span { overflow-wrap:anywhere; word-break:break-word; }
         .career-word-list strong { color:var(--text-main); }
         .career-word-list span { color:var(--muted); font-size:.85rem; }
         .career-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; margin:.8rem 0; }
@@ -94,7 +97,7 @@ export default function CareerQuiz({ words = [], profession = 'Profesi' }) {
         .career-secondary-button { width:fit-content; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
         .career-quiz-result h3,.career-quiz h3 { margin:.2rem 0; color:var(--text-main); }
         .career-quiz-result p:last-of-type { color:var(--muted); }
-        @media(max-width:700px){ .career-word-list{grid-template-columns:repeat(2,minmax(0,1fr));}.career-options{grid-template-columns:1fr;} }
+        @media(max-width:768px){ .career-word-list{grid-template-columns:1fr;}.career-options{grid-template-columns:1fr;} }
       `}</style>
     </section>
   );

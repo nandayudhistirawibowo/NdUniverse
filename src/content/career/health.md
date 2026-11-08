@@ -5,24 +5,24 @@ deskripsi: "Kosakata dan simulasi wawancara untuk bidang perawatan dan kesehatan
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Ausbildung"]
-  - question: "Warum möchten Sie in Deutschland arbeiten?"
-    keywords: ["Pflege", "Karriere", "Chancen"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Geduld", "Teamarbeit", "Empathie"]
-  - question: "Welche Erfahrungen haben Sie in der Pflege?"
-    keywords: ["Pflege", "Patienten", "Erfahrung"]
-  - question: "Wie gehen Sie mit schwierigen Patienten um?"
+  - question: "Was sind Ihre Schwächen?"
+    keywords: ["Perfektionismus", "Ungeduld", "Verbesserung"]
+  - question: "Welche Fähigkeiten bringen Sie mit?"
+    keywords: ["Pflege", "Patientenbetreuung", "Kommunikation"]
+  - question: "Welche Erfahrungen haben Sie?"
+    keywords: ["Pflege", "Patienten", "Berufserfahrung"]
+  - question: "Was sind Ihre Gehaltsvorstellungen?"
+    keywords: ["Gehalt", "Vergütung", "Euro"]
+  - question: "Warum möchten Sie bei uns arbeiten?"
+    keywords: ["Motivation", "Unternehmen", "Entwicklung"]
+  - question: "Wie gehen Sie mit Patienten um?"
     keywords: ["Geduld", "Kommunikation", "Respekt"]
-  - question: "Wie funktionieren Dokumentation und Übergabe?"
-    keywords: ["Dokumentation", "Übergabe", "Team"]
   - question: "Wie reagieren Sie in einem Notfall?"
     keywords: ["Ruhe", "Notfall", "Erste Hilfe"]
-  - question: "Wie arbeiten Sie im Pflege-Team?"
-    keywords: ["Teamarbeit", "Zusammenarbeit", "Kommunikation"]
-  - question: "Wie schützen Sie sich vor Infektionen?"
-    keywords: ["Hygiene", "Schutzausrüstung", "Desinfektion"]
-  - question: "Wo sehen Sie Ihre berufliche Zukunft?"
-    keywords: ["Weiterbildung", "Weiterentwicklung", "Pflege"]
+  - question: "Haben Sie Fragen an uns?"
+    keywords: ["Fragen", "Aufgaben", "Unternehmen"]
 vocab:
   - { german: "die Pflege", indonesian: "perawatan", context: "Die Pflege richtet sich nach den Bedürfnissen." }
   - { german: "der Patient", indonesian: "pasien", context: "Der Patient braucht Unterstützung." }

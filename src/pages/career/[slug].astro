@@ -1,6 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import HelpHint from '../../components/HelpHint.jsx';
 
 export const prerender = false;
 
@@ -19,7 +20,10 @@ if (!item) return new Response('Materi Career tidak ditemukan.', { status: 404 }
     <a class="back-link" href="/career">← Kembali ke Career</a>
     <header class="page-heading">
       <p class="eyebrow">Career • Kosakata profesional</p>
-      <h1>{item.data.judulMateri}</h1>
+      <div class="heading-title">
+        <h1>{item.data.judulMateri}</h1>
+        <HelpHint title="Persiapan Karir" text="Pelajari 50 kosakata dan ikuti simulasi wawancara (Boss Fight) di bawah." client:load />
+      </div>
       <p>{item.data.deskripsi}</p>
     </header>
     <section class="vocabulary-list" aria-label="Daftar kosakata">
@@ -63,6 +67,13 @@ if (!item) return new Response('Materi Career tidak ditemukan.', { status: 404 }
     margin: 0;
     color: var(--text-main);
     font-size: clamp(1.7rem, 4vw, 2.4rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .eyebrow {

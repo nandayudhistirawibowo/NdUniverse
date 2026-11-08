@@ -1,16 +1,23 @@
 ---
+import { getEntry } from 'astro:content';
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
 import CareerQuiz from '../../components/CareerQuiz.jsx';
+import HelpHint from '../../components/HelpHint.jsx';
 
 export const prerender = false;
 
-const words = [
-  { german: 'die Pflege', indonesian: 'Perawatan', options: ['Perawatan', 'Diagnosa', 'Obat', 'Operasi'] },
-  { german: 'der Patient', indonesian: 'Pasien', options: ['Dokter', 'Pasien', 'Apoteker', 'Perawat'] },
-  { german: 'das Krankenhaus', indonesian: 'Rumah sakit', options: ['Rumah sakit', 'Klinik', 'Apotek', 'Laboratorium'] },
-  { german: 'die Untersuchung', indonesian: 'Pemeriksaan', options: ['Pemeriksaan', 'Rekam medis', 'Resep', 'Perawatan'] },
-  { german: 'die Medikamentengabe', indonesian: 'Pemberian obat', options: ['Pemberian obat', 'Pemeriksaan darah', 'Mobilitas', 'Sterilisasi'] },
-];
+const entry = await getEntry('career', 'health');
+const vocab = entry?.data.vocab ?? [];
+const words = vocab.map((word) => ({
+  ...word,
+  options: [
+    word.indonesian,
+    ...vocab
+      .filter((candidate) => candidate.indonesian !== word.indonesian)
+      .slice(0, 3)
+      .map((candidate) => candidate.indonesian),
+  ],
+}));
 ---
 
 <DashboardLayout
@@ -22,7 +29,10 @@ const words = [
 >
   <section class="career-profession">
     <a href="/career">← Kembali ke Career</a>
-    <h1>Pflege &amp; Gesundheitswesen</h1>
+    <div class="profession-heading">
+      <h1>Pflege &amp; Gesundheitswesen</h1>
+      <HelpHint title="Persiapan Karir" text="Pelajari 50 kosakata dan ikuti simulasi wawancara (Boss Fight) di bawah." client:load />
+    </div>
     <CareerQuiz client:load words={words} profession="Pflege" />
     <article class="boss-card"><span aria-hidden="true">⚔️</span><div><p>Boss Fight</p><h2>Boss Fight: HRD Interview</h2><p>Berlatih menjawab wawancara kerja dalam bahasa Jerman.</p></div><a href="/career/health/boss">Mulai Wawancara</a></article>
   </section>
@@ -31,7 +41,8 @@ const words = [
 <style>
   .career-profession { display:grid; gap:1rem; }
   .career-profession > a { width:fit-content; color:var(--text-main); text-decoration:none; font-weight:700; }
-  .career-profession > h1 { margin:0; color:var(--text-main); }
+  .profession-heading { display:flex; align-items:center; gap:.65rem; flex-wrap:wrap; }
+  .profession-heading h1 { margin:0; color:var(--text-main); }
   .boss-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:var(--card-bg); }
   .boss-card span { font-size:1.8rem; }.boss-card p,.boss-card h2 { margin:.1rem 0; }.boss-card div > p:first-child { color:#966313;font-size:.72rem;font-weight:800;text-transform:uppercase; }
   .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }

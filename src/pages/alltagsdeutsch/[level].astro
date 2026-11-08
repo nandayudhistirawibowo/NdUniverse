@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import HelpHint from '../../components/HelpHint.jsx';
 
 export const prerender = true;
 
@@ -38,7 +39,10 @@ const items = materi.filter((item) =>
     <div class="level-heading">
       <div>
         <p class="eyebrow">Alltagsdeutsch</p>
-        <h1>Level {level}</h1>
+        <div class="heading-title">
+          <h1>Level {level}</h1>
+          <HelpHint title="Belajar Bertahap" text="Pilih materi, pelajari kosakata per sesi, lalu latih 4 pilar CEFR (Reading, Listening, Writing, Speaking)." client:load />
+        </div>
       </div>
       <a class="exam-button" href={`/ujian/${String(level).toLowerCase()}`}>
         Mulai Ujian {level}
@@ -86,6 +90,13 @@ const items = materi.filter((item) =>
   h1 {
     margin: 0;
     font-size: clamp(2rem, 4vw, 2.8rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .level-heading {

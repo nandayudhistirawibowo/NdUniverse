@@ -5,24 +5,24 @@ deskripsi: "Kosakata dan simulasi wawancara untuk pemasaran digital dan bisnis d
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Studium"]
-  - question: "Warum möchten Sie in Deutschland arbeiten?"
-    keywords: ["Karriere", "Digitalisierung", "Chancen"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Kommunikation", "Teamarbeit", "Vertrieb"]
-  - question: "Wie analysieren Sie den Online-Markt?"
-    keywords: ["Marktforschung", "Daten", "Kunden"]
-  - question: "Wie entwickeln Sie eine Marketingkampagne?"
+  - question: "Was sind Ihre Schwächen?"
+    keywords: ["Perfektionismus", "Ungeduld", "Verbesserung"]
+  - question: "Welche Fähigkeiten bringen Sie mit?"
+    keywords: ["Marketing", "Kommunikation", "Analyse"]
+  - question: "Welche Erfahrungen haben Sie?"
+    keywords: ["E-Commerce", "Marketing", "Berufserfahrung"]
+  - question: "Was sind Ihre Gehaltsvorstellungen?"
+    keywords: ["Gehalt", "Vergütung", "Euro"]
+  - question: "Warum möchten Sie bei uns arbeiten?"
+    keywords: ["Motivation", "Unternehmen", "Entwicklung"]
+  - question: "Wie entwickeln Sie eine erfolgreiche Marketingkampagne?"
     keywords: ["Zielgruppe", "Kampagne", "Budget"]
-  - question: "Wie überzeugen Sie Kunden?"
-    keywords: ["Vertrieb", "Bedürfnisse", "Kommunikation"]
-  - question: "Welche Erfahrungen haben Sie mit E-Commerce?"
-    keywords: ["Online-Shop", "Verkäufe", "Erfahrung"]
-  - question: "Wie messen Sie den Erfolg einer Kampagne?"
-    keywords: ["Kennzahlen", "Conversion", "Analyse"]
-  - question: "Wie reagieren Sie auf sinkende Umsätze?"
-    keywords: ["Analyse", "Strategie", "Optimierung"]
-  - question: "Wo sehen Sie sich in Ihrer Karriere?"
-    keywords: ["Weiterentwicklung", "Management", "Verantwortung"]
+  - question: "Wie analysieren Sie Verkaufszahlen im E-Commerce?"
+    keywords: ["Verkaufszahlen", "Analyse", "Optimierung"]
+  - question: "Haben Sie Fragen an uns?"
+    keywords: ["Fragen", "Aufgaben", "Unternehmen"]
 vocab:
   - { german: "das Marketing", indonesian: "pemasaran", context: "Das Marketing erreicht neue Kunden." }
   - { german: "der Vertrieb", indonesian: "penjualan", context: "Der Vertrieb plant die Verkaufsziele." }

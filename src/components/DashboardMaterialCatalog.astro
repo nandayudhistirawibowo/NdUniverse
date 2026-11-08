@@ -1,6 +1,7 @@
 ---
 import DashboardLayout from '../layouts/DashboardLayout.astro';
 import DashboardMaterialGrid from './DashboardMaterialGrid.astro';
+import HelpHint from './HelpHint.jsx';
 
 const {
   title,
@@ -17,6 +18,9 @@ const {
   examHref,
   examLabel,
 } = Astro.props;
+const helpText = active === 'alltagsdeutsch'
+  ? 'Pilih materi, pelajari kosakata per sesi, lalu latih 4 pilar CEFR (Reading, Listening, Writing, Speaking).'
+  : 'Pilih materi Fachdeutsch untuk mempelajari kosakata teknis yang relevan dengan bidang studimu.';
 ---
 
 <DashboardLayout title={`${title} | siDeutsch`} active={active} user={user} profile={profile}>
@@ -28,7 +32,10 @@ const {
     <header class="page-heading">
       <div>
         <p class="eyebrow">{eyebrow}</p>
-        <h1>{title}</h1>
+        <div class="page-heading-title">
+          <h1>{title}</h1>
+          <HelpHint title="Belajar Bertahap" text={helpText} client:load />
+        </div>
         <p>{description}</p>
       </div>
       <div class="heading-actions">
@@ -83,6 +90,13 @@ const {
     margin: 0;
     color: var(--text-main);
     font-size: 2rem;
+  }
+
+  .page-heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .page-heading {

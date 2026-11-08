@@ -1,16 +1,23 @@
 ---
+import { getEntry } from 'astro:content';
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
 import CareerQuiz from '../../components/CareerQuiz.jsx';
+import HelpHint from '../../components/HelpHint.jsx';
 
 export const prerender = false;
 
-const words = [
-  { german: 'die Software', indonesian: 'Perangkat lunak', options: ['Perangkat lunak', 'Jaringan', 'Penyimpanan', 'Server'] },
-  { german: 'programmieren', indonesian: 'Memprogram', options: ['Mengujicoba', 'Memprogram', 'Merancang', 'Menganalisis'] },
-  { german: 'der Server', indonesian: 'Peladen', options: ['Peladen', 'Monitor', 'Aplikasi', 'Basis data'] },
-  { german: 'die Datenbank', indonesian: 'Basis data', options: ['Basis data', 'Antarmuka', 'Algoritma', 'Sistem operasi'] },
-  { german: 'die Anwendung', indonesian: 'Aplikasi', options: ['Aplikasi', 'Kode sumber', 'Keamanan', 'Cloud'] },
-];
+const entry = await getEntry('career', 'it');
+const vocab = entry?.data.vocab ?? [];
+const words = vocab.map((word) => ({
+  ...word,
+  options: [
+    word.indonesian,
+    ...vocab
+      .filter((candidate) => candidate.indonesian !== word.indonesian)
+      .slice(0, 3)
+      .map((candidate) => candidate.indonesian),
+  ],
+}));
 ---
 
 <DashboardLayout
@@ -22,7 +29,10 @@ const words = [
 >
   <section class="career-profession">
     <a href="/career">← Kembali ke Career</a>
-    <h1>IT &amp; Software Engineering</h1>
+    <div class="profession-heading">
+      <h1>IT &amp; Software Engineering</h1>
+      <HelpHint title="Persiapan Karir" text="Pelajari 50 kosakata dan ikuti simulasi wawancara (Boss Fight) di bawah." client:load />
+    </div>
     <CareerQuiz client:load words={words} profession="IT" />
     <article class="boss-card">
       <span aria-hidden="true">⚔️</span>
@@ -39,7 +49,8 @@ const words = [
 <style>
   .career-profession { display:grid; gap:1rem; }
   .career-profession > a { width:fit-content; color:var(--text-main); text-decoration:none; font-weight:700; }
-  .career-profession > h1 { margin:0; color:var(--text-main); }
+  .profession-heading { display:flex; align-items:center; gap:.65rem; flex-wrap:wrap; }
+  .profession-heading h1 { margin:0; color:var(--text-main); }
   .boss-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:var(--card-bg); }
   .boss-card span { font-size:1.8rem; }
   .boss-card p,.boss-card h2 { margin:.1rem 0; }

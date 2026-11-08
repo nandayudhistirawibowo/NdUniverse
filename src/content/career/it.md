@@ -5,24 +5,24 @@ deskripsi: "Kosakata dan simulasi wawancara untuk bidang IT dan pengembangan per
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Studium"]
-  - question: "Warum möchten Sie in Deutschland arbeiten?"
-    keywords: ["Karriere", "Technologie", "Chancen"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Teamarbeit", "Kommunikation", "Lernfähigkeit"]
-  - question: "Welche Erfahrungen haben Sie mit Softwareprojekten?"
-    keywords: ["Projekt", "Programmierung", "Erfahrung"]
-  - question: "Welche Programmiersprache beherrschen Sie am besten?"
-    keywords: ["Sprache", "Framework", "Praxis"]
-  - question: "Wie lösen Sie technische Probleme?"
-    keywords: ["Analysieren", "Debugging", "Tests"]
-  - question: "Wie arbeiten Sie im Team?"
-    keywords: ["Team", "Kommunikation", "Code Review"]
-  - question: "Beschreiben Sie Ihr letztes Projekt."
-    keywords: ["Projekt", "Aufgabe", "Ergebnis"]
-  - question: "Wie bleiben Sie technisch aktuell?"
-    keywords: ["Weiterbildung", "Dokumentation", "lernen"]
-  - question: "Wo sehen Sie sich in fünf Jahren?"
-    keywords: ["Senior", "Entwicklung", "Verantwortung"]
+  - question: "Was sind Ihre Schwächen?"
+    keywords: ["Perfektionismus", "Ungeduld", "Verbesserung"]
+  - question: "Welche Fähigkeiten bringen Sie mit?"
+    keywords: ["Programmierung", "Problemlösung", "Technologie"]
+  - question: "Welche Erfahrungen haben Sie?"
+    keywords: ["Softwareprojekte", "Programmierung", "Berufserfahrung"]
+  - question: "Was sind Ihre Gehaltsvorstellungen?"
+    keywords: ["Gehalt", "Vergütung", "Euro"]
+  - question: "Warum möchten Sie bei uns arbeiten?"
+    keywords: ["Motivation", "Unternehmen", "Entwicklung"]
+  - question: "Wie gehen Sie mit einem Bug um?"
+    keywords: ["Analyse", "Debugging", "Tests"]
+  - question: "Welche Programmiersprachen beherrschen Sie?"
+    keywords: ["Programmiersprachen", "JavaScript", "Python"]
+  - question: "Haben Sie Fragen an uns?"
+    keywords: ["Fragen", "Aufgaben", "Unternehmen"]
 vocab:
   - { german: "die Software", indonesian: "perangkat lunak", context: "Die Software läuft stabil." }
   - { german: "programmieren", indonesian: "memprogram", context: "Ich programmiere eine neue Anwendung." }

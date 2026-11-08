@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import HelpHint from '../../components/HelpHint.jsx';
 
 export const prerender = false;
 
@@ -14,7 +15,10 @@ export const prerender = false;
   <section class="career-catalog">
     <header class="page-heading">
       <p class="eyebrow">Persiapan dunia kerja</p>
-      <h1>Career</h1>
+      <div class="heading-title">
+        <h1>Career</h1>
+        <HelpHint title="Apa ini?" text="Pilih rumpun profesi untuk melatih kosakata dan simulasi wawancara kerja di Jerman." client:load />
+      </div>
       <p>Pilih rumpun profesi untuk mempersiapkan karir berbahasa Jerman.</p>
     </header>
 
@@ -60,6 +64,13 @@ export const prerender = false;
     margin: 0.35rem 0 0;
     color: var(--text-main);
     font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
   }
 
   .page-heading > p:last-child {

@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from '../../layouts/DashboardLayout.astro';
+import HelpHint from '../../components/HelpHint.jsx';
 
 export const prerender = false;
 
@@ -17,7 +18,10 @@ const user = Astro.locals.user;
     <header>
       <div>
         <p class="eyebrow">Bahasa sehari-hari</p>
-        <h1>Pilih Level Kamu</h1>
+        <div class="heading-title">
+          <h1>Pilih Level Kamu</h1>
+          <HelpHint title="Belajar Bertahap" text="Pilih materi, pelajari kosakata per sesi, lalu latih 4 pilar CEFR (Reading, Listening, Writing, Speaking)." client:load />
+        </div>
         <p>Pilih materi berdasarkan level CEFR.</p>
       </div>
       <a class="goethe-button" href="/ujian/goethe">Simulate Goethe-Zertifikat</a>
@@ -39,6 +43,7 @@ const user = Astro.locals.user;
   .back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
   .eyebrow { margin: 0; color: var(--muted); font-weight: 800; text-transform: uppercase; }
   h1 { margin: 0.35rem 0; }
+  .heading-title { display:flex; align-items:center; gap:.65rem; flex-wrap:wrap; }
   header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
   .goethe-button { padding:0.72rem 1rem; border:1px solid var(--accent-gold); border-radius:.65rem; background:var(--accent-gold); color:#4b3508; font-weight:900; text-decoration:none; box-shadow:0 8px 20px rgba(229,169,59,.18); }
   header p:last-child { margin: 0; color: var(--muted); }
