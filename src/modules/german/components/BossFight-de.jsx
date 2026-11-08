@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
+import { playSound } from '@core/game/quiz-sounds.js';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')
@@ -47,6 +48,7 @@ export default function BossFight({
 
   const knockDoor = () => {
     if (doorState !== 'closed') return;
+    playSound('click');
     setMessages([]);
     setDoorState('opening');
     doorTransitionRef.current = window.setTimeout(() => {
@@ -59,6 +61,7 @@ export default function BossFight({
   };
 
   const startInterview = () => {
+    playSound('click');
     setGameState('interview');
     setMessages([{ speaker: 'hrd', text: interviewQuestions[0].question }]);
     setQuestionIndex(0);
@@ -90,6 +93,7 @@ export default function BossFight({
 
   const submitAnswer = () => {
     if (!answer.trim()) return;
+    playSound('click');
     const normalized = normalizeAnswer(answer);
     const matchedKeywords = (currentQuestion.keywords ?? []).filter((keyword) =>
       normalized.includes(normalizeAnswer(keyword))
@@ -102,7 +106,18 @@ export default function BossFight({
       : 'Jawaban belum mengenali kata kunci dari pertanyaan ini.';
 
     const finalQuestionIndex = questionIndex + 1;
+    if (!passed) {
+      playSound('error');
+      setMessages((current) => [
+        ...current,
+        userMessage,
+        { speaker: 'hrd', text: `${feedback} Silakan jawab pertanyaan ini kembali: ${currentQuestion.question}` },
+      ]);
+      setAnswer('');
+      return;
+    }
     if (finalQuestionIndex >= interviewQuestions.length) {
+      playSound('success');
       setMessages((current) => [...current, userMessage, { speaker: 'hrd', text: feedback }]);
       setCorrectAnswers(totalPassed);
       setAnswer('');
@@ -111,6 +126,7 @@ export default function BossFight({
     }
 
     const nextQuestion = interviewQuestions[finalQuestionIndex].question;
+    playSound('success');
     setCorrectAnswers(totalPassed);
     setMessages((current) => [
       ...current,
@@ -243,7 +259,10 @@ export default function BossFight({
                       id="boss-answer"
                       rows="4"
                       value={answer}
-                      onInput={(event) => setAnswer(event.currentTarget.value)}
+                      onInput={(event) => {
+                        if (!answer) playSound('click');
+                        setAnswer(event.currentTarget.value);
+                      }}
                       placeholder="Jawab dalam bahasa Jerman..."
                     />
                     <div class="boss-actions">

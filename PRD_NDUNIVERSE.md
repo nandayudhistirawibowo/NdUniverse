@@ -6,6 +6,11 @@ NdUniverse adalah platform induk multi-bahasa yang menghubungkan pembelajaran ba
 
 Platform ini menjadi gerbang utama untuk berbagai modul bahasa. Setiap modul dapat memiliki kurikulum, sistem latihan, ujian, autentikasi, dan dashboard yang disesuaikan dengan kebutuhan bahasanya, tanpa kehilangan identitas utama NdUniverse.
 
+## Status Rilis
+
+- Modul German adalah rilis aktif saat ini dan dinyatakan **100% selesai untuk lingkup fase German**.
+- Modul English berada dalam status **Under Development**. `/login-en` menampilkan pengumuman penundaan dan mengarahkan pengguna ke modul German.
+
 ## Target User
 
 - Pelajar dan mahasiswa yang ingin membangun kemampuan bahasa untuk studi atau mobilitas internasional.

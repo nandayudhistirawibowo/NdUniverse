@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
+import { playSound } from '@core/game/quiz-sounds.js';
 import {
   fetchAllUserProgress,
   getProgressClient,
@@ -10,19 +11,6 @@ import {
 const STORAGE_KEY = 'sideutsch-xp';
 const BOOKMARKS_KEY = 'sideutsch-bookmarks';
 const PILLAR_TYPES = ['reading', 'listening', 'writing', 'speaking'];
-const SOUND_FILES = {
-  click: '/sounds/quiz-click.mp3',
-  success: '/sounds/quiz-success.mp3',
-  error: '/sounds/quiz-error.mp3',
-};
-
-function playSound(name) {
-  if (typeof Audio === 'undefined') return;
-
-  const sound = new Audio(SOUND_FILES[name]);
-  sound.volume = 0.45;
-  sound.play().catch(() => {});
-}
 
 function shuffle(items) {
   const arr = [...items];
@@ -159,6 +147,7 @@ function filterPillarItems(items, pillarType, startIndex = 0, batchSize = 5) {
 export default function Quiz(props) {
   const {
     items: suppliedItems,
+    questions: suppliedQuestions,
     track,
     level,
     jurusan,
@@ -170,7 +159,7 @@ export default function Quiz(props) {
     materialId,
     type: pillarType,
   } = props;
-  const items = suppliedItems ?? [];
+  const items = suppliedQuestions ?? suppliedItems ?? [];
   const pillarMode = PILLAR_TYPES.includes(pillarType);
   const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
   const selectedSession = Math.max(1, Number(session) || Math.floor(startIndex / effectiveBatchSize) + 1);
@@ -216,6 +205,8 @@ export default function Quiz(props) {
   const [userAnswer, setUserAnswer] = useState('');
   const [choiceAnswer, setChoiceAnswer] = useState('');
   const [isListening, setIsListening] = useState(false);
+  const [hasPlayedListening, setHasPlayedListening] = useState(false);
+  const listeningPlayedRef = useRef(false);
   const [matcherWrongPair, setMatcherWrongPair] = useState(null);
   const matcherWrongTimeoutRef = useRef(0);
   const [checkedResult, setCheckedResult] = useState(null);
@@ -446,6 +437,8 @@ export default function Quiz(props) {
     }
     setUserAnswer('');
     setChoiceAnswer('');
+    setHasPlayedListening(false);
+    listeningPlayedRef.current = false;
   }, [currentQuestion]);
 
   useEffect(() => {
@@ -728,10 +721,13 @@ export default function Quiz(props) {
   }
 
   function playListeningAudio(event) {
+    if (hasPlayedListening || listeningPlayedRef.current) return;
     const audioSource = currentQuestion?.hoeren_audio?.trim()
       || currentQuestion?.context?.trim()
       || currentQuestion?.german?.trim();
     if (!audioSource) return;
+    listeningPlayedRef.current = true;
+    setHasPlayedListening(true);
 
     if (/^(\/|https?:\/\/)/i.test(audioSource)) {
       const button = event.currentTarget;
@@ -907,62 +903,18 @@ export default function Quiz(props) {
                   </>
                 ) : currentQuestion.type === 'matcher' ? (
                   <>
-                    <p className="question-label">Tipe B · Word matcher</p>
-                    <h3>Hubungkan kata dengan artinya</h3>
-                    <div className="matcher-board">
-                      <div className="matcher-grid">
-                        <div className="matcher-column">
-                          <p className="column-title">Bahasa Jerman</p>
-                          {matcherSet?.germanWords.map((word) => {
-                            const isMatched = Object.prototype.hasOwnProperty.call(matcherMatches, word);
-                            const isWrong = matcherWrongPair?.german === word;
-                            return (
-                              <button
-                                key={word}
-                                type="button"
-                                className={`match-choice ${matcherSelection === word ? 'active' : ''} ${isMatched ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
-                                onClick={() => selectMatcherWord(word)}
-                                disabled={checkedResult !== null || isMatched}
-                                aria-pressed={matcherSelection === word}
-                              >
-                                {word}
-                              </button>
-                            );
-                          })}
-                        </div>
-                        <div className="matcher-column">
-                          <p className="column-title">Bahasa Indonesia</p>
-                          {matcherSet?.indonesianOptions.map((word) => {
-                            const matchedGerman = Object.keys(matcherMatches).find((german) => matcherMatches[german] === word);
-                            const isWrong = matcherWrongPair?.indonesian === word;
-                            return (
-                              <button
-                                key={word}
-                                type="button"
-                                className={`match-choice ${matcherSelection ? 'selectable' : ''} ${matchedGerman ? 'correct' : ''} ${isWrong ? 'wrong' : ''}`}
-                                onClick={() => handleMatcherPick(word)}
-                                disabled={checkedResult !== null || Boolean(matchedGerman) || !matcherSelection}
-                                aria-pressed={Boolean(matcherSelection)}
-                              >
-                                {word}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
+                    <p className="question-label">Tipe D · Reading / Lesen</p>
+                    <h3>Bacalah teks berikut</h3>
+                    <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
+                      {currentQuestion.lesen_teks || currentQuestion.context || currentQuestion.german || 'Teks bacaan tidak tersedia.'}
                     </div>
-                    {checkedResult === false && (
-                      <p className="correct-answer">
-                        Jawaban yang benar: {Object.entries(matcherSet.correctMap).map(([german, indonesian]) => `${german} = ${indonesian}`).join(', ')}
-                      </p>
-                    )}
                   </>
                 ) : currentQuestion.type === 'reading' ? (
                   <>
                     <p className="question-label">Tipe D · Reading / Lesen</p>
                     <h3>Bacalah teks berikut</h3>
                     <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
-                      {currentQuestion.lesen_teks}
+                      {currentQuestion.lesen_teks || currentQuestion.context || 'Teks bacaan tidak tersedia.'}
                     </div>
                     <h3 style={{ marginTop: '1rem' }}>{currentQuestion.lesen_pertanyaan}</h3>
                     <div style={{ display: 'grid', gap: '0.65rem' }}>
@@ -988,11 +940,12 @@ export default function Quiz(props) {
                       type="button"
                       className="vocab-speech-button"
                       onClick={playListeningAudio}
+                      disabled={hasPlayedListening || checkedResult !== null}
                       aria-label={`Putar audio: ${currentQuestion.hoeren_audio}`}
                       title="Putar audio"
                       style={{ width: '52px', height: '52px', fontSize: '1.35rem' }}
                     >
-                      🔊
+                      {hasPlayedListening ? '✓ Audio sudah diputar 1x' : '🔊 Putar audio (1x)'}
                     </button>
                     <div style={{ display: 'grid', gap: '0.65rem', marginTop: '1rem' }}>
                       {multipleChoiceOptions.map((option) => (
@@ -1032,6 +985,7 @@ export default function Quiz(props) {
                         resize: 'vertical',
                       }}
                     />
+                    <small>{userAnswer.trim() ? userAnswer.trim().split(/\s+/).length : 0} kata</small>
                     {checkedResult === false && <p className="correct-answer">Jawaban yang mendekati: {currentQuestion.german}</p>}
                   </>
                 ) : currentQuestion.type === 'speaking' ? (
@@ -1058,14 +1012,14 @@ export default function Quiz(props) {
                     >
                       🎤
                     </button>
-                    <input
-                      type="text"
+                    <textarea
                       value={userAnswer}
                       onInput={(event) => setUserAnswer(event.currentTarget.value)}
-                      placeholder="Ketik kata kunci jawabannya"
+                      placeholder="Lihat hasil rekaman atau ketik jawabanmu"
                       aria-label="Jawaban kata kunci"
                       disabled={checkedResult !== null}
                       autoComplete="off"
+                      rows={4}
                       style={{
                         boxSizing: 'border-box',
                         width: '100%',
@@ -1228,6 +1182,39 @@ export default function Quiz(props) {
             gap: 0.9rem;
             min-width: 0;
             position: relative;
+            isolation: isolate;
+            overflow: hidden;
+            padding: clamp(1rem, 3vw, 1.6rem);
+            border: 1px solid rgba(255,255,255,.12);
+            border-radius: 18px;
+            color: #f8fafc;
+            background:
+              radial-gradient(circle at 15% 12%, rgba(56,189,248,.18), transparent 28%),
+              radial-gradient(circle at 88% 18%, rgba(251,191,36,.14), transparent 24%),
+              linear-gradient(145deg, #07111f 0%, #111827 48%, #172554 100%);
+            box-shadow: 0 24px 70px rgba(15,23,42,.34);
+          }
+
+          .quiz-shell::before,
+          .quiz-shell::after {
+            content: '';
+            position: absolute;
+            z-index: -1;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            filter: blur(10px);
+            opacity: .18;
+            pointer-events: none;
+            animation: quiz-parallax 8s ease-in-out infinite alternate;
+          }
+
+          .quiz-shell::before { top: -70px; left: -55px; background: #38bdf8; }
+          .quiz-shell::after { right: -70px; bottom: -80px; background: #f59e0b; animation-delay: -4s; }
+
+          @keyframes quiz-parallax {
+            from { transform: translate3d(-8px, 0, 0) scale(.96); }
+            to { transform: translate3d(18px, 14px, 0) scale(1.08); }
           }
 
           .quiz-toast {
@@ -1294,6 +1281,7 @@ export default function Quiz(props) {
             gap: 0.75rem;
             font-size: 0.75rem;
             font-weight: 700;
+            color: #e2e8f0;
           }
 
           .track-tag {
@@ -1422,11 +1410,13 @@ export default function Quiz(props) {
           }
 
           .question-card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(30,41,59,.96), rgba(15,23,42,.96));
+            border: 1px solid rgba(148,163,184,.28);
+            border-radius: 14px;
             padding: clamp(1rem, 2.5vw, 1.6rem);
-            box-shadow: 0 12px 30px rgba(26, 26, 30, 0.07);
+            box-shadow: 0 18px 38px rgba(2,6,23,.38), inset 0 1px 0 rgba(255,255,255,.08);
+            transform: perspective(1100px) rotateX(1deg);
+            transform-style: preserve-3d;
           }
 
           .question-label {
@@ -1434,7 +1424,7 @@ export default function Quiz(props) {
             font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 0.08em;
-            color: var(--text-main);
+            color: #93c5fd;
             text-transform: uppercase;
           }
 
@@ -1442,6 +1432,7 @@ export default function Quiz(props) {
             margin: 0 0 1rem;
             font-size: 1.15rem;
             line-height: 1.5;
+            color: #fff;
           }
 
           .answer-box {
@@ -1493,19 +1484,23 @@ export default function Quiz(props) {
 
           .token-chip,
           .match-choice {
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            border-radius: 8px;
-            background: #fff;
-            color: var(--text-main);
+            border: 1px solid rgba(148, 163, 184, 0.38);
+            border-radius: 10px;
+            background: linear-gradient(145deg, rgba(51,65,85,.96), rgba(30,41,59,.96));
+            color: #fff;
             padding: 0.65rem 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.18s ease;
+            box-shadow: 0 8px 0 rgba(2,6,23,.8), 0 14px 22px rgba(2,6,23,.24);
+            transform-style: preserve-3d;
           }
 
           .token-chip:hover,
           .match-choice:hover {
             border-color: var(--accent-gold);
+            transform: translateY(-4px) perspective(600px) rotateX(4deg) scale(1.015);
+            box-shadow: 0 12px 0 rgba(2,6,23,.8), 0 18px 28px rgba(2,6,23,.32);
           }
 
           .token-chip:disabled,

@@ -1,0 +1,71 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
+import Quiz from '@german/components/Quiz-de.jsx';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const slug = Astro.params.slug ?? '';
+const materials = await getCollection('materi');
+const item = materials.find((entry) =>
+  entry.id === slug || entry.id.endsWith(`/${slug}`)
+);
+
+if (!item) return new Response('Material tidak ditemukan.', { status: 404 });
+
+const typeParam = Astro.url.searchParams.get('type') ?? 'reading';
+const validTypes = ['reading', 'listening', 'writing', 'speaking'];
+const type = validTypes.includes(typeParam) ? typeParam : 'reading';
+const labels = {
+  reading: 'Reading / Lesen',
+  listening: 'Listening / Hören',
+  writing: 'Writing / Schreiben',
+  speaking: 'Speaking / Sprechen',
+};
+const questions = item.data.vocab.slice(0, 20);
+const batchSize = 5;
+const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
+const startIndex = (sessionNumber - 1) * batchSize;
+---
+
+<DashboardLayout
+  title={`Latihan ${labels[type]}: ${item.data.judulMateri} | siDeutsch`}
+  active={item.data.track === 'Alltagsdeutsch' ? 'alltagsdeutsch' : 'fachdeutsch'}
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="practice-page">
+    <a class="back-link" href={`/de/materi/${item.id}`}>← Kembali ke Detail Materi</a>
+    <header>
+      <p class="eyebrow">Latihan Materi</p>
+      <h1>{labels[type]}: {item.data.judulMateri}</h1>
+      <p>{questions.length} kosakata tersedia untuk kuis 4 pilar.</p>
+    </header>
+    <section class="practice-panel" aria-label={`Kuis ${item.data.judulMateri}`}>
+      <Quiz
+        client:load
+        questions={questions}
+        items={questions}
+        track={item.data.track}
+        level={item.data.level}
+        jurusan={item.data.jurusan}
+        returnHref={`/de/materi/${item.id}`}
+        startIndex={startIndex}
+        session={sessionNumber}
+        batchSize={batchSize}
+        sessionMode={true}
+        materialId={item.id}
+        type={type}
+      />
+    </section>
+  </main>
+</DashboardLayout>
+
+<style>
+  .practice-page { display:grid; gap:1rem; width:min(1000px,100%); margin:0 auto; }
+  .back-link { width:fit-content; color:var(--text-main); font-weight:800; text-decoration:none; }
+  header .eyebrow { margin:0; color:#966313; font-size:.78rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  header h1 { margin:.35rem 0; }
+  header > p:last-child { margin:.5rem 0 0; color:var(--muted); }
+  .practice-panel { padding:clamp(1rem,3vw,2rem); border:1px solid var(--border); border-radius:10px; background:var(--card-bg); }
+</style>

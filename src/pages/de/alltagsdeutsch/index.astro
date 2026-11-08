@@ -75,11 +75,11 @@ const materials = (await getCollection('materi'))
     if (examLink) {
       if (selected === 'ALL') {
         examLink.hidden = false;
-        examLink.href = '/de/ujian/goethe';
-        examLink.textContent = 'Simulasi Goethe';
+        examLink.href = '/de/ujian/goethe/a1';
+        examLink.textContent = 'Simulate Goethe A1';
       } else {
         examLink.hidden = false;
-        examLink.href = `/de/ujian/${selected.toLowerCase()}`;
+        examLink.href = `/de/ujian/goethe/${selected.toLowerCase()}`;
         examLink.textContent = `Mulai Ujian ${selected}`;
       }
     }

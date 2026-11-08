@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
+import { playSound } from '@core/game/quiz-sounds.js';
 import {
   fetchAllUserProgress,
   getProgressClient,
@@ -10,19 +11,6 @@ import {
 const STORAGE_KEY = 'sideutsch-xp';
 const BOOKMARKS_KEY = 'sideutsch-bookmarks';
 const PILLAR_TYPES = ['reading', 'listening', 'writing', 'speaking'];
-const SOUND_FILES = {
-  click: '/sounds/quiz-click.mp3',
-  success: '/sounds/quiz-success.mp3',
-  error: '/sounds/quiz-error.mp3',
-};
-
-function playSound(name) {
-  if (typeof Audio === 'undefined') return;
-
-  const sound = new Audio(SOUND_FILES[name]);
-  sound.volume = 0.45;
-  sound.play().catch(() => {});
-}
 
 function shuffle(items) {
   const arr = [...items];

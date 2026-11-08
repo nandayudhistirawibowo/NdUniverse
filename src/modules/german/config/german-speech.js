@@ -20,6 +20,7 @@ function getManifest() {
       })
       .catch((error) => {
         console.error('Unable to load the TTS audio manifest.', error);
+        manifestPromise = undefined;
         return null;
       });
   }
@@ -50,7 +51,7 @@ function speakGerman(text, button) {
   window.speechSynthesis.speak(utterance);
 }
 
-function normalizeText(text) {
+export function normalizeText(text) {
   return String(text ?? '').replace(/\s+/g, ' ').trim();
 }
 

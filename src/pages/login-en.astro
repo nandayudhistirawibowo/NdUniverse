@@ -7,12 +7,66 @@ if (Astro.locals.user) {
 }
 ---
 
-<AuthPortal
-  portal="student"
-  language="en"
-  title="Login | NdUniverse"
-  eyebrow="English Learning Portal"
-  heading="Welcome back!"
-  description="Sign in with your email or student ID."
-  buttonText="Sign in"
-/>
+<main class="english-development">
+  <section class="development-card" aria-labelledby="development-title">
+    <p class="module-label">NdUniverse English Module</p>
+    <h1 id="development-title">English Module is Under Development</h1>
+    <p>We are currently building the English content. Please check back later. Meanwhile, you can explore our German module.</p>
+    <a href="/login-de">Go to German Module</a>
+  </section>
+
+  <div hidden>
+    <AuthPortal
+      portal="student"
+      language="en"
+      title="Login | NdUniverse"
+      eyebrow="English Learning Portal"
+      heading="Welcome back!"
+      description="Sign in with your email or student ID."
+      buttonText="Sign in"
+    />
+  </div>
+</main>
+
+<style>
+  .english-development {
+    min-height: 70vh;
+    display: grid;
+    place-items: center;
+    padding: 2rem 1rem;
+  }
+  .development-card {
+    width: min(680px, 100%);
+    display: grid;
+    gap: 1rem;
+    padding: clamp(1.5rem, 5vw, 3rem);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: var(--card-bg);
+    text-align: center;
+    box-shadow: 0 18px 50px color-mix(in srgb, var(--text-main) 12%, transparent);
+  }
+  .module-label {
+    margin: 0;
+    color: var(--accent-gold);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+  h1 { margin: 0; color: var(--text-main); }
+  .development-card > p:not(.module-label) { margin: 0; color: var(--muted); line-height: 1.7; }
+  .development-card a {
+    width: fit-content;
+    justify-self: center;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: .75rem 1rem;
+    border-radius: 8px;
+    background: var(--accent-red);
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+  }
+</style>

@@ -1,5 +1,33 @@
 ---
 import Layout from '@core/ui/Layout.astro';
 ---
-<Layout title="Aussprache | NdUniverse" description="Ausspracheübungen für Deutschlernende."><main class="simple-page"><a href="/de" class="back-link">← Zurück zum Deutsch-Modul</a><p class="eyebrow">Aussprache</p><h1>Panduan Pengucapan</h1><p>Lautschrift, Hörübungen und Ausspracheübungen folgen in Kürze.</p></main></Layout>
-<style>.simple-page{display:grid;gap:.9rem;width:min(900px,100%);margin:0 auto}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.simple-page p:last-child{color:var(--muted)}h1{margin:0}</style>
+<Layout title="Aussprache | NdUniverse" description="Panduan pengucapan bahasa Jerman.">
+  <main class="simple-page">
+    <a href="/de" class="back-link">← Zurück zum Deutsch-Modul</a>
+    <p class="eyebrow">Aussprache</p>
+    <h1>Panduan Pengucapan</h1>
+    <p>Kenali umlaut, diftong, dan bunyi khas bahasa Jerman.</p>
+    <section>
+      <h2>Umlaut</h2>
+      <div class="sound-grid">
+        <article><strong lang="de">ä</strong><span>mirip “e” terbuka</span></article>
+        <article><strong lang="de">ö</strong><span>bibir bulat seperti “o”, bunyi “e”</span></article>
+        <article><strong lang="de">ü</strong><span>bibir bulat seperti “u”, bunyi “i”</span></article>
+      </div>
+    </section>
+    <section>
+      <h2>Contoh Bunyi</h2>
+      <p><strong lang="de">ei</strong> dibaca “ai”, seperti pada <strong lang="de">mein</strong>.</p>
+      <p><strong lang="de">ie</strong> dibaca “i” panjang, seperti pada <strong lang="de">Liebe</strong>.</p>
+      <button type="button" data-speech="Guten Morgen">🔊 Guten Morgen</button>
+    </section>
+    <a class="full-link" href="/pengucapan">Lihat panduan lengkap →</a>
+  </main>
+</Layout>
+<script>
+  import { playAudioTTS } from '@german/config/german-speech.js';
+  document.querySelectorAll<HTMLButtonElement>('[data-speech]').forEach((button) => {
+    button.addEventListener('click', () => playAudioTTS(button.dataset.speech ?? '', button));
+  });
+</script>
+<style>.simple-page{display:grid;gap:.9rem;width:min(900px,100%);margin:0 auto}.back-link,.full-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.simple-page>p{color:var(--muted)}h1{margin:0}section{padding:1rem;border:1px solid var(--border);border-radius:10px;background:var(--card-bg)}section h2{margin-top:0}.sound-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.75rem}.sound-grid article{display:grid;gap:.35rem;padding:.75rem;border-radius:8px;background:#fffaf0;text-align:center}.sound-grid strong{font-size:2rem;color:#966313}button{min-height:44px;border:1px solid var(--accent-gold);border-radius:8px;background:#fffaf0;color:var(--text-main);font-weight:800;cursor:pointer}@media(max-width:600px){.sound-grid{grid-template-columns:1fr}}</style>

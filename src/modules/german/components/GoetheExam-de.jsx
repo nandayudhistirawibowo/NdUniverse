@@ -393,14 +393,15 @@ export default function GoetheExam({ level, tasks, available = true }) {
           <div class="module-results">
             {result.modules.map((module) => {
               let feedback = `${module.percent}% skor modul (${module.correct}/${module.total} rasio kecocokan).`;
-              if (module.id === 'lesen') feedback = `Paragraf kunci: ${result.readingKeyParagraph}`;
-              if (module.id === 'hoeren') feedback = `Transkrip: ${result.listeningTranscript}`;
+              if (module.id === 'lesen') feedback = `${module.percent}% — ${module.passed ? 'Kemampuan membaca sudah cukup baik.' : 'Perkuat pemahaman paragraf dan kosakata bacaan.'}`;
+              if (module.id === 'hoeren') feedback = `${module.percent}% — ${module.passed ? 'Pemahaman mendengar sudah baik.' : 'Latih kembali audio dan makna kalimat utama.'}`;
               if (module.id === 'schreiben' || module.id === 'sprechen') {
-                feedback = module.answers.map((answer, index) => {
+                const taskFeedback = module.answers.map((answer, index) => {
                   const keywords = module.keywords[index];
                   const keywordText = Array.isArray(keywords) ? keywords.join(' atau ') : String(keywords ?? '');
                   return `Jawaban Anda: "${answer || '-'}" · Kata kunci yang dinilai: "${keywordText}"`;
                 }).join(' | ');
+                feedback = `${module.percent}% — ${module.passed ? 'Keterampilan sudah cukup baik.' : 'Perlu lebih banyak kosakata dan struktur kalimat.'} ${taskFeedback}`;
               }
               return (
                 <article key={module.id} class={module.passed ? 'passed' : 'failed'}>
@@ -414,7 +415,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
           {!result.passed ? (
             <>
               <p class="retry-message">Anda harus mengulang modul: {failedModules.map((module) => module.label).join(', ')}.</p>
-              <a class="certificate-link failure-link" href={`/de/ujian/${level.toLowerCase()}`}>Perbaiki Skillku</a>
+              <a class="certificate-link failure-link" href={`/de/ujian/goethe/${level.toLowerCase()}`}>Perbaiki Skillku</a>
             </>
           ) : (
             <div class="result-navigation">

@@ -1,6 +1,5 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
-import Quiz from '@german/components/Quiz-de.jsx';
 import { getCollection } from 'astro:content';
 const slug = Astro.params.slug ?? '';
 const materials = await getCollection('materi');
@@ -8,20 +7,84 @@ const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/
 if (!item) return new Response('Material nicht gefunden.', { status: 404 });
 const sessions = Array.from({ length: Math.ceil(item.data.vocab.length / 5) }, (_, index) => ({ number: index + 1, words: item.data.vocab.slice(index * 5, index * 5 + 5) }));
 ---
-<DashboardLayout title={`${item.data.judulMateri} | NdUniverse`} description={item.data.deskripsi} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}><article class="material-page"><a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? '/de/alltagsdeutsch' : '/de/dashboard'} data-session-back>← Kembali ke Materi</a><header><p class="eyebrow">{item.data.track} · {item.data.level ?? item.data.jurusan}</p><h1>{item.data.judulMateri}</h1><p>{item.data.deskripsi}</p></header><Quiz client:load items={item.data.vocab} track={item.data.track} level={item.data.level} materialId={item.id} returnHref={`/de/materi/${item.id}`} batchSize={5} sessionMode={true}/>{sessions.map((session)=><section class="session-card"><h2>Sitzung {session.number}</h2><div class="table-wrap"><table><thead><tr><th>Deutsch</th><th>Indonesisch</th><th>Kontext</th><th>Dengar</th></tr></thead><tbody>{session.words.map((word)=><tr><td lang="de">{word.german}</td><td>{word.indonesian}</td><td>{word.context}</td><td><button class="speaker-button" type="button" data-speech={word.german} aria-label={`Dengarkan ${word.german}`}>🔊</button></td></tr>)}</tbody></table></div><nav><a href={`/de/materi/${item.id}/latihan?type=reading&session=${session.number}`}>Reading</a><a href={`/de/materi/${item.id}/latihan?type=listening&session=${session.number}`}>Listening</a><a href={`/de/materi/${item.id}/latihan?type=writing&session=${session.number}`}>Writing</a><a href={`/de/materi/${item.id}/latihan?type=speaking&session=${session.number}`}>Speaking</a></nav></section>)}</article></DashboardLayout>
+<DashboardLayout title={`${item.data.judulMateri} | NdUniverse`} description={item.data.deskripsi} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
+  <article class="material-page">
+    <a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? '/de/alltagsdeutsch' : '/de/dashboard'} data-session-back>← Kembali ke Materi</a>
+    <header><p class="eyebrow">{item.data.track} · {item.data.level ?? item.data.jurusan}</p><h1>{item.data.judulMateri}</h1><p>{item.data.deskripsi}</p></header>
+    {sessions.map((session) => (
+      <section class="session-card">
+        <h2>Sitzung {session.number}</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Deutsch</th><th>Indonesisch</th><th>Kontext</th></tr></thead>
+            <tbody>
+              {session.words.map((word) => (
+                <tr>
+                  <td lang="de">
+                    <span class="speech-inline">
+                      <span>{word.german}</span>
+                      <button class="speaker-button" type="button" data-speech={word.german} aria-label={`Dengarkan kata ${word.german}`} title={`Dengarkan kata: ${word.german}`}>🔊</button>
+                    </span>
+                  </td>
+                  <td>{word.indonesian}</td>
+                  <td>
+                    <span class="speech-inline">
+                      <span>{word.context}</span>
+                      <button class="speaker-button" type="button" data-speech={word.context} aria-label={`Dengarkan kalimat ${word.context}`} title={`Dengarkan kalimat: ${word.context}`}>🔊</button>
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <nav>
+          <a href={`/de/materi/${item.id}/latihan?type=reading&session=${session.number}`}>Reading</a>
+          <a href={`/de/materi/${item.id}/latihan?type=listening&session=${session.number}`}>Listening</a>
+          <a href={`/de/materi/${item.id}/latihan?type=writing&session=${session.number}`}>Writing</a>
+          <a href={`/de/materi/${item.id}/latihan?type=speaking&session=${session.number}`}>Speaking</a>
+        </nav>
+      </section>
+    ))}
+  </article>
+</DashboardLayout>
 <script>
-  import { playAudioTTS } from '@german/config/german-speech.js';
-  document.querySelectorAll<HTMLButtonElement>('[data-speech]').forEach((button) => {
-    button.addEventListener('click', () => playAudioTTS(button.dataset.speech ?? '', button));
-  });
-  document.querySelectorAll<HTMLAnchorElement>('[data-session-back]').forEach((link) => {
-    link.addEventListener('click', () => {
-      const session = new URLSearchParams(window.location.search).get('session');
-      if (session) window.sessionStorage.setItem('nduniverse-last-session', session);
-      if (document.referrer && new URL(document.referrer, window.location.origin).pathname.includes('/de/alltagsdeutsch')) {
-        link.href = '/de/alltagsdeutsch';
-      }
+  import { normalizeText, playAudioTTS } from '@german/config/german-speech.js';
+
+  const bindVocabularyAudio = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-speech]').forEach((button) => {
+      button.onclick = () => {
+        const speechText = normalizeText(button.dataset.speech ?? '');
+        playAudioTTS(speechText, button);
+      };
     });
-  });
+    document.querySelectorAll<HTMLAnchorElement>('[data-session-back]').forEach((link) => {
+      link.onclick = () => {
+        const session = new URLSearchParams(window.location.search).get('session');
+        if (session) window.sessionStorage.setItem('nduniverse-last-session', session);
+        if (document.referrer && new URL(document.referrer, window.location.origin).pathname.includes('/de/alltagsdeutsch')) {
+          link.href = '/de/alltagsdeutsch';
+        }
+      };
+    });
+  };
+
+  bindVocabularyAudio();
+  document.addEventListener('astro:page-load', bindVocabularyAudio);
 </script>
-<style>.material-page{display:grid;gap:1.25rem}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.material-page header p:last-child{color:var(--muted)}.session-card{display:grid;gap:.75rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:.65rem;border-bottom:1px solid var(--border);text-align:left}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}.session-card nav a{min-height:42px;display:grid;place-items:center;border:1px solid var(--border);border-radius:8px;color:var(--text-main);text-decoration:none;font-weight:800}@media(max-width:700px){nav{grid-template-columns:repeat(2,1fr)}} </style>
+<style>
+.material-page{display:grid;gap:1.25rem}
+.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}
+.eyebrow{color:var(--accent-gold);font-size:.78rem;font-weight:800;text-transform:uppercase}
+.material-page header p:last-child{color:var(--muted)}
+.session-card{display:grid;gap:.75rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th,td{padding:.65rem;border-bottom:1px solid var(--border);text-align:left}
+.speech-inline{display:inline-flex;align-items:flex-start;gap:.35rem}
+.speaker-button{width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;padding:0;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);color:var(--text-main);font-size:.8rem;line-height:1;cursor:pointer}
+.speaker-button:hover,.speaker-button.is-playing{border-color:var(--accent-gold)}
+nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}
+.session-card nav a{min-height:42px;display:grid;place-items:center;border:1px solid var(--border);border-radius:8px;color:var(--text-main);text-decoration:none;font-weight:800}
+@media(max-width:700px){nav{grid-template-columns:repeat(2,1fr)}}
+</style>

@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks';
+import { playSound } from '@core/game/quiz-sounds.js';
 
 /** @param {{ words?: Array<{ german: string; indonesian: string; options: string[] }>; profession?: string }} props */
 export default function CareerQuiz({ words, profession = 'Profesi' }) {
@@ -12,6 +13,7 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
   const current = vocab[index];
 
   const start = () => {
+    playSound('click');
     setStarted(true);
     setIndex(0);
     setScore(0);
@@ -21,12 +23,15 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
 
   const choose = (answer) => {
     if (selected) return;
+    playSound(answer === current.indonesian ? 'success' : 'error');
     setSelected(answer);
     if (answer === current.indonesian) setScore((value) => value + 1);
   };
 
   const next = () => {
+    playSound('click');
     if (index + 1 >= vocab.length) {
+      playSound(score >= Math.ceil(vocab.length / 2) ? 'success' : 'error');
       setFinished(true);
       return;
     }

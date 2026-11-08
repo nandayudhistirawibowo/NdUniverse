@@ -1,5 +1,9 @@
 # siDeutsch — Alur Aplikasi
 
+## Status Modul
+
+Modul German merupakan jalur aktif saat ini dan Modul English ditunda melalui halaman `/login-en`.
+
 ## Login dan Auto-Signup
 
 ```mermaid

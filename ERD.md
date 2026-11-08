@@ -1,5 +1,7 @@
 # siDeutsch — Entity Relationship Diagram
 
+Status data English ditunda hingga modul `/en` dipublikasikan. Skema progress tetap mendukung `language_code` untuk German (`de`) dan English (`en`) agar aktivasi berikutnya tidak memerlukan perubahan fundamental.
+
 ## Entitas Utama
 
 ```mermaid
