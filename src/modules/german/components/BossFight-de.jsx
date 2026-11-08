@@ -454,6 +454,14 @@ export default function BossFight({
           .boss-actions{display:grid;grid-template-columns:minmax(0,1fr)}
           .boss-mic-button,.boss-finish-button{width:100%;justify-content:center}
           .boss-interview textarea{min-height:120px;font-size:16px}
+          .cinematic-room { height:100vh; height:100dvh; }
+          .cinematic-overlay { overflow-y:auto; }
+          .cinematic-interview { height:auto; min-height:0; align-content:start; overflow-y:auto; overscroll-behavior:contain; padding-bottom:max(.75rem,env(safe-area-inset-bottom)); }
+          .cinematic-chat-panel { min-height:0; grid-template-rows:minmax(120px,32vh) auto; }
+          .cinematic-chat-panel .boss-chat { height:auto; min-height:120px; max-height:32vh; }
+          .cinematic-chat-panel .boss-interview { position:relative; }
+          .cinematic-chat-panel .boss-interview textarea { min-height:96px; max-height:none; font-size:16px; resize:vertical; }
+          .cinematic-chat-panel .boss-actions { grid-template-columns:1fr; }
         }
         @media(max-width:768px){
           .door-zoom-room { width:min(88vw,560px); height:min(58vh,430px); }
@@ -462,7 +470,9 @@ export default function BossFight({
           .inside-door-backdrop { inset:16% 0 auto; }
           .inside-door-panel { width:min(32vw,180px); height:min(30vh,220px); }
           .door-action { padding-bottom:1.5rem; }
-          .cinematic-interview { overflow:hidden; }
+          .cinematic-room { height:100vh; height:100dvh; }
+          .cinematic-overlay { overflow-y:auto; }
+          .cinematic-interview { height:auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
           .cinematic-boss-panel .cinematic-boss { bottom:54%; width:auto; }
           .boss-chair { bottom:48%; }
           .boss-desk { bottom:52%; }

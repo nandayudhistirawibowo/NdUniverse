@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">NdUniverse</title>
+  <desc id="description">NdUniverse language learning platform</desc>
+  <rect width="1200" height="630" fill="#0b1520"/>
+  <circle cx="1050" cy="90" r="240" fill="#e5a93b" opacity=".12"/>
+  <circle cx="120" cy="570" r="180" fill="#e5a93b" opacity=".08"/>
+  <g fill="#f8fafc" font-family="Arial, sans-serif" text-anchor="middle">
+    <text x="600" y="260" font-size="112" font-weight="700">NdUniverse</text>
+    <text x="600" y="350" fill="#e5a93b" font-size="34" letter-spacing="8">CONNECTING LANGUAGES &amp; CULTURES</text>
+    <text x="600" y="430" fill="#cbd5e1" font-size="28">German Learning Platform</text>
+  </g>
+</svg>

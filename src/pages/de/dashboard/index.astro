@@ -80,5 +80,11 @@ const totalXp = progressRows.reduce((total, row) => total + Math.max(0, Number(r
   .shortcut-grid a { display: grid; gap: .45rem; min-height: 120px; align-content: center; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
   .shortcut-grid a:hover { border-color: var(--accent-gold); }
   .shortcut-grid span { color: var(--muted); }
-  @media (max-width: 700px) { .shortcut-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 700px) {
+    .dashboard-content { gap: 1rem; min-width: 0; }
+    .level-card > div:first-child { align-items: flex-start; flex-direction: column; gap: .35rem; }
+    .level-card strong { font-size: 1.65rem; }
+    .shortcut-grid { grid-template-columns: 1fr; }
+    .shortcut-grid a { min-height: 104px; }
+  }
 </style>

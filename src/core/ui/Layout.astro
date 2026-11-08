@@ -4,9 +4,9 @@ import { createAvatarSignedUrl } from '@core/auth/avatar';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 
 const {
-  title = 'NDUniverse - Platform Belajar Bahasa',
+  title = 'NdUniverse - Platform Belajar Bahasa',
   description = 'Platform belajar bahasa Jerman interaktif untuk siapa saja. 8.000+ kosakata, kuis A1-C2, Alltagsdeutsch, Fachdeutsch, dan persiapan karir.',
-  image = '/og-nduniverse.svg',
+  image = '/android-chrome-512x512.png',
   hideNavbar = false,
 } = Astro.props;
 
@@ -41,6 +41,8 @@ const organizationSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -73,8 +75,8 @@ const organizationSchema = {
       {!hideNavbar && (
         <header class="topbar">
           <nav class="navbar" aria-label="Navigasi utama">
-            <a href="/" class="brand" aria-label="NDUniverse">
-              <img src="/logo-nduniverse.png" alt="NDUniverse" style="height: 35px;" />
+            <a href="/" class="brand" aria-label="NdUniverse">
+              <img src="/logo-nduniverse.png" alt="NdUniverse" style="height: 35px;" />
             </a>
             <button
               class="menu-toggle"

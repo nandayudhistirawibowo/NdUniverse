@@ -1,14 +1,10 @@
 node_modules/
 .astro/
 dist/
-.vercel/
-
 .env
 .env.*
-!.env.example
-
-# Internal project handover; do not publish.
-HANDOVER_NDUNIVERSE.md
-
+.vercel/
 .DS_Store
 Thumbs.db
+*.log
+.vscode/

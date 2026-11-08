@@ -913,7 +913,7 @@ export default function Quiz(props) {
                   <>
                     <p className="question-label">Tipe D · Reading / Lesen</p>
                     <h3>Bacalah teks berikut</h3>
-                    <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
+                    <div className="reading-text">
                       {currentQuestion.lesen_teks || currentQuestion.context || 'Teks bacaan tidak tersedia.'}
                     </div>
                     <h3 style={{ marginTop: '1rem' }}>{currentQuestion.lesen_pertanyaan}</h3>
@@ -1555,6 +1555,28 @@ export default function Quiz(props) {
             75% { transform: translateX(3px); }
           }
 
+          .reading-text {
+            max-height: min(42vh, 360px);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: 1rem;
+            border: 1px solid rgba(148, 163, 184, 0.38);
+            border-radius: 12px;
+            background: rgba(248, 250, 252, 0.96);
+            color: #0f172a;
+            line-height: 1.75;
+            white-space: pre-wrap;
+            scrollbar-gutter: stable;
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .match-choice {
+            width: 100%;
+            box-sizing: border-box;
+            text-align: left;
+            overflow-wrap: anywhere;
+          }
+
           .matcher-board {
             margin-bottom: 1rem;
           }
@@ -1933,6 +1955,29 @@ export default function Quiz(props) {
           }
 
           @media (max-width: 520px) {
+            .quiz-shell {
+              overflow-y: visible;
+              padding: .85rem;
+              border-radius: 14px;
+            }
+
+            .question-card {
+              padding: .85rem;
+            }
+
+            .reading-text {
+              max-height: 38vh;
+              padding: .85rem;
+              font-size: 16px;
+            }
+
+            .match-choice,
+            .primary-btn,
+            .next-btn {
+              width: 100%;
+              min-height: 48px;
+            }
+
             .summary-modal {
               padding: 1rem;
             }

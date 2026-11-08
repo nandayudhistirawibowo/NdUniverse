@@ -65,7 +65,7 @@ const materials = (await getCollection('materi'))
   .empty-state{color:var(--muted)}
   .catalog-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem}.level-filter{display:flex;align-items:center;gap:.75rem}.level-filter label{font-weight:800}.level-filter select{min-height:44px;padding:.55rem .75rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main)}.exam-link{min-height:44px;display:inline-flex;align-items:center;padding:.65rem 1rem;border-radius:8px;background:var(--accent-gold);color:#4b3508;font-weight:900;text-decoration:none}
   .level-section[hidden]{display:none}
-  @media(max-width:700px){.material-grid{grid-template-columns:1fr}.catalog-controls{align-items:flex-start;flex-direction:column}.level-filter{align-items:flex-start;flex-direction:column}.exam-link{width:100%;justify-content:center}}
+  @media(max-width:700px){.language-page{padding-inline:.25rem}.material-grid{grid-template-columns:1fr}.catalog-controls{width:100%;align-items:stretch;flex-direction:column}.level-filter{width:100%;align-items:flex-start;flex-direction:column}.level-filter select{width:100%;max-width:100%}.exam-link{width:100%;justify-content:center}}
 </style>
 <script>
   const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
