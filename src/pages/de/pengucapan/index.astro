@@ -27,6 +27,8 @@ import Layout from '@core/ui/Layout.astro';
 <script>
   import { playAudioTTS } from '@german/config/german-speech.js';
   document.querySelectorAll<HTMLButtonElement>('[data-speech]').forEach((button) => {
+    if (button.dataset.speechHandlerAttached === 'true') return;
+    button.dataset.speechHandlerAttached = 'true';
     button.addEventListener('click', () => playAudioTTS(button.dataset.speech ?? '', button));
   });
 </script>

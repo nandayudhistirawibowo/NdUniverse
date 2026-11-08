@@ -25,13 +25,17 @@ const { text } = Astro.props;
 <script>
   import { playAudioTTS } from '@german/config/german-speech.js';
 
-  document.addEventListener('click', (event) => {
-    if (!(event.target instanceof Element)) return;
-    const button = event.target.closest<HTMLButtonElement>('.grammar-speech-button');
-    if (!button) return;
+  const speechDocument = document as Document & { __ndUniverseGrammarSpeechHandler?: boolean };
+  if (!speechDocument.__ndUniverseGrammarSpeechHandler) {
+    speechDocument.__ndUniverseGrammarSpeechHandler = true;
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest<HTMLButtonElement>('.grammar-speech-button');
+      if (!button) return;
 
-    playAudioTTS(button.dataset.grammarSpeech ?? '', button);
-  });
+      playAudioTTS(button.dataset.grammarSpeech ?? '', button);
+    });
+  }
 </script>
 
 <style>

@@ -191,13 +191,17 @@ const diphthongs = [
 <script>
   import { playAudioTTS } from '@german/config/german-speech.js';
 
-  document.addEventListener('click', (event) => {
-    if (!(event.target instanceof Element)) return;
-    const button = event.target.closest<HTMLButtonElement>('.speech-button');
-    if (!button) return;
+  const speechDocument = document as Document & { __ndUniversePronunciationSpeechHandler?: boolean };
+  if (!speechDocument.__ndUniversePronunciationSpeechHandler) {
+    speechDocument.__ndUniversePronunciationSpeechHandler = true;
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest<HTMLButtonElement>('.speech-button');
+      if (!button) return;
 
-    playAudioTTS(button.dataset.speech ?? '', button);
-  });
+      playAudioTTS(button.dataset.speech ?? '', button);
+    });
+  }
 </script>
 
 <style>

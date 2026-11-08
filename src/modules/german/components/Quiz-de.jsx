@@ -764,7 +764,6 @@ export default function Quiz(props) {
 
   function addArrangeToken(index) {
     setArrangeSelected((prev) => [...prev, index]);
-    playSound('click');
   }
 
   function removeArrangeToken() {
@@ -797,7 +796,6 @@ export default function Quiz(props) {
     if (checkedResult !== null || Object.prototype.hasOwnProperty.call(matcherMatches, word)) return;
 
     setMatcherSelection((selected) => selected === word ? null : word);
-    playSound('click');
   }
 
   function handleQuestionAction() {
@@ -891,7 +889,7 @@ export default function Quiz(props) {
             </div>
           </div>
 
-              <div className="question-card">
+              <div className="quiz-card question-card">
                 {currentQuestion.type === 'arrange' ? (
                   <>
                     <p className="question-label">Tipe A · Susun kata</p>
@@ -911,7 +909,7 @@ export default function Quiz(props) {
                     </div>
                     <div className="tokens-wrap">
                       {arrangeOptions.map((token, index) => !arrangeSelected.includes(index) && (
-                        <button key={`${token}-${index}`} type="button" className="token-chip" onClick={() => addArrangeToken(index)} disabled={checkedResult !== null}>
+                        <button key={`${token}-${index}`} type="button" className="token-chip" onClick={() => { playSound('click'); addArrangeToken(index); }} disabled={checkedResult !== null}>
                           {token}
                         </button>
                       ))}
@@ -940,7 +938,7 @@ export default function Quiz(props) {
                           key={option}
                           type="button"
                           className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.indonesian ? 'correct' : ''}`}
-                          onClick={() => setChoiceAnswer(option)}
+                          onClick={() => { playSound('click'); setChoiceAnswer(option); }}
                           disabled={checkedResult !== null}
                         >
                           {option}
@@ -972,7 +970,7 @@ export default function Quiz(props) {
                           key={option}
                           type="button"
                           className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.indonesian ? 'correct' : ''}`}
-                          onClick={() => setChoiceAnswer(option)}
+                          onClick={() => { playSound('click'); setChoiceAnswer(option); }}
                           disabled={checkedResult !== null}
                         >
                           {option}
@@ -987,7 +985,7 @@ export default function Quiz(props) {
                     <h3>{currentQuestion.schreiben_instruksi || `Tulis dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
                     <textarea
                       value={userAnswer}
-                      onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                      onInput={(event) => { playSound('click'); setUserAnswer(event.currentTarget.value); }}
                       placeholder="Tulis jawabanmu di sini"
                       aria-label="Jawaban tulisan"
                       disabled={checkedResult !== null}
@@ -1034,7 +1032,7 @@ export default function Quiz(props) {
                     </button>
                     <textarea
                       value={userAnswer}
-                      onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                      onInput={(event) => { playSound('click'); setUserAnswer(event.currentTarget.value); }}
                       placeholder="Lihat hasil rekaman atau ketik jawabanmu"
                       aria-label="Jawaban kata kunci"
                       disabled={checkedResult !== null}
@@ -1063,10 +1061,11 @@ export default function Quiz(props) {
                       <input
                         type="text"
                         value={userAnswer}
-                        onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                        onInput={(event) => { playSound('click'); setUserAnswer(event.currentTarget.value); }}
                         onKeyDown={(event) => {
                           if (event.key === 'Enter' && userAnswer.trim()) {
                             event.preventDefault();
+                            playSound('click');
                             handleQuestionAction();
                           }
                         }}
@@ -1104,7 +1103,7 @@ export default function Quiz(props) {
                   <button
                     type="button"
                     className="primary-btn"
-                    onClick={handleQuestionAction}
+                    onClick={() => { playSound('click'); handleQuestionAction(); }}
                     disabled={checkedResult === null && !canCheckAnswer}
                   >
                     {checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Lanjutkan' : 'Periksa'}
@@ -1176,11 +1175,11 @@ export default function Quiz(props) {
 
             <div className="summary-actions">
               {sessionMode && sessionPassed && activeSessionNumber < sessionCount ? (
-                <button type="button" className="primary-btn" onClick={() => startSession(activeSessionNumber + 1)}>
+                <button type="button" className="primary-btn" onClick={() => { playSound('click'); startSession(activeSessionNumber + 1); }}>
                   Lanjut ke Sesi Berikutnya
                 </button>
               ) : (
-                <button type="button" className="primary-btn" onClick={restartGame}>
+                <button type="button" className="primary-btn" onClick={() => { playSound('click'); restartGame(); }}>
                   {sessionMode ? 'Ulangi Sesi Ini' : (isGameOver ? 'Coba Lagi' : 'Ulangi Kuis')}
                 </button>
               )}
@@ -1206,14 +1205,10 @@ export default function Quiz(props) {
             isolation: isolate;
             overflow: hidden;
             padding: clamp(1rem, 3vw, 1.6rem);
-            border: 1px solid rgba(255,255,255,.12);
+            border: 1px solid var(--border);
             border-radius: 18px;
-            color: #f8fafc;
-            background:
-              radial-gradient(circle at 15% 12%, rgba(56,189,248,.18), transparent 28%),
-              radial-gradient(circle at 88% 18%, rgba(251,191,36,.14), transparent 24%),
-              linear-gradient(145deg, #07111f 0%, #111827 48%, #172554 100%);
-            box-shadow: 0 24px 70px rgba(15,23,42,.34);
+            color: var(--text-main);
+            background: var(--bg-main, #f8fafc);
           }
 
           .vocab-speech-button {
@@ -1243,42 +1238,23 @@ export default function Quiz(props) {
 
           .quiz-shell::before,
           .quiz-shell::after {
-            content: '';
-            position: absolute;
-            z-index: -1;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            filter: blur(10px);
-            opacity: .18;
-            pointer-events: none;
-            animation: quiz-parallax 8s ease-in-out infinite alternate;
-          }
-
-          .quiz-shell::before { top: -70px; left: -55px; background: #38bdf8; }
-          .quiz-shell::after { right: -70px; bottom: -80px; background: #f59e0b; animation-delay: -4s; }
-
-          @keyframes quiz-parallax {
-            from { transform: translate3d(-8px, 0, 0) scale(.96); }
-            to { transform: translate3d(18px, 14px, 0) scale(1.08); }
+            content: none;
           }
 
           .quiz-toast {
             display: flex;
             position: fixed;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 16px;
+            right: 16px;
             z-index: 9999;
-            width: max-content;
-            max-width: min(400px, calc(100vw - 32px));
+            width: min(400px, calc(100% - 32px));
+            margin: 0 auto;
             padding: 12px 24px;
             border: 1px solid;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             font-weight: 800;
             text-align: center;
-            animation: toast-slide-fade 3s ease forwards;
             pointer-events: none;
             align-items: center;
             justify-content: center;
@@ -1313,12 +1289,6 @@ export default function Quiz(props) {
             overflow-wrap: anywhere;
           }
 
-          @keyframes toast-slide-fade {
-            0% { opacity: 0; transform: translate(-50%, -12px); }
-            12%, 78% { opacity: 1; transform: translate(-50%, 0); }
-            100% { opacity: 0; transform: translate(-50%, -4px); }
-          }
-
           .quiz-header {
             display: flex;
             justify-content: space-between;
@@ -1327,7 +1297,7 @@ export default function Quiz(props) {
             gap: 0.75rem;
             font-size: 0.75rem;
             font-weight: 700;
-            color: #e2e8f0;
+            color: var(--text-main);
           }
 
           .track-tag {
@@ -1413,7 +1383,6 @@ export default function Quiz(props) {
             border-color: var(--accent-gold);
             background: #FFF4DC;
             color: #966313;
-            transform: rotate(-18deg);
           }
 
           .restart-btn svg {
@@ -1456,13 +1425,11 @@ export default function Quiz(props) {
           }
 
           .question-card {
-            background: linear-gradient(145deg, rgba(30,41,59,.96), rgba(15,23,42,.96));
-            border: 1px solid rgba(148,163,184,.28);
-            border-radius: 14px;
+            box-sizing: border-box;
+            background: var(--card-bg, #fff);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             padding: clamp(1rem, 2.5vw, 1.6rem);
-            box-shadow: 0 18px 38px rgba(2,6,23,.38), inset 0 1px 0 rgba(255,255,255,.08);
-            transform: perspective(1100px) rotateX(1deg);
-            transform-style: preserve-3d;
           }
 
           .question-label {
@@ -1470,7 +1437,7 @@ export default function Quiz(props) {
             font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 0.08em;
-            color: #93c5fd;
+            color: var(--accent-gold);
             text-transform: uppercase;
           }
 
@@ -1478,7 +1445,7 @@ export default function Quiz(props) {
             margin: 0 0 1rem;
             font-size: 1.15rem;
             line-height: 1.5;
-            color: #fff;
+            color: var(--text-main);
           }
 
           .answer-box {
@@ -1530,16 +1497,14 @@ export default function Quiz(props) {
 
           .token-chip,
           .match-choice {
-            border: 1px solid rgba(148, 163, 184, 0.38);
+            border: 1px solid var(--border);
             border-radius: 10px;
-            background: linear-gradient(145deg, rgba(51,65,85,.96), rgba(30,41,59,.96));
-            color: #fff;
+            background: #fff;
+            color: var(--text-main);
             padding: 0.65rem 0.85rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.18s ease;
-            box-shadow: 0 8px 0 rgba(2,6,23,.8), 0 14px 22px rgba(2,6,23,.24);
-            transform-style: preserve-3d;
           }
 
           .multiple-choice-list {
@@ -1560,7 +1525,7 @@ export default function Quiz(props) {
           .token-chip:hover,
           .match-choice:hover {
             border-color: var(--accent-gold);
-            box-shadow: 0 12px 0 rgba(2,6,23,.8), 0 18px 28px rgba(2,6,23,.32);
+            background: #FFF4DC;
           }
 
           .token-chip:disabled,
@@ -1595,7 +1560,6 @@ export default function Quiz(props) {
             background: #dcfce7;
             border-color: #16a34a;
             color: #166534;
-            animation: choice-pop 0.28s ease-out;
           }
 
           .match-choice.wrong,
@@ -1603,16 +1567,6 @@ export default function Quiz(props) {
             background: #fee2e2;
             border-color: var(--accent-red);
             color: #991b1b;
-            animation: choice-shake 0.28s ease-in-out;
-          }
-
-          @keyframes choice-pop {
-            50% { transform: scale(1.04); }
-          }
-
-          @keyframes choice-shake {
-            25% { transform: translateX(-3px); }
-            75% { transform: translateX(3px); }
           }
 
           .reading-text {
@@ -1683,7 +1637,6 @@ export default function Quiz(props) {
 
           .match-choice.selectable:not(:disabled) {
             border-color: var(--accent-gold);
-            box-shadow: 0 0 0 3px rgba(229, 169, 59, 0.2);
           }
 
           .cloze-options {
@@ -1703,7 +1656,7 @@ export default function Quiz(props) {
             font-weight: 700;
             text-align: left;
             cursor: pointer;
-            transition: background-color 0.16s ease, border-color 0.16s ease, transform 0.16s ease;
+            transition: background-color 0.16s ease, border-color 0.16s ease;
           }
 
           .cloze-choice.selected:not(.correct):not(.wrong) {
@@ -1714,7 +1667,7 @@ export default function Quiz(props) {
 
           .cloze-choice:hover:not(:disabled) {
             border-color: var(--accent-gold);
-            transform: translateY(-1px);
+            background: #FFF4DC;
           }
 
           .column-title {
@@ -1847,7 +1800,6 @@ export default function Quiz(props) {
             border: 1px solid var(--border);
             border-radius: 16px;
             background: #fff;
-            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
           }
 
           .summary-status {
@@ -2052,6 +2004,17 @@ export default function Quiz(props) {
           }
 
           @media (max-width: 768px) {
+            .quiz-shell,
+            .quiz-card,
+            .question-card,
+            .reading-text,
+            .audio-text-box,
+            button,
+            input,
+            textarea {
+              font-size: 16px;
+            }
+
             .reading-text,
             .audio-text-box {
               max-height: 200px;
