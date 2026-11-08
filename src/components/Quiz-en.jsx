@@ -1,11 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { playAudioTTS } from '../lib/german-speech.js';
+import { playAudioTTS } from '@german/config/german-speech.js';
 import {
   fetchAllUserProgress,
   getProgressClient,
   normalizePassedSessions,
   upsertUserProgress,
-} from '../lib/progress-client.js';
+} from '@core/db/progress-client-en.js';
 
 const STORAGE_KEY = 'sideutsch-xp';
 const BOOKMARKS_KEY = 'sideutsch-bookmarks';
@@ -713,7 +713,7 @@ export default function Quiz(props) {
     }
 
     const recognition = new SpeechRecognition();
-    recognition.lang = 'de-DE';
+    recognition.lang = 'en-US';
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
     recognition.onstart = () => setIsListening(true);
@@ -884,7 +884,7 @@ export default function Quiz(props) {
                 {currentQuestion.type === 'arrange' ? (
                   <>
                     <p className="question-label">Tipe A · Susun kata</p>
-                    <h3>Susun dalam Bahasa Jerman: {currentQuestion.indonesian}</h3>
+                    <h3>Susun dalam English: {currentQuestion.indonesian}</h3>
                     <div className="answer-box">
                       <div className="answer-content">
                         {arrangeSelected.length === 0 && <span className="placeholder">Pilih kata untuk menyusun</span>}
@@ -914,7 +914,7 @@ export default function Quiz(props) {
                     <div className="matcher-board">
                       <div className="matcher-grid">
                         <div className="matcher-column">
-                          <p className="column-title">Bahasa Jerman</p>
+                          <p className="column-title">English</p>
                           {matcherSet?.germanWords.map((word) => {
                             const isMatched = Object.prototype.hasOwnProperty.call(matcherMatches, word);
                             const isWrong = matcherWrongPair?.german === word;
@@ -961,7 +961,7 @@ export default function Quiz(props) {
                   </>
                 ) : currentQuestion.type === 'reading' ? (
                   <>
-                    <p className="question-label">Tipe D · Reading / Lesen</p>
+                    <p className="question-label">Tipe D · Reading / Reading</p>
                     <h3>Bacalah teks berikut</h3>
                     <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
                       {currentQuestion.lesen_teks}
@@ -984,7 +984,7 @@ export default function Quiz(props) {
                   </>
                 ) : currentQuestion.type === 'listening' ? (
                   <>
-                    <p className="question-label">Tipe E · Listening / Hören</p>
+                    <p className="question-label">Tipe E · Listening / Listening</p>
                     <h3>Dengarkan audio, lalu pilih arti yang tepat</h3>
                     <button
                       type="button"
@@ -1013,8 +1013,8 @@ export default function Quiz(props) {
                   </>
                 ) : currentQuestion.type === 'writing' ? (
                   <>
-                    <p className="question-label">Tipe F · Writing / Schreiben</p>
-                    <h3>{currentQuestion.schreiben_instruksi || `Tulis dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
+                    <p className="question-label">Tipe F · Writing / Writing</p>
+                    <h3>{currentQuestion.schreiben_instruksi || `Tulis dalam English: ${currentQuestion.indonesian}`}</h3>
                     <textarea
                       value={userAnswer}
                       onInput={(event) => setUserAnswer(event.currentTarget.value)}
@@ -1038,8 +1038,8 @@ export default function Quiz(props) {
                   </>
                 ) : currentQuestion.type === 'speaking' ? (
                   <>
-                    <p className="question-label">Tipe G · Speaking / Sprechen</p>
-                    <h3>{currentQuestion.sprechen_pertanyaan || `Ucapkan dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
+                    <p className="question-label">Tipe G · Speaking / Speaking</p>
+                    <h3>{currentQuestion.sprechen_pertanyaan || `Ucapkan dalam English: ${currentQuestion.indonesian}`}</h3>
                     <button
                       type="button"
                       onClick={startSpeechRecognition}
@@ -1085,7 +1085,7 @@ export default function Quiz(props) {
                 ) : (
                   <>
                     <p className="question-label">Tipe C · Text Box</p>
-                    <h3>Bagaimana mengatakan „{currentQuestion.indonesian}“ dalam Bahasa Jerman?</h3>
+                    <h3>Bagaimana mengatakan „{currentQuestion.indonesian}“ dalam English?</h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', margin: '0.25rem 0 1rem' }}>
                       <input
                         type="text"
@@ -1097,8 +1097,8 @@ export default function Quiz(props) {
                             handleQuestionAction();
                           }
                         }}
-                        placeholder="Ketik jawaban dalam Bahasa Jerman"
-                        aria-label="Jawaban dalam Bahasa Jerman"
+                        placeholder="Ketik jawaban dalam English"
+                        aria-label="Jawaban dalam English"
                         autoComplete="off"
                         autoCapitalize="none"
                         spellCheck={false}
@@ -1134,7 +1134,7 @@ export default function Quiz(props) {
                     onClick={handleQuestionAction}
                     disabled={checkedResult === null && !canCheckAnswer}
                   >
-                    {checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Lanjutkan' : 'Periksa'}
+                    {checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Nextkan' : 'Periksa'}
                   </button>
                 </div>
               </div>
@@ -1204,11 +1204,11 @@ export default function Quiz(props) {
             <div className="summary-actions">
               {sessionMode && sessionPassed && activeSessionNumber < sessionCount ? (
                 <button type="button" className="primary-btn" onClick={() => startSession(activeSessionNumber + 1)}>
-                  Lanjut ke Sesi Berikutnya
+                  Next ke Sesi Berikutnya
                 </button>
               ) : (
                 <button type="button" className="primary-btn" onClick={restartGame}>
-                  {sessionMode ? 'Ulangi Sesi Ini' : (isGameOver ? 'Coba Lagi' : 'Ulangi Kuis')}
+                  {sessionMode ? 'Ulangi Sesi Ini' : (isGameOver ? 'Coba Lagi' : 'Ulangi Quiz')}
                 </button>
               )}
               <a className="secondary-btn" href={returnHref}>Kembali ke Materi</a>

@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '@core/ui/Layout.astro';
 
 const alphabet = [
   { letter: 'A', orthography: 'A', reading: 'Ah', example: 'Apfel', translation: 'apel', spelling: 'Ah - Peh - Ef - Eh - El' },
@@ -189,7 +189,7 @@ const diphthongs = [
 </Layout>
 
 <script>
-  import { playAudioTTS } from '../lib/german-speech.js';
+  import { playAudioTTS } from '@german/config/german-speech.js';
 
   document.addEventListener('click', (event) => {
     if (!(event.target instanceof Element)) return;

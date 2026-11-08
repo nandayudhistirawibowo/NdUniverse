@@ -1,7 +1,7 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import Layout from '@core/ui/Layout.astro';
 import { getEntry, render } from 'astro:content';
-import { normalizePassedPillars } from '../../lib/progress-client.js';
+import { normalizePassedPillars } from '@core/db/progress-client.js';
 
 export const prerender = false;
 
@@ -157,14 +157,14 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 </Layout>
 
 <script>
-  import { playAudioTTS } from '../../lib/german-speech.js';
+  import { playAudioTTS } from '@german/config/german-speech.js';
 
   import {
     fetchUserProgress,
     getProgressClient,
     normalizePassedSessions,
     upsertUserProgress,
-  } from '../../lib/progress-client.js';
+  } from '@core/db/progress-client.js';
 
   document.addEventListener('astro:page-load', () => {
     document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {

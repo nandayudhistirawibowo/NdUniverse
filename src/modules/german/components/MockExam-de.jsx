@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { playAudioTTS } from '../lib/german-speech.js';
-import { playSound } from '../lib/quiz-sounds.js';
+import { playAudioTTS } from '@german/config/german-speech.js';
+import { playSound } from '@core/game/quiz-sounds.js';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')

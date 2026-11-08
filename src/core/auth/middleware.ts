@@ -1,6 +1,6 @@
 import { defineMiddleware } from 'astro:middleware';
 import { createServerClient } from '@supabase/ssr';
-import { isAdminNim } from '../lib/admin';
+import { isAdminNim } from '@core/auth/admin';
 
 function parseCookieHeader(header: string) {
   return header.split(';').flatMap((part) => {

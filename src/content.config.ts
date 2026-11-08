@@ -14,7 +14,7 @@ const vocabItemSchema = z.object({
 });
 
 const materi = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/materi' }),
+  loader: glob({ pattern: '**/*.md', base: './src/modules/german/content/materi' }),
   schema: z.object({
     track: z.enum(['Alltagsdeutsch', 'Fachdeutsch']),
     level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']).optional(),
@@ -37,7 +37,7 @@ const materi = defineCollection({
 });
 
 const career = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/career' }),
+  loader: glob({ pattern: '**/*.md', base: './src/modules/german/content/career' }),
   schema: z.object({
     track: z.literal('Career'),
     judulMateri: z.string(),

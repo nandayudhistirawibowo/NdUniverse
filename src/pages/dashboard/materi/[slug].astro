@@ -1,5 +1,5 @@
 ---
-import DashboardLayout from '../../../layouts/DashboardLayout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout.astro';
 import { getEntry } from 'astro:content';
 
 export const prerender = false;
@@ -74,7 +74,7 @@ const vocabSessions = Array.from({ length: Math.ceil(item.data.vocab.length / ba
 </DashboardLayout>
 
 <script>
-  import { playAudioTTS } from '../../../lib/german-speech.js';
+  import { playAudioTTS } from '@german/config/german-speech.js';
 
   document.addEventListener('astro:page-load', () => {
     document.querySelectorAll<HTMLButtonElement>('.speech-button').forEach((button) => {

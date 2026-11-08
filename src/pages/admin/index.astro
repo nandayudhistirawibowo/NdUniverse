@@ -1,6 +1,6 @@
 ---
-import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import { isAdminNim } from '../../lib/admin';
+import DashboardLayout from '@core/ui/DashboardLayout.astro';
+import { isAdminNim } from '@core/auth/admin';
 
 const user = Astro.locals.user;
 const profile = Astro.locals.profile;

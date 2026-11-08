@@ -1,6 +1,6 @@
 ---
-import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import { normalizePassedPillars } from '../../lib/progress-client.js';
+import DashboardLayout from '@core/ui/DashboardLayout.astro';
+import { normalizePassedPillars } from '@core/db/progress-client.js';
 import { getCollection } from 'astro:content';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };

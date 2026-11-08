@@ -1,10 +1,10 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { createAvatarSignedUrl } from '../lib/avatar';
-import FeedbackModal from '../components/FeedbackModal.jsx';
+import { createAvatarSignedUrl } from '@core/auth/avatar';
+import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 
 const {
-  title = 'siDeutsch - Belajar Bahasa Jerman A1-C2 & Persiapan Kerja',
+  title = 'NDUniverse - Platform Belajar Bahasa',
   description = 'Platform belajar bahasa Jerman interaktif untuk siapa saja. 8.000+ kosakata, kuis A1-C2, Alltagsdeutsch, Fachdeutsch, dan persiapan karir.',
   image = '/og-sideutsch.svg',
   hideNavbar = false,
@@ -22,6 +22,9 @@ const isAdminArea = Astro.url.pathname.startsWith('/admin');
 const isAdminLogin = Astro.url.pathname === '/admin/login';
 const isAdminAccount = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
 const accountHref = isAdminAccount ? '/admin' : '/dashboard';
+const isEnglishRoute = Astro.url.pathname === '/en' || Astro.url.pathname.startsWith('/en/');
+const languageHref = isEnglishRoute ? '/de' : '/en';
+const languageLabel = isEnglishRoute ? 'Deutsch' : 'English';
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
@@ -70,8 +73,8 @@ const organizationSchema = {
       {!hideNavbar && (
         <header class="topbar">
           <nav class="navbar" aria-label="Navigasi utama">
-            <a href="/" class="brand" aria-label="siDeutsch">
-              <span>siDeutsch</span>
+            <a href="/" class="brand" aria-label="NDUniverse">
+              <img src="/logo-nduniverse.png" alt="NDUniverse" style="height: 35px;" />
             </a>
             <button
               class="menu-toggle"
@@ -100,6 +103,11 @@ const organizationSchema = {
                   </>
                 )}
               </div>
+              {!isAdminArea && (
+                <a class="language-switch" href={languageHref} aria-label={`Switch language to ${languageLabel}`}>
+                  {languageLabel}
+                </a>
+              )}
               <div class="mobile-feedback">
                 {!isAdminLogin && <FeedbackModal client:load variant="mobile" />}
               </div>
@@ -157,7 +165,7 @@ const organizationSchema = {
     }
   });
 
-  import { createAvatarSignedUrl } from '../lib/avatar';
+  import { createAvatarSignedUrl } from '@core/auth/avatar';
 
   const progressWindow = window as Window & { __sideDeutschProgressInitialized?: boolean };
   if (!progressWindow.__sideDeutschProgressInitialized) {
@@ -421,6 +429,25 @@ const organizationSchema = {
     gap: 1.75rem;
   }
 
+  .language-switch {
+    display: inline-flex;
+    min-height: 36px;
+    align-items: center;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid rgba(229, 169, 59, 0.55);
+    border-radius: 999px;
+    color: var(--accent-gold);
+    font-size: 0.78rem;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .language-switch:hover,
+  .language-switch:focus-visible {
+    background: rgba(229, 169, 59, 0.12);
+    border-color: var(--accent-gold);
+  }
+
   .nav-account {
     display: flex;
     align-items: center;
@@ -678,6 +705,12 @@ const organizationSchema = {
       flex-direction: column;
       align-items: stretch;
       gap: 0.15rem;
+    }
+
+    .language-switch {
+      justify-content: center;
+      min-height: 44px;
+      margin: 0.45rem 0;
     }
 
     .nav-links a {

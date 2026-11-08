@@ -1,1 +1,1 @@
-export { onRequest } from './middleware/index';
+export { onRequest } from './core/auth/middleware';

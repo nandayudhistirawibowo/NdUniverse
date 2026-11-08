@@ -1,0 +1,47 @@
+---
+import Layout from '@core/ui/Layout.astro';
+
+const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+---
+
+<Layout title="German | NDUniverse" description="Goethe-Zertifikat preparation dan bahasa Jerman sehari-hari di NDUniverse.">
+  <section class="page-shell">
+    <a class="back-link" href="/">← Kembali ke NDUniverse</a>
+    <div class="level-heading">
+      <div>
+        <p class="eyebrow">German Module</p>
+        <h1>Alltagsdeutsch</h1>
+        <p class="lead">Pilih level CEFR untuk memulai persiapan Goethe-Zertifikat dan komunikasi bahasa Jerman sehari-hari.</p>
+      </div>
+      <a class="exam-button" href="/ujian/goethe">Goethe-Zertifikat</a>
+    </div>
+
+    <div class="level-grid">
+      {levels.map((level) => (
+        <a class="level-card" href={`/alltagsdeutsch/${level}`}>
+          <span class="level-badge">{level}</span>
+          <h2>Level {level}</h2>
+          <p>Materi Alltagsdeutsch untuk level {level}.</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .page-shell { display:grid; gap:1.5rem; padding-top:1rem; }
+  .back-link { width:fit-content; color:var(--text-main); font-weight:700; text-decoration:none; }
+  .back-link:hover { color:#966313; }
+  .level-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+  .eyebrow { margin:0 0 .5rem; color:#966313; font-size:.8rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  h1 { margin:0; color:var(--text-main); font-size:clamp(2rem,5vw,3.2rem); }
+  .lead { max-width:720px; margin:.75rem 0 0; color:var(--muted); line-height:1.7; }
+  .exam-button { display:inline-flex; min-height:44px; align-items:center; padding:.72rem 1rem; border:1px solid var(--accent-gold); border-radius:.65rem; background:var(--accent-gold); color:#4b3508; font-weight:900; text-decoration:none; }
+  .level-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
+  .level-card { display:block; min-height:170px; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); color:var(--text-main); text-decoration:none; box-shadow:var(--shadow); transition:transform .18s ease,border-color .18s ease; }
+  .level-card:hover { border-color:var(--accent-gold); transform:translateY(-3px); }
+  .level-badge { display:inline-flex; padding:.35rem .65rem; border-radius:999px; background:var(--accent-red); color:#fff; font-size:.72rem; font-weight:800; }
+  h2 { margin:.85rem 0 .35rem; }
+  .level-card p { margin:0; color:var(--muted); line-height:1.6; }
+  @media (max-width:768px) { .level-heading { align-items:flex-start; flex-direction:column; } .level-grid { grid-template-columns:1fr; } }
+</style>

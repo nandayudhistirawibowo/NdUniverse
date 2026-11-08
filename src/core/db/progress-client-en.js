@@ -57,9 +57,10 @@ export function normalizePassedPillars(value) {
 export async function fetchUserProgress(client, userId, materialSlug) {
   const { data, error } = await client
     .from('user_progress')
-    .select('id, user_id, material_slug, xp, sessions_passed, notes')
+    .select('id, user_id, material_slug, language_code, xp, sessions_passed, notes')
     .eq('user_id', userId)
     .eq('material_slug', materialSlug)
+    .eq('language_code', 'en')
     .maybeSingle();
 
   if (error) throw error;
@@ -69,8 +70,9 @@ export async function fetchUserProgress(client, userId, materialSlug) {
 export async function fetchAllUserProgress(client, userId) {
   const { data, error } = await client
     .from('user_progress')
-    .select('id, material_slug, xp, sessions_passed, notes')
-    .eq('user_id', userId);
+    .select('id, material_slug, language_code, xp, sessions_passed, notes')
+    .eq('user_id', userId)
+    .eq('language_code', 'en');
 
   if (error) throw error;
   return data ?? [];
@@ -93,6 +95,7 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
     ...(existing?.id !== undefined ? { id: existing.id } : {}),
     user_id: userId,
     material_slug: materialSlug,
+    language_code: 'en',
     xp: Math.max(0, Number(updates.xp ?? existing?.xp ?? 0) + xpDelta),
     sessions_passed: mergedSessions,
     notes: updates.notes ?? existing?.notes ?? '',
@@ -101,12 +104,12 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
 
   const { error } = await client
     .from('user_progress')
-    .upsert(payload, { onConflict: 'user_id,material_slug' });
+    .upsert(payload, { onConflict: 'user_id,material_slug,language_code' });
   if (error) throw error;
 }
 
 export function upsertUserProgress(client, userId, materialSlug, updates) {
-  const queueKey = `${userId}:${materialSlug}`;
+  const queueKey = `en:${userId}:${materialSlug}`;
   const previousWrite = progressWriteQueues.get(queueKey) ?? Promise.resolve();
   const currentWrite = previousWrite
     .catch(() => {})

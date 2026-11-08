@@ -1,6 +1,6 @@
 import type { APIContext, APIRoute } from 'astro';
 import type { SupabaseClient } from '@supabase/supabase-js';
-import { createServiceRoleClient, isAdminNim } from '../../../lib/admin';
+import { createServiceRoleClient, isAdminNim } from '@core/auth/admin';
 
 function jsonError(message: string, status: number) {
   return new Response(JSON.stringify({ error: message }), {

@@ -1,6 +1,6 @@
 ---
-import DashboardLayout from '../../layouts/DashboardLayout.astro';
-import { createAvatarSignedUrl, getAvatarStoragePath } from '../../lib/avatar';
+import DashboardLayout from '@core/ui/DashboardLayout.astro';
+import { createAvatarSignedUrl, getAvatarStoragePath } from '@core/auth/avatar';
 
 const user = Astro.locals.user!;
 const profile = Astro.locals.profile;
