@@ -6,11 +6,11 @@ import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 const {
   title = 'NDUniverse - Platform Belajar Bahasa',
   description = 'Platform belajar bahasa Jerman interaktif untuk siapa saja. 8.000+ kosakata, kuis A1-C2, Alltagsdeutsch, Fachdeutsch, dan persiapan karir.',
-  image = '/og-sideutsch.svg',
+  image = '/og-nduniverse.svg',
   hideNavbar = false,
 } = Astro.props;
 
-const siteUrl = Astro.site ?? 'https://sideutsch.ndhistira.my.id';
+const siteUrl = Astro.site ?? 'https://nduniverse.ndhistira.my.id';
 const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
 const imageURL = new URL(image, siteUrl).toString();
 const user = Astro.locals.user;
@@ -28,11 +28,11 @@ const languageLabel = isEnglishRoute ? 'Deutsch' : 'English';
 const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'EducationalOrganization',
-  name: 'siDeutsch',
+  name: 'NdUniverse',
   description: 'Platform belajar bahasa Jerman interaktif untuk siapa saja. 8.000+ kosakata, kuis A1-C2, Alltagsdeutsch, Fachdeutsch, dan persiapan karir.',
   url: siteUrl,
   logo: new URL('/logo.png', siteUrl).toString(),
-  sameAs: ['https://www.sideutsch.id'],
+  sameAs: ['https://nduniverse.ndhistira.my.id'],
 };
 ---
 
@@ -55,7 +55,7 @@ const organizationSchema = {
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageURL} />
-    <meta property="og:site_name" content="siDeutsch" />
+    <meta property="og:site_name" content="NdUniverse" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
@@ -133,7 +133,7 @@ const organizationSchema = {
 
       <footer class="site-footer">
         <div class="footer-inner">
-          <p>© 2026 siDeutsch. Dibuat untuk siapa saja yang ingin belajar bahasa Jerman.</p>
+          <p>© 2026 NdUniverse. Connecting Languages & Cultures.</p>
           <span class="footer-separator" aria-hidden="true">·</span>
           <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Kontak Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>

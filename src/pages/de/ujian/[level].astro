@@ -1,0 +1,165 @@
+---
+// @ts-nocheck
+import Layout from '@core/ui/Layout.astro';
+import MockExam from '@german/components/MockExam-de.jsx';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  return ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].map((level) => ({
+    params: { level: level.toLowerCase() },
+  }));
+}
+
+const { level: levelParam } = Astro.params;
+const level = String(levelParam ?? '').toUpperCase();
+const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
+
+const materials = (await getCollection('materi'))
+  .filter((item) =>
+    String(item.data.track ?? '').toLowerCase() === 'alltagsdeutsch'
+    && String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
+  );
+const vocabPool = materials.flatMap((material) => material.data.vocab ?? []);
+
+function shuffle(items: any[]) {
+  const copy = [...items];
+  for (let index = copy.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    [copy[index], copy[randomIndex]] = [copy[randomIndex], copy[index]];
+  }
+  return copy;
+}
+
+function makeOptions(correct: string) {
+  const alternatives = shuffle(
+    [...new Set(vocabPool.map((item) => item.indonesian).filter((value) => value && value !== correct))]
+  ).slice(0, 3);
+  if (!correct || alternatives.length === 0) return [];
+  return shuffle([correct, ...alternatives]);
+}
+
+function makeGermanOptions(correct: string) {
+  const alternatives = shuffle(
+    [...new Set(vocabPool.map((item) => item.german).filter((value) => value && value !== correct))]
+  ).slice(0, 3);
+  if (!correct || alternatives.length === 0) return [];
+  return shuffle([correct, ...alternatives]);
+}
+
+const readingItems = shuffle(vocabPool.filter((item) =>
+  Boolean(item.lesen_teks || item.context)
+)).slice(0, 10);
+const listeningItems = shuffle(vocabPool.filter((item) =>
+  item.hoeren_audio || item.context || item.german
+)).slice(0, 10);
+const writingItem = shuffle(vocabPool).find((item) =>
+  item.schreiben_instruksi && item.german
+) || shuffle(vocabPool).find((item) => item.german && item.indonesian);
+const speakingItem = shuffle(vocabPool).find((item) =>
+  item.sprechen_pertanyaan && item.german
+) || shuffle(vocabPool).find((item) => item.german && (item.context || item.indonesian));
+
+const tasks = vocabPool.length === 0 ? [] : [
+  ...readingItems.map((item) => {
+    const passage = item.lesen_teks || item.context;
+    const correct = item.lesen_pertanyaan ? item.german : (item.contextIndonesian || item.indonesian);
+    return {
+      kind: 'reading',
+      kindLabel: 'Lesen',
+      passage,
+      prompt: item.lesen_pertanyaan || `Pilih terjemahan yang tepat untuk teks: "${passage}"`,
+      answer: correct,
+      options: item.lesen_pertanyaan
+        ? makeGermanOptions(item.german)
+        : makeOptions(correct),
+    };
+  }),
+  ...listeningItems.map((item) => {
+    const audioText = item.hoeren_audio || item.context || item.german;
+    const correct = item.contextIndonesian || item.indonesian;
+    return {
+      kind: 'listening',
+      kindLabel: 'Hören',
+      audio: audioText,
+      audioFallback: item.context || item.german,
+      prompt: `Dengarkan teks dan pilih arti yang tepat untuk bagian: "${item.german}".`,
+      answer: item.indonesian,
+      options: makeOptions(item.indonesian),
+    };
+  }),
+  ...(writingItem ? [{
+    kind: 'writing',
+    kindLabel: 'Schreiben',
+    prompt: writingItem.schreiben_instruksi
+      || `Tulis dalam bahasa Jerman: "${writingItem.indonesian}".`,
+    answer: writingItem.german,
+  }] : []),
+  ...(speakingItem ? [{
+    kind: 'speaking',
+    kindLabel: 'Sprechen',
+    prompt: speakingItem.sprechen_pertanyaan
+      || `Sebutkan kosakata bahasa Jerman untuk "${speakingItem.indonesian}".`,
+    answer: speakingItem.german,
+  }] : []),
+];
+const hasCompleteMockExam = tasks.length === 22
+  && tasks.filter((task) => task.kind === 'reading').length === 10
+  && tasks.filter((task) => task.kind === 'listening').length === 10
+  && tasks.filter((task) => task.kind === 'writing').length === 1
+  && tasks.filter((task) => task.kind === 'speaking').length === 1;
+---
+
+<Layout
+  title={`Mock Exam ${level} | NdUniverse`}
+  description={`Mock Exam Goethe-Zertifikat ${level} untuk Alltagsdeutsch.`}
+>
+  <main class="exam-shell">
+    <MockExam
+      client:load
+      level={level}
+      tasks={hasCompleteMockExam ? tasks : []}
+      unavailable={!hasCompleteMockExam}
+    />
+  </main>
+</Layout>
+
+<style is:global>
+  .exam-shell { width: min(980px, calc(100% - 2rem)); min-width: 0; margin: 2rem auto 4rem; }
+  .mock-exam { display: grid; gap: 1.25rem; }
+  .exam-heading { display:flex; justify-content:space-between; align-items:flex-start; gap:1rem; padding:1.4rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
+  .exam-heading > div { min-width:0; }
+  .exam-heading h1 { margin:.15rem 0 .35rem; }
+  .exam-heading p { margin:.25rem 0; color:var(--muted); }
+  .exam-status { padding:.55rem .75rem; border-radius:999px; background:rgba(229,169,59,.12); color:#966313; font-weight:800; white-space:nowrap; }
+  .exam-list { display:grid; gap:1rem; margin:0; padding:0; list-style:none; counter-reset:none; }
+  .exam-task { display:grid; gap:.85rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); box-shadow:var(--shadow); }
+  .task-meta { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; }
+  .task-meta span { padding:.32rem .55rem; border-radius:999px; background:var(--accent-red); color:#fff; font-weight:800; }
+  .task-meta strong { color:var(--text-main); }
+  .exam-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); border-radius:.4rem; background:#fffaf0; color:var(--text-main); line-height:1.65; overflow-wrap:anywhere; }
+  .prompt { margin:0; font-weight:700; line-height:1.55; overflow-wrap:anywhere; }
+  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.7rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
+  .options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; }
+  .option { display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; cursor:pointer; }
+  .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); }
+  .option input { accent-color:var(--accent-gold); }
+  .text-answer { display:grid; gap:.75rem; }
+  .text-answer textarea { width:100%; box-sizing:border-box; resize:vertical; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; font:inherit; }
+  .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
+  .exam-result { padding:1.25rem; border-radius:1rem; text-align:center; border:1px solid var(--border); }
+  .exam-result.passed { background:#edf8ef; border-color:#9bd0a5; }
+  .exam-result.failed { background:#fff2f2; border-color:#e6a3a3; }
+  .exam-result h2 { margin:.2rem 0; font-size:2rem; }
+  .exam-result a { display:inline-flex; margin-top:.5rem; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
+  @media (max-width:768px) {
+    .exam-heading { flex-direction:column; }
+    .exam-shell { width:min(100% - 1rem,980px); margin:1rem auto 2rem; }
+    .exam-task { padding:.9rem; }
+    .options { grid-template-columns:1fr; }
+    .exam-status { white-space:normal; }
+    .submit-button { width:100%; }
+  }
+</style>

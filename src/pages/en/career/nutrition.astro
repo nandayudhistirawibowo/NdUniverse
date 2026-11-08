@@ -1,0 +1,49 @@
+---
+import { getEntry } from 'astro:content';
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import CareerQuiz from '../../../components/CareerQuiz-en.jsx';
+import HelpHint from '@core/ui/HelpHint.jsx';
+
+export const prerender = false;
+
+const entry = await getEntry('career', 'nutrition');
+const vocab = entry?.data.vocab ?? [];
+const words = vocab.map((word) => ({
+  ...word,
+  options: [
+    word.indonesian,
+    ...vocab
+      .filter((candidate) => candidate.indonesian !== word.indonesian)
+      .slice(0, 3)
+      .map((candidate) => candidate.indonesian),
+  ],
+}));
+---
+
+<DashboardLayout
+  title="Gizi & Kebidanan | Career | siDeutsch"
+  description="Materi Career Gizi dan Kebidanan."
+  active="career"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <section class="career-profession">
+    <a href="/career">← Kembali ke Career</a>
+    <div class="profession-heading">
+      <h1>Gizi &amp; Kebidanan</h1>
+      <HelpHint title="Persiapan Karir" text="Pelajari 50 kosakata dan ikuti simulasi wawancara (Boss Fight) di bawah." client:load />
+    </div>
+    <CareerQuiz client:load words={words} profession="Gizi dan Kebidanan" />
+    <article class="boss-card"><span aria-hidden="true">⚔️</span><div><p>Boss Fight</p><h2>Boss Fight: HRD Interview</h2><p>Berlatih menjawab wawancara kerja dalam bahasa Jerman.</p></div><a href="/career/nutrition/boss">Mulai Wawancara</a></article>
+  </section>
+</DashboardLayout>
+
+<style>
+  .career-profession { display:grid; gap:1rem; }
+  .career-profession > a { width:fit-content; color:var(--text-main); text-encoration:none; font-weight:700; }
+  .profession-heading { display:flex; align-items:center; gap:.65rem; flex-wrap:wrap; }
+  .profession-heading h1 { margin:0; color:var(--text-main); }
+  .boss-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:var(--card-bg); }
+  .boss-card span { font-size:1.8rem; }.boss-card p,.boss-card h2 { margin:.1rem 0; }.boss-card div > p:first-child { color:#966313;font-size:.72rem;font-weight:800;text-transform:uppercase; }
+  .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-encoration:none; font-weight:800; }
+</style>

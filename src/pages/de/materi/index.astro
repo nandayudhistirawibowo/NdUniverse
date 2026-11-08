@@ -1,0 +1,16 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
+import { getCollection } from 'astro:content';
+const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const materials = await getCollection('materi');
+---
+<DashboardLayout title="Katalog Materi | NdUniverse" description="Katalog materi bahasa Jerman." active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
+  <section class="catalog-content">
+    <header><p class="eyebrow">Katalog Materi</p><h1>Belajar Bahasa Jerman</h1><p>Pilih materi berdasarkan level CEFR.</p></header>
+    {levels.map((level) => {
+      const items = materials.filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level);
+      return <section class="level-section"><h2>Level {level}</h2>{items.length ? <div class="material-grid">{items.map((item) => <a class="material-card" href={`/de/materi/${item.id}`}><span>{item.data.track}</span><h3>{item.data.judulMateri}</h3><p>{item.data.deskripsi}</p></a>)}</div> : <p class="empty">Belum ada materi.</p>}</section>;
+    })}
+  </section>
+</DashboardLayout>
+<style>.catalog-content{display:grid;gap:1.5rem}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}.catalog-content h1{margin:.25rem 0}.catalog-content header>p:last-child{color:var(--muted)}.level-section{display:grid;gap:.75rem}.material-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}.material-card{display:grid;gap:.5rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main);text-decoration:none}.material-card span{color:#966313;font-size:.75rem;font-weight:800;text-transform:uppercase}.material-card h3,.material-card p{margin:0}.material-card p{color:var(--muted);line-height:1.55}.empty{color:var(--muted)}@media(max-width:700px){.material-grid{grid-template-columns:1fr}}</style>

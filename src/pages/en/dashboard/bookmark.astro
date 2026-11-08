@@ -1,0 +1,5 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+---
+<DashboardLayout title="Bookmarks | NdUniverse" description="Saved English vocabulary." active="bookmark" user={Astro.locals.user} profile={Astro.locals.profile}><section class="bookmark-page"><header><p class="eyebrow">Bookmarks</p><h1>Saved Vocabulary</h1></header><article><p>You have not saved any vocabulary yet.</p></article></section></DashboardLayout>
+<style>.bookmark-page{display:grid;gap:1rem}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.bookmark-page article{padding:1rem;border:1px dashed var(--border);border-radius:8px;color:var(--muted)}</style>

@@ -1,0 +1,202 @@
+---
+import Layout from '@core/ui/Layout.astro';
+import HelpHint from '@core/ui/HelpHint.jsx';
+import { getCollection } from 'astro:content';
+
+const materials = (await getCollection('english')).filter((item) => item.data.track !== 'Academic English');
+const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+---
+
+<Layout
+  title="Everyday English | NdUniverse"
+  description="Choose a CEFR level to start learning practical English."
+>
+  <section class="page-shell">
+    <a class="dashboard-back-link" href="/en">← Back to Home</a>
+    <div class="level-heading">
+      <div>
+        <p class="eyebrow">EVERYDAY ENGLISH</p>
+        <div class="heading-title">
+          <h1>Choose Your Level</h1>
+          <HelpHint title="Learn Step by Step" text="Choose a lesson, study its vocabulary, then practice Reading, Listening, Writing, and Speaking." client:load />
+        </div>
+        <p class="lead">Start with basic conversations and progress to confident everyday communication.</p>
+      </div>
+      <a class="exam-button" href="/en/ujian/ielts">Simulate IELTS/TOEFL Exam</a>
+    </div>
+
+    <div class="level-filter" aria-label="Level filter">
+      <label for="english-level-filter">Choose level</label>
+      <select id="english-level-filter" data-level-filter>
+        <option value="ALL">All Levels</option>
+        {levels.map((level) => <option value={level}>Level {level}</option>)}
+      </select>
+    </div>
+    <section class="material-section"><div class="section-heading"><h2>Available Materials</h2><span>{materials.length} materials</span></div><div class="material-grid">{materials.map((item)=><article class="material-card" data-level={item.data.level ?? 'A1'}><span>{item.data.level ?? 'A1'}</span><h3>{item.data.title ?? item.id}</h3><p>{item.data.description ?? ''}</p><a href={`/en/materi/${item.id}`}>Open Material →</a></article>)}</div>{materials.length === 0 && <p class="empty-state">No Everyday English materials yet.</p>}</section>
+    <div class="level-grid">
+      {levels.map((level) => (
+        <a class="level-card" href={`/en/everyday-english/${level.toLowerCase()}`}>
+          <span class="level-badge">{level}</span>
+          <h2>{level}</h2>
+          <p>
+            {level === 'A1' && 'Basic lessons for introductions and simple conversations.'}
+            {level === 'A2' && 'Everyday communication for routines and daily activities.'}
+            {level === 'B1' && 'Discuss work, travel, and social life with more confidence.'}
+            {level === 'B2' && 'Communicate fluently and in detail in real situations.'}
+            {level === 'C1' && 'Strong comprehension for complex professional contexts.'}
+            {level === 'C2' && 'Advanced, precise expression in every situation.'}
+          </p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .dashboard-back-link {
+    display: inline-flex;
+    width: fit-content;
+    margin-bottom: 1.1rem;
+    padding: 0.55rem 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-main);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-encoration: none;
+  }
+
+  .dashboard-back-link:hover {
+    border-color: var(--accent-gold);
+    background: rgba(229, 169, 59, 0.1);
+  }
+
+  .page-shell {
+    padding-top: 1rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .level-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .exam-button {
+    flex: 0 0 auto;
+    padding: 0.72rem 1rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 0.65rem;
+    background: var(--accent-gold);
+    color: #4b3508;
+    font-weight: 900;
+    text-encoration: none;
+    box-shadow: 0 8px 20px rgba(229, 169, 59, 0.18);
+  }
+
+  .lead {
+    margin-top: 0.75rem;
+    max-width: 720px;
+    color: var(--text-dark);
+    line-height: 1.7;
+  }
+
+  .level-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .level-card {
+    display: block;
+    padding: 1.3rem;
+    border-radius: 12px;
+    background: var(--card-bg);
+    border: 2px solid var(--accent-gold);
+    text-encoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+  }
+
+  .level-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 10px 20px rgba(229, 169, 59, 0.18);
+  }
+
+  .level-badge {
+    display: inline-flex;
+    padding: 0.4rem 0.7rem;
+    border-radius: 999px;
+    background: var(--accent-red);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin: 0.9rem 0 0.5rem;
+    font-size: 1.8rem;
+  }
+
+  .level-card p {
+    margin: 0;
+    color: var(--text-dark);
+    line-height: 1.7;
+  }
+
+  .material-section { display: grid; gap: 0.75rem; }
+  .section-heading { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
+  .section-heading h2 { margin: 0.35rem 0; }
+  .section-heading span { color: var(--muted); font-size: 0.85rem; }
+  .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+  .material-card { display: grid; align-content: start; gap: 0.65rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
+  .material-card > span { width: fit-content; padding: 0.3rem 0.55rem; border-radius: 999px; background: var(--accent-red); color: white; font-size: 0.72rem; font-weight: 800; }
+  .material-card h3 { margin: 0.15rem 0; }.material-card p { margin: 0; color: var(--muted); line-height: 1.55; }
+  .material-card a { width: fit-content; color: #966313; font-weight: 800; text-decoration: none; }
+  .empty-state { color: var(--muted); }
+  .level-filter { display: flex; align-items: center; gap: 0.75rem; }
+  .level-filter label { font-weight: 800; }
+  .level-filter select { min-height: 44px; padding: 0.55rem 0.75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); }
+  .material-card[hidden] { display: none; }
+  @media (max-width: 700px) {
+    .material-grid { grid-template-columns: 1fr; }
+    .level-filter { align-items: flex-start; flex-direction: column; }
+  }
+</style>
+<script>
+  const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
+  const applyFilter = () => {
+    const selected = filter?.value ?? 'ALL';
+    document.querySelectorAll<HTMLElement>('[data-level]').forEach((card) => {
+      card.hidden = selected !== 'ALL' && card.dataset.level !== selected;
+    });
+  };
+  filter?.addEventListener('change', applyFilter);
+  applyFilter();
+</script>

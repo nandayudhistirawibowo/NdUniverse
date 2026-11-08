@@ -1,0 +1,9 @@
+---
+import Layout from '@core/ui/Layout.astro';
+import { getCollection } from 'astro:content';
+const materials = (await getCollection('materi')).filter((item) => item.data.track === 'Fachdeutsch').sort((a, b) => a.data.judulMateri.localeCompare(b.data.judulMateri));
+---
+<Layout title="Fachdeutsch | NdUniverse" description="Materi Fachdeutsch untuk studi dan profesi.">
+  <main class="language-page"><a href="/de/dashboard" class="back-link">← Kembali ke Beranda</a><header><p class="eyebrow">Fachdeutsch · {materials.length} Materi</p><h1>Deutsch untuk Studi dan Karir</h1><p class="lead">Semua materi Fachdeutsch untuk bidang studi dan profesi.</p></header><div class="material-grid">{materials.map((item)=><article class="material-card"><span>{item.data.jurusan ?? item.data.fakultas ?? 'Fachdeutsch'}</span><h2>{item.data.judulMateri}</h2><p>{item.data.deskripsi}</p><a href={`/de/materi/${item.id}`}>Buka Materi →</a></article>)}</div>{materials.length === 0 && <p class="empty-state">Belum ada materi Fachdeutsch.</p>}</main>
+</Layout>
+<style>.language-page{display:grid;gap:1.5rem;width:min(1120px,100%);margin:0 auto}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.lead{color:var(--muted)}.material-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}.material-card{display:grid;align-content:start;gap:.65rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}.material-card span{color:#966313;font-size:.75rem;font-weight:800;text-transform:uppercase}.material-card h2,.material-card p{margin:0}.material-card p{color:var(--muted);line-height:1.55}.material-card a{color:#966313;font-weight:800;text-decoration:none}.empty-state{color:var(--muted)}@media(max-width:700px){.subject-grid{grid-template-columns:1fr}}</style>

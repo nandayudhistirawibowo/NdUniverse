@@ -1,0 +1,16 @@
+---
+import Layout from '@core/ui/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const hasAlltagsMaterial = (await getCollection('materi')).some((item) => item.data.track === 'Alltagsdeutsch');
+---
+<Layout title="Ujian Bahasa Jerman | NdUniverse" description="Ujian Goethe dan Mini-Mock bahasa Jerman.">
+  <main class="exam-page">
+    <header><p class="eyebrow">Ujian Bahasa Jerman</p><h1>Pilih jenis ujian</h1></header>
+    <div class="exam-grid">
+      <article><span class="badge">Goethe-Zertifikat</span><h2>Simulasi Goethe</h2><p>4 Modul · Timer · Reading, Listening, Writing, dan Speaking.</p><a class="exam-link" href="/de/ujian/goethe/a1" aria-disabled={!hasAlltagsMaterial}>Mulai Simulasi Goethe A1 →</a></article>
+      <article><span class="badge">Mini-Mock</span><h2>Mini-Mock Exam</h2><p>22 Soal · Reading, Listening, Writing, dan Speaking.</p><a class="exam-link" href="/de/ujian/a1">Mulai Mini-Mock A1 →</a></article>
+    </div>
+  </main>
+</Layout>
+<style>.exam-page{width:min(1100px,100%);margin:0 auto;display:grid;gap:1.5rem}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.exam-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.exam-grid article{display:grid;gap:.8rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}.exam-grid h2,.exam-grid p{margin:0}.badge{width:fit-content;padding:.35rem .6rem;border-radius:999px;background:var(--accent-red);color:white;font-size:.75rem;font-weight:800}.exam-link{width:fit-content;min-height:44px;display:inline-flex;align-items:center;padding:.65rem 1rem;border-radius:8px;background:var(--accent-gold);color:#4b3508;font-weight:900;text-decoration:none}@media(max-width:700px){.exam-grid{grid-template-columns:1fr}}</style>

@@ -1,0 +1,42 @@
+---
+import Layout from '@core/ui/Layout.astro';
+---
+
+<Layout title="Choose IELTS/TOEFL Level | NdUniverse" description="Choose a level for the IELTS/TOEFL simulation.">
+  <section class="ielts-picker">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/en/everyday-english">Everyday English</a>
+      <span aria-hidden="true">›</span>
+      <span>IELTS/TOEFL Simulation</span>
+    </nav>
+    <header>
+      <p class="eyebrow">Simulate IELTS/TOEFL Exam</p>
+      <h1>Choose an Exam Level</h1>
+      <p>Choose A1-C2 and practice Reading, Listening, Writing, and Speaking.</p>
+    </header>
+    <div class="level-grid">
+      {['A1','A2','B1','B2','C1','C2'].map((level) => (
+        <a class="level-card" href={`/en/ujian/ielts/${level.toLowerCase()}`}>
+          <span>{level}</span>
+          <h2>IELTS/TOEFL {level}</h2>
+          <p>Start the four-module simulation</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .ielts-picker { width:min(980px,calc(100% - 2rem)); margin:2rem auto 4rem; display:grid; gap:1.25rem; }
+  .breadcrumb { display:flex; gap:.45rem; color:var(--muted); }
+  .breadcrumb a { color:var(--text-main); font-weight:700; text-encoration:none; }
+  header h1 { margin:.35rem 0; }
+  header p:last-child { margin:.35rem 0 0; color:var(--muted); }
+  .eyebrow { margin:0; color:#966313; font-weight:800; text-transform:uppercase; }
+  .level-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+  .level-card { display:block; padding:1.25rem; border:2px solid var(--accent-gold); border-radius:1rem; background:var(--card-bg); color:var(--text-main); text-encoration:none; box-shadow:var(--shadow); }
+  .level-card > span { display:inline-flex; padding:.35rem .6rem; border-radius:999px; background:var(--accent-red); color:#fff; font-weight:800; }
+  .level-card h2 { margin:.75rem 0 .35rem; }
+  .level-card p { margin:0; color:var(--muted); }
+  @media(max-width:700px) { .level-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+</style>

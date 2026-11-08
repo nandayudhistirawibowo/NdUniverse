@@ -28,7 +28,7 @@ export default function FeedbackModal({ variant = 'default' }) {
 
     const currentUrl = window.location.href;
     const text = [
-      'Halo Admin siDeutsch,',
+      'Halo Admin NdUniverse,',
       '',
       'Saya ingin melaporkan:',
       `Kategori: ${category}`,

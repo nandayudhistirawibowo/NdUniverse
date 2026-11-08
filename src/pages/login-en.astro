@@ -1,0 +1,18 @@
+---
+import AuthPortal from '@core/auth/AuthPortal.astro';
+import { isAdminNim } from '@core/auth/admin';
+
+if (Astro.locals.user) {
+  return Astro.redirect(isAdminNim(Astro.locals.profile?.nim) ? '/admin' : '/dashboard-en');
+}
+---
+
+<AuthPortal
+  portal="student"
+  language="en"
+  title="Login | NdUniverse"
+  eyebrow="English Learning Portal"
+  heading="Welcome back!"
+  description="Sign in with your email or student ID."
+  buttonText="Sign in"
+/>

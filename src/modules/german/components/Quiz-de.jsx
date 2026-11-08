@@ -38,11 +38,11 @@ function shuffle(items) {
 function getPillarQuestionType(pillar, item) {
   const hasText = (value) => typeof value === 'string' && value.trim().length > 0;
   if (pillar === 'reading') {
-    return hasText(item?.lesen_teks) && hasText(item?.lesen_pertanyaan) ? 'reading' : 'matcher';
+    return 'reading';
   }
   if (pillar === 'listening') {
     const canPlayAudio = hasText(item?.hoeren_audio) || hasText(item?.context) || hasText(item?.german);
-    return canPlayAudio ? 'listening' : 'matcher';
+    return 'listening';
   }
   if (pillar === 'writing') return 'writing';
   if (pillar === 'speaking') return 'speaking';
@@ -102,9 +102,7 @@ function buildQuestionQueue(items, sessionNumber = 1, useSessionType = false, pi
     id: `${item.german}-${index}-${Math.random().toString(36).slice(2, 8)}`,
     type: pillarType
       ? getPillarQuestionType(pillarType, item)
-      : useSessionType
-        ? (getPillarQuestionType(pillarType, item) ?? 'matcher')
-        : 'matcher',
+      : ['reading', 'listening', 'writing', 'speaking'][index % 4],
     needsReview: false,
     correctAfterWrong: 0,
   }));

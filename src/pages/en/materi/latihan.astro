@@ -1,0 +1,134 @@
+---
+import Layout from '@core/ui/Layout.astro';
+import Quiz from '../../../components/Quiz-en.jsx';
+import { getEntry } from 'astro:content';
+
+export const prerender = false;
+
+const item = await getEntry('materi', Astro.params.slug ?? '');
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
+
+const type = Astro.url.searchParams.get('type') ?? '';
+const pillarLabels = { reading: 'Reading / Lesen', listening: 'Listening / Hören', writing: 'Writing / Schreiben', speaking: 'Speaking / Sprechen' };
+const pillarLabel = pillarLabels[type] ?? 'Latihan Materi';
+const batchSize = 5;
+const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
+const startIndex = (sessionNumber - 1) * batchSize;
+const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
+---
+
+<Layout
+  title={`Latihan: ${item.data.judulMateri} | siDeutsch`}
+  description={`Latihan kosakata dari materi ${item.data.judulMateri}.`}
+  hideNavbar={true}
+>
+  <main class="practice-page">
+    <a class="back-link" href={`/materi/${item.id}`} data-track={item.data.track} data-practice-back>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 18-6-6 6-6M8 12h12" /></svg>
+      <span data-back-label>Kembali ke Materi</span>
+    </a>
+    <header class="page-heading">
+      <p class="eyebrow">Latihan Materi</p>
+      <h1>{pillarLabel}: {item.data.judulMateri}</h1>
+      <p>Maksimal {batchSize} soal untuk pilar ini.</p>
+    </header>
+
+    <section class="practice-panel" aria-label={`Kuis ${item.data.judulMateri}`}>
+      <Quiz
+        client:load
+        items={item.data.vocab}
+        track={item.data.track}
+        level={item.data.level}
+        jurusan={item.data.jurusan}
+        returnHref={`/materi/${item.id}`}
+        startIndex={startIndex}
+        session={sessionNumber}
+        batchSize={batchSize}
+        sessionMode={true}
+        materialId={item.id}
+        type={type}
+      />
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .practice-page {
+    display: grid;
+    max-width: 1000px;
+    min-height: calc(100svh - 8.5rem);
+    align-content: center;
+    gap: 0.9rem;
+    margin: 0 auto;
+    padding: 1.25rem 0;
+  }
+
+  .back-link {
+    display: inline-flex;
+    width: fit-content;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.2rem;
+    color: var(--text-main);
+    font-weight: 700;
+    text-encoration: none;
+  }
+
+  .back-link svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .back-link:hover {
+    color: var(--text-main);
+    transform: translateX(-2px);
+  }
+
+  .page-heading {
+    margin-bottom: 0.25rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 2.45rem);
+  }
+
+  .page-heading > p:last-child {
+    margin: 0.75rem 0 0;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  .practice-panel {
+    padding: clamp(1rem, 3vw, 2rem);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg);
+    box-shadow: 0 20px 50px rgba(26, 26, 30, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .practice-page {
+      min-height: calc(100svh - 7rem);
+      padding: 0.75rem 0;
+    }
+
+    .practice-panel {
+      padding: 0.85rem;
+    }
+  }
+</style>

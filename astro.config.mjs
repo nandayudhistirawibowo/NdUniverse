@@ -8,7 +8,7 @@ import vercel from '@astrojs/vercel';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://sideutsch.ndhistira.my.id',
+  site: 'https://nduniverse.ndhistira.my.id',
   output: 'server',
   prefetch: {
     prefetchAll: true,

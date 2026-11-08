@@ -1,35 +1,11 @@
 ---
 import Layout from '@core/ui/Layout.astro';
-import CareerQuiz from '../../../components/CareerQuiz-en.jsx';
-
-const words = [
-  { german: 'communication', indonesian: 'komunikasi', options: ['komunikasi', 'negosiasi', 'analisis', 'presentasi'] },
-  { german: 'teamwork', indonesian: 'kerja tim', options: ['kerja tim', 'anggaran', 'jadwal', 'kontrak'] },
-  { german: 'leadership', indonesian: 'kepemimpinan', options: ['kepemimpinan', 'pemasaran', 'pelanggan', 'laporan'] },
-  { german: 'experience', indonesian: 'pengalaman', options: ['pengalaman', 'pendidikan', 'gaji', 'kantor'] },
-  { german: 'responsibility', indonesian: 'tanggung jawab', options: ['tanggung jawab', 'keuntungan', 'perjalanan', 'peralatan'] },
+const professions = [
+  { slug:'it', name:'IT', description:'Software, digital systems, and cybersecurity.' },
+  { slug:'business', name:'Business', description:'Management, sales, and corporate communication.' },
+  { slug:'health', name:'Health', description:'Healthcare, nursing, and medical communication.' },
+  { slug:'nutrition', name:'Nutrition', description:'Food, nutrition, and health education.' },
 ];
 ---
-
-<Layout title="Career Prep | NdUniverse" description="English career preparation on NdUniverse.">
-  <main class="career-page">
-    <a class="back-link" href="/en">← Back to English Module</a>
-    <header>
-      <p class="eyebrow">Career Prep</p>
-      <h1>Prepare for global opportunities.</h1>
-      <p class="lead">Practice workplace vocabulary and prepare your English for interviews and international teams.</p>
-    </header>
-    <CareerQuiz client:load words={words} profession="English Career" />
-    <a class="boss-link" href="/en/career/boss">Start Interview Challenge →</a>
-  </main>
-</Layout>
-
-<style>
-  .career-page { display:grid; gap:1.5rem; width:min(1120px,100%); margin:0 auto; padding:1rem 0 3rem; }
-  .back-link { width:fit-content; color:var(--text-main); font-weight:700; text-decoration:none; }
-  .back-link:hover { color:var(--accent-gold); }
-  .eyebrow { margin:0 0 .6rem; color:#966313; font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-  h1 { margin:0; color:var(--text-main); font-size:clamp(2rem,5vw,4rem); line-height:1; }
-  .lead { margin:1rem 0 0; color:var(--muted); line-height:1.75; }
-  .boss-link { display:inline-flex; min-height:44px; align-items:center; justify-content:center; width:fit-content; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; font-weight:800; text-decoration:none; }
-</style>
+<Layout title="Career Prep | NdUniverse" description="English career preparation."><main class="career-page"><header><p class="eyebrow">Career Prep</p><h1>Professional Careers</h1><p>Practice vocabulary and interview skills across four professions.</p></header><div class="career-grid">{professions.map((profession)=><a href={`/en/career/${profession.slug}/boss`}><span>Career Prep</span><h2>{profession.name}</h2><p>{profession.description}</p><small>Start interview challenge →</small></a>)}</div></main></Layout>
+<style>.career-page{display:grid;gap:1.5rem;width:min(1120px,100%);margin:auto}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.career-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}.career-grid a{display:grid;gap:.75rem;min-height:220px;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main);text-decoration:none}.career-grid span,.career-grid small{color:#966313;font-weight:800}.career-grid h2,.career-grid p{margin:0}@media(max-width:800px){.career-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:500px){.career-grid{grid-template-columns:1fr}}</style>

@@ -1,0 +1,92 @@
+---
+import Layout from '@core/ui/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const materials = (await getCollection('materi'))
+  .filter((item) => item.data.track === 'Alltagsdeutsch')
+  .sort((a, b) => a.data.level?.localeCompare(b.data.level ?? '') || a.data.judulMateri.localeCompare(b.data.judulMateri));
+---
+<Layout title="Alltagsdeutsch | NdUniverse" description="Semua materi Alltagsdeutsch dari A1 sampai C2.">
+  <main class="language-page">
+    <a href="/de/dashboard" class="back-link">← Kembali ke Beranda</a>
+    <header>
+      <p class="eyebrow">Alltagsdeutsch · {materials.length} Materi</p>
+      <h1>Materi Alltagsdeutsch</h1>
+      <p class="lead">Semua materi dari A1 sampai C2.</p>
+    </header>
+    <div class="catalog-controls">
+      <div class="level-filter" aria-label="Filter level">
+        <label for="level-filter">Pilih level</label>
+        <select id="level-filter" data-level-filter>
+          <option value="ALL">Semua Level</option>
+          {levels.map((level) => <option value={level}>Level {level}</option>)}
+        </select>
+      </div>
+      <a class="exam-link" data-exam-link hidden href="/de/ujian">Mulai Ujian</a>
+    </div>
+    <div class="level-grid">
+      {levels.map((level) => {
+        const items = materials.filter((item) => item.data.level === level);
+        return (
+          <section class="level-section" data-level={level}>
+            <div class="level-heading"><h2>Level {level}</h2><span>{items.length} Materi</span></div>
+            {items.length > 0 ? (
+              <div class="material-grid">
+                {items.map((item) => (
+                  <article class="material-card">
+                    <span class="level-badge">{item.data.level}</span>
+                    <h3>{item.data.judulMateri}</h3>
+                    <p>{item.data.deskripsi}</p>
+                    <a href={`/de/materi/${item.id}`}>Buka Materi →</a>
+                  </article>
+                ))}
+              </div>
+            ) : <p class="empty-state">Belum ada materi untuk Level {level}.</p>}
+          </section>
+        );
+      })}
+    </div>
+  </main>
+</Layout>
+<style>
+  .language-page{display:grid;gap:1.5rem;width:min(1120px,100%);margin:0 auto}
+  .back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}
+  .eyebrow{color:#966313;font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
+  .lead{color:var(--muted)} h1{margin:.25rem 0}
+  .level-grid{display:grid;gap:2rem}
+  .level-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;border-bottom:1px solid var(--border)}
+  .level-heading h2{margin:.25rem 0}.level-heading span{color:var(--muted);font-size:.85rem}
+  .material-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem}
+  .material-card{display:grid;align-content:start;gap:.65rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}
+  .material-card h3{margin:.15rem 0}.material-card p{margin:0;color:var(--muted);line-height:1.55}
+  .level-badge{width:fit-content;padding:.3rem .55rem;border-radius:999px;background:var(--accent-red);color:#fff;font-size:.72rem;font-weight:800}
+  .material-card a{width:fit-content;margin-top:.25rem;color:#966313;font-weight:800;text-decoration:none}
+  .empty-state{color:var(--muted)}
+  .catalog-controls{display:flex;align-items:center;justify-content:space-between;gap:1rem}.level-filter{display:flex;align-items:center;gap:.75rem}.level-filter label{font-weight:800}.level-filter select{min-height:44px;padding:.55rem .75rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main)}.exam-link{min-height:44px;display:inline-flex;align-items:center;padding:.65rem 1rem;border-radius:8px;background:var(--accent-gold);color:#4b3508;font-weight:900;text-decoration:none}
+  .level-section[hidden]{display:none}
+  @media(max-width:700px){.material-grid{grid-template-columns:1fr}.catalog-controls{align-items:flex-start;flex-direction:column}.level-filter{align-items:flex-start;flex-direction:column}.exam-link{width:100%;justify-content:center}}
+</style>
+<script>
+  const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
+  const applyFilter = () => {
+    const selected = filter?.value ?? 'ALL';
+    const examLink = document.querySelector<HTMLAnchorElement>('[data-exam-link]');
+    if (examLink) {
+      if (selected === 'ALL') {
+        examLink.hidden = false;
+        examLink.href = '/de/ujian/goethe';
+        examLink.textContent = 'Simulasi Goethe';
+      } else {
+        examLink.hidden = false;
+        examLink.href = `/de/ujian/${selected.toLowerCase()}`;
+        examLink.textContent = `Mulai Ujian ${selected}`;
+      }
+    }
+    document.querySelectorAll<HTMLElement>('[data-level]').forEach((section) => {
+      section.hidden = selected !== 'ALL' && section.dataset.level !== selected;
+    });
+  };
+  filter?.addEventListener('change', applyFilter);
+  applyFilter();
+</script>

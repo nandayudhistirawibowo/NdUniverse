@@ -1,0 +1,55 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import HelpHint from '@core/ui/HelpHint.jsx';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+---
+
+<DashboardLayout
+  title="Everyday English | siDeutsch"
+  active="alltagsdeutsch"
+  user={user}
+  profile={Astro.locals.profile}
+>
+  <section class="catalog-page">
+    <a class="back-link" href="/dashboard-en">← Kembali ke Dashboard</a>
+    <header>
+      <div>
+        <p class="eyebrow">Bahasa sehari-hari</p>
+        <div class="heading-title">
+          <h1>Pilih Level Kamu</h1>
+          <HelpHint title="Belajar Bertahap" text="Pilih materi, pelajari kosakata per sesi, lalu latih 4 pilar CEFR (Reading, Listening, Writing, Speaking)." client:load />
+        </div>
+        <p>Pilih materi berdasarkan level CEFR.</p>
+      </div>
+      <a class="goethe-button" href="/ujian/goethe">Simulate Goethe-Zertifikat</a>
+    </header>
+    <div class="level-grid">
+      {['A1','A2','B1','B2','C1','C2'].map((level) => (
+        <a class="level-card" href={`/dashboard-en/alltags/${level}`}>
+          <span>{level}</span>
+          <h2>Level {level}</h2>
+          <p>Buka katalog materi Everyday English {level}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</DashboardLayout>
+
+<style>
+  .catalog-page { display: grid; gap: 1.25rem; }
+  .back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
+  .eyebrow { margin: 0; color: var(--muted); font-weight: 800; text-transform: uppercase; }
+  h1 { margin: 0.35rem 0; }
+  .heading-title { display:flex; align-items:center; gap:.65rem; flex-wrap:wrap; }
+  header { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
+  .goethe-button { padding:0.72rem 1rem; border:1px solid var(--accent-gold); border-radius:.65rem; background:var(--accent-gold); color:#4b3508; font-weight:900; text-decoration:none; box-shadow:0 8px 20px rgba(229,169,59,.18); }
+  header p:last-child { margin: 0; color: var(--muted); }
+  .level-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; }
+  .level-card { padding: 1rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
+  .level-card span { display: inline-flex; padding: 0.35rem 0.6rem; border-radius: 999px; background: var(--accent-red); color: white; font-weight: 800; }
+  .level-card h2 { margin: 0.75rem 0 0.35rem; }
+  .level-card p { margin: 0; color: var(--muted); }
+</style>

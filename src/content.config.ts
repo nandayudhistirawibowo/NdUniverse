@@ -64,7 +64,31 @@ const career = defineCollection({
   }),
 });
 
+const english = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/en' }),
+  schema: z.object({
+    title: z.string().optional(),
+    judulMateri: z.string().optional(),
+    description: z.string().optional(),
+    deskripsi: z.string().optional(),
+    track: z.enum(['Everyday English', 'Academic English']).optional(),
+    level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']).optional(),
+    vocab: z.array(z.object({
+      word: z.string(),
+      translation: z.string(),
+      context: z.string(),
+      contextIndonesian: z.string().optional(),
+      reading_text: z.string().optional(),
+      reading_question: z.string().optional(),
+      listening_audio: z.string().optional(),
+      writing_instruction: z.string().optional(),
+      speaking_question: z.string().optional(),
+    })),
+  }),
+});
+
 export const collections = {
   materi,
   career,
+  english,
 };

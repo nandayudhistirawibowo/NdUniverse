@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content';
+import DashboardMaterialCatalog from '@core/ui/DashboardMaterialCatalog.astro';
+
+export const prerender = false;
+
+const levelParam = String(Astro.params.level ?? '').toUpperCase();
+const level = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2']
+  .find((allowedLevel) => allowedLevel.toLowerCase() === levelParam.toLowerCase())
+  ?? '';
+const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
+
+const user = Astro.locals.user;
+const materials = (await getCollection('materi'))
+  .filter((item) =>
+    String(item.data.track ?? '').toLowerCase() === 'alltagsdeutsch'
+    && String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
+  )
+  .toSorted((left, right) => left.data.judulMateri.localeCompare(right.data.judulMateri, 'id'));
+const { data } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('material_slug, sessions_passed')
+    .eq('user_id', user.id)
+  : { data: [] };
+---
+
+<DashboardMaterialCatalog
+  title={`Everyday English ${level}`}
+  eyebrow="Bahasa sehari-hari"
+  description={`Daftar materi Everyday English untuk level ${level}.`}
+  active="alltagsdeutsch"
+  user={user}
+  profile={Astro.locals.profile}
+  materials={materials}
+  progressRows={data ?? []}
+  backHref="/dashboard-en/alltags"
+  backLabel="Kembali ke Semua Level"
+  materialHrefPrefix="/dashboard-en/materi"
+  examHref={`/ujian/${String(level).toLowerCase()}`}
+  examLabel={`Mulai Ujian ${level}`}
+/>

@@ -1,0 +1,218 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
+
+export const prerender = false;
+---
+
+<DashboardLayout
+  title="Bookmark | siDeutsch"
+  description="Kumpulan kosakata yang kamu simpan untuk dipelajari kembali."
+  active="bookmark"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <section class="bookmark-page">
+    <header class="page-heading">
+      <p class="eyebrow">Kosakata tersimpan</p>
+      <h1>Bookmark</h1>
+      <p>Kata-kata sulit yang kamu simpan dari sesi latihan.</p>
+    </header>
+    <p id="bookmark-status" class="bookmark-status" role="status" aria-live="polite">
+      Memuat bookmark...
+    </p>
+    <ul id="bookmark-list" class="bookmark-list"></ul>
+  </section>
+</DashboardLayout>
+
+<script>
+  const BOOKMARKS_KEY = 'sideutsch-bookmarks';
+
+  document.addEventListener('astro:page-load', () => {
+    const list = document.querySelector<HTMLUListElement>('#bookmark-list');
+    const status = document.querySelector<HTMLElement>('#bookmark-status');
+    if (!list || !status) return;
+
+    const renderBookmarks = () => {
+      let bookmarks: Array<{ german: string; indonesian: string; context: string }>;
+      try {
+        const saved = localStorage.getItem(BOOKMARKS_KEY);
+        const parsed: unknown = saved ? JSON.parse(saved) : [];
+        if (!Array.isArray(parsed) || parsed.some((word) =>
+          !word || typeof word.german !== 'string' || typeof word.indonesian !== 'string' || typeof word.context !== 'string'
+        )) {
+          throw new Error('Format data bookmark tidak valid.');
+        }
+        bookmarks = parsed;
+      } catch (error) {
+        status.textContent = error instanceof Error
+          ? `Bookmark tidak dapat dibaca: ${error.message}`
+          : 'Bookmark tidak dapat dibaca.';
+        status.dataset.state = 'error';
+        list.replaceChildren();
+        return;
+      }
+
+      list.replaceChildren();
+      status.dataset.state = 'ready';
+      status.textContent = bookmarks.length === 0
+        ? 'Belum ada kata yang disimpan.'
+        : `${bookmarks.length} kata tersimpan.`;
+
+      bookmarks.forEach((word, index) => {
+        const item = document.createElement('li');
+        item.className = 'bookmark-card';
+
+        const terms = document.createElement('div');
+        terms.className = 'bookmark-terms';
+        const german = document.createElement('h2');
+        german.lang = 'de';
+        german.textContent = word.german;
+        const indonesian = document.createElement('p');
+        indonesian.textContent = word.indonesian;
+        terms.append(german, indonesian);
+
+        const context = document.createElement('div');
+        context.className = 'bookmark-context';
+        const germanContext = document.createElement('p');
+        germanContext.lang = 'de';
+        germanContext.textContent = word.context;
+        context.append(germanContext);
+
+        const remove = document.createElement('button');
+        remove.className = 'remove-bookmark';
+        remove.type = 'button';
+        remove.textContent = 'Hapus';
+        remove.setAttribute('aria-label', `Hapus bookmark ${word.german}`);
+        remove.addEventListener('click', () => {
+          const next = bookmarks.filter((_, currentIndex) => currentIndex !== index);
+          try {
+            localStorage.setItem(BOOKMARKS_KEY, JSON.stringify(next));
+            bookmarks = next;
+            renderBookmarks();
+          } catch (error) {
+            status.textContent = error instanceof Error
+              ? `Bookmark tidak dapat dihapus: ${error.message}`
+              : 'Bookmark tidak dapat dihapus.';
+            status.dataset.state = 'error';
+          }
+        });
+
+        item.append(terms, context, remove);
+        list.append(item);
+      });
+    };
+
+    renderBookmarks();
+  });
+</script>
+
+<style>
+  .bookmark-page {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .page-heading h1 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: clamp(1.7rem, 4vw, 2.4rem);
+  }
+
+  .eyebrow {
+    margin: 0 0 0.4rem;
+    color: #966313;
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  .page-heading > p:last-child {
+    margin: 0.45rem 0 0;
+    color: var(--muted);
+  }
+
+  .bookmark-status {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  .bookmark-status[data-state='error'] {
+    color: var(--accent-red);
+  }
+
+  .bookmark-list {
+    display: grid;
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bookmark-card {
+    display: grid;
+    grid-template-columns: minmax(160px, 0.8fr) minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-bg);
+  }
+
+  .bookmark-terms h2,
+  .bookmark-terms p,
+  .bookmark-context p {
+    margin: 0;
+  }
+
+  .bookmark-terms h2 {
+    color: var(--text-main);
+    font-size: 1rem;
+  }
+
+  .bookmark-terms p,
+  .bookmark-context p {
+    margin-top: 0.3rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .bookmark-context p {
+    color: var(--text-main);
+  }
+
+  .remove-bookmark {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--accent-red);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .remove-bookmark:hover {
+    border-color: var(--accent-red);
+    background: rgba(180, 55, 55, 0.06);
+  }
+
+  @media (max-width: 680px) {
+    .bookmark-card {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+    }
+
+    .bookmark-context {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+
+    .remove-bookmark {
+      grid-column: 2;
+      grid-row: 1;
+    }
+  }
+</style>

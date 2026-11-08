@@ -3,8 +3,8 @@ import { createAvatarSignedUrl } from '@core/auth/avatar';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 
 const {
-  title = 'Dashboard | siDeutsch',
-  description = 'Portal mahasiswa siDeutsch.',
+  title = 'Dashboard | NdUniverse',
+  description = 'Portal mahasiswa NdUniverse.',
   variant = 'student',
   active = '',
   user = null,
@@ -18,7 +18,7 @@ const nimValue = profile?.nim || user?.user_metadata?.nim || '';
 const nim = typeof nimValue === 'string' ? nimValue.trim() : '';
 const hasNim = Boolean(nim && (/^\d+$/.test(nim) || nim !== displayName));
 const accountInitial = displayName.slice(0, 1).toUpperCase();
-const logoFallback = 'siDeutsch';
+const logoFallback = 'NdUniverse';
 const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.avatar_url);
 ---
 
@@ -46,8 +46,8 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     <div class={`private-shell ${isAdmin ? 'admin-shell' : 'student-shell'}`}>
       <aside class="private-sidebar" id="dashboard-sidebar" aria-label={isAdmin ? 'Navigasi admin' : 'Navigasi mahasiswa'}>
         <div class="sidebar-top-row">
-          <a class="sidebar-logo" href={isAdmin ? '/admin' : '/dashboard'} aria-label="siDeutsch">
-            <img src="/logo.png" alt="siDeutsch" />
+          <a class="sidebar-logo" href={isAdmin ? '/admin' : '/dashboard'} aria-label="NdUniverse">
+            <img src="/logo.png" alt="NdUniverse" />
             <span>{logoFallback}</span>
           </a>
           <button class="sidebar-close" type="button" aria-label="Tutup navigasi" aria-controls="dashboard-sidebar">
@@ -121,8 +121,8 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
               <path d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
-          <a href={isAdmin ? '/admin' : '/dashboard'} aria-label="siDeutsch">
-            <img src="/logo.png" alt="siDeutsch" />
+          <a href={isAdmin ? '/admin' : '/dashboard'} aria-label="NdUniverse">
+            <img src="/logo.png" alt="NdUniverse" />
           </a>
           {user && (
             <details class="account-dropdown">
@@ -151,7 +151,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </header>
         <main class="private-content"><slot /></main>
         <footer class="private-footer">
-          <span>© 2026 siDeutsch. Dibuat untuk siapa saja yang ingin belajar bahasa Jerman.</span>
+          <span>© 2026 NdUniverse. Connecting Languages & Cultures.</span>
           <span class="footer-separator" aria-hidden="true">·</span>
           <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Kontak Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>

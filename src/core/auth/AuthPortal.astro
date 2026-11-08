@@ -8,12 +8,15 @@ const {
   heading = 'Halo! Selamat datang kembali.',
   description = 'Masuk dengan email atau NIM kamu.',
   buttonText = 'Masuk ke Portal',
+  language = 'id',
 } = Astro.props;
 const isAdminPortal = portal === 'admin';
+const isEnglish = language === 'en';
+const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
 ---
 
 <!doctype html>
-<html lang="id">
+<html lang={isEnglish ? 'en' : 'id'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -33,61 +36,61 @@ const isAdminPortal = portal === 'admin';
   </head>
   <body>
     <main class={`auth-screen ${isAdminPortal ? 'admin-portal' : 'student-portal'}`}>
-      <section class="auth-story" aria-label="siDeutsch">
-        <a class="brand" href="/">siDeutsch<span>.</span></a>
+      <section class="auth-story" aria-label={isEnglish ? 'NdUniverse English' : 'siDeutsch'}>
+        <a class="brand" href="/">{isEnglish ? 'NdUniverse' : 'siDeutsch'}<span>.</span></a>
         <div class="story-copy">
-          <p class="story-kicker">{isAdminPortal ? 'Akses terbatas' : 'Ruang belajar bahasa Jerman'}</p>
+          <p class="story-kicker">{isEnglish ? (isAdminPortal ? 'Restricted access' : 'English learning space') : (isAdminPortal ? 'Akses terbatas' : 'Ruang belajar bahasa Jerman')}</p>
           {isAdminPortal && <p class="portal-stamp">ADMIN PORTAL</p>}
-          <h1>Belajar Jerman,<br />satu sesi lebih dekat.</h1>
+          <h1>{isEnglish ? <>Build English,<br />one session closer.</> : <>Belajar Jerman,<br />satu sesi lebih dekat.</>}</h1>
           <p class="story-detail">
-            {isAdminPortal
-              ? 'Kelola ruang belajar dan akun mahasiswa siDeutsch.'
-              : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.'}
+            {isEnglish
+              ? (isAdminPortal ? 'Manage the NdUniverse learning space and student accounts.' : 'Build a steady English learning habit, one focused session at a time.')
+              : (isAdminPortal ? 'Kelola ruang belajar dan akun mahasiswa siDeutsch.' : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.')}
           </p>
         </div>
-        <p class="story-footer">siDeutsch · Belajar dengan ritme sendiri</p>
+        <p class="story-footer">{isEnglish ? 'NdUniverse · Learn at your own pace' : 'siDeutsch · Belajar dengan ritme sendiri'}</p>
       </section>
 
       <section class="auth-side" aria-labelledby="auth-title">
         <div class="auth-panel">
           {!isAdminPortal && (
             <a class="back-link-top" href="/">
-              <span class="arrow-anim" aria-hidden="true">←</span> Kembali ke siDeutsch
+              <span class="arrow-anim" aria-hidden="true">←</span> {isEnglish ? 'Back to NdUniverse' : 'Kembali ke siDeutsch'}
             </a>
           )}
           <div class="panel-topline">
             <span class="panel-mark" aria-hidden="true">{isAdminPortal ? 'A' : 'S'}</span>
-            <span class="portal-label">{isAdminPortal ? eyebrow : 'Portal Belajar'}</span>
+            <span class="portal-label">{isEnglish ? (isAdminPortal ? eyebrow : 'Learning Portal') : (isAdminPortal ? eyebrow : 'Portal Belajar')}</span>
           </div>
           <h2 id="auth-title">{heading}</h2>
           <p class="panel-description">{description}</p>
 
-          <form id="auth-form" class="auth-form" data-portal={portal}>
-            <label for="identifier">{isAdminPortal ? 'Nomor Induk Mahasiswa' : 'Email / Username'}</label>
+          <form id="auth-form" class="auth-form" data-portal={portal} data-default-dashboard={defaultDashboard} data-language={language}>
+            <label for="identifier">{isEnglish ? (isAdminPortal ? 'Student ID' : 'Email / Username') : (isAdminPortal ? 'Nomor Induk Mahasiswa' : 'Email / Username')}</label>
             <input
               id="identifier"
               name="identifier"
               type="text"
               inputmode="text"
               autocomplete="username"
-              placeholder={isAdminPortal ? 'Masukkan NIM admin' : 'Masukkan username atau email'}
+              placeholder={isEnglish ? (isAdminPortal ? 'Enter admin ID' : 'Enter your username or email') : (isAdminPortal ? 'Masukkan NIM admin' : 'Masukkan username atau email')}
               required
             />
 
-            <label for="password">Kata Sandi</label>
+            <label for="password">{isEnglish ? 'Password' : 'Kata Sandi'}</label>
             <div class="password-field">
               <input
                 id="password"
                 name="password"
                 type="password"
                 autocomplete="current-password"
-                placeholder="Masukkan kata sandi"
+                placeholder={isEnglish ? 'Enter your password' : 'Masukkan kata sandi'}
                 required
               />
               <button
                 class="password-toggle"
                 type="button"
-                aria-label="Tampilkan kata sandi"
+                aria-label={isEnglish ? 'Show password' : 'Tampilkan kata sandi'}
                 aria-pressed="false"
                 data-password-toggle="password"
               >
@@ -110,7 +113,7 @@ const isAdminPortal = portal === 'admin';
           </form>
           {!isAdminPortal && (
             <p class="first-login-note">
-              Belum punya akun? Masukkan email dan kata sandi baru, klik Masuk, akun akan dibuat otomatis.
+              {isEnglish ? 'New account? Enter a new email and password, click Sign in, and an account will be created automatically.' : 'Belum punya akun? Masukkan email dan kata sandi baru, klik Masuk, akun akan dibuat otomatis.'}
             </p>
           )}
         </div>
@@ -196,9 +199,10 @@ const isAdminPortal = portal === 'admin';
 
     const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
     const redirect = new URLSearchParams(window.location.search).get('redirect');
+    const defaultDashboard = form?.dataset.defaultDashboard ?? '/dashboard';
     const safeRedirect = isAdminPortal
       ? (redirect?.startsWith('/admin') && !redirect.startsWith('//') && redirect !== '/admin/login' ? redirect : '/admin')
-      : (redirect?.startsWith('/dashboard') && !redirect.startsWith('//') ? redirect : '/dashboard');
+      : (redirect?.startsWith('/dashboard-') && !redirect.startsWith('//') ? redirect : defaultDashboard);
 
     submitButton.disabled = true;
     showMessage('Memeriksa akun...', 'loading');

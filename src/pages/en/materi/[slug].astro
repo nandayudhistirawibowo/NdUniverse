@@ -1,0 +1,24 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import Quiz from '../../../components/Quiz-en.jsx';
+import { getCollection } from 'astro:content';
+const slug = Astro.params.slug ?? '';
+const materials = await getCollection('english');
+const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
+if (!item) return new Response('Material not found.', { status: 404 });
+const vocab = item.data.vocab.map((entry) => ({ german: entry.word, indonesian: entry.translation, context: entry.context }));
+const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) => ({ number: index + 1, words: vocab.slice(index * 5, index * 5 + 5) }));
+---
+<DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}><article class="material-page"><a class="back-link" href={item.data.track === 'Academic English' ? '/en/dashboard' : '/en/everyday-english'} data-session-back>← Back to Materials</a><header><p class="eyebrow">{item.data.track ?? 'Everyday English'} · {item.data.level}</p><h1>{item.data.title ?? item.id}</h1><p>{item.data.description}</p></header><Quiz client:load items={vocab} track={item.data.track ?? 'Everyday English'} level={item.data.level} materialId={item.id} returnHref={`/en/materi/${item.id}`} batchSize={5} sessionMode={true}/>{sessions.map((session)=><section class="session-card"><h2>Session {session.number}</h2><div class="table-wrap"><table><thead><tr><th>English</th><th>Indonesian</th><th>Context</th></tr></thead><tbody>{session.words.map((word)=><tr><td lang="en">{word.german}</td><td>{word.indonesian}</td><td>{word.context}</td></tr>)}</tbody></table></div><nav><a href={`/en/materi/${item.id}/latihan?type=reading&session=${session.number}`}>Reading</a><a href={`/en/materi/${item.id}/latihan?type=listening&session=${session.number}`}>Listening</a><a href={`/en/materi/${item.id}/latihan?type=writing&session=${session.number}`}>Writing</a><a href={`/en/materi/${item.id}/latihan?type=speaking&session=${session.number}`}>Speaking</a></nav></section>)}</article></DashboardLayout>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-session-back]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const session = new URLSearchParams(window.location.search).get('session');
+      if (session) window.sessionStorage.setItem('nduniverse-last-session', session);
+      if (document.referrer && new URL(document.referrer, window.location.origin).pathname.includes('/en/everyday-english')) {
+        link.href = '/en/everyday-english';
+      }
+    });
+  });
+</script>
+<style>.material-page{display:grid;gap:1.25rem}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.session-card{display:grid;gap:.75rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:.65rem;border-bottom:1px solid var(--border);text-align:left}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}.session-card nav a{min-height:42px;display:grid;place-items:center;border:1px solid var(--border);border-radius:8px;color:var(--text-main);text-decoration:none;font-weight:800}@media(max-width:700px){nav{grid-template-columns:repeat(2,1fr)}} </style>

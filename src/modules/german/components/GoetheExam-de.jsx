@@ -414,12 +414,12 @@ export default function GoetheExam({ level, tasks, available = true }) {
           {!result.passed ? (
             <>
               <p class="retry-message">Anda harus mengulang modul: {failedModules.map((module) => module.label).join(', ')}.</p>
-              <a class="certificate-link failure-link" href={`/dashboard/alltags/${level.toLowerCase()}`}>Perbaiki Skillku</a>
+              <a class="certificate-link failure-link" href={`/de/ujian/${level.toLowerCase()}`}>Perbaiki Skillku</a>
             </>
           ) : (
             <div class="result-navigation">
               <a class="certificate-link" href={`/sertifikat/goethe/${level.toLowerCase()}`}>Ambil Sertifikat</a>
-              <a class="certificate-link" href="/dashboard">Kembali ke Dashboard</a>
+              <a class="certificate-link" href="/de/dashboard">Kembali ke Dashboard</a>
             </div>
           )}
         </section>

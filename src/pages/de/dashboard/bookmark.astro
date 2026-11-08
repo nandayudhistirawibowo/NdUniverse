@@ -1,0 +1,5 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
+---
+<DashboardLayout title="Bookmark | NdUniverse" description="Gespeicherte deutsche Wörter." active="bookmark" user={Astro.locals.user} profile={Astro.locals.profile}><section class="bookmark-page"><header><p class="eyebrow">Bookmark</p><h1>Gespeicherte Wörter</h1></header><article><p>Du hast noch keine Wörter gespeichert.</p></article></section></DashboardLayout>
+<style>.bookmark-page{display:grid;gap:1rem}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.bookmark-page article{padding:1rem;border:1px dashed var(--border);border-radius:8px;color:var(--muted)}</style>

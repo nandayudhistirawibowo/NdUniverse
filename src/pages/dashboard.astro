@@ -1,0 +1,6 @@
+---
+const user = Astro.locals.user;
+const preferredLanguage = String(user?.user_metadata?.language_code ?? Astro.cookies.get('language')?.value ?? '').toLowerCase();
+if (!user) return Astro.redirect('/login-de');
+return Astro.redirect(preferredLanguage === 'en' ? '/dashboard-en' : '/dashboard-de');
+---
