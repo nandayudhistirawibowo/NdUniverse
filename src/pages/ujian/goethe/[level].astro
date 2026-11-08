@@ -149,8 +149,8 @@ const available = vocabPool.length > 0
   .audio-button:disabled { opacity:.65; cursor:not-allowed; }
   .audio-controls { display:flex; }
   .text-answer small { color:var(--muted); line-height:1.5; }
-  .options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; }
-  .option { display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; cursor:pointer; }
+  .options { display:flex; flex-direction:column; gap:12px; }
+  .option { width:100%; box-sizing:border-box; margin:0; display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; cursor:pointer; }
   .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); }
   .text-answer { display:grid; gap:.75rem; }
   .text-answer textarea { width:100%; box-sizing:border-box; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; resize:vertical; font:inherit; }
@@ -170,7 +170,10 @@ const available = vocabPool.length > 0
   .failure-link { background:#966313; }
   @media(max-width:768px) {
     .module-progress,.module-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
-    .options { grid-template-columns:1fr; }
+    .options { gap:12px; }
+    .option { width:100%; min-height:56px; margin:0; padding:16px; font-size:16px; }
+    .goethe-task blockquote,
+    .prompt { max-height:200px; overflow-y:auto; overflow-wrap:anywhere; }
     .goethe-heading { align-items:flex-start; flex-direction:column; }
     .exam-timer { min-width:0;width:100%; }
     .goethe-task { padding:.9rem; }

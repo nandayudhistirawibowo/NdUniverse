@@ -934,7 +934,7 @@ export default function Quiz(props) {
                       {currentQuestion.lesen_teks || currentQuestion.context || 'Teks bacaan tidak tersedia.'}
                     </div>
                     <h3 style={{ marginTop: '1rem' }}>{currentQuestion.lesen_pertanyaan}</h3>
-                    <div style={{ display: 'grid', gap: '0.65rem' }}>
+                    <div className="multiple-choice-list">
                       {multipleChoiceOptions.map((option) => (
                         <button
                           key={option}
@@ -966,7 +966,7 @@ export default function Quiz(props) {
                     >
                       {hasPlayedListening ? '✓ Audio sudah diputar 1x' : '🔊 Putar audio (1x)'}
                     </button>
-                    <div style={{ display: 'grid', gap: '0.65rem', marginTop: '1rem' }}>
+                    <div className="multiple-choice-list listening-options">
                       {multipleChoiceOptions.map((option) => (
                         <button
                           key={option}
@@ -1542,10 +1542,24 @@ export default function Quiz(props) {
             transform-style: preserve-3d;
           }
 
+          .multiple-choice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+          }
+
+          .multiple-choice-list .match-choice {
+            width: 100%;
+            margin: 0;
+          }
+
+          .listening-options {
+            margin-top: 1rem;
+          }
+
           .token-chip:hover,
           .match-choice:hover {
             border-color: var(--accent-gold);
-            transform: translateY(-4px) perspective(600px) rotateX(4deg) scale(1.015);
             box-shadow: 0 12px 0 rgba(2,6,23,.8), 0 18px 28px rgba(2,6,23,.32);
           }
 
@@ -2038,15 +2052,31 @@ export default function Quiz(props) {
           }
 
           @media (max-width: 768px) {
+            .reading-text,
+            .audio-text-box {
+              max-height: 200px;
+              overflow-y: auto;
+              overflow-wrap: anywhere;
+            }
+
             button,
             .match-choice,
             .primary-btn,
             .next-btn,
             .vocab-speech-button {
-              min-height: 44px;
-              padding: 12px 16px;
+              min-height: 56px;
+              padding: 16px;
               font-size: 16px;
               cursor: pointer;
+            }
+
+            .multiple-choice-list {
+              gap: 12px;
+            }
+
+            .multiple-choice-list .match-choice {
+              width: 100%;
+              margin: 0;
             }
 
             input,
