@@ -4,7 +4,7 @@ Platform Super App multi-bahasa untuk persiapan akademik dan karir global (Jerma
 
 ## Status Modul
 
-- **Modul German (`/de`): 100% selesai untuk fase German saat ini.** Materi A1-C2, kuis empat pilar, ujian Goethe, Career, Boss Fight, TTS, dan SFX sudah tersedia.
+- **Modul German (`/de`): 100% Selesai.** Materi A1-C2, kuis 4 Pilar, Ujian Goethe, Career, Boss Fight, TTS 2 tombol (kata dan kalimat), Mobile Responsive, dan SFX sudah tersedia.
 - **Modul English (`/en`): Under Development.** Akses login English sementara ditutup melalui `/login-en`; materi final English belum dipublikasikan.
 
 NdUniverse adalah platform induk dengan gerbang utama di `/`, modul German di `/de`, dan modul English di `/en`. Setiap modul dapat memiliki kurikulum, latihan, ujian, Career, dan dashboard sendiri.

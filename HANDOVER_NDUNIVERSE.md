@@ -14,7 +14,8 @@ NdUniverse adalah Super App pembelajaran bahasa multi-bahasa berdasarkan Astro 7
 
 - `/`: landing page NdUniverse tanpa login.
 - `/de`: modul bahasa Jerman, empat pilar CEFR, Goethe, Career, dan Boss Fight.
-- `/en`: modul bahasa Inggris, kuis dasar, IELTS, Career, dan interview challenge.
+- `/en`: modul bahasa Inggris ditunda; halaman login menampilkan status Under Development.
+- Seluruh fitur pembelajaran wajib login; akses tanpa login telah dihapus.
 - Database progress dipisahkan berdasarkan `language_code` (`de` atau `en`).
 - Repository saat ini masih bernama `sideutsch` secara lokal/package; penggantian nama GitHub dapat dilakukan dari Settings repository.
 
@@ -36,7 +37,16 @@ NdUniverse adalah Super App pembelajaran bahasa multi-bahasa berdasarkan Astro 7
 Status finalisasi fase German: **SELESAI 100% untuk lingkup saat ini**.  
 Status modul English: **DITUNDA / Under Development**. `/login-en` menampilkan pesan penundaan; Auth dan form lama dipertahankan tersembunyi untuk pengaktifan berikutnya.
 
-Sudah tersedia:
+## Pencapaian Fase 1
+
+- Modul German lengkap dan dinyatakan 100% selesai.
+- Kuis 4 Pilar CEFR, Ujian Goethe, Career, dan Boss Fight tersedia.
+- TTS 2 tombol untuk kata dan kalimat tersedia.
+- Mobile responsive dengan touch target minimal 44px.
+- Dashboard, Bookmark, progress, XP, materi A1-C2, dan sertifikat tersedia.
+- Akses tanpa login dihapus; pengguna harus login sebelum mengakses dashboard atau pembelajaran.
+
+### Konfigurasi tetap tersedia
 
 - Landing page platform dan routing `/de` serta `/en`.
 - Komponen English untuk kuis, IELTS, Career, dan Boss Fight.
@@ -53,7 +63,14 @@ Belum tersedia atau belum terverifikasi:
 - Pengujian E2E `/en` dan penyimpanan `language_code = 'en'` di Supabase belum terverifikasi.
 - Generator TTS masih khusus German dan belum mendukung mode/target language English.
 - Migrasi SQL repository belum mencerminkan perubahan multi-language. `supabase/user_progress.sql` masih memakai unique lama `(user_id, material_slug)` dan belum membuat `language_code`.
-- Nama GitHub `sideutsch` belum dapat diverifikasi dari workspace ini dan harus diganti manual di Settings GitHub menjadi `NdUniverse`.
+- Nama repositori GitHub lama perlu diselaraskan manual dengan nama produk `NdUniverse`.
+
+## Sisa Pekerjaan Fase 2-5
+
+1. **Fase 2: Modul English** ditunda, termasuk materi dan dashboard aktif.
+2. **Fase 3: Backend/Testing** ditunda untuk pengujian dan validasi end-to-end.
+3. **Fase 4: IELTS/TOEFL dan English Career** ditunda.
+4. **Fase 5: Finalisasi publikasi, deployment, dan dokumentasi** menunggu modul aktif berikutnya.
 
 ## Temuan Database Penting
 
@@ -125,7 +142,6 @@ Uji:
 - `PRD_NDUNIVERSE.md`.
 - `ERD.md`.
 - `FLOWCHART.md`.
-- `HANDOVER.md` agar tidak lagi menyebut siDeutsch sebagai nama utama.
 
 ### 6. Rename Repository GitHub
 

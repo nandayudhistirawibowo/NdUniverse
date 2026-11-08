@@ -8,8 +8,8 @@ Platform ini menjadi gerbang utama untuk berbagai modul bahasa. Setiap modul dap
 
 ## Status Rilis
 
-- Modul German adalah rilis aktif saat ini dan dinyatakan **100% selesai untuk lingkup fase German**.
-- Modul English berada dalam status **Under Development**. `/login-en` menampilkan pengumuman penundaan dan mengarahkan pengguna ke modul German.
+- Modul German 100% selesai. Modul German adalah rilis aktif saat ini dengan semua fitur pembelajaran utama.
+- Modul English ditunda dan berada dalam status **Under Development**. `/login-en` menampilkan pengumuman penundaan.
 
 ## Target User
 
@@ -25,7 +25,7 @@ Platform ini menjadi gerbang utama untuk berbagai modul bahasa. Setiap modul dap
 
 Route utama: `/de`
 
-Modul German melanjutkan platform siDeutsch yang sudah tersedia, dengan fokus pada:
+Modul German adalah modul aktif utama, dengan fokus pada:
 
 - Alltagsdeutsch untuk komunikasi sehari-hari tingkat A1-C2.
 - Fachdeutsch untuk kosakata akademik dan profesional.
@@ -33,6 +33,8 @@ Modul German melanjutkan platform siDeutsch yang sudah tersedia, dengan fokus pa
 - Persiapan Goethe-Zertifikat dan simulasi ujian per level.
 - Career dan Boss Fight untuk latihan wawancara kerja berbahasa Jerman.
 - Audio bahasa Jerman berbasis aset Edge TTS yang sudah tersedia.
+- TTS 2 Tombol (Kata & Kalimat).
+- Mobile Touch Target 44px untuk kontrol interaktif pada layar kecil.
 
 ### English
 

@@ -23,6 +23,7 @@ const isAdminLogin = Astro.url.pathname === '/admin/login';
 const isAdminAccount = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
 const accountHref = isAdminAccount ? '/admin' : '/dashboard';
 const isEnglishRoute = Astro.url.pathname === '/en' || Astro.url.pathname.startsWith('/en/');
+const loginHref = isEnglishRoute ? '/login-en' : '/login-de';
 const languageHref = isEnglishRoute ? '/de' : '/en';
 const languageLabel = isEnglishRoute ? 'Deutsch' : 'English';
 const organizationSchema = {
@@ -121,7 +122,7 @@ const organizationSchema = {
                     <span class="account-name">{accountName}</span>
                   </a>
                 ) : (
-                  <a class="login-link" href="/login">Login</a>
+                  <a class="login-link" href={loginHref}>Login</a>
                 ))}
               </div>
             </div>

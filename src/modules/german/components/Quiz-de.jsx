@@ -41,6 +41,23 @@ function normalizeAnswer(answer) {
   return answer.trim().toLowerCase().replace(/\s+/g, ' ');
 }
 
+function getListeningPrompt(item) {
+  const audioText = item?.hoeren_audio?.trim();
+  if (audioText && !/^(\/|https?:\/\/)/i.test(audioText)) return audioText;
+  return item?.context?.trim() || item?.german?.trim() || 'Dengarkan audio...';
+}
+
+function getSpeakingPrompt(item) {
+  const instruction = item?.sprechen_pertanyaan?.trim();
+  const germanWord = item?.german?.trim();
+  if (instruction && germanWord) return `${instruction} Ucapkan kata kunci: „${germanWord}“.`;
+  if (instruction) return instruction;
+  if (germanWord) return `Ucapkan dalam Bahasa Jerman: „${germanWord}“`;
+  return item?.indonesian?.trim()
+    ? `Ucapkan dalam Bahasa Jerman: ${item.indonesian}`
+    : 'Ucapkan kata Bahasa Jerman di bawah ini.';
+}
+
 function fuzzyMatch(answer, expected) {
   const a = normalizeAnswer(answer).replace(/[^\p{L}\p{N}\s]/gu, '');
   const b = normalizeAnswer(expected).replace(/[^\p{L}\p{N}\s]/gu, '');
@@ -936,6 +953,9 @@ export default function Quiz(props) {
                   <>
                     <p className="question-label">Tipe E · Listening / Hören</p>
                     <h3>Dengarkan audio, lalu pilih arti yang tepat</h3>
+                    <p className="audio-text-box" aria-label="Teks audio">
+                      „{getListeningPrompt(currentQuestion)}“
+                    </p>
                     <button
                       type="button"
                       className="vocab-speech-button"
@@ -943,7 +963,6 @@ export default function Quiz(props) {
                       disabled={hasPlayedListening || checkedResult !== null}
                       aria-label={`Putar audio: ${currentQuestion.hoeren_audio}`}
                       title="Putar audio"
-                      style={{ width: '52px', height: '52px', fontSize: '1.35rem' }}
                     >
                       {hasPlayedListening ? '✓ Audio sudah diputar 1x' : '🔊 Putar audio (1x)'}
                     </button>
@@ -982,6 +1001,7 @@ export default function Quiz(props) {
                         background: 'var(--bg-main)',
                         color: 'var(--text-main)',
                         font: 'inherit',
+                        fontSize: '16px',
                         resize: 'vertical',
                       }}
                     />
@@ -991,7 +1011,7 @@ export default function Quiz(props) {
                 ) : currentQuestion.type === 'speaking' ? (
                   <>
                     <p className="question-label">Tipe G · Speaking / Sprechen</p>
-                    <h3>{currentQuestion.sprechen_pertanyaan || `Ucapkan dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
+                    <h3>{getSpeakingPrompt(currentQuestion)}</h3>
                     <button
                       type="button"
                       onClick={startSpeechRecognition}
@@ -1030,6 +1050,7 @@ export default function Quiz(props) {
                         background: 'var(--bg-main)',
                         color: 'var(--text-main)',
                         font: 'inherit',
+                        fontSize: '16px',
                       }}
                     />
                     {checkedResult === false && <p className="correct-answer">Kata kunci: {currentQuestion.german}</p>}
@@ -1193,6 +1214,31 @@ export default function Quiz(props) {
               radial-gradient(circle at 88% 18%, rgba(251,191,36,.14), transparent 24%),
               linear-gradient(145deg, #07111f 0%, #111827 48%, #172554 100%);
             box-shadow: 0 24px 70px rgba(15,23,42,.34);
+          }
+
+          .vocab-speech-button {
+            width: min(100%, 240px);
+            min-height: 44px;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--card-bg);
+            color: var(--text-main);
+            font: inherit;
+            cursor: pointer;
+          }
+
+          .audio-text-box {
+            box-sizing: border-box;
+            width: 100%;
+            margin: 0;
+            padding: 12px 16px;
+            overflow-wrap: anywhere;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.5;
           }
 
           .quiz-shell::before,
@@ -1988,6 +2034,34 @@ export default function Quiz(props) {
 
             .summary-actions {
               flex-direction: column;
+            }
+          }
+
+          @media (max-width: 768px) {
+            button,
+            .match-choice,
+            .primary-btn,
+            .next-btn,
+            .vocab-speech-button {
+              min-height: 44px;
+              padding: 12px 16px;
+              font-size: 16px;
+              cursor: pointer;
+            }
+
+            input,
+            textarea,
+            .audio-text-box {
+              box-sizing: border-box;
+              width: 100%;
+              max-width: 100%;
+              min-width: 0;
+              font-size: 16px;
+            }
+
+            textarea {
+              overflow-wrap: anywhere;
+              white-space: pre-wrap;
             }
           }
 

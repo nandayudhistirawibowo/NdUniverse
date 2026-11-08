@@ -5,6 +5,8 @@ import { normalizePassedPillars } from '@core/db/progress-client.js';
 
 export const prerender = false;
 
+if (!Astro.locals.user) return Astro.redirect('/login-de');
+
 const item = await getEntry('materi', Astro.params.slug ?? '');
 if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 
@@ -15,7 +17,6 @@ const batchSize = 5;
 const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
 const progressKey = `progress_materi_${item.id}`;
 const notesKey = `catatan_materi_${item.id}`;
-const user = Astro.locals.user;
 const referer = Astro.request.headers.get('referer');
 let dashboardReturnHref = item.data.track === 'Alltagsdeutsch' ? '/dashboard/alltags' : '/dashboard/fach';
 
@@ -67,14 +68,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
           <span class="pill">{trackLabel}</span>
           {levelOrJurusan && <span class="pill soft">{levelOrJurusan}</span>}
         </div>
-        {user ? (
-          <a href={returnHref}>← Kembali ke Dashboard</a>
-        ) : (
-          <div class="guest-actions">
-            <a class="curriculum-back" href={returnHref}>← Kembali ke Kurikulum</a>
-            <a class="login-cta" href="/login?redirect=%2Fdashboard">Mulai Belajar (Login) <span aria-hidden="true">→</span></a>
-          </div>
-        )}
+        <a href={returnHref}>← Kembali ke Dashboard</a>
       </div>
     </header>
 
@@ -472,8 +466,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     transition: all 0.2s ease;
   }
 
-  .locked-session-message a:hover,
-  .login-cta:hover {
+  .locked-session-message a:hover {
     transform: translateY(-2px);
     background: #F0B84F;
   }
@@ -766,42 +759,10 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     font-weight: 600;
   }
 
-  .guest-actions {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-  }
-
-  .meta-row .login-cta {
-    display: inline-flex;
-    min-height: 42px;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.6rem 0.9rem;
-    border-radius: 7px;
-    background: var(--accent-gold);
-    color: var(--text-main);
-    font-weight: 800;
-    transition: all 0.2s ease;
-  }
-
-  .meta-row .curriculum-back {
-    color: var(--text-main);
-    text-decoration: underline;
-    text-decoration-color: var(--accent-gold);
-    text-underline-offset: 3px;
-  }
-
   @media (max-width: 640px) {
     .pillar-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .pillar-grid {
       grid-template-columns: 1fr;
-    }
-
-    .guest-actions {
-      justify-content: flex-start;
     }
 
     .locked-session-message {

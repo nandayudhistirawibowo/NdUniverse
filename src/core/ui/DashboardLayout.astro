@@ -144,7 +144,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
               </summary>
               <div class="account-menu">
                 {!isAdmin && <a href="/dashboard/profil">Profil Saya</a>}
-                <form action="/logout" method="post">
+                <form action="/logout?module=de" method="post">
                   <button type="submit">Logout</button>
                 </form>
               </div>

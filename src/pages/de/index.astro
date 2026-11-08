@@ -1,6 +1,9 @@
 ---
 import Layout from '@core/ui/Layout.astro';
 
+if (!Astro.locals.user) return Astro.redirect('/login-de');
+return Astro.redirect('/de/dashboard');
+
 const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 ---
 

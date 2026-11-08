@@ -1,8 +1,21 @@
-# siDeutsch — Alur Aplikasi
+# NdUniverse — Alur Aplikasi
 
 ## Status Modul
 
-Modul German merupakan jalur aktif saat ini dan Modul English ditunda melalui halaman `/login-en`.
+Modul German 100% selesai dan merupakan jalur aktif saat ini. Modul English ditunda melalui halaman `/login-en`. Semua pengguna wajib login untuk mengakses dashboard dan fitur pembelajaran.
+
+## Alur Utama
+
+```mermaid
+flowchart LR
+    A[Landing NdUniverse] --> B[Pilih Jerman atau Inggris]
+    B --> C[Login]
+    C --> D[Dashboard]
+    D --> E[Kuis 4 Pilar]
+    D --> F[Ujian Goethe / IELTS]
+    D --> G[Career dan Boss Fight]
+    F --> H[Hasil dan Sertifikat]
+```
 
 ## Login dan Auto-Signup
 
@@ -59,11 +72,9 @@ flowchart TD
     N -->|Ya| F
     N -->|Tidak| O[Sesi selesai]
     O --> P[Finalisasi XP sekali untuk run ini]
-    P --> Q{Pengguna login?}
-    Q -->|Ya| R[Upsert XP dan pilar lulus ke Supabase]
-    Q -->|Tidak| S[Ambil cache lokal hanya untuk browser]
+    P --> Q[Pengguna login]
+    Q --> R[Upsert XP dan pilar lulus ke Supabase]
     R --> T[Perbarui total progress dan level]
-    S --> T
 ```
 
 Reading memakai teks dan pilihan ganda; Listening memakai audio/TTS dan pilihan ganda; Writing memakai text box fuzzy matching; Speaking memakai microphone atau text box. Anti-farming membuang XP sementara saat Game Over dan menggunakan guard finalisasi run agar XP tidak dikomit dua kali.

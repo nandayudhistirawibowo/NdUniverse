@@ -36,3 +36,9 @@ Status: **DITUNDA (Under Development)**
 - English Career dan interview challenge.
 - TTS/manifest audio English.
 - Validasi end-to-end dan publikasi modul English.
+
+## Status Fase Utama
+
+- **Fase 1 (Rebranding & Jerman): SELESAI**
+- **Fase 2 (Inggris): DITUNDA**
+- **Fase 3 (Backend/Testing): DITUNDA**

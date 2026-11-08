@@ -1,4 +1,4 @@
-# siDeutsch — Entity Relationship Diagram
+# NdUniverse — Entity Relationship Diagram
 
 Status data English ditunda hingga modul `/en` dipublikasikan. Skema progress tetap mendukung `language_code` untuk German (`de`) dan English (`en`) agar aktivasi berikutnya tidak memerlukan perubahan fundamental.
 
@@ -28,6 +28,7 @@ erDiagram
         uuid id PK
         uuid user_id FK
         text material_slug
+        text language_code
         integer xp
         jsonb sessions_passed
         text notes
@@ -41,12 +42,14 @@ erDiagram
 | --- | --- | --- |
 | `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Login menerima email atau NIM lama yang dinormalisasi ke email akun. |
 | `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | `id` sama dengan `auth.users.id`. `nim` bersifat **nullable** karena pengguna email umum tidak selalu memiliki NIM. `avatar_url` menyimpan path objek, bukan URL publik. |
-| `public.user_progress` | `id`, `user_id`, `material_slug`, `xp`, `sessions_passed`, `notes`, `updated_at` | Kombinasi `(user_id, material_slug)` unik; `sessions_passed` harus JSON array melalui check JSONB; `xp` tidak boleh negatif; RLS membatasi akses ke pemilik baris. |
+| `public.user_progress` | `id`, `user_id`, `material_slug`, `language_code`, `xp`, `sessions_passed`, `notes`, `updated_at` | Kombinasi `(user_id, material_slug, language_code)` unik untuk memisahkan progress `de` dan `en`; `sessions_passed` harus JSON array melalui check JSONB; `xp` tidak boleh negatif; RLS membatasi akses ke pemilik baris. |
 
 ## Relasi dan Makna Kolom
 
 - Satu pengguna Supabase memiliki nol atau satu profil.
 - Satu pengguna dapat memiliki banyak baris progress, satu baris per `material_slug`.
+- Kolom `language_code` bernilai `de` atau `en` agar progress Jerman dan Inggris tetap terpisah.
+- Akses tanpa login dihapus; seluruh fitur pembelajaran dan progress wajib digunakan setelah login.
 - `material_slug` mengacu logis ke ID Astro Content Collection dan bukan foreign key SQL.
 - `xp` menyimpan progres XP kumulatif yang sudah dikomit.
 - `notes` menyimpan catatan belajar pengguna untuk materi tertentu.
