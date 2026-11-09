@@ -83,7 +83,7 @@ NdUniverse (/)
 - [ERD](ERD.md)
 - [Flowchart](FLOWCHART.md)
 - [Handover](HANDOVER.md)
-- [Testing](testing.md)
+- [Testing](TESTING.md)
 
 ## Menjalankan Proyek
 
@@ -106,3 +106,7 @@ npm run generate:tts
 ```
 
 Repository ini sekarang bernama **NdUniverse** sebagai platform induk multi-bahasa.
+
+## Testing & Performance
+
+Platform telah diuji dengan k6 pada 100 VUs dan mencatat success rate 100% dengan rata-rata waktu respons 32ms. Lihat [laporan Load Testing](TESTING.md) untuk detail hasil.

@@ -37,6 +37,12 @@ NdUniverse adalah Super App pembelajaran bahasa multi-bahasa berdasarkan Astro 7
 Status finalisasi fase German: **SELESAI 100% untuk lingkup saat ini**.  
 Status modul English: **DITUNDA / Under Development**. `/login-en` menampilkan pesan penundaan; Auth dan form lama dipertahankan tersembunyi untuk pengaktifan berikutnya.
 
+## Validasi Performa
+
+- Load testing dengan k6 telah dilakukan dan hasilnya sangat baik: 100 Virtual Users selama 60 detik, 5.797 request, 100.00% success rate (0% error), rata-rata respons 32.07 ms, p(95) 44.7 ms, dan sekitar 95.31 req/s.
+- Skor PageSpeed: **100/100/100/100**.
+- Laporan lengkap tersedia di [TESTING.md](TESTING.md).
+
 ## Pencapaian Fase 1
 
 - Modul German lengkap dan dinyatakan 100% selesai.
