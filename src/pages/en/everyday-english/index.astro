@@ -3,7 +3,7 @@ import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 import { getCollection } from 'astro:content';
 
 const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-const materials = (await getCollection('english'))
+const materials = (await getCollection('englishEveryday'))
 	.filter((item) => item.data.track === 'Everyday English')
 	.toSorted((left, right) => {
 		const levelOrder = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -34,7 +34,10 @@ const materials = (await getCollection('english'))
 					{levels.map((level) => <option value={level}>{level}</option>)}
 				</select>
 			</div>
-			<a class="exam-link" data-exam-link href="/en/ujian/ielts">IELTS Simulation</a>
+			<div class="exam-actions">
+				<a class="exam-link ielts-link" data-exam-link data-exam-type="ielts" href="/en/exam/ielts">IELTS Exam</a>
+				<a class="exam-link toefl-link" data-exam-link data-exam-type="toefl" href="/en/exam/toefl">TOEFL Exam</a>
+			</div>
 		</div>
 		{materials.length > 0 ? (
 			<div class="material-grid">
@@ -57,13 +60,16 @@ const materials = (await getCollection('english'))
 	const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
 	const applyFilter = () => {
 		const selected = filter?.value ?? 'ALL';
-		const examLink = document.querySelector<HTMLAnchorElement>('[data-exam-link]');
-		if (examLink) {
+		document.querySelectorAll<HTMLAnchorElement>('[data-exam-link]').forEach((examLink) => {
+			const examType = examLink.dataset.examType;
+			if (!examType) return;
 			examLink.href = selected === 'ALL'
-				? '/en/ujian/ielts'
-				: `/en/ujian/ielts/${selected.toLowerCase()}`;
-			examLink.textContent = selected === 'ALL' ? 'IELTS Simulation' : `Start IELTS ${selected}`;
-		}
+				? `/en/exam/${examType}`
+				: `/en/exam/${examType}/${selected.toLowerCase()}`;
+			examLink.textContent = selected === 'ALL'
+				? `${examType.toUpperCase()} Exam`
+				: `${examType.toUpperCase()} Exam ${selected}`;
+		});
 		document.querySelectorAll<HTMLElement>('.material-card[data-level]').forEach((card) => {
 			card.hidden = selected !== 'ALL' && card.dataset.level !== selected;
 		});
@@ -89,11 +95,15 @@ const materials = (await getCollection('english'))
 	.level-filter { display: flex; align-items: center; gap: .75rem; }
 	.level-filter label { font-weight: 800; }
 	.level-filter select { min-height: 44px; padding: .55rem .75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); }
-	.exam-link { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: .65rem 1rem; border-radius: 8px; background: var(--accent-gold); color: #4b3508; font-weight: 900; text-decoration: none; }
+	.exam-actions { display: flex; flex-wrap: wrap; gap: .65rem; }
+	.exam-link { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: .65rem 1rem; border-radius: 8px; color: #fff; font-weight: 900; text-decoration: none; }
+	.ielts-link { background: #2874b8; }
+	.toefl-link { background: #218449; }
 	@media (max-width: 700px) {
 		.material-grid { grid-template-columns: 1fr; }
 		.catalog-controls { width: 100%; align-items: stretch; flex-direction: column; }
 		.level-filter { width: 100%; align-items: flex-start; flex-direction: column; }
 		.level-filter select, .exam-link { width: 100%; }
+		.exam-actions { display: grid; grid-template-columns: 1fr; }
 	}
 </style>

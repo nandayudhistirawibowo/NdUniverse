@@ -64,8 +64,8 @@ const career = defineCollection({
   }),
 });
 
-const english = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/modules/english/content' }),
+const englishEveryday = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/modules/english/content/everyday' }),
   schema: z.object({
     title: z.string().optional(),
     judulMateri: z.string().optional(),
@@ -87,8 +87,31 @@ const english = defineCollection({
   }),
 });
 
+const englishExam = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/modules/english/content/exam' }),
+  schema: z.object({
+    exam_type: z.enum(['ielts', 'toefl']),
+    level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']),
+    reading: z.array(z.object({
+      passage: z.string(),
+      question: z.string(),
+      options: z.array(z.string()),
+      answer: z.string(),
+    })),
+    listening: z.array(z.object({
+      audio_text: z.string(),
+      question: z.string(),
+      options: z.array(z.string()),
+      answer: z.string(),
+    })),
+    writing: z.string(),
+    speaking: z.string(),
+  }),
+});
+
 export const collections = {
   materi,
   career,
-  english,
+  englishEveryday,
+  englishExam,
 };

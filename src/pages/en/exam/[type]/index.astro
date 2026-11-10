@@ -1,0 +1,56 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const examType = String(Astro.params.type ?? '').toLowerCase();
+if (!['ielts', 'toefl'].includes(examType)) return new Response('Exam type not found.', { status: 404 });
+
+const exams = await getCollection('englishExam');
+const availableLevels = new Set(
+  exams.filter((exam) => exam.data.exam_type === examType).map((exam) => exam.data.level)
+);
+const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const label = examType.toUpperCase();
+---
+
+<DashboardLayout
+  title={`Choose ${label} Level | NdUniverse`}
+  description={`Choose a level for the ${label} exam.`}
+  active="exam"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="exam-picker">
+    <a class="back-link" href="/en/everyday-english">Back to Everyday English</a>
+    <header>
+      <p class="eyebrow">{label} Exam</p>
+      <h1>Choose your level</h1>
+      <p>Select a level to start Reading, Listening, Writing, and Speaking.</p>
+    </header>
+    <div class="level-grid">
+      {levels.filter((level) => availableLevels.has(level)).map((level) => (
+        <a class="level-card" href={`/en/exam/${examType}/${level.toLowerCase()}`}>
+          <span>{level}</span>
+          <strong>{label} Exam</strong>
+          <small>Four timed modules</small>
+        </a>
+      ))}
+    </div>
+    {availableLevels.size === 0 && <p class="empty-state">No {label} exam levels are available yet.</p>}
+  </main>
+</DashboardLayout>
+
+<style>
+  .exam-picker { display:grid; gap:1.25rem; width:min(100%, 980px); margin:0 auto; padding:1rem 0 2.5rem; }
+  .back-link { width:fit-content; color:var(--text-main); font-weight:700; text-decoration:none; }
+  .eyebrow { margin:0; color:#966313; font-size:.75rem; font-weight:900; text-transform:uppercase; }
+  h1 { margin:.25rem 0; font-size:clamp(1.8rem, 5vw, 2.6rem); }
+  header p:last-child,.empty-state { color:var(--muted); }
+  .level-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:.8rem; }
+  .level-card { display:grid; gap:.45rem; min-height:130px; align-content:center; padding:1rem; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); color:var(--text-main); text-decoration:none; }
+  .level-card:hover { border-color:var(--accent-gold); }
+  .level-card span { color:#966313; font-size:.8rem; font-weight:900; }
+  .level-card small { color:var(--muted); }
+</style>

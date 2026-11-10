@@ -1,0 +1,37 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import EnglishExam from '../../../../modules/english/components/EnglishExam-en.jsx';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const examType = String(Astro.params.type ?? '').toLowerCase();
+const level = String(Astro.params.level ?? '').toUpperCase();
+if (!['ielts', 'toefl'].includes(examType)) return new Response('Exam type not found.', { status: 404 });
+if (!['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(level)) return new Response('Exam level not found.', { status: 404 });
+
+const examEntry = (await getCollection('englishExam')).find(
+  (entry) => entry.data.exam_type === examType && entry.data.level === level
+);
+if (!examEntry) return new Response('Exam content not found for this level.', { status: 404 });
+
+const exam = {
+  exam_type: examEntry.data.exam_type,
+  level: examEntry.data.level,
+  reading: examEntry.data.reading,
+  listening: examEntry.data.listening,
+  writing: examEntry.data.writing,
+  speaking: examEntry.data.speaking,
+};
+const label = examType.toUpperCase();
+---
+
+<DashboardLayout
+  title={`${label} ${level} Exam | NdUniverse`}
+  description={`${label} exam practice for level ${level}.`}
+  active="exam"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <EnglishExam client:load exam={exam} />
+</DashboardLayout>

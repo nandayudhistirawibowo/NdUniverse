@@ -17,7 +17,7 @@ const level = String(levelParam ?? '').toUpperCase();
 const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 if (!allowedLevels.includes(level)) return new Response('Level tidak ditemukan.', { status: 404 });
 
-const materials = (await getCollection('english'))
+const materials = (await getCollection('englishEveryday'))
   .filter((item) =>
     String(item.data.level ?? '').toLowerCase() === level.toLowerCase()
   );

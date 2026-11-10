@@ -2,7 +2,7 @@
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 import { getCollection } from 'astro:content';
 const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
-const materials = await getCollection('english');
+const materials = await getCollection('englishEveryday');
 ---
 <DashboardLayout title="Material Catalog | NdUniverse" description="Catalog of English learning materials." active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <section class="catalog-content">

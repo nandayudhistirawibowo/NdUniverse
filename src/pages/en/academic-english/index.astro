@@ -1,7 +1,7 @@
 ---
 import Layout from '@core/ui/Layout.astro';
 import { getCollection } from 'astro:content';
-const materials = (await getCollection('english'))
+const materials = (await getCollection('englishEveryday'))
   .filter((item) => item.data.track === 'Academic English')
   .sort((a, b) => (a.data.title ?? a.id).localeCompare(b.data.title ?? b.id));
 ---

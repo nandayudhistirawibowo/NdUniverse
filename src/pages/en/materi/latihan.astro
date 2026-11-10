@@ -6,7 +6,7 @@ import { getCollection } from 'astro:content';
 export const prerender = false;
 
 const slug = Astro.url.searchParams.get('slug') ?? '';
-const materials = await getCollection('english');
+const materials = await getCollection('englishEveryday');
 const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
 if (!item) return new Response('Material not found.', { status: 404 });
 
