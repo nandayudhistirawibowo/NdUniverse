@@ -3,7 +3,7 @@ import { ClientRouter } from 'astro:transitions';
 
 const {
   portal = 'student',
-  title = 'Login | siDeutsch',
+  title = 'Login | NdUniverse',
   eyebrow = 'Portal Belajar',
   heading = 'Halo! Selamat datang kembali.',
   description = 'Masuk dengan email atau NIM kamu.',
@@ -38,26 +38,26 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
   </head>
   <body>
     <main class={`auth-screen ${isAdminPortal ? 'admin-portal' : 'student-portal'}`}>
-      <section class="auth-story" aria-label={isEnglish ? 'NdUniverse English' : 'siDeutsch'}>
-        <a class="brand" href="/">{isEnglish ? 'NdUniverse' : 'siDeutsch'}<span>.</span></a>
+      <section class="auth-story" aria-label={isEnglish ? 'NdUniverse English' : 'NdUniverse German'}>
+        <a class="brand" href="/">NdUniverse<span>.</span></a>
         <div class="story-copy">
-          <p class="story-kicker">{isEnglish ? (isAdminPortal ? 'Restricted access' : 'English learning space') : (isAdminPortal ? 'Akses terbatas' : 'Ruang belajar bahasa Jerman')}</p>
+          <p class="story-kicker">{isEnglish ? (isAdminPortal ? 'Restricted access' : 'English learning space') : (isAdminPortal ? 'Akses terbatas' : 'MODUL JERMAN')}</p>
           {isAdminPortal && <p class="portal-stamp">ADMIN PORTAL</p>}
-          <h1>{isEnglish ? <>Build English,<br />one session closer.</> : <>Belajar Jerman,<br />satu sesi lebih dekat.</>}</h1>
+          <h1>{isEnglish ? <>Build English,<br />one session closer.</> : <>Belajar Jerman,<br />satu sesi lebih dekat bersama NdUniverse.</>}</h1>
           <p class="story-detail">
             {isEnglish
               ? (isAdminPortal ? 'Manage the NdUniverse learning space and student accounts.' : 'Build a steady English learning habit, one focused session at a time.')
-              : (isAdminPortal ? 'Kelola ruang belajar dan akun mahasiswa siDeutsch.' : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.')}
+              : (isAdminPortal ? 'Kelola ruang belajar dan akun mahasiswa NdUniverse.' : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.')}
           </p>
         </div>
-        <p class="story-footer">{isEnglish ? 'NdUniverse · Learn at your own pace' : 'siDeutsch · Belajar dengan ritme sendiri'}</p>
+        <p class="story-footer">{isEnglish ? 'NdUniverse · Learn at your own pace' : 'NdUniverse · Belajar dengan ritme sendiri'}</p>
       </section>
 
       <section class="auth-side" aria-labelledby="auth-title">
         <div class="auth-panel">
           {!isAdminPortal && (
             <a class="back-link-top" href="/">
-              <span class="arrow-anim" aria-hidden="true">←</span> {isEnglish ? 'Back to NdUniverse' : 'Kembali ke siDeutsch'}
+              <span class="arrow-anim" aria-hidden="true">←</span> {isEnglish ? 'Back to NdUniverse' : 'Kembali ke NdUniverse'}
             </a>
           )}
           <div class="panel-topline">
