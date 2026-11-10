@@ -2,6 +2,7 @@
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 import { getCollection } from 'astro:content';
 
+const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const materials = (await getCollection('english'))
 	.filter((item) => item.data.track === 'Everyday English')
 	.toSorted((left, right) => {
@@ -25,10 +26,20 @@ const materials = (await getCollection('english'))
 			<h1>Everyday English</h1>
 			<p class="lead">Choose a level and continue building practical English skills.</p>
 		</header>
+		<div class="catalog-controls">
+			<div class="level-filter">
+				<label for="level-filter">Choose a level</label>
+				<select id="level-filter" data-level-filter>
+					<option value="ALL">All Levels</option>
+					{levels.map((level) => <option value={level}>{level}</option>)}
+				</select>
+			</div>
+			<a class="exam-link" data-exam-link href="/en/ujian/ielts">IELTS Simulation</a>
+		</div>
 		{materials.length > 0 ? (
 			<div class="material-grid">
 				{materials.map((item) => (
-					<article class="material-card">
+					<article class="material-card" data-level={item.data.level ?? ''}>
 						<span>{item.data.level ?? 'Everyday English'}</span>
 						<h2>{item.data.title ?? item.id}</h2>
 						<p>{item.data.description ?? ''}</p>
@@ -42,6 +53,25 @@ const materials = (await getCollection('english'))
 	</section>
 </DashboardLayout>
 
+<script>
+	const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
+	const applyFilter = () => {
+		const selected = filter?.value ?? 'ALL';
+		const examLink = document.querySelector<HTMLAnchorElement>('[data-exam-link]');
+		if (examLink) {
+			examLink.href = selected === 'ALL'
+				? '/en/ujian/ielts'
+				: `/en/ujian/ielts/${selected.toLowerCase()}`;
+			examLink.textContent = selected === 'ALL' ? 'IELTS Simulation' : `Start IELTS ${selected}`;
+		}
+		document.querySelectorAll<HTMLElement>('.material-card[data-level]').forEach((card) => {
+			card.hidden = selected !== 'ALL' && card.dataset.level !== selected;
+		});
+	};
+	filter?.addEventListener('change', applyFilter);
+	applyFilter();
+</script>
+
 <style>
 	.everyday-page { display: grid; gap: 1.5rem; width: min(1120px, 100%); margin: 0 auto; padding: 1rem 0 3rem; }
 	.back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
@@ -50,9 +80,20 @@ const materials = (await getCollection('english'))
 	.lead { max-width: 700px; margin: 1rem 0 0; color: var(--muted); line-height: 1.75; }
 	.material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
 	.material-card { display: grid; align-content: start; gap: .65rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
+	.material-card[hidden] { display: none; }
 	.material-card span { color: #966313; font-size: .75rem; font-weight: 800; }
 	.material-card h2, .material-card p { margin: 0; }
 	.material-card p, .empty-state { color: var(--muted); line-height: 1.55; }
 	.material-card a { color: #966313; font-weight: 800; text-decoration: none; }
-	@media (max-width: 700px) { .material-grid { grid-template-columns: 1fr; } }
+	.catalog-controls { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+	.level-filter { display: flex; align-items: center; gap: .75rem; }
+	.level-filter label { font-weight: 800; }
+	.level-filter select { min-height: 44px; padding: .55rem .75rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); }
+	.exam-link { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: .65rem 1rem; border-radius: 8px; background: var(--accent-gold); color: #4b3508; font-weight: 900; text-decoration: none; }
+	@media (max-width: 700px) {
+		.material-grid { grid-template-columns: 1fr; }
+		.catalog-controls { width: 100%; align-items: stretch; flex-direction: column; }
+		.level-filter { width: 100%; align-items: flex-start; flex-direction: column; }
+		.level-filter select, .exam-link { width: 100%; }
+	}
 </style>

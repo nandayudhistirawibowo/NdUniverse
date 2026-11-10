@@ -23,7 +23,7 @@ const materials = (await getCollection('materi'))
           {levels.map((level) => <option value={level}>Level {level}</option>)}
         </select>
       </div>
-      <a class="exam-link" data-exam-link hidden href="/de/ujian">Mulai Ujian</a>
+      <a class="exam-link" data-exam-link href="/de/ujian/goethe">Simulasi Goethe</a>
     </div>
     <div class="level-grid">
       {levels.map((level) => {
@@ -73,15 +73,12 @@ const materials = (await getCollection('materi'))
     const selected = filter?.value ?? 'ALL';
     const examLink = document.querySelector<HTMLAnchorElement>('[data-exam-link]');
     if (examLink) {
-      if (selected === 'ALL') {
-        examLink.hidden = false;
-        examLink.href = '/de/ujian/goethe/a1';
-        examLink.textContent = 'Simulate Goethe A1';
-      } else {
-        examLink.hidden = false;
-        examLink.href = `/de/ujian/goethe/${selected.toLowerCase()}`;
-        examLink.textContent = `Mulai Ujian ${selected}`;
-      }
+      examLink.href = selected === 'ALL'
+        ? '/de/ujian/goethe'
+        : `/de/ujian/goethe/${selected.toLowerCase()}`;
+      examLink.textContent = selected === 'ALL'
+        ? 'Simulasi Goethe'
+        : `Mulai Ujian ${selected}`;
     }
     document.querySelectorAll<HTMLElement>('[data-level]').forEach((section) => {
       section.hidden = selected !== 'ALL' && section.dataset.level !== selected;
