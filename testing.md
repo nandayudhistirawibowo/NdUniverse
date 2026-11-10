@@ -18,3 +18,12 @@
 ## Analisis
 
 Platform NdUniverse mampu menangani 100 user bersamaan tanpa error, dengan waktu respons rata-rata 32ms. Ini membuktikan platform siap untuk production.
+
+## PageSpeed Insights
+
+| Kategori | Skor |
+|---|---:|
+| Performance | 100/100 |
+| Accessibility | 100/100 |
+| Best Practices | 100/100 |
+| SEO | 100/100 |

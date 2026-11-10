@@ -1,11 +1,13 @@
-# siDeutsch — Product Requirements Document
+# PRD Modul Jerman (NdUniverse)
 
 **Status:** Dokumentasi implementasi V3.0
 **Produk:** Platform belajar bahasa Jerman universal A1–C2
 
 ## Ringkasan Produk
 
-siDeutsch adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Produk mendukung mode tamu serta akun login yang menyinkronkan progress ke Supabase.
+Modul Jerman NdUniverse adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Seluruh fitur pembelajaran memerlukan login dan progress disinkronkan ke Supabase.
+
+**Catatan:** Modul Inggris ditunda.
 
 Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, mencakup Alltagsdeutsch A1–C2, Fachdeutsch, dan empat rumpun Career.
 
@@ -14,7 +16,7 @@ Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, men
 - Membantu pengguna belajar bahasa Jerman dari level A1 hingga C2.
 - Membagi pembelajaran materi menjadi empat keterampilan CEFR: Reading/Lesen, Listening/Hören, Writing/Schreiben, dan Speaking/Sprechen.
 - Menyediakan latihan berbasis sesi, umpan balik pengucapan dan audio, progress XP, serta materi profesi.
-- Menjaga fitur guest tetap dapat digunakan tanpa login; sinkronisasi progress berlaku bagi pengguna login.
+- Mewajibkan login untuk mengakses fitur pembelajaran dan menyinkronkan progress pengguna ke Supabase.
 
 ## Fitur Utama
 
@@ -26,7 +28,7 @@ Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, men
 - Setiap materi memiliki kosakata Jerman, terjemahan Indonesia, konteks Jerman, dan terjemahan konteks.
 - Kosakata dibagi menjadi **4 sesi**, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20.
 - Detail materi menampilkan tabel kosakata per sesi beserta tombol speaker dan tombol latihan keempat pilar.
-- Route guest menggunakan `/materi/[slug]` dan `/materi/[slug]/latihan`; route login menggunakan `/dashboard/materi/[slug]` dan `/dashboard/materi/[slug]/latihan`.
+- Route materi dan latihan hanya dapat diakses melalui dashboard setelah login: `/dashboard/materi/[slug]` dan `/dashboard/materi/[slug]/latihan`.
 
 ### Kuis 4 Pilar CEFR
 
@@ -96,7 +98,7 @@ Route `/ujian/[level]` menyediakan Mock Exam mini:
 - 1 Schreiben
 - 1 Sprechen
 - Kelulusan keseluruhan jika skor minimal 60%.
-- Status kelulusan disimpan browser pada `localStorage` dengan key `sideutsch-ujian-[level]`.
+- Status kelulusan disimpan browser pada `localStorage` dengan key `nduniverse-ujian-[level]`.
 - Tombol melihat sertifikat ditampilkan apabila lulus.
 
 Komposisi Mini-Mock tetap 22 soal: 10 Lesen, 10 Hören, 1 Schreiben, dan 1 Sprechen. Schreiben dan Sprechen dinilai persentase berdasarkan kecocokan kata kunci sehingga jawaban parsial tidak langsung bernilai 0 atau 25. Skor total akhir ditampilkan dalam skala 0–100 persen.
@@ -124,7 +126,7 @@ Level B2 ke atas mengikuti durasi yang dikonfigurasi pada implementasi halaman d
 
 Kelulusan seluruh simulasi mensyaratkan **skor minimal 60% pada setiap modul**, bukan hanya rata-rata. Hasil menampilkan skor, rating, paragraf kunci untuk Lesen, transkrip untuk Hören, serta kata kunci dan umpan balik untuk Writing/Speaking.
 
-Status `sideutsch-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus dapat dibuka dan diunduh sebagai PDF melalui `html2pdf.js`.
+Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus dapat dibuka dan diunduh sebagai PDF melalui `html2pdf.js`.
 
 ### Audio TTS dan Microphone
 
@@ -143,7 +145,7 @@ Status `sideutsch-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus d
 
 ### Bookmark dan Penyimpanan Client
 
-- Bookmark kosakata disimpan di `localStorage` dengan key `sideutsch-bookmarks`.
+- Bookmark kosakata disimpan di `localStorage` dengan key `nduniverse-bookmarks`.
 - Duplikat kata Jerman dicegah.
 - Status Mock Exam, hasil Simulasi Goethe, dan data sertifikat disimpan client-side.
 - Sertifikat PDF bukan entitas database.

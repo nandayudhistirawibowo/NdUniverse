@@ -171,7 +171,7 @@ flowchart TD
     M --> N{Timer habis atau modul selesai?}
     N -->|Ya| O[Hitung skor terpisah empat modul]
     O --> P{Setiap modul minimal 60 persen?}
-    P -->|Ya| Q[Simpan status sideutsch-goethe-level]
+    P -->|Ya| Q[Simpan status nduniverse-goethe-level]
     Q --> R[Lulus keseluruhan]
     R --> S[Generate sertifikat PDF]
     P -->|Tidak| T[Gagal keseluruhan]
@@ -209,7 +209,7 @@ flowchart LR
     C --> D{kata Jerman sudah ada?}
     D -->|Ya| E[Jangan duplikat]
     D -->|Belum| F[Simpan german indonesian context]
-    F --> G[localStorage sideutsch-bookmarks]
+    F --> G[localStorage nduniverse-bookmarks]
     E --> G
 ```
 

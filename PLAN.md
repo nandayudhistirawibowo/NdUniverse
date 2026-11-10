@@ -41,4 +41,6 @@ Status: **DITUNDA (Under Development)**
 
 - **Fase 1 (Rebranding & Jerman): SELESAI**
 - **Fase 2 (Inggris): DITUNDA**
-- **Fase 3 (Backend/Testing): DITUNDA**
+- **Fase 3 (Backend/RLS): DITUNDA**
+- **Fase 3 (Testing): SELESAI**
+- **Load Testing & PageSpeed: SELESAI**

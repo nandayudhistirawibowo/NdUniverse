@@ -73,9 +73,9 @@ Materi baru dianggap lulus hanya jika keempat pilar ada setelah normalisasi. Mat
 - Konten Career disimpan di `src/content/career/*.md` dan diambil melalui koleksi Astro `career`, bukan Supabase.
 - Setiap file Career berisi **50 entri `vocab`** dengan `german`, `indonesian`, dan `context`, serta **10 entri `boss_questions`**.
 - Setiap `boss_questions` berisi satu `question` berbahasa Jerman dan array `keywords` 2–3 kata kunci untuk penilaian wawancara.
-- Bookmark kosakata disimpan di browser pada `localStorage` key `sideutsch-bookmarks` dan tidak disinkronkan ke Supabase.
-- Status kelulusan Mock Exam disimpan pada `localStorage` key `sideutsch-ujian-[level]`.
-- Status kelulusan Simulasi Goethe disimpan pada `localStorage` key `sideutsch-goethe-[level]`.
+- Bookmark kosakata disimpan di browser pada `localStorage` key `nduniverse-bookmarks` dan tidak disinkronkan ke Supabase.
+- Status kelulusan Mock Exam disimpan pada `localStorage` key `nduniverse-ujian-[level]`.
+- Status kelulusan Simulasi Goethe disimpan pada `localStorage` key `nduniverse-goethe-[level]`.
 - **Sertifikat PDF adalah artefak client-side** yang dibuat melalui `html2pdf.js`; sertifikat tidak disimpan sebagai entitas atau blob database.
 - Avatar disimpan di bucket Private `avatars` pada Supabase Storage. Aplikasi membuat Signed URL untuk ditampilkan. Bookmark dan sertifikat tidak memiliki tabel SQL.
 - Manifest dan file Audio TTS berjumlah 8.372 MP3 disimpan sebagai aset statis pada `public/audio/tts/`.
