@@ -1,17 +1,83 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
-import Quiz from '../../../modules/english/components/Quiz-en.jsx';
 import { getCollection } from 'astro:content';
 const slug = Astro.params.slug ?? '';
 const materials = await getCollection('english');
 const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
 if (!item) return new Response('Material not found.', { status: 404 });
 const materialSlug = item.id.split('/').at(-1) ?? item.id;
-const vocab = item.data.vocab.map((entry) => ({ german: entry.word, indonesian: entry.translation, context: entry.context }));
+const vocab = item.data.vocab.map((entry) => ({
+  german: entry.word,
+  indonesian: entry.translation,
+  context: entry.context,
+  reading_text: entry.reading_text,
+  reading_question: entry.reading_question,
+  listening_audio: entry.listening_audio,
+  writing_instruction: entry.writing_instruction,
+  speaking_question: entry.speaking_question,
+}));
 const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) => ({ number: index + 1, words: vocab.slice(index * 5, index * 5 + 5) }));
 ---
-<DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}><article class="material-page"><a class="back-link" href={item.data.track === 'Academic English' ? '/en/dashboard' : '/en/everyday-english'} data-session-back>← Back to Materials</a><header><p class="eyebrow">{item.data.track ?? 'Everyday English'} · {item.data.level}</p><h1>{item.data.title ?? item.id}</h1><p>{item.data.description}</p></header><Quiz client:load items={vocab} track={item.data.track ?? 'Everyday English'} level={item.data.level} materialId={item.id} returnHref={`/en/materi/${materialSlug}`} batchSize={5} sessionMode={true}/>{sessions.map((session)=><section class="session-card"><h2>Session {session.number}</h2><div class="table-wrap"><table><thead><tr><th>English</th><th>Indonesian</th><th>Context</th></tr></thead><tbody>{session.words.map((word)=><tr><td lang="en">{word.german}</td><td>{word.indonesian}</td><td>{word.context}</td></tr>)}</tbody></table></div><nav><a href={`/en/materi/latihan?slug=${materialSlug}&type=reading&session=${session.number}`}>Reading</a><a href={`/en/materi/latihan?slug=${materialSlug}&type=listening&session=${session.number}`}>Listening</a><a href={`/en/materi/latihan?slug=${materialSlug}&type=writing&session=${session.number}`}>Writing</a><a href={`/en/materi/latihan?slug=${materialSlug}&type=speaking&session=${session.number}`}>Speaking</a></nav></section>)}</article></DashboardLayout>
+<DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
+  <article class="material-page">
+    <a class="back-link" href={item.data.track === 'Academic English' ? '/en/dashboard' : '/en/everyday-english'} data-session-back>← Back to Materials</a>
+    <header>
+      <p class="eyebrow">{item.data.track ?? 'Everyday English'} · {item.data.level}</p>
+      <h1>{item.data.title ?? item.id}</h1>
+      <p>{item.data.description}</p>
+    </header>
+    {sessions.map((session) => (
+      <section class="session-card">
+        <h2>Session {session.number}</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>English</th><th>Indonesian</th><th>Context</th><th>Word audio</th><th>Sentence audio</th></tr>
+            </thead>
+            <tbody>
+              {session.words.map((word) => (
+                <tr>
+                  <td lang="en">{word.german}</td>
+                  <td>{word.indonesian}</td>
+                  <td lang="en">{word.context}</td>
+                  <td>
+                    <button class="vocab-speech-button" type="button" data-vocab-speech={word.german} aria-label={`Play word: ${word.german}`} title="Play word">🔊</button>
+                  </td>
+                  <td>
+                    <button class="vocab-speech-button" type="button" data-vocab-speech={word.context} aria-label={`Play sentence: ${word.context}`} title="Play sentence">🔊</button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <nav class="pillar-links" aria-label={`Session ${session.number} practice pillars`}>
+          <a href={`/en/materi/latihan?slug=${materialSlug}&type=reading&session=${session.number}`}>Reading</a>
+          <a href={`/en/materi/latihan?slug=${materialSlug}&type=listening&session=${session.number}`}>Listening</a>
+          <a href={`/en/materi/latihan?slug=${materialSlug}&type=writing&session=${session.number}`}>Writing</a>
+          <a href={`/en/materi/latihan?slug=${materialSlug}&type=speaking&session=${session.number}`}>Speaking</a>
+        </nav>
+      </section>
+    ))}
+  </article>
+</DashboardLayout>
 <script>
+  import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
+
+  const bindVocabularyAudio = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-vocab-speech]').forEach((button) => {
+      if (button.dataset.speechBound) return;
+      button.dataset.speechBound = 'true';
+      button.addEventListener('click', () => {
+        const text = button.dataset.vocabSpeech;
+        if (text) void playAudioTTS(text, button);
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', bindVocabularyAudio);
+  bindVocabularyAudio();
+
   document.querySelectorAll<HTMLAnchorElement>('[data-session-back]').forEach((link) => {
     link.addEventListener('click', () => {
       const session = new URLSearchParams(window.location.search).get('session');
@@ -22,4 +88,17 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
     });
   });
 </script>
-<style>.material-page{display:grid;gap:1.25rem}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.session-card{display:grid;gap:.75rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}.table-wrap{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:.65rem;border-bottom:1px solid var(--border);text-align:left}nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}.session-card nav a{min-height:42px;display:grid;place-items:center;border:1px solid var(--border);border-radius:8px;color:var(--text-main);text-decoration:none;font-weight:800}@media(max-width:700px){nav{grid-template-columns:repeat(2,1fr)}} </style>
+<style>
+  .material-page { display: grid; gap: 1.25rem; }
+  .back-link { width: fit-content; color: var(--text-main); font-weight: 800; text-decoration: none; }
+  .eyebrow { color: #966313; font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+  .session-card { display: grid; gap: .75rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: .65rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .vocab-speech-button { min-width: 40px; min-height: 40px; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); cursor: pointer; }
+  .vocab-speech-button.is-playing { border-color: var(--accent-gold); background: #fff4dc; }
+  .pillar-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
+  .pillar-links a { min-height: 42px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
+  @media (max-width: 700px) { .pillar-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+</style>

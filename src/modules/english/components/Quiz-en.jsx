@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { playAudioTTS } from '@german/config/german-speech.js';
+import { playAudioTTS } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import {
   fetchAllUserProgress,
@@ -24,14 +24,8 @@ function shuffle(items) {
 }
 
 function getPillarQuestionType(pillar, item) {
-  const hasText = (value) => typeof value === 'string' && value.trim().length > 0;
-  if (pillar === 'reading') {
-    return hasText(item?.lesen_teks) && hasText(item?.lesen_pertanyaan) ? 'reading' : 'matcher';
-  }
-  if (pillar === 'listening') {
-    const canPlayAudio = hasText(item?.hoeren_audio) || hasText(item?.context) || hasText(item?.german);
-    return canPlayAudio ? 'listening' : 'matcher';
-  }
+  if (pillar === 'reading') return 'reading';
+  if (pillar === 'listening') return 'listening';
   if (pillar === 'writing') return 'writing';
   if (pillar === 'speaking') return 'speaking';
   return null;
@@ -116,17 +110,18 @@ function buildMatcherSet(currentItem, items) {
   };
 }
 
-function buildMultipleChoiceOptions(currentItem, items) {
+function buildMultipleChoiceOptions(currentItem, items, useEnglishAnswers = false) {
   if (!currentItem) return [];
 
-  const uniqueItems = [...new Map(items.map((item) => [item.indonesian, item])).values()];
+  const answerKey = useEnglishAnswers ? 'german' : 'indonesian';
+  const uniqueItems = [...new Map(items.map((item) => [item[answerKey], item])).values()];
   const distractors = shuffle(
     uniqueItems
-      .filter((item) => item.indonesian !== currentItem.indonesian)
-      .map((item) => item.indonesian)
+      .filter((item) => item[answerKey] !== currentItem[answerKey])
+      .map((item) => item[answerKey])
   ).slice(0, 3);
 
-  return shuffle([currentItem.indonesian, ...distractors]);
+  return shuffle([currentItem[answerKey], ...distractors]);
 }
 
 function readCompletedSessions(materialId) {
@@ -145,7 +140,7 @@ function filterPillarItems(items, pillarType, startIndex = 0, batchSize = 5) {
   return items.slice(startIndex, startIndex + batchSize);
 }
 
-/** @param {{ items?: Array<{ german: string, indonesian: string, context: string, lesen_teks?: string, lesen_pertanyaan?: string, hoeren_audio?: string, schreiben_instruksi?: string, sprechen_pertanyaan?: string }>, track?: string, level?: string, jurusan?: string, returnHref?: string, startIndex?: number, batchSize?: number, sessionMode?: boolean, session?: number, materialId?: string, type?: string }} props */
+/** @param {{ items?: Array<{ german: string, indonesian: string, context: string, reading_text?: string, reading_question?: string, listening_audio?: string, writing_instruction?: string, speaking_question?: string }>, track?: string, level?: string, jurusan?: string, returnHref?: string, startIndex?: number, batchSize?: number, sessionMode?: boolean, session?: number, materialId?: string, type?: string }} props */
 export default function Quiz(props) {
   const {
     items: suppliedItems,
@@ -462,7 +457,7 @@ export default function Quiz(props) {
 
   const multipleChoiceOptions = useMemo(() => {
     if (!currentQuestion || !['reading', 'listening'].includes(currentQuestion.type)) return [];
-    return buildMultipleChoiceOptions(currentQuestion, currentBatchItems);
+    return buildMultipleChoiceOptions(currentQuestion, currentBatchItems, currentQuestion.type === 'reading');
   }, [currentQuestion, currentBatchItems]);
 
   const requiredCorrect = Math.ceil(currentBatchItems.length * 0.8);
@@ -682,7 +677,8 @@ export default function Quiz(props) {
 
   function handleMultipleChoiceSubmit() {
     if (!choiceAnswer) return;
-    showResult(choiceAnswer === currentQuestion.indonesian);
+    const correctAnswer = currentQuestion.type === 'reading' ? currentQuestion.german : currentQuestion.indonesian;
+    showResult(choiceAnswer === correctAnswer);
   }
 
   function handleFuzzySubmit() {
@@ -718,7 +714,7 @@ export default function Quiz(props) {
   }
 
   function playListeningAudio(event) {
-    const audioSource = currentQuestion?.hoeren_audio?.trim()
+    const audioSource = currentQuestion?.listening_audio?.trim()
       || currentQuestion?.context?.trim()
       || currentQuestion?.german?.trim();
     if (!audioSource) return;
@@ -952,15 +948,15 @@ export default function Quiz(props) {
                     <p className="question-label">Tipe D · Reading / Reading</p>
                     <h3>Bacalah teks berikut</h3>
                     <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
-                      {currentQuestion.lesen_teks}
+                      {currentQuestion.reading_text || currentQuestion.context}
                     </div>
-                    <h3 style={{ marginTop: '1rem' }}>{currentQuestion.lesen_pertanyaan}</h3>
+                    <h3 style={{ marginTop: '1rem' }}>{currentQuestion.reading_question || 'Which English word is used in this sentence?'}</h3>
                     <div style={{ display: 'grid', gap: '0.65rem' }}>
                       {multipleChoiceOptions.map((option) => (
                         <button
                           key={option}
                           type="button"
-                          className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.indonesian ? 'correct' : ''}`}
+                          className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.german ? 'correct' : ''}`}
                           onClick={() => setChoiceAnswer(option)}
                           disabled={checkedResult !== null}
                         >
@@ -968,7 +964,7 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.indonesian}</p>}
+                    {checkedResult === false && <p className="correct-answer">Correct answer: {currentQuestion.german}</p>}
                   </>
                 ) : currentQuestion.type === 'listening' ? (
                   <>
@@ -978,8 +974,8 @@ export default function Quiz(props) {
                       type="button"
                       className="vocab-speech-button"
                       onClick={playListeningAudio}
-                      aria-label={`Putar audio: ${currentQuestion.hoeren_audio}`}
-                      title="Putar audio"
+                      aria-label={`Play audio: ${currentQuestion.listening_audio || currentQuestion.context || currentQuestion.german}`}
+                      title="Play audio"
                       style={{ width: '52px', height: '52px', fontSize: '1.35rem' }}
                     >
                       🔊
@@ -1002,7 +998,7 @@ export default function Quiz(props) {
                 ) : currentQuestion.type === 'writing' ? (
                   <>
                     <p className="question-label">Tipe F · Writing / Writing</p>
-                    <h3>{currentQuestion.schreiben_instruksi || `Tulis dalam English: ${currentQuestion.indonesian}`}</h3>
+                    <h3>{currentQuestion.writing_instruction || `Write in English: ${currentQuestion.indonesian}`}</h3>
                     <textarea
                       value={userAnswer}
                       onInput={(event) => setUserAnswer(event.currentTarget.value)}
@@ -1027,7 +1023,7 @@ export default function Quiz(props) {
                 ) : currentQuestion.type === 'speaking' ? (
                   <>
                     <p className="question-label">Tipe G · Speaking / Speaking</p>
-                    <h3>{currentQuestion.sprechen_pertanyaan || `Ucapkan dalam English: ${currentQuestion.indonesian}`}</h3>
+                    <h3>{currentQuestion.speaking_question || `Say in English: ${currentQuestion.indonesian}`}</h3>
                     <button
                       type="button"
                       onClick={startSpeechRecognition}
