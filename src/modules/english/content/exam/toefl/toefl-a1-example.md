@@ -2,23 +2,28 @@
 exam_type: toefl
 level: A1
 reading:
-  - passage: "Omar has a small garden. He grows tomatoes and waters the plants every morning."
-    question: "What does Omar grow?"
+  - passage: "My name is Leo, and I live with my parents and sister. My sister is ten years old. We eat breakfast together every morning. On Sundays, we visit our grandparents."
+    question: "Who does Leo live with?"
     options:
-      - "Tomatoes"
-      - "Apples"
-      - "Potatoes"
-    answer: "Tomatoes"
+      - "His parents and sister"
+      - "His teacher and friends"
+      - "His grandparents"
+    answer: "His parents and sister"
 listening:
-  - audio_text: "The class starts at ten and finishes at eleven."
-    question: "When does the class finish?"
+  - audio_text: "Good morning. The market is busy today. Apples cost two dollars a bag, and fresh bread costs one dollar. The fruit stand is next to the main entrance."
+    question: "How much does a bag of apples cost?"
     options:
-      - "At nine"
-      - "At ten"
-      - "At eleven"
-    answer: "At eleven"
-writing: "Write three sentences about a place you like."
-speaking: "Describe your favorite food in a few sentences."
+      - "One dollar"
+      - "Two dollars"
+      - "Three dollars"
+    answer: "Two dollars"
+writing: "Write about your school in 20 words."
+speaking:
+  question: "What is your favorite color?"
+  keywords:
+    - "blue"
+    - "sky"
+    - "calm"
 ---
 
 # TOEFL A1 Example

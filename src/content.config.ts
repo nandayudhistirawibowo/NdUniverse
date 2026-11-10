@@ -105,7 +105,10 @@ const englishExam = defineCollection({
       answer: z.string(),
     })),
     writing: z.string(),
-    speaking: z.string(),
+    speaking: z.object({
+      question: z.string(),
+      keywords: z.array(z.string()).length(3),
+    }),
   }),
 });
 

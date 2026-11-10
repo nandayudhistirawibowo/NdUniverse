@@ -31,6 +31,13 @@ function scoreText(answer, targetWords) {
   return Math.min(100, Math.round((countWords(answer) / targetWords) * 100));
 }
 
+function scoreKeywords(answer, keywords) {
+  if (!keywords.length) return 0;
+  const normalizedAnswer = answer.toLowerCase();
+  const matched = keywords.filter((keyword) => normalizedAnswer.includes(keyword.toLowerCase())).length;
+  return Math.round((matched / keywords.length) * 100);
+}
+
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60).toString().padStart(2, '0');
   const remainder = (seconds % 60).toString().padStart(2, '0');
@@ -56,8 +63,8 @@ export default function EnglishExam({ exam }) {
     reading: scoreChoices(readingQuestions, answers.reading),
     listening: scoreChoices(listeningQuestions, answers.listening),
     writing: scoreText(writingAnswer, 20),
-    speaking: scoreText(speakingAnswer, 10),
-  }), [readingQuestions, listeningQuestions, answers, writingAnswer, speakingAnswer]);
+    speaking: scoreKeywords(speakingAnswer, exam?.speaking?.keywords ?? []),
+  }), [readingQuestions, listeningQuestions, answers, writingAnswer, speakingAnswer, exam?.speaking?.keywords]);
   const totalScore = Math.round(MODULES.reduce((total, module) => total + scores[module], 0) / MODULES.length);
   const passed = MODULES.every((module) => scores[module] >= 60);
   const writingWordCount = countWords(writingAnswer);
@@ -171,7 +178,7 @@ export default function EnglishExam({ exam }) {
               </article>
             ))}
           </div>
-          <p className="scoring-note">Writing score is estimated from a 20-word target; Speaking score is estimated from a 10-word transcript.</p>
+          <p className="scoring-note">Writing score is estimated against a 20-word target; Speaking score is based on the required keywords.</p>
           <div className="result-actions">
             <button type="button" className="primary-action" onClick={() => window.location.reload()}>Retake exam</button>
             <a className="secondary-action" href="/en/everyday-english">Back to Everyday English</a>
@@ -240,7 +247,7 @@ export default function EnglishExam({ exam }) {
 
           {activeModule === 'speaking' && (
             <div className="spoken-response">
-              <p className="response-prompt">{exam.speaking}</p>
+              <p className="response-prompt">{exam.speaking.question}</p>
               <button className="audio-action mic-action" type="button" onClick={startSpeakingCapture} disabled={isRecording}>{isRecording ? 'Listening...' : '🎙 Record answer'}</button>
               <p className="speech-message" role="status">{speechMessage}</p>
               <label for="speaking-answer">Your transcript or typed response</label>
