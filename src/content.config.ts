@@ -65,7 +65,7 @@ const career = defineCollection({
 });
 
 const english = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/en' }),
+  loader: glob({ pattern: '**/*.md', base: './src/modules/english/content' }),
   schema: z.object({
     title: z.string().optional(),
     judulMateri: z.string().optional(),

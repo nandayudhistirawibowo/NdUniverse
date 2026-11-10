@@ -1,7 +1,7 @@
 ---
 import { getEntry } from 'astro:content';
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
-import CareerQuiz from '../../../components/CareerQuiz-en.jsx';
+import CareerQuiz from '../../../modules/english/components/CareerQuiz-en.jsx';
 import HelpHint from '@core/ui/HelpHint.jsx';
 
 export const prerender = false;
@@ -28,13 +28,13 @@ const words = vocab.map((word) => ({
   profile={Astro.locals.profile}
 >
   <section class="career-profession">
-    <a href="/career">← Kembali ke Career</a>
+    <a href="/en/career">← Back to Career</a>
     <div class="profession-heading">
       <h1>Pflege &amp; Gesundheitswesen</h1>
       <HelpHint title="Persiapan Karir" text="Pelajari 50 kosakata dan ikuti simulasi wawancara (Boss Fight) di bawah." client:load />
     </div>
     <CareerQuiz client:load words={words} profession="Pflege" />
-    <article class="boss-card"><span aria-hidden="true">⚔️</span><div><p>Boss Fight</p><h2>Boss Fight: HRD Interview</h2><p>Berlatih menjawab wawancara kerja dalam bahasa Jerman.</p></div><a href="/career/health/boss">Mulai Wawancara</a></article>
+    <article class="boss-card"><span aria-hidden="true">⚔️</span><div><p>Boss Fight</p><h2>Boss Fight: HRD Interview</h2><p>Practice answering job interview questions in English.</p></div><a href="/en/career/health/boss">Start Interview</a></article>
   </section>
 </DashboardLayout>
 

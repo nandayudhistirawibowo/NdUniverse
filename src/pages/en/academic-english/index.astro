@@ -10,7 +10,7 @@ const materials = (await getCollection('english'))
   <main class="academic-page">
     <a class="back-link" href="/en">← Back to English Module</a>
     <header><p class="eyebrow">Academic English · {materials.length} Materials</p><h1>Build language for study and work.</h1><p class="lead">Explore academic vocabulary and professional communication materials.</p></header>
-    {materials.length > 0 ? <div class="material-grid">{materials.map((item)=><article class="material-card"><span>{item.data.level ?? 'Academic'}</span><h2>{item.data.title ?? item.id}</h2><p>{item.data.description}</p><a href={`/en/materi/${item.id}`}>Open Material →</a></article>)}</div> : <p class="empty-state">No Academic English materials are available yet.</p>}
+    {materials.length > 0 ? <div class="material-grid">{materials.map((item)=><article class="material-card"><span>{item.data.level ?? 'Academic'}</span><h2>{item.data.title ?? item.id}</h2><p>{item.data.description}</p><a href={`/en/materi/${item.id.split('/').at(-1)}`}>Open Material →</a></article>)}</div> : <p class="empty-state">No Academic English materials are available yet.</p>}
   </main>
 </Layout>
 

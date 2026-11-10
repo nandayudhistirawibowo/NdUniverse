@@ -1,46 +1,53 @@
 ---
 import Layout from '@core/ui/Layout.astro';
-import Quiz from '../../../components/Quiz-en.jsx';
-import { getEntry } from 'astro:content';
+import Quiz from '../../../modules/english/components/Quiz-en.jsx';
+import { getCollection } from 'astro:content';
 
 export const prerender = false;
 
-const item = await getEntry('materi', Astro.params.slug ?? '');
-if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
+const slug = Astro.url.searchParams.get('slug') ?? '';
+const materials = await getCollection('english');
+const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
+if (!item) return new Response('Material not found.', { status: 404 });
 
 const type = Astro.url.searchParams.get('type') ?? '';
-const pillarLabels = { reading: 'Reading / Lesen', listening: 'Listening / Hören', writing: 'Writing / Schreiben', speaking: 'Speaking / Sprechen' };
-const pillarLabel = pillarLabels[type] ?? 'Latihan Materi';
+const pillarLabels = { reading: 'Reading', listening: 'Listening', writing: 'Writing', speaking: 'Speaking' };
+const pillarLabel = pillarLabels[type] ?? 'Practice';
 const batchSize = 5;
 const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
 const startIndex = (sessionNumber - 1) * batchSize;
 const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
+const materialSlug = item.id.split('/').at(-1) ?? item.id;
+const vocab = item.data.vocab.map((entry) => ({
+  german: entry.word,
+  indonesian: entry.translation,
+  context: entry.context,
+}));
 ---
 
 <Layout
-  title={`Latihan: ${item.data.judulMateri} | siDeutsch`}
-  description={`Latihan kosakata dari materi ${item.data.judulMateri}.`}
+  title={`Practice: ${item.data.title ?? materialSlug} | NdUniverse`}
+  description={`English practice for ${item.data.title ?? materialSlug}.`}
   hideNavbar={true}
 >
   <main class="practice-page">
-    <a class="back-link" href={`/materi/${item.id}`} data-track={item.data.track} data-practice-back>
+    <a class="back-link" href={`/en/materi/${materialSlug}`} data-practice-back>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 18-6-6 6-6M8 12h12" /></svg>
-      <span data-back-label>Kembali ke Materi</span>
+      <span data-back-label>Back to Material</span>
     </a>
     <header class="page-heading">
-      <p class="eyebrow">Latihan Materi</p>
-      <h1>{pillarLabel}: {item.data.judulMateri}</h1>
-      <p>Maksimal {batchSize} soal untuk pilar ini.</p>
+      <p class="eyebrow">English Practice</p>
+      <h1>{pillarLabel}: {item.data.title ?? materialSlug}</h1>
+      <p>Practice up to {batchSize} questions in this session.</p>
     </header>
 
     <section class="practice-panel" aria-label={`Kuis ${item.data.judulMateri}`}>
       <Quiz
         client:load
-        items={item.data.vocab}
+        items={vocab}
         track={item.data.track}
         level={item.data.level}
-        jurusan={item.data.jurusan}
-        returnHref={`/materi/${item.id}`}
+        returnHref={`/en/materi/${materialSlug}`}
         startIndex={startIndex}
         session={sessionNumber}
         batchSize={batchSize}

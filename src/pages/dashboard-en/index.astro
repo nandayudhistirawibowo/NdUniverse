@@ -28,7 +28,7 @@ const { data: progressData } = user
   : { data: [] };
 const progressRows = progressData ?? [];
 const totalXp = progressRows.reduce((total, row) => total + Math.max(0, Number(row.xp) || 0), 0);
-const materials = await getCollection('materi');
+const materials = await getCollection('english');
 const totalSessions = materials.reduce((total, material) => total + Math.ceil(material.data.vocab.length / 5), 0);
 const materialBySlug = new Map(materials.map((item) => [item.id, item]));
 const totalPoints = progressRows.reduce((total, row) => {
@@ -60,7 +60,7 @@ const completedMaterials = progressRows.flatMap((row) => {
   if (!material || material.data.track !== 'Everyday English' || !material.data.level) return [];
   const isComplete = normalizePassedPillars(row.sessions_passed).length === 4;
 
-  return isComplete ? [{ slug: row.material_slug, title: material.data.judulMateri }] : [];
+  return isComplete ? [{ slug: material.id.split('/').at(-1) ?? material.id, title: material.data.title ?? material.data.judulMateri ?? material.id }] : [];
 });
 ---
 
@@ -84,9 +84,9 @@ const completedMaterials = progressRows.flatMap((row) => {
           <p class="eyebrow">Lanjutkan belajar</p>
           <h2>Waktunya satu sesi baru.</h2>
           <p>Pilih materi, pelajari kosakata, lalu selesaikan latihan bertahap.</p>
-          <a href="/materi">Buka katalog <span aria-hidden="true">→</span></a>
+          <a href="/en/materi">Buka katalog <span aria-hidden="true">→</span></a>
         </div>
-        <a class="welcome-mark" href="/materi" aria-label="Buka katalog materi">
+        <a class="welcome-mark" href="/en/materi" aria-label="Buka katalog materi">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 17.5v-11Z" />
             <path d="M8 8h8M8 12h8M8 16h5" />
@@ -138,22 +138,22 @@ const completedMaterials = progressRows.flatMap((row) => {
             <p class="eyebrow">Jalur Belajar</p>
             <h2 id="learning-title">Pilih ruang belajarmu</h2>
           </div>
-          <a href="/materi">Semua Materi <span aria-hidden="true">→</span></a>
+          <a href="/en/materi">Semua Materi <span aria-hidden="true">→</span></a>
         </div>
         <div class="learning-grid">
-          <a class="learning-card" href="/materi">
+          <a class="learning-card" href="/en/materi">
             <span class="learning-index">01</span>
             <h3>Katalog Materi</h3>
             <p>Jelajahi seluruh materi English.</p>
             <span class="learning-arrow" aria-hidden="true">→</span>
           </a>
-          <a class="learning-card" href="/dashboard-en/alltags">
+          <a class="learning-card" href="/en/everyday-english">
             <span class="learning-index">02</span>
             <h3>Everyday English</h3>
             <p>Bangun komunikasi sehari-hari dari A1 sampai C2.</p>
             <span class="learning-arrow" aria-hidden="true">→</span>
           </a>
-          <a class="learning-card" href="/fachdeutsch">
+          <a class="learning-card" href="/en/academic-english">
             <span class="learning-index">03</span>
             <h3>Academic English</h3>
             <p>Pelajari kosakata sesuai bidang studi.</p>
@@ -191,7 +191,7 @@ const completedMaterials = progressRows.flatMap((row) => {
         {completedMaterials.length > 0 ? (
           <ul class="completed-list">
             {completedMaterials.map((material) => (
-              <li><a href={`/materi/${material.slug}`}>{material.title}<span aria-hidden="true">→</span></a></li>
+              <li><a href={`/en/materi/${material.slug}`}>{material.title}<span aria-hidden="true">→</span></a></li>
             ))}
           </ul>
         ) : (

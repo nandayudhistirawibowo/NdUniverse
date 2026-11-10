@@ -21,8 +21,16 @@ const accountAvatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, prof
 const isAdminArea = Astro.url.pathname.startsWith('/admin');
 const isAdminLogin = Astro.url.pathname === '/admin/login';
 const isAdminAccount = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
-const accountHref = isAdminAccount ? '/admin' : '/dashboard';
-const isEnglishRoute = Astro.url.pathname === '/en' || Astro.url.pathname.startsWith('/en/');
+const currentPath = Astro.url.pathname;
+const isEnglishRoute = currentPath === '/en'
+  || currentPath.startsWith('/en/')
+  || currentPath === '/dashboard-en'
+  || currentPath.startsWith('/dashboard-en/');
+const isGermanRoute = currentPath === '/de'
+  || currentPath.startsWith('/de/')
+  || currentPath === '/dashboard-de'
+  || currentPath.startsWith('/dashboard-de/');
+const accountHref = isAdminAccount ? '/admin' : isEnglishRoute ? '/dashboard-en' : isGermanRoute ? '/dashboard-de' : '/dashboard';
 const loginHref = isEnglishRoute ? '/login-en' : '/login-de';
 const languageHref = isEnglishRoute ? '/de' : '/en';
 const languageLabel = isEnglishRoute ? 'Deutsch' : 'English';
@@ -214,7 +222,16 @@ const organizationSchema = {
       const isAdmin = ['admin', '000000'].includes(String(profile?.nim ?? '').toLowerCase());
       const accountLink = document.createElement('a');
       accountLink.className = 'account-link';
-      accountLink.href = isAdmin ? '/admin' : '/dashboard';
+      const currentPath = window.location.pathname;
+      const isEnglishRoute = currentPath === '/en'
+        || currentPath.startsWith('/en/')
+        || currentPath === '/dashboard-en'
+        || currentPath.startsWith('/dashboard-en/');
+      const isGermanRoute = currentPath === '/de'
+        || currentPath.startsWith('/de/')
+        || currentPath === '/dashboard-de'
+        || currentPath.startsWith('/dashboard-de/');
+      accountLink.href = isAdmin ? '/admin' : isEnglishRoute ? '/dashboard-en' : isGermanRoute ? '/dashboard-de' : '/dashboard';
       accountLink.setAttribute('aria-label', `${isAdmin ? 'Admin Panel' : 'Dashboard pengguna'} ${name}`);
 
       const avatarUrl = await createAvatarSignedUrl(supabase, profile?.avatar_url);

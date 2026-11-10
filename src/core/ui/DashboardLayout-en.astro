@@ -13,6 +13,7 @@ const {
 import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
+const accountDashboardHref = isAdmin ? '/admin' : '/dashboard-en';
 const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
 const nimValue = profile?.nim || user?.user_metadata?.nim || '';
 const nim = typeof nimValue === 'string' ? nimValue.trim() : '';
@@ -147,6 +148,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 </svg>
               </summary>
               <div class="account-menu">
+                {!isAdmin && <a href={accountDashboardHref}>Dashboard</a>}
                 {!isAdmin && <a href="/dashboard-en/profil">My Profile</a>}
                 <form action="/logout?module=en" method="post">
                   <button type="submit">Log out</button>

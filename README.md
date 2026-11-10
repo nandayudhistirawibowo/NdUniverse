@@ -82,7 +82,8 @@ NdUniverse (/)
 - [PRD Modul German](PRD.md)
 - [ERD](ERD.md)
 - [Flowchart](FLOWCHART.md)
-- [Handover](HANDOVER.md)
+- [Struktur Data dan Komponen](DATA_STRUCTURE.md)
+- [Handover](HANDOVER_NDUNIVERSE.md)
 - [Testing](TESTING.md)
 
 ## Menjalankan Proyek

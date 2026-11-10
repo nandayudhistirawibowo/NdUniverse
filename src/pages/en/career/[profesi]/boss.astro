@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
-import BossFight from '../../../../components/BossFight-en.jsx';
+import BossFight from '../../../../modules/english/components/BossFight-en.jsx';
 import { getEntry } from 'astro:content';
 
 export const prerender = false;
@@ -27,7 +27,7 @@ const questions = entry?.data.boss_questions ?? [];
   profile={Astro.locals.profile}
 >
   <section class="boss-page">
-    <a class="back-link" href={`/career/${profesi}`}>← Kembali ke Materi</a>
+    <a class="back-link" href={`/en/career/${profesi}`}>← Back to Career</a>
     <header>
       <p class="eyebrow">Boss Fight</p>
       <h1>{titleData[0]}</h1>
@@ -37,7 +37,7 @@ const questions = entry?.data.boss_questions ?? [];
       questions={questions}
       badge={titleData[1]}
       profession={titleData[0]}
-      returnHref={`/career/${profesi}`}
+      returnHref={`/en/career/${profesi}`}
     />
   </section>
 </DashboardLayout>
