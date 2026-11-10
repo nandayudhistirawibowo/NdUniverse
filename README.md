@@ -5,7 +5,7 @@ Platform Super App multi-bahasa untuk persiapan akademik dan karir global (Jerma
 ## Status Modul
 
 - **Modul German (`/de`): 100% Selesai.** Materi A1-C2, kuis 4 Pilar, Ujian Goethe, Career, Boss Fight, TTS 2 tombol (kata dan kalimat), Mobile Responsive, dan SFX sudah tersedia.
-- **Modul English (`/en`): Under Development.** Akses login English sementara ditutup melalui `/login-en`; materi final English belum dipublikasikan.
+- **Modul Inggris:** Fondasi UI & Routing Selesai. Konten & TTS menyusul.
 
 NdUniverse adalah platform induk dengan gerbang utama di `/`, modul German di `/de`, dan modul English di `/en`. Setiap modul dapat memiliki kurikulum, latihan, ujian, Career, dan dashboard sendiri.
 
@@ -21,13 +21,13 @@ NdUniverse adalah platform induk dengan gerbang utama di `/`, modul German di `/
 - Boss Fight Visual Novel untuk latihan wawancara kerja.
 - Audio German berbasis Edge TTS dan fallback Web Speech API.
 
-### Modul English (`/en`) — DITUNDA (Under Development)
+### Modul English (`/en`) — Fondasi Selesai
 
-- Everyday English untuk komunikasi sehari-hari.
-- IELTS/TOEFL preparation.
+- Everyday English untuk komunikasi sehari-hari dengan contoh materi A1.
+- Exam Prep IELTS/TOEFL dengan contoh soal A1 dan route terpisah.
 - Career Prep dan English Interview Challenge.
-- Struktur latihan Reading, Listening, Writing, dan Speaking.
-- Komponen English disiapkan terpisah dari komponen German dengan suffix `-en`.
+- Fondasi latihan Reading, Listening, Writing, dan Speaking.
+- Pengisian materi skala penuh dan produksi audio/TTS English menyusul.
 
 ### Fondasi Platform
 
@@ -45,7 +45,7 @@ NdUniverse adalah platform induk dengan gerbang utama di `/`, modul German di `/
 - **Database/Auth:** Supabase PostgreSQL, Auth, Storage, dan RLS
 - **Multi-language progress:** kolom `user_progress.language_code` dan client progress terpisah untuk `de`/`en`
 - **Konten:** Astro Content Collections, Markdown, dan Zod
-- **Struktur modul:** `src/core/` untuk sistem platform dan `src/modules/german/` untuk konten German
+- **Struktur modul:** `src/core/` untuk sistem platform serta `src/modules/german/` dan `src/modules/english/` untuk modul bahasa
 - **Styling:** CSS murni dengan CSS Variables dan Media Queries
 - **Audio:** Edge TTS, aset MP3 statis German, dan Web Speech API
 - **PDF:** `html2pdf.js`
@@ -71,9 +71,9 @@ NdUniverse (/)
 - `src/core/db/`: progress client German dan English.
 - `src/core/ui/`: Layout, dashboard layout, katalog, modal, dan hint universal.
 - `src/core/game/`: helper game bersama.
-- `src/modules/german/components/`: komponen German dengan suffix `-de`.
-- `src/modules/german/content/`: content collection materi dan Career German.
-- `src/components/`: placeholder dan komponen English tahap awal.
+- `src/modules/german/`: komponen, config, dan konten German.
+- `src/modules/english/`: komponen, config, materi Everyday, dan konten Exam Prep IELTS/TOEFL.
+- `src/content.config.ts`: Content Collections `englishEveryday` dan `englishExam` serta collection German.
 - `src/pages/`: routing Astro; halaman tidak dipindahkan saat refactor.
 
 ## Dokumentasi
@@ -99,7 +99,7 @@ Kelola server background dengan `npx astro dev status`, `npx astro dev logs`, da
 
 ## Audio TTS
 
-Audio German yang tersedia menggunakan Edge TTS dan fallback Web Speech API. Untuk modul English, generator berikutnya harus menggunakan Edge TTS dengan voice `en-US` atau `en-GB`; MP3 English belum perlu dibuat pada tahap fondasi.
+Audio German yang tersedia menggunakan Edge TTS dan fallback Web Speech API. Produksi audio/TTS English dengan voice `en-US` atau `en-GB` menjadi bagian dari Fase 2.5; aset MP3 English belum dibuat.
 
 ```bash
 python -m pip install -r requirements-tts.txt

@@ -2,7 +2,7 @@
 
 ## Status Modul
 
-Modul German 100% selesai dan merupakan jalur aktif saat ini. Modul English ditunda melalui halaman `/login-en`. Semua pengguna wajib login untuk mengakses dashboard dan fitur pembelajaran.
+Modul German 100% selesai. Fondasi UI dan routing Modul English juga selesai, sedangkan pengisian konten dan TTS menyusul. Pengguna wajib login untuk mengakses dashboard dan fitur pembelajaran.
 
 ## Alur Utama
 
@@ -33,6 +33,22 @@ flowchart TD
     J --> K[Buat profil]
     K --> H
     I -->|Konfirmasi email diperlukan atau gagal| L[Tampilkan pesan error]
+```
+
+## Alur Ujian Inggris
+
+```mermaid
+flowchart TD
+    A[User membuka /en/exam/ielts atau /en/exam/toefl] --> B[Pilih level]
+    B --> C[Masuk ke ujian empat modul]
+    C --> D[Reading: timer berjalan]
+    D --> E[Listening: timer berjalan]
+    E --> F[Writing: timer berjalan]
+    F --> G[Speaking: timer berjalan]
+    G --> H[Hitung skor setiap modul]
+    H --> I{Setiap modul mencapai minimal 60%?}
+    I -->|Ya| J[LULUS]
+    I -->|Tidak| K[GAGAL]
 ```
 
 ## Alur Detail Materi dan Pilihan Pilar

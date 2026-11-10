@@ -1,6 +1,6 @@
 # NdUniverse — Entity Relationship Diagram
 
-Status data English ditunda hingga modul `/en` dipublikasikan. Skema progress tetap mendukung `language_code` untuk German (`de`) dan English (`en`) agar aktivasi berikutnya tidak memerlukan perubahan fundamental.
+Modul English sudah aktif pada tahap fondasi. Skema progress mendukung `language_code` untuk German (`de`) dan English (`en`) agar progress kedua modul tetap terpisah.
 
 ## Entitas Utama
 

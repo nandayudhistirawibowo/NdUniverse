@@ -14,7 +14,7 @@ NdUniverse adalah Super App pembelajaran bahasa multi-bahasa berdasarkan Astro 7
 
 - `/`: landing page NdUniverse tanpa login.
 - `/de`: modul bahasa Jerman, empat pilar CEFR, Goethe, Career, dan Boss Fight.
-- `/en`: modul bahasa Inggris ditunda; halaman login menampilkan status Under Development.
+- `/en`: fondasi Modul English selesai, mencakup Everyday English dan Exam Prep IELTS/TOEFL.
 - Seluruh fitur pembelajaran wajib login; akses tanpa login telah dihapus.
 - Database progress dipisahkan berdasarkan `language_code` (`de` atau `en`).
 - Repository saat ini masih bernama `sideutsch` secara lokal/package; penggantian nama GitHub dapat dilakukan dari Settings repository.
@@ -35,7 +35,7 @@ NdUniverse adalah Super App pembelajaran bahasa multi-bahasa berdasarkan Astro 7
 ## Kondisi Implementasi Saat Ini
 
 Status finalisasi fase German: **SELESAI 100% untuk lingkup saat ini**.  
-Status modul English: **DITUNDA / Under Development**. `/login-en` menampilkan pesan penundaan; Auth dan form lama dipertahankan tersembunyi untuk pengaktifan berikutnya.
+Status modul English: **Fondasi UI & Routing Selesai**. Route Everyday English dan Exam Prep tersedia; pengisian konten skala penuh dan TTS menyusul.
 
 ## Validasi Performa
 
@@ -55,32 +55,36 @@ Status modul English: **DITUNDA / Under Development**. `/login-en` menampilkan p
 ### Konfigurasi tetap tersedia
 
 - Landing page platform dan routing `/de` serta `/en`.
+- Komponen English berada di `src/modules/english/components/`, termasuk `EnglishExam-en.jsx`, `Quiz-en.jsx`, `IELTSExam-en.jsx`, `MockExam-en.jsx`, `CareerQuiz-en.jsx`, dan `BossFight-en.jsx`.
+- Konten English berada di `src/modules/english/content/`, dengan collection `englishEveryday` dan `englishExam`.
+- Config speech English tersedia di `src/modules/english/config/english-speech.js`.
 - Komponen English untuk kuis, IELTS, Career, dan Boss Fight.
 - Client progress terpisah: `src/core/db/progress-client.js` dan `src/core/db/progress-client-en.js`.
 - Client English mengirim `language_code: 'en'` dan menggunakan upsert `user_id, material_slug, language_code`.
+- Migrasi kolom `language_code` sudah dijalankan di Supabase. File `supabase/user_progress.sql` di repository belum sinkron dan perlu disesuaikan sebelum digunakan sebagai sumber migrasi berikutnya.
 - Pembagian komponen/asset German dan platform ke struktur modular.
 - Generator TTS German yang membaca koleksi materi German dari `src/content/materi` saat ini sudah tidak lagi sesuai struktur aktual dan perlu diperiksa/diperbarui ke `src/modules/german/content/materi`.
 
 Belum tersedia atau belum terverifikasi:
 
-- Koleksi Markdown English di `src/content/en/` belum ada.
-- Schema English belum didaftarkan di `src/content.config.ts`.
-- Audio English dan folder `public/audio/tts-en/` belum ada.
-- Pengujian E2E `/en` dan penyimpanan `language_code = 'en'` di Supabase belum terverifikasi.
+- Konten Everyday English dan bank soal IELTS/TOEFL skala penuh belum diisi; contoh A1 tersedia di `src/modules/english/content/everyday/` dan `src/modules/english/content/exam/`.
+- Schema collections `englishEveryday` dan `englishExam` sudah terdaftar di `src/content.config.ts`.
+- Audio English produksi dan manifest belum tersedia; TTS/browser fallback sudah disiapkan.
+- Penyimpanan progress `language_code = 'en'` ke Supabase masih perlu diuji end-to-end.
 - Generator TTS masih khusus German dan belum mendukung mode/target language English.
-- Migrasi SQL repository belum mencerminkan perubahan multi-language. `supabase/user_progress.sql` masih memakai unique lama `(user_id, material_slug)` dan belum membuat `language_code`.
 - Nama repositori GitHub lama perlu diselaraskan manual dengan nama produk `NdUniverse`.
 
-## Sisa Pekerjaan Fase 2-5
+## Sisa Pekerjaan
 
-1. **Fase 2: Modul English** ditunda, termasuk materi dan dashboard aktif.
-2. **Fase 3: Backend/Testing** ditunda untuk pengujian dan validasi end-to-end.
-3. **Fase 4: IELTS/TOEFL dan English Career** ditunda.
-4. **Fase 5: Finalisasi publikasi, deployment, dan dokumentasi** menunggu modul aktif berikutnya.
+1. **Fase 2.5: Isi Konten Inggris (Materi & TTS)** menjadi langkah berikutnya.
+2. Isi materi Everyday English A1-C2 dan bank soal IELTS/TOEFL secara bertahap.
+3. Kembangkan generator, aset audio, dan manifest TTS English.
+4. Uji simpan/muat progress `language_code = 'en'` secara end-to-end.
+5. Sinkronkan file `supabase/user_progress.sql` dengan migrasi yang sudah dijalankan di Supabase setelah memverifikasi schema aktual.
 
 ## Temuan Database Penting
 
-Jangan menjalankan `upsert` English sampai schema Supabase dan repository migration konsisten.
+Migrasi untuk kolom `language_code` sudah dijalankan di Supabase. File `supabase/user_progress.sql` masih perlu disesuaikan dengan schema tersebut; jangan jalankan ulang migrasi berdasarkan file lama sebelum memeriksa constraint dan kondisi database aktual.
 
 Target schema yang direncanakan:
 
@@ -108,23 +112,21 @@ Sebelum migration:
 
 ## Backlog Prioritas
 
-### 1. Selesaikan Migration Database English
+### 1. Sinkronkan File Migrasi Progress
 
-- Tambahkan atau perbaiki `language_code` pada `user_progress`.
-- Ganti unique lama dengan `(user_id, material_slug, language_code)`.
-- Sinkronkan constraint Supabase SQL dengan implementasi di kode.
-- Tambahkan default `'de'` untuk backward compatibility.
+- Sesuaikan `supabase/user_progress.sql` dengan migrasi `language_code` yang sudah diterapkan di Supabase.
+- Verifikasi unique key `(user_id, material_slug, language_code)` dan default `'de'` terhadap schema aktual.
+- Jangan menjalankan ulang migrasi secara buta; lakukan perubahan staged setelah backup dan verifikasi.
 
-### 2. Buat Materi English
+### 2. Isi Materi English
 
-- Buat `src/content/en/` beserta koleksi Astro.
-- Tentukan schema khusus untuk `title`, `description`, `level`, `track`, dan vocabulary.
-- Tambahkan minimal satu materi English yang dapat dipakai untuk menguji kuis `/en`.
-- Sambungkan halaman dan komponen quiz ke loader materi English tersebut.
+- Tambahkan materi Everyday English ke `src/modules/english/content/everyday/`.
+- Tambahkan bank soal IELTS/TOEFL ke `src/modules/english/content/exam/`.
+- Gunakan schema collections `englishEveryday` dan `englishExam` yang sudah terdaftar.
 
-### 3. Buat TTS English
+### 3. Produksi TTS English
 
-- Modifikasi atau buat generator terpisah untuk `src/content/en/`.
+- Modifikasi atau buat generator terpisah untuk `src/modules/english/content/`.
 - Gunakan Edge TTS voice English `en-US` atau `en-GB`.
 - Simpan MP3 di `public/audio/tts-en/` dan buat manifest English.
 - Jangan mengubah manifest German tanpa kebutuhan eksplisit.

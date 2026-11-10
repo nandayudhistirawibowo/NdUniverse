@@ -8,8 +8,8 @@ Platform ini menjadi gerbang utama untuk berbagai modul bahasa. Setiap modul dap
 
 ## Status Rilis
 
-- Modul German 100% selesai. Modul German adalah rilis aktif saat ini dengan semua fitur pembelajaran utama.
-- Modul English ditunda dan berada dalam status **Under Development**. `/login-en` menampilkan pengumuman penundaan.
+- Modul German: 100% Selesai.
+- Modul English: Fondasi UI & Routing Selesai (Konten & TTS menyusul).
 
 ## Target User
 
@@ -40,7 +40,7 @@ Modul German adalah modul aktif utama, dengan fokus pada:
 
 Route utama: `/en`
 
-Modul English disiapkan untuk pengembangan berikutnya, dengan fokus pada:
+Fondasi Modul English tersedia, dengan fokus produk pada:
 
 - Persiapan IELTS dan TOEFL.
 - Latihan Reading, Listening, Writing, dan Speaking.
@@ -48,7 +48,7 @@ Modul English disiapkan untuk pengembangan berikutnya, dengan fokus pada:
 - Simulasi ujian dengan penilaian dan feedback terukur.
 - Pengembangan aset audio bahasa Inggris melalui Edge TTS.
 
-Untuk audio English, gunakan Edge TTS dengan voice `en-US` atau `en-GB`. File MP3 baru dibuat saat implementasi modul English dimulai; tidak ada kebutuhan untuk mengunduh ribuan file audio pada tahap fondasi UI.
+Route Everyday English dan Exam Prep IELTS/TOEFL sudah tersedia dengan contoh soal A1. Pengisian konten skala penuh dan aset audio English menyusul. Untuk audio English, gunakan Edge TTS dengan voice `en-US` atau `en-GB`; file MP3 dibuat bertahap sesuai materi.
 
 ## Struktur Navigasi
 

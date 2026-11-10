@@ -7,7 +7,7 @@
 
 Modul Jerman NdUniverse adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Seluruh fitur pembelajaran memerlukan login dan progress disinkronkan ke Supabase.
 
-**Catatan:** Modul Inggris ditunda.
+**Catatan:** Fondasi Modul Inggris selesai; pengisian konten dan TTS menyusul.
 
 Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, mencakup Alltagsdeutsch A1–C2, Fachdeutsch, dan empat rumpun Career.
 

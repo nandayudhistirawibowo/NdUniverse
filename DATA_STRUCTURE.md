@@ -28,6 +28,24 @@ src/
 │       ├── HelpHint.jsx
 │       └── Layout.astro
 ├── modules/
+│   ├── english/
+│   │   ├── components/
+│   │   │   ├── BossFight-en.jsx
+│   │   │   ├── CareerQuiz-en.jsx
+│   │   │   ├── EnglishExam-en.jsx
+│   │   │   ├── IELTSExam-en.jsx
+│   │   │   ├── MockExam-en.jsx
+│   │   │   └── Quiz-en.jsx
+│   │   ├── config/
+│   │   │   └── english-speech.js
+│   │   └── content/
+│   │       ├── everyday/a1/
+│   │       │   ├── english-a1-colors.md
+│   │       │   ├── english-a1-family.md
+│   │       │   └── ...
+│   │       ├── exam/ielts/ielts-a1-example.md
+│   │       ├── exam/toefl/toefl-a1-example.md
+│   │       └── alltags/ (legacy placeholder folders)
 │   └── german/
 │       ├── components/
 │       │   ├── BossFight-de.jsx
@@ -47,20 +65,6 @@ src/
 │           └── materi/
 │               ├── alltags-a1-alam.md
 │               ├── alltags-a1-angka.md
-│               └── ...
-├── components/
-│   ├── BossFight-en.jsx
-│   ├── CareerQuiz-en.jsx
-│   ├── IELTSExam-en.jsx
-│   ├── MockExam-en.jsx
-│   └── Quiz-en.jsx
-├── content/
-│   └── en/
-│       └── alltags/
-│           └── a1/
-│               ├── english-a1-colors.md
-│               ├── english-a1-family.md
-│               ├── english-a1-food.md
 │               └── ...
 ├── layouts/
 ├── pages/
@@ -97,24 +101,28 @@ Implementasi khusus modul German. Komponen menggunakan suffix `-de` agar mudah d
 - **`content/`** — konten German berbasis Markdown yang dikelompokkan menjadi `materi/` dan `career/`. Contoh materi: `alltags-a1-alam.md`; contoh Career: `it.md` dan `health.md`.
 - **`config/`** — konfigurasi/logic khusus German. File `german-speech.js` terkait pengaturan speech German.
 
+### `src/modules/english/`
+
+Modul English mengikuti struktur modular yang simetris dengan German.
+
+- **`components/`** — komponen English untuk kuis, Career, IELTS/TOEFL Exam, dan Boss Fight, semuanya dengan suffix `-en`.
+- **`content/everyday/`** — materi harian English per level CEFR; materi A1 tersedia sebagai contoh.
+- **`content/exam/ielts/` dan `content/exam/toefl/`** — konten ujian per tipe, dengan contoh soal A1 untuk validasi schema.
+- **`config/`** — konfigurasi speech English melalui `english-speech.js`; produksi audio/TTS masih menjadi pekerjaan lanjutan.
+- Astro Content Collections memisahkan konten menjadi `englishEveryday` dan `englishExam`.
+
 ### `src/pages/`
 
 Route Astro berbasis nama file dan struktur folder. Komponen halaman biasanya menyusun layout, mengambil konten, lalu menampilkan komponen interaktif dari `core/` atau modul bahasa.
 
 - **`de/`** — route publik dan fitur modul German, misalnya landing `/de`, materi, ujian, Career, grammar, dan pengucapan.
-- **`en/`** — route modul English, misalnya `/en`, Everyday English, Academic English, Career, dan ujian English. Modul ini masih dalam pengembangan.
+- **`en/`** — route modul English, termasuk Everyday English, Academic English, Career, ujian lama, dan Exam Prep di `/en/exam/[type]/[level]`.
 - **`login-de.astro` dan `login-en.astro`** — halaman login untuk pilihan bahasa masing-masing.
 - **`dashboard-de/` dan `dashboard-en/`** — route dashboard authenticated beserta katalog, profil, bookmark, detail materi, dan latihan. Contoh route: `dashboard-de/materi/[slug]/latihan.astro`.
 - Halaman di root `pages/` seperti `index.astro`, `bantuan.astro`, `panduan.astro`, dan `pengucapan.astro` menyediakan entry point atau route platform yang masih ada.
 - Folder route lain termasuk `api/`, `admin/`, `career/`, `materi/`, `ujian/`, dan `sertifikat/`. Periksa implementasi route terkait sebelum menambah atau memindahkan URL.
 
-### `src/components/`
-
-Komponen bahasa English dan komponen yang belum dipindahkan ke struktur modul khusus. File yang ada saat ini meliputi `Quiz-en.jsx`, `BossFight-en.jsx`, `CareerQuiz-en.jsx`, `MockExam-en.jsx`, dan `IELTSExam-en.jsx`. Komponen platform universal ditempatkan di `src/core/ui/`, bukan di folder ini.
-
-### `src/content/`
-
-Konten English berbasis Markdown yang dikelola sebagai Astro Content Collections. Contoh yang tersedia saat ini berada di `en/alltags/a1/`, seperti `english-a1-colors.md`, `english-a1-family.md`, dan `english-a1-food.md`. Konten German disimpan terpisah di `src/modules/german/content/`.
+Komponen universal ditempatkan di `src/core/ui/`. Folder root `src/components/` dan `src/content/` sudah tidak digunakan; komponen serta konten English berada di `src/modules/english/`.
 
 ### `src/lib/`
 
@@ -130,6 +138,6 @@ Folder `src/lib/` tidak ada pada struktur repository saat ini. Jika menemukan do
 
 - Letakkan helper lintas bahasa di `src/core/` sesuai domainnya.
 - Letakkan komponen dan konten German di `src/modules/german/`.
-- Pertahankan komponen English dengan suffix `-en` di `src/components/` selama belum dipindahkan ke struktur modul khusus.
-- Letakkan Markdown konten English pada collection yang sesuai di `src/content/en/`.
+- Letakkan komponen, config, dan konten English di `src/modules/english/`.
+- Gunakan collection `englishEveryday` untuk materi sehari-hari dan `englishExam` untuk IELTS/TOEFL.
 - Route ditentukan oleh struktur file `src/pages/`; periksa route dan link terkait sebelum mengubah lokasi halaman.

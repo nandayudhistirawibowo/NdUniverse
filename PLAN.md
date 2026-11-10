@@ -10,37 +10,35 @@ Status: **SELESAI**
 - Kuis empat pilar.
 - Dashboard, progress, XP, bookmark, TTS, dan SFX.
 
-## Fase 2 — Ujian, Career, dan Finalisasi German
+## Fase 2 — Modul Inggris (Fondasi)
 
 Status: **SELESAI**
 
-- Simulasi Goethe dan Mock Exam.
-- Sertifikat hasil ujian.
-- Career, kuis kosakata, dan Boss Fight.
-- Penyempurnaan routing, audio, UI, dan efek suara German.
+- Struktur `src/modules/english/` simetris dengan modul German.
+- Content Collections `englishEveryday` dan `englishExam` beserta schema IELTS/TOEFL.
+- Route Everyday English, Exam Prep IELTS/TOEFL, dan redirect kompatibilitas route IELTS lama.
+- UI katalog, login, kuis, komponen ujian, dan contoh soal A1.
 
-## Fase 3 — Modul English
+## Fase 2.5 — Isi Konten Inggris (Materi & TTS)
 
-Status: **DITUNDA (Under Development)**
+Status: **BERIKUTNYA**
 
-- Materi Everyday English dan Academic English.
-- Kuis dan dashboard English.
-- Login English sementara menampilkan halaman Under Development.
-- Progress dan kolom multi-language masih menunggu aktivasi final.
+- Isi materi Everyday English bertahap untuk level A1-C2.
+- Kembangkan bank soal Reading, Listening, Writing, dan Speaking untuk IELTS/TOEFL.
+- Produksi audio/TTS English dan manifest dengan voice `en-US` atau `en-GB`.
+- Uji konten, audio, dan alur belajar English end-to-end.
 
-## Fase 4 — IELTS, TOEFL, dan English Career
+## Fase 3 — Backend dan RLS
 
-Status: **DITUNDA (Under Development)**
+Status: **BELUM DIMULAI**
 
-- Simulasi IELTS dan TOEFL.
-- English Career dan interview challenge.
-- TTS/manifest audio English.
-- Validasi end-to-end dan publikasi modul English.
+- Audit kebijakan akses data dan row-level security.
+- Finalisasi kebutuhan backend multi-bahasa.
 
-## Status Fase Utama
+## Fase 4 — Validasi dan Rilis
 
-- **Fase 1 (Rebranding & Jerman): SELESAI**
-- **Fase 2 (Inggris): DITUNDA**
-- **Fase 3 (Backend/RLS): DITUNDA**
-- **Fase 3 (Testing): SELESAI**
-- **Load Testing & PageSpeed: SELESAI**
+- **Fase 1 (Modul German & Fondasi Platform): SELESAI**
+- **Fase 2 (Modul Inggris - Fondasi): SELESAI**
+- **Fase 2.5 (Konten Inggris & TTS): BERIKUTNYA**
+- **Fase 3 (Backend/RLS): BELUM DIMULAI**
+- Uji regresi dan kesiapan rilis dilaksanakan setelah konten fase 2.5 tersedia.
