@@ -146,13 +146,15 @@ export default function EnglishExam({ exam }) {
           <h1>{exam.exam_type.toUpperCase()} Exam</h1>
           <p>Complete each module before its timer runs out. Each module needs at least 60% to pass.</p>
         </div>
-        {!isComplete && (
+      </header>
+      {!isComplete && (
+        <div className="timer-sticky-shell">
           <div className={`exam-timer ${remainingSeconds <= 60 ? 'urgent' : ''}`} role="timer" aria-live="off">
             <span>{MODULE_LABELS[activeModule]} time</span>
             <strong>{formatTime(remainingSeconds)}</strong>
           </div>
-        )}
-      </header>
+        </div>
+      )}
 
       <nav className="module-steps" aria-label="Exam modules">
         {MODULES.map((module, index) => (
@@ -270,7 +272,8 @@ export default function EnglishExam({ exam }) {
         .exam-heading p { max-width:680px; margin:.4rem 0 0; color:var(--muted); line-height:1.6; }
         .exam-back-link { display:inline-block; margin-bottom:.75rem; color:var(--text-main); font-weight:700; text-decoration:none; }
         .exam-eyebrow,.results-eyebrow { margin:0; color:#966313; font-size:.75rem; font-weight:900; text-transform:uppercase; }
-        .exam-timer { display:grid; flex:0 0 150px; gap:.2rem; padding:.75rem; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); text-align:center; }
+        .timer-sticky-shell { position:sticky; top:72px; z-index:19; display:flex; justify-content:flex-end; padding:.5rem 0; border-bottom:1px solid var(--border); background:rgba(249,249,251,.96); backdrop-filter:blur(10px); }
+        .exam-timer { display:grid; min-width:150px; gap:.2rem; padding:.55rem .8rem; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); text-align:center; }
         .exam-timer span { color:var(--muted); font-size:.72rem; font-weight:800; text-transform:uppercase; }
         .exam-timer strong { font-size:1.65rem; font-variant-numeric:tabular-nums; }
         .exam-timer.urgent { border-color:#c83c3c; color:#a51d1d; }
@@ -287,19 +290,19 @@ export default function EnglishExam({ exam }) {
         .question-list { display:grid; gap:1rem; }
         .exam-question { display:grid; gap:.75rem; padding:1rem; border:1px solid var(--border); border-radius:6px; background:var(--bg-main); }
         .question-count { margin:0; color:#966313; font-size:.76rem; font-weight:900; text-transform:uppercase; }
-        .exam-question blockquote { margin:0; padding:1rem; border-left:3px solid var(--accent-gold); background:var(--card-bg); line-height:1.7; }
+        .exam-question blockquote { max-height:200px; overflow-y:auto; overflow-wrap:anywhere; margin:0; padding:1rem; border-left:3px solid var(--accent-gold); background:var(--card-bg); line-height:1.7; overscroll-behavior:contain; }
         .exam-question h3 { margin:0; font-size:1rem; }
-        .answer-options { display:grid; gap:.55rem; }
-        .answer-option { display:flex; min-height:46px; align-items:center; gap:.65rem; padding:.7rem; border:1px solid var(--border); border-radius:6px; background:var(--card-bg); cursor:pointer; }
+        .answer-options { display:flex; flex-direction:column; gap:12px; min-width:0; }
+        .answer-option { display:flex; min-width:0; min-height:46px; align-items:center; gap:.65rem; padding:.7rem; border:1px solid var(--border); border-radius:6px; background:var(--card-bg); cursor:pointer; overflow-wrap:anywhere; }
         .answer-option.selected { border-color:#3979bc; background:#eef5fc; }
-        .answer-option input { accent-color:#2874b8; }
+        .answer-option input { flex:0 0 auto; accent-color:#2874b8; }
         .audio-action { width:fit-content; min-height:44px; padding:.7rem 1rem; border:0; border-radius:6px; background:#2874b8; color:white; font:inherit; font-weight:800; cursor:pointer; }
         .mic-action { background:#218449; }
         .audio-action:disabled { opacity:.65; cursor:progress; }
         .written-response,.spoken-response { display:grid; gap:.65rem; }
         .response-prompt { margin:0 0 .25rem; padding:1rem; border-left:3px solid var(--accent-gold); background:var(--bg-main); font-weight:700; line-height:1.65; }
         .written-response label,.spoken-response label { font-size:.86rem; font-weight:800; }
-        .written-response textarea,.spoken-response textarea { box-sizing:border-box; width:100%; min-height:150px; padding:.8rem; border:1px solid var(--border); border-radius:6px; background:var(--bg-main); color:var(--text-main); font:inherit; resize:vertical; }
+        .written-response textarea,.spoken-response textarea { box-sizing:border-box; width:100%; min-width:0; max-width:100%; min-height:150px; padding:.8rem; border:1px solid var(--border); border-radius:6px; background:var(--bg-main); color:var(--text-main); font:inherit; font-size:16px; resize:vertical; overflow-wrap:anywhere; }
         .spoken-response textarea { min-height:110px; }
         .word-count { display:flex; flex-wrap:wrap; justify-content:space-between; gap:.5rem; color:var(--muted); font-size:.78rem; }
         .speech-message { min-height:1.2em; margin:0; color:var(--muted); font-size:.82rem; }
@@ -326,7 +329,8 @@ export default function EnglishExam({ exam }) {
         .unavailable { padding:2rem; }
         @media(max-width:700px) {
           .exam-heading { align-items:stretch; flex-direction:column; }
-          .exam-timer { flex-basis:auto; }
+          .timer-sticky-shell { top:62px; justify-content:stretch; }
+          .exam-timer { width:100%; min-width:0; }
           .module-steps { grid-template-columns:repeat(2,minmax(0,1fr)); }
           .module-step { min-height:48px; }
           .score-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
