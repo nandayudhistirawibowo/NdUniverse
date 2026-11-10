@@ -12,11 +12,12 @@ const {
 } = Astro.props;
 const isAdminPortal = portal === 'admin';
 const isEnglish = language === 'en';
+const isGerman = language === 'de';
 const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
 ---
 
 <!doctype html>
-<html lang={isEnglish ? 'en' : 'id'}>
+<html lang={isEnglish ? 'en' : isGerman ? 'de' : 'id'}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,61 +39,63 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
   </head>
   <body>
     <main class={`auth-screen ${isAdminPortal ? 'admin-portal' : 'student-portal'}`}>
-      <section class="auth-story" aria-label={isEnglish ? 'NdUniverse English' : 'NdUniverse German'}>
+      <section class="auth-story" aria-label={isEnglish ? 'NdUniverse English' : isGerman ? 'NdUniverse German' : 'NdUniverse'}>
         <a class="brand" href="/">NdUniverse<span>.</span></a>
         <div class="story-copy">
-          <p class="story-kicker">{isEnglish ? (isAdminPortal ? 'Restricted access' : 'English learning space') : (isAdminPortal ? 'Akses terbatas' : 'MODUL JERMAN')}</p>
-          {isAdminPortal && <p class="portal-stamp">ADMIN PORTAL</p>}
-          <h1>{isEnglish ? <>Build English,<br />one session closer.</> : <>Belajar Jerman,<br />satu sesi lebih dekat bersama NdUniverse.</>}</h1>
+          <p class="story-kicker">{isEnglish ? (isAdminPortal ? 'Restricted access' : 'English learning space') : isGerman ? (isAdminPortal ? 'Zugang beschränkt' : 'MODUL JERMAN') : (isAdminPortal ? 'Akses terbatas' : 'MODUL JERMAN')}</p>
+          {isAdminPortal && <p class="portal-stamp">{isEnglish ? 'ADMIN PORTAL' : isGerman ? 'ADMIN-BEREICH' : 'PORTAL ADMIN'}</p>}
+          <h1>{isEnglish ? <>Build English,<br />one session closer.</> : isGerman ? <>Deutsch lernen,<br />Sitzung für Sitzung mit NdUniverse.</> : <>Belajar Jerman,<br />satu sesi lebih dekat bersama NdUniverse.</>}</h1>
           <p class="story-detail">
             {isEnglish
               ? (isAdminPortal ? 'Manage the NdUniverse learning space and student accounts.' : 'Build a steady English learning habit, one focused session at a time.')
-              : (isAdminPortal ? 'Kelola ruang belajar dan akun mahasiswa NdUniverse.' : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.')}
+              : isGerman
+                ? (isAdminPortal ? 'Verwalten Sie den NdUniverse-Lernbereich und die Benutzerkonten.' : 'Entwickeln Sie eine beständige Lernroutine, Schritt für Schritt.')
+                : (isAdminPortal ? 'Kelola ruang belajar dan akun mahasiswa NdUniverse.' : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.')}
           </p>
         </div>
-        <p class="story-footer">{isEnglish ? 'NdUniverse · Learn at your own pace' : 'NdUniverse · Belajar dengan ritme sendiri'}</p>
+        <p class="story-footer">{isEnglish ? 'NdUniverse · Learn at your own pace' : isGerman ? 'NdUniverse · Lernen Sie in Ihrem eigenen Tempo' : 'NdUniverse · Belajar dengan ritme sendiri'}</p>
       </section>
 
       <section class="auth-side" aria-labelledby="auth-title">
         <div class="auth-panel">
           {!isAdminPortal && (
             <a class="back-link-top" href="/">
-              <span class="arrow-anim" aria-hidden="true">←</span> {isEnglish ? 'Back to NdUniverse' : 'Kembali ke NdUniverse'}
+              <span class="arrow-anim" aria-hidden="true">←</span> {isEnglish ? 'Back to NdUniverse' : isGerman ? 'Zurück zu NdUniverse' : 'Kembali ke NdUniverse'}
             </a>
           )}
           <div class="panel-topline">
             <span class="panel-mark" aria-hidden="true">{isAdminPortal ? 'A' : 'S'}</span>
-            <span class="portal-label">{isEnglish ? (isAdminPortal ? eyebrow : 'Learning Portal') : (isAdminPortal ? eyebrow : 'Portal Belajar')}</span>
+            <span class="portal-label">{isEnglish ? (isAdminPortal ? eyebrow : 'Learning Portal') : isGerman ? (isAdminPortal ? eyebrow : 'Lernportal') : (isAdminPortal ? eyebrow : 'Portal Belajar')}</span>
           </div>
           <h2 id="auth-title">{heading}</h2>
           <p class="panel-description">{description}</p>
 
           <form id="auth-form" class="auth-form" data-portal={portal} data-default-dashboard={defaultDashboard} data-language={language}>
-            <label for="identifier">{isEnglish ? (isAdminPortal ? 'Student ID' : 'Email / Username') : (isAdminPortal ? 'Nomor Induk Mahasiswa' : 'Email / Username')}</label>
+            <label for="identifier">{isEnglish ? (isAdminPortal ? 'Student ID' : 'Email / Username') : isGerman ? (isAdminPortal ? 'Admin-Kennung' : 'E-Mail / Benutzername') : (isAdminPortal ? 'Nomor Induk Mahasiswa' : 'Email / Username')}</label>
             <input
               id="identifier"
               name="identifier"
               type="text"
               inputmode="text"
               autocomplete="username"
-              placeholder={isEnglish ? (isAdminPortal ? 'Enter admin ID' : 'Enter your username or email') : (isAdminPortal ? 'Masukkan NIM admin' : 'Masukkan username atau email')}
+              placeholder={isEnglish ? (isAdminPortal ? 'Enter admin ID' : 'Enter your username or email') : isGerman ? (isAdminPortal ? 'Admin-Kennung eingeben' : 'Benutzername oder E-Mail eingeben') : (isAdminPortal ? 'Masukkan NIM admin' : 'Masukkan username atau email')}
               required
             />
 
-            <label for="password">{isEnglish ? 'Password' : 'Kata Sandi'}</label>
+            <label for="password">{isEnglish ? 'Password' : isGerman ? 'Passwort' : 'Kata Sandi'}</label>
             <div class="password-field">
               <input
                 id="password"
                 name="password"
                 type="password"
                 autocomplete="current-password"
-                placeholder={isEnglish ? 'Enter your password' : 'Masukkan kata sandi'}
+                placeholder={isEnglish ? 'Enter your password' : isGerman ? 'Passwort eingeben' : 'Masukkan kata sandi'}
                 required
               />
               <button
                 class="password-toggle"
                 type="button"
-                aria-label={isEnglish ? 'Show password' : 'Tampilkan kata sandi'}
+                aria-label={isEnglish ? 'Show password' : isGerman ? 'Passwort anzeigen' : 'Tampilkan kata sandi'}
                 aria-pressed="false"
                 data-password-toggle="password"
               >
@@ -115,7 +118,7 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
           </form>
           {!isAdminPortal && (
             <p class="first-login-note">
-              {isEnglish ? 'New account? Enter a new email and password, click Sign in, and an account will be created automatically.' : 'Belum punya akun? Masukkan email dan kata sandi baru, klik Masuk, akun akan dibuat otomatis.'}
+              {isEnglish ? 'New account? Enter a new email and password, click Sign in, and an account will be created automatically.' : isGerman ? 'Noch kein Konto? Geben Sie eine neue E-Mail und ein Passwort ein, klicken Sie auf Anmelden, und ein Konto wird automatisch erstellt.' : 'Belum punya akun? Masukkan email dan kata sandi baru, klik Masuk, akun akan dibuat otomatis.'}
             </p>
           )}
         </div>
@@ -134,7 +137,11 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
   const submitButton = document.querySelector<HTMLButtonElement>('#auth-submit');
   const message = document.querySelector<HTMLElement>('#auth-message');
   const isAdminPortal = form?.dataset.portal === 'admin';
+  const isEnglish = form?.dataset.language === 'en';
+  const isGerman = form?.dataset.language === 'de';
   const adminNims = new Set(['admin', '000000']);
+  const localizedText = (english: string, german: string, indonesian: string) =>
+    isEnglish ? english : isGerman ? german : indonesian;
 
   form?.querySelectorAll<HTMLButtonElement>('[data-password-toggle]').forEach((toggle) => {
     toggle.addEventListener('click', () => {
@@ -143,7 +150,9 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
       const isVisible = target.type === 'text';
       target.type = isVisible ? 'password' : 'text';
       toggle.setAttribute('aria-pressed', String(!isVisible));
-      toggle.setAttribute('aria-label', isVisible ? 'Tampilkan kata sandi' : 'Sembunyikan kata sandi');
+      toggle.setAttribute('aria-label', isVisible
+        ? localizedText('Show password', 'Passwort anzeigen', 'Tampilkan kata sandi')
+        : localizedText('Hide password', 'Passwort verbergen', 'Sembunyikan kata sandi'));
     });
   });
 
@@ -162,18 +171,18 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
     const isValidNim = /^[A-Za-z0-9._-]{3,32}$/.test(identifier);
 
     if (isAdminPortal && !isValidNim) {
-      showMessage('Format NIM admin tidak valid.', 'error');
+      showMessage(localizedText('Invalid admin ID format.', 'Ungültiges Format der Admin-Kennung.', 'Format NIM admin tidak valid.'), 'error');
       return;
     }
 
     if (!isAdminPortal && !isEmail && !isValidNim) {
-      showMessage('Masukkan email yang valid atau NIM 3-32 karakter.', 'error');
+      showMessage(localizedText('Enter a valid email address or an ID with 3-32 characters.', 'Geben Sie eine gültige E-Mail-Adresse oder eine Matrikelnummer mit 3 bis 32 Zeichen ein.', 'Masukkan email yang valid atau NIM 3-32 karakter.'), 'error');
       return;
     }
 
     const email = isEmail ? identifier.toLowerCase() : `${identifier}@student.sideutsch.com`;
     if (isEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      showMessage('Format email tidak valid.', 'error');
+      showMessage(localizedText('Invalid email format.', 'Ungültiges E-Mail-Format.', 'Format email tidak valid.'), 'error');
       return;
     }
 
@@ -183,19 +192,19 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
     const isPrivilegedNim = adminNims.has(String(studentNim ?? '').toLowerCase());
 
     if (!isAdminPortal && isPrivilegedNim) {
-      showMessage('Akses ditolak. Silakan login melalui portal admin.', 'error');
+      showMessage(localizedText('Access denied. Please sign in through the admin portal.', 'Zugriff verweigert. Bitte melden Sie sich über das Admin-Portal an.', 'Akses ditolak. Silakan login melalui portal admin.'), 'error');
       return;
     }
 
     if (isAdminPortal && !isPrivilegedNim) {
-      showMessage('Akses ditolak. Gunakan NIM admin untuk masuk ke portal ini.', 'error');
+      showMessage(localizedText('Access denied. Use an admin ID to access this portal.', 'Zugriff verweigert. Verwenden Sie eine Admin-Kennung für dieses Portal.', 'Akses ditolak. Gunakan NIM admin untuk masuk ke portal ini.'), 'error');
       return;
     }
 
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
-      showMessage('Konfigurasi Supabase belum tersedia.', 'error');
+      showMessage(localizedText('Supabase configuration is unavailable.', 'Die Supabase-Konfiguration ist nicht verfügbar.', 'Konfigurasi Supabase belum tersedia.'), 'error');
       return;
     }
 
@@ -207,7 +216,7 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
       : (redirect?.startsWith('/dashboard-') && !redirect.startsWith('//') ? redirect : defaultDashboard);
 
     submitButton.disabled = true;
-    showMessage('Memeriksa akun...', 'loading');
+    showMessage(localizedText('Checking account...', 'Konto wird überprüft...', 'Memeriksa akun...'), 'loading');
 
     async function prepareProfile(user: { id: string; user_metadata?: Record<string, unknown> }) {
       const { data: profile, error: profileError } = await supabase
@@ -216,10 +225,10 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
         .eq('id', user.id)
         .maybeSingle();
 
-      if (profileError) throw new Error('Profil akun gagal diperiksa.');
+      if (profileError) throw new Error(localizedText('Unable to verify the account profile.', 'Das Kontoprofil konnte nicht überprüft werden.', 'Profil akun gagal diperiksa.'));
       if (profile && adminNims.has(String(profile.nim ?? '').trim().toLowerCase())) {
         await supabase.auth.signOut();
-        throw new Error('Akses ditolak. Silakan login melalui portal admin.');
+        throw new Error(localizedText('Access denied. Please sign in through the admin portal.', 'Zugriff verweigert. Bitte melden Sie sich über das Admin-Portal an.', 'Akses ditolak. Silakan login melalui portal admin.'));
       }
 
       if (!profile) {
@@ -231,7 +240,7 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
           nama_lengkap: profileNim || 'Member',
         }, { onConflict: 'id' });
 
-        if (saveProfileError) throw new Error('Profil akun gagal dibuat. Coba lagi atau hubungi admin.');
+        if (saveProfileError) throw new Error(localizedText('Unable to create the account profile. Try again or contact an administrator.', 'Das Kontoprofil konnte nicht erstellt werden. Versuchen Sie es erneut oder wenden Sie sich an den Support.', 'Profil akun gagal dibuat. Coba lagi atau hubungi admin.'));
       }
     }
 
@@ -251,7 +260,7 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
 
           if (profileError || !adminNims.has(String(profile?.nim ?? '').trim().toLowerCase())) {
             await supabase.auth.signOut();
-            throw new Error('Akses ditolak. Akun ini tidak terdaftar sebagai admin.');
+            throw new Error(localizedText('Access denied. This account is not registered as an administrator.', 'Zugriff verweigert. Dieses Konto ist nicht als Administratorkonto registriert.', 'Akses ditolak. Akun ini tidak terdaftar sebagai admin.'));
           }
         } else {
           await prepareProfile(signInData.user);
@@ -266,11 +275,11 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
 
       if (!invalidCredentials || isAdminPortal || isPrivilegedNim) {
         throw new Error(isAdminPortal
-          ? 'Login admin gagal. Periksa NIM dan password admin.'
-          : 'Login gagal. Periksa koneksi dan format email atau NIM.');
+          ? localizedText('Admin sign-in failed. Check the admin ID and password.', 'Die Admin-Anmeldung ist fehlgeschlagen. Überprüfen Sie die Admin-Kennung und das Passwort.', 'Login admin gagal. Periksa NIM dan password admin.')
+          : localizedText('Sign-in failed. Check your connection and email or ID format.', 'Die Anmeldung ist fehlgeschlagen. Überprüfen Sie Ihre Verbindung und das Format Ihrer E-Mail-Adresse oder Matrikelnummer.', 'Login gagal. Periksa koneksi dan format email atau NIM.'));
       }
 
-      showMessage('Akun belum ditemukan. Membuat akun...', 'loading');
+      showMessage(localizedText('Account not found. Creating account...', 'Konto nicht gefunden. Konto wird erstellt...', 'Akun belum ditemukan. Membuat akun...'), 'loading');
       const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email,
         password: passwordInput.value,
@@ -286,20 +295,20 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
         || /already registered|already exists/i.test(signUpError?.message ?? '')
         || signUpData.user?.identities?.length === 0;
       if (accountAlreadyExists) {
-        throw new Error('Email/NIM sudah terdaftar, tetapi password salah.');
+        throw new Error(localizedText('This email or ID is already registered, but the password is incorrect.', 'Diese E-Mail-Adresse oder Matrikelnummer ist bereits registriert, aber das Passwort ist falsch.', 'Email/NIM sudah terdaftar, tetapi password salah.'));
       }
       if (signUpError || !signUpData.user) {
-        throw new Error('Akun gagal dibuat. Periksa email dan password, lalu coba lagi.');
+        throw new Error(localizedText('Unable to create the account. Check your email and password, then try again.', 'Das Konto konnte nicht erstellt werden. Überprüfen Sie Ihre E-Mail-Adresse und Ihr Passwort und versuchen Sie es erneut.', 'Akun gagal dibuat. Periksa email dan password, lalu coba lagi.'));
       }
 
-      showMessage('Akun dibuat. Menyiapkan sesi login...', 'loading');
+      showMessage(localizedText('Account created. Preparing your sign-in session...', 'Konto erstellt. Anmeldung wird vorbereitet...', 'Akun dibuat. Menyiapkan sesi login...'), 'loading');
       const { data: newSignInData, error: newSignInError } = await supabase.auth.signInWithPassword({
         email,
         password: passwordInput.value,
       });
 
       if (newSignInError || !newSignInData.user) {
-        throw new Error('Akun berhasil dibuat, tetapi belum dapat digunakan. Periksa konfirmasi email atau coba lagi.');
+        throw new Error(localizedText('Account created, but it is not ready to use. Check your email confirmation or try again.', 'Das Konto wurde erstellt, ist aber noch nicht einsatzbereit. Überprüfen Sie Ihre E-Mail-Bestätigung oder versuchen Sie es erneut.', 'Akun berhasil dibuat, tetapi belum dapat digunakan. Periksa konfirmasi email atau coba lagi.'));
       }
 
       await prepareProfile(newSignInData.user);
@@ -307,7 +316,7 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
     } catch (error) {
       submitButton.disabled = false;
       showMessage(
-        error instanceof Error ? error.message : 'Koneksi login gagal. Periksa jaringan lalu coba lagi.',
+        error instanceof Error ? error.message : localizedText('Sign-in connection failed. Check your network and try again.', 'Die Verbindung zur Anmeldung ist fehlgeschlagen. Überprüfen Sie Ihr Netzwerk und versuchen Sie es erneut.', 'Koneksi login gagal. Periksa jaringan lalu coba lagi.'),
         'error'
       );
     }
