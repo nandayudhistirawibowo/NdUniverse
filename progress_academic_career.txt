@@ -1,3 +1,17 @@
 academic/fachdeutsch-akuntansi.md
 academic/fachdeutsch-arsitektur.md
+academic/fachdeutsch-ekonomi-lanjutan.md
+academic/fachdeutsch-farmasi.md
+academic/fachdeutsch-hubungan-internasional.md
+academic/fachdeutsch-hukum.md
+academic/fachdeutsch-informatika-dasar.md
+academic/fachdeutsch-informatika-lanjutan.md
+academic/fachdeutsch-kedokteran-lanjutan.md
+academic/fachdeutsch-kedokteran.md
+academic/fachdeutsch-komunikasi.md
+academic/fachdeutsch-psikologi.md
+academic/fachdeutsch-sastra.md
 career/business.md
+career/health.md
+career/it.md
+career/nutrition.md
