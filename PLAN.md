@@ -28,6 +28,50 @@ Status: **BERIKUTNYA**
 - Produksi audio/TTS English dan manifest dengan voice `en-US` atau `en-GB`.
 - Uji konten, audio, dan alur belajar English end-to-end.
 
+## Fase 2.6 — Standarisasi Grading Ujian (Goethe, IELTS, TOEFL)
+
+Status: **RENCANA (Belum Dieksekusi)**
+
+### Utility Grading Bersama
+
+Rencanakan utility bersama di `src/core/game/exam-grading.js` dengan fungsi:
+
+- `calculateModuleScore(correct, total, type)` — hitung skor 0-100 per modul.
+- `isPassed(moduleScores, threshold=60)` — cek semua modul mencapai ambang kelulusan 60%.
+- `getStorageKey(examType, level)` — kembalikan key unik berdasarkan tipe ujian dan level.
+- `saveExamResult(examType, level, result)` dan `getExamResult(examType, level)` — simpan dan baca hasil dari localStorage.
+- `getBandScore(percentage)` — gunakan mapping statis persentase ke Band Score IELTS/TOEFL.
+
+### Storage Key Terpisah
+
+- Goethe: `nduniverse-goethe-[level]`
+- IELTS: `nduniverse-exam-ielts-[level]`
+- TOEFL: `nduniverse-exam-toefl-[level]`
+
+### Band Score Mapping (Statis)
+
+Jangan menghitung atau mengubah mapping ini secara dinamis:
+
+| Persentase | Estimasi Band Score |
+|---|---|
+| 90-100% | Band 8.0 - 9.0 |
+| 80-89.9% | Band 7.0 - 7.5 |
+| 70-79.9% | Band 6.0 - 6.5 |
+| 60-69.9% | Band 5.5 - 6.0 |
+| 0-59.9% | Di Bawah 5.5 |
+
+### Komponen yang Perlu Diupdate
+
+- `GoetheExam-de.jsx` — gunakan utility grading bersama.
+- `EnglishExam-en.jsx` — gunakan utility bersama dan tampilkan Band Score.
+- `src/pages/en/exam/[type]/[level].astro` — tampilkan Band Score Estimate di halaman hasil.
+
+### Catatan
+
+- Band Score hanya estimasi dan bukan sertifikat resmi.
+- Jangan hapus data localStorage lama; implementasi harus backward-compatible.
+- Jangan ubah timer atau UI yang sudah berjalan.
+
 ## Fase 3 — Backend dan RLS
 
 Status: **BELUM DIMULAI**
@@ -40,5 +84,6 @@ Status: **BELUM DIMULAI**
 - **Fase 1 (Modul German & Fondasi Platform): SELESAI**
 - **Fase 2 (Modul Inggris - Fondasi): SELESAI**
 - **Fase 2.5 (Konten Inggris & TTS): BERIKUTNYA**
+- **Fase 2.6 (Standarisasi Grading): RENCANA (Belum Dieksekusi)**
 - **Fase 3 (Backend/RLS): BELUM DIMULAI**
 - Uji regresi dan kesiapan rilis dilaksanakan setelah konten fase 2.5 tersedia.

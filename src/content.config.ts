@@ -87,6 +87,39 @@ const englishEveryday = defineCollection({
   }),
 });
 
+const englishAcademic = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/modules/english/content/academic' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    jurusan: z.string(),
+    vocab: z.array(z.object({
+      word: z.string(),
+      translation: z.string(),
+      context: z.string(),
+      contextIndonesian: z.string(),
+    })),
+  }),
+});
+
+const englishCareer = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/modules/english/content/career' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    vocab: z.array(z.object({
+      word: z.string(),
+      translation: z.string(),
+      context: z.string(),
+      contextIndonesian: z.string(),
+    })).length(50),
+    boss_questions: z.array(z.object({
+      question: z.string(),
+      keywords: z.array(z.string()),
+    })).length(10),
+  }),
+});
+
 const englishExam = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/modules/english/content/exam' }),
   schema: z.object({
@@ -116,5 +149,7 @@ export const collections = {
   materi,
   career,
   englishEveryday,
+  englishAcademic,
+  englishCareer,
   englishExam,
 };
