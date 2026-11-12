@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Assemble exam listening MP3 files from the repository's existing word audio."""
+"""Assemble exam listening MP3 files from the repository's sentence audio."""
 
 from __future__ import annotations
 
@@ -19,8 +19,9 @@ ROOT = Path(__file__).resolve().parents[1]
 EXAM_DIR = ROOT / "src" / "modules" / "english" / "content" / "exam"
 PUBLIC_DIR = ROOT / "public"
 OUTPUT_DIR = PUBLIC_DIR / "audio" / "exam-listening"
+ERROR_LOG_PATH = ROOT / "error_log.txt"
 LOCALE_BY_EXAM = {"toefl": "us", "ielts": "gb"}
-SILENCE_MS = 300
+SILENCE_MS = 2000
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 LOGGER = logging.getLogger("stitch-exam-audio")
@@ -69,7 +70,15 @@ def read_frontmatter(path: Path) -> dict[str, Any]:
     return payload
 
 
-def load_word_audio_map(locale: str) -> dict[str, Path]:
+def split_sentences(transcript: str) -> list[str]:
+    return [
+        sentence.strip()
+        for sentence in re.split(r"(?<=[.!?])\s+", transcript.strip())
+        if sentence.strip()
+    ]
+
+
+def load_sentence_audio_map(locale: str) -> dict[str, Path]:
     manifest_path = PUBLIC_DIR / "audio" / f"tts-en-{locale}" / f"manifest-en-{locale}.json"
     try:
         manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -79,10 +88,10 @@ def load_word_audio_map(locale: str) -> dict[str, Path]:
         raise RuntimeError(f"{manifest_path}: expected a text-to-audio mapping")
 
     audio_root = (PUBLIC_DIR / "audio" / f"tts-en-{locale}").resolve()
-    word_audio: dict[str, Path] = {}
+    sentence_audio: dict[str, Path] = {}
     for phrase, public_path in manifest.items():
         normalized_phrase = normalize_text(phrase)
-        if len(normalized_phrase.split()) != 1 or not isinstance(public_path, str):
+        if not normalized_phrase or not isinstance(public_path, str):
             continue
         if not public_path.startswith(f"/audio/tts-en-{locale}/"):
             continue
@@ -91,8 +100,8 @@ def load_word_audio_map(locale: str) -> dict[str, Path]:
             LOGGER.warning("Ignoring audio manifest path outside %s: %s", audio_root, public_path)
             continue
         if audio_path.is_file():
-            word_audio.setdefault(normalized_phrase, audio_path)
-    return word_audio
+            sentence_audio.setdefault(normalized_phrase, audio_path)
+    return sentence_audio
 
 
 def load_audio_segment(audio_path: Path):
@@ -122,42 +131,46 @@ def stitch_exam(
     exam_type = str(exam["exam_type"])
     level = str(exam["level"])
     locale = LOCALE_BY_EXAM[exam_type]
-    word_audio = load_word_audio_map(locale)
-    if not word_audio:
-        LOGGER.error(
-            "%s %s has no word-level MP3 files in its %s audio manifest.",
-            exam_type.upper(),
-            level,
-            locale,
-        )
-        return None
+    sentence_audio = load_sentence_audio_map(locale)
 
     silence = audio_segment_type.silent(duration=SILENCE_MS)
     segments = []
     missing_count = 0
+    sentence_count = 0
     for item_index, item in enumerate(exam["listening"], start=1):
-        for token in normalize_text(item["transcript"]).split():
-            audio_path = word_audio.get(token)
+        for sentence in split_sentences(item["transcript"]):
+            audio_path = sentence_audio.get(normalize_text(sentence))
             if audio_path is None:
-                LOGGER.warning(
-                    "%s %s listening[%d]: no %s MP3 for word %r; skipping it.",
-                    exam_type.upper(),
-                    level,
-                    item_index,
-                    locale,
-                    token,
+                message = (
+                    f"{exam_type.upper()} {level} listening[{item_index}]: "
+                    f"no {locale} MP3 for sentence {sentence!r}; skipping it."
                 )
+                LOGGER.error(message)
+                with ERROR_LOG_PATH.open("a", encoding="utf-8") as error_log:
+                    error_log.write(message + "\n")
                 missing_count += 1
                 continue
             try:
-                segments.append(load_audio_segment(audio_path))
+                segment = load_audio_segment(audio_path)
             except ValueError as error:
-                LOGGER.warning("%s %s: %s; skipping word %r.", exam_type.upper(), level, error, token)
+                LOGGER.warning(
+                    "%s %s: %s; skipping sentence %r.",
+                    exam_type.upper(),
+                    level,
+                    error,
+                    sentence,
+                )
                 missing_count += 1
+                continue
+            if segments:
+                segments.append(silence)
+            segments.append(segment)
+            sentence_count += 1
 
     if not segments:
         LOGGER.error(
-            "%s %s produced no audio segments; no output file was written (%d words unavailable).",
+            "%s %s produced no audio segments; no output file was written "
+            "(%d sentence(s) unavailable).",
             exam_type.upper(),
             level,
             missing_count,
@@ -165,9 +178,7 @@ def stitch_exam(
         return None
 
     combined = audio_segment_type.empty()
-    for index, segment in enumerate(segments):
-        if index:
-            combined += silence
+    for segment in segments:
         combined += segment
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -180,9 +191,9 @@ def stitch_exam(
         temporary_path.unlink(missing_ok=True)
 
     LOGGER.info(
-        "Created %s from %d word(s); skipped %d unavailable word(s).",
+        "Created %s from %d sentence(s); skipped %d unavailable sentence(s).",
         display_path(output_path),
-        len(segments),
+        sentence_count,
         missing_count,
     )
     return output_path

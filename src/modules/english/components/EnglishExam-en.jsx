@@ -213,7 +213,13 @@ export default function EnglishExam({ exam, type, level }) {
     };
     recognition.onerror = () => setSpeechMessage('Speech was not captured. Please try again or type your answer.');
     recognition.onend = () => setIsRecording(false);
-    recognition.start();
+    try {
+      recognition.start();
+    } catch (error) {
+      setIsRecording(false);
+      setSpeechMessage('Speech recognition could not start. Please try again or type your answer.');
+      console.error('Unable to start English exam speech recognition.', error);
+    }
   }
 
   if (!exam) {

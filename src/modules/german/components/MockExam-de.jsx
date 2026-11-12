@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')
@@ -8,28 +9,6 @@ function normalizeAnswer(answer) {
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]/gu, '')
     .replace(/\s+/g, ' ');
-}
-
-function fuzzyMatch(answer, expected) {
-  const a = normalizeAnswer(answer);
-  const b = normalizeAnswer(expected);
-  if (!a || !b) return false;
-  if (a === b || a.includes(b) || b.includes(a)) return true;
-
-  const matrix = Array.from({ length: a.length + 1 }, (_, row) =>
-    Array.from({ length: b.length + 1 }, (_, column) =>
-      row === 0 ? column : column === 0 ? row : 0
-    )
-  );
-  for (let i = 1; i <= a.length; i += 1) {
-    for (let j = 1; j <= b.length; j += 1) {
-      const substitute = matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1);
-      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, substitute);
-    }
-  }
-  const distance = matrix[a.length][b.length];
-  const threshold = Math.max(1, Math.floor(Math.max(a.length, b.length) * 0.25));
-  return distance <= threshold;
 }
 
 /** @param {{ level: string; tasks?: Array<any>; unavailable?: boolean }} props */
@@ -41,11 +20,13 @@ export default function MockExam({ level, tasks, unavailable = false }) {
   const [score, setScore] = useState(null);
   const recognitionRef = useRef(null);
   const [isListening, setIsListening] = useState(false);
+  const [speechMessage, setSpeechMessage] = useState('');
 
   useEffect(() => {
     setAnswers({});
     setFinished(false);
     setScore(null);
+    setSpeechMessage('');
   }, [level]);
 
   const chooseAnswer = (index, value) => {
@@ -57,23 +38,37 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     playSound('click');
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) {
-      chooseAnswer(index, 'Browser tidak mendukung Speech Recognition.');
+      setSpeechMessage('Browser ini tidak mendukung pengenalan suara. Silakan ketik jawaban.');
       return;
     }
+    recognitionRef.current?.abort?.();
     const recognition = new Recognition();
     recognition.lang = 'de-DE';
     recognition.interimResults = false;
     recognition.continuous = false;
-    recognitionRef.current?.abort?.();
     recognitionRef.current = recognition;
-    setIsListening(true);
     recognition.onresult = (event) => {
-      const transcript = event.results[0]?.[0]?.transcript ?? '';
+      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
       chooseAnswer(index, transcript);
+      setSpeechMessage(transcript ? 'Jawaban suara berhasil ditangkap.' : 'Tidak ada ucapan yang tertangkap. Coba lagi.');
     };
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
-    recognition.start();
+    recognition.onerror = (event) => {
+      setIsListening(false);
+      setSpeechMessage(`Suara tidak berhasil dikenali (${event.error}). Coba lagi atau ketik jawaban.`);
+    };
+    recognition.onend = () => {
+      setIsListening(false);
+      setSpeechMessage((message) => message === 'Merekam...' ? 'Tidak ada ucapan yang tertangkap. Coba lagi.' : message);
+    };
+    try {
+      recognition.start();
+      setIsListening(true);
+      setSpeechMessage('Merekam...');
+    } catch (error) {
+      setIsListening(false);
+      setSpeechMessage('Perekaman tidak dapat dimulai. Coba lagi atau ketik jawaban.');
+      console.error('Unable to start German mock exam speech recognition.', error);
+    }
   };
 
   const playListeningAudio = (event, task) => {
@@ -91,7 +86,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
       const answer = answers[index];
       if (task.kind === 'reading' || task.kind === 'listening') {
         if (normalizeAnswer(answer) === normalizeAnswer(task.answer)) correct += 1;
-      } else if (typeof answer === 'string' && fuzzyMatch(answer, task.answer)) {
+      } else if (typeof answer === 'string' && isFuzzyMatch(answer, task.answer)) {
         correct += 1;
       }
     });
@@ -194,6 +189,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                   disabled={finished}
                   placeholder={task.kind === 'writing' ? 'Tulis jawaban bahasa Jerman...' : 'Hasil rekaman atau jawaban tertulis...'}
                 />
+                {task.kind === 'speaking' && speechMessage && <p role="status">{speechMessage}</p>}
               </div>
             )}
           </li>

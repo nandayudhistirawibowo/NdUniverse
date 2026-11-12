@@ -82,6 +82,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
   const [isListening, setIsListening] = useState(false);
+  const [speechMessage, setSpeechMessage] = useState('');
   const [playedAudio, setPlayedAudio] = useState({});
   const recognitionRef = useRef(null);
   const answersRef = useRef({});
@@ -99,6 +100,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     setResult(null);
     setActiveModule('lesen');
     setPlayedAudio({});
+    setSpeechMessage('');
   }, [level]);
 
   const chooseAnswer = (moduleId, index, value) => {
@@ -115,7 +117,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     playSound('click');
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) {
-      chooseAnswer(moduleId, index, 'Browser tidak mendukung Speech Recognition.');
+      setSpeechMessage('Browser ini tidak mendukung pengenalan suara. Silakan ketik jawaban.');
       return;
     }
     recognitionRef.current?.abort?.();
@@ -124,13 +126,28 @@ export default function GoetheExam({ level, tasks, available = true }) {
     recognition.interimResults = false;
     recognition.continuous = false;
     recognitionRef.current = recognition;
-    setIsListening(true);
     recognition.onresult = (event) => {
-      chooseAnswer(moduleId, index, event.results[0]?.[0]?.transcript ?? '');
+      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
+      chooseAnswer(moduleId, index, transcript);
+      setSpeechMessage(transcript ? 'Jawaban suara berhasil ditangkap.' : 'Tidak ada ucapan yang tertangkap. Coba lagi.');
     };
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
-    recognition.start();
+    recognition.onerror = (event) => {
+      setIsListening(false);
+      setSpeechMessage(`Suara tidak berhasil dikenali (${event.error}). Coba lagi atau ketik jawaban.`);
+    };
+    recognition.onend = () => {
+      setIsListening(false);
+      setSpeechMessage((message) => message === 'Merekam...' ? 'Tidak ada ucapan yang tertangkap. Coba lagi.' : message);
+    };
+    try {
+      recognition.start();
+      setIsListening(true);
+      setSpeechMessage('Merekam...');
+    } catch (error) {
+      setIsListening(false);
+      setSpeechMessage('Perekaman tidak dapat dimulai. Coba lagi atau ketik jawaban.');
+      console.error('Unable to start Goethe exam speech recognition.', error);
+    }
   };
 
   const playListeningAudio = (event, task, index) => {
@@ -344,6 +361,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                     onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
                     placeholder={activeModule === 'schreiben' ? 'Tulis jawaban dalam bahasa Jerman...' : 'Hasil rekaman atau jawaban tertulis...'}
                   />
+                  {activeModule === 'sprechen' && speechMessage && <p role="status">{speechMessage}</p>}
                   {task.keywords && (
                     <small>Kata kunci yang dinilai: {task.keywords.join(', ')}</small>
                   )}

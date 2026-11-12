@@ -1,0 +1,126 @@
+IELTS A1 listening[1]: no gb MP3 for sentence 'I go to the shop every morning I buy bread and milk'; skipping it.
+IELTS A1 listening[2]: no gb MP3 for sentence 'She walks to the park she likes to see the trees and the birds'; skipping it.
+IELTS A1 listening[3]: no gb MP3 for sentence 'He drinks water after his run he feels fresh'; skipping it.
+IELTS A1 listening[4]: no gb MP3 for sentence 'We eat dinner at six we have rice and vegetables'; skipping it.
+IELTS A1 listening[5]: no gb MP3 for sentence 'The cat sleeps on the sofa it is very soft'; skipping it.
+IELTS A2 listening[1]: no gb MP3 for sentence 'I wake up early and I have a cup of tea'; skipping it.
+IELTS A2 listening[2]: no gb MP3 for sentence 'My sister goes to the market on the weekend and she buys fresh vegetables'; skipping it.
+IELTS A2 listening[3]: no gb MP3 for sentence 'We walk to the park after school and we play football'; skipping it.
+IELTS A2 listening[4]: no gb MP3 for sentence 'He reads a book in the evening and then he goes to bed'; skipping it.
+IELTS A2 listening[5]: no gb MP3 for sentence 'The cat sleeps on the sofa and the dog sleeps on the floor'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'A: Hey, Lisa, have you decided what to do this weekend?'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'B: Not yet.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'I was thinking of going to the lake for a hike.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'A: That sounds nice.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'The weather forecast says it will be sunny on Saturday.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'B: Great!'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'I also need to borrow a kayak.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'Do you have one?'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'A: I have a small one I can lend you.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'We could leave early Saturday morning, maybe around 7 am, to avoid traffic.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'B: Perfect.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'Should we pack a picnic?'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'A: Yes, some sandwiches and fruit would be good.'; skipping it.
+IELTS B1 listening[1]: no gb MP3 for sentence 'We’ll meet at my place at 6:30.'; skipping it.
+IELTS B1 listening[2]: no gb MP3 for sentence 'Today we will review the water cycle, which moves water between the earth’s surface and the atmosphere.'; skipping it.
+IELTS B1 listening[2]: no gb MP3 for sentence 'First, evaporation occurs when the sun heats water in rivers, lakes, and oceans, turning it into vapor.'; skipping it.
+IELTS B1 listening[2]: no gb MP3 for sentence 'The vapor rises and cools, forming clouds in a process called condensation.'; skipping it.
+IELTS B1 listening[2]: no gb MP3 for sentence 'When the clouds become heavy, precipitation falls as rain or snow.'; skipping it.
+IELTS B1 listening[2]: no gb MP3 for sentence 'Some of this water runs off into rivers, while the rest soaks into the ground, becoming groundwater.'; skipping it.
+IELTS B1 listening[2]: no gb MP3 for sentence 'Finally, through transpiration, plants release water back into the air, completing the cycle.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence "Emma: Hey, Alex, have you thought about how we're going to split the research for our environmental science project?"; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'Alex: I was thinking we could each take a different ecosystem.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'Maybe I handle the rainforest section and you cover marine ecosystems.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'Emma: That sounds good, but we also need to include a case study on urban green spaces.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'Maybe we can both contribute a bit to that part.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'Alex: Agreed.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'We should meet twice a week at the library to keep on track.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'How about Tuesdays at 4 pm?'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence 'Emma: Tuesdays work for me.'; skipping it.
+IELTS B2 listening[1]: no gb MP3 for sentence "I'll draft an outline tonight and send it over."; skipping it.
+IELTS B2 listening[2]: no gb MP3 for sentence 'Lecturer: Today we will examine the impact of rising sea levels on coastal communities.'; skipping it.
+IELTS B2 listening[2]: no gb MP3 for sentence 'Over the past century, global sea levels have increased by about 20 centimetres, primarily due to thermal expansion and melting glaciers.'; skipping it.
+IELTS B2 listening[2]: no gb MP3 for sentence 'This rise threatens low-lying areas with more frequent flooding, saltwater intrusion into freshwater supplies, and loss of arable land.'; skipping it.
+IELTS B2 listening[2]: no gb MP3 for sentence 'Some nations are responding by constructing sea walls, while others are implementing managed retreat strategies, relocating populations inland.'; skipping it.
+IELTS B2 listening[2]: no gb MP3 for sentence 'However, both approaches require substantial financial investment and long-term planning.'; skipping it.
+IELTS B2 listening[2]: no gb MP3 for sentence 'Recent studies suggest that limiting global temperature rise to 1.5 degrees Celsius could significantly reduce the projected sea-level increase by the end of the century.'; skipping it.
+IELTS C1 listening[1]: no gb MP3 for sentence 'Good morning, everyone.'; skipping it.
+IELTS C1 listening[1]: no gb MP3 for sentence 'Today I’d like to discuss the ecological and social benefits of urban green spaces.'; skipping it.
+IELTS C1 listening[1]: no gb MP3 for sentence 'Firstly, trees and parks mitigate the urban heat island effect by providing shade and through evapotranspiration, which can lower ambient temperatures by up to 3\u202f°C.'; skipping it.
+IELTS C1 listening[1]: no gb MP3 for sentence 'Secondly, green areas improve air quality by filtering particulate matter and absorbing carbon dioxide.'; skipping it.
+IELTS C1 listening[1]: no gb MP3 for sentence 'Thirdly, they offer residents recreational opportunities that promote mental well‑being; studies show a 15\u202f% reduction in reported stress levels among people living within 300\u202fm of a park.'; skipping it.
+IELTS C1 listening[1]: no gb MP3 for sentence 'However, challenges remain, such as land scarcity and maintenance costs.'; skipping it.
+IELTS C1 listening[1]: no gb MP3 for sentence 'To maximize impact, cities should prioritize multifunctional designs that combine biodiversity corridors with community gardens.'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'Researcher A: Have you read the latest paper on algorithmic bias in hiring platforms?'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'It argues that even transparent models can perpetuate discrimination if the training data reflect historical inequities.'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'Researcher B: Yes, and the authors propose a mitigation framework that includes regular audits, diverse data sampling, and stakeholder feedback loops.'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'They also stress the importance of explainability, so users can understand why a candidate was ranked a certain way.'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'Researcher A: I’m curious about the feasibility of continuous audits.'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'Companies might view them as costly, but the long‑term reputational risk could outweigh the expense.'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'Researcher B: Absolutely.'; skipping it.
+IELTS C1 listening[2]: no gb MP3 for sentence 'Moreover, integrating ethical guidelines into the development lifecycle, rather than treating them as an afterthought, seems to produce more trustworthy systems.'; skipping it.
+IELTS C2 listening[1]: no gb MP3 for sentence 'Professor Liu: Today we’ll explore the recent breakthroughs in quantum error correction.'; skipping it.
+IELTS C2 listening[1]: no gb MP3 for sentence 'Classical computers rely on redundancy to detect and fix errors, but quantum bits—qubits—are fragile, collapsing under the slightest disturbance.'; skipping it.
+IELTS C2 listening[1]: no gb MP3 for sentence 'The surface‑code architecture, introduced five years ago, uses a lattice of physical qubits to encode logical information.'; skipping it.
+IELTS C2 listening[1]: no gb MP3 for sentence 'However, its overhead was prohibitive.'; skipping it.
+IELTS C2 listening[1]: no gb MP3 for sentence 'In 2023 a team at the Quantum Institute demonstrated a new concatenated code that reduces the required qubits by 40\u202f% while maintaining fault tolerance.'; skipping it.
+IELTS C2 listening[1]: no gb MP3 for sentence 'This advancement brings us closer to scalable, universal quantum computers, though challenges remain in maintaining coherence over longer computational cycles.'; skipping it.
+IELTS C2 listening[2]: no gb MP3 for sentence 'Patel: I’m glad you asked about the ethical dimensions of CRISPR‑based gene editing.'; skipping it.
+IELTS C2 listening[2]: no gb MP3 for sentence 'While the technology offers unprecedented potential to eradicate hereditary diseases, it also raises profound questions about consent, equity, and unintended ecological impact.'; skipping it.
+IELTS C2 listening[2]: no gb MP3 for sentence 'For instance, editing embryos could prevent cystic fibrosis, yet it may also introduce off‑target mutations that we cannot fully predict.'; skipping it.
+IELTS C2 listening[2]: no gb MP3 for sentence 'Moreover, if only affluent societies can afford these therapies, we risk widening existing health disparities.'; skipping it.
+IELTS C2 listening[2]: no gb MP3 for sentence 'Therefore, many bioethicists advocate for a global governance framework that balances scientific innovation with precautionary principles.'; skipping it.
+TOEFL A1 listening[1]: no us MP3 for sentence 'I go to school every day'; skipping it.
+TOEFL A1 listening[2]: no us MP3 for sentence 'She likes to read books'; skipping it.
+TOEFL A1 listening[3]: no us MP3 for sentence 'We eat lunch at noon'; skipping it.
+TOEFL A1 listening[4]: no us MP3 for sentence 'The dog runs fast in the park'; skipping it.
+TOEFL A1 listening[5]: no us MP3 for sentence 'He drinks water after the run'; skipping it.
+TOEFL A2 listening[1]: no us MP3 for sentence 'The dog runs fast in the park'; skipping it.
+TOEFL A2 listening[2]: no us MP3 for sentence 'She reads a book in the quiet room'; skipping it.
+TOEFL A2 listening[3]: no us MP3 for sentence 'The sun shines bright over the hill'; skipping it.
+TOEFL A2 listening[4]: no us MP3 for sentence 'Children play games on the playground'; skipping it.
+TOEFL A2 listening[5]: no us MP3 for sentence 'A baker makes fresh bread every morning'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'Professor: Good morning, everyone.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'Today we’ll talk about photosynthesis, the process that plants use to turn sunlight into food.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'First, chlorophyll in the leaves captures light energy.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'This energy splits water molecules into oxygen and hydrogen.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'The oxygen is released into the air, while the hydrogen combines with carbon dioxide to form glucose, a sugar that fuels the plant’s growth.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'Two main stages occur: the light‑dependent reactions and the Calvin cycle.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'In the light‑dependent stage, light energy is converted into chemical energy in the form of ATP and NADPH.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'These molecules then power the Calvin cycle, where carbon dioxide is fixed into glucose.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'Temperature, light intensity, and carbon dioxide levels all affect the rate of photosynthesis.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'For example, on a bright, warm day with plenty of CO₂, plants photosynthesize faster than on a cloudy, cool day.'; skipping it.
+TOEFL B1 listening[1]: no us MP3 for sentence 'That’s why greenhouse growers often control these factors to maximize crop yields.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'Professor: Good afternoon, everyone.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'Today we’ll explore how social media has reshaped interpersonal communication.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'In the early 2000s, platforms like MySpace and early Facebook were primarily used for sharing personal updates.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'Over the past decade, however, the emphasis has shifted toward real‑time interaction—think of stories, live streams, and short‑form video.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'This immediacy encourages users to craft concise messages, often sacrificing depth for speed.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'Moreover, algorithms prioritize content that generates high engagement, which can amplify sensational or emotionally charged posts.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'While this can foster rapid information dissemination, it also contributes to echo chambers, where users are repeatedly exposed to viewpoints that reinforce their existing beliefs.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'On the positive side, social media enables connections across geographic boundaries, allowing families and friends to maintain relationships despite physical distance.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'It also provides a platform for marginalized groups to voice concerns and organize movements.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'Nonetheless, the constant influx of notifications can lead to cognitive overload, reducing the ability to focus on longer, more complex texts.'; skipping it.
+TOEFL B2 listening[1]: no us MP3 for sentence 'In sum, social media’s impact is double‑edged: it democratizes communication but also challenges our capacity for deep, reflective dialogue.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Professor Martinez: Good afternoon, everyone.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence "Today we're going to explore the fundamentals of quantum computing and why it matters for future technology."; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Classical computers, as you know, process information in bits that are either 0 or 1.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Quantum computers, however, use quantum bits, or qubits, which can exist in a superposition of both states simultaneously.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'This property allows a quantum processor to evaluate many possible solutions at once.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Another key concept is entanglement, where the state of one qubit becomes linked to another, regardless of distance.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Entanglement enables instantaneous correlations that can dramatically speed up certain calculations, such as factoring large numbers or simulating molecular interactions.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Yet, building a functional quantum computer is extremely challenging.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Qubits are highly susceptible to decoherence—loss of quantum information—caused by environmental noise.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'Researchers mitigate this by employing error‑correction codes and by cooling the system to near absolute zero using dilution refrigerators.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'While we’re still in the noisy intermediate‑scale quantum (NISQ) era, recent experiments have demonstrated quantum supremacy, meaning a quantum device performed a specific task faster than the world’s most powerful supercomputer.'; skipping it.
+TOEFL C1 listening[1]: no us MP3 for sentence 'The implications are vast, ranging from cryptography to drug discovery, but practical, large‑scale quantum computers may still be a decade or more away.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'Good afternoon, everyone.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'Today I’ll give you an overview of quantum computing and why it represents a paradigm shift from classical computers.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'Classical machines process information using bits that are either 0 or 1.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'In contrast, quantum computers use quantum bits, or qubits, which can exist in superpositions of both states simultaneously.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'This property, along with entanglement—a phenomenon where qubits become interdependent regardless of distance—allows quantum computers to perform certain calculations exponentially faster.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'For instance, factoring large numbers, which underpins modern cryptography, could be solved in polynomial time on a sufficiently advanced quantum processor.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'However, building such machines is fraught with challenges.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'Qubits are extremely sensitive to environmental noise, leading to decoherence that destroys quantum information.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'Researchers are exploring error‑correction codes and topological qubits to mitigate these issues, but practical, large‑scale quantum computers remain a distant goal.'; skipping it.
+TOEFL C2 listening[1]: no us MP3 for sentence 'Despite these hurdles, the potential applications span drug discovery, optimization problems, and simulation of complex quantum systems, making the field a hotbed of interdisciplinary research.'; skipping it.

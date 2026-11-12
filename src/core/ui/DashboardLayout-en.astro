@@ -1,6 +1,7 @@
 ---
 import { createAvatarSignedUrl } from '@core/auth/avatar';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
+import ChatbotWidget from '@core/ui/ChatbotWidget.jsx';
 
 const {
   title = 'English Dashboard | NdUniverse',
@@ -90,10 +91,6 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4V4.5Z" /></svg>
                 <span>Bookmarks</span>
               </a>
-              <a class={`nav-item ${active === 'help' ? 'active' : ''}`} href="/en/help" aria-current={active === 'help' ? 'page' : undefined}>
-                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M9.6 9a2.5 2.5 0 1 1 4.4 1.6c-1.1 1.1-2 1.4-2 3M12 17.5h.01" /></svg>
-                <span>Help</span>
-              </a>
               <a class="nav-item" href="/en/pronunciation">
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 19h16M7 5v14M17 5v14" /><path d="m10 10 2 4 2-4" /></svg>
                 <span>Pronunciation Guide</span>
@@ -168,6 +165,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </footer>
       </div>
     </div>
+    <ChatbotWidget client:load />
   </body>
 </html>
 

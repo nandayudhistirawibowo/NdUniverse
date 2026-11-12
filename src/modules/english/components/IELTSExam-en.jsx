@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')
@@ -8,30 +9,6 @@ function normalizeAnswer(answer) {
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]/gu, '')
     .replace(/\s+/g, ' ');
-}
-
-function fuzzyMatch(answer, expected) {
-  const a = normalizeAnswer(answer);
-  const b = normalizeAnswer(expected);
-  if (!a || !b) return false;
-  if (a === b || a.includes(b) || b.includes(a)) return true;
-
-  const matrix = Array.from({ length: a.length + 1 }, (_, row) =>
-    Array.from({ length: b.length + 1 }, (_, column) =>
-      row === 0 ? column : column === 0 ? row : 0
-    )
-  );
-  for (let i = 1; i <= a.length; i += 1) {
-    for (let j = 1; j <= b.length; j += 1) {
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,
-        matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
-      );
-    }
-  }
-  const threshold = Math.max(1, Math.floor(Math.max(a.length, b.length) * 0.25));
-  return matrix[a.length][b.length] <= threshold;
 }
 
 function tokenizeAnswer(answer) {
@@ -61,10 +38,7 @@ function partialTextScore(answer, task) {
       if (keywordTokens.length === 0) return false;
       return keywordTokens.every((keywordToken) =>
         answerTokens.some((answerToken) =>
-          answerToken === keywordToken
-          || answerToken.includes(keywordToken)
-          || keywordToken.includes(answerToken)
-          || fuzzyMatch(answerToken, keywordToken)
+          isFuzzyMatch(answerToken, keywordToken)
         )
       );
     });
@@ -108,6 +82,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
   const [isListening, setIsListening] = useState(false);
+  const [speechMessage, setSpeechMessage] = useState('');
   const [playedAudio, setPlayedAudio] = useState({});
   const recognitionRef = useRef(null);
   const answersRef = useRef({});
@@ -125,6 +100,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     setResult(null);
     setActiveModule('lesen');
     setPlayedAudio({});
+    setSpeechMessage('');
   }, [level]);
 
   const chooseAnswer = (moduleId, index, value) => {
@@ -141,7 +117,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     playSound('click');
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) {
-      chooseAnswer(moduleId, index, 'Browser tidak mendukung Speech Recognition.');
+      setSpeechMessage('Speech recognition is not supported by this browser. You can type your answer instead.');
       return;
     }
     recognitionRef.current?.abort?.();
@@ -150,13 +126,28 @@ export default function GoetheExam({ level, tasks, available = true }) {
     recognition.interimResults = false;
     recognition.continuous = false;
     recognitionRef.current = recognition;
-    setIsListening(true);
     recognition.onresult = (event) => {
-      chooseAnswer(moduleId, index, event.results[0]?.[0]?.transcript ?? '');
+      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
+      chooseAnswer(moduleId, index, transcript);
+      setSpeechMessage(transcript ? 'Speech captured successfully.' : 'No speech was captured. Please try again.');
     };
-    recognition.onerror = () => setIsListening(false);
-    recognition.onend = () => setIsListening(false);
-    recognition.start();
+    recognition.onerror = (event) => {
+      setIsListening(false);
+      setSpeechMessage(`Speech was not recognized (${event.error}). Please try again or type your answer.`);
+    };
+    recognition.onend = () => {
+      setIsListening(false);
+      setSpeechMessage((message) => message === 'Recording...' ? 'No speech was captured. Please try again.' : message);
+    };
+    try {
+      recognition.start();
+      setIsListening(true);
+      setSpeechMessage('Recording...');
+    } catch (error) {
+      setIsListening(false);
+      setSpeechMessage('Recording could not be started. Please try again or type your answer.');
+      console.error('Unable to start IELTS exam speech recognition.', error);
+    }
   };
 
   const playListeningAudio = (event, task, index) => {
@@ -370,6 +361,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                     onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
                     placeholder={activeModule === 'schreiben' ? 'Write your answer in English...' : 'Your recording or written response...'}
                   />
+                  {activeModule === 'sprechen' && speechMessage && <p role="status">{speechMessage}</p>}
                   {task.keywords && (
                     <small>Scored keywords: {task.keywords.join(', ')}</small>
                   )}

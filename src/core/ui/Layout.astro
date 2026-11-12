@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import { createAvatarSignedUrl } from '@core/auth/avatar';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
+import ChatbotWidget from '@core/ui/ChatbotWidget.jsx';
 
 const {
   title = 'NdUniverse - Platform Belajar Bahasa',
@@ -113,7 +114,6 @@ const organizationSchema = {
                         <a href="/en/materi">All Materials</a>
                         <a href="/en/pronunciation">Pronunciation Guide</a>
                         <a href="/en/grammar">Grammar</a>
-                        <a href="/en/help">Help</a>
                       </>
                     ) : (
                       <>
@@ -121,7 +121,6 @@ const organizationSchema = {
                         <a href="/materi">Semua Materi</a>
                         <a href="/pengucapan">Panduan Pengucapan</a>
                         <a href="/grammar">Tata Bahasa</a>
-                        <a href="/panduan">Bantuan</a>
                       </>
                     )}
                   </>
@@ -166,6 +165,7 @@ const organizationSchema = {
         </div>
       </footer>
     </div>
+    <ChatbotWidget client:load />
   </body>
 </html>
 
