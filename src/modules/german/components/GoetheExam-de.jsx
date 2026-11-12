@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
+import { calculateModuleScore, isPassed, saveExamResult } from '@core/game/exam-grading.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 
 function normalizeAnswer(answer) {
@@ -103,7 +104,6 @@ function formatTime(seconds) {
 }
 
 export default function GoetheExam({ level, tasks, available = true }) {
-  const storageKey = `sideutsch-goethe-${level.toLowerCase()}`;
   const [activeModule, setActiveModule] = useState('lesen');
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
@@ -181,23 +181,22 @@ export default function GoetheExam({ level, tasks, available = true }) {
           correct += partialTextScore(answer, task);
         }
       });
-      const ratio = moduleTasks.length ? correct / moduleTasks.length : 0;
-      const percent = Math.round(ratio * 100);
+      const percent = calculateModuleScore(correct, moduleTasks.length, 'goethe');
       return {
         id: module.id,
         label: module.label,
         correct: Math.round(correct * 100) / 100,
         total: moduleTasks.length,
         percent,
-        points: Math.round(ratio * 25),
-        passed: percent >= 60,
+        points: calculateModuleScore(correct, moduleTasks.length * 4, 'goethe'),
+        passed: isPassed([percent]),
         rating: rating(percent),
         answers: moduleTasks.map((task, index) => String(currentAnswers[`${module.id}-${index}`] ?? '').trim()),
         keywords: moduleTasks.map((task) => task.keywords ?? task.answer ?? []),
       };
     });
     const totalPoints = moduleResults.reduce((sum, module) => sum + module.points, 0);
-    const passed = moduleResults.every((module) => module.passed);
+    const passed = isPassed(moduleResults.map((module) => module.percent));
     const nextResult = {
       passed,
       totalPoints,
@@ -208,7 +207,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     };
     setResult(nextResult);
     playSound(passed ? 'success' : 'error');
-    localStorage.setItem(storageKey, JSON.stringify(nextResult));
+    saveExamResult('goethe', level, nextResult);
   };
 
   const finishCurrentModule = () => {

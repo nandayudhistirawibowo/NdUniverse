@@ -33,5 +33,5 @@ const label = examType.toUpperCase();
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
-  <EnglishExam client:load exam={exam} />
+  <EnglishExam client:load exam={exam} type={examType} level={level} />
 </DashboardLayout>

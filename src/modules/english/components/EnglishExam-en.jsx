@@ -1,5 +1,12 @@
 import { useEffect, useMemo, useState } from 'preact/hooks';
 import { playAudioTTS } from '../config/english-speech.js';
+import {
+  calculateModuleScore,
+  getBandScore,
+  getExamResult,
+  isPassed,
+  saveExamResult,
+} from '@core/game/exam-grading.js';
 
 const MODULES = ['reading', 'listening', 'writing', 'speaking'];
 const MODULE_LABELS = {
@@ -21,21 +28,19 @@ function countWords(value) {
   return value.trim().match(/\S+/g)?.length ?? 0;
 }
 
-function scoreChoices(questions, answers) {
-  if (!questions.length) return 0;
+function scoreChoices(questions, answers, type) {
   const correct = questions.reduce((total, question, index) => total + Number(answers[index] === question.answer), 0);
-  return Math.round((correct / questions.length) * 100);
+  return calculateModuleScore(correct, questions.length, type);
 }
 
-function scoreText(answer, targetWords) {
-  return Math.min(100, Math.round((countWords(answer) / targetWords) * 100));
+function scoreText(answer, targetWords, type) {
+  return calculateModuleScore(Math.min(countWords(answer), targetWords), targetWords, type);
 }
 
-function scoreKeywords(answer, keywords) {
-  if (!keywords.length) return 0;
+function scoreKeywords(answer, keywords, type) {
   const normalizedAnswer = answer.toLowerCase();
   const matched = keywords.filter((keyword) => normalizedAnswer.includes(keyword.toLowerCase())).length;
-  return Math.round((matched / keywords.length) * 100);
+  return calculateModuleScore(matched, keywords.length, type);
 }
 
 function formatTime(seconds) {
@@ -44,8 +49,9 @@ function formatTime(seconds) {
   return `${minutes}:${remainder}`;
 }
 
-export default function EnglishExam({ exam }) {
-  const examLevel = String(exam?.level ?? 'A1').toUpperCase();
+export default function EnglishExam({ exam, type, level }) {
+  const examType = String(type ?? exam?.exam_type ?? '').toLowerCase();
+  const examLevel = String(level ?? exam?.level ?? 'A1').toUpperCase();
   const durations = MODULE_MINUTES[examLevel] ?? MODULE_MINUTES.A1;
   const readingQuestions = exam?.reading ?? [];
   const listeningQuestions = exam?.listening ?? [];
@@ -57,19 +63,42 @@ export default function EnglishExam({ exam }) {
   const [isRecording, setIsRecording] = useState(false);
   const [speechMessage, setSpeechMessage] = useState('');
   const [isComplete, setIsComplete] = useState(false);
+  const [examResult, setExamResult] = useState(null);
 
   const activeModule = MODULES[activeIndex];
-  const listeningAccent = String(exam?.exam_type ?? '').toLowerCase() === 'ielts' ? 'exam-uk' : 'us';
+  const listeningAccent = examType === 'ielts' ? 'exam-uk' : 'us';
   const scores = useMemo(() => ({
-    reading: scoreChoices(readingQuestions, answers.reading),
-    listening: scoreChoices(listeningQuestions, answers.listening),
-    writing: scoreText(writingAnswer, 20),
-    speaking: scoreKeywords(speakingAnswer, exam?.speaking?.keywords ?? []),
-  }), [readingQuestions, listeningQuestions, answers, writingAnswer, speakingAnswer, exam?.speaking?.keywords]);
-  const totalScore = Math.round(MODULES.reduce((total, module) => total + scores[module], 0) / MODULES.length);
-  const passed = MODULES.every((module) => scores[module] >= 60);
+    reading: scoreChoices(readingQuestions, answers.reading, examType),
+    listening: scoreChoices(listeningQuestions, answers.listening, examType),
+    writing: scoreText(writingAnswer, 20, examType),
+    speaking: scoreKeywords(speakingAnswer, exam?.speaking?.keywords ?? [], examType),
+  }), [readingQuestions, listeningQuestions, answers, writingAnswer, speakingAnswer, exam?.speaking?.keywords, examType]);
+  const totalScore = calculateModuleScore(
+    MODULES.reduce((total, module) => total + scores[module], 0),
+    MODULES.length * 100,
+    examType,
+  );
+  const passed = isPassed(MODULES.map((module) => scores[module]));
+  const bandScore = getBandScore(totalScore);
   const writingWordCount = countWords(writingAnswer);
   const speakingWordCount = countWords(speakingAnswer);
+
+  useEffect(() => {
+    if (!isComplete) return;
+    const result = {
+      examType,
+      level: examLevel,
+      totalScore,
+      passed,
+      scores,
+      bandScore,
+      completedAt: new Date().toISOString(),
+    };
+    setExamResult(result);
+    saveExamResult(examType, examLevel, result);
+    const savedResult = getExamResult(examType, examLevel);
+    if (savedResult) setExamResult(savedResult);
+  }, [isComplete, examType, examLevel, totalScore, passed, scores, bandScore]);
 
   useEffect(() => {
     if (isComplete) return undefined;
@@ -167,17 +196,24 @@ export default function EnglishExam({ exam }) {
       </nav>
 
       {isComplete ? (
-        <section className={`exam-results ${passed ? 'passed' : 'failed'}`} aria-live="polite">
+        <section className={`exam-results ${(examResult?.passed ?? passed) ? 'passed' : 'failed'}`} aria-live="polite">
           <p className="results-eyebrow">{exam.exam_type.toUpperCase()} · {examLevel}</p>
-          <h2>{passed ? 'PASSED' : 'FAILED'}</h2>
-          <p className="total-score">{totalScore}% <span>overall score</span></p>
+          <h2>{(examResult?.passed ?? passed) ? 'PASSED' : 'FAILED'}</h2>
+          <div className="score-summary">
+            <p className="total-score">{examResult?.totalScore ?? totalScore}% <span>overall score</span></p>
+            <div className="band-score-estimate">
+              <strong>Band Score Estimate</strong>
+              <span>{examResult?.bandScore ?? bandScore}</span>
+              <small>Estimasi ini bukan sertifikat resmi.</small>
+            </div>
+          </div>
           <p className="result-note">You need at least 60% in every module to pass.</p>
           <div className="score-grid">
             {MODULES.map((module) => (
-              <article className={scores[module] >= 60 ? 'score-card passed' : 'score-card failed'}>
+              <article className={(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'score-card passed' : 'score-card failed'}>
                 <span>{MODULE_LABELS[module]}</span>
-                <strong>{scores[module]}%</strong>
-                <small>{scores[module] >= 60 ? 'Passed' : 'Below 60%'}</small>
+                <strong>{examResult?.scores?.[module] ?? scores[module]}%</strong>
+                <small>{(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'Passed' : 'Below 60%'}</small>
               </article>
             ))}
           </div>
@@ -316,8 +352,13 @@ export default function EnglishExam({ exam }) {
         .exam-results.passed { border-color:#82bd91; }
         .exam-results.failed { border-color:#d99494; }
         .exam-results h2 { margin:0; font-size:2rem; }
+        .score-summary { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:1rem; }
         .total-score { margin:0; font-size:2.5rem; font-weight:900; }
         .total-score span { display:block; color:var(--muted); font-size:.85rem; font-weight:600; }
+        .band-score-estimate { display:grid; gap:.3rem; padding:.75rem 1rem; border:1px solid var(--border); border-radius:6px; background:var(--bg-main); text-align:left; }
+        .band-score-estimate strong { font-size:.78rem; }
+        .band-score-estimate span { font-size:1.35rem; font-weight:900; }
+        .band-score-estimate small { color:var(--muted); font-size:.75rem; }
         .result-note,.scoring-note { margin:0; color:var(--muted); font-size:.85rem; }
         .score-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
         .score-card { display:grid; gap:.25rem; padding:.8rem; border:1px solid var(--border); border-radius:6px; background:var(--bg-main); }

@@ -40,17 +40,18 @@ const userName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || p
 
 <script>
   import html2pdfModule from 'html2pdf.js';
+  import { getExamResult } from '@core/game/exam-grading.js';
 
   const certificateRoot = document.querySelector('[data-certificate-level]');
   const level = certificateRoot?.dataset.certificateLevel?.toUpperCase() || 'A1';
-  const storageKey = `sideutsch-goethe-${level.toLowerCase()}`;
   const statusElement = document.querySelector('#certificate-status');
   const downloadButton = document.querySelector('#download-certificate');
   const dateElement = document.querySelector('[data-certificate-date]');
   let savedResult = null;
   try {
-    savedResult = JSON.parse(localStorage.getItem(storageKey) || 'null');
-  } catch {
+    savedResult = getExamResult('goethe', level);
+  } catch (error) {
+    console.error('Gagal membaca hasil ujian Goethe.', error);
     savedResult = null;
   }
 
