@@ -1,6 +1,8 @@
 ---
 const user = Astro.locals.user;
 const preferredLanguage = String(user?.user_metadata?.language_code ?? Astro.cookies.get('language')?.value ?? '').toLowerCase();
-if (!user) return Astro.redirect('/login-de');
-return Astro.redirect(preferredLanguage === 'en' ? '/dashboard-en' : '/dashboard-de');
+const error = Astro.url.searchParams.get('error');
+if (!user) return Astro.redirect(preferredLanguage === 'en' ? '/login-en' : '/login-de');
+const dashboardPath = preferredLanguage === 'en' ? '/en/dashboard' : '/dashboard-de';
+return Astro.redirect(error ? `${dashboardPath}?error=${encodeURIComponent(error)}` : dashboardPath);
 ---

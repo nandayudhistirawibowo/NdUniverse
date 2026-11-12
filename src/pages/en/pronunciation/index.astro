@@ -32,79 +32,79 @@ const alphabet = [
 
 const vowelContrasts = [
   {
-    sound: '/ɪ/ pendek vs /iː/ panjang',
-    description: 'Pada “ship”, ucapkan i pendek dan rileks. Pada “sheep”, tarik bunyi ii lebih panjang dengan senyum tipis.',
-    words: [{ word: 'ship', label: 'pendek' }, { word: 'sheep', label: 'panjang' }],
+    sound: 'Short /ɪ/ vs long /iː/',
+    description: 'Keep the vowel in “ship” short and relaxed. In “sheep,” hold the longer /iː/ sound with a slight smile.',
+    words: [{ word: 'ship', label: 'short' }, { word: 'sheep', label: 'long' }],
   },
   {
-    sound: '/ʊ/ pendek vs /uː/ panjang',
-    description: '“Full” memakai u pendek yang santai. “Fool” memakai uu lebih panjang dengan bibir membulat.',
-    words: [{ word: 'full', label: 'pendek' }, { word: 'fool', label: 'panjang' }],
+    sound: 'Short /ʊ/ vs long /uː/',
+    description: '“Full” uses a short, relaxed vowel. “Fool” uses a longer /uː/ sound with rounded lips.',
+    words: [{ word: 'full', label: 'short' }, { word: 'fool', label: 'long' }],
   },
   {
-    sound: '/æ/ pendek vs /eɪ/ panjang',
-    description: '“Cap” memakai bunyi ae pendek dengan rahang terbuka. Pada “cape”, bunyi vokalnya bergeser menjadi ei.',
-    words: [{ word: 'cap', label: 'pendek' }, { word: 'cape', label: 'panjang' }],
+    sound: 'Short /æ/ vs /eɪ/',
+    description: '“Cap” uses a short /æ/ sound with an open jaw. In “cape,” the vowel glides into /eɪ/.',
+    words: [{ word: 'cap', label: 'short' }, { word: 'cape', label: 'long' }],
   },
 ];
 
 const vowelCombinations = [
-  { pattern: 'EA', examples: [{ word: 'eat', sound: 'ii panjang' }, { word: 'bread', sound: 'e pendek' }] },
-  { pattern: 'OO', examples: [{ word: 'moon', sound: 'uu panjang' }, { word: 'book', sound: 'u pendek' }] },
-  { pattern: 'AI', examples: [{ word: 'rain', sound: 'ei' }, { word: 'said', sound: 'e pendek' }] },
+  { pattern: 'EA', examples: [{ word: 'eat', sound: 'long /iː/' }, { word: 'bread', sound: 'short /e/' }] },
+  { pattern: 'OO', examples: [{ word: 'moon', sound: 'long /uː/' }, { word: 'book', sound: 'short /ʊ/' }] },
+  { pattern: 'AI', examples: [{ word: 'rain', sound: '/eɪ/' }, { word: 'said', sound: 'short /e/' }] },
 ];
 
 const trickySounds = [
   {
     title: 'TH — Think vs This',
-    description: 'Letakkan ujung lidah sedikit di antara gigi atas dan bawah, lalu alirkan udara. “Think” memakai TH tanpa getaran; “this” memakai TH dengan getaran.',
+    description: 'Place the tip of your tongue lightly between your upper and lower teeth, then let air flow. “Think” has an unvoiced TH; “this” has a voiced TH.',
     words: ['Think', 'This'],
   },
   {
     title: 'V vs F — Very vs Ferry',
-    description: 'Posisi gigi atas menyentuh bibir bawah untuk keduanya. Pada V, tenggorokan bergetar; pada F, hanya udara yang keluar tanpa getaran.',
+    description: 'For both sounds, rest your upper teeth on your lower lip. Your throat vibrates for V; F uses airflow without that vibration.',
     words: ['Very', 'Ferry'],
   },
   {
     title: 'J vs Y — Jam vs Yam',
-    description: 'Untuk J, lidah menyentuh area tepat di belakang gigi atas lalu melepas bunyi “dj”; bibir boleh sedikit membulat. Untuk Y, lidah terangkat dekat langit-langit tanpa menutup aliran udara dan bibir tetap rileks.',
+    description: 'For J, touch the area just behind your upper teeth and release a “dzh” sound; your lips may round slightly. For Y, raise your tongue near the roof of your mouth without blocking airflow, and keep your lips relaxed.',
     words: ['Jam', 'Yam'],
   },
 ];
 ---
 
 <Layout
-  title="Panduan Pengucapan Bahasa Inggris | NdUniverse"
-  description="Panduan alfabet, vokal, dan konsonan bahasa Inggris untuk penutur Indonesia."
+  title="English Pronunciation Guide | NdUniverse"
+  description="A practical guide to English letters, vowels, and consonants for Indonesian speakers."
 >
   <main class="pronunciation-page">
-    <a class="back-link" href="/en">← Kembali ke Beranda</a>
+    <a class="back-link" href="/en">← Back to Home</a>
 
     <header class="page-heading">
-      <p class="eyebrow">Panduan Pemula · English Pronunciation</p>
-      <h1>Panduan Pengucapan Bahasa Inggris</h1>
+      <p class="eyebrow">Beginner Guide · English Pronunciation</p>
+      <h1>English Pronunciation Guide</h1>
       <p class="intro-copy">
-        Kenali nama huruf dan bunyi bahasa Inggris yang sering membingungkan. Ejaan bunyi dalam bahasa Indonesia hanya pendekatan agar lebih mudah mulai berlatih; dengarkan contoh audionya untuk menangkap bunyi aslinya.
+        Learn English letter names and sounds that are often confusing. Pronunciation hints are approximate; use the audio examples to hear the sounds clearly.
       </p>
     </header>
 
     <section class="guide-section" aria-labelledby="alphabet-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">01 / Alfabet</p>
-          <h2 id="alphabet-heading">Alfabet A-Z</h2>
+          <p class="section-kicker">01 / Alphabet</p>
+          <h2 id="alphabet-heading">The Alphabet A-Z</h2>
         </div>
-        <p class="section-note">Kolom “Ejaan” menunjukkan bunyi nama huruf dalam IPA; “Dibaca” adalah perkiraan untuk lidah Indonesia.</p>
+        <p class="section-note">“Spelling” shows each letter name in IPA; “Approximation” offers a simple pronunciation guide.</p>
       </div>
 
-      <div class="table-scroll" role="region" aria-label="Tabel pengucapan alfabet bahasa Inggris" tabindex="0">
+      <div class="table-scroll" role="region" aria-label="English alphabet pronunciation table" tabindex="0">
         <table class="guide-table alphabet-table">
           <thead>
             <tr>
-              <th scope="col">Huruf</th>
-              <th scope="col">Ejaan (Spelling)</th>
-              <th scope="col">Dibaca</th>
-              <th scope="col">Contoh Kata</th>
+              <th scope="col">Letter</th>
+              <th scope="col">Pronunciation (IPA)</th>
+              <th scope="col">Approximation</th>
+              <th scope="col">Example Word</th>
             </tr>
           </thead>
           <tbody>
@@ -116,7 +116,7 @@ const trickySounds = [
                 <td>
                   <div class="example-with-speech">
                     <span lang="en">{example}</span>
-                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Listen to ${example}`} title={`Listen to ${example}`}>
                       <span aria-hidden="true">🔊</span>
                     </button>
                   </div>
@@ -126,16 +126,16 @@ const trickySounds = [
           </tbody>
         </table>
       </div>
-      <p class="section-note footnote">Catatan: contoh kata menunjukkan bunyi huruf di dalam kata, yang bisa berbeda dari nama hurufnya. “Z” dibaca “zi” dalam American English dan “zed” dalam British English.</p>
+      <p class="section-note footnote">Note: an example word shows the letter's sound within that word, which may differ from its name. “Z” is pronounced “zee” in American English and “zed” in British English.</p>
     </section>
 
     <section class="guide-section" aria-labelledby="vowels-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">02 / Vokal</p>
-          <h2 id="vowels-heading">Vokal Pendek, Panjang, dan Gabungan</h2>
+          <p class="section-kicker">02 / Vowels</p>
+          <h2 id="vowels-heading">Short, Long, and Combined Vowels</h2>
         </div>
-        <p class="section-note">Dengarkan tiap pasangan dan perhatikan durasi serta bentuk mulutnya.</p>
+        <p class="section-note">Listen to each pair and notice the vowel length and mouth shape.</p>
       </div>
 
       <div class="contrast-grid">
@@ -147,7 +147,7 @@ const trickySounds = [
               {words.map(({ word, label }) => (
                 <span class="word-example">
                   <span><span lang="en">{word}</span><small>{label}</small></span>
-                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Listen to ${word}`} title={`Listen to ${word}`}>
                     <span aria-hidden="true">🔊</span>
                   </button>
                 </span>
@@ -157,12 +157,12 @@ const trickySounds = [
         ))}
       </div>
 
-      <h3 class="subheading">Gabungan huruf vokal</h3>
-      <p class="section-note combination-note">Dua huruf vokal yang sama bisa menghasilkan bunyi berbeda tergantung katanya. Bandingkan contoh berikut.</p>
-      <div class="table-scroll" role="region" aria-label="Tabel contoh gabungan huruf vokal" tabindex="0">
+      <h3 class="subheading">Vowel Combinations</h3>
+      <p class="section-note combination-note">The same pair of vowels can sound different depending on the word. Compare these examples.</p>
+      <div class="table-scroll" role="region" aria-label="Vowel combination examples" tabindex="0">
         <table class="guide-table combination-table">
           <thead>
-            <tr><th scope="col">Gabungan</th><th scope="col">Contoh dan bunyi</th></tr>
+            <tr><th scope="col">Combination</th><th scope="col">Examples and Sounds</th></tr>
           </thead>
           <tbody>
             {vowelCombinations.map(({ pattern, examples }) => (
@@ -173,7 +173,7 @@ const trickySounds = [
                     {examples.map(({ word, sound }) => (
                       <span class="word-example">
                         <span><span lang="en">{word}</span><small>{sound}</small></span>
-                        <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                        <button class="speaker-button" type="button" data-speak={word} aria-label={`Listen to ${word}`} title={`Listen to ${word}`}>
                           <span aria-hidden="true">🔊</span>
                         </button>
                       </span>
@@ -190,10 +190,10 @@ const trickySounds = [
     <section class="guide-section" aria-labelledby="tricky-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">03 / Konsonan tricky</p>
-          <h2 id="tricky-heading">Bunyi yang Sering Tertukar</h2>
+          <p class="section-kicker">03 / Tricky Consonants</p>
+          <h2 id="tricky-heading">Sounds That Are Often Confused</h2>
         </div>
-        <p class="section-note">Coba ucapkan pasangan kata dengan perlahan, lalu ulangi dengan kecepatan normal.</p>
+        <p class="section-note">Say each pair slowly, then repeat at a natural speed.</p>
       </div>
 
       <div class="tricky-grid">
@@ -205,7 +205,7 @@ const trickySounds = [
               {words.map((word) => (
                 <span class="word-example">
                   <span lang="en">{word}</span>
-                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Listen to ${word}`} title={`Listen to ${word}`}>
                     <span aria-hidden="true">🔊</span>
                   </button>
                 </span>
@@ -219,7 +219,7 @@ const trickySounds = [
 </Layout>
 
 <script>
-  import { playAudioTTS } from '../../modules/english/config/english-speech.js';
+  import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
 
   const speechDocument = document as Document & { __ndUniverseEnglishPronunciationHandler?: boolean };
   if (!speechDocument.__ndUniverseEnglishPronunciationHandler) {

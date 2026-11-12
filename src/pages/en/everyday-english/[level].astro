@@ -1,3 +1,63 @@
 ---
-return Astro.redirect('/login-en');
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const requestedLevel = String(Astro.params.level ?? '').toUpperCase();
+const level = allowedLevels.find((allowedLevel) => allowedLevel === requestedLevel);
+if (!level) return new Response('Level not found.', { status: 404 });
+
+const materials = (await getCollection('englishEveryday'))
+  .filter((item) => item.data.track === 'Everyday English' && item.data.level === level)
+  .sort((left, right) => (left.data.title ?? left.id).localeCompare(right.data.title ?? right.id));
 ---
+
+<DashboardLayout
+  title={`Everyday English ${level} | NdUniverse`}
+  description={`Everyday English materials for CEFR level ${level}.`}
+  active="everydayEnglish"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="level-page">
+    <a class="back-link" href="/en/everyday-english">← Back to Everyday English</a>
+    <header>
+      <p class="eyebrow">Everyday English · Level {level}</p>
+      <h1>Level {level} Materials</h1>
+      <p>Choose a material to practice English vocabulary and the four core skills.</p>
+    </header>
+    {materials.length ? (
+      <div class="material-grid">
+        {materials.map((item) => (
+          <article class="material-card">
+            <h2>{item.data.title ?? item.id}</h2>
+            <p>{item.data.description ?? ''}</p>
+            <a href={`/en/materi/${item.id.split('/').at(-1)}`}>Open Material →</a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-state">No Everyday English materials are available for this level yet.</p>
+    )}
+    <nav class="exam-links" aria-label={`Level ${level} exam practice`}>
+      <a href={`/en/exam/ielts/${level.toLowerCase()}`}>IELTS {level}</a>
+      <a href={`/en/exam/toefl/${level.toLowerCase()}`}>TOEFL {level}</a>
+    </nav>
+  </main>
+</DashboardLayout>
+
+<style>
+  .level-page { display: grid; gap: 1.25rem; width: min(1120px, 100%); margin: 0 auto; padding: 1rem 0 3rem; }
+  .back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
+  .eyebrow { margin: 0 0 .5rem; color: #966313; font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); }
+  header p:last-child, .empty-state, .material-card p { color: var(--muted); line-height: 1.6; }
+  .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .material-card { display: grid; align-content: start; gap: .65rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
+  .material-card h2, .material-card p { margin: 0; }
+  .material-card a, .exam-links a { color: #966313; font-weight: 800; text-decoration: none; }
+  .exam-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+  @media (max-width: 700px) { .material-grid { grid-template-columns: 1fr; } }
+</style>

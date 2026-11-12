@@ -38,7 +38,7 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
     data-report-title={reportTitle}
   >
     <div class="report-toolbar">
-      <a class="back-link" href="/dashboard">Back to dashboard</a>
+      <a class="back-link" href="/en/dashboard">Back to English dashboard</a>
       <p class="verification-status" id="certificate-status" role="status">Verifying passed exam result...</p>
     </div>
 
@@ -46,7 +46,7 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
       <h1>Certificate unavailable</h1>
       <p id="certificate-error-message"></p>
       <p>You will be redirected to your dashboard shortly.</p>
-      <a href="/dashboard">Go to dashboard now</a>
+      <a href="/en/dashboard">Go to English dashboard now</a>
     </div>
 
     <section class="certificate-container" id="certificate-container" aria-label="NdUniverse simulation score report" hidden>
@@ -133,7 +133,7 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
     statusElement.textContent = 'Exam result verification failed.';
     errorMessage.textContent = message;
     errorPanel.hidden = false;
-    window.setTimeout(() => window.location.assign('/dashboard'), 4000);
+    window.setTimeout(() => window.location.assign('/en/dashboard'), 4000);
   }
 
   function formatExamDate(value) {

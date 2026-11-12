@@ -13,7 +13,7 @@ const {
 const isAdminPortal = portal === 'admin';
 const isEnglish = language === 'en';
 const isGerman = language === 'de';
-const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
+const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
 ---
 
 <!doctype html>
@@ -211,9 +211,15 @@ const defaultDashboard = isEnglish ? '/dashboard-en' : '/dashboard-de';
     const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
     const redirect = new URLSearchParams(window.location.search).get('redirect');
     const defaultDashboard = form?.dataset.defaultDashboard ?? '/dashboard';
+    const isSafeStudentRedirect = redirect && !redirect.startsWith('//') && (
+      redirect === '/en/dashboard'
+      || redirect.startsWith('/en/dashboard/')
+      || redirect === '/dashboard-de'
+      || redirect.startsWith('/dashboard-de/')
+    );
     const safeRedirect = isAdminPortal
       ? (redirect?.startsWith('/admin') && !redirect.startsWith('//') && redirect !== '/admin/login' ? redirect : '/admin')
-      : (redirect?.startsWith('/dashboard-') && !redirect.startsWith('//') ? redirect : defaultDashboard);
+      : (isSafeStudentRedirect ? redirect : defaultDashboard);
 
     submitButton.disabled = true;
     showMessage(localizedText('Checking account...', 'Konto wird überprüft...', 'Memeriksa akun...'), 'loading');

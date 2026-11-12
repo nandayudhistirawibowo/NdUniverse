@@ -13,7 +13,7 @@ const {
 import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
-const accountDashboardHref = isAdmin ? '/admin' : '/dashboard-en';
+const accountDashboardHref = isAdmin ? '/admin' : '/en/dashboard';
 const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
 const nimValue = profile?.nim || user?.user_metadata?.nim || '';
 const nim = typeof nimValue === 'string' ? nimValue.trim() : '';
@@ -24,7 +24,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 ---
 
 <!doctype html>
-<html lang="id">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -47,13 +47,13 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
   <body>
     <div id="navigation-progress" class="navigation-progress" transition:persist="navigation-progress" aria-hidden="true"></div>
     <div class={`private-shell ${isAdmin ? 'admin-shell' : 'student-shell'}`}>
-      <aside class="private-sidebar" id="dashboard-sidebar" aria-label={isAdmin ? 'Navigasi admin' : 'Navigasi mahasiswa'}>
+      <aside class="private-sidebar" id="dashboard-sidebar" aria-label={isAdmin ? 'Admin navigation' : 'Student navigation'}>
         <div class="sidebar-top-row">
           <a class="sidebar-logo" href={isAdmin ? '/admin' : '/en/dashboard'} aria-label="NdUniverse">
             <img src="/logo.png" alt="NdUniverse" />
             <span>{logoFallback}</span>
           </a>
-          <button class="sidebar-close" type="button" aria-label="Tutup navigasi" aria-controls="dashboard-sidebar">
+          <button class="sidebar-close" type="button" aria-label="Close navigation" aria-controls="dashboard-sidebar">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" /></svg>
           </button>
         </div>
@@ -62,7 +62,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
           {isAdmin ? (
             <a class={`nav-item ${active === 'users' ? 'active' : ''}`} href="/admin" aria-current={active === 'users' ? 'page' : undefined}>
               <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M8 9h9M8 13h9M8 17h5" /></svg>
-              <span>Manajemen User</span>
+              <span>User Management</span>
             </a>
           ) : (
             <>
@@ -74,7 +74,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z" /><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h8" /></svg>
                 <span>Material Catalog</span>
               </a>
-              <a class={`nav-item ${active === 'exam' ? 'active' : ''}`} href="/en/ujian" aria-current={active === 'exam' ? 'page' : undefined}>
+              <a class={`nav-item ${active === 'exam' ? 'active' : ''}`} href="/en/exam" aria-current={active === 'exam' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5" /></svg>
                 <span>Exams</span>
               </a>
@@ -94,7 +94,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M9.6 9a2.5 2.5 0 1 1 4.4 1.6c-1.1 1.1-2 1.4-2 3M12 17.5h.01" /></svg>
                 <span>Help</span>
               </a>
-              <a class="nav-item" href="/en/pengucapan-en">
+              <a class="nav-item" href="/en/pronunciation">
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 19h16M7 5v14M17 5v14" /><path d="m10 10 2 4 2-4" /></svg>
                 <span>Pronunciation Guide</span>
               </a>
@@ -106,21 +106,21 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" /></svg>
                 <span>Career Prep</span>
               </a>
-              <FeedbackModal client:load variant="sidebar" />
+              <FeedbackModal client:load variant="sidebar" language="en" />
             </>
           )}
         </nav>
 
       </aside>
 
-      <button class="sidebar-overlay" type="button" aria-label="Tutup navigasi"></button>
+      <button class="sidebar-overlay" type="button" aria-label="Close navigation"></button>
 
       <div class="private-main-column">
         <header class="dashboard-header">
           <button
             class="sidebar-toggle"
             type="button"
-            aria-label="Buka navigasi"
+            aria-label="Open navigation"
             aria-expanded="false"
             aria-controls="dashboard-sidebar"
           >
@@ -141,7 +141,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 )}
                 <span class="account-copy">
                   <strong>{displayName}</strong>
-                  <span>{hasNim ? `NIM ${nim}` : 'General'}</span>
+                  <span>{hasNim ? `Student ID ${nim}` : 'General'}</span>
                 </span>
                 <svg class="account-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="m6 9 6 6 6-6" />
@@ -149,7 +149,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
               </summary>
               <div class="account-menu">
                 {!isAdmin && <a href={accountDashboardHref}>Dashboard</a>}
-                {!isAdmin && <a href="/dashboard-en/profil">My Profile</a>}
+                {!isAdmin && <a href="/en/dashboard/profile">My Profile</a>}
                 <form action="/logout?module=en" method="post">
                   <button type="submit">Log out</button>
                 </form>
@@ -161,9 +161,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         <footer class="private-footer">
           <span>© 2026 NdUniverse. Connecting Languages & Cultures.</span>
           <span class="footer-separator" aria-hidden="true">·</span>
-          <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Kontak Admin (WhatsApp)</a>
+          <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Contact Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>
-          <a href="https://ndhistira.my.id" target="_blank" rel="noopener noreferrer">Created by Nanda Yudhistira · Lihat Portofolio</a>
+          <a href="https://ndhistira.my.id" target="_blank" rel="noopener noreferrer">Created by Nanda Yudhistira · View Portfolio</a>
           <span class="audio-attribution">Audio powered by Microsoft Edge TTS</span>
         </footer>
       </div>
@@ -177,7 +177,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     const sidebarToggle = document.querySelector<HTMLButtonElement>('.sidebar-toggle');
     shell?.classList.toggle('sidebar-open', isOpen);
     sidebarToggle?.setAttribute('aria-expanded', String(isOpen));
-    sidebarToggle?.setAttribute('aria-label', isOpen ? 'Tutup navigasi' : 'Buka navigasi');
+    sidebarToggle?.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
     if (!isOpen && restoreFocus) sidebarToggle?.focus();
   };
 
@@ -240,9 +240,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     }, { once: true });
   });
 
-  const progressWindow = window as Window & { __sideDeutschProgressInitialized?: boolean };
-  if (!progressWindow.__sideDeutschProgressInitialized) {
-    progressWindow.__sideDeutschProgressInitialized = true;
+  const progressWindow = window as Window & { __ndUniverseEnglishProgressInitialized?: boolean };
+  if (!progressWindow.__ndUniverseEnglishProgressInitialized) {
+    progressWindow.__ndUniverseEnglishProgressInitialized = true;
     let progressResetTimer: number | undefined;
 
     document.addEventListener('astro:before-preparation', () => {

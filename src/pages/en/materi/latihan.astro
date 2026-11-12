@@ -46,7 +46,7 @@ const vocab = item.data.vocab.map((entry) => ({
       <p>Practice up to {batchSize} questions in this session.</p>
     </header>
 
-    <section class="practice-panel" aria-label={`Kuis ${item.data.judulMateri}`}>
+    <section class="practice-panel" aria-label={`Practice ${item.data.title ?? materialSlug}`}>
       <Quiz
         client:load
         items={vocab}

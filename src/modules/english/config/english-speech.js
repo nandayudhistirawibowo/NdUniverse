@@ -36,7 +36,7 @@ if (typeof window !== 'undefined') getManifest();
 function showUkSpeechError(button, error) {
   button?.classList.remove('is-playing');
   console.error('Unable to speak English text with UK browser speech synthesis.', error);
-  window.alert('Browser Anda belum mendukung aksen UK.');
+  window.alert('This browser does not support a UK voice.');
 }
 
 function speakWithUsBrowserVoice(text, button) {

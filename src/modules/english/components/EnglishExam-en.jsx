@@ -274,7 +274,7 @@ export default function EnglishExam({ exam, type, level }) {
           <p className="scoring-note">Writing score is estimated against a 20-word target; Speaking score is based on the required keywords.</p>
           <div className="result-actions">
             {(examResult?.passed ?? passed) && (
-              <a className="primary-action" href={`/sertifikat/en/${examType}/${examLevel.toLowerCase()}`}>Ambil Sertifikat</a>
+              <a className="primary-action" href={`/sertifikat/en/${examType}/${examLevel.toLowerCase()}`}>Get Certificate</a>
             )}
             <button type="button" className="primary-action" onClick={() => window.location.reload()}>Retake exam</button>
             <a className="secondary-action" href="/en/everyday-english">Back to Everyday English</a>

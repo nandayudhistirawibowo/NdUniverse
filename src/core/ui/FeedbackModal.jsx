@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 
-export default function FeedbackModal({ variant = 'default' }) {
+export default function FeedbackModal({ variant = 'default', language = 'id' }) {
+  const isEnglish = language === 'en';
   const [isOpen, setIsOpen] = useState(false);
   const [category, setCategory] = useState('Bug');
   const [message, setMessage] = useState('');
@@ -27,14 +28,23 @@ export default function FeedbackModal({ variant = 'default' }) {
     if (!cleanedMessage) return;
 
     const currentUrl = window.location.href;
-    const text = [
-      'Halo Admin NdUniverse,',
-      '',
-      'Saya ingin melaporkan:',
-      `Kategori: ${category}`,
-      `Pesan: ${cleanedMessage}`,
-      `(Dikirim dari halaman: ${currentUrl})`,
-    ].join('\n');
+    const text = isEnglish
+      ? [
+        'Hello NdUniverse Admin,',
+        '',
+        'I would like to report:',
+        `Category: ${category}`,
+        `Message: ${cleanedMessage}`,
+        `(Sent from: ${currentUrl})`,
+      ].join('\n')
+      : [
+        'Halo Admin NdUniverse,',
+        '',
+        'Saya ingin melaporkan:',
+        `Kategori: ${category}`,
+        `Pesan: ${cleanedMessage}`,
+        `(Dikirim dari halaman: ${currentUrl})`,
+      ].join('\n');
 
     window.open(`https://wa.me/6281288951254?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
   };
@@ -49,7 +59,7 @@ export default function FeedbackModal({ variant = 'default' }) {
         aria-expanded={isOpen}
       >
         <span aria-hidden="true">💬</span>
-        <span>Kirim Feedback</span>
+        <span>{isEnglish ? 'Send Feedback' : 'Kirim Feedback'}</span>
       </button>
 
       {isOpen && (
@@ -68,46 +78,46 @@ export default function FeedbackModal({ variant = 'default' }) {
           >
             <div class="feedback-modal-header">
               <div>
-                <span class="feedback-label">Hubungi Admin</span>
-                <h2 id="feedback-title">Kirim Feedback</h2>
+                <span class="feedback-label">{isEnglish ? 'Contact Admin' : 'Hubungi Admin'}</span>
+                <h2 id="feedback-title">{isEnglish ? 'Send Feedback' : 'Kirim Feedback'}</h2>
               </div>
               <button
                 class="feedback-close"
                 type="button"
                 onClick={() => setIsOpen(false)}
-                aria-label="Tutup modal feedback"
+                aria-label={isEnglish ? 'Close feedback dialog' : 'Tutup modal feedback'}
               >
                 ×
               </button>
             </div>
 
             <label class="feedback-field" for="feedback-category">
-              <span>Kategori</span>
+              <span>{isEnglish ? 'Category' : 'Kategori'}</span>
               <select
                 id="feedback-category"
                 value={category}
                 onChange={(event) => setCategory(event.currentTarget.value)}
               >
                 <option value="Bug">Bug</option>
-                <option value="Saran Fitur">Saran Fitur</option>
-                <option value="Lainnya">Lainnya</option>
+                <option value={isEnglish ? 'Feature Suggestion' : 'Saran Fitur'}>{isEnglish ? 'Feature Suggestion' : 'Saran Fitur'}</option>
+                <option value={isEnglish ? 'Other' : 'Lainnya'}>{isEnglish ? 'Other' : 'Lainnya'}</option>
               </select>
             </label>
 
             <label class="feedback-field" for="feedback-message">
-              <span>Pesan</span>
+              <span>{isEnglish ? 'Message' : 'Pesan'}</span>
               <textarea
                 id="feedback-message"
                 value={message}
                 onInput={(event) => setMessage(event.currentTarget.value)}
-                placeholder="Tuliskan laporan, bug, atau saran Anda..."
+                placeholder={isEnglish ? 'Describe your issue, bug, or suggestion...' : 'Tuliskan laporan, bug, atau saran Anda...'}
                 rows="7"
               />
             </label>
 
             <div class="feedback-actions">
               <button class="feedback-cancel" type="button" onClick={() => setIsOpen(false)}>
-                Batal
+                {isEnglish ? 'Cancel' : 'Batal'}
               </button>
               <button
                 class="feedback-submit"
@@ -115,7 +125,7 @@ export default function FeedbackModal({ variant = 'default' }) {
                 onClick={sendFeedback}
                 disabled={!message.trim()}
               >
-                Kirim ke WhatsApp
+                {isEnglish ? 'Send via WhatsApp' : 'Kirim ke WhatsApp'}
               </button>
             </div>
           </section>

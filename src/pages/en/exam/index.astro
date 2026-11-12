@@ -1,0 +1,51 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+
+const exams = [
+  { type: 'ielts', name: 'IELTS', description: 'Practice all four modules with IELTS-style tasks.' },
+  { type: 'toefl', name: 'TOEFL', description: 'Practice Reading, Listening, Writing, and Speaking.' },
+];
+---
+
+<DashboardLayout
+  title="English Exams | NdUniverse"
+  description="Choose an IELTS or TOEFL practice exam."
+  active="exam"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="exam-page">
+    <a class="back-link" href="/en/dashboard">← Back to English Dashboard</a>
+    <header>
+      <p class="eyebrow">English Exam Prep</p>
+      <h1>Choose an Exam</h1>
+      <p>Build confidence in Reading, Listening, Writing, and Speaking.</p>
+    </header>
+    <section class="exam-grid" aria-label="English exam types">
+      {exams.map((exam) => (
+        <a class="exam-card" href={`/en/exam/${exam.type}`}>
+          <span class="exam-label">{exam.name}</span>
+          <h2>{exam.name} Practice</h2>
+          <p>{exam.description}</p>
+          <strong>Choose a level →</strong>
+        </a>
+      ))}
+    </section>
+  </main>
+</DashboardLayout>
+
+<style>
+  .exam-page { display: grid; gap: 1.25rem; width: min(100%, 980px); margin: 0 auto; padding: 1rem 0 3rem; }
+  .back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
+  .eyebrow { margin: 0 0 .5rem; color: #966313; font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+  h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); }
+  header p:last-child { color: var(--muted); }
+  .exam-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .exam-card { display: grid; min-height: 190px; align-content: start; gap: .6rem; padding: 1.25rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
+  .exam-card:hover { border-color: var(--accent-gold); }
+  .exam-label { color: #966313; font-size: .8rem; font-weight: 900; }
+  .exam-card h2, .exam-card p { margin: 0; }
+  .exam-card p { color: var(--muted); line-height: 1.55; }
+  .exam-card strong { align-self: end; }
+  @media (max-width: 640px) { .exam-grid { grid-template-columns: 1fr; } }
+</style>

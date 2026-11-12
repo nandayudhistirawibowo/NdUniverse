@@ -268,8 +268,8 @@ export default function GoetheExam({ level, tasks, available = true }) {
     return (
       <section class="goethe-exam">
         <div class="goethe-task" role="alert">
-          <h1>Soal untuk level ini belum tersedia.</h1>
-          <p>Silakan hubungi admin.</p>
+          <h1>No questions are available for this level yet.</h1>
+          <p>Please contact an administrator.</p>
         </div>
       </section>
     );
@@ -281,7 +281,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
         <div>
           <p class="eyebrow">IELTS/TOEFL Simulation</p>
           <h1>{level} · Reading, Listening, Writing, Speaking</h1>
-          <p>Kelulusan hanya diberikan jika setiap modul mencapai minimal 60%.</p>
+          <p>You pass only if every module reaches at least 60%.</p>
         </div>
         <div class="exam-timer" aria-live="polite">
           <span>{MODULES.find((module) => module.id === activeModule)?.label}</span>
@@ -289,7 +289,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
         </div>
       </header>
 
-      <nav class="module-progress" aria-label="Progress modul ujian">
+      <nav class="module-progress" aria-label="Exam module progress">
         {MODULES.map((module) => (
           <button
             type="button"
@@ -326,7 +326,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                     disabled={Boolean(playedAudio[String(index)])}
                     onClick={(event) => playListeningAudio(event, task, index)}
                   >
-                    🔊 {playedAudio[String(index)] ? 'Audio sudah diputar 1x' : 'Putar Audio (maks. 1x)'}
+                    🔊 {playedAudio[String(index)] ? 'Audio played once' : 'Play Audio (once only)'}
                   </button>
                 </div>
               )}
@@ -361,17 +361,17 @@ export default function GoetheExam({ level, tasks, available = true }) {
                       disabled={isListening}
                       onClick={() => startSpeaking(activeModule, index)}
                     >
-                      {isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}
+                      {isListening ? '🎤 Recording...' : '🎤 Record Answer'}
                     </button>
                   )}
                   <textarea
                     rows={activeModule === 'schreiben' ? '8' : '4'}
                     value={answers[`${activeModule}-${index}`] ?? ''}
                     onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
-                    placeholder={activeModule === 'schreiben' ? 'Tulis jawaban dalam bahasa English...' : 'Hasil rekaman atau jawaban tertulis...'}
+                    placeholder={activeModule === 'schreiben' ? 'Write your answer in English...' : 'Your recording or written response...'}
                   />
                   {task.keywords && (
-                    <small>Kata kunci yang dinilai: {task.keywords.join(', ')}</small>
+                    <small>Scored keywords: {task.keywords.join(', ')}</small>
                   )}
                 </div>
               )}
@@ -379,27 +379,27 @@ export default function GoetheExam({ level, tasks, available = true }) {
           ))}
 
           {activeModule === 'sprechen' ? (
-            <button class="submit-button" type="button" onClick={submitExam}>Selesaikan Semua Modul</button>
+            <button class="submit-button" type="button" onClick={submitExam}>Complete All Modules</button>
           ) : (
-            <button class="submit-button" type="button" onClick={finishCurrentModule}>Selesaikan Modul & Next</button>
+            <button class="submit-button" type="button" onClick={finishCurrentModule}>Complete Module & Continue</button>
           )}
         </section>
       )}
 
       {result && (
         <section class={`goethe-result ${result.passed ? 'passed' : 'failed'}`} aria-live="polite">
-          <p class="result-label">{result.passed ? 'LULUS' : 'GAGAL'}</p>
-          <h2>🏆 Total Skor: {result.totalPoints}/100 ({result.passed ? 'LULUS' : 'GAGAL'})</h2>
+          <p class="result-label">{result.passed ? 'PASSED' : 'FAILED'}</p>
+          <h2>🏆 Total Score: {result.totalPoints}/100 ({result.passed ? 'PASSED' : 'FAILED'})</h2>
           <div class="module-results">
             {result.modules.map((module) => {
-              let feedback = `${module.percent}% skor modul (${module.correct}/${module.total} rasio kecocokan).`;
-              if (module.id === 'lesen') feedback = `Paragraf kunci: ${result.readingKeyParagraph}`;
-              if (module.id === 'hoeren') feedback = `Transkrip: ${result.listeningTranscript}`;
+              let feedback = `${module.percent}% module score (${module.correct}/${module.total} correct).`;
+              if (module.id === 'lesen') feedback = `Key paragraph: ${result.readingKeyParagraph}`;
+              if (module.id === 'hoeren') feedback = `Transcript: ${result.listeningTranscript}`;
               if (module.id === 'schreiben' || module.id === 'sprechen') {
                 feedback = module.answers.map((answer, index) => {
                   const keywords = module.keywords[index];
-                  const keywordText = Array.isArray(keywords) ? keywords.join(' atau ') : String(keywords ?? '');
-                  return `Your Answer: "${answer || '-'}" · Kata kunci yang dinilai: "${keywordText}"`;
+                  const keywordText = Array.isArray(keywords) ? keywords.join(' or ') : String(keywords ?? '');
+                  return `Your Answer: "${answer || '-'}" · Scored keywords: "${keywordText}"`;
                 }).join(' | ');
               }
               return (
@@ -413,13 +413,13 @@ export default function GoetheExam({ level, tasks, available = true }) {
           </div>
           {!result.passed ? (
             <>
-              <p class="retry-message">Anda harus mengulang modul: {failedModules.map((module) => module.label).join(', ')}.</p>
-              <a class="certificate-link failure-link" href={`/dashboard/alltags/${level.toLowerCase()}`}>Perbaiki Skillku</a>
+              <p class="retry-message">You need to retry these modules: {failedModules.map((module) => module.label).join(', ')}.</p>
+              <a class="certificate-link failure-link" href={`/en/everyday-english/${level.toLowerCase()}`}>Review your skills</a>
             </>
           ) : (
             <div class="result-navigation">
-              <a class="certificate-link" href={`/sertifikat/goethe/${level.toLowerCase()}`}>Ambil Sertifikat</a>
-              <a class="certificate-link" href="/dashboard">Kembali ke Dashboard</a>
+              <a class="certificate-link" href={`/sertifikat/en/ielts/${level.toLowerCase()}`}>Get Certificate</a>
+              <a class="certificate-link" href="/en/dashboard">Back to English Dashboard</a>
             </div>
           )}
         </section>

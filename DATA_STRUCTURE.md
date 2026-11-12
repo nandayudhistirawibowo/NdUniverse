@@ -71,7 +71,6 @@ src/
 │   ├── de/
 │   ├── en/
 │   ├── dashboard-de/
-│   ├── dashboard-en/
 │   ├── login-de.astro
 │   ├── login-en.astro
 │   ├── index.astro
@@ -116,9 +115,9 @@ Modul English mengikuti struktur modular yang simetris dengan German.
 Route Astro berbasis nama file dan struktur folder. Komponen halaman biasanya menyusun layout, mengambil konten, lalu menampilkan komponen interaktif dari `core/` atau modul bahasa.
 
 - **`de/`** — route publik dan fitur modul German, misalnya landing `/de`, materi, ujian, Career, grammar, dan pengucapan.
-- **`en/`** — route modul English, termasuk Everyday English, Academic English, Career, ujian lama, dan Exam Prep di `/en/exam/[type]/[level]`.
+- **`en/`** — route modul English, termasuk dashboard, materi, Everyday English, Academic English, Career, Grammar, Pronunciation, dan Exam Prep di `/en/exam/[type]/[level]`.
 - **`login-de.astro` dan `login-en.astro`** — halaman login untuk pilihan bahasa masing-masing.
-- **`dashboard-de/` dan `dashboard-en/`** — route dashboard authenticated beserta katalog, profil, bookmark, detail materi, dan latihan. Contoh route: `dashboard-de/materi/[slug]/latihan.astro`.
+- **`dashboard-de/`** — route dashboard German legacy beserta katalog, profil, bookmark, detail materi, dan latihan. Dashboard English berada di bawah `pages/en/dashboard/`.
 - Halaman di root `pages/` seperti `index.astro`, `bantuan.astro`, `panduan.astro`, dan `pengucapan.astro` menyediakan entry point atau route platform yang masih ada.
 - Folder route lain termasuk `api/`, `admin/`, `career/`, `materi/`, `ujian/`, dan `sertifikat/`. Periksa implementasi route terkait sebelum menambah atau memindahkan URL.
 

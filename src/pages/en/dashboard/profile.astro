@@ -13,8 +13,8 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
 ---
 
 <DashboardLayout
-  title="Profil Mahasiswa | siDeutsch"
-  description="Kelola informasi profil mahasiswa siDeutsch."
+  title="Student Profile | NdUniverse"
+  description="Manage your NdUniverse profile."
   active="profile"
   user={user}
   profile={profile}
@@ -22,9 +22,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   <section class="profile-content">
       <div id="password-alert" class="password-alert" role="alert" aria-live="assertive" hidden></div>
       <header class="page-heading">
-        <p class="eyebrow">Akun Mahasiswa</p>
-        <h1>Profil</h1>
-        <p>Perbarui nama dan foto profilmu.</p>
+        <p class="eyebrow">Student Account</p>
+        <h1>Profile</h1>
+        <p>Update your name and profile photo.</p>
       </header>
 
       <form
@@ -35,63 +35,63 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
         <div class="avatar-editor">
           <div class="avatar-frame">
             <div class="avatar-preview-wrap">
-              <img id="avatar-preview" class="avatar-preview" src={avatarUrl ?? ''} alt="Foto profil" hidden={!avatarUrl} />
+              <img id="avatar-preview" class="avatar-preview" src={avatarUrl ?? ''} alt="Profile photo" hidden={!avatarUrl} />
               <span id="avatar-preview-fallback" class="avatar-fallback" aria-hidden="true" hidden={!!avatarUrl}>
                 {(displayName || nim || 'M').slice(0, 1).toUpperCase()}
               </span>
             </div>
             <input id="file-upload" class="avatar-file-input" name="avatar" type="file" accept="image/png,image/jpeg,image/webp" />
-            <label class="avatar-camera" for="file-upload" title="Ganti foto profil">
+            <label class="avatar-camera" for="file-upload" title="Change profile photo">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M14 5H8L6.5 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2.5L16 5h-2Z" />
                 <circle cx="12" cy="13" r="3.5" />
               </svg>
-              <span class="visually-hidden">Pilih foto profil</span>
+              <span class="visually-hidden">Choose profile photo</span>
             </label>
           </div>
           <div class="avatar-upload">
-            <span class="avatar-upload-title">Foto Profil</span>
-            <small>PNG, JPG, atau WebP. Maksimal 5 MB.</small>
+            <span class="avatar-upload-title">Profile Photo</span>
+            <small>PNG, JPG, or WebP. Maximum 5 MB.</small>
           </div>
         </div>
 
-        <label for="nama-lengkap">Nama Lengkap</label>
+        <label for="nama-lengkap">Full Name</label>
         <input
           id="nama-lengkap"
           name="nama_lengkap"
           type="text"
           value={displayName}
           autocomplete="name"
-          placeholder="Masukkan nama lengkap"
+          placeholder="Enter your full name"
           required
         />
 
-        <label for="nim">{hasNim ? 'NIM' : 'Status Akun'}</label>
-        <input id="nim" name="nim" type="text" value={hasNim ? nim : 'Umum'} readonly />
+        <label for="nim">{hasNim ? 'Student ID' : 'Account Status'}</label>
+        <input id="nim" name="nim" type="text" value={hasNim ? nim : 'General'} readonly />
 
-        <button id="profile-submit" type="submit">Simpan Perubahan</button>
+        <button id="profile-submit" type="submit">Save Changes</button>
         <p id="profile-message" class="profile-message" role="status" aria-live="polite"></p>
       </form>
 
       <section class="password-section" aria-labelledby="password-title">
         <header class="password-heading">
-          <p class="eyebrow">Keamanan Akun</p>
-          <h2 id="password-title">Ganti Password</h2>
-          <p>Gunakan kata sandi baru yang mudah kamu ingat dan sulit ditebak.</p>
+          <p class="eyebrow">Account Security</p>
+          <h2 id="password-title">Change Password</h2>
+          <p>Choose a new password that is easy to remember and hard to guess.</p>
         </header>
         <form id="password-form" class="password-form" novalidate>
-          <label for="new-password">Password Baru</label>
+          <label for="new-password">New Password</label>
           <div class="password-input-wrap">
             <input
               id="new-password"
               name="new-password"
               type="password"
               autocomplete="new-password"
-              placeholder="Masukkan password baru"
+              placeholder="Enter a new password"
               required
               minlength="6"
             />
-            <button type="button" class="password-toggle" data-password-toggle="new-password" aria-label="Tampilkan password" aria-pressed="false">
+            <button type="button" class="password-toggle" data-password-toggle="new-password" aria-label="Show password" aria-pressed="false">
               <svg class="eye-open" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
                 <circle cx="12" cy="12" r="2.7" />
@@ -103,18 +103,18 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
             </button>
           </div>
 
-          <label for="confirm-password">Konfirmasi Password Baru</label>
+          <label for="confirm-password">Confirm New Password</label>
           <div class="password-input-wrap">
             <input
               id="confirm-password"
               name="confirm-password"
               type="password"
               autocomplete="new-password"
-              placeholder="Ulangi password baru"
+              placeholder="Re-enter your new password"
               required
               minlength="6"
             />
-            <button type="button" class="password-toggle" data-password-toggle="confirm-password" aria-label="Tampilkan password" aria-pressed="false">
+            <button type="button" class="password-toggle" data-password-toggle="confirm-password" aria-label="Show password" aria-pressed="false">
               <svg class="eye-open" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
                 <circle cx="12" cy="12" r="2.7" />
@@ -126,7 +126,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
             </button>
           </div>
 
-          <button id="password-submit" type="submit">Simpan Password Baru</button>
+          <button id="password-submit" type="submit">Save New Password</button>
         </form>
       </section>
   </section>
@@ -175,7 +175,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
       const isVisible = target.type === 'text';
       target.type = isVisible ? 'password' : 'text';
       toggle.setAttribute('aria-pressed', String(!isVisible));
-      toggle.setAttribute('aria-label', isVisible ? 'Tampilkan password' : 'Sembunyikan password');
+      toggle.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
     });
   });
 
@@ -185,19 +185,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     const confirmPassword = passwordForm.querySelector<HTMLInputElement>('#confirm-password')?.value ?? '';
 
     if (newPassword.length < 6) {
-      showPasswordAlert('Password baru minimal 6 karakter.', 'error');
+      showPasswordAlert('Your new password must be at least 6 characters.', 'error');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      showPasswordAlert('Konfirmasi password tidak sama.', 'error');
+      showPasswordAlert('The passwords do not match.', 'error');
       return;
     }
 
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
-      showPasswordAlert('Konfigurasi Supabase belum tersedia.', 'error');
+      showPasswordAlert('Account configuration is unavailable.', 'error');
       return;
     }
 
@@ -212,15 +212,15 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
       passwordForm.reset();
       passwordForm.querySelectorAll<HTMLButtonElement>('[data-password-toggle]').forEach((toggle) => {
         toggle.setAttribute('aria-pressed', 'false');
-        toggle.setAttribute('aria-label', 'Tampilkan password');
+        toggle.setAttribute('aria-label', 'Show password');
       });
-      showPasswordAlert('Password berhasil diubah!', 'success');
+      showPasswordAlert('Password updated successfully!', 'success');
       window.setTimeout(() => {
-        window.location.href = '/dashboard-en';
+        window.location.href = '/en/dashboard';
       }, 2000);
     } catch (error) {
       showPasswordAlert(
-        error instanceof Error ? `Password gagal diubah: ${error.message}` : 'Password gagal diubah. Coba lagi.',
+        error instanceof Error ? `Could not update password: ${error.message}` : 'Could not update password. Please try again.',
         'error'
       );
     } finally {
@@ -235,7 +235,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     if (!['image/png', 'image/jpeg', 'image/webp'].includes(selectedAvatar.type) || selectedAvatar.size > 5 * 1024 * 1024) {
       selectedAvatar = null;
       fileInput.value = '';
-      message.textContent = 'File harus berupa PNG, JPG, atau WebP dengan ukuran maksimal 5 MB.';
+      message.textContent = 'Choose a PNG, JPG, or WebP image no larger than 5 MB.';
       message.dataset.state = 'error';
       return;
     }
@@ -254,7 +254,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
-      message.textContent = 'Konfigurasi Supabase belum tersedia.';
+      message.textContent = 'Account configuration is unavailable.';
       message.dataset.state = 'error';
       return;
     }
@@ -262,7 +262,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      message.textContent = 'Sesi login berakhir. Silakan login kembali.';
+      message.textContent = 'Your session has expired. Please sign in again.';
       message.dataset.state = 'error';
       return;
     }
@@ -274,7 +274,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     let avatarSignedUrlError: string | null = null;
 
     submitButton.disabled = true;
-    message.textContent = 'Menyimpan profil...';
+    message.textContent = 'Saving profile...';
     message.dataset.state = 'loading';
 
     try {
@@ -316,7 +316,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
         .maybeSingle();
 
       if (saveError) throw saveError;
-      if (!savedProfile) throw new Error('Profil tidak ditemukan.');
+      if (!savedProfile) throw new Error('Profile not found.');
 
       form.dataset.avatarPath = nextAvatarPath ?? '';
       if (avatarPreview && avatarFallback) {
@@ -333,13 +333,13 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
       selectedAvatar = null;
       if (fileInput) fileInput.value = '';
       message.textContent = avatarSignedUrlError
-        ? `Profil berhasil disimpan, tetapi foto belum dapat ditampilkan: ${avatarSignedUrlError}`
-        : 'Profil berhasil disimpan.';
+        ? `Profile saved, but the photo could not be displayed: ${avatarSignedUrlError}`
+        : 'Profile saved successfully.';
       message.dataset.state = 'success';
     } catch (error) {
       message.textContent = error instanceof Error
-        ? `Profil gagal disimpan: ${error.message}`
-        : 'Profil gagal disimpan. Coba lagi.';
+        ? `Could not save profile: ${error.message}`
+        : 'Could not save profile. Please try again.';
       message.dataset.state = 'error';
     } finally {
       submitButton.disabled = false;

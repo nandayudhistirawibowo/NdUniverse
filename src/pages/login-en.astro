@@ -3,7 +3,7 @@ import AuthPortal from '@core/auth/AuthPortal.astro';
 import { isAdminNim } from '@core/auth/admin';
 
 if (Astro.locals.user) {
-  return Astro.redirect(isAdminNim(Astro.locals.profile?.nim) ? '/admin' : '/dashboard-en');
+  return Astro.redirect(isAdminNim(Astro.locals.profile?.nim) ? '/admin' : '/en/dashboard');
 }
 ---
 

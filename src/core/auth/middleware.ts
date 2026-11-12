@@ -75,11 +75,13 @@ export const onRequest = defineMiddleware(async (context, next) => {
     }
   }
 
+  const isEnglishDashboardRoute = context.url.pathname === '/en/dashboard'
+    || context.url.pathname.startsWith('/en/dashboard/');
   const isCareerRoute = context.url.pathname === '/career' || context.url.pathname.startsWith('/career/');
   const isDashboardHelpRoute = context.url.pathname === '/bantuan';
-  if ((context.url.pathname.startsWith('/dashboard') || isCareerRoute || isDashboardHelpRoute) && !user) {
+  if ((context.url.pathname.startsWith('/dashboard') || isEnglishDashboardRoute || isCareerRoute || isDashboardHelpRoute) && !user) {
     const returnTo = `${context.url.pathname}${context.url.search}`;
-    return context.redirect(`/login-de?redirect=${encodeURIComponent(returnTo)}`);
+    return context.redirect(`${isEnglishDashboardRoute ? '/login-en' : '/login-de'}?redirect=${encodeURIComponent(returnTo)}`);
   }
 
   return next();

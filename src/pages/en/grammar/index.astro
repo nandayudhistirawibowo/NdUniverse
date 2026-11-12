@@ -5,77 +5,74 @@ const tenses = [
   {
     tense: 'Present',
     example: 'I go to work every day.',
-    meaning: 'Kebiasaan atau keadaan saat ini. Bentuk dasar “go” tetap; untuk he/she/it biasanya ditambah -s.',
+    meaning: 'Use the present for habits and current situations. Keep the base form “go”; add -s for he/she/it.',
   },
   {
     tense: 'Past',
     wrong: 'I go yesterday.',
     example: 'I went yesterday.',
-    meaning: 'Kejadian sudah selesai. “Go” berubah menjadi bentuk lampau “went”; kata “yesterday” saja tidak cukup.',
+    meaning: 'Use the past for a completed event. “Go” changes to “went”; adding “yesterday” alone is not enough.',
   },
   {
     tense: 'Future',
     example: 'I will go tomorrow.',
-    meaning: 'Rencana atau kejadian yang akan datang. Gunakan “will” sebelum kata kerja bentuk dasar.',
+    meaning: 'Use this for plans or events in the future. Put “will” before the base verb.',
   },
 ];
 
 const articles = [
   {
     article: 'A',
-    title: 'Sebelum bunyi konsonan',
-    description: 'Pakai “a” sebelum kata benda tunggal yang bunyi awalnya konsonan.',
+    title: 'Before a consonant sound',
+    description: 'Use “a” before a singular noun that begins with a consonant sound.',
     example: 'a book',
-    translation: 'sebuah buku',
   },
   {
     article: 'An',
-    title: 'Sebelum bunyi vokal',
-    description: 'Pakai “an” sebelum kata benda tunggal yang bunyi awalnya vokal.',
+    title: 'Before a vowel sound',
+    description: 'Use “an” before a singular noun that begins with a vowel sound.',
     example: 'an apple',
-    translation: 'sebuah apel',
   },
   {
     article: 'The',
-    title: 'Benda yang spesifik',
-    description: 'Pakai “the” saat pembicara dan pendengar tahu benda mana yang dimaksud.',
+    title: 'A specific item',
+    description: 'Use “the” when both the speaker and listener know which item is meant.',
     example: 'the book on the table',
-    translation: 'buku yang di atas meja itu',
   },
 ];
 
 const prepositions = [
   {
     preposition: 'In',
-    usage: 'Untuk rentang waktu yang luas dan wilayah: bulan, tahun, kota, atau negara.',
+    usage: 'Use for broad periods of time and locations: months, years, cities, or countries.',
     examples: ['in May', 'in 2026', 'in Jakarta'],
   },
   {
     preposition: 'On',
-    usage: 'Untuk hari atau tanggal tertentu, serta sesuatu yang berada di permukaan.',
+    usage: 'Use for specific days or dates, and for things on a surface.',
     examples: ['on Monday', 'on the table'],
   },
   {
     preposition: 'At',
-    usage: 'Untuk jam tertentu atau lokasi yang dianggap sebagai titik spesifik.',
+    usage: 'Use for a specific time or a location treated as a precise point.',
     examples: ['at 7 PM', 'at the bus stop'],
   },
 ];
 
 const plurals = [
   {
-    rule: 'Tambah -s',
-    description: 'Aturan umum untuk banyak kata benda.',
+    rule: 'Add -s',
+    description: 'The general rule for many plural nouns.',
     examples: [{ singular: 'cat', plural: 'cats' }],
   },
   {
-    rule: 'Tambah -es',
-    description: 'Sering dipakai pada kata yang berakhir dengan bunyi seperti s, x, z, ch, atau sh.',
+    rule: 'Add -es',
+    description: 'Often used for nouns ending in sounds such as s, x, z, ch, or sh.',
     examples: [{ singular: 'box', plural: 'boxes' }],
   },
   {
-    rule: 'Bentuk tidak beraturan',
-    description: 'Beberapa kata berubah bentuk dan perlu diingat satu per satu.',
+    rule: 'Irregular forms',
+    description: 'Some nouns change form and need to be learned individually.',
     examples: [
       { singular: 'child', plural: 'children' },
       { singular: 'mouse', plural: 'mice' },
@@ -85,36 +82,36 @@ const plurals = [
 ---
 
 <Layout
-  title="Panduan Grammar Bahasa Inggris | NdUniverse"
-  description="Panduan grammar bahasa Inggris dengan penjelasan perbedaan konsep untuk penutur bahasa Indonesia."
+  title="English Grammar Guide | NdUniverse"
+  description="A clear English grammar guide for learners whose first language is Indonesian."
 >
   <main class="grammar-page">
-    <a class="back-link" href="/en">← Kembali ke Beranda</a>
+    <a class="back-link" href="/en">← Back to Home</a>
 
     <header class="page-heading">
-      <p class="eyebrow">Panduan Pemula · English Grammar</p>
-      <h1>Tata Bahasa Inggris</h1>
+      <p class="eyebrow">Beginner Guide · English Grammar</p>
+      <h1>English Grammar</h1>
       <p class="intro-copy">
-        Mulai dari pola yang paling sering dipakai. Kita bandingkan langsung dengan bahasa Indonesia, supaya jelas bagian mana yang perlu diperhatikan saat menyusun kalimat bahasa Inggris.
+        Start with the patterns used most often. Comparing English with Indonesian helps highlight what to pay attention to when building an English sentence.
       </p>
     </header>
 
     <section class="guide-section" aria-labelledby="tenses-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">01 / Waktu</p>
-          <h2 id="tenses-heading">Tenses: Kata Kerja Menandai Waktu</h2>
+          <p class="section-kicker">01 / Time</p>
+          <h2 id="tenses-heading">Tenses: Verbs Mark Time</h2>
         </div>
-        <p class="section-note">Dalam bahasa Indonesia, kata kerja biasanya tidak berubah: “pergi kemarin” dan “pergi besok” memakai kata “pergi” yang sama.</p>
+        <p class="section-note">In Indonesian, verbs usually stay the same: the equivalent of “go yesterday” and “go tomorrow” uses the same verb.</p>
       </div>
 
-      <div class="table-scroll" role="region" aria-label="Tabel tenses bahasa Inggris" tabindex="0">
+      <div class="table-scroll" role="region" aria-label="English tenses table" tabindex="0">
         <table class="guide-table tenses-table">
           <thead>
             <tr>
-              <th scope="col">Waktu</th>
-              <th scope="col">Contoh</th>
-              <th scope="col">Makna dan catatan</th>
+              <th scope="col">Tense</th>
+              <th scope="col">Example</th>
+              <th scope="col">Meaning and Notes</th>
             </tr>
           </thead>
           <tbody>
@@ -122,10 +119,10 @@ const plurals = [
               <tr>
                 <th scope="row" class="row-heading">{tense}</th>
                 <td>
-                  {wrong && <p class="incorrect-example"><span lang="en">{wrong}</span> <span aria-label="salah">❌</span></p>}
+                  {wrong && <p class="incorrect-example"><span lang="en">{wrong}</span> <span aria-label="incorrect">❌</span></p>}
                   <div class="example-with-speech">
-                    <span lang="en">{example} <span aria-label="benar">✅</span></span>
-                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                    <span lang="en">{example} <span aria-label="correct">✅</span></span>
+                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Listen to ${example}`} title={`Listen to ${example}`}>
                       <span aria-hidden="true">🔊</span>
                     </button>
                   </div>
@@ -136,49 +133,49 @@ const plurals = [
           </tbody>
         </table>
       </div>
-      <p class="section-note footnote">Pola ringkas: present <span lang="en">go</span>, past <span lang="en">went</span>, future <span lang="en">will go</span>. Untuk kata kerja lain, bentuk past bisa beraturan (<span lang="en">play → played</span>) atau tidak beraturan.</p>
+      <p class="section-note footnote">Quick pattern: present <span lang="en">go</span>, past <span lang="en">went</span>, future <span lang="en">will go</span>. Other verbs may have regular past forms (<span lang="en">play → played</span>) or irregular forms.</p>
     </section>
 
     <section class="guide-section" aria-labelledby="articles-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">02 / Kata sandang</p>
-          <h2 id="articles-heading">Articles: A, An, dan The</h2>
+          <p class="section-kicker">02 / Articles</p>
+          <h2 id="articles-heading">Articles: A, An, and The</h2>
         </div>
-        <p class="section-note">Bahasa Indonesia tidak punya kata sandang yang setara langsung dengan “a”, “an”, dan “the”, sehingga bagian ini sering terlewat.</p>
+        <p class="section-note">Indonesian has no direct equivalents of “a,” “an,” and “the,” so English learners often leave these words out.</p>
       </div>
 
       <div class="article-grid">
-        {articles.map(({ article, title, description, example, translation }) => (
+        {articles.map(({ article, title, description, example }) => (
           <article class="article-card">
             <p class="article-label">{article}</p>
             <h3>{title}</h3>
             <p class="card-description">{description}</p>
             <div class="example-with-speech">
-              <span><span lang="en">{example}</span><small>{translation}</small></span>
-              <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+              <span lang="en">{example}</span>
+              <button class="speaker-button" type="button" data-speak={example} aria-label={`Listen to ${example}`} title={`Listen to ${example}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
             </div>
           </article>
         ))}
       </div>
-      <p class="section-note footnote">Pilih “a” atau “an” berdasarkan bunyi awal, bukan hanya hurufnya. Misalnya, <span lang="en">an hour</span> dimulai dengan bunyi vokal karena huruf h tidak terdengar.</p>
+      <p class="section-note footnote">Choose “a” or “an” based on the first sound, not only the first letter. For example, <span lang="en">an hour</span> begins with a vowel sound because the h is silent.</p>
     </section>
 
     <section class="guide-section" aria-labelledby="prepositions-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">03 / Kata depan</p>
-          <h2 id="prepositions-heading">Prepositions: In, On, dan At</h2>
+          <p class="section-kicker">03 / Prepositions</p>
+          <h2 id="prepositions-heading">Prepositions: In, On, and At</h2>
         </div>
-        <p class="section-note">Padanan “di” atau “pada” dalam bahasa Indonesia tidak selalu menentukan pilihan preposisi bahasa Inggris.</p>
+        <p class="section-note">The Indonesian equivalents of “in,” “on,” and “at” do not always determine which English preposition to choose.</p>
       </div>
 
-      <div class="table-scroll" role="region" aria-label="Tabel prepositions bahasa Inggris" tabindex="0">
+      <div class="table-scroll" role="region" aria-label="English prepositions table" tabindex="0">
         <table class="guide-table">
           <thead>
-            <tr><th scope="col">Kata depan</th><th scope="col">Kapan digunakan</th><th scope="col">Contoh frasa</th></tr>
+            <tr><th scope="col">Preposition</th><th scope="col">When to Use It</th><th scope="col">Example Phrases</th></tr>
           </thead>
           <tbody>
             {prepositions.map(({ preposition, usage, examples }) => (
@@ -190,7 +187,7 @@ const plurals = [
                     {examples.map((example) => (
                       <span class="example-with-speech phrase-example">
                         <span lang="en">{example}</span>
-                        <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                        <button class="speaker-button" type="button" data-speak={example} aria-label={`Listen to ${example}`} title={`Listen to ${example}`}>
                           <span aria-hidden="true">🔊</span>
                         </button>
                       </span>
@@ -207,16 +204,16 @@ const plurals = [
     <section class="guide-section" aria-labelledby="plural-heading">
       <div class="section-heading">
         <div>
-          <p class="section-kicker">04 / Bentuk jamak</p>
-          <h2 id="plural-heading">Pluralization: Bentuk Jamak</h2>
+          <p class="section-kicker">04 / Pluralization</p>
+          <h2 id="plural-heading">Making Nouns Plural</h2>
         </div>
-        <p class="section-note">Dalam bahasa Indonesia, pengulangan kata bisa menandai jamak; dalam bahasa Inggris, kata benda sering berubah bentuk.</p>
+        <p class="section-note">In Indonesian, repeating a word can indicate a plural; in English, the noun itself often changes form.</p>
       </div>
 
-      <div class="table-scroll" role="region" aria-label="Tabel perubahan kata benda jamak" tabindex="0">
+      <div class="table-scroll" role="region" aria-label="English plural noun table" tabindex="0">
         <table class="guide-table plural-table">
           <thead>
-            <tr><th scope="col">Aturan</th><th scope="col">Penjelasan</th><th scope="col">Contoh</th></tr>
+            <tr><th scope="col">Rule</th><th scope="col">Explanation</th><th scope="col">Example</th></tr>
           </thead>
           <tbody>
             {plurals.map(({ rule, description, examples }) => (
@@ -228,7 +225,7 @@ const plurals = [
                     {examples.map(({ singular, plural }) => (
                       <span class="plural-example">
                         <span lang="en">{singular} → <strong>{plural}</strong></span>
-                        <button class="speaker-button" type="button" data-speak={plural} aria-label={`Dengarkan ${plural}`} title={`Dengarkan ${plural}`}>
+                        <button class="speaker-button" type="button" data-speak={plural} aria-label={`Listen to ${plural}`} title={`Listen to ${plural}`}>
                           <span aria-hidden="true">🔊</span>
                         </button>
                       </span>

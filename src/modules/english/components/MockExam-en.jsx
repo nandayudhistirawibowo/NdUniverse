@@ -118,15 +118,15 @@ export default function MockExam({ level, tasks, unavailable = false }) {
         <div>
           <p class="eyebrow">IELTS/TOEFL Preparation</p>
           <h1>English Mock Exam {level}</h1>
-          <p>22 task: 10 Reading, 10 Listening, 1 Writing, 1 Speaking</p>
+          <p>22 tasks: 10 Reading, 10 Listening, 1 Writing, and 1 Speaking</p>
         </div>
-        <span class="exam-status">Target kelulusan: 60%</span>
+        <span class="exam-status">Passing score: 60%</span>
       </header>
 
       {unavailable || examTasks.length === 0 ? (
         <section class="exam-result failed" role="alert">
-          <h2>Soal untuk level ini belum tersedia.</h2>
-          <p>Silakan hubungi admin atau coba level lain setelah materi ditambahkan.</p>
+          <h2>No questions are available for this level yet.</h2>
+          <p>Contact an administrator or try another level once content is available.</p>
         </section>
       ) : (
         <>
@@ -144,9 +144,9 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                 class="audio-button"
                 type="button"
                 onClick={(event) => playListeningAudio(event, task)}
-                aria-label="Putar audio soal"
+                aria-label="Play question audio"
               >
-                🔊 Putar Audio
+                🔊 Play Audio
               </button>
             )}
             <p class="prompt">{task.prompt}</p>
@@ -181,7 +181,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                     onClick={() => startSpeaking(index)}
                     disabled={finished || isListening}
                   >
-                    {isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}
+                    {isListening ? '🎤 Recording...' : '🎤 Record Answer'}
                   </button>
                 )}
                 <textarea
@@ -192,7 +192,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                     chooseAnswer(index, event.currentTarget.value);
                   }}
                   disabled={finished}
-                  placeholder={task.kind === 'writing' ? 'Tulis jawaban bahasa English...' : 'Hasil rekaman atau jawaban tertulis...'}
+                  placeholder={task.kind === 'writing' ? 'Write your answer in English...' : 'Your recording or written response...'}
                 />
               </div>
             )}
@@ -202,17 +202,17 @@ export default function MockExam({ level, tasks, unavailable = false }) {
 
       {!finished ? (
         <button class="submit-button" type="button" onClick={submitExam}>
-          Selesaikan Ujian
+          Complete Exam
         </button>
       ) : (
         <section class={`exam-result ${score.passed ? 'passed' : 'failed'}`} aria-live="polite">
-          <p class="result-label">{score.passed ? 'Selamat!' : 'Belum Lulus'}</p>
+          <p class="result-label">{score.passed ? 'Passed!' : 'Not Passed'}</p>
           <h2>{score.percent}%</h2>
-          <p>{score.correct} dari {score.total} task benar. {score.passed ? 'Anda memenuhi standar kelulusan 60%.' : 'Silakan ulangi latihan dan coba lagi.'}</p>
+          <p>{score.correct} of {score.total} tasks correct. {score.passed ? 'You met the 60% passing standard.' : 'Review the material and try again.'}</p>
           {score.passed && (
             <>
-              <a href={`/sertifikat/${level.toLowerCase()}`}>Lihat Sertifikat</a>
-              <a href="/dashboard">Kembali ke Dashboard</a>
+              <a href={`/sertifikat/en/ielts/${level.toLowerCase()}`}>View Certificate</a>
+              <a href="/en/dashboard">Back to English Dashboard</a>
             </>
           )}
         </section>
