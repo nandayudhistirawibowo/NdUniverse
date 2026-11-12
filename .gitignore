@@ -8,3 +8,5 @@ dist/
 Thumbs.db
 *.log
 .vscode/
+/playwright-report/
+/test-results/

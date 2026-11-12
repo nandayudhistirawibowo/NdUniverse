@@ -10,7 +10,7 @@ reading:
       - "At the library"
     answer: "In the park"
 listening:
-  - audio_text: "Hello, this is Anna. I am going to the sports center after school today. My swimming lesson starts at four o'clock. Please bring my blue towel from home."
+  - transcript: "Hello, this is Anna. I am going to the sports center after school today. My swimming lesson starts at four o'clock. Please bring my blue towel from home."
     question: "What time does Anna's swimming lesson start?"
     options:
       - "At three o'clock"

@@ -26,12 +26,52 @@ export function isPassed(moduleScores, threshold = 60) {
     && moduleScores.every((score) => Number.isFinite(Number(score)) && Number(score) >= threshold);
 }
 
+function getModulePercentages(moduleScores) {
+  const scores = Array.isArray(moduleScores)
+    ? moduleScores
+    : moduleScores && typeof moduleScores === 'object'
+      ? Object.values(moduleScores)
+      : [];
+  return scores.map((score) => Number(score));
+}
+
+export function getToeflTotalScore(moduleScores) {
+  const scores = getModulePercentages(moduleScores);
+  if (scores.length === 0 || !scores.every(Number.isFinite)) return 0;
+  const points = scores.reduce(
+    (total, score) => total + (Math.min(100, Math.max(0, score)) / 100) * 30,
+    0,
+  );
+  return Math.round(points);
+}
+
+export function getIeltsBandScore(moduleScores) {
+  const scores = getModulePercentages(moduleScores);
+  if (scores.length === 0 || !scores.every(Number.isFinite)) return 3;
+  const average = scores.reduce(
+    (total, score) => total + Math.min(100, Math.max(0, score)),
+    0,
+  ) / scores.length;
+
+  if (average >= 95) return 9;
+  if (average >= 90) return 8.5;
+  if (average >= 80) return 7;
+  if (average >= 70) return 6.5;
+  if (average >= 60) return 6;
+  if (average >= 50) return 5.5;
+  if (average >= 40) return 5;
+  if (average >= 30) return 4.5;
+  if (average >= 20) return 4;
+  if (average >= 10) return 3.5;
+  return 3;
+}
+
 export function getStorageKey(examType, level) {
   const prefix = STORAGE_KEY_PREFIXES[String(examType).toLowerCase()];
   if (!prefix) {
     throw new RangeError(`Unsupported exam type: ${examType}`);
   }
-  return `${prefix}-${String(level).toUpperCase()}`;
+  return `${prefix}-${String(level).toLowerCase()}`;
 }
 
 export function saveExamResult(examType, level, result) {
@@ -45,6 +85,14 @@ export function getExamResult(examType, level) {
   const storage = getLocalStorage();
   const storageKey = getStorageKey(examType, level);
   let serializedResult = storage.getItem(storageKey);
+
+  if (serializedResult === null) {
+    const prefix = STORAGE_KEY_PREFIXES[String(examType).toLowerCase()];
+    const previousKey = `${prefix}-${String(level).toUpperCase()}`;
+    if (previousKey !== storageKey) {
+      serializedResult = storage.getItem(previousKey);
+    }
+  }
 
   if (serializedResult === null && String(examType).toLowerCase() === 'goethe') {
     serializedResult = storage.getItem(`sideutsch-goethe-${String(level).toLowerCase()}`);

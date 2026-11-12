@@ -10,7 +10,7 @@ reading:
       - "His grandparents"
     answer: "His parents and sister"
 listening:
-  - audio_text: "Good morning. The market is busy today. Apples cost two dollars a bag, and fresh bread costs one dollar. The fruit stand is next to the main entrance."
+  - transcript: "Good morning. The market is busy today. Apples cost two dollars a bag, and fresh bread costs one dollar. The fruit stand is next to the main entrance."
     question: "How much does a bag of apples cost?"
     options:
       - "One dollar"

@@ -10,9 +10,11 @@ const level = String(Astro.params.level ?? '').toUpperCase();
 if (!['ielts', 'toefl'].includes(examType)) return new Response('Exam type not found.', { status: 404 });
 if (!['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(level)) return new Response('Exam level not found.', { status: 404 });
 
-const examEntry = (await getCollection('englishExam')).find(
+const examEntries = (await getCollection('englishExam')).filter(
   (entry) => entry.data.exam_type === examType && entry.data.level === level
 );
+const examEntry = examEntries.find((entry) => entry.id.endsWith('-mock'))
+  ?? examEntries[0];
 if (!examEntry) return new Response('Exam content not found for this level.', { status: 404 });
 
 const exam = {

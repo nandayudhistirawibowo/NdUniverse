@@ -125,23 +125,62 @@ const englishExam = defineCollection({
   schema: z.object({
     exam_type: z.enum(['ielts', 'toefl']),
     level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'C2']),
-    reading: z.array(z.object({
-      passage: z.string(),
-      question: z.string(),
-      options: z.array(z.string()),
-      answer: z.string(),
-    })),
-    listening: z.array(z.object({
-      audio_text: z.string(),
-      question: z.string(),
-      options: z.array(z.string()),
-      answer: z.string(),
-    })),
-    writing: z.string(),
-    speaking: z.object({
-      question: z.string(),
-      keywords: z.array(z.string()).length(3),
-    }),
+    reading: z.array(z.union([
+      z.object({
+        passage: z.string(),
+        question: z.string(),
+        options: z.array(z.string()),
+        answer: z.string(),
+      }),
+      z.object({
+        passage: z.string(),
+        questions: z.array(z.object({
+          question: z.string(),
+          options: z.array(z.string()),
+          answer: z.string(),
+        })),
+      }),
+    ])),
+    listening: z.array(z.union([
+      z.object({
+        transcript: z.string(),
+        question: z.string(),
+        options: z.array(z.string()),
+        answer: z.string(),
+      }),
+      z.object({
+        transcript: z.string(),
+        questions: z.array(z.object({
+          question: z.string(),
+          options: z.array(z.string()),
+          answer: z.string(),
+        })),
+      }),
+    ])),
+    writing: z.union([
+      z.string(),
+      z.object({
+        task1: z.string(),
+        task2: z.string(),
+      }),
+      z.object({
+        integrated: z.string(),
+        academic_discussion: z.string(),
+      }),
+    ]),
+    speaking: z.union([
+      z.object({
+        question: z.string(),
+        keywords: z.array(z.string()).length(3),
+      }),
+      z.object({
+        parts: z.array(z.object({
+          part: z.string(),
+          question: z.string(),
+          keywords: z.array(z.string()).length(3),
+        })).length(3),
+      }),
+    ]),
   }),
 });
 

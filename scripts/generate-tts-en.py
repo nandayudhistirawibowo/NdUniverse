@@ -3,6 +3,7 @@ import asyncio
 import hashlib
 import json
 import os
+import re
 import time
 from pathlib import Path
 
@@ -63,12 +64,31 @@ def collect_spoken_texts(value, texts):
             collect_spoken_texts(child, texts)
 
 
+def collect_exam_transcript_words(exam, texts):
+    listening = exam.get("listening", []) if isinstance(exam, dict) else []
+    if not isinstance(listening, list):
+        return
+
+    for item in listening:
+        if not isinstance(item, dict):
+            continue
+        transcript = item.get("transcript")
+        if not isinstance(transcript, str):
+            transcript = item.get("audio_text")
+        if isinstance(transcript, str) and transcript.strip():
+            normalized = re.sub(r"[^\w\s]|_", " ", transcript.lower(), flags=re.UNICODE)
+            texts.update(normalized.split())
+
+
 def content_groups():
     groups = {"us": set(), "gb": set()}
     for path in sorted(CONTENT_ROOT.rglob("*.md")):
         relative = path.relative_to(CONTENT_ROOT)
         accent = "gb" if relative.parts[:2] == ("exam", "ielts") else "us"
-        collect_spoken_texts(get_frontmatter(path), groups[accent])
+        content = get_frontmatter(path)
+        collect_spoken_texts(content, groups[accent])
+        if relative.parts and relative.parts[0] == "exam":
+            collect_exam_transcript_words(content, groups[accent])
     return groups
 
 
