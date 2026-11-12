@@ -1,11 +1,184 @@
 ---
 import Layout from '@core/ui/Layout.astro';
+
 const professions = [
-  { slug:'it', name:'IT', description:'Software, digital systems, and cybersecurity.' },
-  { slug:'business', name:'Business', description:'Management, sales, and corporate communication.' },
-  { slug:'health', name:'Health', description:'Healthcare, nursing, and medical communication.' },
-  { slug:'nutrition', name:'Nutrition', description:'Food, nutrition, and health education.' },
+  {
+    slug: 'it',
+    name: 'IT & Software Engineering',
+    description: 'Build practical vocabulary for software, systems, and technical interviews.',
+    icon: '💻',
+  },
+  {
+    slug: 'business',
+    name: 'Business & E-Commerce',
+    description: 'Practice language for management, sales, marketing, and online commerce.',
+    icon: '📊',
+  },
+  {
+    slug: 'health',
+    name: 'Healthcare',
+    description: 'Learn workplace English for patient care, clinical teams, and healthcare settings.',
+    icon: '🩺',
+  },
+  {
+    slug: 'nutrition',
+    name: 'Nutrition',
+    description: 'Explore nutrition terms and communication for food and health education.',
+    icon: '🥗',
+  },
 ];
 ---
-<Layout title="Career Prep | NdUniverse" description="English career preparation."><main class="career-page"><header><p class="eyebrow">Career Prep</p><h1>Professional Careers</h1><p>Practice vocabulary and interview skills across four professions.</p></header><div class="career-grid">{professions.map((profession)=><a href={`/en/career/${profession.slug}/boss`}><span>Career Prep</span><h2>{profession.name}</h2><p>{profession.description}</p><small>Start interview challenge →</small></a>)}</div></main></Layout>
-<style>.career-page{display:grid;gap:1.5rem;width:min(1120px,100%);margin:auto}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.career-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}.career-grid a{display:grid;gap:.75rem;min-height:220px;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main);text-decoration:none}.career-grid span,.career-grid small{color:#966313;font-weight:800}.career-grid h2,.career-grid p{margin:0}@media(max-width:800px){.career-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:500px){.career-grid{grid-template-columns:1fr}}</style>
+
+<Layout title="English Career Prep | NdUniverse" description="Practice career vocabulary and job interviews in English.">
+  <main class="career-page">
+    <a class="back-link" href="/en">← Back to Home</a>
+    <header class="page-heading">
+      <p class="eyebrow">Career Prep</p>
+      <h1>Build English for Your Career</h1>
+      <p>Choose a profession to practice 50 job-related vocabulary terms in ten short quiz batches and take a role-specific interview challenge.</p>
+    </header>
+
+    <section class="career-grid" aria-label="Career preparation professions">
+      {professions.map((profession) => (
+        <article class="career-card">
+          <a class="career-card-main" href={`/en/career/${profession.slug}`}>
+            <span class="career-icon" aria-hidden="true">{profession.icon}</span>
+            <p class="career-label">English Career Module</p>
+            <h2>{profession.name}</h2>
+            <p class="career-description">{profession.description}</p>
+            <span class="career-link-label">Explore vocabulary →</span>
+          </a>
+          <a class="boss-link" href={`/en/career/${profession.slug}/boss`}>Start Boss Fight</a>
+        </article>
+      ))}
+    </section>
+  </main>
+</Layout>
+
+<style>
+  .career-page {
+    --career-accent: var(--accent-gold, #e5a93b);
+    --career-ink: var(--text-main, #2b2d42);
+    --career-muted: var(--muted, #6b7280);
+    --career-border: var(--border, rgba(43, 45, 66, 0.13));
+    --career-card: var(--card-bg, #fff);
+    display: grid;
+    gap: 1.5rem;
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding: 0.5rem 0 3rem;
+  }
+
+  .back-link {
+    width: fit-content;
+    color: var(--career-ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .page-heading {
+    max-width: 760px;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--career-accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    color: var(--career-ink);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.15;
+  }
+
+  .page-heading > p:last-child {
+    margin: 0.85rem 0 0;
+    color: var(--career-muted);
+    line-height: 1.7;
+  }
+
+  .career-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .career-card {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    gap: 0.9rem;
+    min-width: 0;
+    padding: 1.2rem;
+    border: 1px solid var(--career-border);
+    border-top: 3px solid var(--career-accent);
+    border-radius: 0.9rem;
+    background: var(--career-card);
+  }
+
+  .career-card-main {
+    display: grid;
+    align-content: start;
+    gap: 0.6rem;
+    color: var(--career-ink);
+    text-decoration: none;
+  }
+
+  .career-icon {
+    font-size: 2rem;
+  }
+
+  .career-label {
+    margin: 0;
+    color: var(--career-accent);
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .career-card h2 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+
+  .career-description {
+    margin: 0;
+    color: var(--career-muted);
+    line-height: 1.6;
+  }
+
+  .career-link-label {
+    margin-top: 0.2rem;
+    color: var(--career-ink);
+    font-weight: 800;
+  }
+
+  .boss-link {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 0.9rem;
+    border-radius: 0.65rem;
+    background: var(--accent-red, #d93838);
+    color: #fff;
+    font-weight: 800;
+    text-decoration: none;
+  }
+
+  .career-card-main:hover .career-link-label,
+  .back-link:hover {
+    color: var(--career-accent);
+  }
+
+  @media (max-width: 600px) {
+    .career-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

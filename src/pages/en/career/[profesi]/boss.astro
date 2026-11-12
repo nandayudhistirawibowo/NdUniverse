@@ -9,8 +9,8 @@ const profesi = String(Astro.params.profesi ?? '').toLowerCase();
 const titles = {
   it: ['IT & Software Engineering', 'IT'],
   business: ['Digital Business & E-Commerce', 'Business'],
-  health: ['Pflege & Gesundheitswesen', 'Pflege'],
-  nutrition: ['Gizi & Kebidanan', 'Gizi dan Kebidanan'],
+  health: ['Healthcare', 'Healthcare'],
+  nutrition: ['Nutrition', 'Nutrition'],
 };
 const titleData = titles[profesi];
 if (!titleData) return new Response('Profesi tidak ditemukan.', { status: 404 });
@@ -20,8 +20,8 @@ const questions = entry?.data.boss_questions ?? [];
 ---
 
 <DashboardLayout
-  title={`Boss Fight ${titleData[0]} | siDeutsch`}
-  description={`Simulasi wawancara kerja untuk ${titleData[0]}.`}
+  title={`${titleData[0]} Interview Challenge | NdUniverse`}
+  description={`Practice English job interview questions for ${titleData[0]}.`}
   active="career"
   user={Astro.locals.user}
   profile={Astro.locals.profile}

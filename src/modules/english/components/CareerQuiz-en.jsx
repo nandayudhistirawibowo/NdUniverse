@@ -1,72 +1,102 @@
 import { useState } from 'preact/hooks';
 
-/** @param {{ words?: Array<{ german: string; indonesian: string; options: string[] }>; profession?: string }} props */
-export default function CareerQuiz({ words, profession = 'Career' }) {
-  const vocab = words ?? [];
-  const [started, setStarted] = useState(false);
-  const [index, setIndex] = useState(0);
+const WORDS_PER_BATCH = 5;
+
+/** @param {{ words?: Array<{ word: string; translation: string; context: string; contextIndonesian?: string }>; profession?: string }} props */
+export default function CareerQuiz({ words = [], profession = 'Career' }) {
+  const [phase, setPhase] = useState('intro');
+  const [batchIndex, setBatchIndex] = useState(0);
+  const [questionIndex, setQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
+  const [batchScore, setBatchScore] = useState(0);
   const [selected, setSelected] = useState('');
-  const [finished, setFinished] = useState(false);
 
-  const current = vocab[index];
+  const batchCount = Math.ceil(words.length / WORDS_PER_BATCH);
+  const batchWords = words.slice(batchIndex * WORDS_PER_BATCH, (batchIndex + 1) * WORDS_PER_BATCH);
+  const current = batchWords[questionIndex];
+  const overallIndex = batchIndex * WORDS_PER_BATCH + questionIndex;
 
-  const start = () => {
-    setStarted(true);
-    setIndex(0);
+  const getOptions = () => {
+    if (!current) return [];
+    const distractors = [];
+    for (let offset = 1; offset <= words.length && distractors.length < 3; offset += 1) {
+      const translation = words[(overallIndex + offset) % words.length]?.translation;
+      if (translation && translation !== current.translation && !distractors.includes(translation)) {
+        distractors.push(translation);
+      }
+    }
+
+    const options = [current.translation, ...distractors];
+    const rotation = options.length ? overallIndex % options.length : 0;
+    return [...options.slice(rotation), ...options.slice(0, rotation)];
+  };
+
+  const startQuiz = () => {
+    setPhase('quiz');
+    setBatchIndex(0);
+    setQuestionIndex(0);
     setScore(0);
+    setBatchScore(0);
     setSelected('');
-    setFinished(false);
   };
 
-  const choose = (answer) => {
-    if (selected) return;
+  const chooseAnswer = (answer) => {
+    if (selected || !current) return;
     setSelected(answer);
-    if (answer === current.indonesian) setScore((value) => value + 1);
+    if (answer === current.translation) {
+      setScore((value) => value + 1);
+      setBatchScore((value) => value + 1);
+    }
   };
 
-  const next = () => {
-    if (index + 1 >= vocab.length) {
-      setFinished(true);
+  const advance = () => {
+    if (questionIndex + 1 < batchWords.length) {
+      setQuestionIndex((value) => value + 1);
+      setSelected('');
       return;
     }
-    setIndex((value) => value + 1);
+
+    setPhase(batchIndex + 1 < batchCount ? 'batch-complete' : 'finished');
+  };
+
+  const startNextBatch = () => {
+    setBatchIndex((value) => value + 1);
+    setQuestionIndex(0);
+    setBatchScore(0);
     setSelected('');
+    setPhase('quiz');
   };
 
   return (
     <section class="career-quiz" aria-live="polite">
-      {!started ? (
-        <>
+      {phase === 'intro' && (
+        <div class="quiz-intro">
           <p class="career-section-label">Vocabulary Practice</p>
-          <div class="career-word-list">
-            {vocab.map((word) => (
-              <article key={word.german}>
-                <strong lang="en">{word.german}</strong>
-                <span>{word.indonesian}</span>
-              </article>
-            ))}
-          </div>
-          <button class="career-primary-button" type="button" onClick={start}>Mulai Quiz</button>
-        </>
-      ) : finished ? (
-        <div class="career-quiz-result">
-          <p class="career-section-label">Hasil Quiz</p>
-          <h3>{score}/{vocab.length} jawaban benar</h3>
-          <p>Vocabulary {profession} was practiced.</p>
-          <button class="career-secondary-button" type="button" onClick={start}>Ulangi Quiz</button>
+          <h2>{profession} Vocabulary Quiz</h2>
+          <p>Practice {words.length} career words in batches of {WORDS_PER_BATCH}. Choose the Indonesian meaning that best matches each English word.</p>
+          {words.length === 0 ? (
+            <p class="quiz-empty">Vocabulary content is not available yet.</p>
+          ) : (
+            <button class="career-primary-button" type="button" onClick={startQuiz}>Start Quiz</button>
+          )}
         </div>
-      ) : (
-        <div>
-          <p class="career-section-label">Quiz {index + 1}/{vocab.length}</p>
-          <h3>The meaning of <span lang="en">{current.german}</span> is...</h3>
+      )}
+
+      {phase === 'quiz' && current && (
+        <div class="quiz-question">
+          <div class="quiz-progress">
+            <p class="career-section-label">Batch {batchIndex + 1} of {batchCount}</p>
+            <span>Word {questionIndex + 1} of {batchWords.length}</span>
+          </div>
+          <h2>What does <span lang="en">{current.word}</span> mean?</h2>
+          <p class="quiz-context" lang="en">{current.context}</p>
           <div class="career-options">
-            {current.options.map((option) => (
+            {getOptions().map((option) => (
               <button
                 key={option}
-                class={selected ? (option === current.indonesian ? 'correct' : option === selected ? 'wrong' : '') : ''}
+                class={selected ? (option === current.translation ? 'correct' : option === selected ? 'wrong' : '') : ''}
                 type="button"
-                onClick={() => choose(option)}
+                onClick={() => chooseAnswer(option)}
                 disabled={Boolean(selected)}
               >
                 {option}
@@ -74,30 +104,75 @@ export default function CareerQuiz({ words, profession = 'Career' }) {
             ))}
           </div>
           {selected && (
-            <button class="career-primary-button" type="button" onClick={next}>
-              {index + 1 >= vocab.length ? 'See Results' : 'Next'}
-            </button>
+            <div class={selected === current.translation ? 'answer-feedback is-correct' : 'answer-feedback is-wrong'}>
+              <strong>{selected === current.translation ? 'Correct!' : `Not quite. The answer is: ${current.translation}`}</strong>
+              {current.contextIndonesian && <p>{current.contextIndonesian}</p>}
+              <button class="career-primary-button" type="button" onClick={advance}>
+                {questionIndex + 1 < batchWords.length ? 'Next Word' : batchIndex + 1 < batchCount ? 'Finish Batch' : 'See Results'}
+              </button>
+            </div>
           )}
         </div>
       )}
+
+      {phase === 'batch-complete' && (
+        <div class="quiz-result">
+          <p class="career-section-label">Batch {batchIndex + 1} Complete</p>
+          <h2>{batchScore}/{batchWords.length} correct</h2>
+          <p>Ready to practice the next five {profession.toLowerCase()} words?</p>
+          <button class="career-primary-button" type="button" onClick={startNextBatch}>Start Next Batch</button>
+        </div>
+      )}
+
+      {phase === 'finished' && (
+        <div class="quiz-result">
+          <p class="career-section-label">Quiz Complete</p>
+          <h2>{score}/{words.length} correct</h2>
+          <p>You completed all {batchCount} vocabulary batches for {profession}.</p>
+          <button class="career-secondary-button" type="button" onClick={startQuiz}>Try Again</button>
+        </div>
+      )}
+
       <style>{`
-        .career-quiz { display:grid; gap:.9rem; padding:1.25rem; border:1px solid var(--border); border-radius:14px; background:var(--card-bg); }
-        .career-section-label { margin:0; color:#966313; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
-        .career-word-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
-        .career-word-list article { display:grid; min-width:0; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:10px; }
-        .career-word-list strong,.career-word-list span { overflow-wrap:anywhere; word-break:break-word; }
-        .career-word-list strong { color:var(--text-main); }
-        .career-word-list span { color:var(--muted); font-size:.85rem; }
-        .career-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; margin:.8rem 0; }
-        .career-options button,.career-primary-button,.career-secondary-button { min-height:44px; border-radius:.65rem; padding:.65rem .85rem; font-weight:800; cursor:pointer; }
-        .career-options button { border:1px solid var(--border); background:var(--bg-main); color:var(--text-main); }
-        .career-options button.correct { border-color:#9bd0a5; background:#edf8ef; color:#218838; }
-        .career-options button.wrong { border-color:#e6a3a3; background:#fff2f2; color:#b42318; }
-        .career-primary-button { width:fit-content; border:0; background:var(--accent-red); color:#fff; }
-        .career-secondary-button { width:fit-content; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
-        .career-quiz-result h3,.career-quiz h3 { margin:.2rem 0; color:var(--text-main); }
-        .career-quiz-result p:last-of-type { color:var(--muted); }
-        @media(max-width:768px){ .career-word-list{grid-template-columns:1fr;}.career-options{grid-template-columns:1fr;} }
+        .career-quiz {
+          --quiz-ink: var(--text-main, #2b2d42);
+          --quiz-muted: var(--muted, #6b7280);
+          --quiz-border: var(--border, rgba(43,45,66,.13));
+          --quiz-card: var(--card-bg, #fff);
+          --quiz-success: #218838;
+          --quiz-error: #b42318;
+          display:grid;
+          gap:1rem;
+          padding:1.25rem;
+          border:1px solid var(--quiz-border);
+          border-radius:14px;
+          background:var(--quiz-card);
+          color:var(--quiz-ink);
+        }
+        .quiz-intro,.quiz-result,.quiz-question { display:grid; gap:.75rem; }
+        .career-section-label { margin:0; color:var(--accent-gold,#966313); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .career-quiz h2 { margin:0; color:var(--quiz-ink); font-size:clamp(1.2rem,3vw,1.6rem); }
+        .quiz-intro > p:not(.career-section-label),.quiz-result > p:not(.career-section-label) { margin:0; color:var(--quiz-muted); line-height:1.6; }
+        .quiz-empty { color:var(--quiz-error)!important; }
+        .quiz-progress { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+        .quiz-progress > span { color:var(--quiz-muted); font-size:.9rem; }
+        .quiz-context { margin:0; color:var(--quiz-muted); font-style:italic; line-height:1.6; }
+        .career-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; }
+        .career-options button,.career-primary-button,.career-secondary-button { min-height:44px; border-radius:.65rem; padding:.65rem .85rem; font:inherit; font-weight:800; cursor:pointer; }
+        .career-options button { border:1px solid var(--quiz-border); background:var(--bg-main,var(--quiz-card)); color:var(--quiz-ink); text-align:left; }
+        .career-options button:disabled { cursor:default; }
+        .career-options button.correct { border-color:var(--quiz-success); background:color-mix(in srgb,var(--quiz-success) 10%,var(--quiz-card)); color:var(--quiz-success); }
+        .career-options button.wrong { border-color:var(--quiz-error); background:color-mix(in srgb,var(--quiz-error) 8%,var(--quiz-card)); color:var(--quiz-error); }
+        .career-primary-button { width:fit-content; border:0; background:var(--accent-red,#d93838); color:#fff; }
+        .career-secondary-button { width:fit-content; border:1px solid var(--quiz-border); background:var(--quiz-card); color:var(--quiz-ink); }
+        .answer-feedback { display:grid; gap:.6rem; padding:.85rem; border-radius:.65rem; background:var(--bg-main,#f8f9fa); }
+        .answer-feedback.is-correct strong { color:var(--quiz-success); }
+        .answer-feedback.is-wrong strong { color:var(--quiz-error); }
+        .answer-feedback p { margin:0; color:var(--quiz-muted); }
+        @media(max-width:600px) {
+          .career-options { grid-template-columns:1fr; }
+          .quiz-progress { align-items:flex-start; flex-direction:column; gap:.35rem; }
+        }
       `}</style>
     </section>
   );

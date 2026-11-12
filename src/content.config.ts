@@ -115,7 +115,7 @@ const englishCareer = defineCollection({
     })).length(50),
     boss_questions: z.array(z.object({
       question: z.string(),
-      keywords: z.array(z.string()),
+      keywords: z.array(z.string()).length(3),
     })).length(10),
   }),
 });
