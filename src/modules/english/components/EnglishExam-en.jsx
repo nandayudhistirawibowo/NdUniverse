@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 import {
   calculateModuleScore,
   getBandScore,
@@ -40,8 +41,7 @@ function scoreText(answer, targetWords, type) {
 }
 
 function scoreKeywords(answer, keywords, type) {
-  const normalizedAnswer = answer.toLowerCase();
-  const matched = keywords.filter((keyword) => normalizedAnswer.includes(keyword.toLowerCase())).length;
+  const matched = keywords.filter((keyword) => isFuzzyMatch(answer, keyword)).length;
   return calculateModuleScore(matched, keywords.length, type);
 }
 

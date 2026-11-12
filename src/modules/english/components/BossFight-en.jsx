@@ -1,14 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { playAudioTTS } from '../config/english-speech.js';
-
-function normalizeAnswer(answer) {
-  return String(answer ?? '')
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}\s]/gu, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
 export default function BossFight({
   questions = [],
@@ -113,9 +106,8 @@ export default function BossFight({
     if (!answer.trim() || gameState !== 'interview') return;
     playSound('click');
 
-    const normalized = normalizeAnswer(answer);
     const matchedKeywords = (currentQuestion.keywords ?? []).filter((keyword) =>
-      normalized.includes(normalizeAnswer(keyword))
+      isFuzzyMatch(answer, keyword)
     );
     const passed = matchedKeywords.length >= 2;
     const userMessage = { speaker: 'user', text: answer };

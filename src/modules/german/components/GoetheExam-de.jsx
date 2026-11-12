@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
 import { calculateModuleScore, isPassed, saveExamResult } from '@core/game/exam-grading.js';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')
@@ -9,30 +10,6 @@ function normalizeAnswer(answer) {
     .toLowerCase()
     .replace(/[^\p{L}\p{N}\s]/gu, '')
     .replace(/\s+/g, ' ');
-}
-
-function fuzzyMatch(answer, expected) {
-  const a = normalizeAnswer(answer);
-  const b = normalizeAnswer(expected);
-  if (!a || !b) return false;
-  if (a === b || a.includes(b) || b.includes(a)) return true;
-
-  const matrix = Array.from({ length: a.length + 1 }, (_, row) =>
-    Array.from({ length: b.length + 1 }, (_, column) =>
-      row === 0 ? column : column === 0 ? row : 0
-    )
-  );
-  for (let i = 1; i <= a.length; i += 1) {
-    for (let j = 1; j <= b.length; j += 1) {
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,
-        matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1)
-      );
-    }
-  }
-  const threshold = Math.max(1, Math.floor(Math.max(a.length, b.length) * 0.25));
-  return matrix[a.length][b.length] <= threshold;
 }
 
 function tokenizeAnswer(answer) {
@@ -62,10 +39,7 @@ function partialTextScore(answer, task) {
       if (keywordTokens.length === 0) return false;
       return keywordTokens.every((keywordToken) =>
         answerTokens.some((answerToken) =>
-          answerToken === keywordToken
-          || answerToken.includes(keywordToken)
-          || keywordToken.includes(answerToken)
-          || fuzzyMatch(answerToken, keywordToken)
+          isFuzzyMatch(answerToken, keywordToken)
         )
       );
     });

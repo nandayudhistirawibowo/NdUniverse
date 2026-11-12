@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 import {
   fetchAllUserProgress,
   getProgressClient,
@@ -56,28 +57,6 @@ function getSpeakingPrompt(item) {
   return item?.indonesian?.trim()
     ? `Ucapkan dalam Bahasa Jerman: ${item.indonesian}`
     : 'Ucapkan kata Bahasa Jerman di bawah ini.';
-}
-
-function fuzzyMatch(answer, expected) {
-  const a = normalizeAnswer(answer).replace(/[^\p{L}\p{N}\s]/gu, '');
-  const b = normalizeAnswer(expected).replace(/[^\p{L}\p{N}\s]/gu, '');
-  if (!a || !b) return false;
-  if (a === b || a.includes(b) || b.includes(a)) return true;
-
-  const matrix = Array.from({ length: a.length + 1 }, (_, row) =>
-    Array.from({ length: b.length + 1 }, (_, column) =>
-      row === 0 ? column : column === 0 ? row : 0
-    )
-  );
-  for (let i = 1; i <= a.length; i += 1) {
-    for (let j = 1; j <= b.length; j += 1) {
-      const substitution = matrix[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1);
-      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, substitution);
-    }
-  }
-  const distance = matrix[a.length][b.length];
-  const threshold = Math.max(1, Math.floor(Math.max(a.length, b.length) * 0.25));
-  return distance <= threshold;
 }
 
 function getAcceptedAnswers(answer) {
@@ -697,7 +676,7 @@ export default function Quiz(props) {
   function handleTextSubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
     const acceptedAnswers = getAcceptedAnswers(currentQuestion.german);
-    showResult(acceptedAnswers.includes(normalizeAnswer(userAnswer)));
+    showResult(acceptedAnswers.some((answer) => isFuzzyMatch(userAnswer, answer)));
   }
 
   function handleMultipleChoiceSubmit() {
@@ -708,7 +687,7 @@ export default function Quiz(props) {
   function handleFuzzySubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
     const acceptedAnswers = [currentQuestion.german];
-    const isCorrect = acceptedAnswers.some((answer) => fuzzyMatch(userAnswer, answer));
+    const isCorrect = acceptedAnswers.some((answer) => isFuzzyMatch(userAnswer, answer));
     showResult(isCorrect);
   }
 
