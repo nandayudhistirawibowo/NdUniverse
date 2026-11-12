@@ -30,6 +30,7 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
       <section class="session-card">
         <h2>Session {session.number}</h2>
         <div class="table-wrap">
+          <p class="audio-legend">Audio: 🇺🇸 High Quality | 🇬🇧 Browser</p>
           <table>
             <thead>
               <tr><th>English</th><th>Indonesian</th><th>Context</th><th>Word audio</th><th>Sentence audio</th></tr>
@@ -41,10 +42,16 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
                   <td>{word.indonesian}</td>
                   <td lang="en">{word.context}</td>
                   <td>
-                    <button class="vocab-speech-button" type="button" data-vocab-speech={word.german} aria-label={`Play word: ${word.german}`} title="Play word">🔊</button>
+                    <div class="vocab-audio-controls">
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.german} aria-label={`Play word in US English: ${word.german}`} title="US English">🇺🇸</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.german} aria-label={`Play word in UK English: ${word.german}`} title="UK English">🇬🇧</button>
+                    </div>
                   </td>
                   <td>
-                    <button class="vocab-speech-button" type="button" data-vocab-speech={word.context} aria-label={`Play sentence: ${word.context}`} title="Play sentence">🔊</button>
+                    <div class="vocab-audio-controls">
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.context} aria-label={`Play sentence in US English: ${word.context}`} title="US English">🇺🇸</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.context} aria-label={`Play sentence in UK English: ${word.context}`} title="UK English">🇬🇧</button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -65,12 +72,13 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
 
   const bindVocabularyAudio = () => {
-    document.querySelectorAll<HTMLButtonElement>('[data-vocab-speech]').forEach((button) => {
+    document.querySelectorAll<HTMLButtonElement>('[data-vocab-text]').forEach((button) => {
       if (button.dataset.speechBound) return;
       button.dataset.speechBound = 'true';
       button.addEventListener('click', () => {
-        const text = button.dataset.vocabSpeech;
-        if (text) void playAudioTTS(text, button);
+        const text = button.dataset.vocabText;
+        const accent = button.dataset.vocabSpeech;
+        if (text && accent) void playAudioTTS(text, accent, button);
       });
     });
   };
@@ -94,9 +102,11 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   .eyebrow { color: #966313; font-size: .78rem; font-weight: 800; text-transform: uppercase; }
   .session-card { display: grid; gap: .75rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
   .table-wrap { overflow-x: auto; }
+  .audio-legend { margin: 0 0 .4rem; color: var(--muted); font-size: .75rem; }
   table { width: 100%; border-collapse: collapse; }
   th, td { padding: .65rem; border-bottom: 1px solid var(--border); text-align: left; }
-  .vocab-speech-button { min-width: 40px; min-height: 40px; border: 1px solid var(--border); border-radius: 6px; background: var(--card-bg); cursor: pointer; }
+  .vocab-audio-controls { display: flex; align-items: center; gap: .25rem; }
+  .vocab-speech-button { width: 28px; height: 28px; padding: 0; border: 1px solid var(--border); border-radius: 5px; background: var(--card-bg); font-size: .8rem; line-height: 1; cursor: pointer; }
   .vocab-speech-button.is-playing { border-color: var(--accent-gold); background: #fff4dc; }
   .pillar-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
   .pillar-links a { min-height: 42px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }

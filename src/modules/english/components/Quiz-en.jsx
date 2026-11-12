@@ -732,7 +732,7 @@ export default function Quiz(props) {
       return;
     }
 
-    playAudioTTS(audioSource, event.currentTarget);
+    playAudioTTS(audioSource, 'us', event.currentTarget);
   }
 
   function addArrangeToken(index) {

@@ -9,6 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "generate:tts": "node scripts/generate-tts.mjs",
+    "generate:tts:en": "python scripts/generate-tts-en.py",
     "preview": "astro preview",
     "astro": "astro"
   },

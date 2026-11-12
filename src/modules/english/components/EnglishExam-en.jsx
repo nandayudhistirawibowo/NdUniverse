@@ -59,6 +59,7 @@ export default function EnglishExam({ exam }) {
   const [isComplete, setIsComplete] = useState(false);
 
   const activeModule = MODULES[activeIndex];
+  const listeningAccent = String(exam?.exam_type ?? '').toLowerCase() === 'ielts' ? 'exam-uk' : 'us';
   const scores = useMemo(() => ({
     reading: scoreChoices(readingQuestions, answers.reading),
     listening: scoreChoices(listeningQuestions, answers.listening),
@@ -222,7 +223,7 @@ export default function EnglishExam({ exam }) {
               {listeningQuestions.map((question, index) => (
                 <article className="exam-question">
                   <p className="question-count">Question {index + 1}</p>
-                  <button className="audio-action" type="button" onClick={(event) => void playAudioTTS(question.audio_text, event.currentTarget)}>Play audio</button>
+                  <button className="audio-action" type="button" onClick={(event) => void playAudioTTS(question.audio_text, listeningAccent, event.currentTarget)}>Play audio</button>
                   <h3>{question.question}</h3>
                   <div className="answer-options">
                     {question.options.map((option) => (
