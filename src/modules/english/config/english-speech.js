@@ -39,6 +39,34 @@ function showUkSpeechError(button, error) {
   window.alert('Browser Anda belum mendukung aksen UK.');
 }
 
+function speakWithUsBrowserVoice(text, button) {
+  if (!window.speechSynthesis || typeof SpeechSynthesisUtterance === 'undefined') {
+    button?.classList.remove('is-playing');
+    console.error('Unable to play static English audio or use browser speech synthesis.');
+    return;
+  }
+
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(text);
+  utterance.lang = 'en-US';
+  utterance.rate = 1;
+  utterance.onend = () => button?.classList.remove('is-playing');
+  utterance.onerror = (event) => {
+    button?.classList.remove('is-playing');
+    if (event.error !== 'interrupted' && event.error !== 'canceled') {
+      console.error('Unable to speak English text with US browser speech synthesis.', event.error);
+    }
+  };
+  button?.classList.add('is-playing');
+
+  try {
+    window.speechSynthesis.speak(utterance);
+  } catch (error) {
+    button?.classList.remove('is-playing');
+    console.error('Unable to start US browser speech synthesis.', error);
+  }
+}
+
 export function normalizeText(text) {
   return String(text ?? '').replace(/\s+/g, ' ').trim();
 }
@@ -114,6 +142,11 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
   const audioPath = manifest?.[spokenText];
 
   if (typeof audioPath !== 'string' || !audioPath.startsWith(audioDirectory)) {
+    if (manifestAccent === 'us') {
+      speakWithUsBrowserVoice(spokenText, button);
+      return;
+    }
+
     console.error(`No static ${manifestAccent} TTS audio found for: ${spokenText}`);
     button?.classList.remove('is-playing');
     return;
@@ -126,7 +159,11 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
     if (fellBackToSpeech) return;
     fellBackToSpeech = true;
     if (currentAudio === audio) currentAudio = null;
-    button?.classList.remove('is-playing');
+    if (manifestAccent === 'us') {
+      speakWithUsBrowserVoice(spokenText, button);
+    } else {
+      button?.classList.remove('is-playing');
+    }
   };
 
   button?.classList.add('is-playing');

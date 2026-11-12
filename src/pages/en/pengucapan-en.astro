@@ -1,22 +1,521 @@
 ---
 import Layout from '@core/ui/Layout.astro';
+
+const alphabet = [
+  { letter: 'A', spelling: '/eɪ/', reading: 'Ei', example: 'Apple' },
+  { letter: 'B', spelling: '/biː/', reading: 'Bi', example: 'Ball' },
+  { letter: 'C', spelling: '/siː/', reading: 'Si', example: 'Cat' },
+  { letter: 'D', spelling: '/diː/', reading: 'Di', example: 'Dog' },
+  { letter: 'E', spelling: '/iː/', reading: 'Ii', example: 'Egg' },
+  { letter: 'F', spelling: '/ɛf/', reading: 'Ef', example: 'Fish' },
+  { letter: 'G', spelling: '/dʒiː/', reading: 'Ji', example: 'Goat' },
+  { letter: 'H', spelling: '/eɪtʃ/', reading: 'Eich', example: 'Hat' },
+  { letter: 'I', spelling: '/aɪ/', reading: 'Ai', example: 'Ice' },
+  { letter: 'J', spelling: '/dʒeɪ/', reading: 'Jei', example: 'Jam' },
+  { letter: 'K', spelling: '/keɪ/', reading: 'Kei', example: 'Kite' },
+  { letter: 'L', spelling: '/ɛl/', reading: 'El', example: 'Lion' },
+  { letter: 'M', spelling: '/ɛm/', reading: 'Em', example: 'Moon' },
+  { letter: 'N', spelling: '/ɛn/', reading: 'En', example: 'Nose' },
+  { letter: 'O', spelling: '/oʊ/', reading: 'Ou', example: 'Orange' },
+  { letter: 'P', spelling: '/piː/', reading: 'Pi', example: 'Pen' },
+  { letter: 'Q', spelling: '/kjuː/', reading: 'Kyu', example: 'Queen' },
+  { letter: 'R', spelling: '/ɑːr/', reading: 'Ar', example: 'Rain' },
+  { letter: 'S', spelling: '/ɛs/', reading: 'Es', example: 'Sun' },
+  { letter: 'T', spelling: '/tiː/', reading: 'Ti', example: 'Tree' },
+  { letter: 'U', spelling: '/juː/', reading: 'Yu', example: 'Umbrella' },
+  { letter: 'V', spelling: '/viː/', reading: 'Vi', example: 'Van' },
+  { letter: 'W', spelling: '/ˈdʌbəl juː/', reading: 'Dabel-yu', example: 'Water' },
+  { letter: 'X', spelling: '/ɛks/', reading: 'Eks', example: 'X-ray' },
+  { letter: 'Y', spelling: '/waɪ/', reading: 'Wai', example: 'Yellow' },
+  { letter: 'Z', spelling: '/ziː/', reading: 'Zi', example: 'Zebra' },
+];
+
+const vowelContrasts = [
+  {
+    sound: '/ɪ/ pendek vs /iː/ panjang',
+    description: 'Pada “ship”, ucapkan i pendek dan rileks. Pada “sheep”, tarik bunyi ii lebih panjang dengan senyum tipis.',
+    words: [{ word: 'ship', label: 'pendek' }, { word: 'sheep', label: 'panjang' }],
+  },
+  {
+    sound: '/ʊ/ pendek vs /uː/ panjang',
+    description: '“Full” memakai u pendek yang santai. “Fool” memakai uu lebih panjang dengan bibir membulat.',
+    words: [{ word: 'full', label: 'pendek' }, { word: 'fool', label: 'panjang' }],
+  },
+  {
+    sound: '/æ/ pendek vs /eɪ/ panjang',
+    description: '“Cap” memakai bunyi ae pendek dengan rahang terbuka. Pada “cape”, bunyi vokalnya bergeser menjadi ei.',
+    words: [{ word: 'cap', label: 'pendek' }, { word: 'cape', label: 'panjang' }],
+  },
+];
+
+const vowelCombinations = [
+  { pattern: 'EA', examples: [{ word: 'eat', sound: 'ii panjang' }, { word: 'bread', sound: 'e pendek' }] },
+  { pattern: 'OO', examples: [{ word: 'moon', sound: 'uu panjang' }, { word: 'book', sound: 'u pendek' }] },
+  { pattern: 'AI', examples: [{ word: 'rain', sound: 'ei' }, { word: 'said', sound: 'e pendek' }] },
+];
+
+const trickySounds = [
+  {
+    title: 'TH — Think vs This',
+    description: 'Letakkan ujung lidah sedikit di antara gigi atas dan bawah, lalu alirkan udara. “Think” memakai TH tanpa getaran; “this” memakai TH dengan getaran.',
+    words: ['Think', 'This'],
+  },
+  {
+    title: 'V vs F — Very vs Ferry',
+    description: 'Posisi gigi atas menyentuh bibir bawah untuk keduanya. Pada V, tenggorokan bergetar; pada F, hanya udara yang keluar tanpa getaran.',
+    words: ['Very', 'Ferry'],
+  },
+  {
+    title: 'J vs Y — Jam vs Yam',
+    description: 'Untuk J, lidah menyentuh area tepat di belakang gigi atas lalu melepas bunyi “dj”; bibir boleh sedikit membulat. Untuk Y, lidah terangkat dekat langit-langit tanpa menutup aliran udara dan bibir tetap rileks.',
+    words: ['Jam', 'Yam'],
+  },
+];
 ---
 
-<Layout title="English Pronunciation Guide | NdUniverse" description="English pronunciation practice and listening guide.">
+<Layout
+  title="Panduan Pengucapan Bahasa Inggris | NdUniverse"
+  description="Panduan alfabet, vokal, dan konsonan bahasa Inggris untuk penutur Indonesia."
+>
   <main class="pronunciation-page">
-    <a class="back-link" href="/en">← Back to English Module</a>
-    <header>
-      <p class="eyebrow">Pronunciation Guide</p>
-      <h1>Practice clear English pronunciation.</h1>
-      <p class="lead">English pronunciation lessons and listening exercises will be added here.</p>
+    <a class="back-link" href="/en">← Kembali ke Beranda</a>
+
+    <header class="page-heading">
+      <p class="eyebrow">Panduan Pemula · English Pronunciation</p>
+      <h1>Panduan Pengucapan Bahasa Inggris</h1>
+      <p class="intro-copy">
+        Kenali nama huruf dan bunyi bahasa Inggris yang sering membingungkan. Ejaan bunyi dalam bahasa Indonesia hanya pendekatan agar lebih mudah mulai berlatih; dengarkan contoh audionya untuk menangkap bunyi aslinya.
+      </p>
     </header>
+
+    <section class="guide-section" aria-labelledby="alphabet-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">01 / Alfabet</p>
+          <h2 id="alphabet-heading">Alfabet A-Z</h2>
+        </div>
+        <p class="section-note">Kolom “Ejaan” menunjukkan bunyi nama huruf dalam IPA; “Dibaca” adalah perkiraan untuk lidah Indonesia.</p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel pengucapan alfabet bahasa Inggris" tabindex="0">
+        <table class="guide-table alphabet-table">
+          <thead>
+            <tr>
+              <th scope="col">Huruf</th>
+              <th scope="col">Ejaan (Spelling)</th>
+              <th scope="col">Dibaca</th>
+              <th scope="col">Contoh Kata</th>
+            </tr>
+          </thead>
+          <tbody>
+            {alphabet.map(({ letter, spelling, reading, example }) => (
+              <tr>
+                <th scope="row" class="letter-cell">{letter}</th>
+                <td lang="en">{spelling}</td>
+                <td>{reading}</td>
+                <td>
+                  <div class="example-with-speech">
+                    <span lang="en">{example}</span>
+                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                      <span aria-hidden="true">🔊</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="section-note footnote">Catatan: contoh kata menunjukkan bunyi huruf di dalam kata, yang bisa berbeda dari nama hurufnya. “Z” dibaca “zi” dalam American English dan “zed” dalam British English.</p>
+    </section>
+
+    <section class="guide-section" aria-labelledby="vowels-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">02 / Vokal</p>
+          <h2 id="vowels-heading">Vokal Pendek, Panjang, dan Gabungan</h2>
+        </div>
+        <p class="section-note">Dengarkan tiap pasangan dan perhatikan durasi serta bentuk mulutnya.</p>
+      </div>
+
+      <div class="contrast-grid">
+        {vowelContrasts.map(({ sound, description, words }) => (
+          <article class="sound-card">
+            <h3>{sound}</h3>
+            <p>{description}</p>
+            <div class="word-pair">
+              {words.map(({ word, label }) => (
+                <span class="word-example">
+                  <span><span lang="en">{word}</span><small>{label}</small></span>
+                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                    <span aria-hidden="true">🔊</span>
+                  </button>
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <h3 class="subheading">Gabungan huruf vokal</h3>
+      <p class="section-note combination-note">Dua huruf vokal yang sama bisa menghasilkan bunyi berbeda tergantung katanya. Bandingkan contoh berikut.</p>
+      <div class="table-scroll" role="region" aria-label="Tabel contoh gabungan huruf vokal" tabindex="0">
+        <table class="guide-table combination-table">
+          <thead>
+            <tr><th scope="col">Gabungan</th><th scope="col">Contoh dan bunyi</th></tr>
+          </thead>
+          <tbody>
+            {vowelCombinations.map(({ pattern, examples }) => (
+              <tr>
+                <th scope="row" class="letter-cell">{pattern}</th>
+                <td>
+                  <div class="combination-examples">
+                    {examples.map(({ word, sound }) => (
+                      <span class="word-example">
+                        <span><span lang="en">{word}</span><small>{sound}</small></span>
+                        <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                          <span aria-hidden="true">🔊</span>
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="guide-section" aria-labelledby="tricky-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">03 / Konsonan tricky</p>
+          <h2 id="tricky-heading">Bunyi yang Sering Tertukar</h2>
+        </div>
+        <p class="section-note">Coba ucapkan pasangan kata dengan perlahan, lalu ulangi dengan kecepatan normal.</p>
+      </div>
+
+      <div class="tricky-grid">
+        {trickySounds.map(({ title, description, words }) => (
+          <article class="sound-card tricky-card">
+            <h3>{title}</h3>
+            <p>{description}</p>
+            <div class="word-pair">
+              {words.map((word) => (
+                <span class="word-example">
+                  <span lang="en">{word}</span>
+                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                    <span aria-hidden="true">🔊</span>
+                  </button>
+                </span>
+              ))}
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
   </main>
 </Layout>
 
+<script>
+  import { playAudioTTS } from '../../modules/english/config/english-speech.js';
+
+  const speechDocument = document as Document & { __ndUniverseEnglishPronunciationHandler?: boolean };
+  if (!speechDocument.__ndUniverseEnglishPronunciationHandler) {
+    speechDocument.__ndUniverseEnglishPronunciationHandler = true;
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest<HTMLButtonElement>('[data-speak]');
+      if (!button) return;
+
+      const text = button.dataset.speak;
+      if (text) void playAudioTTS(text, 'us', button);
+    });
+  }
+</script>
+
 <style>
-  .pronunciation-page { display: grid; gap: 1.5rem; width: min(1120px, 100%); margin: 0 auto; padding: 1rem 0 3rem; }
-  .back-link { width: fit-content; color: var(--text-main); font-weight: 700; text-decoration: none; }
-  .eyebrow { margin: 0 0 .6rem; color: #966313; font-size: .75rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-  h1 { margin: 0; font-size: clamp(2rem, 5vw, 4rem); }
-  .lead { max-width: 700px; margin: 1rem 0 0; color: var(--muted); line-height: 1.75; }
+  .pronunciation-page {
+    --guide-accent: var(--accent-gold, #e5a93b);
+    --guide-ink: var(--text-main, #2b2d42);
+    --guide-muted: var(--muted, #6b7280);
+    --guide-border: var(--border, rgba(43, 45, 66, 0.13));
+    --guide-card: var(--card-bg, #fff);
+    --guide-soft: rgba(229, 169, 59, 0.1);
+    display: grid;
+    gap: 2.7rem;
+    padding: 0.5rem 0 3rem;
+  }
+
+  .back-link {
+    width: fit-content;
+    color: var(--guide-ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--guide-accent);
+  }
+
+  .page-heading {
+    max-width: 800px;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    margin: 0 0 0.55rem;
+    color: var(--guide-accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    margin-bottom: 0;
+    color: var(--guide-ink);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.15;
+  }
+
+  .intro-copy {
+    max-width: 740px;
+    margin: 0.9rem 0 0;
+    color: var(--guide-muted);
+    line-height: 1.75;
+  }
+
+  .guide-section {
+    min-width: 0;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--guide-ink);
+    font-size: clamp(1.35rem, 3vw, 1.7rem);
+  }
+
+  .section-note {
+    max-width: 450px;
+    margin: 0;
+    color: var(--guide-muted);
+    font-size: 0.87rem;
+    line-height: 1.6;
+  }
+
+  .table-scroll {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    border: 1px solid var(--guide-border);
+    border-radius: 0.75rem;
+    background: var(--guide-card);
+    scrollbar-color: var(--guide-accent) var(--guide-soft);
+  }
+
+  .guide-table {
+    width: 100%;
+    min-width: 560px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .alphabet-table {
+    min-width: 650px;
+  }
+
+  .guide-table th,
+  .guide-table td {
+    padding: 0.7rem 1rem;
+    border-bottom: 1px solid var(--guide-border);
+    vertical-align: middle;
+  }
+
+  .guide-table thead th {
+    background: var(--bg-dark, var(--text-main, #2b2d42));
+    color: var(--card-bg, #fff);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .guide-table tbody tr:nth-child(even) {
+    background: var(--guide-soft);
+  }
+
+  .guide-table tbody tr:last-child th,
+  .guide-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .guide-table tbody th,
+  .guide-table tbody td {
+    color: var(--guide-ink);
+    font-size: 0.93rem;
+  }
+
+  .letter-cell {
+    width: 12%;
+    font-weight: 800;
+  }
+
+  .example-with-speech,
+  .word-example {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .speaker-button {
+    display: inline-grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--guide-border);
+    border-radius: 0.6rem;
+    background: var(--guide-soft);
+    color: var(--guide-ink);
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .speaker-button:hover {
+    transform: scale(1.06);
+    border-color: var(--guide-accent);
+    background: var(--guide-card);
+  }
+
+  .speaker-button.is-playing {
+    border-color: var(--guide-accent);
+    background: var(--guide-accent);
+  }
+
+  .speaker-button:focus-visible,
+  .table-scroll:focus-visible {
+    outline: 3px solid var(--guide-accent);
+    outline-offset: 2px;
+  }
+
+  .footnote {
+    margin-top: 0.7rem;
+  }
+
+  .contrast-grid,
+  .tricky-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .sound-card {
+    min-width: 0;
+    padding: 1.05rem;
+    border: 1px solid var(--guide-border);
+    border-top: 3px solid var(--guide-accent);
+    border-radius: 0.75rem;
+    background: var(--guide-card);
+  }
+
+  .sound-card h3 {
+    margin-bottom: 0.65rem;
+    color: var(--guide-ink);
+    font-size: 1.05rem;
+  }
+
+  .sound-card p {
+    margin-bottom: 0.9rem;
+    color: var(--guide-muted);
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .word-pair {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .word-example {
+    padding: 0.3rem 0.4rem 0.3rem 0.65rem;
+    border: 1px solid var(--guide-border);
+    border-radius: 0.65rem;
+    color: var(--guide-ink);
+    font-weight: 700;
+  }
+
+  .word-example small {
+    display: block;
+    color: var(--guide-muted);
+    font-size: 0.7rem;
+    font-weight: 500;
+  }
+
+  .subheading {
+    margin: 1.6rem 0 0.35rem;
+    color: var(--guide-ink);
+    font-size: 1.15rem;
+  }
+
+  .combination-note {
+    margin-bottom: 0.75rem;
+  }
+
+  .combination-table {
+    min-width: 500px;
+  }
+
+  .combination-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem 1.5rem;
+  }
+
+  @media (max-width: 760px) {
+    .contrast-grid,
+    .tricky-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .section-heading {
+      display: block;
+    }
+
+    .section-note {
+      margin-top: 0.55rem;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .pronunciation-page {
+      gap: 2rem;
+    }
+
+    .contrast-grid,
+    .tricky-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .guide-table th,
+    .guide-table td {
+      padding: 0.65rem 0.75rem;
+    }
+  }
 </style>

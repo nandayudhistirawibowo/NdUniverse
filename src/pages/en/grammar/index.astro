@@ -1,5 +1,544 @@
 ---
 import Layout from '@core/ui/Layout.astro';
+
+const tenses = [
+  {
+    tense: 'Present',
+    example: 'I go to work every day.',
+    meaning: 'Kebiasaan atau keadaan saat ini. Bentuk dasar “go” tetap; untuk he/she/it biasanya ditambah -s.',
+  },
+  {
+    tense: 'Past',
+    wrong: 'I go yesterday.',
+    example: 'I went yesterday.',
+    meaning: 'Kejadian sudah selesai. “Go” berubah menjadi bentuk lampau “went”; kata “yesterday” saja tidak cukup.',
+  },
+  {
+    tense: 'Future',
+    example: 'I will go tomorrow.',
+    meaning: 'Rencana atau kejadian yang akan datang. Gunakan “will” sebelum kata kerja bentuk dasar.',
+  },
+];
+
+const articles = [
+  {
+    article: 'A',
+    title: 'Sebelum bunyi konsonan',
+    description: 'Pakai “a” sebelum kata benda tunggal yang bunyi awalnya konsonan.',
+    example: 'a book',
+    translation: 'sebuah buku',
+  },
+  {
+    article: 'An',
+    title: 'Sebelum bunyi vokal',
+    description: 'Pakai “an” sebelum kata benda tunggal yang bunyi awalnya vokal.',
+    example: 'an apple',
+    translation: 'sebuah apel',
+  },
+  {
+    article: 'The',
+    title: 'Benda yang spesifik',
+    description: 'Pakai “the” saat pembicara dan pendengar tahu benda mana yang dimaksud.',
+    example: 'the book on the table',
+    translation: 'buku yang di atas meja itu',
+  },
+];
+
+const prepositions = [
+  {
+    preposition: 'In',
+    usage: 'Untuk rentang waktu yang luas dan wilayah: bulan, tahun, kota, atau negara.',
+    examples: ['in May', 'in 2026', 'in Jakarta'],
+  },
+  {
+    preposition: 'On',
+    usage: 'Untuk hari atau tanggal tertentu, serta sesuatu yang berada di permukaan.',
+    examples: ['on Monday', 'on the table'],
+  },
+  {
+    preposition: 'At',
+    usage: 'Untuk jam tertentu atau lokasi yang dianggap sebagai titik spesifik.',
+    examples: ['at 7 PM', 'at the bus stop'],
+  },
+];
+
+const plurals = [
+  {
+    rule: 'Tambah -s',
+    description: 'Aturan umum untuk banyak kata benda.',
+    examples: [{ singular: 'cat', plural: 'cats' }],
+  },
+  {
+    rule: 'Tambah -es',
+    description: 'Sering dipakai pada kata yang berakhir dengan bunyi seperti s, x, z, ch, atau sh.',
+    examples: [{ singular: 'box', plural: 'boxes' }],
+  },
+  {
+    rule: 'Bentuk tidak beraturan',
+    description: 'Beberapa kata berubah bentuk dan perlu diingat satu per satu.',
+    examples: [
+      { singular: 'child', plural: 'children' },
+      { singular: 'mouse', plural: 'mice' },
+    ],
+  },
+];
 ---
-<Layout title="Grammar | NdUniverse" description="English grammar lessons."><main class="simple-page"><a href="/en" class="back-link">← Back to English module</a><p class="eyebrow">Grammar</p><h1>English Grammar</h1><p>Grammar materials for sentence structure, verb forms, and academic writing are coming soon.</p></main></Layout>
-<style>.simple-page{display:grid;gap:.9rem;width:min(900px,100%);margin:0 auto}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.simple-page p:last-child{color:var(--muted)}h1{margin:0}</style>
+
+<Layout
+  title="Panduan Grammar Bahasa Inggris | NdUniverse"
+  description="Panduan grammar bahasa Inggris dengan penjelasan perbedaan konsep untuk penutur bahasa Indonesia."
+>
+  <main class="grammar-page">
+    <a class="back-link" href="/en">← Kembali ke Beranda</a>
+
+    <header class="page-heading">
+      <p class="eyebrow">Panduan Pemula · English Grammar</p>
+      <h1>Tata Bahasa Inggris</h1>
+      <p class="intro-copy">
+        Mulai dari pola yang paling sering dipakai. Kita bandingkan langsung dengan bahasa Indonesia, supaya jelas bagian mana yang perlu diperhatikan saat menyusun kalimat bahasa Inggris.
+      </p>
+    </header>
+
+    <section class="guide-section" aria-labelledby="tenses-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">01 / Waktu</p>
+          <h2 id="tenses-heading">Tenses: Kata Kerja Menandai Waktu</h2>
+        </div>
+        <p class="section-note">Dalam bahasa Indonesia, kata kerja biasanya tidak berubah: “pergi kemarin” dan “pergi besok” memakai kata “pergi” yang sama.</p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel tenses bahasa Inggris" tabindex="0">
+        <table class="guide-table tenses-table">
+          <thead>
+            <tr>
+              <th scope="col">Waktu</th>
+              <th scope="col">Contoh</th>
+              <th scope="col">Makna dan catatan</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tenses.map(({ tense, wrong, example, meaning }) => (
+              <tr>
+                <th scope="row" class="row-heading">{tense}</th>
+                <td>
+                  {wrong && <p class="incorrect-example"><span lang="en">{wrong}</span> <span aria-label="salah">❌</span></p>}
+                  <div class="example-with-speech">
+                    <span lang="en">{example} <span aria-label="benar">✅</span></span>
+                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                      <span aria-hidden="true">🔊</span>
+                    </button>
+                  </div>
+                </td>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="section-note footnote">Pola ringkas: present <span lang="en">go</span>, past <span lang="en">went</span>, future <span lang="en">will go</span>. Untuk kata kerja lain, bentuk past bisa beraturan (<span lang="en">play → played</span>) atau tidak beraturan.</p>
+    </section>
+
+    <section class="guide-section" aria-labelledby="articles-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">02 / Kata sandang</p>
+          <h2 id="articles-heading">Articles: A, An, dan The</h2>
+        </div>
+        <p class="section-note">Bahasa Indonesia tidak punya kata sandang yang setara langsung dengan “a”, “an”, dan “the”, sehingga bagian ini sering terlewat.</p>
+      </div>
+
+      <div class="article-grid">
+        {articles.map(({ article, title, description, example, translation }) => (
+          <article class="article-card">
+            <p class="article-label">{article}</p>
+            <h3>{title}</h3>
+            <p class="card-description">{description}</p>
+            <div class="example-with-speech">
+              <span><span lang="en">{example}</span><small>{translation}</small></span>
+              <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                <span aria-hidden="true">🔊</span>
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="section-note footnote">Pilih “a” atau “an” berdasarkan bunyi awal, bukan hanya hurufnya. Misalnya, <span lang="en">an hour</span> dimulai dengan bunyi vokal karena huruf h tidak terdengar.</p>
+    </section>
+
+    <section class="guide-section" aria-labelledby="prepositions-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">03 / Kata depan</p>
+          <h2 id="prepositions-heading">Prepositions: In, On, dan At</h2>
+        </div>
+        <p class="section-note">Padanan “di” atau “pada” dalam bahasa Indonesia tidak selalu menentukan pilihan preposisi bahasa Inggris.</p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel prepositions bahasa Inggris" tabindex="0">
+        <table class="guide-table">
+          <thead>
+            <tr><th scope="col">Kata depan</th><th scope="col">Kapan digunakan</th><th scope="col">Contoh frasa</th></tr>
+          </thead>
+          <tbody>
+            {prepositions.map(({ preposition, usage, examples }) => (
+              <tr>
+                <th scope="row" class="row-heading">{preposition}</th>
+                <td>{usage}</td>
+                <td>
+                  <div class="phrase-list">
+                    {examples.map((example) => (
+                      <span class="example-with-speech phrase-example">
+                        <span lang="en">{example}</span>
+                        <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                          <span aria-hidden="true">🔊</span>
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="guide-section" aria-labelledby="plural-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">04 / Bentuk jamak</p>
+          <h2 id="plural-heading">Pluralization: Bentuk Jamak</h2>
+        </div>
+        <p class="section-note">Dalam bahasa Indonesia, pengulangan kata bisa menandai jamak; dalam bahasa Inggris, kata benda sering berubah bentuk.</p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel perubahan kata benda jamak" tabindex="0">
+        <table class="guide-table plural-table">
+          <thead>
+            <tr><th scope="col">Aturan</th><th scope="col">Penjelasan</th><th scope="col">Contoh</th></tr>
+          </thead>
+          <tbody>
+            {plurals.map(({ rule, description, examples }) => (
+              <tr>
+                <th scope="row" class="row-heading">{rule}</th>
+                <td>{description}</td>
+                <td>
+                  <div class="plural-examples">
+                    {examples.map(({ singular, plural }) => (
+                      <span class="plural-example">
+                        <span lang="en">{singular} → <strong>{plural}</strong></span>
+                        <button class="speaker-button" type="button" data-speak={plural} aria-label={`Dengarkan ${plural}`} title={`Dengarkan ${plural}`}>
+                          <span aria-hidden="true">🔊</span>
+                        </button>
+                      </span>
+                    ))}
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+</Layout>
+
+<script>
+  import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
+
+  const grammarDocument = document as Document & { __ndUniverseEnglishGrammarHandler?: boolean };
+  if (!grammarDocument.__ndUniverseEnglishGrammarHandler) {
+    grammarDocument.__ndUniverseEnglishGrammarHandler = true;
+    document.addEventListener('click', (event) => {
+      if (!(event.target instanceof Element)) return;
+      const button = event.target.closest<HTMLButtonElement>('[data-speak]');
+      if (!button) return;
+
+      const text = button.dataset.speak;
+      if (text) void playAudioTTS(text, 'us', button);
+    });
+  }
+</script>
+
+<style>
+  .grammar-page {
+    --grammar-accent: var(--accent-gold, #e5a93b);
+    --grammar-ink: var(--text-main, #2b2d42);
+    --grammar-muted: var(--muted, #6b7280);
+    --grammar-border: var(--border, rgba(43, 45, 66, 0.13));
+    --grammar-card: var(--card-bg, #fff);
+    --grammar-soft: rgba(229, 169, 59, 0.1);
+    display: grid;
+    gap: 2.7rem;
+    padding: 0.5rem 0 3rem;
+  }
+
+  .back-link {
+    width: fit-content;
+    color: var(--grammar-ink);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .back-link:hover {
+    color: var(--grammar-accent);
+  }
+
+  .page-heading {
+    max-width: 800px;
+  }
+
+  .eyebrow,
+  .section-kicker {
+    margin: 0 0 0.55rem;
+    color: var(--grammar-accent);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    margin-top: 0;
+  }
+
+  h1 {
+    margin-bottom: 0;
+    color: var(--grammar-ink);
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.15;
+  }
+
+  .intro-copy {
+    max-width: 740px;
+    margin: 0.9rem 0 0;
+    color: var(--grammar-muted);
+    line-height: 1.75;
+  }
+
+  .guide-section {
+    min-width: 0;
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-heading h2 {
+    margin: 0;
+    color: var(--grammar-ink);
+    font-size: clamp(1.35rem, 3vw, 1.7rem);
+  }
+
+  .section-note {
+    max-width: 470px;
+    margin: 0;
+    color: var(--grammar-muted);
+    font-size: 0.87rem;
+    line-height: 1.6;
+  }
+
+  .table-scroll {
+    width: 100%;
+    min-width: 0;
+    overflow-x: auto;
+    border: 1px solid var(--grammar-border);
+    border-radius: 0.75rem;
+    background: var(--grammar-card);
+    scrollbar-color: var(--grammar-accent) var(--grammar-soft);
+  }
+
+  .guide-table {
+    width: 100%;
+    min-width: 700px;
+    border-collapse: collapse;
+    text-align: left;
+  }
+
+  .tenses-table {
+    min-width: 850px;
+  }
+
+  .plural-table {
+    min-width: 740px;
+  }
+
+  .guide-table th,
+  .guide-table td {
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid var(--grammar-border);
+    vertical-align: middle;
+  }
+
+  .guide-table thead th {
+    background: var(--bg-dark, var(--text-main, #2b2d42));
+    color: var(--card-bg, #fff);
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .guide-table tbody tr:nth-child(even) {
+    background: var(--grammar-soft);
+  }
+
+  .guide-table tbody tr:last-child th,
+  .guide-table tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .guide-table tbody th,
+  .guide-table tbody td {
+    color: var(--grammar-ink);
+    font-size: 0.91rem;
+    line-height: 1.6;
+  }
+
+  .row-heading {
+    width: 15%;
+    font-weight: 800;
+  }
+
+  .example-with-speech,
+  .plural-example {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.65rem;
+  }
+
+  .example-with-speech small {
+    display: block;
+    margin-top: 0.15rem;
+    color: var(--grammar-muted);
+    font-size: 0.75rem;
+  }
+
+  .incorrect-example {
+    margin: 0 0 0.5rem;
+    color: var(--grammar-muted);
+    text-decoration: line-through;
+  }
+
+  .speaker-button {
+    display: inline-grid;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--grammar-border);
+    border-radius: 0.6rem;
+    background: var(--grammar-soft);
+    color: var(--grammar-ink);
+    cursor: pointer;
+    transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .speaker-button:hover {
+    transform: scale(1.06);
+    border-color: var(--grammar-accent);
+    background: var(--grammar-card);
+  }
+
+  .speaker-button.is-playing {
+    border-color: var(--grammar-accent);
+    background: var(--grammar-accent);
+  }
+
+  .speaker-button:focus-visible,
+  .table-scroll:focus-visible {
+    outline: 3px solid var(--grammar-accent);
+    outline-offset: 2px;
+  }
+
+  .footnote {
+    margin-top: 0.7rem;
+  }
+
+  .article-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.85rem;
+  }
+
+  .article-card {
+    min-width: 0;
+    padding: 1.1rem;
+    border: 1px solid var(--grammar-border);
+    border-top: 3px solid var(--grammar-accent);
+    border-radius: 0.75rem;
+    background: var(--grammar-card);
+  }
+
+  .article-label {
+    margin-bottom: 0.35rem;
+    color: var(--grammar-accent);
+    font-size: 1.6rem;
+    font-weight: 800;
+  }
+
+  .article-card h3 {
+    margin-bottom: 0.6rem;
+    color: var(--grammar-ink);
+    font-size: 1.05rem;
+  }
+
+  .card-description {
+    min-height: 4.5rem;
+    margin-bottom: 0.9rem;
+    color: var(--grammar-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .phrase-list,
+  .plural-examples {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+
+  .phrase-example,
+  .plural-example {
+    padding: 0.3rem 0.4rem 0.3rem 0.65rem;
+    border: 1px solid var(--grammar-border);
+    border-radius: 0.65rem;
+    font-weight: 700;
+  }
+
+  @media (max-width: 760px) {
+    .section-heading {
+      display: block;
+    }
+
+    .section-note {
+      margin-top: 0.55rem;
+    }
+
+    .article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .card-description {
+      min-height: 0;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .grammar-page {
+      gap: 2rem;
+    }
+
+    .guide-table th,
+    .guide-table td {
+      padding: 0.65rem 0.75rem;
+    }
+  }
+</style>
