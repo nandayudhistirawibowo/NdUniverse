@@ -1,7 +1,7 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 import BossFight from '../../../../modules/english/components/BossFight-en.jsx';
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 
 export const prerender = false;
 
@@ -15,7 +15,9 @@ const titles = {
 const titleData = titles[profesi];
 if (!titleData) return new Response('Profesi tidak ditemukan.', { status: 404 });
 
-const entry = await getEntry('career', profesi);
+const careers = await getCollection('englishCareer');
+const entry = careers.find((career) => career.id === profesi);
+if (!entry) return new Response('Career profession not found.', { status: 404 });
 const questions = entry?.data.boss_questions ?? [];
 ---
 

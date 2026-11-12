@@ -35,7 +35,7 @@ vocab:
   - { word: "the advertising", translation: "iklan", context: "The advertisement is running on social media.", contextIndonesian: "Iklan berjalan di media sosial." }
   - { word: "the strategy", translation: "strategi", context: "Our strategy combines quality and price.", contextIndonesian: "Strategi kami menggabungkan kualitas dan harga." }
   - { word: "the product", translation: "produk", context: "The product is available quickly.", contextIndonesian: "Produk tersedia dengan cepat." }
-  - { word: "die Marke", translation: "merek", context: "The brand is internationally known.", contextIndonesian: "Merek ini dikenal secara internasional." }
+  - { word: "the brand", translation: "merek", context: "The brand is internationally known.", contextIndonesian: "Merek ini dikenal secara internasional." }
   - { word: "the competition", translation: "kompetitor", context: "The competition offers similar products.", contextIndonesian: "Kompetisi menawarkan produk serupa." }
   - { word: "the market", translation: "pasar", context: "The market is changing quickly.", contextIndonesian: "Pasar berubah dengan cepat." }
   - { word: "market research", translation: "riset pasar", context: "Market research shows new trends.", contextIndonesian: "Riset pasar menunjukkan tren baru." }

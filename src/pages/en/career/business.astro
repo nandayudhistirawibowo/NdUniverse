@@ -1,12 +1,12 @@
 ---
-import { getEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
-import CareerQuiz from '../../../modules/english/components/CareerQuiz-en.jsx';
 import HelpHint from '@core/ui/HelpHint.jsx';
 
 export const prerender = false;
 
-const entry = await getEntry('career', 'business');
+const careers = await getCollection('englishCareer');
+const entry = careers.find((career) => career.id === 'business');
 const words = entry?.data.vocab ?? [];
 ---
 
@@ -29,7 +29,7 @@ const words = entry?.data.vocab ?? [];
           <p class="eyebrow">Career Vocabulary</p>
           <h2 id="vocabulary-heading">Business &amp; E-Commerce</h2>
         </div>
-        <a class="quiz-link" href="#career-quiz">Go to Vocabulary Quiz</a>
+        <a class="quiz-link" href="/en/career/business/latihan">Start Vocabulary Quiz</a>
       </div>
       <div class="table-scroll" role="region" aria-label="Business vocabulary table" tabindex="0">
         <table class="vocabulary-table">
@@ -42,9 +42,6 @@ const words = entry?.data.vocab ?? [];
         </table>
       </div>
     </section>
-    <div id="career-quiz">
-      <CareerQuiz client:load words={words} profession="Business" />
-    </div>
     <article class="boss-card">
       <span aria-hidden="true">⚔️</span>
       <div>
@@ -52,7 +49,7 @@ const words = entry?.data.vocab ?? [];
         <h2>Business Job Interview</h2>
         <p>Practice answering management, marketing, and e-commerce interview questions.</p>
       </div>
-      <a href="/en/career/business/boss">Start Interview</a>
+      <a href="/en/career/business/boss">Start Boss Fight</a>
     </article>
   </section>
 </DashboardLayout>

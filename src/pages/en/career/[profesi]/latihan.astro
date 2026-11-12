@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import CareerQuiz from '../../../../modules/english/components/CareerQuiz-en.jsx';
+
+export const prerender = false;
+
+const profession = String(Astro.params.profesi ?? '').toLowerCase();
+const titles = {
+  it: ['IT & Software Engineering', 'IT'],
+  business: ['Business & E-Commerce', 'Business'],
+  health: ['Healthcare', 'Healthcare'],
+  nutrition: ['Nutrition', 'Nutrition'],
+};
+const titleData = titles[profession];
+if (!titleData) return new Response('Career profession not found.', { status: 404 });
+
+const careers = await getCollection('englishCareer');
+const entry = careers.find((career) => career.id === profession);
+if (!entry) return new Response('Career profession not found.', { status: 404 });
+
+const words = entry.data.vocab;
+---
+
+<DashboardLayout
+  title={`${titleData[0]} Vocabulary Quiz | NdUniverse`}
+  description={`Practice English vocabulary for ${titleData[0]}.`}
+  active="career"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="quiz-page">
+    <a class="back-link" href={`/en/career/${profession}`}>← Back to {titleData[1]}</a>
+    <header>
+      <p class="eyebrow">Career Prep · Vocabulary Quiz</p>
+      <h1>{titleData[0]}</h1>
+      <p>Practice the English vocabulary for this profession in short quiz batches.</p>
+    </header>
+    <CareerQuiz client:load words={words} profession={titleData[1]} />
+  </main>
+</DashboardLayout>
+
+<style>
+  .quiz-page { display:grid; gap:1rem; }
+  .back-link { width:fit-content; color:var(--text-main); font-weight:800; text-decoration:none; }
+  .back-link:hover { color:var(--accent-gold); }
+  .eyebrow { margin:0; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+  header h1 { margin:.35rem 0; color:var(--text-main); }
+  header > p:last-child { margin:0; color:var(--muted); }
+</style>
