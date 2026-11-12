@@ -98,7 +98,17 @@ const englishAcademic = defineCollection({
       translation: z.string(),
       context: z.string(),
       contextIndonesian: z.string(),
+      reading_text: z.string().optional(),
+      reading_question: z.string().optional(),
+      listening_audio: z.string().optional(),
+      writing_instruction: z.string().optional(),
+      speaking_question: z.string().optional(),
     })),
+    reading_text: z.string().optional(),
+    reading_question: z.string().optional(),
+    listening_audio: z.string().optional(),
+    writing_instruction: z.string().optional(),
+    speaking_question: z.string().optional(),
   }),
 });
 

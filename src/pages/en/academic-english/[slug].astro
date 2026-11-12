@@ -1,0 +1,135 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const slug = String(Astro.params.slug ?? '');
+const materials = await getCollection('englishAcademic');
+const item = materials.find((material) => material.id === slug || material.id.endsWith(`/${slug}`));
+if (!item) return new Response('Academic English material not found.', { status: 404 });
+
+const materialSlug = item.id.split('/').at(-1) ?? item.id;
+const vocab = item.data.vocab.map((entry) => ({
+  ...entry,
+  german: entry.word,
+  indonesian: entry.translation,
+  reading_text: entry.reading_text ?? item.data.reading_text,
+  reading_question: entry.reading_question ?? item.data.reading_question,
+  listening_audio: entry.listening_audio ?? item.data.listening_audio,
+  writing_instruction: entry.writing_instruction ?? item.data.writing_instruction,
+  speaking_question: entry.speaking_question ?? item.data.speaking_question,
+}));
+
+const pillars = [
+  { type: 'reading', label: 'Reading', available: Boolean(item.data.reading_text || item.data.reading_question || item.data.vocab.some((entry) => entry.reading_text || entry.reading_question)) },
+  { type: 'listening', label: 'Listening', available: Boolean(item.data.listening_audio || item.data.vocab.some((entry) => entry.listening_audio)) },
+  { type: 'writing', label: 'Writing', available: Boolean(item.data.writing_instruction || item.data.vocab.some((entry) => entry.writing_instruction)) },
+  { type: 'speaking', label: 'Speaking', available: Boolean(item.data.speaking_question || item.data.vocab.some((entry) => entry.speaking_question)) },
+];
+---
+
+<DashboardLayout
+  title={`${item.data.title} | Academic English | NdUniverse`}
+  description={item.data.description}
+  active="academicEnglish"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="academic-material">
+    <a class="back-link" href="/en/academic-english">← Back to Academic English</a>
+    <header class="material-heading">
+      <p class="eyebrow">{item.data.jurusan} · Academic English</p>
+      <h1>{item.data.title}</h1>
+      <p>{item.data.description}</p>
+    </header>
+
+    <section class="vocabulary-section" aria-labelledby="vocabulary-heading">
+      <div class="section-heading">
+        <h2 id="vocabulary-heading">Vocabulary</h2>
+        <a class="primary-link" href={`/en/academic-english/${materialSlug}/latihan`}>Start Vocabulary Quiz</a>
+      </div>
+      <div class="table-scroll" role="region" aria-label={`${item.data.title} vocabulary`} tabindex="0">
+        <table class="vocabulary-table">
+          <thead>
+            <tr><th scope="col">Word</th><th scope="col">Meaning</th><th scope="col">Example</th></tr>
+          </thead>
+          <tbody>
+            {vocab.map((word) => (
+              <tr>
+                <th scope="row" lang="en">
+                  <span class="audio-example">
+                    {word.word}
+                    <button class="speaker-button" type="button" data-speak={word.word} aria-label={`Listen to ${word.word}`} title={`Listen to ${word.word}`}>🔊</button>
+                  </span>
+                </th>
+                <td>{word.translation}</td>
+                <td lang="en">
+                  <span class="audio-example">
+                    {word.context}
+                    <button class="speaker-button" type="button" data-speak={word.context} aria-label={`Listen to example: ${word.context}`} title="Listen to example">🔊</button>
+                  </span>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    {pillars.some((pillar) => pillar.available) && (
+      <nav class="pillar-links" aria-label="Academic English skill practice">
+        {pillars.filter((pillar) => pillar.available).map((pillar) => (
+          <a href={`/en/academic-english/${materialSlug}/latihan?type=${pillar.type}`}>{pillar.label}</a>
+        ))}
+      </nav>
+    )}
+  </main>
+</DashboardLayout>
+
+<script>
+  import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
+
+  const bindSpeakers = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-speak]').forEach((button) => {
+      if (button.dataset.speechBound) return;
+      button.dataset.speechBound = 'true';
+      button.addEventListener('click', () => {
+        const text = button.dataset.speak;
+        if (text) void playAudioTTS(text, 'us', button);
+      });
+    });
+  };
+
+  document.addEventListener('astro:page-load', bindSpeakers);
+  bindSpeakers();
+</script>
+
+<style>
+  .academic-material { display:grid; gap:1.25rem; padding:1rem 0 3rem; }
+  .back-link { width:fit-content; color:var(--text-main); font-weight:700; text-decoration:none; }
+  .back-link:hover { color:var(--accent-gold,#966313); }
+  .eyebrow { margin:0 0 .45rem; color:var(--accent-gold,#966313); font-size:.75rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .material-heading h1 { margin:0; color:var(--text-main); font-size:clamp(2rem,5vw,3rem); }
+  .material-heading > p:last-child { max-width:760px; margin:.75rem 0 0; color:var(--muted); line-height:1.7; }
+  .vocabulary-section { display:grid; gap:.8rem; min-width:0; }
+  .section-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
+  .section-heading h2 { margin:0; color:var(--text-main); }
+  .primary-link { min-height:48px; display:inline-flex; align-items:center; justify-content:center; padding:.7rem 1rem; border-radius:8px; background:var(--accent-red); color:#fff; font-weight:900; text-decoration:none; }
+  .table-scroll { overflow-x:auto; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); }
+  .vocabulary-table { width:100%; min-width:660px; border-collapse:collapse; text-align:left; }
+  .vocabulary-table th,.vocabulary-table td { padding:.7rem .8rem; border-bottom:1px solid var(--border); color:var(--text-main); vertical-align:middle; }
+  .vocabulary-table thead th { background:var(--bg-dark,var(--text-main)); color:var(--card-bg); }
+  .vocabulary-table tbody tr:nth-child(even) { background:var(--bg-main,#f8f9fa); }
+  .vocabulary-table tbody tr:last-child th,.vocabulary-table tbody tr:last-child td { border-bottom:0; }
+  .audio-example { display:inline-flex; align-items:center; gap:.5rem; }
+  .speaker-button { width:34px; height:34px; flex:0 0 auto; border:1px solid var(--border); border-radius:7px; background:var(--card-bg); cursor:pointer; }
+  .speaker-button.is-playing { border-color:var(--accent-gold); background:var(--bg-main,#fff4dc); }
+  .pillar-links { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.55rem; }
+  .pillar-links a { min-height:44px; display:grid; place-items:center; border:1px solid var(--border); border-radius:8px; color:var(--text-main); font-weight:800; text-decoration:none; }
+  @media(max-width:700px) {
+    .section-heading { align-items:stretch; flex-direction:column; }
+    .primary-link { width:100%; box-sizing:border-box; }
+    .pillar-links { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  }
+</style>
