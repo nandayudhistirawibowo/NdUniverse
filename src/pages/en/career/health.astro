@@ -23,7 +23,28 @@ const words = entry?.data.vocab ?? [];
       <h1>Healthcare</h1>
       <HelpHint title="Healthcare Career Prep" text="Practice 50 healthcare vocabulary terms in five-word batches and take a role-specific interview challenge." client:load />
     </div>
-    <CareerQuiz client:load words={words} profession="Healthcare" />
+    <section class="vocabulary-section" aria-labelledby="vocabulary-heading">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Career Vocabulary</p>
+          <h2 id="vocabulary-heading">Healthcare</h2>
+        </div>
+        <a class="quiz-link" href="#career-quiz">Go to Vocabulary Quiz</a>
+      </div>
+      <div class="table-scroll" role="region" aria-label="Healthcare vocabulary table" tabindex="0">
+        <table class="vocabulary-table">
+          <thead><tr><th scope="col">Word</th><th scope="col">Meaning</th><th scope="col">Example</th></tr></thead>
+          <tbody>
+            {words.map(({ word, translation, context }) => (
+              <tr><th scope="row" lang="en">{word}</th><td>{translation}</td><td lang="en">{context}</td></tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+    <div id="career-quiz">
+      <CareerQuiz client:load words={words} profession="Healthcare" />
+    </div>
     <article class="boss-card">
       <span aria-hidden="true">⚔️</span>
       <div>
@@ -41,10 +62,22 @@ const words = entry?.data.vocab ?? [];
   .back-link { width:fit-content; color:var(--text-main); font-weight:700; text-decoration:none; }
   .profession-heading { display:flex; align-items:center; gap:.65rem; flex-wrap:wrap; }
   .profession-heading h1 { margin:0; color:var(--text-main); }
+  .vocabulary-section { display:grid; gap:.8rem; min-width:0; }
+  .section-heading { display:flex; align-items:end; justify-content:space-between; gap:1rem; }
+  .eyebrow { margin:0 0 .25rem; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+  .section-heading h2 { margin:0; color:var(--text-main); font-size:1.25rem; }
+  .quiz-link { color:var(--text-main); font-weight:800; text-decoration:none; }
+  .quiz-link:hover,.back-link:hover { color:var(--accent-gold); }
+  .table-scroll { overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--card-bg); }
+  .vocabulary-table { width:100%; min-width:620px; border-collapse:collapse; text-align:left; }
+  .vocabulary-table th,.vocabulary-table td { padding:.75rem .9rem; border-bottom:1px solid var(--border); color:var(--text-main); vertical-align:top; }
+  .vocabulary-table thead th { background:var(--bg-dark,var(--text-main)); color:var(--card-bg); }
+  .vocabulary-table tbody tr:nth-child(even) { background:var(--bg-main,#f8f9fa); }
+  .vocabulary-table tbody tr:last-child th,.vocabulary-table tbody tr:last-child td { border-bottom:0; }
   .boss-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:var(--card-bg); }
   .boss-card > span { font-size:1.8rem; }
   .boss-card p,.boss-card h2 { margin:.1rem 0; color:var(--text-main); }
   .boss-card div > p:first-child { color:var(--accent-gold); font-size:.72rem; font-weight:800; text-transform:uppercase; }
   .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; font-weight:800; text-decoration:none; }
-  @media(max-width:700px) { .boss-card { grid-template-columns:auto 1fr; } .boss-card a { grid-column:1/-1; justify-content:center; } }
+  @media(max-width:700px) { .section-heading { align-items:flex-start; flex-direction:column; }.boss-card { grid-template-columns:auto 1fr; } .boss-card a { grid-column:1/-1; justify-content:center; } }
 </style>
