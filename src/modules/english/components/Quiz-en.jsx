@@ -774,6 +774,7 @@ export default function Quiz(props) {
   }
 
   function handleQuestionAction() {
+    playSound('click');
     if (checkedResult !== null) {
       advanceQuestion();
       return;
@@ -957,7 +958,7 @@ export default function Quiz(props) {
                           key={option}
                           type="button"
                           className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.german ? 'correct' : ''}`}
-                          onClick={() => setChoiceAnswer(option)}
+                          onClick={() => { playSound('click'); setChoiceAnswer(option); }}
                           disabled={checkedResult !== null}
                         >
                           {option}
@@ -986,7 +987,7 @@ export default function Quiz(props) {
                           key={option}
                           type="button"
                           className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.indonesian ? 'correct' : ''}`}
-                          onClick={() => setChoiceAnswer(option)}
+                          onClick={() => { playSound('click'); setChoiceAnswer(option); }}
                           disabled={checkedResult !== null}
                         >
                           {option}
@@ -1187,11 +1188,11 @@ export default function Quiz(props) {
 
             <div className="summary-actions">
               {sessionMode && sessionPassed && activeSessionNumber < sessionCount ? (
-                <button type="button" className="primary-btn" onClick={() => startSession(activeSessionNumber + 1)}>
+                <button type="button" className="primary-btn" onClick={() => { playSound('click'); startSession(activeSessionNumber + 1); }}>
                   Next Session
                 </button>
               ) : (
-                <button type="button" className="primary-btn" onClick={restartGame}>
+                <button type="button" className="primary-btn" onClick={() => { playSound('click'); restartGame(); }}>
                   {sessionMode ? 'Retry This Session' : (isGameOver ? 'Try Again' : 'Restart Quiz')}
                 </button>
               )}

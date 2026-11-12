@@ -1,4 +1,5 @@
 import { useState } from 'preact/hooks';
+import { playSound } from '@core/game/quiz-sounds.js';
 
 const WORDS_PER_BATCH = 5;
 
@@ -32,6 +33,7 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
   };
 
   const startQuiz = () => {
+    playSound('click');
     setPhase('quiz');
     setBatchIndex(0);
     setQuestionIndex(0);
@@ -42,14 +44,19 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
 
   const chooseAnswer = (answer) => {
     if (selected || !current) return;
+    playSound('click');
     setSelected(answer);
     if (answer === current.translation) {
+      playSound('success');
       setScore((value) => value + 1);
       setBatchScore((value) => value + 1);
+    } else {
+      playSound('error');
     }
   };
 
   const advance = () => {
+    playSound('click');
     if (questionIndex + 1 < batchWords.length) {
       setQuestionIndex((value) => value + 1);
       setSelected('');
@@ -60,6 +67,7 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
   };
 
   const startNextBatch = () => {
+    playSound('click');
     setBatchIndex((value) => value + 1);
     setQuestionIndex(0);
     setBatchScore(0);

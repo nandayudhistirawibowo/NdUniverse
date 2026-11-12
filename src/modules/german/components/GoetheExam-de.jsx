@@ -213,6 +213,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
   const finishCurrentModule = () => {
     const currentIndex = MODULES.findIndex((module) => module.id === activeModule);
     if (currentIndex < MODULES.length - 1) {
+      playSound('click');
       const nextModule = MODULES[currentIndex + 1].id;
       setActiveModule(nextModule);
       setRemainingSeconds((secondsByModule[nextModule] ?? 15) * 60);

@@ -796,6 +796,7 @@ export default function Quiz(props) {
     if (checkedResult !== null || Object.prototype.hasOwnProperty.call(matcherMatches, word)) return;
 
     setMatcherSelection((selected) => selected === word ? null : word);
+    playSound('click');
   }
 
   function handleQuestionAction() {

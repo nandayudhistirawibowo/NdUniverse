@@ -23,6 +23,7 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
 
   const choose = (answer) => {
     if (selected) return;
+    playSound('click');
     playSound(answer === current.indonesian ? 'success' : 'error');
     setSelected(answer);
     if (answer === current.indonesian) setScore((value) => value + 1);

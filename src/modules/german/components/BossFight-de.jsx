@@ -70,6 +70,7 @@ export default function BossFight({
   };
 
   const startListening = () => {
+    playSound('click');
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) {
       setMessages((current) => [
