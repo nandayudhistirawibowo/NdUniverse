@@ -69,6 +69,7 @@ function buildQuestionQueue(items, sessionNumber = 1, useSessionType = false, pi
     }
     return {
       ...item,
+      english: item.english ?? item.german,
       id: `${item.english || item.german}-${index}-${Math.random().toString(36).slice(2, 8)}`,
       type: type,
       needsReview: false,
@@ -506,7 +507,7 @@ export default function Quiz(props) {
     window.clearTimeout(matcherWrongTimeoutRef.current);
     setMatcherWrongPair(null);
     if (currentQuestion.type === 'arrange') {
-      const tokens = currentQuestion.german.split(/\s+/).filter(Boolean);
+      const tokens = (currentQuestion.english || currentQuestion.german).split(/\s+/).filter(Boolean);
       setArrangeOptions(shuffle(tokens));
       setArrangeSelected([]);
     } else {
@@ -751,7 +752,7 @@ export default function Quiz(props) {
   function handleArrangeSubmit() {
     if (arrangeSelected.length === 0 || !currentQuestion) return;
 
-    const targetWord = currentQuestion.english || currentQuestion.german;
+    const targetWord = currentQuestion.english;
     const answer = arrangeSelected.map((index) => arrangeOptions[index]).join(' ');
     const isCorrect = answer === targetWord;
     showResult(isCorrect);
@@ -769,21 +770,21 @@ export default function Quiz(props) {
 
   function handleTextSubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
-    const targetWord = currentQuestion.english || currentQuestion.german;
+    const targetWord = currentQuestion.english;
     const acceptedAnswers = getAcceptedAnswers(targetWord);
     showResult(acceptedAnswers.some((answer) => isFuzzyMatch(userAnswer, answer)));
   }
 
   function handleMultipleChoiceSubmit() {
     if (!currentQuestion || !choiceAnswer) return;
-    const targetWord = currentQuestion.english || currentQuestion.german;
+    const targetWord = currentQuestion.english;
     const correctAnswer = currentQuestion.type === 'reading' ? targetWord : currentQuestion.indonesian;
     showResult(choiceAnswer === correctAnswer);
   }
 
   function handleFuzzySubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
-    const targetWord = currentQuestion.english || currentQuestion.german;
+    const targetWord = currentQuestion.english;
     const acceptedAnswers = [targetWord];
     const isCorrect = acceptedAnswers.some((answer) => isFuzzyMatch(userAnswer, answer));
     showResult(isCorrect);
@@ -1018,7 +1019,7 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Correct answer: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.english })}>Correct answer: {currentQuestion.english}</p>}
                   </>
                 ) : currentQuestion.type === 'matcher' ? (
                   <>
@@ -1086,7 +1087,7 @@ export default function Quiz(props) {
                         <button
                           key={option}
                           type="button"
-                          className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.german ? 'correct' : ''}`}
+                          className={`match-choice ${choiceAnswer === option ? 'active' : ''} ${checkedResult !== null && option === currentQuestion.english ? 'correct' : ''}`}
                           onClick={() => { playSound('click'); setChoiceAnswer(option); }}
                           disabled={checkedResult !== null}
                         >
@@ -1094,7 +1095,7 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Correct answer: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.english })}>Correct answer: {currentQuestion.english}</p>}
                   </>
                 ) : currentQuestion.type === 'listening' ? (
                   <>
@@ -1152,7 +1153,7 @@ export default function Quiz(props) {
                         resize: 'vertical',
                       }}
                     />
-                    {checkedResult === false && <p className="correct-answer"><span data-i18n="quiz.expectedAnswer">Expected answer:</span> {currentQuestion.english || currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer"><span data-i18n="quiz.expectedAnswer">Expected answer:</span> {currentQuestion.english}</p>}
                   </>
                 ) : currentQuestion.type === 'speaking' ? (
                   <>
@@ -1202,7 +1203,7 @@ export default function Quiz(props) {
                         font: 'inherit',
                       }}
                     />
-                    {checkedResult === false && <p className="correct-answer"><span data-i18n="quiz.keywordLabel">Keyword:</span> {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer"><span data-i18n="quiz.keywordLabel">Keyword:</span> {currentQuestion.english}</p>}
                   </>
                 ) : (
                   <>
@@ -1242,7 +1243,7 @@ export default function Quiz(props) {
                         }}
                       />
                     </div>
-                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Correct answer: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.english })}>Correct answer: {currentQuestion.english}</p>}
                   </>
                 )}
 
