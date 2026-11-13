@@ -338,7 +338,7 @@ export default function EnglishExam({ exam, type, level }) {
                   className="exam-listening-audio"
                   controls
                   preload="none"
-                  src={`/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`}
+                  src={`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`}
                 >
                   Your browser does not support audio playback.
                 </audio>

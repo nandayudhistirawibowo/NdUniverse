@@ -3,7 +3,7 @@ let currentAudio = null;
 
 function getManifest() {
   if (!manifestPromise) {
-    manifestPromise = fetch('/audio/tts/manifest.json')
+    manifestPromise = fetch('https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts/manifest.json')
       .then((response) => {
         if (!response.ok) {
           throw new Error(`TTS manifest request failed: ${response.status}`);
@@ -105,7 +105,7 @@ export async function playAudioTTS(text, button, fallbackText = text) {
   const manifest = await getManifest();
   const audioPath = manifest?.[spokenText];
 
-  if (typeof audioPath !== 'string' || !audioPath.startsWith('/audio/tts/')) {
+  if (typeof audioPath !== 'string' || !audioPath.startsWith('https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts/')) {
     speakGerman(spokenText, button);
     return;
   }

@@ -3,8 +3,8 @@ let currentAudio = null;
 
 function getManifest(accent) {
   const manifestUrl = accent === 'exam-uk'
-    ? '/audio/tts-en-gb/manifest-en-gb.json'
-    : '/audio/tts-en-us/manifest-en-us.json';
+    ? 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-gb/manifest-en-gb.json'
+    : 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-us/manifest-en-us.json';
   if (!manifestPromises.has(accent)) {
     manifestPromises.set(accent, fetch(manifestUrl)
       .then((response) => {
@@ -137,7 +137,7 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
   }
 
   const manifestAccent = accent === 'exam-uk' ? 'exam-uk' : 'us';
-  const audioDirectory = manifestAccent === 'exam-uk' ? '/audio/tts-en-gb/' : '/audio/tts-en-us/';
+  const audioDirectory = manifestAccent === 'exam-uk' ? 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-gb/' : 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-us/';
   const manifest = await getManifest(manifestAccent);
   const audioPath = manifest?.[spokenText];
 
