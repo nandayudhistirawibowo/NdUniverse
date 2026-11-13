@@ -8,7 +8,6 @@ const GROQ_MODELS = [
   'openai/gpt-oss-20b',
 ];
 
-const EMBEDDING_MODEL = 'sentence-transformers/all-MiniLM-L6-v2';
 const EMBEDDING_DIMENSIONS = 384;
 const MATCH_THRESHOLD = 0.5;
 const MATCH_COUNT = 3;
@@ -49,49 +48,36 @@ function isNumericVector(value: unknown): value is number[] {
     && value.every((item) => typeof item === 'number' && Number.isFinite(item));
 }
 
-function extractEmbedding(value: unknown): number[] | null {
-  if (isNumericVector(value)) return value;
-  if (!Array.isArray(value) || value.length === 0) return null;
-
-  if (value.length === 1) {
-    const singleEmbedding = extractEmbedding(value[0]);
-    if (singleEmbedding) return singleEmbedding;
-  }
-
-  if (
-    value.every((item) => Array.isArray(item) && isNumericVector(item))
-  ) {
-    const rows = value as number[][];
-    return Array.from({ length: EMBEDDING_DIMENSIONS }, (_, dimension) => (
-      rows.reduce((sum, row) => sum + row[dimension], 0) / rows.length
-    ));
-  }
-
-  return null;
-}
-
-async function embedQuestion(question: string, token: string): Promise<number[]> {
+async function embedQuestion(
+  question: string,
+  accountId: string,
+  apiToken: string,
+): Promise<number[]> {
   const response = await fetch(
-    `https://router.huggingface.co/hf-inference/models/${EMBEDDING_MODEL}`,
+    `https://api.cloudflare.com/client/v4/accounts/${accountId}/ai/run/@cf/baai/bge-small-en-v1.5`,
     {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${apiToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ inputs: question }),
+      body: JSON.stringify({ text: [question] }),
     },
   );
 
   if (!response.ok) {
-    console.warn(`Hugging Face embedding request returned HTTP ${response.status}.`);
+    console.warn(`Cloudflare embedding request returned HTTP ${response.status}.`);
     throw new Error('Question embedding request failed.');
   }
 
   const result: unknown = await response.json();
-  const embedding = extractEmbedding(result);
-  if (!embedding) {
-    console.error('Hugging Face returned an invalid embedding shape.');
+  const embedding = isRecord(result)
+    && isRecord(result.result)
+    && Array.isArray(result.result.data)
+    ? result.result.data[0]
+    : null;
+  if (!isNumericVector(embedding)) {
+    console.error('Cloudflare returned an invalid embedding shape.');
     throw new Error('Question embedding response was invalid.');
   }
   return embedding;
@@ -153,10 +139,16 @@ export const POST: APIRoute = async ({ request }) => {
     }, 503);
   }
 
-  const huggingFaceToken = import.meta.env.HUGGINGFACE_API_KEY;
+  const cloudflareAccountId = import.meta.env.CLOUDFLARE_ACCOUNT_ID;
+  const cloudflareApiToken = import.meta.env.CLOUDFLARE_API_TOKEN;
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
   const supabaseServiceRoleKey = import.meta.env.SUPABASE_SERVICE_ROLE_KEY;
-  if (!huggingFaceToken || !supabaseUrl || !supabaseServiceRoleKey) {
+  if (
+    !cloudflareAccountId
+    || !cloudflareApiToken
+    || !supabaseUrl
+    || !supabaseServiceRoleKey
+  ) {
     console.error('RAG configuration is incomplete for the chat endpoint.');
     return jsonResponse({
       type: 'error',
@@ -164,10 +156,13 @@ export const POST: APIRoute = async ({ request }) => {
     }, 503);
   }
 
-  let embedding: number[];
   let matchedDocuments: Array<{ content: string }>;
   try {
-    embedding = await embedQuestion(lastUserMessage.content, huggingFaceToken);
+    const embedding = await embedQuestion(
+      lastUserMessage.content,
+      cloudflareAccountId,
+      cloudflareApiToken,
+    );
 
     const supabase = createServiceRoleClient();
     const { data, error } = await supabase.rpc('match_documents', {
