@@ -217,8 +217,6 @@ export default function Quiz(props) {
   const sessionCount = Math.max(1, Math.ceil(items.length / effectiveBatchSize));
   const requestedSession = Math.max(1, Number(session) || Math.floor(startIndex / effectiveBatchSize) + 1);
   const selectedSession = Math.min(requestedSession, sessionCount);
-  const sessionOutOfRange = requestedSession > sessionCount;
-  const pillarIndex = PILLAR_TYPES.indexOf(pillarType);
   const sessionStartIndex = (selectedSession - 1) * effectiveBatchSize;
   const [activeStartIndex, setActiveStartIndex] = useState(sessionStartIndex);
   const pillarItems = useMemo(
@@ -229,12 +227,6 @@ export default function Quiz(props) {
   const [sessionXp, setSessionXp] = useState(0);
   const [lives, setLives] = useState(3);
   const [sessionInitialized, setSessionInitialized] = useState(!sessionMode);
-  const [sessionAccess, setSessionAccess] = useState(
-    sessionMode && pillarMode ? 'checking' : 'allowed'
-  );
-  const [sessionLockMessage, setSessionLockMessage] = useState('');
-  const [pillarProgressSaved, setPillarProgressSaved] = useState(false);
-  const [practiceUrl, setPracticeUrl] = useState('');
   const currentBatchItems = useMemo(
     () => pillarMode
       ? pillarItems
@@ -385,7 +377,7 @@ export default function Quiz(props) {
       if (sessionMode && !pillarMode && !hasAnsweredRef.current && !session) {
         const totalSessions = Math.ceil(items.length / effectiveBatchSize);
         const nextSession = requestedSession
-          ? Math.min(Math.max(requestedSession, 1), Math.min(completed + 1, totalSessions || 1))
+          ? Math.min(Math.max(requestedSession, 1), totalSessions || 1)
           : Math.min(completed + 1, totalSessions || 1);
         const nextStartIndex = (nextSession - 1) * effectiveBatchSize;
         if (nextStartIndex !== activeStartIndex) {
@@ -458,7 +450,7 @@ export default function Quiz(props) {
     const defaultSession = Math.min(completed + 1, totalSessions || 1);
     const selectedSession = Math.min(
       Math.max(requestedSession || defaultSession, 1),
-      Math.min(completed + 1, totalSessions || 1)
+      totalSessions || 1
     );
     const nextStartIndex = sessionMode ? (selectedSession - 1) * effectiveBatchSize : startIndex;
     const firstBatch = sessionMode
@@ -483,45 +475,6 @@ export default function Quiz(props) {
     setCheckedResult(null);
     setToast(null);
   }, [items, sessionMode, materialId, effectiveBatchSize, startIndex, sessionStartIndex, authResolved, isAuthenticated, pillarMode, pillarType]);
-
-  useEffect(() => {
-    setPracticeUrl(window.location.href);
-  }, []);
-
-  useEffect(() => {
-    if (!sessionMode || !pillarMode || !materialId) {
-      setSessionAccess('allowed');
-      setSessionLockMessage('');
-      return;
-    }
-
-    if (sessionOutOfRange) {
-      setSessionLockMessage(`Sesi ${requestedSession} tidak tersedia untuk materi ini.`);
-      setSessionAccess('locked');
-      return;
-    }
-
-    for (let previousSession = 1; previousSession < selectedSession; previousSession += 1) {
-      if (readSessionPillars(materialId, previousSession).length !== PILLAR_TYPES.length) {
-        setSessionLockMessage(`Selesaikan dulu 4 pilar di Sesi ${previousSession} untuk membuka Sesi ${selectedSession}.`);
-        setSessionAccess('locked');
-        return;
-      }
-    }
-
-    const passedPillars = readSessionPillars(materialId, selectedSession);
-    const firstIncomplete = PILLAR_TYPES.findIndex((pillar) => !passedPillars.includes(pillar));
-    if (pillarIndex > (firstIncomplete < 0 ? PILLAR_TYPES.length : firstIncomplete)) {
-      const requiredPillar = PILLAR_TYPES[firstIncomplete];
-      const label = requiredPillar[0].toUpperCase() + requiredPillar.slice(1);
-      setSessionLockMessage(`Selesaikan ${label} di Sesi ${selectedSession} sebelum melanjutkan ke ${pillarType}.`);
-      setSessionAccess('locked');
-      return;
-    }
-
-    setSessionLockMessage('');
-    setSessionAccess('allowed');
-  }, [sessionMode, pillarMode, materialId, selectedSession, requestedSession, sessionOutOfRange, pillarIndex, pillarType]);
 
   const currentQuestion = queue[0] ?? null;
   const showSummary = isGameOver || queue.length === 0;
@@ -594,7 +547,6 @@ export default function Quiz(props) {
       }
       const pillarsPassed = readSessionPillars(materialId, activeSessionNumber).map((p) => `s${activeSessionNumber}-${p}`);
       completedSessionsRef.current = pillarsPassed;
-      setPillarProgressSaved(true);
       queueProgressUpdate({ sessions_passed: [sessionPillarKey] });
       return;
     }
@@ -629,19 +581,6 @@ export default function Quiz(props) {
     return (
       <div className="quiz-empty">
         <p>Belum ada kosakata untuk latihan saat ini.</p>
-      </div>
-    );
-  }
-
-  if (sessionMode && pillarMode && sessionAccess === 'checking') {
-    return <p className="quiz-empty">Memeriksa progres pilar...</p>;
-  }
-
-  if (sessionMode && pillarMode && sessionAccess === 'locked') {
-    return (
-      <div className="quiz-empty" role="alert">
-        <p>{sessionLockMessage}</p>
-        <a href={returnHref}>Kembali ke Materi</a>
       </div>
     );
   }
@@ -922,23 +861,6 @@ export default function Quiz(props) {
       : ['reading', 'listening'].includes(currentQuestion?.type)
         ? Boolean(choiceAnswer)
       : userAnswer.trim().length > 0;
-  const nextPillar = pillarIndex >= 0
-    ? PILLAR_TYPES[(pillarIndex + 1) % PILLAR_TYPES.length]
-    : '';
-  const nextPillarSession = pillarIndex === PILLAR_TYPES.length - 1
-    ? activeSessionNumber + 1
-    : activeSessionNumber;
-  const nextPillarUrl = (() => {
-    if (!practiceUrl || !nextPillar || nextPillarSession > sessionCount) return '';
-    const url = new URL(practiceUrl);
-    url.searchParams.set('type', nextPillar);
-    url.searchParams.set('session', String(nextPillarSession));
-    return `${url.pathname}${url.search}${url.hash}`;
-  })();
-  const nextPillarLabel = nextPillar
-    ? nextPillar[0].toUpperCase() + nextPillar.slice(1)
-    : '';
-
   return (
     <div className="quiz-shell">
       {toast && (
@@ -1293,25 +1215,7 @@ export default function Quiz(props) {
             </div>
 
             <div className="summary-actions">
-              {sessionMode && pillarMode && sessionPassed && nextPillarSession <= sessionCount ? (
-                pillarProgressSaved && nextPillarUrl ? (
-                  <a className="primary-btn" href={nextPillarUrl}>
-                    <span>Berikutnya: {nextPillarLabel} (Sesi {nextPillarSession})</span>
-                  </a>
-                ) : (
-                  <button type="button" className="primary-btn" disabled>
-                    <span>Menyimpan progres...</span>
-                  </button>
-                )
-              ) : sessionMode && pillarMode && sessionPassed ? (
-                <button type="button" className="primary-btn" disabled>
-                  <span>Semua sesi selesai</span>
-                </button>
-              ) : sessionMode && !pillarMode && sessionPassed && activeSessionNumber < sessionCount ? (
-                <button type="button" className="primary-btn" onClick={() => { playSound('click'); startSession(activeSessionNumber + 1); }}>
-                  <span>Lanjut ke Sesi Berikutnya</span>
-                </button>
-              ) : (
+              {!sessionPassed && (
                 <button type="button" className="primary-btn" onClick={() => { playSound('click'); restartGame(); }}>
                   <span>
                     {sessionMode ? 'Ulangi Sesi Ini' : (isGameOver ? 'Coba Lagi' : 'Ulangi Kuis')}
