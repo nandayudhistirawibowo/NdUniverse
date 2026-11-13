@@ -1,3 +1,5 @@
+import { preloadCdnAudioManifest, resolveCdnAudioUrl } from '../../../core/audio/cdn-audio.js';
+
 let manifestPromise;
 let currentAudio = null;
 
@@ -28,7 +30,10 @@ function getManifest() {
   return manifestPromise;
 }
 
-if (typeof window !== 'undefined') getManifest();
+if (typeof window !== 'undefined') {
+  getManifest();
+  preloadCdnAudioManifest();
+}
 
 function speakGerman(text, button) {
   if (typeof window === 'undefined') return;
@@ -79,7 +84,8 @@ export async function playAudioTTS(text, button, fallbackText = text) {
       speakGerman(spokenFallback, button);
       return;
     }
-    const directAudio = new Audio(spokenText);
+    const directAudioPath = await resolveCdnAudioUrl(spokenText) || spokenText;
+    const directAudio = new Audio(directAudioPath);
     currentAudio = directAudio;
     button?.classList.add('is-playing');
     directAudio.onended = () => {
@@ -94,7 +100,7 @@ export async function playAudioTTS(text, button, fallbackText = text) {
     try {
       await directAudio.play();
     } catch (error) {
-      console.error(`Unable to play direct TTS audio: ${spokenText}`, error);
+      console.error(`Unable to play direct TTS audio: ${directAudioPath}`, error);
       button?.classList.remove('is-playing');
       if (currentAudio === directAudio) currentAudio = null;
       speakGerman(spokenFallback, button);
@@ -104,13 +110,14 @@ export async function playAudioTTS(text, button, fallbackText = text) {
 
   const manifest = await getManifest();
   const audioPath = manifest?.[spokenText];
+  const cdnAudioPath = await resolveCdnAudioUrl(audioPath);
 
-  if (typeof audioPath !== 'string' || !audioPath.startsWith('https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts/')) {
+  if (typeof cdnAudioPath !== 'string') {
     speakGerman(spokenText, button);
     return;
   }
 
-  const audio = new Audio(audioPath);
+  const audio = new Audio(cdnAudioPath);
   currentAudio = audio;
   let fellBackToSpeech = false;
   const fallBack = () => {
@@ -127,14 +134,14 @@ export async function playAudioTTS(text, button, fallbackText = text) {
     if (currentAudio === audio) currentAudio = null;
   };
   audio.onerror = () => {
-    console.error(`Unable to play generated TTS audio: ${audioPath}`, audio.error);
+    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, audio.error);
     fallBack();
   };
 
   try {
     await audio.play();
   } catch (error) {
-    console.error(`Unable to play generated TTS audio: ${audioPath}`, error);
+    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, error);
     fallBack();
   }
 }

@@ -1,3 +1,5 @@
+import { preloadCdnAudioManifest, resolveCdnAudioUrl } from '../../../core/audio/cdn-audio.js';
+
 const manifestPromises = new Map();
 let currentAudio = null;
 
@@ -31,7 +33,10 @@ function getManifest(accent) {
   return manifestPromises.get(accent);
 }
 
-if (typeof window !== 'undefined') getManifest();
+if (typeof window !== 'undefined') {
+  getManifest('us');
+  preloadCdnAudioManifest();
+}
 
 function showUkSpeechError(button, error) {
   button?.classList.remove('is-playing');
@@ -39,21 +44,29 @@ function showUkSpeechError(button, error) {
   window.alert('This browser does not support a UK voice.');
 }
 
-function speakWithUsBrowserVoice(text, button) {
+function speakWithBrowserVoice(text, language, button) {
   if (!window.speechSynthesis || typeof SpeechSynthesisUtterance === 'undefined') {
-    button?.classList.remove('is-playing');
-    console.error('Unable to play static English audio or use browser speech synthesis.');
+    if (language === 'en-GB') {
+      showUkSpeechError(button, new Error('Speech synthesis is not supported.'));
+    } else {
+      button?.classList.remove('is-playing');
+      console.error('Unable to play static English audio or use browser speech synthesis.');
+    }
     return;
   }
 
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'en-US';
+  utterance.lang = language;
   utterance.rate = 1;
   utterance.onend = () => button?.classList.remove('is-playing');
   utterance.onerror = (event) => {
-    button?.classList.remove('is-playing');
-    if (event.error !== 'interrupted' && event.error !== 'canceled') {
+    if (language === 'en-GB') {
+      showUkSpeechError(button, event.error);
+    } else {
+      button?.classList.remove('is-playing');
+    }
+    if (language !== 'en-GB' && event.error !== 'interrupted' && event.error !== 'canceled') {
       console.error('Unable to speak English text with US browser speech synthesis.', event.error);
     }
   };
@@ -62,8 +75,12 @@ function speakWithUsBrowserVoice(text, button) {
   try {
     window.speechSynthesis.speak(utterance);
   } catch (error) {
-    button?.classList.remove('is-playing');
-    console.error('Unable to start US browser speech synthesis.', error);
+    if (language === 'en-GB') {
+      showUkSpeechError(button, error);
+    } else {
+      button?.classList.remove('is-playing');
+      console.error('Unable to start US browser speech synthesis.', error);
+    }
   }
 }
 
@@ -93,29 +110,21 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
   }
 
   if (accent === 'uk') {
-    try {
-      if (!window.speechSynthesis || typeof SpeechSynthesisUtterance === 'undefined') {
-        showUkSpeechError(button, new Error('Speech synthesis is not supported.'));
-        return;
-      }
-
-      window.speechSynthesis.cancel();
-      const utterance = new SpeechSynthesisUtterance(spokenText);
-      utterance.lang = 'en-GB';
-      utterance.rate = 1;
-      utterance.onend = () => button?.classList.remove('is-playing');
-      utterance.onerror = (event) => showUkSpeechError(button, event.error);
-      button?.classList.add('is-playing');
-      window.speechSynthesis.speak(utterance);
-    } catch (error) {
-      showUkSpeechError(button, error);
-    }
+    speakWithBrowserVoice(spokenText, 'en-GB', button);
     return;
   }
 
   if (/^(\/|https?:\/\/)/i.test(spokenText)) {
-    if (typeof Audio === 'undefined') return;
-    const directAudio = new Audio(spokenText);
+    const directAudioPath = await resolveCdnAudioUrl(spokenText) || spokenText;
+    if (typeof Audio === 'undefined') {
+      speakWithBrowserVoice(
+        spokenText,
+        accent === 'exam-uk' ? 'en-GB' : 'en-US',
+        button,
+      );
+      return;
+    }
+    const directAudio = new Audio(directAudioPath);
     currentAudio = directAudio;
     button?.classList.add('is-playing');
     directAudio.onended = () => {
@@ -125,45 +134,56 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
     directAudio.onerror = () => {
       button?.classList.remove('is-playing');
       if (currentAudio === directAudio) currentAudio = null;
+      speakWithBrowserVoice(
+        spokenText,
+        accent === 'exam-uk' ? 'en-GB' : 'en-US',
+        button,
+      );
     };
     try {
       await directAudio.play();
     } catch (error) {
-      console.error(`Unable to play direct TTS audio: ${spokenText}`, error);
+      console.error(`Unable to play direct TTS audio: ${directAudioPath}`, error);
       button?.classList.remove('is-playing');
       if (currentAudio === directAudio) currentAudio = null;
+      speakWithBrowserVoice(
+        spokenText,
+        accent === 'exam-uk' ? 'en-GB' : 'en-US',
+        button,
+      );
     }
     return;
   }
 
   const manifestAccent = accent === 'exam-uk' ? 'exam-uk' : 'us';
-  const audioDirectory = manifestAccent === 'exam-uk' ? 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-gb/' : 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-us/';
+  const audioDirectory = manifestAccent === 'exam-uk'
+    ? 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-gb/'
+    : 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-us/';
   const manifest = await getManifest(manifestAccent);
   const audioPath = manifest?.[spokenText];
+  const cdnAudioPath = await resolveCdnAudioUrl(audioPath);
 
-  if (typeof audioPath !== 'string' || !audioPath.startsWith(audioDirectory)) {
-    if (manifestAccent === 'us') {
-      speakWithUsBrowserVoice(spokenText, button);
-      return;
-    }
-
-    console.error(`No static ${manifestAccent} TTS audio found for: ${spokenText}`);
-    button?.classList.remove('is-playing');
+  if (typeof audioPath !== 'string' || !audioPath.startsWith(audioDirectory) || !cdnAudioPath) {
+    speakWithBrowserVoice(
+      spokenText,
+      manifestAccent === 'exam-uk' ? 'en-GB' : 'en-US',
+      button,
+    );
     return;
   }
 
-  const audio = new Audio(audioPath);
+  const audio = new Audio(cdnAudioPath);
   currentAudio = audio;
   let fellBackToSpeech = false;
   const fallBack = () => {
     if (fellBackToSpeech) return;
     fellBackToSpeech = true;
     if (currentAudio === audio) currentAudio = null;
-    if (manifestAccent === 'us') {
-      speakWithUsBrowserVoice(spokenText, button);
-    } else {
-      button?.classList.remove('is-playing');
-    }
+    speakWithBrowserVoice(
+      spokenText,
+      manifestAccent === 'exam-uk' ? 'en-GB' : 'en-US',
+      button,
+    );
   };
 
   button?.classList.add('is-playing');
@@ -172,14 +192,14 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
     if (currentAudio === audio) currentAudio = null;
   };
   audio.onerror = () => {
-    console.error(`Unable to play generated TTS audio: ${audioPath}`, audio.error);
+    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, audio.error);
     fallBack();
   };
 
   try {
     await audio.play();
   } catch (error) {
-    console.error(`Unable to play generated TTS audio: ${audioPath}`, error);
+    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, error);
     fallBack();
   }
 }
