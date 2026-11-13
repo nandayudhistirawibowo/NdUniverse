@@ -2,6 +2,73 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 
 const WELCOME_MESSAGE = 'Halo! Saya NdUniverse Assistant. Ada yang ingin kamu tanyakan tentang materi atau latihan?';
 
+function renderInlineMarkdown(text) {
+  const parts = [];
+  const formatting = /\*\*(.+?)\*\*|\*(.+?)\*/g;
+  let lastIndex = 0;
+  let match;
+
+  while ((match = formatting.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+
+    parts.push(match[1] !== undefined
+      ? <strong key={`bold-${match.index}`}>{match[1]}</strong>
+      : <em key={`italic-${match.index}`}>{match[2]}</em>);
+    lastIndex = formatting.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
+}
+
+function renderAssistantMessage(content) {
+  const blocks = [];
+  let paragraph = [];
+  let listItems = [];
+
+  function flushParagraph() {
+    if (paragraph.length) {
+      blocks.push(<p key={`paragraph-${blocks.length}`}>{renderInlineMarkdown(paragraph.join(' '))}</p>);
+      paragraph = [];
+    }
+  }
+
+  function flushList() {
+    if (listItems.length) {
+      blocks.push(
+        <ul key={`list-${blocks.length}`}>
+          {listItems.map((item, index) => (
+            <li key={`item-${index}`}>{renderInlineMarkdown(item)}</li>
+          ))}
+        </ul>,
+      );
+      listItems = [];
+    }
+  }
+
+  content.split(/\r?\n/).forEach((line) => {
+    const listItem = line.match(/^\s*-\s+(.+)$/);
+    if (listItem) {
+      flushParagraph();
+      listItems.push(listItem[1]);
+    } else if (!line.trim()) {
+      flushParagraph();
+      flushList();
+    } else {
+      flushList();
+      paragraph.push(line.trim());
+    }
+  });
+
+  flushParagraph();
+  flushList();
+  return blocks;
+}
+
 export default function ChatbotWidget() {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -96,7 +163,9 @@ export default function ChatbotWidget() {
                 class={`nd-chatbot-message ${message.role}`}
                 key={`${message.role}-${index}`}
               >
-                <p>{message.content}</p>
+                {message.role === 'assistant'
+                  ? renderAssistantMessage(message.content)
+                  : <p>{message.content}</p>}
                 {message.waLink && (
                   <button
                     class="nd-chatbot-whatsapp"
@@ -205,7 +274,10 @@ export default function ChatbotWidget() {
           line-height: 1.45;
           overflow-wrap: anywhere;
         }
-        .nd-chatbot-message p { margin: 0; white-space: pre-wrap; }
+        .nd-chatbot-message p { margin: 0; }
+        .nd-chatbot-message p + p { margin-top: .55rem; }
+        .nd-chatbot-message ul { margin: .45rem 0 0; padding-left: 1.2rem; }
+        .nd-chatbot-message li + li { margin-top: .2rem; }
         .nd-chatbot-message.assistant {
           align-self: flex-start;
           border: 1px solid var(--chatbot-border);
