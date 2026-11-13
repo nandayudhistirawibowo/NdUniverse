@@ -739,6 +739,8 @@ export default function Quiz(props) {
       awardXp(10);
       setToast({ type: 'success', message: 'Jawaban Tepat! +10 XP setelah sesi selesai' });
       playSound('success');
+      setQueue((currentQueue) => currentQueue.slice(1));
+      setCheckedResult(null);
     } else {
       setLives((remaining) => Math.max(remaining - 1, 0));
       setWrongWords((words) => [...words, currentQuestion]);
