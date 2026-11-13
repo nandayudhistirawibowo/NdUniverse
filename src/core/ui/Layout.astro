@@ -8,11 +8,13 @@ const {
   title = 'NdUniverse - Platform Belajar Bahasa Jerman & Inggris',
   description = 'Belajar bahasa Jerman dan Inggris dengan materi CEFR, latihan empat pilar, persiapan Goethe, IELTS, TOEFL, dan dukungan tutor AI.',
   image = '/android-chrome-512x512.png',
+  url,
+  alternates = [],
   hideNavbar = false,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? 'https://nduniverse.ndhistira.my.id';
-const canonicalURL = new URL(Astro.url.pathname, siteUrl).toString();
+const canonicalURL = new URL(url ?? Astro.url.pathname, siteUrl).toString();
 const imageURL = new URL(image, siteUrl).toString();
 const user = Astro.locals.user;
 const profile = Astro.locals.profile;
@@ -70,6 +72,10 @@ const organizationSchema = {
     <meta name="twitter:image" content={imageURL} />
     <meta property="og:site_name" content="NdUniverse" />
     <link rel="canonical" href={canonicalURL} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    {alternates.map((alternate) => (
+      <link rel="alternate" hreflang={alternate.lang} href={new URL(alternate.url, siteUrl).toString()} />
+    ))}
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
     <link

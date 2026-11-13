@@ -36,7 +36,7 @@ export default function DashboardLanguageSwitcher() {
         }}
       >
         {languages.map((item) => (
-          <option value={item.code}>{item.flag} {item.label}</option>
+          <option value={item.code} aria-label={item.label}>{item.flag}</option>
         ))}
       </select>
     </label>

@@ -1,13 +1,22 @@
 ---
 import Layout from '@core/ui/Layout.astro';
 
-if (!Astro.locals.user) return Astro.redirect('/login-de');
-return Astro.redirect('/de/dashboard');
+if (Astro.locals.user) return Astro.redirect('/de/dashboard');
 
 const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 ---
 
-<Layout title="German | NdUniverse" description="Goethe-Zertifikat preparation dan bahasa Jerman sehari-hari di NdUniverse.">
+<Layout
+  title="Belajar Bahasa Jerman | NdUniverse"
+  description="Jelajahi materi bahasa Jerman berjenjang CEFR, Alltagsdeutsch, Fachdeutsch, dan persiapan Goethe-Zertifikat."
+  url="/de"
+  alternates={[
+    { lang: 'id', url: '/' },
+    { lang: 'en', url: '/en' },
+    { lang: 'de', url: '/de' },
+    { lang: 'x-default', url: '/' },
+  ]}
+>
   <section class="page-shell">
     <a class="back-link" href="/">← Kembali ke NdUniverse</a>
     <div class="level-heading">

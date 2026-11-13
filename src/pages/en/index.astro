@@ -1,8 +1,7 @@
 ---
 import Layout from '@core/ui/Layout.astro';
 
-if (!Astro.locals.user) return Astro.redirect('/login-en');
-return Astro.redirect('/en/dashboard');
+if (Astro.locals.user) return Astro.redirect('/en/dashboard');
 
 const features = [
   { href: '/en/everyday-english', title: 'Everyday English', text: 'Practice practical English vocabulary and the four core skills.' },
@@ -11,7 +10,17 @@ const features = [
 ];
 ---
 
-<Layout title="English Module | NdUniverse" description="English language preparation on NdUniverse.">
+<Layout
+  title="Learn English | NdUniverse"
+  description="Explore practical English lessons, CEFR learning paths, and IELTS or TOEFL preparation on NdUniverse."
+  url="/en"
+  alternates={[
+    { lang: 'id', url: '/' },
+    { lang: 'en', url: '/en' },
+    { lang: 'de', url: '/de' },
+    { lang: 'x-default', url: '/' },
+  ]}
+>
   <main class="module-page">
     <a class="back-link" href="/">← Back to NdUniverse</a>
     <header>
