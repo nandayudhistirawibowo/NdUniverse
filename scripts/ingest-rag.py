@@ -5,10 +5,13 @@ from __future__ import annotations
 
 import hashlib
 import logging
+import math
 import os
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any
+
+import requests
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -16,11 +19,11 @@ SOURCE_ROOTS = {
     "german": ROOT / "src" / "modules" / "german" / "content",
     "english": ROOT / "src" / "modules" / "english" / "content",
 }
-EMBEDDING_MODEL = "all-MiniLM-L6-v2"
+EMBEDDING_MODEL = "@cf/baai/bge-small-en-v1.5"
 EMBEDDING_DIMENSIONS = 384
 CHUNK_SIZE = 500
 CHUNK_OVERLAP = 50
-EMBEDDING_BATCH_SIZE = 64
+EMBEDDING_BATCH_SIZE = 10
 
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 LOGGER = logging.getLogger("ingest-rag")
@@ -32,7 +35,6 @@ class MarkdownDocument:
     language: str
     content_hash: str
     chunks: list[str]
-    replace_existing: bool
     embeddings: list[list[float] | None]
 
 
@@ -64,20 +66,8 @@ def chunk_text(
     return chunks
 
 
-def find_existing_documents(supabase: Any, source_file: str) -> list[dict[str, Any]]:
-    response = (
-        supabase.table("documents")
-        .select("metadata")
-        .contains("metadata", {"source_file": source_file})
-        .limit(1)
-        .execute()
-    )
-    return response.data or []
-
-
-def collect_documents(supabase: Any) -> tuple[list[MarkdownDocument], int]:
-    pending: list[MarkdownDocument] = []
-    skipped = 0
+def collect_documents() -> list[MarkdownDocument]:
+    documents: list[MarkdownDocument] = []
     markdown_files = [
         (language, path)
         for language, source_root in SOURCE_ROOTS.items()
@@ -93,33 +83,28 @@ def collect_documents(supabase: Any) -> tuple[list[MarkdownDocument], int]:
         chunks = chunk_text(text)
         if not chunks:
             LOGGER.info("Skipping empty Markdown file %s.", source_file)
-            skipped += 1
             continue
 
-        existing = find_existing_documents(supabase, source_file)
-        if existing:
-            metadata = existing[0].get("metadata") or {}
-            if metadata.get("content_hash") == content_hash:
-                LOGGER.info("Already ingested; skipping %s.", source_file)
-                skipped += 1
-                continue
-            LOGGER.info("Content changed; replacing indexed chunks for %s.", source_file)
-
-        pending.append(
+        documents.append(
             MarkdownDocument(
                 source_file=source_file,
                 language=language,
                 content_hash=content_hash,
                 chunks=chunks,
-                replace_existing=bool(existing),
                 embeddings=[None] * len(chunks),
             )
         )
 
-    return pending, skipped
+    if not documents:
+        raise RuntimeError("No non-empty Markdown documents were found to ingest.")
+    return documents
 
 
-def embed_documents(model: Any, documents: list[MarkdownDocument]) -> None:
+def embed_documents(
+    api_url: str,
+    api_token: str,
+    documents: list[MarkdownDocument],
+) -> None:
     chunk_references = [
         (document, chunk_index)
         for document in documents
@@ -132,28 +117,57 @@ def embed_documents(model: Any, documents: list[MarkdownDocument]) -> None:
             document.chunks[chunk_index]
             for document, chunk_index in batch_references
         ]
-        embeddings = model.encode(batch_text).tolist()
-        if len(embeddings) != len(batch_references):
-            raise RuntimeError("The local embedding model returned an incomplete batch.")
+        try:
+            response = requests.post(
+                api_url,
+                headers={
+                    "Authorization": f"Bearer {api_token}",
+                    "Content-Type": "application/json",
+                },
+                json={"text": batch_text},
+                timeout=60,
+            )
+            response.raise_for_status()
+            payload = response.json()
+        except ValueError as error:
+            LOGGER.error("Cloudflare returned invalid JSON.")
+            raise RuntimeError("Cloudflare returned invalid JSON.") from error
+        except requests.RequestException as error:
+            LOGGER.error("Cloudflare embedding request failed: %s", error)
+            raise RuntimeError("Cloudflare embedding request failed.") from error
+
+        result = payload.get("result") if isinstance(payload, dict) else None
+        embeddings = result.get("data") if isinstance(result, dict) else None
+        if not isinstance(embeddings, list) or len(embeddings) != len(batch_references):
+            raise RuntimeError("Cloudflare returned an incomplete embedding batch.")
 
         for batch_index, (document, chunk_index) in enumerate(batch_references):
             embedding = embeddings[batch_index]
-            if embedding is None or len(embedding) != EMBEDDING_DIMENSIONS:
+            if (
+                not isinstance(embedding, list)
+                or len(embedding) != EMBEDDING_DIMENSIONS
+                or any(
+                    isinstance(value, bool)
+                    or not isinstance(value, (int, float))
+                    or not math.isfinite(value)
+                    for value in embedding
+                )
+            ):
                 raise RuntimeError(
                     f"Expected a {EMBEDDING_DIMENSIONS}-dimension embedding "
                     f"for {document.source_file} chunk {chunk_index + 1}."
                 )
-            document.embeddings[chunk_index] = embedding
+            document.embeddings[chunk_index] = [float(value) for value in embedding]
 
         LOGGER.info(
-            "Embedded %d of %d chunks.",
+            "Embedded %d of %d chunks with Cloudflare Workers AI.",
             min(batch_start + len(batch_references), len(chunk_references)),
             len(chunk_references),
         )
 
 
 def insert_documents(supabase: Any, documents: list[MarkdownDocument]) -> int:
-    inserted_files = 0
+    rows_by_file: list[tuple[str, list[dict[str, Any]]]] = []
     for document in documents:
         rows = []
         for chunk_index, (content, embedding) in enumerate(
@@ -177,26 +191,33 @@ def insert_documents(supabase: Any, documents: list[MarkdownDocument]) -> int:
                     "embedding": embedding,
                 }
             )
+        rows_by_file.append((document.source_file, rows))
 
-        if document.replace_existing:
-            (
-                supabase.table("documents")
-                .delete()
-                .contains("metadata", {"source_file": document.source_file})
-                .execute()
-            )
+    LOGGER.warning("Deleting all existing rows from public.documents before full re-ingestion.")
+    supabase.table("documents").delete().neq("id", "00000000-0000-0000-0000-000000000000").execute()
 
+    for source_file, rows in rows_by_file:
         supabase.table("documents").insert(rows).execute()
-        inserted_files += 1
-        LOGGER.info("Ingested %s (%d chunks).", document.source_file, len(rows))
+        LOGGER.info("Ingested %s (%d chunks).", source_file, len(rows))
 
-    return inserted_files
+    return len(rows_by_file)
 
 
 def main() -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Re-ingest NdUniverse RAG documents.")
+    parser.add_argument(
+        "--replace-all",
+        action="store_true",
+        help="Delete all existing rows in documents before inserting the re-embedded corpus.",
+    )
+    args = parser.parse_args()
+    if not args.replace_all:
+        parser.error("full re-ingestion is destructive; pass --replace-all to continue")
+
     try:
         from dotenv import load_dotenv
-        from sentence_transformers import SentenceTransformer
         from supabase import create_client
     except ImportError as error:
         LOGGER.error(
@@ -208,11 +229,15 @@ def main() -> int:
 
     load_dotenv(ROOT / ".env")
     supabase_url = os.getenv("SUPABASE_URL") or os.getenv("PUBLIC_SUPABASE_URL")
+    cloudflare_account_id = os.getenv("CLOUDFLARE_ACCOUNT_ID")
+    cloudflare_api_token = os.getenv("CLOUDFLARE_API_TOKEN")
     missing_variables = [
         name
         for name, value in (
             ("SUPABASE_URL (or PUBLIC_SUPABASE_URL)", supabase_url),
             ("SUPABASE_SERVICE_ROLE_KEY", os.getenv("SUPABASE_SERVICE_ROLE_KEY")),
+            ("CLOUDFLARE_ACCOUNT_ID", cloudflare_account_id),
+            ("CLOUDFLARE_API_TOKEN", cloudflare_api_token),
         )
         if not value
     ]
@@ -224,26 +249,25 @@ def main() -> int:
         supabase_url,
         os.environ["SUPABASE_SERVICE_ROLE_KEY"],
     )
-    documents, skipped = collect_documents(supabase)
-    if not documents:
-        LOGGER.info("No new or changed Markdown files to ingest; skipped %d file(s).", skipped)
-        return 0
+    documents = collect_documents()
 
     chunk_count = sum(len(document.chunks) for document in documents)
     LOGGER.info(
-        "Preparing %d file(s) with %d chunk(s) using %s; skipped %d file(s).",
+        "Preparing a full re-ingestion of %d file(s) with %d chunk(s) using %s.",
         len(documents),
         chunk_count,
         EMBEDDING_MODEL,
-        skipped,
     )
-    model = SentenceTransformer("all-MiniLM-L6-v2")
-    embed_documents(model, documents)
+
+    api_url = (
+        "https://api.cloudflare.com/client/v4/accounts/"
+        f"{cloudflare_account_id}/ai/run/{EMBEDDING_MODEL}"
+    )
+    embed_documents(api_url, cloudflare_api_token, documents)
     inserted = insert_documents(supabase, documents)
     LOGGER.info(
-        "RAG ingestion complete: %d file(s) indexed, %d file(s) skipped.",
+        "RAG ingestion complete: %d file(s) indexed.",
         inserted,
-        skipped,
     )
     return 0
 
