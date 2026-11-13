@@ -9,6 +9,8 @@ const item = await getEntry('materi', Astro.params.slug ?? '');
 if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 
 const type = Astro.url.searchParams.get('type') ?? '';
+const validTypes = ['reading', 'listening', 'writing', 'speaking'];
+if (!validTypes.includes(type)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
 const labels = {
   reading: 'Reading / Lesen',
   listening: 'Listening / Hören',

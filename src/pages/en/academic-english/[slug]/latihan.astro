@@ -17,6 +17,8 @@ if (requestedType && !allowedTypes.includes(requestedType)) {
 }
 const type = requestedType;
 const materialSlug = item.id.split('/').at(-1) ?? item.id;
+const batchSize = 5;
+const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
 const items = item.data.vocab.map((entry) => ({
   german: entry.word,
   indonesian: entry.translation,
@@ -27,6 +29,8 @@ const items = item.data.vocab.map((entry) => ({
   writing_instruction: entry.writing_instruction ?? item.data.writing_instruction,
   speaking_question: entry.speaking_question ?? item.data.speaking_question,
 }));
+const sessionCount = Math.ceil(items.length / batchSize);
+const startIndex = (sessionNumber - 1) * batchSize;
 const labels = { reading: 'Reading', listening: 'Listening', writing: 'Writing', speaking: 'Speaking' };
 const pillarLabel = labels[type] ?? 'Vocabulary';
 ---
@@ -40,7 +44,7 @@ const pillarLabel = labels[type] ?? 'Vocabulary';
     <header class="page-heading">
       <p class="eyebrow">Academic English · {item.data.jurusan}</p>
       <h1>{pillarLabel}: {item.data.title}</h1>
-      <p>Practice academic English vocabulary and build confidence one question at a time.</p>
+      <p>Practice academic English vocabulary and build confidence one question at a time.{type ? ` Session ${sessionNumber} of ${sessionCount}.` : ''}</p>
     </header>
     <section class="practice-panel" aria-label={`${pillarLabel} practice for ${item.data.title}`}>
       <Quiz
@@ -49,6 +53,10 @@ const pillarLabel = labels[type] ?? 'Vocabulary';
         track="Academic English"
         jurusan={item.data.jurusan}
         returnHref={`/en/academic-english/${materialSlug}`}
+        startIndex={startIndex}
+        session={sessionNumber}
+        batchSize={batchSize}
+        sessionMode={Boolean(type)}
         materialId={`academic-${materialSlug}`}
         type={type}
       />

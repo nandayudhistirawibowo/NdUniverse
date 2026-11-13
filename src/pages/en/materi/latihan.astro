@@ -11,6 +11,8 @@ const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/
 if (!item) return new Response('Material not found.', { status: 404 });
 
 const type = Astro.url.searchParams.get('type') ?? '';
+const validTypes = ['reading', 'listening', 'writing', 'speaking'];
+if (!validTypes.includes(type)) return new Response('Practice pillar not found.', { status: 404 });
 const pillarLabels = { reading: 'Reading', listening: 'Listening', writing: 'Writing', speaking: 'Speaking' };
 const pillarLabel = pillarLabels[type] ?? 'Practice';
 const batchSize = 5;

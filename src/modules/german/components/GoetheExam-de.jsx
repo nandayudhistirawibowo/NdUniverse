@@ -79,10 +79,12 @@ function formatTime(seconds) {
 
 export default function GoetheExam({ level, tasks, available = true }) {
   const [activeModule, setActiveModule] = useState('lesen');
+  const [completedModules, setCompletedModules] = useState([]);
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
   const [isListening, setIsListening] = useState(false);
   const [speechMessage, setSpeechMessage] = useState('');
+  const [moduleWarning, setModuleWarning] = useState('');
   const [playedAudio, setPlayedAudio] = useState({});
   const recognitionRef = useRef(null);
   const answersRef = useRef({});
@@ -99,8 +101,10 @@ export default function GoetheExam({ level, tasks, available = true }) {
     answersRef.current = {};
     setResult(null);
     setActiveModule('lesen');
+    setCompletedModules([]);
     setPlayedAudio({});
     setSpeechMessage('');
+    setModuleWarning('');
   }, [level]);
 
   const chooseAnswer = (moduleId, index, value) => {
@@ -158,7 +162,17 @@ export default function GoetheExam({ level, tasks, available = true }) {
     playAudioTTS(task.audio, event.currentTarget, task.audioFallback || task.audio);
   };
 
-  const submitExam = () => {
+  const submitExam = (force = false) => {
+    const incompleteModule = MODULES.find((module) => (
+      moduleTasksAnswered(module.id) < (tasks[module.id]?.length ?? 0)
+    ));
+    if (force !== true && incompleteModule) {
+      setModuleWarning(`Bitte bearbeiten Sie zuerst alle Aufgaben in ${incompleteModule.label}.`);
+      setActiveModule(incompleteModule.id);
+      return;
+    }
+
+    setModuleWarning('');
     playSound('click');
     const currentAnswers = answersRef.current;
     const moduleResults = MODULES.map((module) => {
@@ -201,19 +215,30 @@ export default function GoetheExam({ level, tasks, available = true }) {
     saveExamResult('goethe', level, nextResult);
   };
 
-  const finishCurrentModule = () => {
+  const finishCurrentModule = (force = false) => {
+    if (force !== true && moduleTasksAnswered(activeModule) < (tasks[activeModule]?.length ?? 0)) {
+      const currentLabel = MODULES.find((module) => module.id === activeModule)?.label ?? activeModule;
+      setModuleWarning(`Bitte bearbeiten Sie alle Aufgaben in ${currentLabel}, bevor Sie fortfahren.`);
+      return;
+    }
+
+    setModuleWarning('');
     const currentIndex = MODULES.findIndex((module) => module.id === activeModule);
+    setCompletedModules((current) => (
+      current.includes(activeModule) ? current : [...current, activeModule]
+    ));
     if (currentIndex < MODULES.length - 1) {
       playSound('click');
       const nextModule = MODULES[currentIndex + 1].id;
       setActiveModule(nextModule);
       setRemainingSeconds((secondsByModule[nextModule] ?? 15) * 60);
     } else {
-      submitExam();
+      submitExam(force);
     }
   };
 
   const openModule = (moduleId) => {
+    if (!isModuleUnlocked(moduleId)) return;
     playSound('click');
     setActiveModule(moduleId);
     const saved = remainingRef.current[moduleId];
@@ -227,7 +252,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
         remainingRef.current[activeModule] = Math.max(current - 1, 0);
         if (current <= 1) {
           window.clearInterval(timer);
-          window.setTimeout(finishCurrentModule, 0);
+          window.setTimeout(() => finishCurrentModule(true), 0);
           return 0;
         }
         return current - 1;
@@ -250,6 +275,11 @@ export default function GoetheExam({ level, tasks, available = true }) {
   }
 
   const failedModules = result?.modules.filter((module) => !module.passed) ?? [];
+  const firstIncompleteModule = MODULES.findIndex((module) => !completedModules.includes(module.id));
+  const unlockedModuleCount = firstIncompleteModule < 0 ? MODULES.length : firstIncompleteModule + 1;
+  const isModuleUnlocked = (moduleId) => (
+    MODULES.findIndex((module) => module.id === moduleId) < unlockedModuleCount
+  );
 
   const hasTasks = available !== false && MODULES.some((module) =>
     Array.isArray(tasks?.[module.id]) && tasks[module.id].length > 0
@@ -286,7 +316,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
             type="button"
             class={activeModule === module.id ? 'active' : ''}
             onClick={() => openModule(module.id)}
-            disabled={Boolean(result)}
+            disabled={Boolean(result) || !isModuleUnlocked(module.id)}
             key={module.id}
           >
             <span>{module.label}</span>
@@ -369,6 +399,8 @@ export default function GoetheExam({ level, tasks, available = true }) {
               )}
             </article>
           ))}
+
+          {moduleWarning && <p class="module-warning" role="alert">{moduleWarning}</p>}
 
           {activeModule === 'sprechen' ? (
             <button class="submit-button" type="button" onClick={submitExam}>Selesaikan Semua Modul</button>

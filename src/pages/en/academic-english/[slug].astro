@@ -34,6 +34,7 @@ const vocab = item.data.vocab.map((entry) => ({
   writing_instruction: entry.writing_instruction ?? item.data.writing_instruction,
   speaking_question: entry.speaking_question ?? item.data.speaking_question,
 }));
+const sessionCount = Math.ceil(vocab.length / 5);
 
 const pillars = [
   { type: 'reading', label: 'Reading', available: Boolean(item.data.reading_text || item.data.reading_question || item.data.vocab.some((entry) => entry.reading_text || entry.reading_question)) },
@@ -92,21 +93,28 @@ const pillars = [
     </section>
 
     {pillars.some((pillar) => pillar.available) && (
-      <nav class="pillar-links" aria-label="Academic English skill practice">
-        {pillars.filter((pillar) => pillar.available).map((pillar) => (
-          <a
-            href={`/en/academic-english/${materialSlug}/latihan?type=${pillar.type}`}
-            data-progress-pillar={pillar.type}
-            data-progress-slug={progressSlug}
-            data-progress-language="en"
-            data-pillar-label={pillar.label}
-            class={passedPillars.includes(pillar.type) ? 'is-complete' : ''}
-            aria-label={`${pillar.label}${passedPillars.includes(pillar.type) ? ' completed' : ''}`}
-          >
-            <span data-pillar-check aria-hidden="true">{passedPillars.includes(pillar.type) ? '✓ ' : ''}</span>{pillar.label}
-          </a>
+      <section class="pillar-sessions" aria-label="Academic English skill sessions">
+        {Array.from({ length: sessionCount }, (_, index) => index + 1).map((session) => (
+          <div class="pillar-session">
+            <h2>Session {session}</h2>
+            <nav class="pillar-links" aria-label={`Academic English skills in session ${session}`}>
+              {pillars.filter((pillar) => pillar.available).map((pillar) => (
+                <a
+                  href={`/en/academic-english/${materialSlug}/latihan?type=${pillar.type}&session=${session}`}
+                  data-progress-pillar={pillar.type}
+                  data-progress-slug={progressSlug}
+                  data-progress-language="en"
+                  data-pillar-label={pillar.label}
+                  class={passedPillars.includes(pillar.type) ? 'is-complete' : ''}
+                  aria-label={`${pillar.label}${passedPillars.includes(pillar.type) ? ' completed' : ''}`}
+                >
+                  <span data-pillar-check aria-hidden="true">{passedPillars.includes(pillar.type) ? '✓ ' : ''}</span>{pillar.label}
+                </a>
+              ))}
+            </nav>
+          </div>
         ))}
-      </nav>
+      </section>
     )}
   </main>
 </DashboardLayout>
@@ -168,6 +176,9 @@ const pillars = [
   .audio-example { display:inline-flex; align-items:center; gap:.5rem; }
   .speaker-button { width:34px; height:34px; flex:0 0 auto; border:1px solid var(--border); border-radius:7px; background:var(--card-bg); cursor:pointer; }
   .speaker-button.is-playing { border-color:var(--accent-gold); background:var(--bg-main,#fff4dc); }
+  .pillar-sessions { display:grid; gap:.75rem; }
+  .pillar-session { display:grid; gap:.55rem; }
+  .pillar-session h2 { margin:0; color:var(--text-main); font-size:1rem; }
   .pillar-links { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.55rem; }
   .pillar-links a { min-height:44px; display:grid; place-items:center; border:1px solid var(--border); border-radius:8px; color:var(--text-main); font-weight:800; text-decoration:none; }
   .pillar-links a.is-complete { border-color:#3a8b55; background:#eaf6ed; color:#236b38; }

@@ -114,6 +114,53 @@ function readCompletedSessions(materialId) {
   }
 }
 
+function readSessionPillars(materialId, sessionNumber) {
+  const completed = new Set();
+  try {
+    const saved = JSON.parse(
+      window.localStorage.getItem(`progress_pillars_en_${materialId}_${sessionNumber}`) ?? '[]'
+    );
+    if (Array.isArray(saved)) {
+      saved.filter((pillar) => PILLAR_TYPES.includes(pillar)).forEach((pillar) => completed.add(pillar));
+    }
+
+    if (sessionNumber === 1) {
+      PILLAR_TYPES.forEach((pillar) => {
+        const legacy = JSON.parse(
+          window.localStorage.getItem(`progress_pillar_${materialId}_${pillar}`) ?? '[]'
+        );
+        if (Array.isArray(legacy) && legacy.includes(pillar)) completed.add(pillar);
+      });
+    }
+  } catch {
+    return [];
+  }
+  return PILLAR_TYPES.filter((pillar) => completed.has(pillar));
+}
+
+function saveSessionPillar(materialId, sessionNumber, sessionCount, pillar) {
+  try {
+    const completed = new Set(readSessionPillars(materialId, sessionNumber));
+    completed.add(pillar);
+    window.localStorage.setItem(
+      `progress_pillars_en_${materialId}_${sessionNumber}`,
+      JSON.stringify(PILLAR_TYPES.filter((item) => completed.has(item))),
+    );
+
+    let completedSessions = 0;
+    for (let session = 1; session <= sessionCount; session += 1) {
+      if (readSessionPillars(materialId, session).length !== PILLAR_TYPES.length) break;
+      completedSessions = session;
+    }
+    if (completedSessions > 0) {
+      window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completedSessions} Lulus`);
+    }
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 function filterPillarItems(items, pillarType, startIndex = 0, batchSize = 5) {
   if (!PILLAR_TYPES.includes(pillarType)) return items.slice(startIndex, startIndex + batchSize);
   return items.slice(startIndex, startIndex + batchSize);
@@ -137,7 +184,11 @@ export default function Quiz(props) {
   const items = suppliedItems ?? [];
   const pillarMode = PILLAR_TYPES.includes(pillarType);
   const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
-  const selectedSession = Math.max(1, Number(session) || Math.floor(startIndex / effectiveBatchSize) + 1);
+  const sessionCount = Math.max(1, Math.ceil(items.length / effectiveBatchSize));
+  const requestedSession = Math.max(1, Number(session) || Math.floor(startIndex / effectiveBatchSize) + 1);
+  const selectedSession = Math.min(requestedSession, sessionCount);
+  const sessionOutOfRange = requestedSession > sessionCount;
+  const pillarIndex = PILLAR_TYPES.indexOf(pillarType);
   const sessionStartIndex = (selectedSession - 1) * effectiveBatchSize;
   const [activeStartIndex, setActiveStartIndex] = useState(sessionStartIndex);
   const pillarItems = useMemo(
@@ -148,6 +199,12 @@ export default function Quiz(props) {
   const [sessionXp, setSessionXp] = useState(0);
   const [lives, setLives] = useState(3);
   const [sessionInitialized, setSessionInitialized] = useState(!sessionMode);
+  const [sessionAccess, setSessionAccess] = useState(
+    sessionMode && pillarMode ? 'checking' : 'allowed'
+  );
+  const [sessionLockMessage, setSessionLockMessage] = useState('');
+  const [pillarProgressSaved, setPillarProgressSaved] = useState(false);
+  const [practiceUrl, setPracticeUrl] = useState('');
   const currentBatchItems = useMemo(
     () => pillarMode
       ? pillarItems
@@ -156,7 +213,6 @@ export default function Quiz(props) {
         : items,
     [pillarItems, pillarMode, items, activeStartIndex, effectiveBatchSize, sessionMode]
   );
-  const sessionCount = Math.ceil(items.length / effectiveBatchSize);
   const activeSessionNumber = Math.floor(activeStartIndex / effectiveBatchSize) + 1;
   const [queue, setQueue] = useState(() => buildQuestionQueue(
     pillarMode
@@ -363,7 +419,7 @@ export default function Quiz(props) {
     }
 
     const totalSessions = Math.ceil(items.length / effectiveBatchSize);
-    const completed = sessionMode && isAuthenticated ? readCompletedSessions(materialId) : 0;
+    const completed = sessionMode ? readCompletedSessions(materialId) : 0;
     const requestedSession = sessionMode
       ? Number(new URLSearchParams(window.location.search).get('session')) || 0
       : 0;
@@ -395,6 +451,45 @@ export default function Quiz(props) {
     setCheckedResult(null);
     setToast(null);
   }, [items, sessionMode, materialId, effectiveBatchSize, startIndex, sessionStartIndex, authResolved, isAuthenticated, pillarMode, pillarType]);
+
+  useEffect(() => {
+    setPracticeUrl(window.location.href);
+  }, []);
+
+  useEffect(() => {
+    if (!sessionMode || !pillarMode || !materialId) {
+      setSessionAccess('allowed');
+      setSessionLockMessage('');
+      return;
+    }
+
+    if (sessionOutOfRange) {
+      setSessionLockMessage(`Session ${requestedSession} is not available for this material.`);
+      setSessionAccess('locked');
+      return;
+    }
+
+    for (let previousSession = 1; previousSession < selectedSession; previousSession += 1) {
+      if (readSessionPillars(materialId, previousSession).length !== PILLAR_TYPES.length) {
+        setSessionLockMessage(`Complete all four pillars in Session ${previousSession} to unlock Session ${selectedSession}.`);
+        setSessionAccess('locked');
+        return;
+      }
+    }
+
+    const passedPillars = readSessionPillars(materialId, selectedSession);
+    const firstIncomplete = PILLAR_TYPES.findIndex((pillar) => !passedPillars.includes(pillar));
+    if (pillarIndex > (firstIncomplete < 0 ? PILLAR_TYPES.length : firstIncomplete)) {
+      const requiredPillar = PILLAR_TYPES[firstIncomplete];
+      const label = requiredPillar[0].toUpperCase() + requiredPillar.slice(1);
+      setSessionLockMessage(`Complete ${label} in Session ${selectedSession} before moving to ${pillarType}.`);
+      setSessionAccess('locked');
+      return;
+    }
+
+    setSessionLockMessage('');
+    setSessionAccess('allowed');
+  }, [sessionMode, pillarMode, materialId, selectedSession, requestedSession, sessionOutOfRange, pillarIndex, pillarType]);
 
   const currentQuestion = queue[0] ?? null;
   const showSummary = isGameOver || queue.length === 0;
@@ -453,21 +548,19 @@ export default function Quiz(props) {
     if (!sessionPassed || !materialId) return;
 
     if (pillarMode && pillarType) {
-      let savedPillars = [];
-      const key = `progress_pillar_${materialId}_${pillarType}`;
-      try {
-        const saved = window.localStorage.getItem(key);
-        savedPillars = saved ? JSON.parse(saved) : [];
-      } catch {
-        savedPillars = [];
+      const saved = saveSessionPillar(
+        materialId,
+        activeSessionNumber,
+        sessionCount,
+        pillarType,
+      );
+      if (!saved) {
+        setToast({ type: 'error', message: 'Session progress could not be saved in this browser.' });
+        return;
       }
-      const pillarsPassed = [...new Set([...savedPillars, pillarType])];
+      const pillarsPassed = readSessionPillars(materialId, activeSessionNumber);
       completedSessionsRef.current = pillarsPassed;
-      try {
-        window.localStorage.setItem(key, JSON.stringify(pillarsPassed));
-      } catch {
-        // Progress tetap dapat disimpan melalui Supabase saat tersedia.
-      }
+      setPillarProgressSaved(true);
       queueProgressUpdate({ sessions_passed: pillarsPassed });
       return;
     }
@@ -502,6 +595,19 @@ export default function Quiz(props) {
     return (
       <div className="quiz-empty">
         <p>No vocabulary is available for practice yet.</p>
+      </div>
+    );
+  }
+
+  if (sessionMode && pillarMode && sessionAccess === 'checking') {
+    return <p className="quiz-empty">Checking pillar progress...</p>;
+  }
+
+  if (sessionMode && pillarMode && sessionAccess === 'locked') {
+    return (
+      <div className="quiz-empty" role="alert">
+        <p>{sessionLockMessage}</p>
+        <a href={returnHref}>Back to Material</a>
       </div>
     );
   }
@@ -780,6 +886,22 @@ export default function Quiz(props) {
       : ['reading', 'listening'].includes(currentQuestion?.type)
         ? Boolean(choiceAnswer)
       : userAnswer.trim().length > 0;
+  const nextPillar = pillarIndex >= 0
+    ? PILLAR_TYPES[(pillarIndex + 1) % PILLAR_TYPES.length]
+    : '';
+  const nextPillarSession = pillarIndex === PILLAR_TYPES.length - 1
+    ? activeSessionNumber + 1
+    : activeSessionNumber;
+  const nextPillarUrl = (() => {
+    if (!practiceUrl || !nextPillar || nextPillarSession > sessionCount) return '';
+    const url = new URL(practiceUrl);
+    url.searchParams.set('type', nextPillar);
+    url.searchParams.set('session', String(nextPillarSession));
+    return `${url.pathname}${url.search}${url.hash}`;
+  })();
+  const nextPillarLabel = nextPillar
+    ? nextPillar[0].toUpperCase() + nextPillar.slice(1)
+    : '';
 
   return (
     <div className="quiz-shell">
@@ -1169,7 +1291,21 @@ export default function Quiz(props) {
             </div>
 
             <div className="summary-actions">
-              {sessionMode && sessionPassed && activeSessionNumber < sessionCount ? (
+              {sessionMode && pillarMode && sessionPassed && nextPillarSession <= sessionCount ? (
+                pillarProgressSaved && nextPillarUrl ? (
+                  <a className="primary-btn" href={nextPillarUrl}>
+                    Next: {nextPillarLabel} (Session {nextPillarSession})
+                  </a>
+                ) : (
+                  <button type="button" className="primary-btn" disabled>
+                    Saving progress...
+                  </button>
+                )
+              ) : sessionMode && pillarMode && sessionPassed ? (
+                <button type="button" className="primary-btn" disabled>
+                  All sessions complete
+                </button>
+              ) : sessionMode && !pillarMode && sessionPassed && activeSessionNumber < sessionCount ? (
                 <button type="button" className="primary-btn" onClick={() => { playSound('click'); startSession(activeSessionNumber + 1); }}>
                   Next Session
                 </button>

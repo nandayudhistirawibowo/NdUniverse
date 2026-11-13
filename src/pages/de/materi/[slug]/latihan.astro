@@ -15,7 +15,8 @@ if (!item) return new Response('Material tidak ditemukan.', { status: 404 });
 
 const typeParam = Astro.url.searchParams.get('type') ?? 'reading';
 const validTypes = ['reading', 'listening', 'writing', 'speaking'];
-const type = validTypes.includes(typeParam) ? typeParam : 'reading';
+if (!validTypes.includes(typeParam)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
+const type = typeParam;
 const labels = {
   reading: 'Reading / Lesen',
   listening: 'Listening / Hören',
