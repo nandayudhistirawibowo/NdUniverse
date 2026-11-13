@@ -98,19 +98,24 @@ const pillars = [
           <div class="pillar-session">
             <h2>Session {session}</h2>
             <nav class="pillar-links" aria-label={`Academic English skills in session ${session}`}>
-              {pillars.filter((pillar) => pillar.available).map((pillar) => (
-                <a
-                  href={`/en/academic-english/${materialSlug}/latihan?type=${pillar.type}&session=${session}`}
-                  data-progress-pillar={pillar.type}
-                  data-progress-slug={progressSlug}
-                  data-progress-language="en"
-                  data-pillar-label={pillar.label}
-                  class={passedPillars.includes(pillar.type) ? 'is-complete' : ''}
-                  aria-label={`${pillar.label}${passedPillars.includes(pillar.type) ? ' completed' : ''}`}
-                >
-                  <span data-pillar-check aria-hidden="true">{passedPillars.includes(pillar.type) ? '✓ ' : ''}</span>{pillar.label}
-                </a>
-              ))}
+              {pillars.filter((pillar) => pillar.available).map((pillar) => {
+                const sessionPillarKey = `s${session}-${pillar.type}`;
+                const isComplete = passedPillars.includes(sessionPillarKey) || (session === 1 && passedPillars.includes(pillar.type));
+                return (
+                  <a
+                    href={`/en/academic-english/${materialSlug}/latihan?type=${pillar.type}&session=${session}`}
+                    data-progress-pillar={pillar.type}
+                    data-progress-session={session}
+                    data-progress-slug={progressSlug}
+                    data-progress-language="en"
+                    data-pillar-label={pillar.label}
+                    class={isComplete ? 'is-complete' : ''}
+                    aria-label={`${pillar.label}${isComplete ? ' completed' : ''}`}
+                  >
+                    <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span>{pillar.label}
+                  </a>
+                );
+              })}
             </nav>
           </div>
         ))}
@@ -146,7 +151,10 @@ const pillars = [
 
     document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {
       if (link.dataset.progressSlug !== slug) return;
-      const isComplete = pillars.includes(link.dataset.progressPillar ?? '');
+      const sessionNum = Number(link.dataset.progressSession || 1);
+      const pillarType = link.dataset.progressPillar ?? '';
+      const sessionPillarKey = `s${sessionNum}-${pillarType}`;
+      const isComplete = pillars.includes(sessionPillarKey) || (sessionNum === 1 && pillars.includes(pillarType));
       const label = link.dataset.pillarLabel ?? '';
       link.classList.toggle('is-complete', isComplete);
       link.setAttribute('aria-label', `${label}${isComplete ? ' completed' : ''}`);

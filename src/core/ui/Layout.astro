@@ -13,6 +13,7 @@ const {
   url,
   alternates = [],
   hideNavbar = false,
+  hideBot = false,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? 'https://nduniverse.ndhistira.my.id';
@@ -29,6 +30,9 @@ const isAdminAccount = ['admin', '000000'].includes(String(profile?.nim ?? '').t
 const currentPath = Astro.url.pathname;
 const isEnglishRoute = currentPath === '/en'
   || currentPath.startsWith('/en/');
+const isExamRoute = currentPath.includes('/ujian')
+  || currentPath.includes('/exam')
+  || currentPath.includes('/latihan');
 const isGermanRoute = currentPath === '/de'
   || currentPath.startsWith('/de/')
   || currentPath === '/dashboard-de'
@@ -176,7 +180,7 @@ const organizationSchema = {
         </div>
       </footer>
     </div>
-    <NdBot client:load mode="study" />
+    {!hideBot && !isExamRoute && <NdBot client:load mode="study" />}
     <DashboardI18n />
   </body>
 </html>

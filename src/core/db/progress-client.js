@@ -30,6 +30,7 @@ export function normalizePassedSessions(value) {
 export function normalizePassedPillars(value) {
   const pillars = ['reading', 'listening', 'writing', 'speaking'];
   const legacyPillarMap = [null, 'reading', 'listening', 'writing', 'speaking'];
+  const sessionPillarRegex = /^s(\d+)-(reading|listening|writing|speaking)$/i;
 
   const entries = Array.isArray(value)
     ? value
@@ -43,15 +44,13 @@ export function normalizePassedPillars(value) {
   const converted = entries.map((entry) => {
     if (typeof entry === 'string') {
       const normalizedEntry = entry.trim().toLowerCase();
+      if (sessionPillarRegex.test(normalizedEntry)) return normalizedEntry;
       return pillars.includes(normalizedEntry) ? normalizedEntry : '';
     }
     const legacyIndex = Number(entry);
     return Number.isInteger(legacyIndex) ? legacyPillarMap[legacyIndex] ?? '' : '';
   });
-  const normalized = new Set(
-    converted.filter((entry) => pillars.includes(entry))
-  );
-  return pillars.filter((pillar) => normalized.has(pillar));
+  return [...new Set(converted.filter(Boolean))];
 }
 
 export async function fetchUserProgress(client, userId, materialSlug) {

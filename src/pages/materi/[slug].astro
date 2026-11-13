@@ -127,11 +127,13 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
             <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
               {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
                 const label = pillar[0].toUpperCase() + pillar.slice(1);
-                const isComplete = passedPillars.includes(pillar);
+                const sessionPillarKey = `s${session.sessionNumber}-${pillar}`;
+                const isComplete = passedPillars.includes(sessionPillarKey) || (session.sessionNumber === 1 && passedPillars.includes(pillar));
                 return (
                   <a
                     href={`/materi/${item.id}/latihan?type=${pillar}&session=${session.sessionNumber}`}
                     data-progress-pillar={pillar}
+                    data-progress-session={session.sessionNumber}
                     data-progress-slug={item.id}
                     data-progress-language="de"
                     data-pillar-label={label}
@@ -184,7 +186,10 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 
     document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {
       if (link.dataset.progressSlug !== slug) return;
-      const isComplete = pillars.includes(link.dataset.progressPillar ?? '');
+      const sessionNum = Number(link.dataset.progressSession || 1);
+      const pillarType = link.dataset.progressPillar ?? '';
+      const sessionPillarKey = `s${sessionNum}-${pillarType}`;
+      const isComplete = pillars.includes(sessionPillarKey) || (sessionNum === 1 && pillars.includes(pillarType));
       const label = link.dataset.pillarLabel ?? '';
       link.classList.toggle('is-complete', isComplete);
       link.setAttribute('aria-label', `${label}${isComplete ? ' selesai' : ''}`);

@@ -21,6 +21,7 @@ Jika user bertanya di luar topik NdUniverse, arahkan dengan sopan ke admin.
 Jika user mengirimkan soal kuis (ada kata 'Tugas' atau 'Pilih arti'), tolak dengan sopan dan ingatkan untuk mengerjakannya sendiri secara jujur.`;
 
 const SUPPORT_KEYWORDS = /\b(?:admin|min|manusia)\b|bantuan\s+langsung|error\s+pembayaran/i;
+const EXAM_QUESTION_FILTER = /\b(question\s+\d+|tugas\s+\d+|pilih\s+arti|soal\s+no|jawaban\s+dari|kunci\s+jawaban)\b|(?:\b[A-D]\.\s+.*){2,}/i;
 const MAX_BODY_LENGTH = 64_000;
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 5_000;
@@ -165,6 +166,13 @@ export const POST: APIRoute = async ({ request }) => {
   const lastUserMessage = [...messages].reverse().find((message) => message.role === 'user');
   if (!lastUserMessage) {
     return jsonResponse({ type: 'error', message: 'Kirim pesan terlebih dahulu.' }, 400);
+  }
+
+  if (EXAM_QUESTION_FILTER.test(lastUserMessage.content)) {
+    return jsonResponse({
+      type: 'text',
+      message: 'Maaf, saya tidak bisa membantu menjawab soal ujian atau kuis. Silakan kerjakan secara mandiri.',
+    });
   }
 
   if (SUPPORT_KEYWORDS.test(lastUserMessage.content)) {

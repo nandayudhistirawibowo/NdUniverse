@@ -175,7 +175,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </footer>
       </div>
     </div>
-    <NdBot client:load mode="study" />
+    {active !== 'exam' && <NdBot client:load mode="study" />}
   </body>
 </html>
 

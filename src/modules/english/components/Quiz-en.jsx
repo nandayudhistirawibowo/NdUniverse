@@ -143,6 +143,7 @@ function saveSessionPillar(materialId, sessionNumber, sessionCount, pillar) {
   try {
     const completed = new Set(readSessionPillars(materialId, sessionNumber));
     completed.add(pillar);
+    const sessionKey = `s${sessionNumber}-${pillar}`;
     window.localStorage.setItem(
       `progress_pillars_en_${materialId}_${sessionNumber}`,
       JSON.stringify(PILLAR_TYPES.filter((item) => completed.has(item))),
@@ -156,9 +157,9 @@ function saveSessionPillar(materialId, sessionNumber, sessionCount, pillar) {
     if (completedSessions > 0) {
       window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completedSessions} Lulus`);
     }
-    return true;
+    return sessionKey;
   } catch {
-    return false;
+    return null;
   }
 }
 
@@ -351,7 +352,7 @@ export default function Quiz(props) {
       if (sessionsToSave) queueProgressUpdate({ sessions_passed: sessionsToSave });
 
       const requestedSession = Number(new URLSearchParams(window.location.search).get('session')) || 0;
-      if (sessionMode && !pillarMode && !hasAnsweredRef.current) {
+      if (sessionMode && !pillarMode && !hasAnsweredRef.current && !session) {
         const totalSessions = Math.ceil(items.length / effectiveBatchSize);
         const nextSession = requestedSession
           ? Math.min(Math.max(requestedSession, 1), Math.min(completed + 1, totalSessions || 1))
@@ -422,7 +423,7 @@ export default function Quiz(props) {
     const totalSessions = Math.ceil(items.length / effectiveBatchSize);
     const completed = sessionMode ? readCompletedSessions(materialId) : 0;
     const requestedSession = sessionMode
-      ? Number(new URLSearchParams(window.location.search).get('session')) || 0
+      ? (Number(session) || Number(new URLSearchParams(window.location.search).get('session')) || 0)
       : 0;
     const defaultSession = Math.min(completed + 1, totalSessions || 1);
     const selectedSession = Math.min(
@@ -549,20 +550,20 @@ export default function Quiz(props) {
     if (!sessionPassed || !materialId) return;
 
     if (pillarMode && pillarType) {
-      const saved = saveSessionPillar(
+      const sessionPillarKey = saveSessionPillar(
         materialId,
         activeSessionNumber,
         sessionCount,
         pillarType,
       );
-      if (!saved) {
+      if (!sessionPillarKey) {
         setToast({ type: 'error', message: 'Session progress could not be saved in this browser.' });
         return;
       }
-      const pillarsPassed = readSessionPillars(materialId, activeSessionNumber);
+      const pillarsPassed = readSessionPillars(materialId, activeSessionNumber).map((p) => `s${activeSessionNumber}-${p}`);
       completedSessionsRef.current = pillarsPassed;
       setPillarProgressSaved(true);
-      queueProgressUpdate({ sessions_passed: pillarsPassed });
+      queueProgressUpdate({ sessions_passed: [sessionPillarKey] });
       return;
     }
 
