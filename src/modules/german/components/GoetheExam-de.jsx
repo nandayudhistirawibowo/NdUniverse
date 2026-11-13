@@ -50,6 +50,15 @@ function partialTextScore(answer, task) {
   return matchedGroups / usableGroups.length;
 }
 
+const OFFICIAL_EXAM_NAMES = {
+  A1: 'Goethe-Zertifikat A1: Start Deutsch 1',
+  A2: 'Goethe-Zertifikat A2: Start Deutsch 2',
+  B1: 'Goethe-Zertifikat B1: Zertifikat Deutsch (ZD)',
+  B2: 'Goethe-Zertifikat B2',
+  C1: 'Goethe-Zertifikat C1',
+  C2: 'Goethe-Zertifikat C2: Großes Deutsches Sprachdiplom (GDS)',
+};
+
 const MODULES = [
   { id: 'lesen', label: 'Lesen', english: 'Reading' },
   { id: 'hoeren', label: 'Hören', english: 'Listening' },
@@ -329,7 +338,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     <section class="goethe-exam">
       <header class="goethe-heading">
         <div>
-          <p class="eyebrow" data-i18n="exam.titleGoethe">Goethe-Zertifikat Simulation</p>
+          <p class="eyebrow">{OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}`}</p>
           <h1>
             {level} · <span data-i18n="exam.module.lesen">Lesen</span>,{' '}
             <span data-i18n="exam.module.hoeren">Hören</span>,{' '}
@@ -346,7 +355,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
 
       {!isStarted && !result ? (
         <div class="goethe-task exam-start-card" style="text-align: center; padding: 2rem 1.5rem;">
-          <p style="font-weight: 700; margin-bottom: 0.5rem;">Ujian Goethe-Zertifikat {level} dilengkapi sistem Anti-Cheat.</p>
+          <p style="font-weight: 700; margin-bottom: 0.5rem;">{OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}`} dilengkapi sistem Anti-Cheat.</p>
           <p style="color: var(--muted); margin-bottom: 1.5rem;">Mode layar penuh (fullscreen) akan diaktifkan. Jangan berpindah tab atau keluar dari layar penuh selama ujian berlangsung.</p>
           <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
             Mulai Ujian

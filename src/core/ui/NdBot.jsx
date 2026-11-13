@@ -2,12 +2,14 @@
  * NdBot.jsx — Generasi baru chatbot NdUniverse
  *
  * Props:
- *   mode        'study' | 'exam'   (default: 'study')
+ *   mode        'study' | 'exam' | 'quiz'   (default: 'study')
  *   strikeLevel  0 | 1 | 2 | 3    (default: 0, hanya relevan di mode 'exam')
  *
  * Mode 'study' → perilaku chatbot normal (RAG aktif, bisa dibuka/tutup)
  * Mode 'exam'  → chat dinonaktifkan, FAB berubah warna sesuai strikeLevel,
  *                klik FAB memunculkan toast "Mode Ujian Aktif. Fokus!"
+ * Mode 'quiz'  → chat dinonaktifkan, klik FAB memunculkan toast
+ *                "Fokus kerjain kuisnya dulu ya! Nanti kalau udah selesai baru tanya-tanya."
  */
 
 import { useEffect, useRef, useState } from 'preact/hooks';
@@ -140,13 +142,15 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
   const messagesEndRef = useRef(null);
 
   const isExamMode = mode === 'exam';
+  const isQuizMode = mode === 'quiz';
+  const isLocked = isExamMode || isQuizMode;
   const clampedStrike = Math.min(Math.max(Number(strikeLevel) || 0, 0), 3);
   const strikeInfo = STRIKE_COLORS[clampedStrike];
 
-  // Auto-tutup window kalau tiba-tiba masuk exam mode
+  // Auto-tutup window kalau tiba-tiba masuk exam atau quiz mode
   useEffect(() => {
-    if (isExamMode) setIsOpen(false);
-  }, [isExamMode]);
+    if (isLocked) setIsOpen(false);
+  }, [isLocked]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -154,7 +158,7 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
 
   // ── Handler FAB ──────────────────────────────────────────────────────────
   function handleFabClick() {
-    if (isExamMode) {
+    if (isLocked) {
       // Tampilkan toast sebentar
       setExamFlash(true);
       setTimeout(() => setExamFlash(false), 1800);
@@ -227,17 +231,19 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
   // ── Render ───────────────────────────────────────────────────────────────
   return (
     <div class="ndbot">
-      {/* Toast: hanya muncul di exam mode saat diklik */}
+      {/* Toast: muncul di exam atau quiz mode saat diklik */}
       <div
         class={`ndbot-exam-toast${examFlash ? ' ndbot-exam-toast--visible' : ''}`}
         aria-live="assertive"
         aria-atomic="true"
       >
-        🔒 Mode Ujian Aktif. Fokus!
+        {isQuizMode
+          ? 'Fokus kerjain kuisnya dulu ya! Nanti kalau udah selesai baru tanya-tanya.'
+          : '🔒 Mode Ujian Aktif. Fokus!'}
       </div>
 
       {/* Chat window — hanya di mode study */}
-      {!isExamMode && isOpen && (
+      {!isLocked && isOpen && (
         <section class="ndbot-window" aria-label="NdUniverse Assistant chat">
           <header class="ndbot-header">
             <div>
@@ -299,18 +305,20 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
 
       {/* FAB Button */}
       <button
-        class={`ndbot-fab${isExamMode ? ' ndbot-fab--exam' : ''}`}
+        class={`ndbot-fab${isExamMode ? ' ndbot-fab--exam' : ''}${isQuizMode ? ' ndbot-fab--quiz' : ''}`}
         type="button"
         onClick={handleFabClick}
         style={fabStyle}
         aria-label={
           isExamMode
             ? `NdBot — ${strikeInfo.label} (${clampedStrike}/3 pelanggaran)`
-            : isOpen
-              ? 'Tutup NdUniverse Assistant'
-              : 'Buka NdUniverse Assistant'
+            : isQuizMode
+              ? 'NdBot — Mode Kuis'
+              : isOpen
+                ? 'Tutup NdUniverse Assistant'
+                : 'Buka NdUniverse Assistant'
         }
-        aria-expanded={!isExamMode ? isOpen : undefined}
+        aria-expanded={!isLocked ? isOpen : undefined}
       >
         <RobotIcon faceColor={isExamMode ? '#fff' : 'var(--bg-dark)'} />
         {/* Badge strike — hanya exam mode & strike > 0 */}
@@ -337,19 +345,20 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
           color: var(--ndbot-text);
         }
 
-        /* ── Toast exam ───────────────────────────────────────────── */
+        /* ── Toast exam & quiz ────────────────────────────────────── */
         .ndbot-exam-toast {
           position: absolute;
           right: 0;
           bottom: calc(100% + .6rem);
           width: max-content;
-          max-width: min(260px, calc(100vw - 2.5rem));
-          padding: .6rem .9rem;
+          max-width: min(300px, calc(100vw - 2.5rem));
+          padding: .65rem .95rem;
           border-radius: .7rem;
           background: var(--bg-dark, #1A1A1E);
           color: #fff;
           font-size: .82rem;
           font-weight: 700;
+          line-height: 1.4;
           letter-spacing: .01em;
           box-shadow: 0 6px 20px rgba(0,0,0,.22);
           pointer-events: none;

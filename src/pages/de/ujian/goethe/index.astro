@@ -1,0 +1,52 @@
+---
+import Layout from '@core/ui/Layout.astro';
+
+const examLevels = [
+  { code: 'A1', name: 'Goethe-Zertifikat A1: Start Deutsch 1', desc: 'Pemula' },
+  { code: 'A2', name: 'Goethe-Zertifikat A2: Start Deutsch 2', desc: 'Dasar Lanjutan' },
+  { code: 'B1', name: 'Goethe-Zertifikat B1: Zertifikat Deutsch (ZD)', desc: 'Menengah Mandiri' },
+  { code: 'B2', name: 'Goethe-Zertifikat B2', desc: 'Menengah Atas' },
+  { code: 'C1', name: 'Goethe-Zertifikat C1', desc: 'Mahir Efektif' },
+  { code: 'C2', name: 'Goethe-Zertifikat C2: Großes Deutsches Sprachdiplom (GDS)', desc: 'Penguasaan Penuh' },
+];
+---
+
+<Layout title="Ujian Goethe-Zertifikat | NdUniverse" description="Pilih level ujian resmi Goethe-Zertifikat dari A1 sampai C2.">
+  <section class="goethe-picker">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/de/alltagsdeutsch">Alltagsdeutsch</a>
+      <span aria-hidden="true">›</span>
+      <span>Goethe-Zertifikat</span>
+    </nav>
+    <header>
+      <p class="eyebrow">Standar Resmi Goethe-Institut</p>
+      <h1>Pilih Level Ujian</h1>
+      <p>Pilih A1-C2. Kelulusan membutuhkan nilai minimal 60% pada keempat modul (Lesen, Hören, Schreiben, Sprechen).</p>
+    </header>
+    <div class="level-grid">
+      {examLevels.map((exam) => (
+        <a class="level-card" href={`/de/ujian/goethe/${exam.code.toLowerCase()}`}>
+          <span class="badge">{exam.code}</span>
+          <h2>{exam.name}</h2>
+          <p>{exam.desc} · 4 Modul</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .goethe-picker { width: min(980px, calc(100% - 2rem)); margin: 2rem auto 4rem; display: grid; gap: 1.25rem; }
+  .breadcrumb { display: flex; gap: .45rem; color: var(--muted); }
+  .breadcrumb a { color: var(--text-main); font-weight: 700; text-decoration: none; }
+  header h1 { margin: .35rem 0; }
+  header p:last-child { margin: .35rem 0 0; color: var(--muted); }
+  .eyebrow { margin: 0; color: #966313; font-weight: 800; text-transform: uppercase; }
+  .level-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+  .level-card { display: block; padding: 1.25rem; border: 2px solid var(--accent-gold); border-radius: 1rem; background: var(--card-bg); color: var(--text-main); text-decoration: none; box-shadow: var(--shadow); transition: transform .2s ease, border-color .2s ease; }
+  .level-card:hover { transform: translateY(-2px); border-color: var(--primary-hover); }
+  .level-card .badge { display: inline-flex; padding: .35rem .6rem; border-radius: 999px; background: var(--accent-red); color: #fff; font-weight: 800; font-size: .85rem; }
+  .level-card h2 { margin: .75rem 0 .35rem; font-size: 1.05rem; line-height: 1.4; }
+  .level-card p { margin: 0; color: var(--muted); font-size: .9rem; }
+  @media (max-width: 700px) { .level-grid { grid-template-columns: 1fr; } }
+</style>

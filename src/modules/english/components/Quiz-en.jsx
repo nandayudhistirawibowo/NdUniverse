@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import NdBot from '@core/ui/NdBot.jsx';
 import {
   fetchAllUserProgress,
   getProgressClient,
@@ -350,7 +351,7 @@ export default function Quiz(props) {
       if (sessionsToSave) queueProgressUpdate({ sessions_passed: sessionsToSave });
 
       const requestedSession = Number(new URLSearchParams(window.location.search).get('session')) || 0;
-      if (sessionMode && !hasAnsweredRef.current) {
+      if (sessionMode && !pillarMode && !hasAnsweredRef.current) {
         const totalSessions = Math.ceil(items.length / effectiveBatchSize);
         const nextSession = requestedSession
           ? Math.min(Math.max(requestedSession, 1), Math.min(completed + 1, totalSessions || 1))
@@ -2103,6 +2104,8 @@ export default function Quiz(props) {
           }
         `}
       </style>
+
+      <NdBot mode="quiz" />
     </div>
   );
 }

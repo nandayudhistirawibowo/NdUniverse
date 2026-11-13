@@ -23,7 +23,7 @@ const materials = (await getCollection('materi'))
           {levels.map((level) => <option value={level}>Level {level}</option>)}
         </select>
       </div>
-      <a class="exam-link" data-exam-link href="/de/ujian/goethe">Simulasi Goethe</a>
+      <a class="exam-link" data-exam-link href="/de/ujian/goethe">Ujian Goethe</a>
     </div>
     <div class="level-grid">
       {levels.map((level) => {
@@ -77,8 +77,8 @@ const materials = (await getCollection('materi'))
         ? '/de/ujian/goethe'
         : `/de/ujian/goethe/${selected.toLowerCase()}`;
       examLink.textContent = selected === 'ALL'
-        ? 'Simulasi Goethe'
-        : `Mulai Ujian ${selected}`;
+        ? 'Ujian Goethe'
+        : `Ujian Goethe ${selected}`;
     }
     document.querySelectorAll<HTMLElement>('[data-level]').forEach((section) => {
       section.hidden = selected !== 'ALL' && section.dataset.level !== selected;

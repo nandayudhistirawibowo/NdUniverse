@@ -1,25 +1,33 @@
 ---
 import Layout from '@core/ui/Layout.astro';
+const examLevels = [
+  { code: 'A1', name: 'Goethe-Zertifikat A1: Start Deutsch 1' },
+  { code: 'A2', name: 'Goethe-Zertifikat A2: Start Deutsch 2' },
+  { code: 'B1', name: 'Goethe-Zertifikat B1: Zertifikat Deutsch (ZD)' },
+  { code: 'B2', name: 'Goethe-Zertifikat B2' },
+  { code: 'C1', name: 'Goethe-Zertifikat C1' },
+  { code: 'C2', name: 'Goethe-Zertifikat C2: Großes Deutsches Sprachdiplom (GDS)' },
+];
 ---
 
-<Layout title="Pilih Level Goethe | siDeutsch" description="Pilih level untuk Simulate Goethe-Zertifikat.">
+<Layout title="Pilih Level Goethe | NdUniverse" description="Pilih level Goethe-Zertifikat resmi A1-C2.">
   <section class="goethe-picker">
     <nav class="breadcrumb" aria-label="Breadcrumb">
       <a href="/alltagsdeutsch">Alltagsdeutsch</a>
       <span aria-hidden="true">›</span>
-      <span>Goethe Simulation</span>
+      <span>Goethe-Zertifikat</span>
     </nav>
     <header>
-      <p class="eyebrow">Simulate Goethe-Zertifikat</p>
+      <p class="eyebrow">Standar Resmi Goethe-Institut</p>
       <h1>Pilih Level Ujian</h1>
       <p>Pilih A1-C2. Kelulusan di setiap level membutuhkan nilai minimal 60% pada keempat modul.</p>
     </header>
     <div class="level-grid">
-      {['A1','A2','B1','B2','C1','C2'].map((level) => (
-        <a class="level-card" href={`/ujian/goethe/${level.toLowerCase()}`}>
-          <span>{level}</span>
-          <h2>Goethe-Zertifikat {level}</h2>
-          <p>Mulai simulasi 4 modul</p>
+      {examLevels.map((exam) => (
+        <a class="level-card" href={`/de/ujian/goethe/${exam.code.toLowerCase()}`}>
+          <span>{exam.code}</span>
+          <h2>{exam.name}</h2>
+          <p>Mulai ujian 4 modul</p>
         </a>
       ))}
     </div>
