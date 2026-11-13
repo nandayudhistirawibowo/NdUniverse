@@ -8,13 +8,13 @@ export const prerender = false;
 const slug = Astro.url.searchParams.get('slug') ?? '';
 const materials = await getCollection('englishEveryday');
 const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
-if (!item) return new Response('Material not found.', { status: 404 });
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 
 const type = Astro.url.searchParams.get('type') ?? '';
 const validTypes = ['reading', 'listening', 'writing', 'speaking'];
-if (!validTypes.includes(type)) return new Response('Practice pillar not found.', { status: 404 });
-const pillarLabels = { reading: 'Reading', listening: 'Listening', writing: 'Writing', speaking: 'Speaking' };
-const pillarLabel = pillarLabels[type] ?? 'Practice';
+if (!validTypes.includes(type)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
+const pillarLabels = { reading: 'Membaca', listening: 'Menyimak', writing: 'Menulis', speaking: 'Berbicara' };
+const pillarLabel = pillarLabels[type] ?? 'Latihan';
 const batchSize = 5;
 const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
 const startIndex = (sessionNumber - 1) * batchSize;
@@ -33,22 +33,22 @@ const vocab = item.data.vocab.map((entry) => ({
 ---
 
 <Layout
-  title={`Practice: ${item.data.title ?? materialSlug} | NdUniverse`}
-  description={`English practice for ${item.data.title ?? materialSlug}.`}
+  title={`Latihan: ${item.data.title ?? materialSlug} | NdUniverse`}
+  description={`Latihan Bahasa Inggris untuk ${item.data.title ?? materialSlug}.`}
   hideNavbar={true}
 >
   <main class="practice-page">
     <a class="back-link" href={`/en/materi/${materialSlug}`} data-practice-back>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 18-6-6 6-6M8 12h12" /></svg>
-      <span data-back-label>Back to Material</span>
+      <span data-back-label>Kembali ke Materi</span>
     </a>
     <header class="page-heading">
-      <p class="eyebrow">English Practice</p>
+      <p class="eyebrow">Latihan Bahasa Inggris</p>
       <h1>{pillarLabel}: {item.data.title ?? materialSlug}</h1>
-      <p>Practice up to {batchSize} questions in this session.</p>
+      <p>Kerjakan hingga {batchSize} soal pada sesi ini.</p>
     </header>
 
-    <section class="practice-panel" aria-label={`Practice ${item.data.title ?? materialSlug}`}>
+    <section class="practice-panel" aria-label={`Latihan ${item.data.title ?? materialSlug}`}>
       <Quiz
         client:load
         items={vocab}

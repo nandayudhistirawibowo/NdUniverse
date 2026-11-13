@@ -5,8 +5,8 @@ import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
 export default function BossFight({
   questions = [],
-  badge = 'Career',
-  profession = 'Career',
+  badge = 'Karier',
+  profession = 'Karier',
   returnHref = '/en/career',
 }) {
   const fallbackQuestion = {
@@ -68,7 +68,7 @@ export default function BossFight({
     if (!Recognition) {
       setMessages((current) => [
         ...current,
-        { speaker: 'system', text: 'Speech recognition is not supported in this browser. You can type your answer instead.' },
+        { speaker: 'system', text: 'Pengenalan suara tidak didukung di browser ini. Kamu bisa mengetik jawaban.' },
       ]);
       return;
     }
@@ -85,7 +85,7 @@ export default function BossFight({
       setListening(false);
       setMessages((current) => [
         ...current,
-        { speaker: 'system', text: `Speech recognition failed (${event.error}). Please type your answer instead.` },
+        { speaker: 'system', text: `Pengenalan suara gagal (${event.error}). Silakan ketik jawaban.` },
       ]);
     };
     recognition.onend = () => setListening(false);
@@ -96,7 +96,7 @@ export default function BossFight({
       setListening(false);
       setMessages((current) => [
         ...current,
-        { speaker: 'system', text: 'Could not start speech recognition. Please type your answer instead.' },
+        { speaker: 'system', text: 'Pengenalan suara tidak dapat dimulai. Silakan ketik jawaban.' },
       ]);
       console.error('Unable to start English career speech recognition.', error);
     }
@@ -119,7 +119,7 @@ export default function BossFight({
         userMessage,
         {
           speaker: 'hrd',
-          text: `Please try again and include at least two key ideas. Your answer matched ${matchedKeywords.length} of ${currentQuestion.keywords?.length ?? 0}. ${currentQuestion.question}`,
+          text: `Coba lagi dan sertakan setidaknya dua gagasan kunci. Jawabanmu cocok dengan ${matchedKeywords.length} dari ${currentQuestion.keywords?.length ?? 0} kata kunci. ${currentQuestion.question}`,
         },
       ]);
       setAnswer('');
@@ -130,7 +130,7 @@ export default function BossFight({
     const totalCorrect = correctAnswers + 1;
     setCorrectAnswers(totalCorrect);
     const nextQuestionIndex = questionIndex + 1;
-    const feedback = `Good answer! You included ${matchedKeywords.length} key ideas.`;
+    const feedback = `Jawaban bagus! Kamu menyertakan ${matchedKeywords.length} gagasan kunci.`;
 
     if (nextQuestionIndex >= interviewQuestions.length) {
       setMessages((current) => [...current, userMessage, { speaker: 'hrd', text: feedback }]);
@@ -157,10 +157,10 @@ export default function BossFight({
       <div class="cinematic-overlay" aria-live="polite">
         <div class={`cinematic-room room-${doorState}`}>
           <div class="cinematic-header">
-            <span class="career-section-label" data-i18n="career.bossFightTitle" data-i18n-params={JSON.stringify({ profession })}>Boss Fight: {profession}</span>
+            <span class="career-section-label">Tantangan Akhir: {profession}</span>
             {gameState === 'interview' && (
-              <span class="boss-progress" data-i18n="career.interviewProgress" data-i18n-params={JSON.stringify({ current: Math.min(questionIndex + 1, interviewQuestions.length), total: interviewQuestions.length })}>
-                Question {Math.min(questionIndex + 1, interviewQuestions.length)} of {interviewQuestions.length}
+              <span class="boss-progress">
+                Pertanyaan {Math.min(questionIndex + 1, interviewQuestions.length)} dari {interviewQuestions.length}
               </span>
             )}
           </div>
@@ -170,7 +170,7 @@ export default function BossFight({
               <div class="door-zoom-room">
                 <div class="door-wall" />
                 <div class="door-frame">
-                  <span class="room-label" data-i18n="career.doorLabel">HRD ROOM</span>
+                  <span class="room-label">RUANG HRD</span>
                   <div class={`cinematic-door door-${doorState}`}>
                     <i aria-hidden="true" />
                   </div>
@@ -179,30 +179,30 @@ export default function BossFight({
               <div class="door-action">
                 {doorState === 'closed' && (
                   <>
-                    <p data-i18n="career.enterRoomPrompt">Please enter the HRD room to begin.</p>
-                    <button class="boss-start-button" type="button" onClick={knockDoor} data-i18n="career.enterRoom">Enter Room</button>
+                    <p>Silakan masuk ke ruang HRD untuk memulai.</p>
+                    <button class="boss-start-button" type="button" onClick={knockDoor}>Masuk ke Ruangan</button>
                   </>
                 )}
-                {doorState === 'opening' && <p data-i18n="career.doorOpening">The door is opening...</p>}
-                {doorState === 'entering' && <p data-i18n="career.enteringRoom">Entering the interview room...</p>}
+                {doorState === 'opening' && <p>Pintu sedang terbuka...</p>}
+                {doorState === 'entering' && <p>Memasuki ruang wawancara...</p>}
               </div>
             </div>
           )}
 
           <div class="inside-door-backdrop" aria-hidden="true">
-            <span class="room-label" data-i18n="career.doorLabel">HRD ROOM</span>
+            <span class="room-label">RUANG HRD</span>
             <div class="inside-door-panel" />
           </div>
 
           {doorState === 'inside' && gameState === 'intro' && (
             <div class="cinematic-intro">
-              <div class="cinematic-boss" aria-label="Mr. Müller, HR Manager" data-i18n-aria-label="career.bossCharacter">
+              <div class="cinematic-boss" aria-label="Bapak Müller, Manajer HRD">
                 <span class="boss-silhouette" aria-hidden="true"><i class="boss-head" /><i class="boss-hair" /><i class="boss-body" /><i class="boss-tie" /></span>
               </div>
               <div class="boss-speech-bubble">
-                <strong>Mr. Müller</strong>
-                <p>Good day! Please have a seat. I am Mr. Müller, the HR Manager.</p>
-                <button class="boss-start-button" type="button" onClick={startInterview} data-i18n="career.startInterview">Start Interview</button>
+                <strong>Bapak Müller</strong>
+                <p>Selamat datang! Silakan duduk. Saya Bapak Müller, manajer HRD di sini.</p>
+                <button class="boss-start-button" type="button" onClick={startInterview}>Mulai Wawancara</button>
               </div>
             </div>
           )}
@@ -215,20 +215,20 @@ export default function BossFight({
                   <span class="boss-silhouette"><i class="boss-head" /><i class="boss-hair" /><i class="boss-body" /><i class="boss-tie" /></span>
                 </div>
                 <div class="boss-desk" aria-hidden="true"><span /></div>
-                <span>Mr. Müller</span>
-                <small data-i18n="career.interviewerRole">HR Manager</small>
+                <span>Bapak Müller</span>
+                <small>Manajer HRD</small>
               </div>
               <div class="cinematic-chat-panel">
                 <div class="boss-chat" aria-live="polite">
                   {messages.map((message, index) => (
                     <div key={`${message.speaker}-${index}`} class={`chat-message ${message.speaker}`}>
-                      <span class="chat-speaker" data-i18n={message.speaker === 'hrd' ? 'career.speakerManager' : message.speaker === 'user' ? 'career.speakerYou' : 'career.speakerInfo'}>{message.speaker === 'hrd' ? 'HRD Manager' : message.speaker === 'user' ? 'You' : 'Info'}</span>
+                      <span class="chat-speaker">{message.speaker === 'hrd' ? 'Manajer HRD' : message.speaker === 'user' ? 'Kamu' : 'Info'}</span>
                       {message.text}
                     </div>
                   ))}
                 </div>
                 <div class="boss-interview">
-                  <label for="boss-answer" data-i18n="career.answerLabel">Your Answer</label>
+                  <label for="boss-answer">Jawaban Anda</label>
                   <textarea
                     id="boss-answer"
                     rows="4"
@@ -237,15 +237,14 @@ export default function BossFight({
                       if (!answer) playSound('click');
                       setAnswer(event.currentTarget.value);
                     }}
-                    placeholder="Answer in English..."
-                    data-i18n-placeholder="career.answerPlaceholderEnglish"
+                    placeholder="Jawab dalam bahasa Inggris..."
                   />
                   <div class="boss-actions">
                     <button class="boss-mic-button" type="button" onClick={startListening} disabled={listening}>
-                      <span data-i18n={listening ? 'career.listening' : 'career.useMic'}>{listening ? '🎤 Listening...' : '🎤 Use Microphone'}</span>
+                      <span>{listening ? '🎤 Mendengarkan...' : '🎤 Gunakan Mikrofon'}</span>
                     </button>
                     <button class="boss-finish-button" type="button" onClick={submitAnswer} disabled={!answer.trim()}>
-                      <span data-i18n="career.sendAnswer">Submit Answer</span>
+                      <span>Kirim Jawaban</span>
                     </button>
                   </div>
                 </div>
@@ -256,15 +255,13 @@ export default function BossFight({
           {doorState === 'inside' && gameState === 'finished' && (
             <div class={passedInterview ? 'boss-finished boss-victory' : 'boss-finished'}>
               <span class="finished-icon" aria-hidden="true">{passedInterview ? '🏆' : '📋'}</span>
-              <p class="career-section-label" data-i18n="career.bossFightComplete">Boss Fight Complete</p>
-              <h2 data-i18n="career.interviewFinished">Interview Finished!</h2>
+              <p class="career-section-label">Tantangan Selesai</p>
+              <h2>Wawancara Selesai!</h2>
               <p
-                data-i18n={passedInterview ? 'career.passedInterview' : 'career.completedInterview'}
-                data-i18n-params={JSON.stringify({ profession })}
-              >{passedInterview ? `Congratulations! You passed the ${profession} interview.` : `You completed the ${profession} interview.`}</p>
-              <strong data-i18n="career.keywordScore" data-i18n-params={JSON.stringify({ correct: correctAnswers, total: interviewQuestions.length })}>{correctAnswers}/{interviewQuestions.length} answers included at least two key ideas.</strong>
-              {passedInterview && <p data-i18n="career.badgeEarned" data-i18n-params={JSON.stringify({ badge })}>Badge earned: {badge}.</p>}
-              <a class="boss-return-button" href={returnHref} data-i18n="career.backToMaterial">Back to Career Material</a>
+              >{passedInterview ? `Selamat, kamu lulus wawancara ${profession}.` : `Kamu telah menyelesaikan wawancara ${profession}.`}</p>
+              <strong>{correctAnswers}/{interviewQuestions.length} jawaban memuat setidaknya dua gagasan kunci.</strong>
+              {passedInterview && <p>Lencana diperoleh: {badge}.</p>}
+              <a class="boss-return-button" href={returnHref}>Kembali ke Materi Karier</a>
             </div>
           )}
         </div>

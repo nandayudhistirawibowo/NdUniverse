@@ -13,74 +13,67 @@ const materials = (await getCollection('englishEveryday'))
 ---
 
 <DashboardLayout
-	title="Everyday English | NdUniverse"
-	description="Everyday English learning materials by CEFR level."
+	title="Bahasa Inggris Sehari-hari | NdUniverse"
+	description="Materi belajar Bahasa Inggris berdasarkan level CEFR."
 	active="everydayEnglish"
 	user={Astro.locals.user}
 	profile={Astro.locals.profile}
 >
 	<section class="everyday-page">
-		<a class="back-link" href="/en/dashboard">← <span data-i18n="catalog.back">Kembali ke Dasbor</span></a>
+		<a class="back-link" href="/en/dashboard">← <span>Kembali ke Dasbor</span></a>
 		<header>
-			<p class="eyebrow"><span data-i18n="nav.everyday">Bahasa Inggris Sehari-hari</span> · <span data-i18n="catalog.materialCount" data-i18n-params={JSON.stringify({ count: materials.length })}>{materials.length} materi</span></p>
-			<h1 data-i18n="nav.everyday">Bahasa Inggris Sehari-hari</h1>
-			<p class="lead" data-i18n="catalog.chooseCefr">Pilih level dan lanjutkan belajar bahasa Inggris praktis.</p>
+			<p class="eyebrow"><span>Bahasa Inggris Sehari-hari</span> · <span>{materials.length} materi</span></p>
+			<h1>Bahasa Inggris Sehari-hari</h1>
+			<p class="lead">Pilih level dan lanjutkan belajar bahasa Inggris praktis.</p>
 		</header>
 		<div class="catalog-controls">
 			<div class="level-filter">
-				<label for="level-filter" data-i18n="catalog.chooseEnglishLevel">Pilih level</label>
+				<label for="level-filter">Pilih level</label>
 				<select id="level-filter" data-level-filter>
-					<option value="ALL" data-i18n="catalog.allLevels">Semua Level</option>
+					<option value="ALL">Semua Level</option>
 					{levels.map((level) => <option value={level}>{level}</option>)}
 				</select>
 			</div>
 			<div class="exam-actions">
-				<a class="exam-link ielts-link" data-i18n="catalog.ieltsExam" data-exam-link data-exam-type="ielts" href="/en/exam/ielts">Ujian IELTS</a>
-				<a class="exam-link toefl-link" data-i18n="catalog.toeflExam" data-exam-link data-exam-type="toefl" href="/en/exam/toefl">Ujian TOEFL</a>
+				<a class="exam-link ielts-link" data-exam-link data-exam-type="ielts" href="/en/exam/ielts">Ujian IELTS</a>
+				<a class="exam-link toefl-link" data-exam-link data-exam-type="toefl" href="/en/exam/toefl">Ujian TOEFL</a>
 			</div>
 		</div>
 		{materials.length > 0 ? (
 			<div class="material-grid">
 				{materials.map((item) => (
 					<article class="material-card" data-level={item.data.level ?? ''}>
-						<span>{item.data.level ?? 'Everyday English'}</span>
+						<span>{item.data.level ?? 'Bahasa Inggris Sehari-hari'}</span>
 						<h2>{item.data.title ?? item.id}</h2>
 						<p>{item.data.description ?? ''}</p>
-						<a href={`/en/materi/${item.id.split('/').at(-1)}`}><span data-i18n="catalog.englishMaterialOpen">Buka materi</span> →</a>
+						<a href={`/en/materi/${item.id.split('/').at(-1)}`}><span>Buka materi</span> →</a>
 					</article>
 				))}
 			</div>
 		) : (
-			<p class="empty-state" data-i18n="catalog.noEverydayEnglish">Materi Everyday English belum tersedia.</p>
+			<p class="empty-state">Materi Bahasa Inggris Sehari-hari belum tersedia.</p>
 		)}
 	</section>
 </DashboardLayout>
 
 <script>
-	import { getDashboardLanguage, translateDashboard } from '@core/i18n/dashboard-language';
-
 	const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
 	const applyFilter = () => {
 		const selected = filter?.value ?? 'ALL';
-		const language = getDashboardLanguage();
 		document.querySelectorAll<HTMLAnchorElement>('[data-exam-link]').forEach((examLink) => {
 			const examType = examLink.dataset.examType;
 			if (!examType) return;
 			examLink.href = selected === 'ALL'
 				? `/en/exam/${examType}`
 				: `/en/exam/${examType}/${selected.toLowerCase()}`;
-			const translationKey = examType === 'ielts' ? 'catalog.ieltsExam' : 'catalog.toeflExam';
-			examLink.dataset.i18n = translationKey;
-			examLink.textContent = selected === 'ALL'
-				? translateDashboard(translationKey, language)
-				: `${translateDashboard(translationKey, language)} ${selected}`;
+			const examLabel = examType === 'ielts' ? 'Ujian IELTS' : 'Ujian TOEFL';
+			examLink.textContent = selected === 'ALL' ? examLabel : `${examLabel} ${selected}`;
 		});
 		document.querySelectorAll<HTMLElement>('.material-card[data-level]').forEach((card) => {
 			card.hidden = selected !== 'ALL' && card.dataset.level !== selected;
 		});
 	};
 	filter?.addEventListener('change', applyFilter);
-	window.addEventListener('nd:dashboard-language-changed', applyFilter);
 	document.addEventListener('astro:page-load', applyFilter);
 	applyFilter();
 </script>

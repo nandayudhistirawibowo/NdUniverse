@@ -2,32 +2,32 @@
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 
 const exams = [
-  { type: 'ielts', name: 'IELTS', description: 'Practice all four modules with IELTS-style tasks.' },
-  { type: 'toefl', name: 'TOEFL', description: 'Practice Reading, Listening, Writing, and Speaking.' },
+  { type: 'ielts', name: 'IELTS', description: 'Latih empat bagian melalui soal bergaya IELTS.' },
+  { type: 'toefl', name: 'TOEFL', description: 'Latih keterampilan Membaca, Menyimak, Menulis, dan Berbicara.' },
 ];
 ---
 
 <DashboardLayout
-  title="English Exams | NdUniverse"
-  description="Choose an IELTS or TOEFL practice exam."
+  title="Ujian Bahasa Inggris | NdUniverse"
+  description="Pilih ujian latihan IELTS atau TOEFL."
   active="exam"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <main class="exam-page">
-    <a class="back-link" href="/en/dashboard">← Back to English Dashboard</a>
+    <a class="back-link" href="/en/dashboard">← Kembali ke Dasbor Bahasa Inggris</a>
     <header>
-      <p class="eyebrow">English Exam Prep</p>
-      <h1>Choose an Exam</h1>
-      <p>Build confidence in Reading, Listening, Writing, and Speaking.</p>
+      <p class="eyebrow">Persiapan Ujian Bahasa Inggris</p>
+      <h1>Pilih Ujian</h1>
+      <p>Tingkatkan kepercayaan dirimu dalam Membaca, Menyimak, Menulis, dan Berbicara.</p>
     </header>
-    <section class="exam-grid" aria-label="English exam types">
+    <section class="exam-grid" aria-label="Jenis ujian bahasa Inggris">
       {exams.map((exam) => (
         <a class="exam-card" href={`/en/exam/${exam.type}`}>
           <span class="exam-label">{exam.name}</span>
-          <h2>{exam.name} Practice</h2>
+          <h2>Latihan {exam.name}</h2>
           <p>{exam.description}</p>
-          <strong>Choose a level →</strong>
+          <strong>Pilih level →</strong>
         </a>
       ))}
     </section>

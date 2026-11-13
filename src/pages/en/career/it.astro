@@ -11,29 +11,29 @@ const words = entry?.data.vocab ?? [];
 ---
 
 <DashboardLayout
-  title="IT & Software Engineering | English Career Prep | NdUniverse"
-  description="Practice IT vocabulary and interview skills in English."
+  title="Teknologi Informasi & Rekayasa Perangkat Lunak | Persiapan Karier Bahasa Inggris | NdUniverse"
+  description="Latih kosakata teknologi informasi dan keterampilan wawancara dalam bahasa Inggris."
   active="career"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <section class="career-profession">
-    <a class="back-link" href="/en/career">← Back to Career Prep</a>
+    <a class="back-link" href="/en/career">← Kembali ke Persiapan Karier</a>
     <div class="profession-heading">
-      <h1>IT &amp; Software Engineering</h1>
-      <HelpHint title="IT Career Prep" text="Practice 50 IT vocabulary terms in five-word batches and take a role-specific interview challenge." client:load />
+      <h1>Teknologi Informasi &amp; Rekayasa Perangkat Lunak</h1>
+      <HelpHint title="Persiapan Karier Teknologi Informasi" text="Latih 50 kosakata teknologi informasi dalam kelompok berisi lima kata dan ikuti tantangan wawancara sesuai bidang." client:load />
     </div>
     <section class="vocabulary-section" aria-labelledby="vocabulary-heading">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Career Vocabulary</p>
-          <h2 id="vocabulary-heading">IT &amp; Software Engineering</h2>
+          <p class="eyebrow">Kosakata Karier</p>
+          <h2 id="vocabulary-heading">Teknologi Informasi &amp; Rekayasa Perangkat Lunak</h2>
         </div>
-        <a class="quiz-link" href="/en/career/it/latihan">Start Vocabulary Quiz</a>
+        <a class="quiz-link" href="/en/career/it/latihan">Mulai Kuis Kosakata</a>
       </div>
-      <div class="table-scroll" role="region" aria-label="IT vocabulary table" tabindex="0">
+      <div class="table-scroll" role="region" aria-label="Tabel kosakata teknologi informasi" tabindex="0">
         <table class="vocabulary-table">
-          <thead><tr><th scope="col">Word</th><th scope="col">Meaning</th><th scope="col">Example</th></tr></thead>
+          <thead><tr><th scope="col">Kata</th><th scope="col">Arti</th><th scope="col">Contoh</th></tr></thead>
           <tbody>
             {words.map(({ word, translation, context }) => (
               <tr><th scope="row" lang="en">{word}</th><td>{translation}</td><td lang="en">{context}</td></tr>
@@ -45,11 +45,11 @@ const words = entry?.data.vocab ?? [];
     <article class="boss-card">
       <span aria-hidden="true">⚔️</span>
       <div>
-        <p>Boss Fight</p>
-        <h2>IT Job Interview</h2>
-        <p>Practice answering software and technology interview questions in English.</p>
+        <p>Tantangan Akhir</p>
+        <h2>Wawancara Kerja Teknologi Informasi</h2>
+        <p>Latih jawaban untuk pertanyaan wawancara tentang perangkat lunak dan teknologi.</p>
       </div>
-      <a href="/en/career/it/boss">Start Boss Fight</a>
+      <a href="/en/career/it/boss">Mulai Tantangan</a>
     </article>
   </section>
 </DashboardLayout>

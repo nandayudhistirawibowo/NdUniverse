@@ -1,5 +1,5 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 ---
-<DashboardLayout title="Bookmark | NdUniverse" description="Gespeicherte deutsche Wörter." active="bookmark" user={Astro.locals.user} profile={Astro.locals.profile}><section class="bookmark-page"><header><p class="eyebrow" data-i18n="bookmark.title">Penanda Buku</p><h1 data-i18n="bookmark.savedVocabulary">Kosakata tersimpan</h1></header><article><p data-i18n="bookmark.empty">Belum ada kata yang disimpan.</p></article></section></DashboardLayout>
+<DashboardLayout title="Penanda Buku | NdUniverse" description="Kosakata bahasa Jerman yang disimpan." active="bookmark" user={Astro.locals.user} profile={Astro.locals.profile}><section class="bookmark-page"><header><p class="eyebrow">Penanda Buku</p><h1>Kosakata tersimpan</h1></header><article><p>Belum ada kata yang disimpan.</p></article></section></DashboardLayout>
 <style>.bookmark-page{display:grid;gap:1rem}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.bookmark-page article{padding:1rem;border:1px dashed var(--border);border-radius:8px;color:var(--muted)}</style>

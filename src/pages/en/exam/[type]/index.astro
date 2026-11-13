@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 export const prerender = false;
 
 const examType = String(Astro.params.type ?? '').toLowerCase();
-if (!['ielts', 'toefl'].includes(examType)) return new Response('Exam type not found.', { status: 404 });
+if (!['ielts', 'toefl'].includes(examType)) return new Response('Jenis ujian tidak ditemukan.', { status: 404 });
 
 const exams = await getCollection('englishExam');
 const availableLevels = new Set(
@@ -16,29 +16,29 @@ const label = examType.toUpperCase();
 ---
 
 <DashboardLayout
-  title={`Choose ${label} Level | NdUniverse`}
-  description={`Choose a level for the ${label} exam.`}
+  title={`Pilih Level ${label} | NdUniverse`}
+  description={`Pilih level untuk ujian ${label}.`}
   active="exam"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <main class="exam-picker">
-    <a class="back-link" href="/en/everyday-english">Back to Everyday English</a>
+    <a class="back-link" href="/en/everyday-english">Kembali ke Bahasa Inggris Sehari-hari</a>
     <header>
-      <p class="eyebrow">{label} Exam</p>
-      <h1>Choose your level</h1>
-      <p>Select a level to start Reading, Listening, Writing, and Speaking.</p>
+      <p class="eyebrow">Ujian {label}</p>
+      <h1>Pilih level</h1>
+      <p>Pilih level untuk memulai latihan Membaca, Menyimak, Menulis, dan Berbicara.</p>
     </header>
     <div class="level-grid">
       {levels.filter((level) => availableLevels.has(level)).map((level) => (
         <a class="level-card" href={`/en/exam/${examType}/${level.toLowerCase()}`}>
           <span>{level}</span>
-          <strong>{label} Exam</strong>
-          <small>Four timed modules</small>
+          <strong>Ujian {label}</strong>
+          <small>Empat bagian dengan batas waktu</small>
         </a>
       ))}
     </div>
-    {availableLevels.size === 0 && <p class="empty-state">No {label} exam levels are available yet.</p>}
+    {availableLevels.size === 0 && <p class="empty-state">Level ujian {label} belum tersedia.</p>}
   </main>
 </DashboardLayout>
 

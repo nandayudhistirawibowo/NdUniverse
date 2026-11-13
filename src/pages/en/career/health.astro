@@ -11,29 +11,29 @@ const words = entry?.data.vocab ?? [];
 ---
 
 <DashboardLayout
-  title="Healthcare | English Career Prep | NdUniverse"
-  description="Practice healthcare vocabulary and interview skills in English."
+  title="Layanan Kesehatan | Persiapan Karier Bahasa Inggris | NdUniverse"
+  description="Latih kosakata layanan kesehatan dan keterampilan wawancara dalam bahasa Inggris."
   active="career"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <section class="career-profession">
-    <a class="back-link" href="/en/career">← Back to Career Prep</a>
+    <a class="back-link" href="/en/career">← Kembali ke Persiapan Karier</a>
     <div class="profession-heading">
-      <h1>Healthcare</h1>
-      <HelpHint title="Healthcare Career Prep" text="Practice 50 healthcare vocabulary terms in five-word batches and take a role-specific interview challenge." client:load />
+      <h1>Layanan Kesehatan</h1>
+      <HelpHint title="Persiapan Karier Layanan Kesehatan" text="Latih 50 kosakata layanan kesehatan dalam kelompok berisi lima kata dan ikuti tantangan wawancara sesuai bidang." client:load />
     </div>
     <section class="vocabulary-section" aria-labelledby="vocabulary-heading">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Career Vocabulary</p>
-          <h2 id="vocabulary-heading">Healthcare</h2>
+          <p class="eyebrow">Kosakata Karier</p>
+          <h2 id="vocabulary-heading">Layanan Kesehatan</h2>
         </div>
-        <a class="quiz-link" href="/en/career/health/latihan">Start Vocabulary Quiz</a>
+        <a class="quiz-link" href="/en/career/health/latihan">Mulai Kuis Kosakata</a>
       </div>
-      <div class="table-scroll" role="region" aria-label="Healthcare vocabulary table" tabindex="0">
+      <div class="table-scroll" role="region" aria-label="Tabel kosakata layanan kesehatan" tabindex="0">
         <table class="vocabulary-table">
-          <thead><tr><th scope="col">Word</th><th scope="col">Meaning</th><th scope="col">Example</th></tr></thead>
+          <thead><tr><th scope="col">Kata</th><th scope="col">Arti</th><th scope="col">Contoh</th></tr></thead>
           <tbody>
             {words.map(({ word, translation, context }) => (
               <tr><th scope="row" lang="en">{word}</th><td>{translation}</td><td lang="en">{context}</td></tr>
@@ -45,11 +45,11 @@ const words = entry?.data.vocab ?? [];
     <article class="boss-card">
       <span aria-hidden="true">⚔️</span>
       <div>
-        <p>Boss Fight</p>
-        <h2>Healthcare Job Interview</h2>
-        <p>Practice answering patient-care and clinical teamwork interview questions.</p>
+        <p>Tantangan Akhir</p>
+        <h2>Wawancara Kerja Layanan Kesehatan</h2>
+        <p>Latih jawaban untuk pertanyaan wawancara tentang perawatan pasien dan kerja sama tim klinis.</p>
       </div>
-      <a href="/en/career/health/boss">Start Boss Fight</a>
+      <a href="/en/career/health/boss">Mulai Tantangan</a>
     </article>
   </section>
 </DashboardLayout>

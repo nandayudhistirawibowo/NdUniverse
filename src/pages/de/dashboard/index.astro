@@ -5,14 +5,14 @@ import { getCollection } from 'astro:content';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
 const LEVEL_STEPS = [
-  { threshold: 0, label: 'A1 Pemula', labelKey: 'dashboard.levelA1Beginner', nextThreshold: 200, nextLabel: 'A1 Lanjut', nextLabelKey: 'dashboard.levelA1Advanced' },
-  { threshold: 200, label: 'A1 Lanjut', labelKey: 'dashboard.levelA1Advanced', nextThreshold: 400, nextLabel: 'A2 Pemula', nextLabelKey: 'dashboard.levelA2Beginner' },
-  { threshold: 400, label: 'A2 Pemula', labelKey: 'dashboard.levelA2Beginner', nextThreshold: 700, nextLabel: 'A2 Lanjut', nextLabelKey: 'dashboard.levelA2Advanced' },
-  { threshold: 700, label: 'A2 Lanjut', labelKey: 'dashboard.levelA2Advanced', nextThreshold: 1000, nextLabel: 'B1', nextLabelKey: 'dashboard.levelB1' },
-  { threshold: 1000, label: 'B1', labelKey: 'dashboard.levelB1', nextThreshold: 1400, nextLabel: 'B2', nextLabelKey: 'dashboard.levelB2' },
-  { threshold: 1400, label: 'B2', labelKey: 'dashboard.levelB2', nextThreshold: 1800, nextLabel: 'C1', nextLabelKey: 'dashboard.levelC1' },
-  { threshold: 1800, label: 'C1', labelKey: 'dashboard.levelC1', nextThreshold: 2200, nextLabel: 'C2 (Mastery)', nextLabelKey: 'dashboard.levelC2Mastery' },
-  { threshold: 2200, label: 'C2 (Mastery)', labelKey: 'dashboard.levelC2Mastery', nextThreshold: null, nextLabel: null, nextLabelKey: null },
+  { threshold: 0, label: 'A1 Pemula', nextThreshold: 200, nextLabel: 'A1 Lanjut' },
+  { threshold: 200, label: 'A1 Lanjut', nextThreshold: 400, nextLabel: 'A2 Pemula' },
+  { threshold: 400, label: 'A2 Pemula', nextThreshold: 700, nextLabel: 'A2 Lanjut' },
+  { threshold: 700, label: 'A2 Lanjut', nextThreshold: 1000, nextLabel: 'B1' },
+  { threshold: 1000, label: 'B1', nextThreshold: 1400, nextLabel: 'B2' },
+  { threshold: 1400, label: 'B2', nextThreshold: 1800, nextLabel: 'C1' },
+  { threshold: 1800, label: 'C1', nextThreshold: 2200, nextLabel: 'C2 (Mastery)', },
+  { threshold: 2200, label: 'C2 (Mastery)', nextThreshold: null, nextLabel: null },
 ];
 
 const user = Astro.locals.user;
@@ -46,9 +46,9 @@ const levelMaterials = materials
 <DashboardLayout title="Dashboard | NdUniverse" description="Dashboard pembelajaran bahasa Jerman." active="home" user={user} profile={profile}>
   <section class="dashboard-content">
     <header class="dashboard-heading">
-      <p class="eyebrow" data-i18n="dashboard.germanLevel">Level Bahasa Jerman</p>
-      <h1><span data-i18n="dashboard.germanGreeting">Halo, </span>{displayName}</h1>
-      <p data-i18n="dashboard.germanContinue">Siap melanjutkan perjalanan belajar bahasa Jerman?</p>
+      <p class="eyebrow">Level Bahasa Jerman</p>
+      <h1>Halo, {displayName}</h1>
+      <p>Siap melanjutkan perjalanan belajar bahasa Jerman?</p>
     </header>
 
     <article
@@ -59,41 +59,28 @@ const levelMaterials = materials
       data-level-steps={JSON.stringify(LEVEL_STEPS)}
     >
       <div>
-        <span data-i18n="dashboard.currentCefr">Level CEFR Saat Ini</span>
-        <strong data-level-label data-i18n={currentLevel.labelKey}>{currentLevel.label}</strong>
+        <span>Level CEFR Saat Ini</span>
+        <strong data-level-label>{currentLevel.label}</strong>
       </div>
-      <div class="progress-track" role="progressbar" aria-label={`Progress menuju ${currentLevel.nextLabel ?? currentLevel.label}`} data-i18n-aria-label="dashboard.progressToLevel" data-i18n-params={JSON.stringify({ level: currentLevel.nextLabel ?? currentLevel.label })} aria-valuemin="0" aria-valuemax="100" aria-valuenow={levelProgress} data-level-progress>
+      <div class="progress-track" role="progressbar" aria-label={`Progres menuju ${currentLevel.nextLabel ?? currentLevel.label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={levelProgress} data-level-progress>
         <span data-level-fill style={`width: ${levelProgress}%`}></span>
       </div>
       <small
         data-level-summary
-        data-i18n={currentLevel.nextThreshold ? 'dashboard.levelSummaryNext' : 'dashboard.levelSummaryMax'}
-        data-i18n-params={JSON.stringify({
-          points: cefrPoints,
-          progress: levelProgress,
-          next: currentLevel.nextLabel ?? '',
-          xp: totalXp,
-        })}
       >{cefrPoints} poin CEFR · {currentLevel.nextThreshold ? `${levelProgress}% menuju ${currentLevel.nextLabel}` : 'Level tertinggi tercapai'} · {totalXp} XP</small>
     </article>
 
-    <nav class="shortcut-grid" aria-label="Menu cepat" data-i18n-aria-label="dashboard.learningShortcuts">
-      <a href="/de/materi"><strong data-i18n="nav.materials">Katalog Materi</strong><span data-i18n="dashboard.exploreAll">Jelajahi seluruh materi bahasa Jerman.</span></a>
-      <a href="/de/ujian"><strong data-i18n="catalog.goetheExam">Ujian Goethe-Zertifikat</strong><span data-i18n="dashboard.goetheDescription">Mulai ujian Goethe resmi.</span></a>
-      <a href="/de/career"><strong data-i18n="dashboard.career">Karier</strong><span data-i18n="dashboard.careerDescription">Siapkan karier profesional.</span></a>
-      <a href="/de/dashboard/bookmark"><strong data-i18n="bookmark.title">Penanda Buku</strong><span data-i18n="dashboard.openBookmarks">Buka kosakata tersimpan</span></a>
+    <nav class="shortcut-grid" aria-label="Menu cepat">
+      <a href="/de/materi"><strong>Katalog Materi</strong><span>Jelajahi seluruh materi bahasa Jerman.</span></a>
+      <a href="/de/ujian"><strong>Ujian Goethe-Zertifikat</strong><span>Mulai ujian Goethe resmi.</span></a>
+      <a href="/de/career"><strong>Karier</strong><span>Siapkan karier profesional.</span></a>
+      <a href="/de/dashboard/bookmark"><strong>Penanda Buku</strong><span>Buka kosakata tersimpan</span></a>
     </nav>
   </section>
 </DashboardLayout>
 
 <script>
   import { normalizePassedPillars } from '@core/db/progress-client.js';
-  import {
-    getDashboardLanguage,
-    subscribeDashboardLanguage,
-    translateDashboard,
-  } from '@core/i18n/dashboard-language';
-  import type { DashboardTranslationKey } from '@core/i18n/dashboard-dict';
 
   const renderLevelCard = () => {
     const dashboard = document.querySelector<HTMLElement>('[data-progress-dashboard]');
@@ -116,10 +103,8 @@ const levelMaterials = materials
     const steps = JSON.parse(dashboard.dataset.levelSteps ?? '[]') as Array<{
       threshold: number;
       label: string;
-      labelKey: DashboardTranslationKey;
       nextThreshold: number | null;
       nextLabel: string | null;
-      nextLabelKey: DashboardTranslationKey | null;
     }>;
     const totalPoints = levelMaterials.reduce((total, material) => {
       const progress = rows.get(material.slug);
@@ -140,35 +125,22 @@ const levelMaterials = materials
     const progress = dashboard.querySelector<HTMLElement>('[data-level-progress]');
     const fill = dashboard.querySelector<HTMLElement>('[data-level-fill]');
     const summary = dashboard.querySelector<HTMLElement>('[data-level-summary]');
-    const language = getDashboardLanguage();
-    const nextLevel = currentLevel.nextLabel
-      ? translateDashboard(currentLevel.nextLabelKey ?? currentLevel.labelKey, language)
-      : translateDashboard(currentLevel.labelKey, language);
+    const nextLevel = currentLevel.nextLabel ?? currentLevel.label;
     if (label) {
-      label.dataset.i18n = currentLevel.labelKey;
-      label.textContent = translateDashboard(currentLevel.labelKey, language);
+      label.textContent = currentLevel.label;
     }
     if (progress) {
       progress.setAttribute('aria-valuenow', String(percentage));
       progress.setAttribute(
         'aria-label',
-        translateDashboard('dashboard.progressToLevel', language, { level: nextLevel }),
+        `Progres menuju ${nextLevel}`,
       );
     }
     if (fill) fill.style.width = `${percentage}%`;
     if (summary) {
-      const summaryKey: DashboardTranslationKey = currentLevel.nextThreshold
-        ? 'dashboard.levelSummaryNext'
-        : 'dashboard.levelSummaryMax';
-      const params = {
-        points: totalPoints,
-        progress: percentage,
-        next: nextLevel,
-        xp: totalXp,
-      };
-      summary.dataset.i18n = summaryKey;
-      summary.dataset.i18nParams = JSON.stringify(params);
-      summary.textContent = translateDashboard(summaryKey, language, params);
+      summary.textContent = currentLevel.nextThreshold
+        ? `${totalPoints} poin CEFR · ${percentage}% menuju ${nextLevel} · ${totalXp} XP`
+        : `${totalPoints} poin CEFR · Level tertinggi tercapai · ${totalXp} XP`;
     }
   };
 
@@ -195,7 +167,6 @@ const levelMaterials = materials
     renderLevelCard();
   });
 
-  subscribeDashboardLanguage(renderLevelCard);
   renderLevelCard();
 </script>
 

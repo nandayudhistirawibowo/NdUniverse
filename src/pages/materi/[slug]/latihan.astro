@@ -11,7 +11,7 @@ if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 const type = Astro.url.searchParams.get('type') ?? '';
 const validTypes = ['reading', 'listening', 'writing', 'speaking'];
 if (!validTypes.includes(type)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
-const pillarLabels = { reading: 'Reading / Lesen', listening: 'Listening / Hören', writing: 'Writing / Schreiben', speaking: 'Speaking / Sprechen' };
+const pillarLabels = { reading: 'Membaca', listening: 'Menyimak', writing: 'Menulis', speaking: 'Berbicara' };
 const pillarLabel = pillarLabels[type] ?? 'Latihan Materi';
 const batchSize = 5;
 const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);

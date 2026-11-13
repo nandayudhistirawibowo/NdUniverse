@@ -7,15 +7,15 @@ export const prerender = false;
 
 const examType = String(Astro.params.type ?? '').toLowerCase();
 const level = String(Astro.params.level ?? '').toUpperCase();
-if (!['ielts', 'toefl'].includes(examType)) return new Response('Exam type not found.', { status: 404 });
-if (!['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(level)) return new Response('Exam level not found.', { status: 404 });
+if (!['ielts', 'toefl'].includes(examType)) return new Response('Jenis ujian tidak ditemukan.', { status: 404 });
+if (!['A1', 'A2', 'B1', 'B2', 'C1', 'C2'].includes(level)) return new Response('Level ujian tidak ditemukan.', { status: 404 });
 
 const examEntries = (await getCollection('englishExam')).filter(
   (entry) => entry.data.exam_type === examType && entry.data.level === level
 );
 const examEntry = examEntries.find((entry) => entry.id.endsWith('-mock'))
   ?? examEntries[0];
-if (!examEntry) return new Response('Exam content not found for this level.', { status: 404 });
+if (!examEntry) return new Response('Konten ujian untuk level ini tidak ditemukan.', { status: 404 });
 
 const exam = {
   exam_type: examEntry.data.exam_type,
@@ -29,8 +29,8 @@ const label = examType.toUpperCase();
 ---
 
 <DashboardLayout
-  title={`${label} ${level} Exam | NdUniverse`}
-  description={`${label} exam practice for level ${level}.`}
+  title={`Ujian ${label} ${level} | NdUniverse`}
+  description={`Latihan ujian ${label} untuk level ${level}.`}
   active="exam"
   user={Astro.locals.user}
   profile={Astro.locals.profile}

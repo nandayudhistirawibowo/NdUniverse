@@ -60,10 +60,10 @@ const OFFICIAL_EXAM_NAMES = {
 };
 
 const MODULES = [
-  { id: 'lesen', label: 'Lesen', english: 'Reading' },
-  { id: 'hoeren', label: 'Hören', english: 'Listening' },
-  { id: 'schreiben', label: 'Schreiben', english: 'Writing' },
-  { id: 'sprechen', label: 'Sprechen', english: 'Speaking' },
+  { id: 'lesen', label: 'Membaca', english: 'Membaca' },
+  { id: 'hoeren', label: 'Menyimak', english: 'Menyimak' },
+  { id: 'schreiben', label: 'Menulis', english: 'Menulis' },
+  { id: 'sprechen', label: 'Berbicara', english: 'Berbicara' },
 ];
 
 const TIMER_MINUTES = {
@@ -327,8 +327,8 @@ export default function GoetheExam({ level, tasks, available = true }) {
     return (
       <section class="goethe-exam">
         <div class="goethe-task" role="alert">
-          <h1 data-i18n="exam.unavailableTitle">Soal untuk level ini belum tersedia.</h1>
-          <p data-i18n="exam.unavailableDescription">Silakan hubungi admin.</p>
+          <h1>Soal untuk level ini belum tersedia.</h1>
+          <p>Silakan hubungi admin.</p>
         </div>
       </section>
     );
@@ -340,15 +340,12 @@ export default function GoetheExam({ level, tasks, available = true }) {
         <div>
           <p class="eyebrow">{OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}`}</p>
           <h1>
-            {level} · <span data-i18n="exam.module.lesen">Lesen</span>,{' '}
-            <span data-i18n="exam.module.hoeren">Hören</span>,{' '}
-            <span data-i18n="exam.module.schreiben">Schreiben</span>,{' '}
-            <span data-i18n="exam.module.sprechen">Sprechen</span>
+            {level} · Membaca, Menyimak, Menulis, Berbicara
           </h1>
-          <p data-i18n="exam.goethePassRule">Kelulusan hanya diberikan jika setiap modul mencapai minimal 60%.</p>
+          <p>Anda lulus jika setiap modul mencapai nilai minimal 60%.</p>
         </div>
         <div class="exam-timer" aria-live="polite">
-          <span data-i18n={`exam.module.${activeModule}`}>{MODULES.find((module) => module.id === activeModule)?.label}</span>
+          <span>{MODULES.find((module) => module.id === activeModule)?.label}</span>
           <strong>{formatTime(remainingSeconds)}</strong>
         </div>
       </header>
@@ -357,17 +354,15 @@ export default function GoetheExam({ level, tasks, available = true }) {
         <div class="goethe-task exam-start-card" style="text-align: center; padding: 2rem 1.5rem;">
           <p
             style="font-weight: 700; margin-bottom: 0.5rem;"
-            data-i18n="exam.goetheStartIntro"
-            data-i18n-params={JSON.stringify({ name: OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}` })}
           >{OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}`} dilengkapi sistem Anti-Cheat.</p>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;" data-i18n="exam.fullscreenWarning">Mode layar penuh (fullscreen) akan diaktifkan. Jangan berpindah tab atau keluar dari layar penuh selama ujian berlangsung.</p>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Ujian berjalan dalam mode layar penuh. Jangan berpindah tab atau keluar dari layar penuh selama ujian berlangsung.</p>
           <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
-            <span data-i18n="exam.startExam">Mulai Ujian</span>
+            <span>Mulai Ujian</span>
           </button>
         </div>
       ) : (
         <>
-          <nav class="module-progress" aria-label="Progress modul ujian" data-i18n-aria-label="exam.moduleProgress">
+          <nav class="module-progress" aria-label="Progres modul ujian">
         {MODULES.map((module) => (
           <button
             type="button"
@@ -376,7 +371,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
             disabled={Boolean(result) || !isModuleUnlocked(module.id)}
             key={module.id}
           >
-            <span data-i18n={`exam.module.${module.id}`}>{module.label}</span>
+            <span>{module.label}</span>
             <strong>{moduleTasksAnswered(module.id)}/{tasks[module.id]?.length ?? 0}</strong>
             <div class="module-track" aria-hidden="true">
               <span style={`width: ${progressPercent(module.id)}%`} />
@@ -388,13 +383,13 @@ export default function GoetheExam({ level, tasks, available = true }) {
       {!result && (
         <section class="module-panel" aria-labelledby="active-module-title">
           <header>
-            <p data-i18n={`exam.moduleEnglish.${activeModule}`}>{MODULES.find((module) => module.id === activeModule)?.english}</p>
-            <h2 id="active-module-title" data-i18n={`exam.module.${activeModule}`}>{MODULES.find((module) => module.id === activeModule)?.label}</h2>
+            <p>{MODULES.find((module) => module.id === activeModule)?.label}</p>
+            <h2 id="active-module-title">{MODULES.find((module) => module.id === activeModule)?.label}</h2>
           </header>
 
           {(tasks[activeModule] ?? []).map((task, index) => (
             <article class="goethe-task" key={`${activeModule}-${index}`}>
-              <div class="task-meta" data-i18n="exam.taskNumber" data-i18n-params={JSON.stringify({ number: index + 1 })}>Task {index + 1}</div>
+              <div class="task-meta">Soal {index + 1}</div>
               {task.passage && <blockquote>{task.passage}</blockquote>}
               {activeModule === 'hoeren' && (
                 <div class="audio-controls">
@@ -404,7 +399,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                     disabled={Boolean(playedAudio[String(index)])}
                     onClick={(event) => playListeningAudio(event, task, index)}
                   >
-                    <span data-i18n={playedAudio[String(index)] ? 'quiz.audioPlayed' : 'exam.playAudioOnce'}>{playedAudio[String(index)] ? 'Audio sudah diputar 1x' : 'Putar Audio (maks. 1x)'}</span>
+                    <span>{playedAudio[String(index)] ? 'Audio sudah diputar 1 kali' : 'Putar audio (maks. 1 kali)'}</span>
                   </button>
                 </div>
               )}
@@ -439,7 +434,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                       disabled={isListening}
                       onClick={() => startSpeaking(activeModule, index)}
                     >
-                      <span data-i18n={isListening ? 'exam.recording' : 'exam.recordAnswer'}>{isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}</span>
+                      <span>{isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}</span>
                     </button>
                   )}
                   <textarea
@@ -447,37 +442,34 @@ export default function GoetheExam({ level, tasks, available = true }) {
                     value={answers[`${activeModule}-${index}`] ?? ''}
                     onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
                     placeholder={activeModule === 'schreiben' ? 'Tulis jawaban dalam bahasa Jerman...' : 'Hasil rekaman atau jawaban tertulis...'}
-                    data-i18n-placeholder={activeModule === 'schreiben' ? 'exam.writeGerman' : 'exam.recordingOrWritten'}
                   />
                   {activeModule === 'sprechen' && speechMessage && (
                     <p
                       role="status"
-                      data-i18n={speechMessage.key}
-                      data-i18n-params={speechMessage.params ? JSON.stringify(speechMessage.params) : undefined}
                     >{speechMessage.fallback}</p>
                   )}
                   {task.keywords && (
-                    <small><span data-i18n="exam.scoredKeywords">Kata kunci yang dinilai:</span> {task.keywords.join(', ')}</small>
+                    <small><span>Kata kunci yang dinilai:</span> {task.keywords.join(', ')}</small>
                   )}
                 </div>
               )}
             </article>
           ))}
 
-          {moduleWarning && <p class="module-warning" role="alert" data-i18n={moduleWarning.key}>{moduleWarning.fallback}</p>}
+          {moduleWarning && <p class="module-warning" role="alert">{moduleWarning.fallback}</p>}
 
           {activeModule === 'sprechen' ? (
-            <button class="submit-button" type="button" onClick={submitExam} data-i18n="exam.finishAllModules">Selesaikan Semua Modul</button>
+            <button class="submit-button" type="button" onClick={submitExam}>Selesaikan Semua Modul</button>
           ) : (
-            <button class="submit-button" type="button" onClick={finishCurrentModule} data-i18n="exam.finishModuleContinue">Selesaikan Modul & Lanjut</button>
+            <button class="submit-button" type="button" onClick={finishCurrentModule}>Selesaikan Modul &amp; Lanjutkan</button>
           )}
         </section>
       )}
 
       {result && (
         <section class={`goethe-result ${result.passed ? 'passed' : 'failed'}`} aria-live="polite">
-          <p class="result-label" data-i18n={result.passed ? 'exam.resultPassed' : 'exam.resultFailed'}>{result.passed ? 'LULUS' : 'GAGAL'}</p>
-          <h2><span data-i18n="exam.totalScore">🏆 Total Skor:</span> {result.totalPoints}/100 (<span data-i18n={result.passed ? 'exam.resultPassed' : 'exam.resultFailed'}>{result.passed ? 'LULUS' : 'GAGAL'}</span>)</h2>
+          <p class="result-label">{result.passed ? 'LULUS' : 'BELUM LULUS'}</p>
+          <h2><span>🏆 Total Nilai:</span> {result.totalPoints}/100 ({result.passed ? 'LULUS' : 'BELUM LULUS'})</h2>
           <div class="module-results">
             {result.modules.map((module) => {
               const feedbackKey = module.id === 'lesen'
@@ -496,10 +488,10 @@ export default function GoetheExam({ level, tasks, available = true }) {
                 : [];
               return (
                 <article key={module.id} class={module.passed ? 'passed' : 'failed'}>
-                  <h3><span data-i18n={`exam.module.${module.id}`}>{module.id === 'lesen' ? '📖 Lesen' : module.id === 'hoeren' ? '🎧 Hören' : module.id === 'schreiben' ? '✍️ Schreiben' : '🗣️ Sprechen'}</span></h3>
-                  <strong>{module.points}/25 (<span data-i18n={module.rating.key}>{module.rating.label}</span>)</strong>
+                  <h3>{module.id === 'lesen' ? '📖 Membaca' : module.id === 'hoeren' ? '🎧 Menyimak' : module.id === 'schreiben' ? '✍️ Menulis' : '🗣️ Berbicara'}</h3>
+                  <strong>{module.points}/25 ({module.rating.label})</strong>
                   <p>
-                    <span data-i18n={feedbackKey} data-i18n-params={JSON.stringify({ percent: module.percent })}>
+                    <span>
                       {module.percent}% — {module.id === 'lesen'
                         ? module.passed ? 'Kemampuan membaca sudah cukup baik.' : 'Perkuat pemahaman paragraf dan kosakata bacaan.'
                         : module.id === 'hoeren'
@@ -508,8 +500,8 @@ export default function GoetheExam({ level, tasks, available = true }) {
                     </span>{' '}
                     {taskFeedback.map((task, index) => (
                       <span key={`${module.id}-feedback-${index}`}>
-                        <span data-i18n="exam.yourAnswer">Jawaban Anda:</span> "{task.answer}" ·{' '}
-                        <span data-i18n="exam.scoredKeywords">Kata kunci yang dinilai:</span> "{task.keywords}"{' '}
+                        <span>Jawaban Anda:</span> "{task.answer}" ·{' '}
+                        <span>Kata kunci yang dinilai:</span> "{task.keywords}"{' '}
                       </span>
                     ))}
                   </p>
@@ -519,13 +511,13 @@ export default function GoetheExam({ level, tasks, available = true }) {
           </div>
           {!result.passed ? (
             <>
-              <p class="retry-message"><span data-i18n="exam.retryModules">Anda harus mengulang modul:</span> {failedModules.map((module) => module.label).join(', ')}.</p>
-              <a class="certificate-link failure-link" href={`/de/ujian/goethe/${level.toLowerCase()}`} data-i18n="exam.retrySkills">Perbaiki Skillku</a>
+              <p class="retry-message"><span>Anda harus mengulang modul:</span> {failedModules.map((module) => module.label).join(', ')}.</p>
+              <a class="certificate-link failure-link" href={`/de/ujian/goethe/${level.toLowerCase()}`}>Pelajari kembali materi</a>
             </>
           ) : (
             <div class="result-navigation">
-              <a class="certificate-link" href={`/sertifikat/goethe/${level.toLowerCase()}`} data-i18n="exam.certificate">Ambil Sertifikat</a>
-              <a class="certificate-link" href="/de/dashboard" data-i18n="exam.backDashboard">Kembali ke Dashboard</a>
+              <a class="certificate-link" href={`/sertifikat/goethe/${level.toLowerCase()}`}>Ambil Sertifikat</a>
+              <a class="certificate-link" href="/de/dashboard">Kembali ke Dasbor</a>
             </div>
           )}
         </section>

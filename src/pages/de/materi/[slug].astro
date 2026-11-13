@@ -9,28 +9,28 @@ const sessions = Array.from({ length: Math.ceil(item.data.vocab.length / 5) }, (
 ---
 <DashboardLayout title={`${item.data.judulMateri} | NdUniverse`} description={item.data.deskripsi} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <article class="material-page">
-    <a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? '/de/alltagsdeutsch' : '/de/dashboard'} data-session-back><span aria-hidden="true">←</span> <span data-i18n="quiz.backMaterial">Kembali ke Materi</span></a>
+    <a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? '/de/alltagsdeutsch' : '/de/dashboard'} data-session-back><span aria-hidden="true">←</span> <span>Kembali ke Materi</span></a>
     <header><p class="eyebrow">{item.data.track} · {item.data.level ?? item.data.jurusan}</p><h1>{item.data.judulMateri}</h1><p>{item.data.deskripsi}</p></header>
     {sessions.map((session) => (
       <section class="session-card">
-        <h2 data-i18n="material.session" data-i18n-params={JSON.stringify({ session: session.number })}>Sesi {session.number}</h2>
+        <h2>Sesi {session.number}</h2>
         <div class="table-wrap">
           <table>
-            <thead><tr><th data-i18n="material.german">Deutsch</th><th data-i18n="material.indonesian">Indonesisch</th><th data-i18n="material.context">Kontext</th></tr></thead>
+            <thead><tr><th>Bahasa Jerman</th><th>Bahasa Indonesia</th><th>Konteks</th></tr></thead>
             <tbody>
               {session.words.map((word) => (
                 <tr>
                   <td lang="de">
                     <span class="speech-inline">
                       <span>{word.german}</span>
-                      <button class="speaker-button" type="button" data-speech={word.german} aria-label={`Dengarkan kata ${word.german}`} data-i18n-aria-label="material.audioAria" data-i18n-params={JSON.stringify({ word: word.german })} title={`Dengarkan kata: ${word.german}`} data-i18n-title="material.audioAria">🔊</button>
+                      <button class="speaker-button" type="button" data-speech={word.german} aria-label={`Dengarkan kata ${word.german}`} title={`Dengarkan kata: ${word.german}`}>🔊</button>
                     </span>
                   </td>
                   <td>{word.indonesian}</td>
                   <td>
                     <span class="speech-inline">
                       <span>{word.context}</span>
-                      <button class="speaker-button" type="button" data-speech={word.context} aria-label={`Dengarkan kalimat ${word.context}`} data-i18n-aria-label="material.audioAria" data-i18n-params={JSON.stringify({ word: word.context })} title={`Dengarkan kalimat: ${word.context}`} data-i18n-title="material.audioAria">🔊</button>
+                      <button class="speaker-button" type="button" data-speech={word.context} aria-label={`Dengarkan kalimat ${word.context}`} title={`Dengarkan kalimat: ${word.context}`}>🔊</button>
                     </span>
                   </td>
                 </tr>
@@ -39,10 +39,10 @@ const sessions = Array.from({ length: Math.ceil(item.data.vocab.length / 5) }, (
           </table>
         </div>
         <nav>
-          <a href={`/de/materi/${item.id}/latihan?type=reading&session=${session.number}`} data-i18n="material.reading">Reading</a>
-          <a href={`/de/materi/${item.id}/latihan?type=listening&session=${session.number}`} data-i18n="material.listening">Listening</a>
-          <a href={`/de/materi/${item.id}/latihan?type=writing&session=${session.number}`} data-i18n="material.writing">Writing</a>
-          <a href={`/de/materi/${item.id}/latihan?type=speaking&session=${session.number}`} data-i18n="material.speaking">Speaking</a>
+          <a href={`/de/materi/${item.id}/latihan?type=reading&session=${session.number}`}>Membaca</a>
+          <a href={`/de/materi/${item.id}/latihan?type=listening&session=${session.number}`}>Menyimak</a>
+          <a href={`/de/materi/${item.id}/latihan?type=writing&session=${session.number}`}>Menulis</a>
+          <a href={`/de/materi/${item.id}/latihan?type=speaking&session=${session.number}`}>Berbicara</a>
         </nav>
       </section>
     ))}

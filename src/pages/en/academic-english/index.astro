@@ -20,18 +20,18 @@ const progressBySlug = new Map((progressData ?? []).map((row) => [row.material_s
 ---
 
 <DashboardLayout
-  title="Academic English | NdUniverse"
-  description="Academic vocabulary for study and professional communication."
+  title="Bahasa Inggris Akademik | NdUniverse"
+  description="Kosakata akademik untuk studi dan komunikasi profesional."
   active="academicEnglish"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <main class="academic-page">
-    <a class="back-link" href="/en/dashboard">← <span data-i18n="catalog.back">Kembali ke Dasbor</span></a>
+    <a class="back-link" href="/en/dashboard">← <span>Kembali ke Dasbor</span></a>
     <header>
-      <p class="eyebrow"><span data-i18n="nav.academic">Bahasa Inggris Akademik</span> · <span data-i18n="catalog.materialCount" data-i18n-params={JSON.stringify({ count: materials.length })}>{materials.length} materi</span></p>
-      <h1 data-i18n="catalog.studyWorkTitle">Bangun kemampuan bahasa untuk studi dan pekerjaan.</h1>
-      <p class="lead" data-i18n="catalog.academicLead">Pilih bidang untuk melihat kosakata akademik dan berlatih bahasa Inggris untuk studimu.</p>
+      <p class="eyebrow"><span>Bahasa Inggris Akademik</span> · <span>{materials.length} materi</span></p>
+      <h1>Bangun kemampuan bahasa untuk studi dan pekerjaan.</h1>
+      <p class="lead">Pilih bidang untuk melihat kosakata akademik dan berlatih bahasa Inggris untuk studimu.</p>
     </header>
     {materials.length > 0 ? (
       <div class="material-grid">
@@ -47,25 +47,21 @@ const progressBySlug = new Map((progressData ?? []).map((row) => [row.material_s
               <p
                 class={`material-progress ${passedCount === 4 ? 'is-complete' : ''}`}
                 data-academic-progress-copy
-                data-i18n={passedCount === 4 ? 'catalog.skillsComplete' : 'catalog.skillsProgress'}
-                data-i18n-params={JSON.stringify({ count: passedCount })}
               >
                 {passedCount === 4 ? '✓ Keempat keterampilan selesai' : `${passedCount}/4 keterampilan selesai`}
               </p>
-              <a href={`/en/academic-english/${slug}`}><span data-i18n="catalog.englishMaterialOpen">Buka materi</span> →</a>
+              <a href={`/en/academic-english/${slug}`}><span>Buka materi</span> →</a>
             </article>
           );
         })}
       </div>
     ) : (
-      <p class="empty-state" data-i18n="common.noAcademicMaterials">Materi bahasa akademik belum tersedia.</p>
+      <p class="empty-state">Materi bahasa akademik belum tersedia.</p>
     )}
   </main>
 </DashboardLayout>
 
 <script>
-  import { getDashboardLanguage, translateDashboard } from '@core/i18n/dashboard-language';
-
   window.addEventListener('nd:progress-updated', (event) => {
     const { slug, languageCode, pillars } = (event as CustomEvent<{
       slug: string;
@@ -80,10 +76,9 @@ const progressBySlug = new Map((progressData ?? []).map((row) => [row.material_s
       const copy = card.querySelector<HTMLElement>('[data-academic-progress-copy]');
       if (copy) {
         copy.classList.toggle('is-complete', passedCount === 4);
-        const translationKey = passedCount === 4 ? 'catalog.skillsComplete' : 'catalog.skillsProgress';
-        copy.dataset.i18n = translationKey;
-        copy.dataset.i18nParams = JSON.stringify({ count: passedCount });
-        copy.textContent = translateDashboard(translationKey, getDashboardLanguage(), { count: passedCount });
+        copy.textContent = passedCount === 4
+          ? '✓ Keempat keterampilan selesai'
+          : `${passedCount}/4 keterampilan selesai`;
       }
     });
   });

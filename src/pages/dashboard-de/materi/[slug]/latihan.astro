@@ -12,10 +12,10 @@ const type = Astro.url.searchParams.get('type') ?? '';
 const validTypes = ['reading', 'listening', 'writing', 'speaking'];
 if (!validTypes.includes(type)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
 const labels = {
-  reading: 'Reading / Lesen',
-  listening: 'Listening / Hören',
-  writing: 'Writing / Schreiben',
-  speaking: 'Speaking / Sprechen',
+  reading: 'Membaca',
+  listening: 'Menyimak',
+  writing: 'Menulis',
+  speaking: 'Berbicara',
 };
 const label = labels[type] ?? 'Latihan Materi';
 const batchSize = 5;
@@ -30,17 +30,15 @@ const startIndex = (sessionNumber - 1) * batchSize;
   profile={Astro.locals.profile}
 >
   <main class="practice-page">
-    <a class="back-link" href={`/dashboard-de/materi/${item.id}`} data-i18n="material.backToDetail">
+    <a class="back-link" href={`/dashboard-de/materi/${item.id}`}>
       ← Kembali ke Detail Materi
     </a>
     <header>
-      <p class="eyebrow" data-i18n="material.practice">Latihan Materi</p>
+      <p class="eyebrow">Latihan Materi</p>
       <h1>{label}: {item.data.judulMateri}</h1>
     </header>
     <section
       aria-label={`Kuis ${item.data.judulMateri}`}
-      data-i18n-aria-label="material.quiz"
-      data-i18n-params={JSON.stringify({ title: item.data.judulMateri })}
     >
       <Quiz
         client:load

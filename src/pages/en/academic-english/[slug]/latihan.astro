@@ -8,12 +8,12 @@ export const prerender = false;
 const slug = String(Astro.params.slug ?? '');
 const materials = await getCollection('englishAcademic');
 const item = materials.find((material) => material.id === slug || material.id.endsWith(`/${slug}`));
-if (!item) return new Response('Academic English material not found.', { status: 404 });
+if (!item) return new Response('Materi Bahasa Inggris Akademik tidak ditemukan.', { status: 404 });
 
 const allowedTypes = ['reading', 'listening', 'writing', 'speaking'];
 const requestedType = Astro.url.searchParams.get('type') ?? '';
 if (requestedType && !allowedTypes.includes(requestedType)) {
-  return new Response('Practice type not found.', { status: 404 });
+  return new Response('Jenis latihan tidak ditemukan.', { status: 404 });
 }
 const type = requestedType;
 const materialSlug = item.id.split('/').at(-1) ?? item.id;
@@ -31,22 +31,22 @@ const items = item.data.vocab.map((entry) => ({
 }));
 const sessionCount = Math.ceil(items.length / batchSize);
 const startIndex = (sessionNumber - 1) * batchSize;
-const labels = { reading: 'Reading', listening: 'Listening', writing: 'Writing', speaking: 'Speaking' };
-const pillarLabel = labels[type] ?? 'Vocabulary';
+const labels = { reading: 'Membaca', listening: 'Menyimak', writing: 'Menulis', speaking: 'Berbicara' };
+const pillarLabel = labels[type] ?? 'Kosakata';
 ---
 
-<Layout title={`${pillarLabel}: ${item.data.title} | NdUniverse`} description={`Academic English practice for ${item.data.title}.`} hideNavbar={true}>
+<Layout title={`${pillarLabel}: ${item.data.title} | NdUniverse`} description={`Latihan Bahasa Inggris Akademik untuk ${item.data.title}.`} hideNavbar={true}>
   <main class="practice-page">
     <a class="back-link" href={`/en/academic-english/${materialSlug}`}>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 18-6-6 6-6M8 12h12" /></svg>
-      <span>Back to Material</span>
+      <span>Kembali ke Materi</span>
     </a>
     <header class="page-heading">
-      <p class="eyebrow">Academic English · {item.data.jurusan}</p>
+      <p class="eyebrow">Bahasa Inggris Akademik · {item.data.jurusan}</p>
       <h1>{pillarLabel}: {item.data.title}</h1>
-      <p>Practice academic English vocabulary and build confidence one question at a time.{type ? ` Session ${sessionNumber} of ${sessionCount}.` : ''}</p>
+      <p>Latih kosakata Bahasa Inggris Akademik dan tingkatkan kepercayaan dirimu langkah demi langkah.{type ? ` Sesi ${sessionNumber} dari ${sessionCount}.` : ''}</p>
     </header>
-    <section class="practice-panel" aria-label={`${pillarLabel} practice for ${item.data.title}`}>
+    <section class="practice-panel" aria-label={`Latihan ${pillarLabel} untuk ${item.data.title}`}>
       <Quiz
         client:load
         items={items}

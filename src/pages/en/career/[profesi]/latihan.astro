@@ -7,34 +7,34 @@ export const prerender = false;
 
 const profession = String(Astro.params.profesi ?? '').toLowerCase();
 const titles = {
-  it: ['IT & Software Engineering', 'IT'],
-  business: ['Business & E-Commerce', 'Business'],
-  health: ['Healthcare', 'Healthcare'],
-  nutrition: ['Nutrition', 'Nutrition'],
+  it: ['Teknologi Informasi & Rekayasa Perangkat Lunak', 'Teknologi Informasi'],
+  business: ['Bisnis & E-Commerce', 'Bisnis'],
+  health: ['Layanan Kesehatan', 'Layanan Kesehatan'],
+  nutrition: ['Nutrisi', 'Nutrisi'],
 };
 const titleData = titles[profession];
-if (!titleData) return new Response('Career profession not found.', { status: 404 });
+if (!titleData) return new Response('Profesi karier tidak ditemukan.', { status: 404 });
 
 const careers = await getCollection('englishCareer');
 const entry = careers.find((career) => career.id === profession);
-if (!entry) return new Response('Career profession not found.', { status: 404 });
+if (!entry) return new Response('Profesi karier tidak ditemukan.', { status: 404 });
 
 const words = entry.data.vocab;
 ---
 
 <DashboardLayout
-  title={`${titleData[0]} Vocabulary Quiz | NdUniverse`}
-  description={`Practice English vocabulary for ${titleData[0]}.`}
+  title={`Kuis Kosakata ${titleData[0]} | NdUniverse`}
+  description={`Latih kosakata bahasa Inggris untuk bidang ${titleData[0]}.`}
   active="career"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <main class="quiz-page">
-    <a class="back-link" href={`/en/career/${profession}`}>← Back to {titleData[1]}</a>
+    <a class="back-link" href={`/en/career/${profession}`}>← Kembali ke {titleData[1]}</a>
     <header>
-      <p class="eyebrow">Career Prep · Vocabulary Quiz</p>
+      <p class="eyebrow">Persiapan Karier · Kuis Kosakata</p>
       <h1>{titleData[0]}</h1>
-      <p>Practice the English vocabulary for this profession in short quiz batches.</p>
+      <p>Latih kosakata bahasa Inggris untuk profesi ini dalam kelompok kuis singkat.</p>
     </header>
     <CareerQuiz client:load words={words} profession={titleData[1]} />
   </main>

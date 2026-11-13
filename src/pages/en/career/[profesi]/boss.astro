@@ -7,31 +7,31 @@ export const prerender = false;
 
 const profesi = String(Astro.params.profesi ?? '').toLowerCase();
 const titles = {
-  it: ['IT & Software Engineering', 'IT'],
-  business: ['Digital Business & E-Commerce', 'Business'],
-  health: ['Healthcare', 'Healthcare'],
-  nutrition: ['Nutrition', 'Nutrition'],
+  it: ['Teknologi Informasi & Rekayasa Perangkat Lunak', 'Teknologi Informasi'],
+  business: ['Bisnis Digital & E-Commerce', 'Bisnis'],
+  health: ['Layanan Kesehatan', 'Layanan Kesehatan'],
+  nutrition: ['Nutrisi', 'Nutrisi'],
 };
 const titleData = titles[profesi];
 if (!titleData) return new Response('Profesi tidak ditemukan.', { status: 404 });
 
 const careers = await getCollection('englishCareer');
 const entry = careers.find((career) => career.id === profesi);
-if (!entry) return new Response('Career profession not found.', { status: 404 });
+if (!entry) return new Response('Profesi karier tidak ditemukan.', { status: 404 });
 const questions = entry?.data.boss_questions ?? [];
 ---
 
 <DashboardLayout
-  title={`${titleData[0]} Interview Challenge | NdUniverse`}
-  description={`Practice English job interview questions for ${titleData[0]}.`}
+  title={`Tantangan Wawancara ${titleData[0]} | NdUniverse`}
+  description={`Latih pertanyaan wawancara kerja berbahasa Inggris untuk bidang ${titleData[0]}.`}
   active="career"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <section class="boss-page">
-    <a class="back-link" href={`/en/career/${profesi}`}>← Back to Career</a>
+    <a class="back-link" href={`/en/career/${profesi}`}>← Kembali ke Karier</a>
     <header>
-      <p class="eyebrow">Boss Fight</p>
+      <p class="eyebrow">Tantangan Akhir</p>
       <h1>{titleData[0]}</h1>
     </header>
     <BossFight

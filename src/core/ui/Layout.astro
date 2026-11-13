@@ -1,8 +1,6 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import { createAvatarSignedUrl } from '@core/auth/avatar';
-import DashboardI18n from '@core/ui/DashboardI18n.astro';
-import DashboardLanguageSwitcher from '@core/ui/DashboardLanguageSwitcher.jsx';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 import NdBot from '@core/ui/NdBot.jsx';
 
@@ -39,8 +37,6 @@ const isGermanRoute = currentPath === '/de'
   || currentPath.startsWith('/dashboard-de/');
 const accountHref = isAdminAccount ? '/admin' : isEnglishRoute ? '/en/dashboard' : isGermanRoute ? '/dashboard-de' : '/dashboard';
 const loginHref = isEnglishRoute ? '/login-en' : '/login-de';
-const languageHref = isEnglishRoute ? '/de' : '/en';
-const languageLabel = isEnglishRoute ? 'German' : 'English';
 const organizationDescription = isEnglishRoute
   ? 'NdUniverse is an interactive language learning platform with vocabulary, CEFR practice, exams, and career preparation.'
   : 'Platform belajar bahasa Jerman interaktif untuk siapa saja. 8.000+ kosakata, kuis A1-C2, Alltagsdeutsch, Fachdeutsch, dan persiapan karir.';
@@ -56,7 +52,7 @@ const organizationSchema = {
 ---
 
 <!doctype html>
-<html lang={isEnglishRoute ? 'en' : isGermanRoute ? 'de' : 'id'}>
+<html lang="id">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -97,7 +93,7 @@ const organizationSchema = {
     <div class="site-shell">
       {!hideNavbar && (
         <header class="topbar">
-          <nav class="navbar" aria-label={isEnglishRoute ? 'Primary navigation' : 'Navigasi utama'} data-i18n-aria-label={isEnglishRoute ? 'common.primaryNavigation' : 'common.primaryNavigation'}>
+          <nav class="navbar" aria-label="Navigasi utama">
             <a href={isEnglishRoute ? '/en' : '/'} class="brand" aria-label="NdUniverse">
               <img src="/logo-nduniverse.png" alt="NdUniverse" style="height: 35px;" />
             </a>
@@ -117,22 +113,22 @@ const organizationSchema = {
             <div class="nav-panel" id="primary-navigation">
               <div class="nav-links">
                 {isAdminArea ? (
-                  <span class="nav-context" data-i18n="nav.admin">Administrasi</span>
+                  <span class="nav-context">Administrasi</span>
                 ) : (
                   <>
                     {isEnglishRoute ? (
                       <>
-                        <a href="/en" data-i18n="nav.home">Home</a>
-                        <a href="/en/materi" data-i18n="nav.materials">All Materials</a>
-                        <a href="/en/pronunciation" data-i18n="nav.pronunciation">Pronunciation Guide</a>
-                        <a href="/en/grammar" data-i18n="nav.grammar">Grammar</a>
+                        <a href="/en">Beranda</a>
+                        <a href="/en/materi">Semua Materi</a>
+                        <a href="/en/pronunciation">Panduan Pengucapan</a>
+                        <a href="/en/grammar">Tata Bahasa</a>
                       </>
                     ) : (
                       <>
-                        <a href="/" data-i18n="nav.home">Beranda</a>
-                        <a href="/materi" data-i18n="nav.materials">Semua Materi</a>
-                        <a href="/pengucapan" data-i18n="nav.pronunciation">Panduan Pengucapan</a>
-                        <a href="/grammar" data-i18n="nav.grammar">Tata Bahasa</a>
+                        <a href="/">Beranda</a>
+                        <a href="/materi">Semua Materi</a>
+                        <a href="/pengucapan">Panduan Pengucapan</a>
+                        <a href="/grammar">Tata Bahasa</a>
                       </>
                     )}
                   </>
@@ -140,9 +136,8 @@ const organizationSchema = {
               </div>
               {!isAdminArea && (
                 <>
-                  <DashboardLanguageSwitcher client:load />
-                  <a class="language-switch" href={languageHref} aria-label={`Switch language to ${languageLabel}`}>
-                    {languageLabel}
+                  <a class="language-switch" href={isEnglishRoute ? '/de' : '/en'} aria-label={`Beralih ke materi ${isEnglishRoute ? 'Jerman' : 'Inggris'}`}>
+                    {isEnglishRoute ? 'Bahasa Jerman' : 'Bahasa Inggris'}
                   </a>
                 </>
               )}
@@ -173,15 +168,14 @@ const organizationSchema = {
         <div class="footer-inner">
           <p>© 2026 NdUniverse. Connecting Languages & Cultures.</p>
           <span class="footer-separator" aria-hidden="true">·</span>
-          <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer" data-i18n="footer.contact">{isEnglishRoute ? 'Contact Admin (WhatsApp)' : 'Kontak Admin (WhatsApp)'}</a>
+          <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Hubungi Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>
-          <a href="https://ndhistira.my.id" target="_blank" rel="noopener noreferrer" data-i18n="footer.portfolio">{isEnglishRoute ? 'Created by Nanda Yudhistira · View Portfolio' : 'Created by Nanda Yudhistira · Lihat Portofolio'}</a>
-          <span class="audio-attribution" data-i18n="footer.audio">Audio powered by Microsoft Edge TTS</span>
+          <a href="https://ndhistira.my.id" target="_blank" rel="noopener noreferrer">Dibuat oleh Nanda Yudhistira · Lihat Portofolio</a>
+          <span class="audio-attribution">Audio didukung Microsoft Edge TTS</span>
         </div>
       </footer>
     </div>
     {!hideBot && !isExamRoute && <NdBot client:load mode="study" />}
-    <DashboardI18n />
   </body>
 </html>
 
@@ -189,9 +183,8 @@ const organizationSchema = {
   const closeMenu = () => {
     const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
     const topbar = document.querySelector<HTMLElement>('.topbar');
-    const isEnglishRoute = window.location.pathname === '/en' || window.location.pathname.startsWith('/en/');
     menuToggle?.setAttribute('aria-expanded', 'false');
-    menuToggle?.setAttribute('aria-label', isEnglishRoute ? 'Open menu' : 'Buka menu');
+    menuToggle?.setAttribute('aria-label', 'Buka menu');
     topbar?.classList.remove('menu-open');
   };
 

@@ -11,14 +11,14 @@ const LEVEL_STEPS = [
   { threshold: 700, label: 'A2 Lanjut', nextThreshold: 1000, nextLabel: 'B1' },
   { threshold: 1000, label: 'B1', nextThreshold: 1400, nextLabel: 'B2' },
   { threshold: 1400, label: 'B2', nextThreshold: 1800, nextLabel: 'C1' },
-  { threshold: 1800, label: 'C1', nextThreshold: 2200, nextLabel: 'C2 (Mastery)' },
-  { threshold: 2200, label: 'C2 (Mastery)', nextThreshold: null, nextLabel: null },
+  { threshold: 1800, label: 'C1', nextThreshold: 2200, nextLabel: 'C2 (Mahir)' },
+  { threshold: 2200, label: 'C2 (Mahir)', nextThreshold: null, nextLabel: null },
 ];
 
 const user = Astro.locals.user;
 const profile = Astro.locals.profile;
 const nim = profile?.nim || user?.user_metadata?.nim || '';
-const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || nim || 'Member';
+const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || nim || 'Anggota';
 const accessDenied = Astro.url.searchParams.get('error') === 'admin-only';
 const { data: progressData } = user
   ? await Astro.locals.supabase
@@ -72,21 +72,21 @@ const completedMaterials = progressRows.flatMap((row) => {
   profile={profile}
 >
   <section class="dashboard-content">
-      {accessDenied && <p class="access-notice" role="alert" data-i18n="dashboard.adminAccessDenied">Akses Admin ditolak. Akun ini tidak memiliki izin administrator.</p>}
+      {accessDenied && <p class="access-notice" role="alert">Akses Admin ditolak. Akun ini tidak memiliki izin administrator.</p>}
       <header class="dashboard-heading">
-        <p class="eyebrow" data-i18n="dashboard.portal">Portal Pembelajaran</p>
-        <h1><span data-i18n="dashboard.germanGreeting">Halo, </span>{displayName} <span class="greeting-wave" aria-hidden="true">👋</span></h1>
-        <p data-i18n="dashboard.germanContinue">Siap melanjutkan perjalanan belajar bahasa Jerman?</p>
+        <p class="eyebrow">Portal Pembelajaran</p>
+        <h1>Halo, {displayName} <span class="greeting-wave" aria-hidden="true">👋</span></h1>
+        <p>Siap melanjutkan perjalanan belajar bahasa Jerman?</p>
       </header>
 
       <section class="welcome-strip">
         <div>
-          <p class="eyebrow" data-i18n="dashboard.welcome">Lanjutkan belajar</p>
-          <h2 data-i18n="dashboard.nextSession">Saatnya memulai sesi baru.</h2>
-          <p data-i18n="dashboard.nextSessionDescription">Pilih materi, pelajari kosakata, lalu selesaikan latihan secara bertahap.</p>
-          <a href="/materi"><span data-i18n="dashboard.openCatalog">Buka katalog</span> <span aria-hidden="true">→</span></a>
+          <p class="eyebrow">Lanjutkan belajar</p>
+          <h2>Saatnya memulai sesi baru.</h2>
+          <p>Pilih materi, pelajari kosakata, lalu selesaikan latihan secara bertahap.</p>
+          <a href="/materi"><span>Buka katalog</span> <span aria-hidden="true">→</span></a>
         </div>
-        <a class="welcome-mark" href="/materi" aria-label="Buka katalog materi" data-i18n-aria-label="dashboard.openCatalog">
+        <a class="welcome-mark" href="/materi" aria-label="Buka katalog materi">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 17.5v-11Z" />
             <path d="M8 8h8M8 12h8M8 16h5" />
@@ -96,38 +96,37 @@ const completedMaterials = progressRows.flatMap((row) => {
 
       <section class="dynamic-level-card" aria-labelledby="dynamic-level-title">
         <div class="level-summary">
-          <p class="level-eyebrow" data-i18n="dashboard.germanLevel">Level Bahasa Jerman</p>
-          <p class="level-caption" data-i18n="dashboard.currentLevel">Level Saat Ini</p>
+          <p class="level-eyebrow">Level Bahasa Jerman</p>
+          <p class="level-caption">Level Saat Ini</p>
           <h2 id="dynamic-level-title">{currentLevel.label}</h2>
-          <p class="level-points" data-i18n="dashboard.pointsEarned" data-i18n-params={JSON.stringify({ points: totalPoints })}>{totalPoints} poin terkumpul dari materi yang menyelesaikan 4 pilar</p>
+          <p class="level-points">{totalPoints} poin terkumpul dari materi yang menyelesaikan 4 pilar</p>
         </div>
         <div class="level-next-step">
           {currentLevel.nextThreshold ? (
             <>
               <div class="level-progress-heading">
-                <span data-i18n="dashboard.towardLevel" data-i18n-params={JSON.stringify({ level: currentLevel.nextLabel })}>Menuju {currentLevel.nextLabel}</span>
+                <span>Menuju {currentLevel.nextLabel}</span>
                 <strong>{levelProgressPercent}%</strong>
               </div>
               <div
                 class="level-progress-track"
                 role="progressbar"
                 aria-label={`Progress menuju ${currentLevel.nextLabel}`}
-                data-i18n-aria-label="dashboard.progressAria"
                 aria-valuemin="0"
                 aria-valuemax="100"
                 aria-valuenow={levelProgressPercent}
               >
                 <span style={`width: ${levelProgressPercent}%`} />
               </div>
-              <p data-i18n="dashboard.pointsToLevel" data-i18n-params={JSON.stringify({ points: totalPoints, threshold: currentLevel.nextThreshold, level: currentLevel.nextLabel })}>{totalPoints} / {currentLevel.nextThreshold} poin untuk naik ke {currentLevel.nextLabel}</p>
+              <p>{totalPoints} / {currentLevel.nextThreshold} poin untuk naik ke {currentLevel.nextLabel}</p>
             </>
           ) : (
             <>
-              <div class="level-progress-heading"><span data-i18n="dashboard.highestLevel">Level tertinggi</span><strong>100%</strong></div>
-              <div class="level-progress-track" role="progressbar" aria-label="Level tertinggi tercapai" data-i18n-aria-label="dashboard.highestLevel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+              <div class="level-progress-heading"><span>Level tertinggi</span><strong>100%</strong></div>
+              <div class="level-progress-track" role="progressbar" aria-label="Level tertinggi tercapai" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
                 <span style="width: 100%" />
               </div>
-              <p data-i18n="dashboard.masteryReached">C2 (Mastery) tercapai. Lanjutkan belajar untuk mempertahankan ritme.</p>
+              <p>C2 (Mahir) tercapai. Lanjutkan belajar untuk mempertahankan ritme.</p>
             </>
           )}
         </div>
@@ -136,28 +135,28 @@ const completedMaterials = progressRows.flatMap((row) => {
       <section class="learning-section" aria-labelledby="learning-title">
         <div class="learning-heading">
           <div>
-            <p class="eyebrow" data-i18n="dashboard.learningPath">Jalur Belajar</p>
-            <h2 id="learning-title" data-i18n="dashboard.chooseLearning">Pilih ruang belajarmu</h2>
+            <p class="eyebrow">Jalur Belajar</p>
+            <h2 id="learning-title">Pilih ruang belajarmu</h2>
           </div>
-          <a href="/materi"><span data-i18n="dashboard.allMaterials">Semua Materi</span> <span aria-hidden="true">→</span></a>
+          <a href="/materi"><span>Semua Materi</span> <span aria-hidden="true">→</span></a>
         </div>
         <div class="learning-grid">
           <a class="learning-card" href="/materi">
             <span class="learning-index">01</span>
-            <h3 data-i18n="nav.materials">Katalog Materi</h3>
-            <p data-i18n="dashboard.exploreAll">Jelajahi seluruh materi bahasa Jerman.</p>
+            <h3>Katalog Materi</h3>
+            <p>Jelajahi seluruh materi bahasa Jerman.</p>
             <span class="learning-arrow" aria-hidden="true">→</span>
           </a>
           <a class="learning-card" href="/dashboard-de/alltags">
             <span class="learning-index">02</span>
             <h3>Alltagsdeutsch</h3>
-            <p data-i18n="dashboard.dailyGerman">Bangun komunikasi sehari-hari dari A1 sampai C2.</p>
+            <p>Bangun komunikasi sehari-hari dari A1 sampai C2.</p>
             <span class="learning-arrow" aria-hidden="true">→</span>
           </a>
           <a class="learning-card" href="/fachdeutsch">
             <span class="learning-index">03</span>
             <h3>Fachdeutsch</h3>
-            <p data-i18n="dashboard.studyField">Pelajari kosakata sesuai bidang studi.</p>
+            <p>Pelajari kosakata sesuai bidang studi.</p>
             <span class="learning-arrow" aria-hidden="true">→</span>
           </a>
         </div>
@@ -166,16 +165,16 @@ const completedMaterials = progressRows.flatMap((row) => {
       <div class="dashboard-grid">
         <article class="dashboard-card" id="status">
           <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" /></svg></span>
-          <p class="card-label" data-i18n="dashboard.profileStatus">Status Profil</p>
-          <h2 data-i18n={profile?.nama_lengkap && profile?.nomor_wa ? 'dashboard.profileComplete' : 'dashboard.completeProfile'}>{profile?.nama_lengkap && profile?.nomor_wa ? 'Profil lengkap' : 'Lengkapi profil'}</h2>
-          <p data-i18n={profile?.nama_lengkap && profile?.nomor_wa ? 'dashboard.profileUpdated' : 'dashboard.profilePrompt'}>{profile?.nama_lengkap && profile?.nomor_wa ? 'Informasi akunmu sudah diperbarui.' : 'Tambahkan nama dan nomor WhatsApp agar profilmu siap.'}</p>
-          <a href="/dashboard-de/profil"><span data-i18n="dashboard.openProfile">Buka profil</span> <span aria-hidden="true">→</span></a>
+          <p class="card-label">Status Profil</p>
+          <h2>{profile?.nama_lengkap && profile?.nomor_wa ? 'Profil lengkap' : 'Lengkapi profil'}</h2>
+          <p>{profile?.nama_lengkap && profile?.nomor_wa ? 'Informasi akunmu sudah diperbarui.' : 'Tambahkan nama dan nomor WhatsApp agar profilmu siap.'}</p>
+          <a href="/dashboard-de/profil"><span>Buka profil</span> <span aria-hidden="true">→</span></a>
         </article>
         <article class="dashboard-card" id="total-xp">
           <span class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></svg></span>
-          <p class="card-label" data-i18n="dashboard.learningProgress">Progress Belajar</p>
+          <p class="card-label">Progres Belajar</p>
           <h2>{totalXp} XP</h2>
-          <p title="XP didapat dari semua materi. Level CEFR hanya dihitung dari Alltagsdeutsch." data-i18n-title="dashboard.xpDescription" data-i18n="dashboard.xpDescription">
+          <p title="XP didapat dari semua materi. Level CEFR hanya dihitung dari Alltagsdeutsch.">
             XP didapat dari semua materi. Level CEFR hanya dihitung dari Alltagsdeutsch.
           </p>
         </article>
@@ -184,10 +183,10 @@ const completedMaterials = progressRows.flatMap((row) => {
       <section class="completed-section" aria-labelledby="completed-title">
         <div class="completed-heading">
           <div>
-            <p class="eyebrow" data-i18n="dashboard.achievements">Pencapaian</p>
-            <h2 id="completed-title" data-i18n="dashboard.completedMaterials">Materi selesai</h2>
+            <p class="eyebrow">Pencapaian</p>
+            <h2 id="completed-title">Materi selesai</h2>
           </div>
-          <span data-i18n="dashboard.completedCount" data-i18n-params={JSON.stringify({ count: completedMaterials.length })}>{completedMaterials.length} materi</span>
+          <span>{completedMaterials.length} materi</span>
         </div>
         {completedMaterials.length > 0 ? (
           <ul class="completed-list">
@@ -196,7 +195,7 @@ const completedMaterials = progressRows.flatMap((row) => {
             ))}
           </ul>
         ) : (
-          <p class="completed-empty" data-i18n="dashboard.noCompleted">Belum ada materi yang seluruh sesinya lulus.</p>
+          <p class="completed-empty">Belum ada materi yang seluruh sesinya lulus.</p>
         )}
       </section>
   </section>

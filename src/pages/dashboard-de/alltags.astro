@@ -14,15 +14,15 @@ const user = Astro.locals.user;
   profile={Astro.locals.profile}
 >
   <section class="catalog-page">
-    <a class="back-link" href="/dashboard-de" data-i18n="catalog.back">← Kembali ke Dashboard</a>
+    <a class="back-link" href="/dashboard-de">← Kembali ke Dasbor</a>
     <header>
       <div>
-        <p class="eyebrow" data-i18n="catalog.dailyEyebrow">Bahasa sehari-hari</p>
+        <p class="eyebrow">Bahasa sehari-hari</p>
         <div class="heading-title">
-          <h1 data-i18n="catalog.selectLevel">Pilih Level Kamu</h1>
-          <HelpHint title="Belajar Bertahap" textKey="help.alltags" titleKey="catalog.help" client:load />
+          <h1>Pilih Level Kamu</h1>
+          <HelpHint title="Belajar Bertahap" text="Pilih materi Alltagsdeutsch untuk level yang ingin dipelajari, lalu latih empat pilar keterampilan." client:load />
         </div>
-        <p data-i18n="catalog.chooseCefr">Pilih materi berdasarkan level CEFR.</p>
+        <p>Pilih materi berdasarkan level CEFR.</p>
       </div>
       <a class="goethe-button" href="/de/ujian/goethe">Ujian Goethe</a>
     </header>
@@ -30,8 +30,8 @@ const user = Astro.locals.user;
       {['A1','A2','B1','B2','C1','C2'].map((level) => (
         <a class="level-card" href={`/dashboard-de/alltags/${level}`}>
           <span>{level}</span>
-          <h2 data-i18n="catalog.levelName" data-i18n-params={JSON.stringify({ level })}>Level {level}</h2>
-          <p data-i18n="catalog.openLevelMaterials" data-i18n-params={JSON.stringify({ level })}>Buka katalog materi Alltagsdeutsch {level}</p>
+          <h2>Level {level}</h2>
+          <p>Buka katalog materi Alltagsdeutsch {level}</p>
         </a>
       ))}
     </div>

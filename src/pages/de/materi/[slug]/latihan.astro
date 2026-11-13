@@ -18,10 +18,10 @@ const validTypes = ['reading', 'listening', 'writing', 'speaking'];
 if (!validTypes.includes(typeParam)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
 const type = typeParam;
 const labels = {
-  reading: 'Reading / Lesen',
-  listening: 'Listening / Hören',
-  writing: 'Writing / Schreiben',
-  speaking: 'Speaking / Sprechen',
+  reading: 'Membaca',
+  listening: 'Menyimak',
+  writing: 'Menulis',
+  speaking: 'Berbicara',
 };
 const questions = item.data.vocab.slice(0, 20);
 const batchSize = 5;

@@ -145,27 +145,27 @@ export default function BossFight({
             <div class="office-desk">
               <div class="desk-laptop" />
               <div class="desk-chair" />
-              <div class={bossEntered ? 'boss-character boss-entered' : 'boss-character'} aria-label="Herr Müller, HRD" data-i18n-aria-label="career.bossCharacter">
+              <div class={bossEntered ? 'boss-character boss-entered' : 'boss-character'} aria-label="Bapak Müller, HRD">
                 👨‍💼
               </div>
             </div>
             <div class={bossEntered ? 'office-door door-open' : 'office-door'}>
-              <span data-i18n="career.doorLabel">PINTU HRD</span>
+              <span>PINTU HRD</span>
             </div>
           </div>
 
           {!bossEntered ? (
             <div class="intro-dialog">
-              <p data-i18n="career.enteringInterview">Anda memasuki ruang wawancara...</p>
-              <button class="boss-start-button" type="button" onClick={knockDoor} data-i18n="career.knockDoor">Ketuk Pintu</button>
+              <p>Anda memasuki ruang wawancara...</p>
+              <button class="boss-start-button" type="button" onClick={knockDoor}>Ketuk Pintu</button>
             </div>
           ) : (
             <div class="intro-dialog boss-speech">
               <div class="boss-avatar" aria-hidden="true">👨‍💼</div>
               <div>
                 <strong>Herr Müller</strong>
-                <p>Guten Tag! Bitte setzen Sie sich. Ich bin Herr Müller, HRD di sini.</p>
-                <button class="boss-start-button" type="button" onClick={startInterview} data-i18n="career.startInterview">Mulai Wawancara</button>
+                <p>Selamat datang! Silakan duduk. Saya Bapak Müller, HRD di sini.</p>
+                <button class="boss-start-button" type="button" onClick={startInterview}>Mulai Wawancara</button>
               </div>
             </div>
           )}
@@ -176,9 +176,9 @@ export default function BossFight({
         <div class="cinematic-overlay" aria-live="polite">
           <div class={`cinematic-room room-${doorState}`}>
             <div class="cinematic-header">
-              <span class="career-section-label" data-i18n="career.bossFightTitle" data-i18n-params={JSON.stringify({ profession })}>Boss Fight: {profession}</span>
+              <span class="career-section-label">Tantangan Akhir: {profession}</span>
               {gameState === 'interview' && (
-                <span class="boss-progress" data-i18n="career.interviewProgress" data-i18n-params={JSON.stringify({ current: Math.min(questionIndex + 1, interviewQuestions.length), total: interviewQuestions.length })}>
+                <span class="boss-progress">
                   Pertanyaan {Math.min(questionIndex + 1, interviewQuestions.length)} dari {interviewQuestions.length}
                 </span>
               )}
@@ -189,7 +189,7 @@ export default function BossFight({
                 <div class="door-zoom-room">
                   <div class="door-wall" />
                   <div class="door-frame">
-                    <span class="room-label" data-i18n="career.doorLabel">RUANGAN HRD</span>
+                    <span class="room-label">RUANG HRD</span>
                     <div class={`cinematic-door door-${doorState}`}>
                       <i aria-hidden="true" />
                     </div>
@@ -198,30 +198,30 @@ export default function BossFight({
                 <div class="door-action">
                   {doorState === 'closed' && (
                     <>
-                      <p data-i18n="career.enterRoomPrompt">Silakan masuk ke ruangan HRD untuk memulai.</p>
-                      <button class="boss-start-button" type="button" onClick={knockDoor} data-i18n="career.enterRoom">Masuk ke Ruangan</button>
+                      <p>Silakan masuk ke ruang HRD untuk memulai.</p>
+                      <button class="boss-start-button" type="button" onClick={knockDoor}>Masuk ke Ruangan</button>
                     </>
                   )}
-                  {doorState === 'opening' && <p data-i18n="career.doorOpening">Pintu terbuka...</p>}
-                  {doorState === 'entering' && <p data-i18n="career.enteringRoom">Memasuki ruang wawancara...</p>}
+                  {doorState === 'opening' && <p>Pintu sedang terbuka...</p>}
+                  {doorState === 'entering' && <p>Memasuki ruang wawancara...</p>}
                 </div>
               </div>
             )}
 
             <div class="inside-door-backdrop" aria-hidden="true">
-              <span class="room-label" data-i18n="career.doorLabel">RUANGAN HRD</span>
+              <span class="room-label">RUANG HRD</span>
               <div class="inside-door-panel" />
             </div>
 
             {doorState === 'inside' && gameState === 'intro' && (
               <div class="cinematic-intro">
-                <div class="cinematic-boss" aria-label="Herr Müller, HRD" data-i18n-aria-label="career.bossCharacter">
+                <div class="cinematic-boss" aria-label="Bapak Müller, HRD">
                   <span class="boss-silhouette" aria-hidden="true"><i class="boss-head" /><i class="boss-hair" /><i class="boss-body" /><i class="boss-tie" /></span>
                 </div>
                 <div class="boss-speech-bubble">
                   <strong>Herr Müller</strong>
-                  <p>Guten Tag! Bitte setzen Sie sich. Ich bin Herr Müller, HRD di sini.</p>
-                  <button class="boss-start-button" type="button" onClick={startInterview} data-i18n="career.startInterview">Mulai Wawancara</button>
+                  <p>Selamat datang! Silakan duduk. Saya Bapak Müller, HRD di sini.</p>
+                  <button class="boss-start-button" type="button" onClick={startInterview}>Mulai Wawancara</button>
                 </div>
               </div>
             )}
@@ -235,19 +235,19 @@ export default function BossFight({
                   </div>
                   <div class="boss-desk" aria-hidden="true"><span /></div>
                   <span>Herr Müller</span>
-                  <small data-i18n="career.interviewerRole">HRD Interview</small>
+                  <small>Wawancara HRD</small>
                 </div>
                 <div class="cinematic-chat-panel">
                   <div class="boss-chat" aria-live="polite">
                     {messages.map((message, index) => (
                       <div key={`${message.speaker}-${index}`} class={`chat-message ${message.speaker}`}>
-                        <span class="chat-speaker" data-i18n={message.speaker === 'hrd' ? 'career.speakerManager' : message.speaker === 'user' ? 'career.speakerYou' : 'career.speakerInfo'}>{message.speaker === 'hrd' ? 'HRD' : message.speaker === 'user' ? 'Anda' : 'Info'}</span>
+                        <span class="chat-speaker">{message.speaker === 'hrd' ? 'HRD' : message.speaker === 'user' ? 'Anda' : 'Info'}</span>
                         {message.text}
                       </div>
                     ))}
                   </div>
                   <div class="boss-interview">
-                    <label for="boss-answer" data-i18n="career.answerLabel">Jawaban Anda</label>
+                    <label for="boss-answer">Jawaban Anda</label>
                     <textarea
                       id="boss-answer"
                       rows="4"
@@ -257,14 +257,13 @@ export default function BossFight({
                         setAnswer(event.currentTarget.value);
                       }}
                       placeholder="Jawab dalam bahasa Jerman..."
-                      data-i18n-placeholder="career.answerPlaceholderGerman"
                     />
                     <div class="boss-actions">
                       <button class="boss-mic-button" type="button" onClick={startListening} disabled={listening}>
-                        <span data-i18n={listening ? 'career.listening' : 'career.useMic'}>{listening ? '🎤 Mendengarkan...' : '🎤 Gunakan Mic'}</span>
+                        <span>{listening ? '🎤 Mendengarkan...' : '🎤 Gunakan Mikrofon'}</span>
                       </button>
                       <button class="boss-finish-button" type="button" onClick={submitAnswer} disabled={!answer.trim()}>
-                        <span data-i18n="career.sendAnswer">Kirim Jawaban</span>
+                        <span>Kirim Jawaban</span>
                       </button>
                     </div>
                   </div>
@@ -275,15 +274,13 @@ export default function BossFight({
             {doorState === 'inside' && gameState === 'finished' && (
               <div class={passedInterview ? 'boss-finished boss-victory' : 'boss-finished'}>
                 <span class="finished-icon" aria-hidden="true">{passedInterview ? '🏆' : '📋'}</span>
-                <p class="career-section-label" data-i18n="career.bossFightComplete">Boss Fight Selesai</p>
-                <h2 data-i18n="career.interviewFinished">Wawancara Selesai!</h2>
+                <p class="career-section-label">Tantangan Selesai</p>
+                <h2>Wawancara Selesai!</h2>
                 <p
-                  data-i18n={passedInterview ? 'career.passedInterview' : 'career.completedInterview'}
-                  data-i18n-params={JSON.stringify({ profession })}
                 >{passedInterview ? `Selamat, Anda Lulus Wawancara ${profession}!` : `Anda menyelesaikan wawancara ${profession}.`}</p>
-                <strong data-i18n="career.keywordScore" data-i18n-params={JSON.stringify({ correct: correctAnswers, total: interviewQuestions.length })}>{correctAnswers}/{interviewQuestions.length} pertanyaan memenuhi kata kunci.</strong>
-                {passedInterview && <p data-i18n="career.badgeEarned" data-i18n-params={JSON.stringify({ badge })}>Badge {badge} berhasil diperoleh.</p>}
-                <a class="boss-return-button" href={returnHref} data-i18n="career.backToMaterial">Kembali ke Materi</a>
+                <strong>{correctAnswers}/{interviewQuestions.length} pertanyaan memenuhi kata kunci.</strong>
+                {passedInterview && <p>Lencana {badge} berhasil diperoleh.</p>}
+                <a class="boss-return-button" href={returnHref}>Kembali ke Materi Karier</a>
               </div>
             )}
           </div>

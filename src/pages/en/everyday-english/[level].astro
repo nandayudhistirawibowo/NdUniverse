@@ -7,7 +7,7 @@ export const prerender = false;
 const allowedLevels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const requestedLevel = String(Astro.params.level ?? '').toUpperCase();
 const level = allowedLevels.find((allowedLevel) => allowedLevel === requestedLevel);
-if (!level) return new Response('Level not found.', { status: 404 });
+if (!level) return new Response('Level tidak ditemukan.', { status: 404 });
 
 const materials = (await getCollection('englishEveryday'))
   .filter((item) => item.data.track === 'Everyday English' && item.data.level === level)
@@ -15,18 +15,18 @@ const materials = (await getCollection('englishEveryday'))
 ---
 
 <DashboardLayout
-  title={`Everyday English ${level} | NdUniverse`}
-  description={`Everyday English materials for CEFR level ${level}.`}
+  title={`Bahasa Inggris Sehari-hari ${level} | NdUniverse`}
+  description={`Materi Bahasa Inggris Sehari-hari untuk level CEFR ${level}.`}
   active="everydayEnglish"
   user={Astro.locals.user}
   profile={Astro.locals.profile}
 >
   <main class="level-page">
-    <a class="back-link" href="/en/everyday-english">← Back to Everyday English</a>
+    <a class="back-link" href="/en/everyday-english">← Kembali ke Bahasa Inggris Sehari-hari</a>
     <header>
-      <p class="eyebrow">Everyday English · Level {level}</p>
-      <h1>Level {level} Materials</h1>
-      <p>Choose a material to practice English vocabulary and the four core skills.</p>
+      <p class="eyebrow">Bahasa Inggris Sehari-hari · Level {level}</p>
+      <h1>Materi Level {level}</h1>
+      <p>Pilih materi untuk berlatih kosakata bahasa Inggris dan empat keterampilan utama.</p>
     </header>
     {materials.length ? (
       <div class="material-grid">
@@ -34,14 +34,14 @@ const materials = (await getCollection('englishEveryday'))
           <article class="material-card">
             <h2>{item.data.title ?? item.id}</h2>
             <p>{item.data.description ?? ''}</p>
-            <a href={`/en/materi/${item.id.split('/').at(-1)}`}>Open Material →</a>
+            <a href={`/en/materi/${item.id.split('/').at(-1)}`}>Buka Materi →</a>
           </article>
         ))}
       </div>
     ) : (
-      <p class="empty-state">No Everyday English materials are available for this level yet.</p>
+      <p class="empty-state">Materi Bahasa Inggris Sehari-hari untuk level ini belum tersedia.</p>
     )}
-    <nav class="exam-links" aria-label={`Level ${level} exam practice`}>
+    <nav class="exam-links" aria-label={`Latihan ujian level ${level}`}>
       <a href={`/en/exam/ielts/${level.toLowerCase()}`}>IELTS {level}</a>
       <a href={`/en/exam/toefl/${level.toLowerCase()}`}>TOEFL {level}</a>
     </nav>

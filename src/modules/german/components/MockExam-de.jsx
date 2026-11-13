@@ -138,17 +138,17 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     <section class="mock-exam">
       <header class="exam-heading">
         <div>
-          <p class="eyebrow" data-i18n="exam.titleGoethe">Goethe-Zertifikat A1 Adaptation</p>
-          <h1 data-i18n="exam.titleMock" data-i18n-params={JSON.stringify({ level })}>Mock Exam {level}</h1>
-          <p data-i18n="exam.tasksSummaryDe">22 task: 10 Lesen, 10 Hören, 1 Schreiben, 1 Sprechen</p>
+          <p class="eyebrow">Adaptasi Goethe-Zertifikat A1</p>
+          <h1>Simulasi Ujian {level}</h1>
+          <p>22 soal: 10 membaca, 10 menyimak, 1 menulis, dan 1 berbicara</p>
         </div>
-        <span class="exam-status" data-i18n="exam.passingScore">Target kelulusan: 60%</span>
+        <span class="exam-status">Nilai kelulusan: 60%</span>
       </header>
 
       {unavailable || examTasks.length === 0 ? (
         <section class="exam-result failed" role="alert">
-          <h2 data-i18n="exam.unavailableTitle">Soal untuk level ini belum tersedia.</h2>
-          <p data-i18n="exam.unavailableDescription">Silakan hubungi admin atau coba level lain setelah materi ditambahkan.</p>
+          <h2>Soal untuk level ini belum tersedia.</h2>
+          <p>Silakan hubungi admin atau coba level lain setelah materi tersedia.</p>
         </section>
       ) : (
         <>
@@ -156,12 +156,10 @@ export default function MockExam({ level, tasks, unavailable = false }) {
             <div class="exam-task" style="text-align: center; padding: 2rem 1.5rem;">
               <p
                 style="font-weight: 700; margin-bottom: 0.5rem;"
-                data-i18n="exam.mockStartIntro"
-                data-i18n-params={JSON.stringify({ level })}
-              >Ujian Mock Goethe {level} dengan pengawasan Anti-Cheat.</p>
-              <p style="color: var(--muted); margin-bottom: 1.5rem;" data-i18n="exam.fullscreenWarning">Ujian akan berjalan dalam mode layar penuh (fullscreen). Mohon tidak meninggalkan tab atau keluar dari fullscreen.</p>
+              >Simulasi ujian Goethe {level} ini dilengkapi perlindungan anti-kecurangan.</p>
+              <p style="color: var(--muted); margin-bottom: 1.5rem;">Ujian berjalan dalam mode layar penuh. Jangan berpindah tab atau keluar dari layar penuh.</p>
               <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
-                <span data-i18n="exam.startExam">Mulai Ujian</span>
+                <span>Mulai Ujian</span>
               </button>
             </div>
           ) : (
@@ -170,8 +168,8 @@ export default function MockExam({ level, tasks, unavailable = false }) {
         {examTasks.map((task, index) => (
           <li class="exam-task" key={`${task.kind}-${index}`}>
             <div class="task-meta">
-              <span data-i18n={task.kind === 'reading' ? 'exam.module.lesen' : task.kind === 'listening' ? 'exam.module.hoeren' : task.kind === 'writing' ? 'exam.module.schreiben' : 'exam.module.sprechen'}>{task.kindLabel}</span>
-              <strong data-i18n="exam.taskNumber" data-i18n-params={JSON.stringify({ number: index + 1 })}>Task {index + 1}</strong>
+              <span>{task.kind === 'reading' ? 'Membaca' : task.kind === 'listening' ? 'Menyimak' : task.kind === 'writing' ? 'Menulis' : 'Berbicara'}</span>
+              <strong>Soal {index + 1}</strong>
             </div>
             {task.passage && <blockquote>{task.passage}</blockquote>}
             {task.kind === 'listening' && (
@@ -180,9 +178,8 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                 type="button"
                 onClick={(event) => playListeningAudio(event, task)}
                 aria-label="Putar audio soal"
-                data-i18n-aria-label="exam.playQuestionAudio"
               >
-                <span data-i18n="exam.playAudio">🔊 Putar Audio</span>
+                <span>🔊 Putar Audio</span>
               </button>
             )}
             <p class="prompt">{task.prompt}</p>
@@ -217,7 +214,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                     onClick={() => startSpeaking(index)}
                     disabled={finished || isListening}
                   >
-                    <span data-i18n={isListening ? 'exam.recording' : 'exam.recordAnswer'}>{isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}</span>
+                    <span>{isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}</span>
                   </button>
                 )}
                 <textarea
@@ -229,13 +226,10 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                   }}
                   disabled={finished}
                   placeholder={task.kind === 'writing' ? 'Tulis jawaban bahasa Jerman...' : 'Hasil rekaman atau jawaban tertulis...'}
-                  data-i18n-placeholder={task.kind === 'writing' ? 'exam.writeGerman' : 'exam.recordingOrWritten'}
                 />
                 {task.kind === 'speaking' && speechMessage && (
                   <p
                     role="status"
-                    data-i18n={speechMessage.key}
-                    data-i18n-params={speechMessage.params ? JSON.stringify(speechMessage.params) : undefined}
                   >{speechMessage.fallback}</p>
                 )}
               </div>
@@ -246,20 +240,20 @@ export default function MockExam({ level, tasks, unavailable = false }) {
 
       {!finished ? (
         <button class="submit-button" type="button" onClick={submitExam}>
-          <span data-i18n="exam.complete">Selesaikan Ujian</span>
+          <span>Selesaikan Ujian</span>
         </button>
       ) : (
         <section class={`exam-result ${score.passed ? 'passed' : 'failed'}`} aria-live="polite">
-          <p class="result-label" data-i18n={score.passed ? 'exam.resultPassed' : 'exam.resultFailed'}>{score.passed ? 'Selamat!' : 'Belum Lulus'}</p>
+          <p class="result-label">{score.passed ? 'Lulus!' : 'Belum Lulus'}</p>
           <h2>{score.percent}%</h2>
           <p>
-            <span data-i18n="exam.correctTasksDe" data-i18n-params={JSON.stringify({ correct: score.correct, total: score.total })}>{score.correct} dari {score.total} task benar.</span>{' '}
-            <span data-i18n={score.passed ? 'exam.meetStandard' : 'exam.reviewRetry'}>{score.passed ? 'Anda memenuhi standar kelulusan 60%.' : 'Silakan ulangi latihan dan coba lagi.'}</span>
+            <span>{score.correct} dari {score.total} soal benar.</span>{' '}
+            <span>{score.passed ? 'Nilai kelulusan 60% tercapai.' : 'Pelajari kembali materi dan coba lagi.'}</span>
           </p>
           {score.passed && (
             <>
-              <a href={`/sertifikat/${level.toLowerCase()}`} data-i18n="exam.certificate">Lihat Sertifikat</a>
-              <a href="/dashboard" data-i18n="exam.backDashboard">Kembali ke Dashboard</a>
+              <a href={`/sertifikat/${level.toLowerCase()}`}>Lihat Sertifikat</a>
+              <a href="/dashboard">Kembali ke Dasbor</a>
             </>
           )}
         </section>

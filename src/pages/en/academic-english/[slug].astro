@@ -37,10 +37,10 @@ const vocab = item.data.vocab.map((entry) => ({
 const sessionCount = Math.ceil(vocab.length / 5);
 
 const pillars = [
-  { type: 'reading', label: 'Reading', available: Boolean(item.data.reading_text || item.data.reading_question || item.data.vocab.some((entry) => entry.reading_text || entry.reading_question)) },
-  { type: 'listening', label: 'Listening', available: Boolean(item.data.listening_audio || item.data.vocab.some((entry) => entry.listening_audio)) },
-  { type: 'writing', label: 'Writing', available: Boolean(item.data.writing_instruction || item.data.vocab.some((entry) => entry.writing_instruction)) },
-  { type: 'speaking', label: 'Speaking', available: Boolean(item.data.speaking_question || item.data.vocab.some((entry) => entry.speaking_question)) },
+  { type: 'reading', label: 'Membaca', available: Boolean(item.data.reading_text || item.data.reading_question || item.data.vocab.some((entry) => entry.reading_text || entry.reading_question)) },
+  { type: 'listening', label: 'Menyimak', available: Boolean(item.data.listening_audio || item.data.vocab.some((entry) => entry.listening_audio)) },
+  { type: 'writing', label: 'Menulis', available: Boolean(item.data.writing_instruction || item.data.vocab.some((entry) => entry.writing_instruction)) },
+  { type: 'speaking', label: 'Berbicara', available: Boolean(item.data.speaking_question || item.data.vocab.some((entry) => entry.speaking_question)) },
 ];
 ---
 
@@ -52,22 +52,22 @@ const pillars = [
   profile={Astro.locals.profile}
 >
   <main class="academic-material">
-    <a class="back-link" href="/en/academic-english">← Back to Academic English</a>
+    <a class="back-link" href="/en/academic-english">← Kembali ke Bahasa Inggris Akademik</a>
     <header class="material-heading">
-      <p class="eyebrow">{item.data.jurusan} · Academic English</p>
+      <p class="eyebrow">{item.data.jurusan} · Bahasa Inggris Akademik</p>
       <h1>{item.data.title}</h1>
       <p>{item.data.description}</p>
     </header>
 
     <section class="vocabulary-section" aria-labelledby="vocabulary-heading">
       <div class="section-heading">
-        <h2 id="vocabulary-heading">Vocabulary</h2>
-        <a class="primary-link" href={`/en/academic-english/${materialSlug}/latihan`}>Start Vocabulary Quiz</a>
+        <h2 id="vocabulary-heading">Kosakata</h2>
+        <a class="primary-link" href={`/en/academic-english/${materialSlug}/latihan`}>Mulai Kuis Kosakata</a>
       </div>
-      <div class="table-scroll" role="region" aria-label={`${item.data.title} vocabulary`} tabindex="0">
+      <div class="table-scroll" role="region" aria-label={`Kosakata ${item.data.title}`} tabindex="0">
         <table class="vocabulary-table">
           <thead>
-            <tr><th scope="col">Word</th><th scope="col">Meaning</th><th scope="col">Example</th></tr>
+            <tr><th scope="col">Kata</th><th scope="col">Arti</th><th scope="col">Contoh</th></tr>
           </thead>
           <tbody>
             {vocab.map((word) => (
@@ -75,14 +75,14 @@ const pillars = [
                 <th scope="row" lang="en">
                   <span class="audio-example">
                     {word.word}
-                    <button class="speaker-button" type="button" data-speak={word.word} aria-label={`Listen to ${word.word}`} title={`Listen to ${word.word}`}>🔊</button>
+                    <button class="speaker-button" type="button" data-speak={word.word} aria-label={`Dengarkan ${word.word}`} title={`Dengarkan ${word.word}`}>🔊</button>
                   </span>
                 </th>
                 <td>{word.translation}</td>
                 <td lang="en">
                   <span class="audio-example">
                     {word.context}
-                    <button class="speaker-button" type="button" data-speak={word.context} aria-label={`Listen to example: ${word.context}`} title="Listen to example">🔊</button>
+                    <button class="speaker-button" type="button" data-speak={word.context} aria-label={`Dengarkan contoh: ${word.context}`} title="Dengarkan contoh">🔊</button>
                   </span>
                 </td>
               </tr>
@@ -93,11 +93,11 @@ const pillars = [
     </section>
 
     {pillars.some((pillar) => pillar.available) && (
-      <section class="pillar-sessions" aria-label="Academic English skill sessions">
+      <section class="pillar-sessions" aria-label="Sesi keterampilan Bahasa Inggris Akademik">
         {Array.from({ length: sessionCount }, (_, index) => index + 1).map((session) => (
           <div class="pillar-session">
-            <h2>Session {session}</h2>
-            <nav class="pillar-links" aria-label={`Academic English skills in session ${session}`}>
+            <h2>Sesi {session}</h2>
+            <nav class="pillar-links" aria-label={`Keterampilan Bahasa Inggris Akademik pada sesi ${session}`}>
               {pillars.filter((pillar) => pillar.available).map((pillar) => {
                 const sessionPillarKey = `s${session}-${pillar.type}`;
                 const isComplete = passedPillars.includes(sessionPillarKey) || (session === 1 && passedPillars.includes(pillar.type));
@@ -110,7 +110,7 @@ const pillars = [
                     data-progress-language="en"
                     data-pillar-label={pillar.label}
                     class={isComplete ? 'is-complete' : ''}
-                    aria-label={`${pillar.label}${isComplete ? ' completed' : ''}`}
+                    aria-label={`${pillar.label}${isComplete ? ' selesai' : ''}`}
                   >
                     <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span>{pillar.label}
                   </a>
@@ -157,7 +157,7 @@ const pillars = [
       const isComplete = pillars.includes(sessionPillarKey) || (sessionNum === 1 && pillars.includes(pillarType));
       const label = link.dataset.pillarLabel ?? '';
       link.classList.toggle('is-complete', isComplete);
-      link.setAttribute('aria-label', `${label}${isComplete ? ' completed' : ''}`);
+      link.setAttribute('aria-label', `${label}${isComplete ? ' selesai' : ''}`);
       const check = link.querySelector<HTMLElement>('[data-pillar-check]');
       if (check) check.textContent = isComplete ? '✓ ' : '';
     });

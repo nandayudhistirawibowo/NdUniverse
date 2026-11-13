@@ -15,10 +15,10 @@ import {
 
 const MODULES = ['reading', 'listening', 'writing', 'speaking'];
 const MODULE_LABELS = {
-  reading: 'Reading',
-  listening: 'Listening',
-  writing: 'Writing',
-  speaking: 'Speaking',
+  reading: 'Membaca',
+  listening: 'Menyimak',
+  writing: 'Menulis',
+  speaking: 'Berbicara',
 };
 const MODULE_MINUTES = {
   A1: { reading: 15, listening: 10, writing: 15, speaking: 5 },
@@ -49,20 +49,20 @@ function scoreKeywords(answer, keywords, type) {
 
 function getWritingPrompts(writing, examType) {
   if (typeof writing === 'string') {
-    return [{ id: 'writing-answer', title: 'Writing', prompt: writing }];
+    return [{ id: 'writing-answer', title: 'Menulis', prompt: writing }];
   }
   if (!writing || typeof writing !== 'object') return [];
   if (examType === 'ielts') {
     return [
-      { id: 'writing-task1', title: 'Writing Task 1', prompt: writing.task1 },
-      { id: 'writing-task2', title: 'Writing Task 2', prompt: writing.task2 },
+      { id: 'writing-task1', title: 'Tugas Menulis 1', prompt: writing.task1 },
+      { id: 'writing-task2', title: 'Tugas Menulis 2', prompt: writing.task2 },
     ].filter((task) => typeof task.prompt === 'string');
   }
   return [
-    { id: 'writing-integrated', title: 'Integrated Writing', prompt: writing.integrated },
+    { id: 'writing-integrated', title: 'Menulis Terpadu', prompt: writing.integrated },
     {
       id: 'writing-academic-discussion',
-      title: 'Academic Discussion',
+      title: 'Diskusi Akademik',
       prompt: writing.academic_discussion,
     },
   ].filter((task) => typeof task.prompt === 'string');
@@ -92,7 +92,7 @@ export default function EnglishExam({ exam, type, level }) {
   const speakingParts = Array.isArray(exam?.speaking?.parts)
     ? exam.speaking.parts.map((part, index) => ({ ...part, id: `speaking-part-${index + 1}` }))
     : exam?.speaking?.question
-      ? [{ ...exam.speaking, part: 'Speaking', id: 'speaking-part-1' }]
+      ? [{ ...exam.speaking, part: 'Berbicara', id: 'speaking-part-1' }]
       : [];
   const speakingKeywords = speakingParts.flatMap((part) => part.keywords ?? []);
   const [activeIndex, setActiveIndex] = useState(0);
@@ -208,7 +208,7 @@ export default function EnglishExam({ exam, type, level }) {
   function startSpeakingCapture(answerId) {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!SpeechRecognition) {
-      setSpeechMessage('Speech recognition is not available in this browser. You can type your answer instead.');
+      setSpeechMessage('Pengenalan suara tidak tersedia di browser ini. Kamu bisa mengetik jawaban.');
       return;
     }
 
@@ -218,7 +218,7 @@ export default function EnglishExam({ exam, type, level }) {
     recognition.maxAlternatives = 1;
     recognition.onstart = () => {
       setIsRecording(true);
-      setSpeechMessage('Listening...');
+      setSpeechMessage('Mendengarkan...');
     };
     recognition.onresult = (event) => {
       const transcript = event.results?.[0]?.[0]?.transcript?.trim() ?? '';
@@ -228,41 +228,41 @@ export default function EnglishExam({ exam, type, level }) {
           [answerId]: [current[answerId], transcript].filter(Boolean).join(' '),
         }));
       }
-      setSpeechMessage('Speech captured. You can edit the transcript below.');
+      setSpeechMessage('Suara berhasil direkam. Kamu dapat mengedit transkrip di bawah.');
     };
-    recognition.onerror = () => setSpeechMessage('Speech was not captured. Please try again or type your answer.');
+    recognition.onerror = () => setSpeechMessage('Suara tidak berhasil direkam. Coba lagi atau ketik jawabanmu.');
     recognition.onend = () => setIsRecording(false);
     try {
       recognition.start();
     } catch (error) {
       setIsRecording(false);
-      setSpeechMessage('Speech recognition could not start. Please try again or type your answer.');
+      setSpeechMessage('Pengenalan suara tidak dapat dimulai. Coba lagi atau ketik jawabanmu.');
       console.error('Unable to start English exam speech recognition.', error);
     }
   }
 
   if (!exam) {
-    return <section className="english-exam unavailable"><h1>Exam not available</h1><p>There is no exam content for this level yet.</p><a href="/en/everyday-english">Back to Everyday English</a></section>;
+    return <section className="english-exam unavailable"><h1>Ujian tidak tersedia</h1><p>Konten ujian untuk level ini belum tersedia.</p><a href="/en/everyday-english">Kembali ke Bahasa Inggris Sehari-hari</a></section>;
   }
 
   return (
     <main className="english-exam">
       <header className="exam-heading">
         <div>
-          <a className="exam-back-link" href="/en/everyday-english">Back to Everyday English</a>
+          <a className="exam-back-link" href="/en/everyday-english">Kembali ke Bahasa Inggris Sehari-hari</a>
           <p className="exam-eyebrow">{exam.exam_type.toUpperCase()} · {examLevel}</p>
-          <h1>{exam.exam_type.toUpperCase()} Exam</h1>
-          <p>Complete each module before its timer runs out. Each module needs at least 60% to pass.</p>
+          <h1>Ujian {exam.exam_type.toUpperCase()}</h1>
+          <p>Selesaikan setiap bagian sebelum waktu habis. Setiap bagian membutuhkan nilai minimal 60% untuk lulus.</p>
         </div>
       </header>
 
       {!isStarted && !isComplete ? (
         <div className="exam-start-card">
           <p className="exam-eyebrow">{exam.exam_type.toUpperCase()} · {examLevel}</p>
-          <h2>{exam.exam_type.toUpperCase()} Exam — {examLevel}</h2>
-          <p>Fullscreen mode will be activated. Do not switch tabs or exit fullscreen during the exam. You will receive a strike for each violation — 3 strikes will auto-submit your exam.</p>
+          <h2>Ujian {exam.exam_type.toUpperCase()} — {examLevel}</h2>
+          <p>Mode layar penuh akan diaktifkan. Jangan berpindah tab atau keluar dari mode layar penuh selama ujian. Setiap pelanggaran akan mendapat satu teguran; tiga teguran akan mengirimkan ujian secara otomatis.</p>
           <button className="primary-action" type="button" onClick={handleStartExam}>
-            Start Exam
+            Mulai Ujian
           </button>
         </div>
       ) : (
@@ -270,13 +270,13 @@ export default function EnglishExam({ exam, type, level }) {
           {!isComplete && (
             <div className="timer-sticky-shell">
               <div className={`exam-timer ${remainingSeconds <= 60 ? 'urgent' : ''}`} role="timer" aria-live="off">
-                <span>{MODULE_LABELS[activeModule]} time</span>
+                <span>Waktu {MODULE_LABELS[activeModule]}</span>
                 <strong>{formatTime(remainingSeconds)}</strong>
               </div>
             </div>
           )}
 
-          <nav className="module-steps" aria-label="Exam modules">
+          <nav className="module-steps" aria-label="Bagian ujian">
             {MODULES.map((module, index) => (
               <div className={`module-step ${index === activeIndex && !isComplete ? 'active' : ''} ${index < activeIndex || isComplete ? 'complete' : ''}`} key={module}>
                 <span className="step-number">{index < activeIndex || isComplete ? '✓' : `0${index + 1}`}</span>
@@ -288,50 +288,50 @@ export default function EnglishExam({ exam, type, level }) {
           {isComplete ? (
             <section className={`exam-results ${(examResult?.passed ?? passed) ? 'passed' : 'failed'} ${examType === 'ielts' ? 'ielts-results' : ''}`} aria-live="polite">
               <p className="results-eyebrow">{exam.exam_type.toUpperCase()} · {examLevel}</p>
-              <h2>{(examResult?.passed ?? passed) ? 'PASSED' : 'FAILED'}</h2>
+              <h2>{(examResult?.passed ?? passed) ? 'LULUS' : 'BELUM LULUS'}</h2>
               <div className="score-summary">
                 <p className="total-score">
                   {examType === 'ielts'
                     ? (examResult?.bandScore ?? bandScore)
                     : `${examResult?.totalScore ?? totalScore} / 120`}
-                  <span>{examType === 'ielts' ? 'Overall Band Score' : 'Total Score'}</span>
+                  <span>{examType === 'ielts' ? 'Skor Band Keseluruhan' : 'Nilai Total'}</span>
                 </p>
-                {examType === 'ielts' && <small className="scoring-note">Estimated from the module scores.</small>}
+                {examType === 'ielts' && <small className="scoring-note">Perkiraan berdasarkan nilai setiap bagian.</small>}
               </div>
-              <p className="result-note">You need at least 60% in every module to pass.</p>
+              <p className="result-note">Kamu membutuhkan nilai minimal 60% di setiap bagian untuk lulus.</p>
               <div className="score-grid">
                 {MODULES.map((module) => (
                   <article key={module} className={(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'score-card passed' : 'score-card failed'}>
                     <span>{MODULE_LABELS[module]}</span>
                     <strong>{examResult?.scores?.[module] ?? scores[module]}%</strong>
-                    <small>{(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'Passed' : 'Below 60%'}</small>
+                    <small>{(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'Lulus' : 'Di bawah 60%'}</small>
                   </article>
                 ))}
               </div>
-              <p className="scoring-note">Writing score is estimated against a 20-word target; Speaking score is based on the required keywords.</p>
+              <p className="scoring-note">Nilai Menulis diperkirakan berdasarkan target 20 kata; nilai Berbicara berdasarkan kata kunci yang ditentukan.</p>
               <div className="result-actions">
                 {(examResult?.passed ?? passed) && (
-                  <a className="primary-action" href={`/sertifikat/en/${examType}/${examLevel.toLowerCase()}`}>Get Certificate</a>
+                  <a className="primary-action" href={`/sertifikat/en/${examType}/${examLevel.toLowerCase()}`}>Ambil Sertifikat</a>
                 )}
-                <button type="button" className="primary-action" onClick={() => window.location.reload()}>Retake exam</button>
-                <a className="secondary-action" href="/en/everyday-english">Back to Everyday English</a>
+                <button type="button" className="primary-action" onClick={() => window.location.reload()}>Ulangi Ujian</button>
+                <a className="secondary-action" href="/en/everyday-english">Kembali ke Bahasa Inggris Sehari-hari</a>
               </div>
             </section>
           ) : (
             <section className="module-panel" aria-labelledby="module-title">
               <header className="module-heading">
                 <div>
-                  <p>{`Module 0${activeIndex + 1} of 04`}</p>
+                  <p>{`Bagian 0${activeIndex + 1} dari 04`}</p>
                   <h2 id="module-title">{MODULE_LABELS[activeModule]}</h2>
                 </div>
-                <span>{activeModule === 'reading' ? `${readingQuestions.length} questions` : activeModule === 'listening' ? `${listeningQuestions.length} questions` : activeModule === 'writing' ? `${writingWordCount} words` : `${speakingWordCount} words`}</span>
+                <span>{activeModule === 'reading' || activeModule === 'listening' ? `${activeModule === 'reading' ? readingQuestions.length : listeningQuestions.length} soal` : `${activeModule === 'writing' ? writingWordCount : speakingWordCount} kata`}</span>
               </header>
 
               {activeModule === 'reading' && (
                 <div className="question-list">
                   {readingQuestions.map((question, index) => (
                     <article className="exam-question" key={`reading-${index}`}>
-                      <p className="question-count">Question {index + 1}</p>
+                      <p className="question-count">Soal {index + 1}</p>
                       <blockquote>{question.passage}</blockquote>
                       <h3>{question.question}</h3>
                       <div className="answer-options">
@@ -344,7 +344,7 @@ export default function EnglishExam({ exam, type, level }) {
                       </div>
                     </article>
                   ))}
-                  {readingQuestions.length === 0 && <p className="empty-module">No Reading questions are available for this exam.</p>}
+                  {readingQuestions.length === 0 && <p className="empty-module">Soal Membaca untuk ujian ini belum tersedia.</p>}
                 </div>
               )}
 
@@ -352,7 +352,7 @@ export default function EnglishExam({ exam, type, level }) {
                 <div className="question-list">
                   {listeningQuestions.map((question, index) => (
                     <article className="exam-question" key={`listening-${index}`}>
-                      <p className="question-count">Question {index + 1}</p>
+                      <p className="question-count">Soal {index + 1}</p>
                       <h3>{question.question}</h3>
                       <div className="answer-options">
                         {question.options.map((option) => (
@@ -371,10 +371,10 @@ export default function EnglishExam({ exam, type, level }) {
                       preload="none"
                       src={`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`}
                     >
-                      Your browser does not support audio playback.
+                      Browser kamu tidak mendukung pemutaran audio.
                     </audio>
                   )}
-                  {listeningQuestions.length === 0 && <p className="empty-module">No Listening questions are available for this exam.</p>}
+                  {listeningQuestions.length === 0 && <p className="empty-module">Soal Menyimak untuk ujian ini belum tersedia.</p>}
                 </div>
               )}
 
@@ -384,7 +384,7 @@ export default function EnglishExam({ exam, type, level }) {
                     <article className="writing-task" key={task.id}>
                       <h3>{task.title}</h3>
                       <p className="response-prompt">{task.prompt}</p>
-                      <label htmlFor={task.id}>Your response</label>
+                      <label htmlFor={task.id}>Jawabanmu</label>
                       <textarea
                         id={task.id}
                         value={writingAnswers[task.id] ?? ''}
@@ -392,12 +392,12 @@ export default function EnglishExam({ exam, type, level }) {
                           const value = event.currentTarget.value;
                           setWritingAnswers((current) => ({ ...current, [task.id]: value }));
                         }}
-                        placeholder="Write your response here"
+                        placeholder="Tulis jawabanmu di sini"
                         rows={10}
                       />
                     </article>
                   ))}
-                  <div className="word-count"><span>{writingWordCount} words</span><span>Recommended minimum: 20 words</span></div>
+                  <div className="word-count"><span>{writingWordCount} kata</span><span>Minimal yang disarankan: 20 kata</span></div>
                 </div>
               )}
 
@@ -413,9 +413,9 @@ export default function EnglishExam({ exam, type, level }) {
                         onClick={() => startSpeakingCapture(part.id)}
                         disabled={isRecording}
                       >
-                        {isRecording ? 'Listening...' : '🎙 Record answer'}
+                        {isRecording ? 'Mendengarkan...' : '🎙 Rekam jawaban'}
                       </button>
-                      <label htmlFor={part.id}>Your transcript or typed response</label>
+                      <label htmlFor={part.id}>Transkrip atau jawaban yang kamu ketik</label>
                       <textarea
                         id={part.id}
                         value={speakingAnswers[part.id] ?? ''}
@@ -423,19 +423,19 @@ export default function EnglishExam({ exam, type, level }) {
                           const value = event.currentTarget.value;
                           setSpeakingAnswers((current) => ({ ...current, [part.id]: value }));
                         }}
-                        placeholder="Your recognized speech will appear here. You can also type."
+                        placeholder="Hasil pengenalan suara akan muncul di sini. Kamu juga dapat mengetik."
                         rows={4}
                       />
                     </article>
                   ))}
                   <p className="speech-message" role="status">{speechMessage}</p>
-                  <div className="word-count"><span>{speakingWordCount} words</span><span>Recommended minimum: 10 words</span></div>
+                  <div className="word-count"><span>{speakingWordCount} kata</span><span>Minimal yang disarankan: 10 kata</span></div>
                 </div>
               )}
 
               <footer className="module-footer">
-                <span>Progress: {activeIndex + 1} / {MODULES.length}</span>
-                <button className="primary-action" type="button" onClick={() => { playSound('click'); advanceModule(); }}>{activeIndex === MODULES.length - 1 ? 'View results' : `Continue to ${MODULE_LABELS[MODULES[activeIndex + 1]]}`}</button>
+                <span>Progres: {activeIndex + 1} / {MODULES.length}</span>
+                <button className="primary-action" type="button" onClick={() => { playSound('click'); advanceModule(); }}>{activeIndex === MODULES.length - 1 ? 'Lihat Hasil' : `Lanjut ke ${MODULE_LABELS[MODULES[activeIndex + 1]]}`}</button>
               </footer>
             </section>
           )}

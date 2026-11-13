@@ -4,51 +4,51 @@ import Layout from '@core/ui/Layout.astro';
 const professions = [
   {
     slug: 'it',
-    name: 'IT & Software Engineering',
-    description: 'Build practical vocabulary for software, systems, and technical interviews.',
+    name: 'Teknologi Informasi & Rekayasa Perangkat Lunak',
+    description: 'Pelajari kosakata praktis tentang perangkat lunak, sistem, dan wawancara teknis.',
     icon: '💻',
   },
   {
     slug: 'business',
-    name: 'Business & E-Commerce',
-    description: 'Practice language for management, sales, marketing, and online commerce.',
+    name: 'Bisnis & E-Commerce',
+    description: 'Pelajari bahasa untuk manajemen, penjualan, pemasaran, dan perdagangan daring.',
     icon: '📊',
   },
   {
     slug: 'health',
-    name: 'Healthcare',
-    description: 'Learn workplace English for patient care, clinical teams, and healthcare settings.',
+    name: 'Layanan Kesehatan',
+    description: 'Pelajari bahasa Inggris kerja untuk perawatan pasien, tim klinis, dan lingkungan layanan kesehatan.',
     icon: '🩺',
   },
   {
     slug: 'nutrition',
-    name: 'Nutrition',
-    description: 'Explore nutrition terms and communication for food and health education.',
+    name: 'Nutrisi',
+    description: 'Pelajari istilah nutrisi serta komunikasi untuk edukasi pangan dan kesehatan.',
     icon: '🥗',
   },
 ];
 ---
 
-<Layout title="English Career Prep | NdUniverse" description="Practice career vocabulary and job interviews in English.">
+<Layout title="Persiapan Karier Bahasa Inggris | NdUniverse" description="Latih kosakata karier dan wawancara kerja dalam bahasa Inggris.">
   <main class="career-page">
-    <a class="back-link" href="/en">← Back to Home</a>
+    <a class="back-link" href="/en">← Kembali ke Beranda</a>
     <header class="page-heading">
-      <p class="eyebrow">Career Prep</p>
-      <h1>Build English for Your Career</h1>
-      <p>Choose a profession to practice 50 job-related vocabulary terms in ten short quiz batches and take a role-specific interview challenge.</p>
+      <p class="eyebrow">Persiapan Karier</p>
+      <h1>Kembangkan Bahasa Inggris untuk Kariermu</h1>
+      <p>Pilih profesi untuk berlatih 50 kosakata pekerjaan dalam sepuluh kelompok kuis singkat dan ikuti tantangan wawancara sesuai bidang.</p>
     </header>
 
-    <section class="career-grid" aria-label="Career preparation professions">
+    <section class="career-grid" aria-label="Profesi untuk persiapan karier">
       {professions.map((profession) => (
         <article class="career-card">
           <a class="career-card-main" href={`/en/career/${profession.slug}`}>
             <span class="career-icon" aria-hidden="true">{profession.icon}</span>
-            <p class="career-label">English Career Module</p>
+            <p class="career-label">Modul Karier Bahasa Inggris</p>
             <h2>{profession.name}</h2>
             <p class="career-description">{profession.description}</p>
-            <span class="career-link-label">Explore vocabulary →</span>
+            <span class="career-link-label">Jelajahi kosakata →</span>
           </a>
-          <a class="boss-link" href={`/en/career/${profession.slug}/boss`}>Start Boss Fight</a>
+          <a class="boss-link" href={`/en/career/${profession.slug}/boss`}>Mulai Tantangan</a>
         </article>
       ))}
     </section>

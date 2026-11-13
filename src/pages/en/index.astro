@@ -4,15 +4,15 @@ import Layout from '@core/ui/Layout.astro';
 if (Astro.locals.user) return Astro.redirect('/en/dashboard');
 
 const features = [
-  { href: '/en/everyday-english', title: 'Everyday English', text: 'Practice practical English vocabulary and the four core skills.' },
-  { href: '/en/exam', title: 'IELTS / TOEFL Prep', text: 'Train Reading, Listening, Writing, and Speaking with a mock exam.' },
-  { href: '/en/career', title: 'Career Prep', text: 'Build professional vocabulary and prepare for English interviews.' },
+  { href: '/en/everyday-english', title: 'Bahasa Inggris Sehari-hari', text: 'Latih kosakata praktis dan empat keterampilan utama bahasa Inggris.' },
+  { href: '/en/exam', title: 'Persiapan IELTS / TOEFL', text: 'Latih keterampilan Membaca, Menyimak, Menulis, dan Berbicara melalui ujian simulasi.' },
+  { href: '/en/career', title: 'Persiapan Karier', text: 'Pelajari kosakata profesional dan persiapkan diri untuk wawancara kerja berbahasa Inggris.' },
 ];
 ---
 
 <Layout
-  title="Learn English | NdUniverse"
-  description="Explore practical English lessons, CEFR learning paths, and IELTS or TOEFL preparation on NdUniverse."
+  title="Belajar Bahasa Inggris | NdUniverse"
+  description="Jelajahi materi praktis, jalur belajar CEFR, dan persiapan IELTS atau TOEFL di NdUniverse."
   url="/en"
   alternates={[
     { lang: 'id', url: '/' },
@@ -22,18 +22,18 @@ const features = [
   ]}
 >
   <main class="module-page">
-    <a class="back-link" href="/">← Back to NdUniverse</a>
+    <a class="back-link" href="/">← Kembali ke NdUniverse</a>
     <header>
-      <p class="eyebrow">NdUniverse · English</p>
-      <h1>Build English for the world.</h1>
-      <p class="lead">Choose a learning path for everyday communication, international exams, or global career opportunities.</p>
+      <p class="eyebrow">NdUniverse · Bahasa Inggris</p>
+      <h1>Kuasai Bahasa Inggris untuk masa depan.</h1>
+      <p class="lead">Pilih jalur belajar untuk komunikasi sehari-hari, ujian internasional, atau peluang karier global.</p>
     </header>
     <div class="feature-grid">
       {features.map((feature) => (
         <a class="feature-card" href={feature.href}>
           <strong>{feature.title}</strong>
           <span>{feature.text}</span>
-          <small>Open module →</small>
+          <small>Buka modul →</small>
         </a>
       ))}
     </div>

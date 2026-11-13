@@ -18,7 +18,9 @@ const {
   examHref,
   examLabel,
 } = Astro.props;
-const helpTextKey = active === 'alltagsdeutsch' ? 'help.alltags' : 'help.fach';
+const helpText = active === 'alltagsdeutsch'
+  ? 'Pilih materi Alltagsdeutsch untuk level yang ingin dipelajari, lalu latih empat pilar keterampilan.'
+  : 'Pilih materi Fachdeutsch untuk mempelajari kosakata teknis yang relevan dengan bidang studimu.';
 ---
 
 <DashboardLayout title={`${title} | NdUniverse`} active={active} user={user} profile={profile}>
@@ -27,35 +29,24 @@ const helpTextKey = active === 'alltagsdeutsch' ? 'help.alltags' : 'help.fach';
       class="back-link"
       href={backHref}
       aria-label="Kembali ke halaman sebelumnya"
-      data-i18n-aria-label="catalog.backPrevious"
     >
       <span aria-hidden="true">←</span>
-      <span
-        data-i18n={backLabel === 'Kembali ke Semua Level' ? 'catalog.backLevels' : 'catalog.back'}
-      >{backLabel}</span>
+      <span>{backLabel}</span>
     </a>
     <header class="page-heading">
       <div>
-        <p
-          class="eyebrow"
-          data-i18n={active === 'alltagsdeutsch' ? 'catalog.dailyEyebrow' : 'catalog.studyVocabulary'}
-        >{eyebrow}</p>
+        <p class="eyebrow">{eyebrow}</p>
         <div class="page-heading-title">
           <h1>{title}</h1>
-          <HelpHint title="Belajar Bertahap" textKey={helpTextKey} titleKey="catalog.help" client:load />
+          <HelpHint title="Belajar Bertahap" text={helpText} client:load />
         </div>
-        <p
-          data-i18n={active === 'alltagsdeutsch' ? 'catalog.dailyDescription' : 'catalog.fachDescription'}
-          data-i18n-params={JSON.stringify({ level: title.split(' ').at(-1) ?? '' })}
-        >{description}</p>
+        <p>{description}</p>
       </div>
       <div class="heading-actions">
         {examHref && (
           <a
             class="exam-button"
             href={examHref}
-            data-i18n="catalog.exam"
-            data-i18n-params={JSON.stringify({ level: title.split(' ').at(-1) ?? '' })}
           >{examLabel ?? `Mulai Ujian ${title.split(' ').at(-1)}`}</a>
         )}
       </div>

@@ -5,7 +5,7 @@ import { getCollection } from 'astro:content';
 const slug = Astro.params.slug ?? '';
 const materials = await getCollection('englishEveryday');
 const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
-if (!item) return new Response('Material not found.', { status: 404 });
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 const materialSlug = item.id.split('/').at(-1) ?? item.id;
 const user = Astro.locals.user;
 const { data: savedProgress, error: progressError } = user
@@ -33,25 +33,25 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
 ---
 <DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <article class="material-page">
-    <a class="back-link" href={item.data.track === 'Academic English' ? '/en/dashboard' : '/en/everyday-english'} data-session-back><span aria-hidden="true">←</span> <span data-i18n="quiz.backMaterial">Back to Materials</span></a>
+    <a class="back-link" href={item.data.track === 'Academic English' ? '/en/dashboard' : '/en/everyday-english'} data-session-back><span aria-hidden="true">←</span> <span>Kembali ke Materi</span></a>
     <header>
-      <p class="eyebrow">{item.data.track ?? 'Everyday English'} · {item.data.level}</p>
+      <p class="eyebrow">{item.data.track ?? 'Bahasa Inggris Sehari-hari'} · {item.data.level}</p>
       <h1>{item.data.title ?? item.id}</h1>
       <p>{item.data.description}</p>
     </header>
     {sessions.map((session) => (
       <section class="session-card">
-        <h2 data-i18n="material.session" data-i18n-params={JSON.stringify({ session: session.number })}>Session {session.number}</h2>
+        <h2>Sesi {session.number}</h2>
         <div class="table-wrap">
-          <p class="audio-legend" data-i18n="material.audioLegend">Audio: 🇺🇸 High Quality | 🇬🇧 Browser</p>
+          <p class="audio-legend">Audio: 🇺🇸 Kualitas Tinggi | 🇬🇧 Browser</p>
           <table>
             <thead>
               <tr>
-                <th data-i18n="material.english">English</th>
-                <th data-i18n="material.indonesian">Indonesian</th>
-                <th data-i18n="material.context">Context</th>
-                <th data-i18n="material.wordAudio">Word audio</th>
-                <th data-i18n="material.sentenceAudio">Sentence audio</th>
+                <th>Bahasa Inggris</th>
+                <th>Bahasa Indonesia</th>
+                <th>Konteks</th>
+                <th>Audio kata</th>
+                <th>Audio kalimat</th>
               </tr>
             </thead>
             <tbody>
@@ -62,14 +62,14 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
                   <td lang="en">{word.context}</td>
                   <td>
                     <div class="vocab-audio-controls">
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.german} aria-label={`Play word in US English: ${word.german}`} data-i18n-aria-label="material.playWordUs" data-i18n-params={JSON.stringify({ word: word.german })} title="US English" data-i18n-title="material.usEnglish">🇺🇸</button>
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.german} aria-label={`Play word in UK English: ${word.german}`} data-i18n-aria-label="material.playWordUk" data-i18n-params={JSON.stringify({ word: word.german })} title="UK English" data-i18n-title="material.ukEnglish">🇬🇧</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.german} aria-label={`Putar kata dalam bahasa Inggris AS: ${word.german}`} title="Bahasa Inggris AS">🇺🇸</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.german} aria-label={`Putar kata dalam bahasa Inggris UK: ${word.german}`} title="Bahasa Inggris UK">🇬🇧</button>
                     </div>
                   </td>
                   <td>
                     <div class="vocab-audio-controls">
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.context} aria-label={`Play sentence in US English: ${word.context}`} data-i18n-aria-label="material.playSentenceUs" data-i18n-params={JSON.stringify({ sentence: word.context })} title="US English" data-i18n-title="material.usEnglish">🇺🇸</button>
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.context} aria-label={`Play sentence in UK English: ${word.context}`} data-i18n-aria-label="material.playSentenceUk" data-i18n-params={JSON.stringify({ sentence: word.context })} title="UK English" data-i18n-title="material.ukEnglish">🇬🇧</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.context} aria-label={`Putar kalimat dalam bahasa Inggris AS: ${word.context}`} title="Bahasa Inggris AS">🇺🇸</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.context} aria-label={`Putar kalimat dalam bahasa Inggris UK: ${word.context}`} title="Bahasa Inggris UK">🇬🇧</button>
                     </div>
                   </td>
                 </tr>
@@ -77,9 +77,9 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
             </tbody>
           </table>
         </div>
-        <nav class="pillar-links" aria-label={`Session ${session.number} practice pillars`} data-i18n-aria-label="material.practicePillars" data-i18n-params={JSON.stringify({ session: session.number })}>
+        <nav class="pillar-links" aria-label={`Pilar latihan sesi ${session.number}`}>
           {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
-            const label = pillar[0].toUpperCase() + pillar.slice(1);
+            const label = pillar === 'reading' ? 'Membaca' : pillar === 'listening' ? 'Menyimak' : pillar === 'writing' ? 'Menulis' : 'Berbicara';
             const sessionPillarKey = `s${session.number}-${pillar}`;
             const isComplete = passedPillars.includes(sessionPillarKey) || (session.number === 1 && passedPillars.includes(pillar));
             return (
@@ -91,10 +91,9 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
                 data-progress-language="en"
                 data-pillar-label={label}
                 class={isComplete ? 'is-complete' : ''}
-                title={isComplete ? 'Completed' : undefined}
-                data-i18n-title={isComplete ? 'material.completed' : undefined}
+                title={isComplete ? 'Selesai' : undefined}
               >
-                <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span><span data-i18n={`material.${pillar}`}>{label}</span>
+                <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span><span>{label}</span>
               </a>
             );
           })}
