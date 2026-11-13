@@ -9,8 +9,10 @@ const GROQ_MODELS = [
 ];
 
 const EMBEDDING_DIMENSIONS = 384;
-const MATCH_THRESHOLD = 0.5;
+const MATCH_THRESHOLD = 0.35;
 const MATCH_COUNT = 3;
+const QUERY_REWRITER_MODEL = 'llama-3.1-8b-instant';
+const QUERY_REWRITER_PROMPT = 'Kamu adalah query rewriter. Tugasmu: Perbaiki typo, perluas singkatan (misal AI -> Artificial Intelligence), dan terjemahkan pertanyaan user ke bahasa Inggris jika perlu, agar bisa dicari di database materi bahasa. Kembalikan HANYA teks pertanyaannya saja, tanpa basa-basi.';
 
 const SYSTEM_PROMPT = `Kamu adalah NdUniverse Assistant, tutor yang ramah, asyik, dan suportif. Jawab dengan bahasa yang natural, jelas, dan engaging; bantu user memahami materi selangkah demi selangkah tanpa terdengar kaku.
 Susun jawaban dalam paragraf yang rapi dan ringkas. Gunakan bullet points bila membantu, serta **bold** atau *italic* untuk menekankan bagian penting. Jangan gunakan tabel Markdown (termasuk format |...|) atau garis pemisah (---).
@@ -80,6 +82,50 @@ async function embedQuestion(
     throw new Error('Question embedding response was invalid.');
   }
   return embedding;
+}
+
+async function rewriteQuestion(question: string, apiKey: string): Promise<string> {
+  try {
+    const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: QUERY_REWRITER_MODEL,
+        messages: [
+          { role: 'system', content: QUERY_REWRITER_PROMPT },
+          { role: 'user', content: question },
+        ],
+        temperature: 0,
+        max_tokens: 256,
+      }),
+    });
+
+    if (!response.ok) {
+      console.warn(`Groq query rewriting returned HTTP ${response.status}; using the original question.`);
+      return question;
+    }
+
+    const result: unknown = await response.json();
+    const rewrittenQuestion = isRecord(result)
+      && Array.isArray(result.choices)
+      && isRecord(result.choices[0])
+      && isRecord(result.choices[0].message)
+      && typeof result.choices[0].message.content === 'string'
+      ? result.choices[0].message.content.trim()
+      : '';
+    if (!rewrittenQuestion) {
+      console.warn('Groq returned no rewritten question; using the original question.');
+      return question;
+    }
+
+    return rewrittenQuestion;
+  } catch (error) {
+    console.warn('Groq query rewriting failed; using the original question.', error);
+    return question;
+  }
 }
 
 export const POST: APIRoute = async ({ request }) => {
@@ -157,8 +203,9 @@ export const POST: APIRoute = async ({ request }) => {
 
   let matchedDocuments: Array<{ content: string }>;
   try {
+    const rewrittenQuestion = await rewriteQuestion(lastUserMessage.content, apiKey);
     const embedding = await embedQuestion(
-      lastUserMessage.content,
+      rewrittenQuestion,
       cloudflareAccountId,
       cloudflareApiToken,
     );
