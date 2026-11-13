@@ -355,10 +355,14 @@ export default function GoetheExam({ level, tasks, available = true }) {
 
       {!isStarted && !result ? (
         <div class="goethe-task exam-start-card" style="text-align: center; padding: 2rem 1.5rem;">
-          <p style="font-weight: 700; margin-bottom: 0.5rem;">{OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}`} dilengkapi sistem Anti-Cheat.</p>
-          <p style="color: var(--muted); margin-bottom: 1.5rem;">Mode layar penuh (fullscreen) akan diaktifkan. Jangan berpindah tab atau keluar dari layar penuh selama ujian berlangsung.</p>
+          <p
+            style="font-weight: 700; margin-bottom: 0.5rem;"
+            data-i18n="exam.goetheStartIntro"
+            data-i18n-params={JSON.stringify({ name: OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}` })}
+          >{OFFICIAL_EXAM_NAMES[level] || `Goethe-Zertifikat ${level}`} dilengkapi sistem Anti-Cheat.</p>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;" data-i18n="exam.fullscreenWarning">Mode layar penuh (fullscreen) akan diaktifkan. Jangan berpindah tab atau keluar dari layar penuh selama ujian berlangsung.</p>
           <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
-            Mulai Ujian
+            <span data-i18n="exam.startExam">Mulai Ujian</span>
           </button>
         </div>
       ) : (

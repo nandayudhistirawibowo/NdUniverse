@@ -154,10 +154,14 @@ export default function MockExam({ level, tasks, unavailable = false }) {
         <>
           {!isStarted && !finished ? (
             <div class="exam-task" style="text-align: center; padding: 2rem 1.5rem;">
-              <p style="font-weight: 700; margin-bottom: 0.5rem;">Ujian Mock Goethe {level} dengan pengawasan Anti-Cheat.</p>
-              <p style="color: var(--muted); margin-bottom: 1.5rem;">Ujian akan berjalan dalam mode layar penuh (fullscreen). Mohon tidak meninggalkan tab atau keluar dari fullscreen.</p>
+              <p
+                style="font-weight: 700; margin-bottom: 0.5rem;"
+                data-i18n="exam.mockStartIntro"
+                data-i18n-params={JSON.stringify({ level })}
+              >Ujian Mock Goethe {level} dengan pengawasan Anti-Cheat.</p>
+              <p style="color: var(--muted); margin-bottom: 1.5rem;" data-i18n="exam.fullscreenWarning">Ujian akan berjalan dalam mode layar penuh (fullscreen). Mohon tidak meninggalkan tab atau keluar dari fullscreen.</p>
               <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
-                Mulai Ujian
+                <span data-i18n="exam.startExam">Mulai Ujian</span>
               </button>
             </div>
           ) : (

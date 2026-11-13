@@ -712,7 +712,7 @@ export default function Quiz(props) {
     if (isCorrect) {
       setCorrectCount((count) => count + 1);
       awardXp(10);
-      setToast({ type: 'success', message: 'Correct! +10 XP when the session is complete.' });
+      setToast({ type: 'success', key: 'quiz.correctToast', message: 'Correct! +10 XP when the session is complete.' });
       playSound('success');
       setQueue((currentQueue) => currentQueue.slice(1));
       setCheckedResult(null);
@@ -723,7 +723,7 @@ export default function Quiz(props) {
         setIsGameOver(true);
         setSessionXp(0);
       }
-      setToast({ type: 'error', message: 'Not quite right. Try again!' });
+      setToast({ type: 'error', key: 'quiz.incorrectToast', message: 'Not quite right. Try again!' });
       playSound('error');
     }
   }
@@ -916,7 +916,7 @@ export default function Quiz(props) {
               ? <path d="m5 12 4 4L19 6" />
               : <path d="m6 6 12 12M18 6 6 18" />}
           </svg>
-          <span className="toast-message">{toast.message}</span>
+          <span className="toast-message" data-i18n={toast.key}>{toast.message}</span>
         </div>
       )}
 

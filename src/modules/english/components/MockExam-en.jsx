@@ -154,10 +154,14 @@ export default function MockExam({ level, tasks, unavailable = false }) {
         <>
           {!isStarted && !finished ? (
             <div class="exam-task" style="text-align: center; padding: 2rem 1.5rem;">
-              <p style="font-weight: 700; margin-bottom: 0.5rem;">Mock Exam {level} with Anti-Cheat protection.</p>
-              <p style="color: var(--muted); margin-bottom: 1.5rem;">The exam will run in fullscreen mode. Please do not switch tabs or exit fullscreen during the session.</p>
+              <p
+                style="font-weight: 700; margin-bottom: 0.5rem;"
+                data-i18n="exam.mockStartIntro"
+                data-i18n-params={JSON.stringify({ level })}
+              >Mock Exam {level} with Anti-Cheat protection.</p>
+              <p style="color: var(--muted); margin-bottom: 1.5rem;" data-i18n="exam.fullscreenWarning">The exam will run in fullscreen mode. Please do not switch tabs or exit fullscreen during the session.</p>
               <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
-                Start Exam
+                <span data-i18n="exam.startExam">Start Exam</span>
               </button>
             </div>
           ) : (
