@@ -42,6 +42,7 @@ const { data: savedProgress } = user
     .select('sessions_passed, notes')
     .eq('user_id', user.id)
     .eq('material_slug', item.id)
+    .eq('language_code', 'de')
     .maybeSingle()
   : { data: null };
 const passedSessions = Array.isArray(savedProgress?.sessions_passed)
@@ -124,10 +125,23 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
               </table>
             </div>
             <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
-              <a href={`/materi/${item.id}/latihan?type=reading&session=${session.sessionNumber}`}>Reading</a>
-              <a href={`/materi/${item.id}/latihan?type=listening&session=${session.sessionNumber}`}>Listening</a>
-              <a href={`/materi/${item.id}/latihan?type=writing&session=${session.sessionNumber}`}>Writing</a>
-              <a href={`/materi/${item.id}/latihan?type=speaking&session=${session.sessionNumber}`}>Speaking</a>
+              {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
+                const label = pillar[0].toUpperCase() + pillar.slice(1);
+                const isComplete = passedPillars.includes(pillar);
+                return (
+                  <a
+                    href={`/materi/${item.id}/latihan?type=${pillar}&session=${session.sessionNumber}`}
+                    data-progress-pillar={pillar}
+                    data-progress-slug={item.id}
+                    data-progress-language="de"
+                    data-pillar-label={label}
+                    class={isComplete ? 'is-complete' : ''}
+                    aria-label={`${label}${isComplete ? ' selesai' : ''}`}
+                  >
+                    <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span>{label}
+                  </a>
+                );
+              })}
             </div>
           </section>
         ))}
@@ -159,6 +173,25 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     normalizePassedSessions,
     upsertUserProgress,
   } from '@core/db/progress-client.js';
+
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+    }>).detail;
+    if (languageCode !== 'de') return;
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {
+      if (link.dataset.progressSlug !== slug) return;
+      const isComplete = pillars.includes(link.dataset.progressPillar ?? '');
+      const label = link.dataset.pillarLabel ?? '';
+      link.classList.toggle('is-complete', isComplete);
+      link.setAttribute('aria-label', `${label}${isComplete ? ' selesai' : ''}`);
+      const check = link.querySelector<HTMLElement>('[data-pillar-check]');
+      if (check) check.textContent = isComplete ? '✓ ' : '';
+    });
+  });
 
   document.addEventListener('astro:page-load', () => {
     document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {
@@ -622,6 +655,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   .sesi-card .vocab-speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
   .pillar-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; margin-top: 1rem; }
   .pillar-buttons a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
+  .pillar-buttons a.is-complete { border-color: #3a8b55; background: #eaf6ed; color: #236b38; }
   .pillar-buttons a:hover { border-color: var(--accent-gold); }
 
   .vocabulary-table-panel { padding: 1.25rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }

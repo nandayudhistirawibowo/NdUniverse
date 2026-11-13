@@ -26,7 +26,7 @@ const accessDenied = Astro.url.searchParams.get('error') === 'admin-only';
 const { data: progressData, error: progressError } = user
   ? await Astro.locals.supabase
     .from('user_progress')
-    .select('material_slug, language_code, sessions_passed')
+    .select('material_slug, language_code, xp, sessions_passed')
     .eq('user_id', user.id)
     .eq('language_code', 'en')
   : { data: [], error: null };
@@ -49,6 +49,11 @@ const totalPoints = completedMaterials.reduce(
   (total, material) => total + (POINTS_PER_LEVEL[material.level] ?? 0),
   0,
 );
+const levelMaterials = materials.map((material) => ({
+  slug: material.id,
+  title: material.data.title ?? material.id,
+  level: material.data.level ?? '',
+}));
 const currentLevel = [...LEVEL_STEPS].reverse().find((step) => totalPoints >= step.threshold) ?? LEVEL_STEPS[0];
 const levelProgressPercent = currentLevel.nextThreshold !== null
   ? Math.max(0, Math.min(100, Math.floor(
@@ -82,19 +87,26 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
       <a class="welcome-mark" href="/en/materi" aria-label="Browse English materials">📚</a>
     </section>
 
-    <section class="level-card" aria-labelledby="level-title">
+    <section
+      class="level-card"
+      aria-labelledby="level-title"
+      data-progress-dashboard
+      data-progress-rows={JSON.stringify(progressRows)}
+      data-level-materials={JSON.stringify(levelMaterials)}
+      data-level-steps={JSON.stringify(LEVEL_STEPS)}
+    >
       <div class="level-summary">
         <p class="level-eyebrow">Everyday English Level</p>
         <p class="level-caption">Current CEFR Level</p>
-        <h2 id="level-title">{currentLevel.label}</h2>
-        <p class="level-points">{totalPoints} points earned from materials passed in all four skills.</p>
+        <h2 id="level-title" data-level-label>{currentLevel.label}</h2>
+        <p class="level-points" data-level-points>{totalPoints} points earned from materials passed in all four skills.</p>
       </div>
       <div class="level-next-step">
         {currentLevel.nextThreshold !== null ? (
           <>
             <div class="level-progress-heading">
-              <span>Next: {currentLevel.nextLabel}</span>
-              <strong>{levelProgressPercent}%</strong>
+              <span data-level-next-label>Next: {currentLevel.nextLabel}</span>
+              <strong data-level-percent>{levelProgressPercent}%</strong>
             </div>
             <div
               class="level-progress-track"
@@ -103,18 +115,19 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
               aria-valuemin="0"
               aria-valuemax="100"
               aria-valuenow={levelProgressPercent}
+              data-level-progress
             >
-              <span style={`width: ${levelProgressPercent}%`} />
+              <span data-level-fill style={`width: ${levelProgressPercent}%`} />
             </div>
-            <p>{totalPoints} / {currentLevel.nextThreshold} points to reach {currentLevel.nextLabel}</p>
+            <p data-level-summary>{totalPoints} / {currentLevel.nextThreshold} points to reach {currentLevel.nextLabel}</p>
           </>
         ) : (
           <>
-            <div class="level-progress-heading"><span>Highest level reached</span><strong>100%</strong></div>
-            <div class="level-progress-track" role="progressbar" aria-label="Highest level reached" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
-              <span style="width: 100%" />
+            <div class="level-progress-heading"><span data-level-next-label>Highest level reached</span><strong data-level-percent>100%</strong></div>
+            <div class="level-progress-track" role="progressbar" aria-label="Highest level reached" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" data-level-progress>
+              <span data-level-fill style="width: 100%" />
             </div>
-            <p>You have reached C2 Mastery. Keep practicing to maintain your skills.</p>
+            <p data-level-summary>You have reached C2 Mastery. Keep practicing to maintain your skills.</p>
           </>
         )}
       </div>
@@ -130,20 +143,123 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     <section class="completed-section" aria-labelledby="completed-title">
       <div class="completed-heading">
         <div><p class="eyebrow">Achievements</p><h2 id="completed-title">Completed Materials</h2></div>
-        <span>{completedMaterials.length} materials</span>
+        <span data-completed-count>{completedMaterials.length} materials</span>
       </div>
-      {completedMaterials.length > 0 ? (
-        <ul class="completed-list">
-          {completedMaterials.map((material) => (
-            <li><a href={`/en/materi/${material.slug}`}>{material.title}<span aria-hidden="true">→</span></a></li>
-          ))}
-        </ul>
-      ) : (
-        <p class="completed-empty">No materials have passed all four skills yet.</p>
-      )}
+      <ul class="completed-list" data-completed-list>
+        {completedMaterials.map((material) => (
+          <li><a href={`/en/materi/${material.slug}`}>{material.title}<span aria-hidden="true">→</span></a></li>
+        ))}
+      </ul>
+      <p class="completed-empty" data-completed-empty hidden={completedMaterials.length > 0}>
+        No materials have passed all four skills yet.
+      </p>
     </section>
   </section>
 </DashboardLayout>
+
+<script>
+  import { normalizePassedPillars } from '@core/db/progress-client-en.js';
+
+  const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
+
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars, xp } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+      xp: number;
+    }>).detail;
+    if (languageCode !== 'en') return;
+
+    const dashboard = document.querySelector<HTMLElement>('[data-progress-dashboard]');
+    if (!dashboard) return;
+
+    const rows = new Map<string, { material_slug: string; language_code: string; xp: number; sessions_passed: unknown }>(
+      (JSON.parse(dashboard.dataset.progressRows ?? '[]') as Array<{
+        material_slug: string;
+        language_code: string;
+        xp: number;
+        sessions_passed: unknown;
+      }>).map((row) => [row.material_slug, row]),
+    );
+    rows.set(slug, { material_slug: slug, language_code: 'en', xp, sessions_passed: pillars });
+    dashboard.dataset.progressRows = JSON.stringify([...rows.values()]);
+
+    const materials = JSON.parse(dashboard.dataset.levelMaterials ?? '[]') as Array<{
+      slug: string;
+      title: string;
+      level: string;
+    }>;
+    const steps = JSON.parse(dashboard.dataset.levelSteps ?? '[]') as Array<{
+      threshold: number;
+      label: string;
+      nextThreshold: number | null;
+      nextLabel: string | null;
+    }>;
+    const completed = materials.filter((material) => (
+      normalizePassedPillars(rows.get(material.slug)?.sessions_passed).length === 4
+    ));
+    const totalPoints = completed.reduce(
+      (total, material) => total + (POINTS_PER_LEVEL[material.level] ?? 0),
+      0,
+    );
+    const currentLevel = [...steps].reverse().find((step) => totalPoints >= step.threshold) ?? steps[0];
+    if (!currentLevel) return;
+
+    const percentage = currentLevel.nextThreshold
+      ? Math.min(100, Math.max(0, Math.floor(
+        ((totalPoints - currentLevel.threshold) / (currentLevel.nextThreshold - currentLevel.threshold)) * 100,
+      )))
+      : 100;
+    const label = dashboard.querySelector<HTMLElement>('[data-level-label]');
+    const points = dashboard.querySelector<HTMLElement>('[data-level-points]');
+    const progress = dashboard.querySelector<HTMLElement>('[data-level-progress]');
+    const fill = dashboard.querySelector<HTMLElement>('[data-level-fill]');
+    const summary = dashboard.querySelector<HTMLElement>('[data-level-summary]');
+    const nextLabel = dashboard.querySelector<HTMLElement>('[data-level-next-label]');
+    const percentLabel = dashboard.querySelector<HTMLElement>('[data-level-percent]');
+    if (label) label.textContent = currentLevel.label;
+    if (points) points.textContent = `${totalPoints} points earned from materials passed in all four skills.`;
+    if (progress) {
+      progress.setAttribute('aria-valuenow', String(percentage));
+      progress.setAttribute('aria-label', currentLevel.nextThreshold === null
+        ? 'Highest level reached'
+        : `Progress toward ${currentLevel.nextLabel}`);
+    }
+    if (fill) fill.style.width = `${percentage}%`;
+    if (nextLabel) {
+      nextLabel.textContent = currentLevel.nextThreshold === null
+        ? 'Highest level reached'
+        : `Next: ${currentLevel.nextLabel}`;
+    }
+    if (percentLabel) percentLabel.textContent = `${percentage}%`;
+    if (summary) {
+      summary.textContent = currentLevel.nextThreshold === null
+        ? 'You have reached C2 Mastery. Keep practicing to maintain your skills.'
+        : `${totalPoints} / ${currentLevel.nextThreshold} points to reach ${currentLevel.nextLabel}`;
+    }
+
+    const list = document.querySelector<HTMLElement>('[data-completed-list]');
+    const count = document.querySelector<HTMLElement>('[data-completed-count]');
+    const empty = document.querySelector<HTMLElement>('[data-completed-empty]');
+    if (list) {
+      list.replaceChildren(...completed.map((material) => {
+        const item = document.createElement('li');
+        const link = document.createElement('a');
+        link.href = `/en/materi/${encodeURIComponent(material.slug.split('/').at(-1) ?? material.slug)}`;
+        link.textContent = material.title;
+        const arrow = document.createElement('span');
+        arrow.setAttribute('aria-hidden', 'true');
+        arrow.textContent = '→';
+        link.append(arrow);
+        item.append(link);
+        return item;
+      }));
+    }
+    if (count) count.textContent = `${completed.length} materials`;
+    if (empty) empty.hidden = completed.length > 0;
+  });
+</script>
 
 <style>
   .dashboard-content { display: grid; gap: 1.25rem; min-width: 0; padding: .5rem 0 2rem; }

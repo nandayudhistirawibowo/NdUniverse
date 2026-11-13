@@ -1,11 +1,22 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import { normalizePassedPillars } from '@core/db/progress-client-en.js';
 import { getCollection } from 'astro:content';
 
 export const prerender = false;
 
 const materials = (await getCollection('englishAcademic'))
   .sort((left, right) => left.data.title.localeCompare(right.data.title));
+const user = Astro.locals.user;
+const { data: progressData, error: progressError } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('material_slug, sessions_passed')
+    .eq('user_id', user.id)
+    .eq('language_code', 'en')
+  : { data: [], error: null };
+if (progressError) throw progressError;
+const progressBySlug = new Map((progressData ?? []).map((row) => [row.material_slug, row]));
 ---
 
 <DashboardLayout
@@ -26,11 +37,16 @@ const materials = (await getCollection('englishAcademic'))
       <div class="material-grid">
         {materials.map((item) => {
           const slug = item.id.split('/').at(-1) ?? item.id;
+          const progressSlug = `academic-${slug}`;
+          const passedCount = normalizePassedPillars(progressBySlug.get(progressSlug)?.sessions_passed).length;
           return (
-            <article class="material-card">
+            <article class="material-card" data-academic-progress-slug={progressSlug} data-progress-language="en">
               <span class="department-label">{item.data.jurusan}</span>
               <h2>{item.data.title}</h2>
               <p>{item.data.description}</p>
+              <p class={`material-progress ${passedCount === 4 ? 'is-complete' : ''}`} data-academic-progress-copy>
+                {passedCount === 4 ? '✓ All four skills complete' : `${passedCount}/4 skills complete`}
+              </p>
               <a href={`/en/academic-english/${slug}`}>Open Material →</a>
             </article>
           );
@@ -41,6 +57,29 @@ const materials = (await getCollection('englishAcademic'))
     )}
   </main>
 </DashboardLayout>
+
+<script>
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+    }>).detail;
+    if (languageCode !== 'en') return;
+
+    document.querySelectorAll<HTMLElement>('[data-academic-progress-slug]').forEach((card) => {
+      if (card.dataset.academicProgressSlug !== slug) return;
+      const passedCount = pillars.length;
+      const copy = card.querySelector<HTMLElement>('[data-academic-progress-copy]');
+      if (copy) {
+        copy.classList.toggle('is-complete', passedCount === 4);
+        copy.textContent = passedCount === 4
+          ? '✓ All four skills complete'
+          : `${passedCount}/4 skills complete`;
+      }
+    });
+  });
+</script>
 
 <style>
   .academic-page { display:grid; gap:1.5rem; padding:1rem 0 3rem; }
@@ -53,6 +92,8 @@ const materials = (await getCollection('englishAcademic'))
   .department-label { color:var(--accent-gold,#966313); font-size:.75rem; font-weight:800; }
   .material-card h2,.material-card p { margin:0; color:var(--text-main); }
   .material-card p,.empty-state { color:var(--muted); line-height:1.55; }
+  .material-card .material-progress { margin:0; color:var(--muted); font-size:.8rem; font-weight:700; }
+  .material-card .material-progress.is-complete { color:#236b38; }
   .material-card a { color:var(--accent-gold,#966313); font-weight:800; text-decoration:none; }
   @media(max-width:700px) { .material-grid { grid-template-columns:1fr; } }
 </style>

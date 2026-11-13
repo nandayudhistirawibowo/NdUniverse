@@ -33,10 +33,10 @@ const cards = materials.map((material) => {
 
 <div class="material-grid">
   {cards.map(({ material, totalSessions, passedCount, percentage }) => (
-    <a class="material-card" href={`${materialHrefPrefix}/${material.id}`} data-material-level={material.data.level ?? ''}>
+    <a class="material-card" href={`${materialHrefPrefix}/${material.id}`} data-material-level={material.data.level ?? ''} data-progress-slug={material.id} data-progress-language="de">
       <div class="material-topline">
         <span class="material-track">{material.data.track}</span>
-        <span class="material-percent">{percentage}%</span>
+        <span class="material-percent" data-progress-percent>{percentage}%</span>
       </div>
       <h2>{material.data.judulMateri}</h2>
       <p class="material-description">{material.data.deskripsi}</p>
@@ -45,7 +45,7 @@ const cards = materials.map((material) => {
         {material.data.jurusan && <span>{material.data.jurusan}</span>}
       </div>
       <div class="progress-copy">
-        <span>{passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`}</span>
+        <span data-progress-copy>{passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`}</span>
         <span>{material.data.vocab.length} kosakata</span>
       </div>
       <div
@@ -55,13 +55,39 @@ const cards = materials.map((material) => {
         aria-valuemin="0"
         aria-valuemax="100"
         aria-valuenow={percentage}
+        data-progress-bar
       >
-        <span style={`width: ${percentage}%`} />
+        <span data-progress-fill style={`width: ${percentage}%`} />
       </div>
       <span class="material-action">Buka materi <span aria-hidden="true">→</span></span>
     </a>
   ))}
 </div>
+
+<script>
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+    }>).detail;
+    if (languageCode !== 'de') return;
+
+    document.querySelectorAll<HTMLElement>('[data-progress-slug]').forEach((card) => {
+      if (card.dataset.progressSlug !== slug) return;
+      const passedCount = pillars.length;
+      const percentage = Math.round((passedCount / 4) * 100);
+      const copy = card.querySelector<HTMLElement>('[data-progress-copy]');
+      const percent = card.querySelector<HTMLElement>('[data-progress-percent]');
+      const bar = card.querySelector<HTMLElement>('[data-progress-bar]');
+      const fill = card.querySelector<HTMLElement>('[data-progress-fill]');
+      if (copy) copy.textContent = passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`;
+      if (percent) percent.textContent = `${percentage}%`;
+      if (bar) bar.setAttribute('aria-valuenow', String(percentage));
+      if (fill) fill.style.width = `${percentage}%`;
+    });
+  });
+</script>
 
 <style>
   .material-grid {

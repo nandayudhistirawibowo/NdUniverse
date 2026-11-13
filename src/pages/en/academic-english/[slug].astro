@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import { normalizePassedPillars } from '@core/db/progress-client-en.js';
 import { getCollection } from 'astro:content';
 
 export const prerender = false;
@@ -10,6 +11,19 @@ const item = materials.find((material) => material.id === slug || material.id.en
 if (!item) return new Response('Academic English material not found.', { status: 404 });
 
 const materialSlug = item.id.split('/').at(-1) ?? item.id;
+const progressSlug = `academic-${materialSlug}`;
+const user = Astro.locals.user;
+const { data: savedProgress, error: progressError } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('sessions_passed')
+    .eq('user_id', user.id)
+    .eq('material_slug', progressSlug)
+    .eq('language_code', 'en')
+    .maybeSingle()
+  : { data: null, error: null };
+if (progressError) throw progressError;
+const passedPillars = normalizePassedPillars(savedProgress?.sessions_passed);
 const vocab = item.data.vocab.map((entry) => ({
   ...entry,
   german: entry.word,
@@ -80,7 +94,17 @@ const pillars = [
     {pillars.some((pillar) => pillar.available) && (
       <nav class="pillar-links" aria-label="Academic English skill practice">
         {pillars.filter((pillar) => pillar.available).map((pillar) => (
-          <a href={`/en/academic-english/${materialSlug}/latihan?type=${pillar.type}`}>{pillar.label}</a>
+          <a
+            href={`/en/academic-english/${materialSlug}/latihan?type=${pillar.type}`}
+            data-progress-pillar={pillar.type}
+            data-progress-slug={progressSlug}
+            data-progress-language="en"
+            data-pillar-label={pillar.label}
+            class={passedPillars.includes(pillar.type) ? 'is-complete' : ''}
+            aria-label={`${pillar.label}${passedPillars.includes(pillar.type) ? ' completed' : ''}`}
+          >
+            <span data-pillar-check aria-hidden="true">{passedPillars.includes(pillar.type) ? '✓ ' : ''}</span>{pillar.label}
+          </a>
         ))}
       </nav>
     )}
@@ -103,6 +127,25 @@ const pillars = [
 
   document.addEventListener('astro:page-load', bindSpeakers);
   bindSpeakers();
+
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+    }>).detail;
+    if (languageCode !== 'en') return;
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {
+      if (link.dataset.progressSlug !== slug) return;
+      const isComplete = pillars.includes(link.dataset.progressPillar ?? '');
+      const label = link.dataset.pillarLabel ?? '';
+      link.classList.toggle('is-complete', isComplete);
+      link.setAttribute('aria-label', `${label}${isComplete ? ' completed' : ''}`);
+      const check = link.querySelector<HTMLElement>('[data-pillar-check]');
+      if (check) check.textContent = isComplete ? '✓ ' : '';
+    });
+  });
 </script>
 
 <style>
@@ -127,6 +170,7 @@ const pillars = [
   .speaker-button.is-playing { border-color:var(--accent-gold); background:var(--bg-main,#fff4dc); }
   .pillar-links { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.55rem; }
   .pillar-links a { min-height:44px; display:grid; place-items:center; border:1px solid var(--border); border-radius:8px; color:var(--text-main); font-weight:800; text-decoration:none; }
+  .pillar-links a.is-complete { border-color:#3a8b55; background:#eaf6ed; color:#236b38; }
   @media(max-width:700px) {
     .section-heading { align-items:stretch; flex-direction:column; }
     .primary-link { width:100%; box-sizing:border-box; }

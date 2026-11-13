@@ -35,6 +35,12 @@ const levelProgress = currentLevel.nextThreshold
   ? Math.min(100, Math.max(0, Math.floor(((cefrPoints - currentLevel.threshold) / (currentLevel.nextThreshold - currentLevel.threshold)) * 100)))
   : 100;
 const totalXp = progressRows.reduce((total, row) => total + Math.max(0, Number(row.xp) || 0), 0);
+const levelMaterials = materials
+  .filter((material) => material.data.track === 'Alltagsdeutsch' && material.data.level)
+  .map((material) => ({
+    slug: material.id,
+    points: POINTS_PER_LEVEL[material.data.level] ?? 0,
+  }));
 ---
 
 <DashboardLayout title="Dashboard | NdUniverse" description="Dashboard pembelajaran bahasa Jerman." active="home" user={user} profile={profile}>
@@ -45,15 +51,21 @@ const totalXp = progressRows.reduce((total, row) => total + Math.max(0, Number(r
       <p>Lanjutkan perjalanan belajar bahasa Jermanmu.</p>
     </header>
 
-    <article class="level-card">
+    <article
+      class="level-card"
+      data-progress-dashboard
+      data-progress-rows={JSON.stringify(progressRows)}
+      data-level-materials={JSON.stringify(levelMaterials)}
+      data-level-steps={JSON.stringify(LEVEL_STEPS)}
+    >
       <div>
         <span>Level CEFR saat ini</span>
-        <strong>{currentLevel.label}</strong>
+        <strong data-level-label>{currentLevel.label}</strong>
       </div>
-      <div class="progress-track" role="progressbar" aria-label={`Progress menuju ${currentLevel.nextLabel ?? currentLevel.label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={levelProgress}>
-        <span style={`width: ${levelProgress}%`}></span>
+      <div class="progress-track" role="progressbar" aria-label={`Progress menuju ${currentLevel.nextLabel ?? currentLevel.label}`} aria-valuemin="0" aria-valuemax="100" aria-valuenow={levelProgress} data-level-progress>
+        <span data-level-fill style={`width: ${levelProgress}%`}></span>
       </div>
-      <small>{cefrPoints} poin CEFR · {currentLevel.nextThreshold ? `${levelProgress}% menuju ${currentLevel.nextLabel}` : 'Level tertinggi tercapai'} · {totalXp} XP</small>
+      <small data-level-summary>{cefrPoints} poin CEFR · {currentLevel.nextThreshold ? `${levelProgress}% menuju ${currentLevel.nextLabel}` : 'Level tertinggi tercapai'} · {totalXp} XP</small>
     </article>
 
     <nav class="shortcut-grid" aria-label="Menu cepat">
@@ -64,6 +76,74 @@ const totalXp = progressRows.reduce((total, row) => total + Math.max(0, Number(r
     </nav>
   </section>
 </DashboardLayout>
+
+<script>
+  import { normalizePassedPillars } from '@core/db/progress-client.js';
+
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars, xp } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+      xp: number;
+    }>).detail;
+    if (languageCode !== 'de') return;
+
+    const dashboard = document.querySelector<HTMLElement>('[data-progress-dashboard]');
+    if (!dashboard) return;
+
+    const rows = new Map<string, { material_slug: string; xp: number; sessions_passed: unknown }>(
+      (JSON.parse(dashboard.dataset.progressRows ?? '[]') as Array<{
+        material_slug: string;
+        xp: number;
+        sessions_passed: unknown;
+      }>).map((row) => [row.material_slug, row]),
+    );
+    rows.set(slug, { material_slug: slug, xp, sessions_passed: pillars });
+    dashboard.dataset.progressRows = JSON.stringify([...rows.values()]);
+
+    const levelMaterials = JSON.parse(dashboard.dataset.levelMaterials ?? '[]') as Array<{
+      slug: string;
+      points: number;
+    }>;
+    const steps = JSON.parse(dashboard.dataset.levelSteps ?? '[]') as Array<{
+      threshold: number;
+      label: string;
+      nextThreshold: number | null;
+      nextLabel: string | null;
+    }>;
+    const totalPoints = levelMaterials.reduce((total, material) => {
+      const progress = rows.get(material.slug);
+      return progress && normalizePassedPillars(progress.sessions_passed).length === 4
+        ? total + material.points
+        : total;
+    }, 0);
+    const totalXp = [...rows.values()].reduce((total, row) => total + Math.max(0, Number(row.xp) || 0), 0);
+    const currentLevel = [...steps].reverse().find((step) => totalPoints >= step.threshold) ?? steps[0];
+    if (!currentLevel) return;
+
+    const percentage = currentLevel.nextThreshold
+      ? Math.min(100, Math.max(0, Math.floor(
+        ((totalPoints - currentLevel.threshold) / (currentLevel.nextThreshold - currentLevel.threshold)) * 100,
+      )))
+      : 100;
+    const label = dashboard.querySelector<HTMLElement>('[data-level-label]');
+    const progress = dashboard.querySelector<HTMLElement>('[data-level-progress]');
+    const fill = dashboard.querySelector<HTMLElement>('[data-level-fill]');
+    const summary = dashboard.querySelector<HTMLElement>('[data-level-summary]');
+    if (label) label.textContent = currentLevel.label;
+    if (progress) {
+      progress.setAttribute('aria-valuenow', String(percentage));
+      progress.setAttribute('aria-label', `Progress menuju ${currentLevel.nextLabel ?? currentLevel.label}`);
+    }
+    if (fill) fill.style.width = `${percentage}%`;
+    if (summary) {
+      summary.textContent = `${totalPoints} poin CEFR · ${
+        currentLevel.nextThreshold ? `${percentage}% menuju ${currentLevel.nextLabel}` : 'Level tertinggi tercapai'
+      } · ${totalXp} XP`;
+    }
+  });
+</script>
 
 <style>
   .dashboard-content { display: grid; gap: 1.25rem; }

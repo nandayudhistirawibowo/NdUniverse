@@ -1,11 +1,24 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import { normalizePassedPillars } from '@core/db/progress-client-en.js';
 import { getCollection } from 'astro:content';
 const slug = Astro.params.slug ?? '';
 const materials = await getCollection('englishEveryday');
 const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
 if (!item) return new Response('Material not found.', { status: 404 });
 const materialSlug = item.id.split('/').at(-1) ?? item.id;
+const user = Astro.locals.user;
+const { data: savedProgress, error: progressError } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('sessions_passed')
+    .eq('user_id', user.id)
+    .eq('material_slug', item.id)
+    .eq('language_code', 'en')
+    .maybeSingle()
+  : { data: null, error: null };
+if (progressError) throw progressError;
+const passedPillars = normalizePassedPillars(savedProgress?.sessions_passed);
 const vocab = item.data.vocab.map((entry) => ({
   german: entry.word,
   indonesian: entry.translation,
@@ -59,10 +72,23 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
           </table>
         </div>
         <nav class="pillar-links" aria-label={`Session ${session.number} practice pillars`}>
-          <a href={`/en/materi/latihan?slug=${materialSlug}&type=reading&session=${session.number}`}>Reading</a>
-          <a href={`/en/materi/latihan?slug=${materialSlug}&type=listening&session=${session.number}`}>Listening</a>
-          <a href={`/en/materi/latihan?slug=${materialSlug}&type=writing&session=${session.number}`}>Writing</a>
-          <a href={`/en/materi/latihan?slug=${materialSlug}&type=speaking&session=${session.number}`}>Speaking</a>
+          {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
+            const label = pillar[0].toUpperCase() + pillar.slice(1);
+            const isComplete = passedPillars.includes(pillar);
+            return (
+              <a
+                href={`/en/materi/latihan?slug=${materialSlug}&type=${pillar}&session=${session.number}`}
+                data-progress-pillar={pillar}
+                data-progress-slug={item.id}
+                data-progress-language="en"
+                data-pillar-label={label}
+                class={isComplete ? 'is-complete' : ''}
+                aria-label={`${label}${isComplete ? ' completed' : ''}`}
+              >
+                <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span>{label}
+              </a>
+            );
+          })}
         </nav>
       </section>
     ))}
@@ -85,6 +111,25 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
 
   document.addEventListener('astro:page-load', bindVocabularyAudio);
   bindVocabularyAudio();
+
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+    }>).detail;
+    if (languageCode !== 'en') return;
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {
+      if (link.dataset.progressSlug !== slug) return;
+      const isComplete = pillars.includes(link.dataset.progressPillar ?? '');
+      const label = link.dataset.pillarLabel ?? '';
+      link.classList.toggle('is-complete', isComplete);
+      link.setAttribute('aria-label', `${label}${isComplete ? ' completed' : ''}`);
+      const check = link.querySelector<HTMLElement>('[data-pillar-check]');
+      if (check) check.textContent = isComplete ? '✓ ' : '';
+    });
+  });
 
   document.querySelectorAll<HTMLAnchorElement>('[data-session-back]').forEach((link) => {
     link.addEventListener('click', () => {
@@ -110,5 +155,6 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   .vocab-speech-button.is-playing { border-color: var(--accent-gold); background: #fff4dc; }
   .pillar-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
   .pillar-links a { min-height: 42px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
+  .pillar-links a.is-complete { border-color: #3a8b55; background: #eaf6ed; color: #236b38; }
   @media (max-width: 700px) { .pillar-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>

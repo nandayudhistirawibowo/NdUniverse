@@ -210,7 +210,10 @@ export default function Quiz(props) {
 
     progressWriteQueueRef.current = progressWriteQueueRef.current
       .then(() => upsertUserProgress(progressClientRef.current, userId, materialId, updates))
-      .catch(() => {});
+      .catch((error) => {
+        console.error('Failed to save English quiz progress.', error);
+        setToast({ type: 'error', message: 'Progress could not be saved. Please try again shortly.' });
+      });
   }
 
   useEffect(() => {

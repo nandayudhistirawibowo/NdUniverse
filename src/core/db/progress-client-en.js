@@ -106,6 +106,18 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
     .from('user_progress')
     .upsert(payload, { onConflict: 'user_id,material_slug,language_code' });
   if (error) throw error;
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('nd:progress-updated', {
+      detail: {
+        slug: materialSlug,
+        languageCode: 'en',
+        pilar: normalizePassedPillars(updates.sessions_passed).at(-1) ?? null,
+        pillars: mergedSessions,
+        xp: payload.xp,
+      },
+    }));
+  }
 }
 
 export function upsertUserProgress(client, userId, materialSlug, updates) {
