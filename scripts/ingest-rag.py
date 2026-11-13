@@ -207,14 +207,21 @@ def main() -> int:
         return 1
 
     load_dotenv(ROOT / ".env")
-    required_variables = ("SUPABASE_URL", "SUPABASE_SERVICE_ROLE_KEY")
-    missing_variables = [name for name in required_variables if not os.getenv(name)]
+    supabase_url = os.getenv("SUPABASE_URL") or os.getenv("PUBLIC_SUPABASE_URL")
+    missing_variables = [
+        name
+        for name, value in (
+            ("SUPABASE_URL (or PUBLIC_SUPABASE_URL)", supabase_url),
+            ("SUPABASE_SERVICE_ROLE_KEY", os.getenv("SUPABASE_SERVICE_ROLE_KEY")),
+        )
+        if not value
+    ]
     if missing_variables:
         LOGGER.error("Missing required .env variable(s): %s", ", ".join(missing_variables))
         return 1
 
     supabase = create_client(
-        os.environ["SUPABASE_URL"],
+        supabase_url,
         os.environ["SUPABASE_SERVICE_ROLE_KEY"],
     )
     documents, skipped = collect_documents(supabase)
