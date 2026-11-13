@@ -82,15 +82,22 @@ function readBookmarks() {
 }
 
 function buildQuestionQueue(items, sessionNumber = 1, useSessionType = false, pillarType = null) {
-  return items.map((item, index) => ({
-    ...item,
-    id: `${item.german}-${index}-${Math.random().toString(36).slice(2, 8)}`,
-    type: pillarType
-      ? getPillarQuestionType(pillarType, item)
-      : ['reading', 'listening', 'writing', 'speaking'][index % 4],
-    needsReview: false,
-    correctAfterWrong: 0,
-  }));
+  const types = ['reading', 'listening', 'writing', 'speaking'];
+  return items.map((item, index) => {
+    let type = 'matcher';
+    if (pillarType) {
+      type = getPillarQuestionType(pillarType, item);
+    } else if (useSessionType) {
+      type = getPillarQuestionType(types[index % 4], item);
+    }
+    return {
+      ...item,
+      id: `${item.german}-${index}-${Math.random().toString(36).slice(2, 8)}`,
+      type: type,
+      needsReview: false,
+      correctAfterWrong: 0,
+    };
+  });
 }
 
 function buildMatcherSet(currentItem, items) {
@@ -769,7 +776,7 @@ export default function Quiz(props) {
   }
 
   function handleArrangeSubmit() {
-    if (arrangeSelected.length === 0) return;
+    if (arrangeSelected.length === 0 || !currentQuestion) return;
 
     const answer = arrangeSelected.map((index) => arrangeOptions[index]).join(' ');
     const isCorrect = answer === currentQuestion.german;
@@ -777,7 +784,7 @@ export default function Quiz(props) {
   }
 
   function handleMatcherSubmit() {
-    if (!matcherSet) return;
+    if (!matcherSet || !currentQuestion) return;
 
     const isCorrect = Object.entries(matcherSet.correctMap).every(
       ([german, meaning]) => matcherMatches[german] === meaning
@@ -793,7 +800,7 @@ export default function Quiz(props) {
   }
 
   function handleMultipleChoiceSubmit() {
-    if (!choiceAnswer) return;
+    if (!currentQuestion || !choiceAnswer) return;
     showResult(choiceAnswer === currentQuestion.indonesian);
   }
 
@@ -904,7 +911,7 @@ export default function Quiz(props) {
     else handleTextSubmit();
   }
 
-  const questionNumber = Math.min(attemptedCount + (checkedResult === null ? 1 : 0), currentBatchItems.length);
+  const questionNumber = Math.max(1, Math.min((currentBatchItems.length - queue.length) + 1, currentBatchItems.length || 1));
   const progress = currentBatchItems.length === 0 ? 0 : Math.round((attemptedCount / currentBatchItems.length) * 100);
   const accuracy = attemptedCount === 0 ? 0 : Math.round((correctCount / attemptedCount) * 100);
   const matcherIsComplete = matcherSet && Object.keys(matcherMatches).length === matcherSet.germanWords.length;
