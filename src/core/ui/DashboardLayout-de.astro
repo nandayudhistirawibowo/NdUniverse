@@ -136,34 +136,36 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
           <a href={isAdmin ? '/admin' : '/de/dashboard'} aria-label="NdUniverse">
             <img src="/logo.png" alt="NdUniverse" />
           </a>
-          <DashboardLanguageSwitcher client:load />
-          {user && (
-            <details class="account-dropdown" style="margin-left: 0">
-              <summary class="account-trigger">
-                {avatarUrl ? (
-                  <img class="account-avatar" data-avatar-image data-avatar-initial={accountInitial} src={avatarUrl} alt="" />
-                ) : (
-                  <span class="account-avatar avatar-initial" aria-hidden="true">{accountInitial}</span>
-                )}
-                <span class="account-copy">
-                  <strong>{displayName}</strong>
-                  <span
-                    data-i18n={hasNim ? 'account.studentId' : 'account.general'}
-                    data-i18n-params={hasNim ? JSON.stringify({ id: nim }) : undefined}
-                  >{hasNim ? `NIM ${nim}` : 'Umum'}</span>
-                </span>
-                <svg class="account-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </summary>
-              <div class="account-menu">
-                {!isAdmin && <a href="/dashboard-de/profil" data-i18n="account.profile">Profil Saya</a>}
-                <form action="/logout?module=de" method="post">
-                  <button type="submit" data-i18n="account.logout">Keluar</button>
-                </form>
-              </div>
-            </details>
-          )}
+          <div class="header-actions">
+            <DashboardLanguageSwitcher client:load />
+            {user && (
+              <details class="account-dropdown">
+                <summary class="account-trigger">
+                  {avatarUrl ? (
+                    <img class="account-avatar" data-avatar-image data-avatar-initial={accountInitial} src={avatarUrl} alt="" />
+                  ) : (
+                    <span class="account-avatar avatar-initial" aria-hidden="true">{accountInitial}</span>
+                  )}
+                  <span class="account-copy">
+                    <strong>{displayName}</strong>
+                    <span
+                      data-i18n={hasNim ? 'account.studentId' : 'account.general'}
+                      data-i18n-params={hasNim ? JSON.stringify({ id: nim }) : undefined}
+                    >{hasNim ? `NIM ${nim}` : 'Umum'}</span>
+                  </span>
+                  <svg class="account-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="m6 9 6 6 6-6" />
+                  </svg>
+                </summary>
+                <div class="account-menu">
+                  {!isAdmin && <a href="/dashboard-de/profil" data-i18n="account.profile">Profil Saya</a>}
+                  <form action="/logout?module=de" method="post">
+                    <button type="submit" data-i18n="account.logout">Keluar</button>
+                  </form>
+                </div>
+              </details>
+            )}
+          </div>
         </header>
         <main class="private-content"><slot /></main>
         <footer class="private-footer">
@@ -543,6 +545,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     backdrop-filter: blur(14px);
   }
 
+  .header-actions {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: nowrap;
+  }
+
+  .header-actions > astro-island {
+    display: block;
+    flex: 0 0 auto;
+  }
+
   .dashboard-header > a {
     display: inline-flex;
     align-items: center;
@@ -558,7 +573,8 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 
   .account-dropdown {
     position: relative;
-    margin-left: auto;
+    flex: 0 1 auto;
+    margin-left: 0;
   }
 
   .account-trigger {
@@ -826,7 +842,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     .dashboard-header {
       min-height: 62px;
       gap: 0.5rem;
-      padding: 0.45rem 0.75rem;
+      padding: 0.45rem 0.6rem;
     }
 
     .sidebar-toggle {
@@ -841,6 +857,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 
     .dashboard-header > a img {
       height: 30px;
+      max-width: min(112px, 30vw);
+    }
+
+    .header-actions {
+      flex: 0 0 auto;
     }
 
     .account-trigger {
@@ -898,15 +919,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     }
   }
 
-  @media (max-width: 420px) {
+  @media (max-width: 520px) {
     .private-nav { grid-template-columns: 1fr; }
     .account-copy,
     .account-chevron {
       display: none;
     }
     .account-trigger {
+      width: 40px;
       min-height: 44px;
+      min-width: 40px;
+      justify-content: center;
       border: 0;
+      padding: 0;
     }
     .account-avatar {
       width: 40px;
