@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
+import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
+import NdBot from '@core/ui/NdBot.jsx';
 import { playAudioTTS } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
@@ -78,6 +80,7 @@ function formatTime(seconds) {
 
 export default function GoetheExam({ level, tasks, available = true }) {
   const storageKey = `sideutsch-goethe-${level.toLowerCase()}`;
+  const [isStarted, setIsStarted] = useState(false);
   const [activeModule, setActiveModule] = useState('lesen');
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
@@ -89,6 +92,22 @@ export default function GoetheExam({ level, tasks, available = true }) {
   const secondsByModule = TIMER_MINUTES[level] ?? TIMER_MINUTES.A1;
   const [remainingSeconds, setRemainingSeconds] = useState(secondsByModule.lesen * 60);
   const remainingRef = useRef({});
+
+  const handleForceSubmit = () => {
+    submitExam();
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  const { strikeLevel, requestFullscreen } = useExamAntiCheat({
+    onForceSubmit: handleForceSubmit,
+  });
+
+  const handleStartExam = () => {
+    requestFullscreen();
+    setIsStarted(true);
+  };
 
   useEffect(() => {
     answersRef.current = answers;
@@ -221,7 +240,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
   };
 
   useEffect(() => {
-    if (result) return undefined;
+    if (!isStarted || result) return undefined;
     const timer = window.setInterval(() => {
       setRemainingSeconds((current) => {
         remainingRef.current[activeModule] = Math.max(current - 1, 0);
@@ -234,7 +253,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
       });
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [activeModule, result]);
+  }, [isStarted, activeModule, result]);
 
   const progressPercent = (moduleId) => {
     const total = tasks[moduleId]?.length ?? 0;
@@ -280,142 +299,159 @@ export default function GoetheExam({ level, tasks, available = true }) {
         </div>
       </header>
 
-      <nav class="module-progress" aria-label="Exam module progress">
-        {MODULES.map((module) => (
-          <button
-            type="button"
-            class={activeModule === module.id ? 'active' : ''}
-            onClick={() => openModule(module.id)}
-            disabled={Boolean(result)}
-            key={module.id}
-          >
-            <span>{module.label}</span>
-            <strong>{moduleTasksAnswered(module.id)}/{tasks[module.id]?.length ?? 0}</strong>
-            <div class="module-track" aria-hidden="true">
-              <span style={`width: ${progressPercent(module.id)}%`} />
-            </div>
+      {!isStarted && !result ? (
+        <div class="goethe-task exam-start-card" style="text-align: center; padding: 2rem 1.5rem;">
+          <p style="font-weight: 700; margin-bottom: 0.5rem;">IELTS/TOEFL Simulation · {level}</p>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">
+            Fullscreen mode will be activated. Do not switch tabs or exit fullscreen during the exam.
+            You will receive a strike for each violation — 3 strikes will auto-submit your exam.
+          </p>
+          <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
+            Start Exam
           </button>
-        ))}
-      </nav>
-
-      {!result && (
-        <section class="module-panel" aria-labelledby="active-module-title">
-          <header>
-            <p>{MODULES.find((module) => module.id === activeModule)?.english}</p>
-            <h2 id="active-module-title">{MODULES.find((module) => module.id === activeModule)?.label}</h2>
-          </header>
-
-          {(tasks[activeModule] ?? []).map((task, index) => (
-            <article class="goethe-task" key={`${activeModule}-${index}`}>
-              <div class="task-meta">Task {index + 1}</div>
-              {task.passage && <blockquote>{task.passage}</blockquote>}
-              {activeModule === 'hoeren' && (
-                <div class="audio-controls">
-                  <button
-                    class="audio-button"
-                    type="button"
-                    disabled={Boolean(playedAudio[String(index)])}
-                    onClick={(event) => playListeningAudio(event, task, index)}
-                  >
-                    🔊 {playedAudio[String(index)] ? 'Audio played once' : 'Play Audio (once only)'}
-                  </button>
+        </div>
+      ) : (
+        <>
+          <nav class="module-progress" aria-label="Exam module progress">
+            {MODULES.map((module) => (
+              <button
+                type="button"
+                class={activeModule === module.id ? 'active' : ''}
+                onClick={() => openModule(module.id)}
+                disabled={Boolean(result)}
+                key={module.id}
+              >
+                <span>{module.label}</span>
+                <strong>{moduleTasksAnswered(module.id)}/{tasks[module.id]?.length ?? 0}</strong>
+                <div class="module-track" aria-hidden="true">
+                  <span style={`width: ${progressPercent(module.id)}%`} />
                 </div>
-              )}
-              <p class="prompt">{task.prompt}</p>
+              </button>
+            ))}
+          </nav>
 
-              {(activeModule === 'lesen' || activeModule === 'hoeren') && (
-                <div class="options">
-                  {task.options.map((option, optionIndex) => (
-                    <label
-                      class={`option ${answers[`${activeModule}-${index}`] === option ? 'selected' : ''}`}
-                      key={`${option}-${optionIndex}`}
-                    >
-                      <input
-                        type="radio"
-                        name={`${activeModule}-${index}`}
-                        value={option}
-                        checked={answers[`${activeModule}-${index}`] === option}
-                        onChange={() => chooseAnswer(activeModule, index, option)}
+          {!result && (
+            <section class="module-panel" aria-labelledby="active-module-title">
+              <header>
+                <p>{MODULES.find((module) => module.id === activeModule)?.english}</p>
+                <h2 id="active-module-title">{MODULES.find((module) => module.id === activeModule)?.label}</h2>
+              </header>
+
+              {(tasks[activeModule] ?? []).map((task, index) => (
+                <article class="goethe-task" key={`${activeModule}-${index}`}>
+                  <div class="task-meta">Task {index + 1}</div>
+                  {task.passage && <blockquote>{task.passage}</blockquote>}
+                  {activeModule === 'hoeren' && (
+                    <div class="audio-controls">
+                      <button
+                        class="audio-button"
+                        type="button"
+                        disabled={Boolean(playedAudio[String(index)])}
+                        onClick={(event) => playListeningAudio(event, task, index)}
+                      >
+                        {'\uD83D\uDD0A'} {playedAudio[String(index)] ? 'Audio played once' : 'Play Audio (once only)'}
+                      </button>
+                    </div>
+                  )}
+                  <p class="prompt">{task.prompt}</p>
+
+                  {(activeModule === 'lesen' || activeModule === 'hoeren') && (
+                    <div class="options">
+                      {task.options.map((option, optionIndex) => (
+                        <label
+                          class={`option ${answers[`${activeModule}-${index}`] === option ? 'selected' : ''}`}
+                          key={`${option}-${optionIndex}`}
+                        >
+                          <input
+                            type="radio"
+                            name={`${activeModule}-${index}`}
+                            value={option}
+                            checked={answers[`${activeModule}-${index}`] === option}
+                            onChange={() => chooseAnswer(activeModule, index, option)}
+                          />
+                          <span>{option}</span>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+
+                  {(activeModule === 'schreiben' || activeModule === 'sprechen') && (
+                    <div class="text-answer">
+                      {activeModule === 'sprechen' && (
+                        <button
+                          class="mic-button"
+                          type="button"
+                          disabled={isListening}
+                          onClick={() => startSpeaking(activeModule, index)}
+                        >
+                          {isListening ? '\uD83C\uDF9E Recording...' : '\uD83C\uDF9E Record Answer'}
+                        </button>
+                      )}
+                      <textarea
+                        rows={activeModule === 'schreiben' ? '8' : '4'}
+                        value={answers[`${activeModule}-${index}`] ?? ''}
+                        onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
+                        placeholder={activeModule === 'schreiben' ? 'Write your answer in English...' : 'Your recording or written response...'}
                       />
-                      <span>{option}</span>
-                    </label>
-                  ))}
-                </div>
-              )}
-
-              {(activeModule === 'schreiben' || activeModule === 'sprechen') && (
-                <div class="text-answer">
-                  {activeModule === 'sprechen' && (
-                    <button
-                      class="mic-button"
-                      type="button"
-                      disabled={isListening}
-                      onClick={() => startSpeaking(activeModule, index)}
-                    >
-                      {isListening ? '🎤 Recording...' : '🎤 Record Answer'}
-                    </button>
+                      {activeModule === 'sprechen' && speechMessage && <p role="status">{speechMessage}</p>}
+                      {task.keywords && (
+                        <small>Scored keywords: {task.keywords.join(', ')}</small>
+                      )}
+                    </div>
                   )}
-                  <textarea
-                    rows={activeModule === 'schreiben' ? '8' : '4'}
-                    value={answers[`${activeModule}-${index}`] ?? ''}
-                    onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
-                    placeholder={activeModule === 'schreiben' ? 'Write your answer in English...' : 'Your recording or written response...'}
-                  />
-                  {activeModule === 'sprechen' && speechMessage && <p role="status">{speechMessage}</p>}
-                  {task.keywords && (
-                    <small>Scored keywords: {task.keywords.join(', ')}</small>
-                  )}
-                </div>
-              )}
-            </article>
-          ))}
-
-          {activeModule === 'sprechen' ? (
-            <button class="submit-button" type="button" onClick={submitExam}>Complete All Modules</button>
-          ) : (
-            <button class="submit-button" type="button" onClick={finishCurrentModule}>Complete Module & Continue</button>
-          )}
-        </section>
-      )}
-
-      {result && (
-        <section class={`goethe-result ${result.passed ? 'passed' : 'failed'}`} aria-live="polite">
-          <p class="result-label">{result.passed ? 'PASSED' : 'FAILED'}</p>
-          <h2>🏆 Total Score: {result.totalPoints}/100 ({result.passed ? 'PASSED' : 'FAILED'})</h2>
-          <div class="module-results">
-            {result.modules.map((module) => {
-              let feedback = `${module.percent}% module score (${module.correct}/${module.total} correct).`;
-              if (module.id === 'lesen') feedback = `Key paragraph: ${result.readingKeyParagraph}`;
-              if (module.id === 'hoeren') feedback = `Transcript: ${result.listeningTranscript}`;
-              if (module.id === 'schreiben' || module.id === 'sprechen') {
-                feedback = module.answers.map((answer, index) => {
-                  const keywords = module.keywords[index];
-                  const keywordText = Array.isArray(keywords) ? keywords.join(' or ') : String(keywords ?? '');
-                  return `Your Answer: "${answer || '-'}" · Scored keywords: "${keywordText}"`;
-                }).join(' | ');
-              }
-              return (
-                <article key={module.id} class={module.passed ? 'passed' : 'failed'}>
-                  <h3>{module.id === 'lesen' ? '📖 Reading' : module.id === 'hoeren' ? '🎧 Listening' : module.id === 'schreiben' ? '✍️ Writing' : '🗣️ Speaking'}</h3>
-                  <strong>{module.points}/25 ({module.rating})</strong>
-                  <p>{feedback}</p>
                 </article>
-              );
-            })}
-          </div>
-          {!result.passed ? (
-            <>
-              <p class="retry-message">You need to retry these modules: {failedModules.map((module) => module.label).join(', ')}.</p>
-              <a class="certificate-link failure-link" href={`/en/everyday-english/${level.toLowerCase()}`}>Review your skills</a>
-            </>
-          ) : (
-            <div class="result-navigation">
-              <a class="certificate-link" href={`/sertifikat/en/ielts/${level.toLowerCase()}`}>Get Certificate</a>
-              <a class="certificate-link" href="/en/dashboard">Back to English Dashboard</a>
-            </div>
+              ))}
+
+              {activeModule === 'sprechen' ? (
+                <button class="submit-button" type="button" onClick={submitExam}>Complete All Modules</button>
+              ) : (
+                <button class="submit-button" type="button" onClick={finishCurrentModule}>Complete Module &amp; Continue</button>
+              )}
+            </section>
           )}
-        </section>
+
+          {result && (
+            <section class={`goethe-result ${result.passed ? 'passed' : 'failed'}`} aria-live="polite">
+              <p class="result-label">{result.passed ? 'PASSED' : 'FAILED'}</p>
+              <h2>{'\uD83C\uDFC6'} Total Score: {result.totalPoints}/100 ({result.passed ? 'PASSED' : 'FAILED'})</h2>
+              <div class="module-results">
+                {result.modules.map((module) => {
+                  let feedback = `${module.percent}% module score (${module.correct}/${module.total} correct).`;
+                  if (module.id === 'lesen') feedback = `Key paragraph: ${result.readingKeyParagraph}`;
+                  if (module.id === 'hoeren') feedback = `Transcript: ${result.listeningTranscript}`;
+                  if (module.id === 'schreiben' || module.id === 'sprechen') {
+                    feedback = module.answers.map((answer, index) => {
+                      const keywords = module.keywords[index];
+                      const keywordText = Array.isArray(keywords) ? keywords.join(' or ') : String(keywords ?? '');
+                      return `Your Answer: "${answer || '-'}" · Scored keywords: "${keywordText}"`;
+                    }).join(' | ');
+                  }
+                  return (
+                    <article key={module.id} class={module.passed ? 'passed' : 'failed'}>
+                      <h3>{module.id === 'lesen' ? 'Reading' : module.id === 'hoeren' ? 'Listening' : module.id === 'schreiben' ? 'Writing' : 'Speaking'}</h3>
+                      <strong>{module.points}/25 ({module.rating})</strong>
+                      <p>{feedback}</p>
+                    </article>
+                  );
+                })}
+              </div>
+              {!result.passed ? (
+                <>
+                  <p class="retry-message">You need to retry these modules: {failedModules.map((module) => module.label).join(', ')}.</p>
+                  <a class="certificate-link failure-link" href={`/en/everyday-english/${level.toLowerCase()}`}>Review your skills</a>
+                </>
+              ) : (
+                <div class="result-navigation">
+                  <a class="certificate-link" href={`/sertifikat/en/ielts/${level.toLowerCase()}`}>Get Certificate</a>
+                  <a class="certificate-link" href="/en/dashboard">Back to English Dashboard</a>
+                </div>
+              )}
+            </section>
+          )}
+        </>
       )}
+
+      <NdBot mode="exam" strikeLevel={strikeLevel} />
     </section>
   );
 }

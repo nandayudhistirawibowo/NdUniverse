@@ -1,4 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
+import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
+import NdBot from '@core/ui/NdBot.jsx';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 import {
@@ -102,6 +104,7 @@ export default function EnglishExam({ exam, type, level }) {
   const [speechMessage, setSpeechMessage] = useState('');
   const [isComplete, setIsComplete] = useState(false);
   const [examResult, setExamResult] = useState(null);
+  const [isStarted, setIsStarted] = useState(false);
   const resultSoundPlayed = useRef(false);
 
   const activeModule = MODULES[activeIndex];
@@ -126,6 +129,22 @@ export default function EnglishExam({ exam, type, level }) {
   const writingWordCount = countWords(writingAnswer);
   const speakingWordCount = countWords(speakingAnswer);
 
+  const handleForceSubmit = () => {
+    setIsComplete(true);
+    if (document.fullscreenElement) {
+      document.exitFullscreen().catch(() => {});
+    }
+  };
+
+  const { strikeLevel, requestFullscreen } = useExamAntiCheat({
+    onForceSubmit: handleForceSubmit,
+  });
+
+  const handleStartExam = () => {
+    requestFullscreen();
+    setIsStarted(true);
+  };
+
   useEffect(() => {
     if (!isComplete) return;
     const result = {
@@ -149,7 +168,7 @@ export default function EnglishExam({ exam, type, level }) {
   }, [isComplete, examType, examLevel, totalScore, passed, scores, bandScore]);
 
   useEffect(() => {
-    if (isComplete) return undefined;
+    if (!isStarted || isComplete) return undefined;
     if (remainingSeconds <= 0) {
       if (activeIndex === MODULES.length - 1) {
         setIsComplete(true);
@@ -163,7 +182,7 @@ export default function EnglishExam({ exam, type, level }) {
 
     const timer = window.setTimeout(() => setRemainingSeconds((seconds) => seconds - 1), 1000);
     return () => window.clearTimeout(timer);
-  }, [activeIndex, durations, isComplete, remainingSeconds]);
+  }, [isStarted, activeIndex, durations, isComplete, remainingSeconds]);
 
   useEffect(() => () => {
     window.speechSynthesis?.cancel();
@@ -236,178 +255,194 @@ export default function EnglishExam({ exam, type, level }) {
           <p>Complete each module before its timer runs out. Each module needs at least 60% to pass.</p>
         </div>
       </header>
-      {!isComplete && (
-        <div className="timer-sticky-shell">
-          <div className={`exam-timer ${remainingSeconds <= 60 ? 'urgent' : ''}`} role="timer" aria-live="off">
-            <span>{MODULE_LABELS[activeModule]} time</span>
-            <strong>{formatTime(remainingSeconds)}</strong>
-          </div>
+
+      {!isStarted && !isComplete ? (
+        <div className="exam-start-card">
+          <p className="exam-eyebrow">{exam.exam_type.toUpperCase()} · {examLevel}</p>
+          <h2>{exam.exam_type.toUpperCase()} Exam — {examLevel}</h2>
+          <p>Fullscreen mode will be activated. Do not switch tabs or exit fullscreen during the exam. You will receive a strike for each violation — 3 strikes will auto-submit your exam.</p>
+          <button className="primary-action" type="button" onClick={handleStartExam}>
+            Start Exam
+          </button>
         </div>
-      )}
-
-      <nav className="module-steps" aria-label="Exam modules">
-        {MODULES.map((module, index) => (
-          <div className={`module-step ${index === activeIndex && !isComplete ? 'active' : ''} ${index < activeIndex || isComplete ? 'complete' : ''}`}>
-            <span className="step-number">{index < activeIndex || isComplete ? '✓' : `0${index + 1}`}</span>
-            <span>{MODULE_LABELS[module]}</span>
-          </div>
-        ))}
-      </nav>
-
-      {isComplete ? (
-        <section className={`exam-results ${(examResult?.passed ?? passed) ? 'passed' : 'failed'} ${examType === 'ielts' ? 'ielts-results' : ''}`} aria-live="polite">
-          <p className="results-eyebrow">{exam.exam_type.toUpperCase()} · {examLevel}</p>
-          <h2>{(examResult?.passed ?? passed) ? 'PASSED' : 'FAILED'}</h2>
-          <div className="score-summary">
-            <p className="total-score">
-              {examType === 'ielts'
-                ? (examResult?.bandScore ?? bandScore)
-                : `${examResult?.totalScore ?? totalScore} / 120`}
-              <span>{examType === 'ielts' ? 'Overall Band Score' : 'Total Score'}</span>
-            </p>
-            {examType === 'ielts' && <small className="scoring-note">Estimated from the module scores.</small>}
-          </div>
-          <p className="result-note">You need at least 60% in every module to pass.</p>
-          <div className="score-grid">
-            {MODULES.map((module) => (
-              <article className={(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'score-card passed' : 'score-card failed'}>
-                <span>{MODULE_LABELS[module]}</span>
-                <strong>{examResult?.scores?.[module] ?? scores[module]}%</strong>
-                <small>{(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'Passed' : 'Below 60%'}</small>
-              </article>
-            ))}
-          </div>
-          <p className="scoring-note">Writing score is estimated against a 20-word target; Speaking score is based on the required keywords.</p>
-          <div className="result-actions">
-            {(examResult?.passed ?? passed) && (
-              <a className="primary-action" href={`/sertifikat/en/${examType}/${examLevel.toLowerCase()}`}>Get Certificate</a>
-            )}
-            <button type="button" className="primary-action" onClick={() => window.location.reload()}>Retake exam</button>
-            <a className="secondary-action" href="/en/everyday-english">Back to Everyday English</a>
-          </div>
-        </section>
       ) : (
-        <section className="module-panel" aria-labelledby="module-title">
-          <header className="module-heading">
-            <div>
-              <p>{`Module 0${activeIndex + 1} of 04`}</p>
-              <h2 id="module-title">{MODULE_LABELS[activeModule]}</h2>
-            </div>
-            <span>{activeModule === 'reading' ? `${readingQuestions.length} questions` : activeModule === 'listening' ? `${listeningQuestions.length} questions` : activeModule === 'writing' ? `${writingWordCount} words` : `${speakingWordCount} words`}</span>
-          </header>
-
-          {activeModule === 'reading' && (
-            <div className="question-list">
-              {readingQuestions.map((question, index) => (
-                <article className="exam-question">
-                  <p className="question-count">Question {index + 1}</p>
-                  <blockquote>{question.passage}</blockquote>
-                  <h3>{question.question}</h3>
-                  <div className="answer-options">
-                    {question.options.map((option) => (
-                      <label className={`answer-option ${answers.reading[index] === option ? 'selected' : ''}`}>
-                        <input type="radio" name={`reading-${index}`} checked={answers.reading[index] === option} onChange={() => { updateChoice('reading', index, option); playSound('click'); }} />
-                        <span>{option}</span>
-                      </label>
-                    ))}
-                  </div>
-                </article>
-              ))}
-              {readingQuestions.length === 0 && <p className="empty-module">No Reading questions are available for this exam.</p>}
+        <>
+          {!isComplete && (
+            <div className="timer-sticky-shell">
+              <div className={`exam-timer ${remainingSeconds <= 60 ? 'urgent' : ''}`} role="timer" aria-live="off">
+                <span>{MODULE_LABELS[activeModule]} time</span>
+                <strong>{formatTime(remainingSeconds)}</strong>
+              </div>
             </div>
           )}
 
-          {activeModule === 'listening' && (
-            <div className="question-list">
-              {listeningQuestions.map((question, index) => (
-                <article className="exam-question">
-                  <p className="question-count">Question {index + 1}</p>
-                  <h3>{question.question}</h3>
-                  <div className="answer-options">
-                    {question.options.map((option) => (
-                      <label className={`answer-option ${answers.listening[index] === option ? 'selected' : ''}`}>
-                        <input type="radio" name={`listening-${index}`} checked={answers.listening[index] === option} onChange={() => { updateChoice('listening', index, option); playSound('click'); }} />
-                        <span>{option}</span>
-                      </label>
-                    ))}
-                  </div>
-                </article>
-              ))}
-              {listeningQuestions.length > 0 && (
-                <audio
-                  className="exam-listening-audio"
-                  controls
-                  preload="none"
-                  src={`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`}
-                >
-                  Your browser does not support audio playback.
-                </audio>
+          <nav className="module-steps" aria-label="Exam modules">
+            {MODULES.map((module, index) => (
+              <div className={`module-step ${index === activeIndex && !isComplete ? 'active' : ''} ${index < activeIndex || isComplete ? 'complete' : ''}`} key={module}>
+                <span className="step-number">{index < activeIndex || isComplete ? '✓' : `0${index + 1}`}</span>
+                <span>{MODULE_LABELS[module]}</span>
+              </div>
+            ))}
+          </nav>
+
+          {isComplete ? (
+            <section className={`exam-results ${(examResult?.passed ?? passed) ? 'passed' : 'failed'} ${examType === 'ielts' ? 'ielts-results' : ''}`} aria-live="polite">
+              <p className="results-eyebrow">{exam.exam_type.toUpperCase()} · {examLevel}</p>
+              <h2>{(examResult?.passed ?? passed) ? 'PASSED' : 'FAILED'}</h2>
+              <div className="score-summary">
+                <p className="total-score">
+                  {examType === 'ielts'
+                    ? (examResult?.bandScore ?? bandScore)
+                    : `${examResult?.totalScore ?? totalScore} / 120`}
+                  <span>{examType === 'ielts' ? 'Overall Band Score' : 'Total Score'}</span>
+                </p>
+                {examType === 'ielts' && <small className="scoring-note">Estimated from the module scores.</small>}
+              </div>
+              <p className="result-note">You need at least 60% in every module to pass.</p>
+              <div className="score-grid">
+                {MODULES.map((module) => (
+                  <article key={module} className={(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'score-card passed' : 'score-card failed'}>
+                    <span>{MODULE_LABELS[module]}</span>
+                    <strong>{examResult?.scores?.[module] ?? scores[module]}%</strong>
+                    <small>{(examResult?.scores?.[module] ?? scores[module]) >= 60 ? 'Passed' : 'Below 60%'}</small>
+                  </article>
+                ))}
+              </div>
+              <p className="scoring-note">Writing score is estimated against a 20-word target; Speaking score is based on the required keywords.</p>
+              <div className="result-actions">
+                {(examResult?.passed ?? passed) && (
+                  <a className="primary-action" href={`/sertifikat/en/${examType}/${examLevel.toLowerCase()}`}>Get Certificate</a>
+                )}
+                <button type="button" className="primary-action" onClick={() => window.location.reload()}>Retake exam</button>
+                <a className="secondary-action" href="/en/everyday-english">Back to Everyday English</a>
+              </div>
+            </section>
+          ) : (
+            <section className="module-panel" aria-labelledby="module-title">
+              <header className="module-heading">
+                <div>
+                  <p>{`Module 0${activeIndex + 1} of 04`}</p>
+                  <h2 id="module-title">{MODULE_LABELS[activeModule]}</h2>
+                </div>
+                <span>{activeModule === 'reading' ? `${readingQuestions.length} questions` : activeModule === 'listening' ? `${listeningQuestions.length} questions` : activeModule === 'writing' ? `${writingWordCount} words` : `${speakingWordCount} words`}</span>
+              </header>
+
+              {activeModule === 'reading' && (
+                <div className="question-list">
+                  {readingQuestions.map((question, index) => (
+                    <article className="exam-question" key={`reading-${index}`}>
+                      <p className="question-count">Question {index + 1}</p>
+                      <blockquote>{question.passage}</blockquote>
+                      <h3>{question.question}</h3>
+                      <div className="answer-options">
+                        {question.options.map((option) => (
+                          <label key={option} className={`answer-option ${answers.reading[index] === option ? 'selected' : ''}`}>
+                            <input type="radio" name={`reading-${index}`} checked={answers.reading[index] === option} onChange={() => { updateChoice('reading', index, option); playSound('click'); }} />
+                            <span>{option}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                  {readingQuestions.length === 0 && <p className="empty-module">No Reading questions are available for this exam.</p>}
+                </div>
               )}
-              {listeningQuestions.length === 0 && <p className="empty-module">No Listening questions are available for this exam.</p>}
-            </div>
-          )}
 
-          {activeModule === 'writing' && (
-            <div className="written-response">
-              {writingPrompts.map((task) => (
-                <article className="writing-task">
-                  <h3>{task.title}</h3>
-                  <p className="response-prompt">{task.prompt}</p>
-                  <label for={task.id}>Your response</label>
-                  <textarea
-                    id={task.id}
-                    value={writingAnswers[task.id] ?? ''}
-                    onInput={(event) => {
-                      const value = event.currentTarget.value;
-                      setWritingAnswers((current) => ({ ...current, [task.id]: value }));
-                    }}
-                    placeholder="Write your response here"
-                    rows={10}
-                  />
-                </article>
-              ))}
-              <div className="word-count"><span>{writingWordCount} words</span><span>Recommended minimum: 20 words</span></div>
-            </div>
-          )}
+              {activeModule === 'listening' && (
+                <div className="question-list">
+                  {listeningQuestions.map((question, index) => (
+                    <article className="exam-question" key={`listening-${index}`}>
+                      <p className="question-count">Question {index + 1}</p>
+                      <h3>{question.question}</h3>
+                      <div className="answer-options">
+                        {question.options.map((option) => (
+                          <label key={option} className={`answer-option ${answers.listening[index] === option ? 'selected' : ''}`}>
+                            <input type="radio" name={`listening-${index}`} checked={answers.listening[index] === option} onChange={() => { updateChoice('listening', index, option); playSound('click'); }} />
+                            <span>{option}</span>
+                          </label>
+                        ))}
+                      </div>
+                    </article>
+                  ))}
+                  {listeningQuestions.length > 0 && (
+                    <audio
+                      className="exam-listening-audio"
+                      controls
+                      preload="none"
+                      src={`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`}
+                    >
+                      Your browser does not support audio playback.
+                    </audio>
+                  )}
+                  {listeningQuestions.length === 0 && <p className="empty-module">No Listening questions are available for this exam.</p>}
+                </div>
+              )}
 
-          {activeModule === 'speaking' && (
-            <div className="spoken-response">
-              {speakingParts.map((part) => (
-                <article className="speaking-part">
-                  <h3>{part.part}</h3>
-                  <p className="response-prompt">{part.question}</p>
-                  <button
-                    className="audio-action mic-action"
-                    type="button"
-                    onClick={() => startSpeakingCapture(part.id)}
-                    disabled={isRecording}
-                  >
-                    {isRecording ? 'Listening...' : '🎙 Record answer'}
-                  </button>
-                  <label for={part.id}>Your transcript or typed response</label>
-                  <textarea
-                    id={part.id}
-                    value={speakingAnswers[part.id] ?? ''}
-                    onInput={(event) => {
-                      const value = event.currentTarget.value;
-                      setSpeakingAnswers((current) => ({ ...current, [part.id]: value }));
-                    }}
-                    placeholder="Your recognized speech will appear here. You can also type."
-                    rows={4}
-                  />
-                </article>
-              ))}
-              <p className="speech-message" role="status">{speechMessage}</p>
-              <div className="word-count"><span>{speakingWordCount} words</span><span>Recommended minimum: 10 words</span></div>
-            </div>
-          )}
+              {activeModule === 'writing' && (
+                <div className="written-response">
+                  {writingPrompts.map((task) => (
+                    <article className="writing-task" key={task.id}>
+                      <h3>{task.title}</h3>
+                      <p className="response-prompt">{task.prompt}</p>
+                      <label htmlFor={task.id}>Your response</label>
+                      <textarea
+                        id={task.id}
+                        value={writingAnswers[task.id] ?? ''}
+                        onInput={(event) => {
+                          const value = event.currentTarget.value;
+                          setWritingAnswers((current) => ({ ...current, [task.id]: value }));
+                        }}
+                        placeholder="Write your response here"
+                        rows={10}
+                      />
+                    </article>
+                  ))}
+                  <div className="word-count"><span>{writingWordCount} words</span><span>Recommended minimum: 20 words</span></div>
+                </div>
+              )}
 
-          <footer className="module-footer">
-            <span>Progress: {activeIndex + 1} / {MODULES.length}</span>
-            <button className="primary-action" type="button" onClick={() => { playSound('click'); advanceModule(); }}>{activeIndex === MODULES.length - 1 ? 'View results' : `Continue to ${MODULE_LABELS[MODULES[activeIndex + 1]]}`}</button>
-          </footer>
-        </section>
+              {activeModule === 'speaking' && (
+                <div className="spoken-response">
+                  {speakingParts.map((part) => (
+                    <article className="speaking-part" key={part.id}>
+                      <h3>{part.part}</h3>
+                      <p className="response-prompt">{part.question}</p>
+                      <button
+                        className="audio-action mic-action"
+                        type="button"
+                        onClick={() => startSpeakingCapture(part.id)}
+                        disabled={isRecording}
+                      >
+                        {isRecording ? 'Listening...' : '🎙 Record answer'}
+                      </button>
+                      <label htmlFor={part.id}>Your transcript or typed response</label>
+                      <textarea
+                        id={part.id}
+                        value={speakingAnswers[part.id] ?? ''}
+                        onInput={(event) => {
+                          const value = event.currentTarget.value;
+                          setSpeakingAnswers((current) => ({ ...current, [part.id]: value }));
+                        }}
+                        placeholder="Your recognized speech will appear here. You can also type."
+                        rows={4}
+                      />
+                    </article>
+                  ))}
+                  <p className="speech-message" role="status">{speechMessage}</p>
+                  <div className="word-count"><span>{speakingWordCount} words</span><span>Recommended minimum: 10 words</span></div>
+                </div>
+              )}
+
+              <footer className="module-footer">
+                <span>Progress: {activeIndex + 1} / {MODULES.length}</span>
+                <button className="primary-action" type="button" onClick={() => { playSound('click'); advanceModule(); }}>{activeIndex === MODULES.length - 1 ? 'View results' : `Continue to ${MODULE_LABELS[MODULES[activeIndex + 1]]}`}</button>
+              </footer>
+            </section>
+          )}
+        </>
       )}
+
+      <NdBot mode="exam" strikeLevel={strikeLevel} />
 
       <style>{`
         .english-exam { display:grid; gap:1.15rem; width:min(100%, 980px); margin:0 auto; padding:1rem 0 2.5rem; color:var(--text-main); }
@@ -416,6 +451,10 @@ export default function EnglishExam({ exam, type, level }) {
         .exam-heading p { max-width:680px; margin:.4rem 0 0; color:var(--muted); line-height:1.6; }
         .exam-back-link { display:inline-block; margin-bottom:.75rem; color:var(--text-main); font-weight:700; text-decoration:none; }
         .exam-eyebrow,.results-eyebrow { margin:0; color:#966313; font-size:.75rem; font-weight:900; text-transform:uppercase; }
+        .exam-start-card { display:grid; gap:1rem; padding:clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem); border:2px solid var(--accent-gold); border-radius:1rem; background:var(--card-bg); text-align:center; }
+        .exam-start-card h2 { margin:.25rem 0; font-size:clamp(1.4rem, 4vw, 1.9rem); }
+        .exam-start-card p { margin:0; color:var(--muted); line-height:1.6; }
+        .exam-start-card .primary-action { justify-self:center; min-width:160px; }
         .timer-sticky-shell { position:sticky; top:72px; z-index:19; display:flex; justify-content:flex-end; padding:.5rem 0; border-bottom:1px solid var(--border); background:rgba(249,249,251,.96); backdrop-filter:blur(10px); }
         .exam-timer { display:grid; min-width:150px; gap:.2rem; padding:.55rem .8rem; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); text-align:center; }
         .exam-timer span { color:var(--muted); font-size:.72rem; font-weight:800; text-transform:uppercase; }
@@ -486,6 +525,7 @@ export default function EnglishExam({ exam, type, level }) {
           .module-footer .primary-action { width:100%; }
           .result-actions { align-items:stretch; flex-direction:column; }
           .result-actions > * { width:100%; box-sizing:border-box; }
+          .exam-start-card .primary-action { width:100%; }
         }
         @media(max-width:380px) {
           .module-steps { grid-template-columns:1fr; }
