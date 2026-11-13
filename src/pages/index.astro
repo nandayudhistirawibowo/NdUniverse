@@ -1,5 +1,8 @@
 ---
-const title = 'NdUniverse - Connecting Languages & Cultures';
+const title = 'NdUniverse - Platform Belajar Bahasa Jerman & Inggris';
+const description = 'Belajar bahasa Jerman dan Inggris dengan materi CEFR, latihan empat pilar, persiapan Goethe, IELTS, TOEFL, dan dukungan tutor AI.';
+const siteUrl = Astro.site ?? 'https://nduniverse.ndhistira.my.id';
+const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
 ---
 
 <!doctype html>
@@ -7,7 +10,19 @@ const title = 'NdUniverse - Connecting Languages & Cultures';
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="NdUniverse adalah platform belajar bahasa terpadu untuk dunia global." />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="NdUniverse" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={siteUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={imageUrl} />
+    <link rel="canonical" href={siteUrl} />
     <title>{title}</title>
   </head>
   <body>

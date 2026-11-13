@@ -1,6 +1,9 @@
 node_modules/
 .astro/
 dist/
+.venv/
+__pycache__/
+*.pyc
 .env
 .env.*
 .vercel/
@@ -10,4 +13,4 @@ Thumbs.db
 .vscode/
 /playwright-report/
 /test-results/
-public/audio/
+public/audio/tts/

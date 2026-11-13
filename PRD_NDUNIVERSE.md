@@ -8,8 +8,9 @@ Platform ini menjadi gerbang utama untuk berbagai modul bahasa. Setiap modul dap
 
 ## Status Rilis
 
-- Modul German: 100% Selesai.
-- Modul English: Fondasi UI & Routing Selesai (Konten & TTS menyusul).
+- NdUniverse V4: **Selesai 100% untuk lingkup rilis.**
+- Modul German dan English memiliki materi belajar, latihan, ujian, dan progress sesuai route yang tersedia.
+- Chatbot RAG dan penguncian urutan kuis empat pilar termasuk dalam lingkup V4.
 
 ## Target User
 
@@ -40,7 +41,7 @@ Modul German adalah modul aktif utama, dengan fokus pada:
 
 Route utama: `/en`
 
-Fondasi Modul English tersedia, dengan fokus produk pada:
+Modul English tersedia, dengan fokus produk pada:
 
 - Persiapan IELTS dan TOEFL.
 - Latihan Reading, Listening, Writing, dan Speaking.
@@ -48,7 +49,7 @@ Fondasi Modul English tersedia, dengan fokus produk pada:
 - Simulasi ujian dengan penilaian dan feedback terukur.
 - Pengembangan aset audio bahasa Inggris melalui Edge TTS.
 
-Route Everyday English dan Exam Prep IELTS/TOEFL sudah tersedia dengan contoh soal A1. Pengisian konten skala penuh dan aset audio English menyusul. Untuk audio English, gunakan Edge TTS dengan voice `en-US` atau `en-GB`; file MP3 dibuat bertahap sesuai materi.
+Route Everyday English, Academic English, Career Prep, dan Exam Prep IELTS/TOEFL tersedia. Produksi audio English memakai Edge TTS dengan voice `en-US` atau `en-GB`; aset yang dikonfigurasi sebagai CDN disajikan melalui jsDelivr.
 
 ## Struktur Navigasi
 
@@ -78,9 +79,12 @@ Landing page hanya berfungsi sebagai gerbang pengenalan dan pemilihan modul. Log
 - **Konsisten:** NdUniverse menjadi identitas induk, sementara modul bahasa memiliki konten dan alur khusus.
 - **Bertahap:** landing mengarahkan user ke bahasa, modul mengarahkan ke login, lalu dashboard mengatur perjalanan belajar.
 
-## Fondasi Teknis Tahap 1
+## Fondasi Teknis
 
 - Landing root berada di `src/pages/index.astro` dan tidak memakai sidebar atau navbar dashboard.
 - Route modul awal berada di `src/pages/en/index.astro` dan `src/pages/de/index.astro`.
 - Layout publik memakai branding NdUniverse.
-- Auth, Supabase, dan aset audio German yang sudah ada tidak diubah pada tahap fondasi UI.
+- Platform menggunakan Supabase untuk auth, database, storage, dan progress; audio yang dikonfigurasi CDN disajikan melalui jsDelivr.
+- Chatbot memakai Supabase `pgvector` untuk retrieval, Cloudflare Workers AI untuk embedding, dan Groq untuk query rewrite serta jawaban berbasis materi.
+- XP kuis sementara dibatalkan saat Game Over dan dilindungi dari finalisasi ganda pada run yang sama.
+- Kuis per sesi mengunci urutan Reading → Listening → Writing → Speaking. Status lock disimpan di localStorage browser.

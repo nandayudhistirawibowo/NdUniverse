@@ -2,7 +2,7 @@
 
 ## Status Modul
 
-Modul German 100% selesai. Fondasi UI dan routing Modul English juga selesai, sedangkan pengisian konten dan TTS menyusul. Pengguna wajib login untuk mengakses dashboard dan fitur pembelajaran.
+NdUniverse V4 mencakup modul belajar German dan English, chatbot RAG, progress, dan ujian. Pengguna wajib login untuk mengakses dashboard dan fitur pembelajaran.
 
 ## Alur Utama
 
@@ -94,6 +94,45 @@ flowchart TD
 ```
 
 Reading memakai teks dan pilihan ganda; Listening memakai audio/TTS dan pilihan ganda; Writing memakai text box fuzzy matching; Speaking memakai microphone atau text box. Anti-farming membuang XP sementara saat Game Over dan menggunakan guard finalisasi run agar XP tidak dikomit dua kali.
+
+## Locking Flow Kuis Empat Pilar
+
+```mermaid
+flowchart TD
+    A[Masuk dengan session dan type] --> B{Sesi sebelumnya lengkap?}
+    B -->|Tidak| C[Tampilkan peringatan dan hentikan akses]
+    B -->|Ya| D{Pilar sesuai urutan?}
+    D -->|Tidak| E[Tampilkan peringatan pilar berikutnya]
+    D -->|Ya| F[Kerjakan pilar aktif]
+    F --> G{Pilar selesai?}
+    G -->|Tidak| F
+    G -->|Ya| H[Simpan pilar pada localStorage browser]
+    H --> I{Reading, Listening, Writing, Speaking lengkap?}
+    I -->|Tidak| J[Next ke pilar berikutnya di sesi yang sama]
+    I -->|Ya| K[Buka Reading sesi berikutnya]
+```
+
+Status sesi/pilar untuk penguncian disimpan di browser, sehingga belum tersinkron lintas perangkat dan bukan validasi server-side.
+
+## Chatbot RAG
+
+```mermaid
+flowchart TD
+    A[Pertanyaan user] --> B[Groq menulis ulang query]
+    B -->|Gagal| C[Gunakan pertanyaan asli]
+    B -->|Berhasil| D[Gunakan query hasil rewrite]
+    C --> E[Cloudflare Workers AI membuat embedding 384 dimensi]
+    D --> E
+    E --> F[Supabase RPC match_documents]
+    F --> G[Cari hingga 3 chunk dengan threshold 0.35]
+    G --> H{Chunk relevan ditemukan?}
+    H -->|Ya| I[Groq menyusun jawaban dari konteks materi]
+    H -->|Tidak| J[Tampilkan fallback informatif]
+    I --> K[Tampilkan jawaban di chatbot]
+    J --> K
+```
+
+Materi Markdown diindeks ke `public.documents` melalui script ingest. Pembaruan indeks adalah proses manual dan ingest penuh mengganti seluruh baris tabel tersebut.
 
 ## Sinkronisasi `sessions_passed`
 
@@ -214,7 +253,7 @@ flowchart TD
     J -->|Tidak| L[Tampilkan indikator berhenti dan log error]
 ```
 
-Lookup manifest memakai teks yang dikirim, bukan nama atau pencocokan substring. File MP3 berada di `public/audio/tts/`; jika manifest atau audio gagal, browser memakai Web Speech API dengan `lang = 'de-DE'`.
+Lookup manifest memakai teks yang dikirim, bukan nama atau pencocokan substring. Manifest dan aset audio yang dikonfigurasi untuk CDN diambil dari jsDelivr; jika manifest atau audio gagal, browser memakai Web Speech API dengan `lang = 'de-DE'`.
 
 ## Alur Bookmark
 

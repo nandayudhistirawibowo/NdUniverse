@@ -1,0 +1,15 @@
+<script>
+  import {
+    applyDashboardTranslations,
+    getDashboardLanguage,
+    subscribeDashboardLanguage,
+  } from '@core/i18n/dashboard-language';
+
+  const applyTranslations = () => {
+    applyDashboardTranslations(document, getDashboardLanguage());
+  };
+
+  document.addEventListener('astro:page-load', applyTranslations);
+  subscribeDashboardLanguage(applyTranslations);
+  applyTranslations();
+</script>

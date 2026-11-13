@@ -1,22 +1,36 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
+import {
+  getDashboardLanguage,
+  subscribeDashboardLanguage,
+  translateDashboard,
+} from '@core/i18n/dashboard-language';
 
-export default function HelpHint({ title = 'Panduan', text = '' }) {
+export default function HelpHint({ title = 'Panduan', text = '', titleKey, textKey }) {
   const [open, setOpen] = useState(false);
+  const [language, setLanguage] = useState('id');
+
+  useEffect(() => {
+    setLanguage(getDashboardLanguage());
+    return subscribeDashboardLanguage(setLanguage);
+  }, []);
+
+  const translatedTitle = titleKey ? translateDashboard(titleKey, language) : title;
+  const translatedText = textKey ? translateDashboard(textKey, language) : text;
 
   return (
     <span class={`help-hint${open ? ' is-open' : ''}`}>
       <button
         class="help-hint-trigger"
         type="button"
-        aria-label={`Buka bantuan: ${title}`}
+        aria-label={translateDashboard('help.open', language, { title: translatedTitle })}
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
       >
         <span aria-hidden="true">❓</span>
       </button>
       <span class="help-hint-popover" role="tooltip">
-        <strong>{title}</strong>
-        <span>{text}</span>
+        <strong>{translatedTitle}</strong>
+        <span>{translatedText}</span>
       </span>
       <style>{`
         .help-hint { --help-ink:var(--text-main,#17202a); --help-muted:var(--muted,#65717d); --help-accent:var(--accent-gold,#e5a93b); position:relative; display:inline-flex; vertical-align:middle; }

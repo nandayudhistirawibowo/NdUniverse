@@ -45,8 +45,12 @@ const cards = materials.map((material) => {
         {material.data.jurusan && <span>{material.data.jurusan}</span>}
       </div>
       <div class="progress-copy">
-        <span data-progress-copy>{passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`}</span>
-        <span>{material.data.vocab.length} kosakata</span>
+        <span
+          data-progress-copy
+          data-i18n={passedCount === 0 ? 'material.notStarted' : 'material.pillarProgress'}
+          data-i18n-params={JSON.stringify({ count: passedCount })}
+        >{passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`}</span>
+        <span data-i18n="material.words" data-i18n-params={JSON.stringify({ count: material.data.vocab.length })}>{material.data.vocab.length} kosakata</span>
       </div>
       <div
         class="progress-track"
@@ -59,12 +63,18 @@ const cards = materials.map((material) => {
       >
         <span data-progress-fill style={`width: ${percentage}%`} />
       </div>
-      <span class="material-action">Buka materi <span aria-hidden="true">→</span></span>
+      <span class="material-action"><span data-i18n="common.openMaterial">Buka materi</span> <span aria-hidden="true">→</span></span>
     </a>
   ))}
 </div>
 
 <script>
+  import {
+    getDashboardLanguage,
+    translateDashboard,
+    type DashboardTranslationKey,
+  } from '@core/i18n/dashboard-language';
+
   window.addEventListener('nd:progress-updated', (event) => {
     const { slug, languageCode, pillars } = (event as CustomEvent<{
       slug: string;
@@ -81,7 +91,18 @@ const cards = materials.map((material) => {
       const percent = card.querySelector<HTMLElement>('[data-progress-percent]');
       const bar = card.querySelector<HTMLElement>('[data-progress-bar]');
       const fill = card.querySelector<HTMLElement>('[data-progress-fill]');
-      if (copy) copy.textContent = passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`;
+      if (copy) {
+        const translationKey: DashboardTranslationKey = passedCount === 0
+          ? 'material.notStarted'
+          : 'material.pillarProgress';
+        copy.dataset.i18n = translationKey;
+        copy.dataset.i18nParams = JSON.stringify({ count: passedCount });
+        copy.textContent = translateDashboard(
+          translationKey,
+          getDashboardLanguage(),
+          { count: passedCount },
+        );
+      }
       if (percent) percent.textContent = `${percentage}%`;
       if (bar) bar.setAttribute('aria-valuenow', String(percentage));
       if (fill) fill.style.width = `${percentage}%`;

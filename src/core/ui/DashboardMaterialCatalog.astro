@@ -18,29 +18,45 @@ const {
   examHref,
   examLabel,
 } = Astro.props;
-const helpText = active === 'alltagsdeutsch'
-  ? 'Pilih materi, pelajari kosakata per sesi, lalu latih 4 pilar CEFR (Reading, Listening, Writing, Speaking).'
-  : 'Pilih materi Fachdeutsch untuk mempelajari kosakata teknis yang relevan dengan bidang studimu.';
+const helpTextKey = active === 'alltagsdeutsch' ? 'help.alltags' : 'help.fach';
 ---
 
 <DashboardLayout title={`${title} | NdUniverse`} active={active} user={user} profile={profile}>
   <section class="catalog-page">
-    <a class="back-link" href={backHref} aria-label="Kembali ke halaman sebelumnya">
+    <a
+      class="back-link"
+      href={backHref}
+      aria-label="Kembali ke halaman sebelumnya"
+      data-i18n-aria-label="catalog.backPrevious"
+    >
       <span aria-hidden="true">←</span>
-      <span>{backLabel}</span>
+      <span
+        data-i18n={backLabel === 'Kembali ke Semua Level' ? 'catalog.backLevels' : 'catalog.back'}
+      >{backLabel}</span>
     </a>
     <header class="page-heading">
       <div>
-        <p class="eyebrow">{eyebrow}</p>
+        <p
+          class="eyebrow"
+          data-i18n={active === 'alltagsdeutsch' ? 'catalog.dailyEyebrow' : 'catalog.studyVocabulary'}
+        >{eyebrow}</p>
         <div class="page-heading-title">
           <h1>{title}</h1>
-          <HelpHint title="Belajar Bertahap" text={helpText} client:load />
+          <HelpHint title="Belajar Bertahap" textKey={helpTextKey} titleKey="catalog.help" client:load />
         </div>
-        <p>{description}</p>
+        <p
+          data-i18n={active === 'alltagsdeutsch' ? 'catalog.dailyDescription' : 'catalog.fachDescription'}
+          data-i18n-params={JSON.stringify({ level: title.split(' ').at(-1) ?? '' })}
+        >{description}</p>
       </div>
       <div class="heading-actions">
         {examHref && (
-          <a class="exam-button" href={examHref}>{examLabel ?? `Mulai Ujian ${title.split(' ').at(-1)}`}</a>
+          <a
+            class="exam-button"
+            href={examHref}
+            data-i18n="catalog.exam"
+            data-i18n-params={JSON.stringify({ level: title.split(' ').at(-1) ?? '' })}
+          >{examLabel ?? `Mulai Ujian ${title.split(' ').at(-1)}`}</a>
         )}
       </div>
     </header>

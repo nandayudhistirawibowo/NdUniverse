@@ -1,10 +1,26 @@
 import { useEffect, useState } from 'preact/hooks';
+import {
+  getDashboardLanguage,
+  subscribeDashboardLanguage,
+  translateDashboard,
+} from '@core/i18n/dashboard-language';
 
-export default function FeedbackModal({ variant = 'default', language = 'id' }) {
-  const isEnglish = language === 'en';
+export default function FeedbackModal({ variant = 'default', language }) {
+  const [selectedLanguage, setSelectedLanguage] = useState(language ?? 'id');
   const [isOpen, setIsOpen] = useState(false);
-  const [category, setCategory] = useState('Bug');
+  const [category, setCategory] = useState('bug');
   const [message, setMessage] = useState('');
+  const t = (key, params) => translateDashboard(key, selectedLanguage, params);
+
+  useEffect(() => {
+    if (language) {
+      setSelectedLanguage(language);
+      return undefined;
+    }
+
+    setSelectedLanguage(getDashboardLanguage());
+    return subscribeDashboardLanguage(setSelectedLanguage);
+  }, [language]);
 
   useEffect(() => {
     if (!isOpen) return undefined;
@@ -28,22 +44,13 @@ export default function FeedbackModal({ variant = 'default', language = 'id' }) 
     if (!cleanedMessage) return;
 
     const currentUrl = window.location.href;
-    const text = isEnglish
-      ? [
-        'Hello NdUniverse Admin,',
+    const text = [
+        t('feedback.greeting'),
         '',
-        'I would like to report:',
-        `Category: ${category}`,
-        `Message: ${cleanedMessage}`,
-        `(Sent from: ${currentUrl})`,
-      ].join('\n')
-      : [
-        'Halo Admin NdUniverse,',
-        '',
-        'Saya ingin melaporkan:',
-        `Kategori: ${category}`,
-        `Pesan: ${cleanedMessage}`,
-        `(Dikirim dari halaman: ${currentUrl})`,
+        t('feedback.report'),
+        `${t('feedback.category')}: ${t(`feedback.${category}`)}`,
+        `${t('feedback.message')}: ${cleanedMessage}`,
+        t('feedback.sentFrom', { url: currentUrl }),
       ].join('\n');
 
     window.open(`https://wa.me/6281288951254?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
@@ -59,7 +66,7 @@ export default function FeedbackModal({ variant = 'default', language = 'id' }) 
         aria-expanded={isOpen}
       >
         <span aria-hidden="true">💬</span>
-        <span>{isEnglish ? 'Send Feedback' : 'Kirim Feedback'}</span>
+        <span>{t('feedback.trigger')}</span>
       </button>
 
       {isOpen && (
@@ -78,46 +85,46 @@ export default function FeedbackModal({ variant = 'default', language = 'id' }) 
           >
             <div class="feedback-modal-header">
               <div>
-                <span class="feedback-label">{isEnglish ? 'Contact Admin' : 'Hubungi Admin'}</span>
-                <h2 id="feedback-title">{isEnglish ? 'Send Feedback' : 'Kirim Feedback'}</h2>
+                <span class="feedback-label">{t('feedback.contact')}</span>
+                <h2 id="feedback-title">{t('feedback.title')}</h2>
               </div>
               <button
                 class="feedback-close"
                 type="button"
                 onClick={() => setIsOpen(false)}
-                aria-label={isEnglish ? 'Close feedback dialog' : 'Tutup modal feedback'}
+                aria-label={t('feedback.close')}
               >
                 ×
               </button>
             </div>
 
             <label class="feedback-field" for="feedback-category">
-              <span>{isEnglish ? 'Category' : 'Kategori'}</span>
+              <span>{t('feedback.category')}</span>
               <select
                 id="feedback-category"
                 value={category}
                 onChange={(event) => setCategory(event.currentTarget.value)}
               >
-                <option value="Bug">Bug</option>
-                <option value={isEnglish ? 'Feature Suggestion' : 'Saran Fitur'}>{isEnglish ? 'Feature Suggestion' : 'Saran Fitur'}</option>
-                <option value={isEnglish ? 'Other' : 'Lainnya'}>{isEnglish ? 'Other' : 'Lainnya'}</option>
+                <option value="bug">{t('feedback.bug')}</option>
+                <option value="feature">{t('feedback.feature')}</option>
+                <option value="other">{t('feedback.other')}</option>
               </select>
             </label>
 
             <label class="feedback-field" for="feedback-message">
-              <span>{isEnglish ? 'Message' : 'Pesan'}</span>
+              <span>{t('feedback.message')}</span>
               <textarea
                 id="feedback-message"
                 value={message}
                 onInput={(event) => setMessage(event.currentTarget.value)}
-                placeholder={isEnglish ? 'Describe your issue, bug, or suggestion...' : 'Tuliskan laporan, bug, atau saran Anda...'}
+                placeholder={t('feedback.placeholder')}
                 rows="7"
               />
             </label>
 
             <div class="feedback-actions">
               <button class="feedback-cancel" type="button" onClick={() => setIsOpen(false)}>
-                {isEnglish ? 'Cancel' : 'Batal'}
+                {t('feedback.cancel')}
               </button>
               <button
                 class="feedback-submit"
@@ -125,7 +132,7 @@ export default function FeedbackModal({ variant = 'default', language = 'id' }) 
                 onClick={sendFeedback}
                 disabled={!message.trim()}
               >
-                {isEnglish ? 'Send via WhatsApp' : 'Kirim ke WhatsApp'}
+                {t('feedback.send')}
               </button>
             </div>
           </section>

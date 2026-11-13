@@ -21,7 +21,7 @@ const vocabSessions = Array.from({ length: Math.ceil(item.data.vocab.length / ba
   profile={Astro.locals.profile}
 >
   <section class="detail-page">
-    <a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? `/dashboard-de/alltags/${item.data.level}` : '/dashboard-de/fach'}>
+    <a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? `/dashboard-de/alltags/${item.data.level}` : '/dashboard-de/fach'} data-i18n="material.back">
       ← Kembali
     </a>
     <header>
@@ -33,39 +33,52 @@ const vocabSessions = Array.from({ length: Math.ceil(item.data.vocab.length / ba
     <section class="session-list" aria-labelledby="vocabulary-title">
       <header>
         <div>
-          <p class="eyebrow">Bantuan</p>
-          <h2 id="vocabulary-title">Kosakata per Sesi</h2>
-          <p>Hafalkan kosakata berikut sebelum memulai latihan.</p>
+          <p class="eyebrow" data-i18n="material.help">Bantuan</p>
+          <h2 id="vocabulary-title" data-i18n="material.vocabulary">Kosakata per Sesi</h2>
+          <p data-i18n="material.vocabularyHelp">Hafalkan kosakata berikut sebelum memulai latihan.</p>
         </div>
-        <span>{item.data.vocab.length} kosakata</span>
+        <span data-i18n="material.words" data-i18n-params={JSON.stringify({ count: item.data.vocab.length })}>{item.data.vocab.length} kosakata</span>
       </header>
       {vocabSessions.map((session) => (
         <section class="sesi-card" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
           <div class="sesi-heading">
-            <h3 id={`session-vocab-${session.sessionNumber}`}>
+            <h3
+              id={`session-vocab-${session.sessionNumber}`}
+              data-i18n="material.sessionVocabulary"
+              data-i18n-params={JSON.stringify({
+                session: session.sessionNumber,
+                start: ((session.sessionNumber - 1) * batchSize) + 1,
+                end: Math.min(session.sessionNumber * batchSize, item.data.vocab.length),
+              })}
+            >
               Sesi {session.sessionNumber}: Kosakata {((session.sessionNumber - 1) * batchSize) + 1}-{Math.min(session.sessionNumber * batchSize, item.data.vocab.length)}
             </h3>
-            <span>{session.vocab.length} kata</span>
+            <span data-i18n="material.wordCount" data-i18n-params={JSON.stringify({ count: session.vocab.length })}>{session.vocab.length} kata</span>
           </div>
           <div class="table-scroll">
             <table>
-              <thead><tr><th scope="col">Bahasa Jerman</th><th scope="col">Bahasa Indonesia</th><th scope="col">Dengar</th></tr></thead>
+              <thead><tr><th scope="col" data-i18n="material.german">Bahasa Jerman</th><th scope="col" data-i18n="material.indonesian">Bahasa Indonesia</th><th scope="col" data-i18n="material.listen">Dengar</th></tr></thead>
               <tbody>
                 {session.vocab.map((entry) => (
                   <tr>
                     <td lang="de">{entry.german}</td>
                     <td>{entry.indonesian}</td>
-                    <td><button class="speech-button" type="button" data-speech={entry.german} aria-label={`Dengarkan ${entry.german}`}>🔊</button></td>
+                    <td><button class="speech-button" type="button" data-speech={entry.german} aria-label={`Dengarkan ${entry.german}`} data-i18n-aria-label="material.listenAria" data-i18n-params={JSON.stringify({ word: entry.german })}>🔊</button></td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
-          <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
-            <a href={`/dashboard-de/materi/${item.id}/latihan?type=reading&session=${session.sessionNumber}`}>Reading</a>
-            <a href={`/dashboard-de/materi/${item.id}/latihan?type=listening&session=${session.sessionNumber}`}>Listening</a>
-            <a href={`/dashboard-de/materi/${item.id}/latihan?type=writing&session=${session.sessionNumber}`}>Writing</a>
-            <a href={`/dashboard-de/materi/${item.id}/latihan?type=speaking&session=${session.sessionNumber}`}>Speaking</a>
+          <div
+            class="pillar-buttons"
+            aria-label={`Latihan Sesi ${session.sessionNumber}`}
+            data-i18n-aria-label="material.practiceSkills"
+            data-i18n-params={JSON.stringify({ session: session.sessionNumber })}
+          >
+            <a href={`/dashboard-de/materi/${item.id}/latihan?type=reading&session=${session.sessionNumber}`} data-i18n="material.reading">Reading</a>
+            <a href={`/dashboard-de/materi/${item.id}/latihan?type=listening&session=${session.sessionNumber}`} data-i18n="material.listening">Listening</a>
+            <a href={`/dashboard-de/materi/${item.id}/latihan?type=writing&session=${session.sessionNumber}`} data-i18n="material.writing">Writing</a>
+            <a href={`/dashboard-de/materi/${item.id}/latihan?type=speaking&session=${session.sessionNumber}`} data-i18n="material.speaking">Speaking</a>
           </div>
         </section>
       ))}

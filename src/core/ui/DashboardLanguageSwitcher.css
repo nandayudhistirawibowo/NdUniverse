@@ -1,0 +1,59 @@
+.dashboard-language-switcher {
+  position: relative;
+  display: inline-flex;
+  min-height: 40px;
+  margin-left: auto;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--text-main);
+}
+
+.dashboard-language-flag {
+  display: none;
+  pointer-events: none;
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.dashboard-language-switcher select {
+  width: 8.5rem;
+  min-height: 38px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dashboard-language-switcher:focus-within {
+  outline: 3px solid rgba(229, 169, 59, 0.3);
+  outline-offset: 2px;
+}
+
+@media (max-width: 520px) {
+  .dashboard-language-switcher {
+    gap: 0;
+    padding: 0 0.35rem;
+  }
+
+  .dashboard-language-flag {
+    display: block;
+  }
+
+  .dashboard-language-switcher select {
+    width: 2.8rem;
+    color: transparent;
+  }
+
+  .dashboard-language-switcher select option {
+    color: var(--text-main);
+  }
+}

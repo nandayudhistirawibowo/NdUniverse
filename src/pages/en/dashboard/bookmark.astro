@@ -13,16 +13,22 @@ export const prerender = false;
 >
   <section class="bookmark-page">
     <header class="page-heading">
-      <p class="eyebrow">Saved Vocabulary</p>
-      <h1>Bookmarks</h1>
-      <p>Review words saved during your practice sessions.</p>
+      <p class="eyebrow" data-i18n="bookmark.savedVocabulary">Kosakata tersimpan</p>
+      <h1 data-i18n="bookmark.title">Penanda Buku</h1>
+      <p data-i18n="bookmark.description">Tinjau kembali kata-kata yang disimpan saat latihan.</p>
     </header>
-    <p id="bookmark-status" class="bookmark-status" role="status" aria-live="polite">Loading bookmarks...</p>
+    <p id="bookmark-status" class="bookmark-status" role="status" aria-live="polite"><span data-i18n="bookmark.loading">Memuat penanda buku...</span></p>
     <ul id="bookmark-list" class="bookmark-list"></ul>
   </section>
 </DashboardLayout>
 
 <script>
+  import {
+    getDashboardLanguage,
+    subscribeDashboardLanguage,
+    translateDashboard,
+  } from '@core/i18n/dashboard-language';
+
   const BOOKMARKS_KEY = 'sideutsch-bookmarks';
 
   document.addEventListener('astro:page-load', () => {
@@ -42,9 +48,9 @@ export const prerender = false;
         }
         bookmarks = parsed;
       } catch (error) {
-        status.textContent = error instanceof Error
-          ? `Could not read bookmarks: ${error.message}`
-          : 'Could not read bookmarks.';
+        status.textContent = translateDashboard('bookmark.readError', getDashboardLanguage(), {
+          error: error instanceof Error ? error.message : '',
+        });
         status.dataset.state = 'error';
         list.replaceChildren();
         return;
@@ -53,8 +59,8 @@ export const prerender = false;
       list.replaceChildren();
       status.dataset.state = 'ready';
       status.textContent = bookmarks.length === 0
-        ? 'No words have been saved yet.'
-        : `${bookmarks.length} ${bookmarks.length === 1 ? 'word' : 'words'} saved.`;
+        ? translateDashboard('bookmark.empty')
+        : translateDashboard('bookmark.count', getDashboardLanguage(), { count: bookmarks.length });
 
       bookmarks.forEach((word, index) => {
         const item = document.createElement('li');
@@ -80,8 +86,12 @@ export const prerender = false;
         const remove = document.createElement('button');
         remove.className = 'remove-bookmark';
         remove.type = 'button';
-        remove.textContent = 'Remove';
-        remove.setAttribute('aria-label', `Remove bookmark ${word.german}`);
+        remove.textContent = translateDashboard('bookmark.remove');
+        remove.setAttribute('aria-label', translateDashboard(
+          'bookmark.removeAria',
+          getDashboardLanguage(),
+          { word: word.german },
+        ));
         remove.addEventListener('click', () => {
           const next = bookmarks.filter((_, currentIndex) => currentIndex !== index);
           try {
@@ -89,9 +99,9 @@ export const prerender = false;
             bookmarks = next;
             renderBookmarks();
           } catch (error) {
-            status.textContent = error instanceof Error
-              ? `Could not remove bookmark: ${error.message}`
-              : 'Could not remove bookmark.';
+            status.textContent = translateDashboard('bookmark.removeError', getDashboardLanguage(), {
+              error: error instanceof Error ? error.message : '',
+            });
             status.dataset.state = 'error';
           }
         });
@@ -102,6 +112,7 @@ export const prerender = false;
     };
 
     renderBookmarks();
+    subscribeDashboardLanguage(renderBookmarks);
   });
 </script>
 

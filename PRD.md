@@ -1,13 +1,13 @@
 # PRD Modul Jerman (NdUniverse)
 
-**Status:** Dokumentasi implementasi V3.0
+**Status:** Dokumentasi implementasi V4
 **Produk:** Platform belajar bahasa Jerman universal A1–C2
 
 ## Ringkasan Produk
 
 Modul Jerman NdUniverse adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Seluruh fitur pembelajaran memerlukan login dan progress disinkronkan ke Supabase.
 
-**Catatan:** Fondasi Modul Inggris selesai; pengisian konten dan TTS menyusul.
+**Catatan:** Modul English menyediakan Everyday dan Academic English, persiapan IELTS/TOEFL, serta latihan empat pilar. Aset audio yang dikonfigurasi sebagai CDN diambil dari jsDelivr.
 
 Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, mencakup Alltagsdeutsch A1–C2, Fachdeutsch, dan empat rumpun Career.
 
@@ -40,6 +40,8 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - **Speaking / Sprechen:** menampilkan pertanyaan Jerman, menyediakan text box, dan mic-to-text menggunakan Web Speech API.
 - Pada setiap pilar, maksimal lima kosakata dari sesi aktif diproses sebagai lima soal.
 - Tipe soal lama bukan lagi generator acak global; tipe soal disesuaikan dengan pilar aktif.
+- Urutan pilar wajib pada tiap sesi adalah **Reading → Listening → Writing → Speaking**. Tombol Next membuka pilar berikutnya di sesi yang sama; sesi berikutnya baru tersedia setelah keempat pilar selesai.
+- Validasi sesi/pilar menggunakan `localStorage` browser. Validasi ini menjaga alur UI, tetapi belum menjadi kontrol keamanan server-side dan belum tersinkron antarperangkat.
 
 ### Sistem Nyawa, XP, dan Anti-Farming
 
@@ -49,7 +51,15 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - XP baru tidak dikomit secara final sebelum sesi mencapai penyelesaian.
 - Jika Game Over, XP sementara dibuang dan tidak disimpan.
 - `finalizedXpRef` mencegah finalisasi ganda untuk run kuis yang sama.
-- Sistem anti-farming saat ini secara khusus membatalkan XP dari sesi yang berakhir Game Over dan menjaga XP tidak difinalisasi dua kali dalam satu run.
+- Sistem anti-farming membatalkan XP sementara dari sesi yang berakhir Game Over dan mencegah finalisasi XP ganda pada run yang sama. Ini bukan deteksi farming lintas akun/perangkat.
+
+### Chatbot Tutor berbasis RAG
+
+- Chatbot menjawab pertanyaan belajar menggunakan potongan materi Markdown yang diindeks pada tabel Supabase `public.documents`.
+- Pertanyaan terakhir dapat ditulis ulang oleh Groq untuk memperbaiki typo, memperluas singkatan, dan menyesuaikan bahasa pencarian; jika rewrite gagal, pertanyaan asli tetap digunakan.
+- Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` berdimensi 384. Supabase `pgvector` mencari hingga tiga potongan materi dengan ambang kemiripan 0.35.
+- Potongan materi yang relevan diberikan ke model Groq untuk menyusun jawaban tutor. Indeks memuat materi Markdown German dan English dari direktori konten modul.
+- Pembaruan materi tidak otomatis memperbarui indeks. Jalankan proses ingest penuh sesuai panduan di `HANDOVER_NDUNIVERSE.md`; script menghapus seluruh baris `documents` sebelum memasukkan kembali indeks.
 
 ### Career dan Boss Fight
 
@@ -130,9 +140,8 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### Audio TTS dan Microphone
 
-- Sistem TTS mencari teks pada `public/audio/tts/manifest.json`.
-- Terdapat **8.372 file MP3 statis** hasil Edge TTS.
-- Jika manifest atau MP3 gagal, aplikasi memakai Web Speech API dengan bahasa `de-DE`.
+- Sistem TTS mencari teks pada manifest audio yang disajikan melalui jsDelivr.
+- Aset audio dibuat dengan Edge TTS; jika manifest atau MP3 gagal, aplikasi memakai Web Speech API dengan bahasa `de-DE`.
 - Speaking memakai browser Speech Recognition untuk mengubah rekaman suara menjadi teks sebelum fuzzy matching.
 
 ### Autentikasi dan Profil
@@ -164,16 +173,19 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 | Framework / rendering | Astro 7, SSR |
 | Komponen interaktif | Preact 11, `@astrojs/preact` |
 | Database dan auth | Supabase PostgreSQL/Auth/Storage |
+| Retrieval chatbot | Supabase `pgvector`, tabel `documents`, dan RPC `match_documents` |
+| AI chatbot | Cloudflare Workers AI untuk embedding; Groq untuk query rewriting dan jawaban |
+| CDN audio | jsDelivr untuk aset dan manifest audio yang dikonfigurasi ke CDN |
 | Content | Astro Content Collections, Markdown, Zod |
 | Styling | CSS murni dan CSS variables |
-| Audio | 8.372 MP3 Edge TTS, Web Speech API, Speech Recognition API |
+| Audio | Edge TTS, aset audio melalui CDN, Web Speech API, Speech Recognition API |
 | PDF | html2pdf.js |
 | Hosting | Vercel |
 | Penyimpanan browser | localStorage |
 
 ## Model Data
 
-- Konten materi tersimpan sebagai file Markdown di `src/content/materi/` dan collection Career.
+- Konten materi tersimpan sebagai file Markdown di `src/modules/german/content/materi/` dan collection Career.
 - `profiles` menyimpan identitas dan avatar pengguna.
 - `user_progress` menyimpan XP, JSONB `sessions_passed`, dan catatan per pengguna serta slug materi.
 - Bookmark, status ujian, dan sertifikat tidak disimpan sebagai tabel Supabase.

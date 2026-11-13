@@ -63,28 +63,28 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
 ---
 
 <DashboardLayout
-  title="English Dashboard | NdUniverse"
+  title="Dasbor | NdUniverse"
   description="Track your English learning progress and continue your studies."
   active="home"
   user={user}
   profile={profile}
 >
   <section class="dashboard-content">
-    {accessDenied && <p class="access-notice" role="alert">Administrator access is not available for this account.</p>}
+    {accessDenied && <p class="access-notice" role="alert" data-i18n="dashboard.adminAccessDenied">Akses Admin ditolak. Akun ini tidak memiliki izin administrator.</p>}
     <header class="dashboard-heading">
-      <p class="eyebrow">English Learning</p>
-      <h1>Hello, {displayName} <span aria-hidden="true">👋</span></h1>
-      <p>Keep building your English skills, one session at a time.</p>
+      <p class="eyebrow" data-i18n="dashboard.englishLearning">Belajar Bahasa Inggris</p>
+      <h1><span data-i18n="dashboard.englishGreeting">Halo, </span>{displayName} <span aria-hidden="true">👋</span></h1>
+      <p data-i18n="dashboard.englishContinue">Terus tingkatkan kemampuan bahasa Inggrismu, satu sesi setiap kali.</p>
     </header>
 
     <section class="welcome-strip">
       <div>
-        <p class="eyebrow">Keep Learning</p>
-        <h2>Ready for your next session?</h2>
-        <p>Choose a material, learn new vocabulary, and complete all four practice skills.</p>
-        <a href="/en/materi">Browse Materials <span aria-hidden="true">→</span></a>
+        <p class="eyebrow" data-i18n="dashboard.welcome">Lanjutkan belajar</p>
+        <h2 data-i18n="dashboard.englishReady">Siap memulai sesi berikutnya?</h2>
+        <p data-i18n="dashboard.englishDescription">Pilih materi, pelajari kosakata baru, dan selesaikan latihan keempat keterampilan.</p>
+        <a href="/en/materi"><span data-i18n="dashboard.browseMaterials">Jelajahi Materi</span> <span aria-hidden="true">→</span></a>
       </div>
-      <a class="welcome-mark" href="/en/materi" aria-label="Browse English materials">📚</a>
+      <a class="welcome-mark" href="/en/materi" aria-label="Buka katalog materi" data-i18n-aria-label="nav.materials">📚</a>
     </section>
 
     <section
@@ -96,22 +96,23 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
       data-level-steps={JSON.stringify(LEVEL_STEPS)}
     >
       <div class="level-summary">
-        <p class="level-eyebrow">Everyday English Level</p>
-        <p class="level-caption">Current CEFR Level</p>
+        <p class="level-eyebrow" data-i18n="dashboard.everydayLevel">Level Bahasa Inggris Sehari-hari</p>
+        <p class="level-caption" data-i18n="dashboard.currentCefr">Level CEFR Saat Ini</p>
         <h2 id="level-title" data-level-label>{currentLevel.label}</h2>
-        <p class="level-points" data-level-points>{totalPoints} points earned from materials passed in all four skills.</p>
+        <p class="level-points" data-level-points data-i18n="dashboard.skillsPoints" data-i18n-params={JSON.stringify({ points: totalPoints })}>{totalPoints} poin dari materi yang lulus di keempat keterampilan.</p>
       </div>
       <div class="level-next-step">
         {currentLevel.nextThreshold !== null ? (
           <>
             <div class="level-progress-heading">
-              <span data-level-next-label>Next: {currentLevel.nextLabel}</span>
+              <span data-level-next-label data-i18n="dashboard.nextLevel" data-i18n-params={JSON.stringify({ level: currentLevel.nextLabel })}>Berikutnya: {currentLevel.nextLabel}</span>
               <strong data-level-percent>{levelProgressPercent}%</strong>
             </div>
             <div
               class="level-progress-track"
               role="progressbar"
-              aria-label={`Progress toward ${currentLevel.nextLabel}`}
+              aria-label={`Progress menuju ${currentLevel.nextLabel}`}
+              data-i18n-aria-label="dashboard.progressAria"
               aria-valuemin="0"
               aria-valuemax="100"
               aria-valuenow={levelProgressPercent}
@@ -119,31 +120,31 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
             >
               <span data-level-fill style={`width: ${levelProgressPercent}%`} />
             </div>
-            <p data-level-summary>{totalPoints} / {currentLevel.nextThreshold} points to reach {currentLevel.nextLabel}</p>
+            <p data-level-summary data-i18n="dashboard.englishPointsToLevel" data-i18n-params={JSON.stringify({ points: totalPoints, threshold: currentLevel.nextThreshold, level: currentLevel.nextLabel })}>{totalPoints} / {currentLevel.nextThreshold} poin menuju {currentLevel.nextLabel}</p>
           </>
         ) : (
           <>
-            <div class="level-progress-heading"><span data-level-next-label>Highest level reached</span><strong data-level-percent>100%</strong></div>
-            <div class="level-progress-track" role="progressbar" aria-label="Highest level reached" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" data-level-progress>
+            <div class="level-progress-heading"><span data-level-next-label data-i18n="dashboard.highestLevel">Level tertinggi</span><strong data-level-percent>100%</strong></div>
+            <div class="level-progress-track" role="progressbar" aria-label="Level tertinggi tercapai" data-i18n-aria-label="dashboard.highestLevel" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" data-level-progress>
               <span data-level-fill style="width: 100%" />
             </div>
-            <p data-level-summary>You have reached C2 Mastery. Keep practicing to maintain your skills.</p>
+            <p data-level-summary data-i18n="dashboard.englishMastery">Kamu telah mencapai C2 Mastery. Terus berlatih untuk mempertahankan kemampuanmu.</p>
           </>
         )}
       </div>
     </section>
 
-    <nav class="shortcut-grid" aria-label="Learning shortcuts">
-      <a href="/en/materi"><strong>Material Catalog</strong><span>Explore all English materials.</span></a>
-      <a href="/en/everyday-english"><strong>Everyday English</strong><span>Practice from A1 through C2.</span></a>
-      <a href="/en/exam"><strong>IELTS / TOEFL</strong><span>Prepare for an English exam.</span></a>
-      <a href="/en/career"><strong>Career Prep</strong><span>Practice workplace English.</span></a>
+    <nav class="shortcut-grid" aria-label="Pintasan belajar" data-i18n-aria-label="dashboard.learningShortcuts">
+      <a href="/en/materi"><strong data-i18n="nav.materials">Katalog Materi</strong><span data-i18n="dashboard.catalogDescription">Jelajahi semua materi bahasa Inggris.</span></a>
+      <a href="/en/everyday-english"><strong data-i18n="nav.everyday">Bahasa Inggris Sehari-hari</strong><span data-i18n="dashboard.everydayDescription">Berlatih dari A1 hingga C2.</span></a>
+      <a href="/en/exam"><strong>IELTS / TOEFL</strong><span data-i18n="dashboard.examDescription">Persiapkan diri untuk ujian bahasa Inggris.</span></a>
+      <a href="/en/career"><strong data-i18n="nav.career">Persiapan Karier</strong><span data-i18n="dashboard.careerDescription">Berlatih bahasa Inggris di tempat kerja.</span></a>
     </nav>
 
     <section class="completed-section" aria-labelledby="completed-title">
       <div class="completed-heading">
-        <div><p class="eyebrow">Achievements</p><h2 id="completed-title">Completed Materials</h2></div>
-        <span data-completed-count>{completedMaterials.length} materials</span>
+        <div><p class="eyebrow" data-i18n="dashboard.englishAchievements">Pencapaian</p><h2 id="completed-title" data-i18n="dashboard.englishCompleted">Materi selesai</h2></div>
+        <span data-completed-count data-i18n="dashboard.completedCount" data-i18n-params={JSON.stringify({ count: completedMaterials.length })}>{completedMaterials.length} materi</span>
       </div>
       <ul class="completed-list" data-completed-list>
         {completedMaterials.map((material) => (
@@ -151,7 +152,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
         ))}
       </ul>
       <p class="completed-empty" data-completed-empty hidden={completedMaterials.length > 0}>
-        No materials have passed all four skills yet.
+        <span data-i18n="dashboard.noEnglishCompleted">Belum ada materi yang lulus di keempat keterampilan.</span>
       </p>
     </section>
   </section>
@@ -159,6 +160,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
 
 <script>
   import { normalizePassedPillars } from '@core/db/progress-client-en.js';
+  import { getDashboardLanguage, translateDashboard } from '@core/i18n/dashboard-language';
 
   const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
 
@@ -218,25 +220,48 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     const summary = dashboard.querySelector<HTMLElement>('[data-level-summary]');
     const nextLabel = dashboard.querySelector<HTMLElement>('[data-level-next-label]');
     const percentLabel = dashboard.querySelector<HTMLElement>('[data-level-percent]');
+    const language = getDashboardLanguage();
     if (label) label.textContent = currentLevel.label;
-    if (points) points.textContent = `${totalPoints} points earned from materials passed in all four skills.`;
+    if (points) {
+      points.dataset.i18nParams = JSON.stringify({ points: totalPoints });
+      points.textContent = translateDashboard('dashboard.skillsPoints', language, { points: totalPoints });
+    }
     if (progress) {
       progress.setAttribute('aria-valuenow', String(percentage));
-      progress.setAttribute('aria-label', currentLevel.nextThreshold === null
-        ? 'Highest level reached'
-        : `Progress toward ${currentLevel.nextLabel}`);
+      progress.dataset.i18nAriaLabel = currentLevel.nextThreshold === null
+        ? 'dashboard.highestLevel'
+        : 'dashboard.progressAria';
+      progress.setAttribute('aria-label', translateDashboard(
+        progress.dataset.i18nAriaLabel,
+        language,
+      ));
     }
     if (fill) fill.style.width = `${percentage}%`;
     if (nextLabel) {
-      nextLabel.textContent = currentLevel.nextThreshold === null
-        ? 'Highest level reached'
-        : `Next: ${currentLevel.nextLabel}`;
+      const translationKey = currentLevel.nextThreshold === null
+        ? 'dashboard.highestLevel'
+        : 'dashboard.nextLevel';
+      nextLabel.dataset.i18n = translationKey;
+      nextLabel.dataset.i18nParams = JSON.stringify({ level: currentLevel.nextLabel });
+      nextLabel.textContent = translateDashboard(
+        translationKey,
+        language,
+        { level: currentLevel.nextLabel },
+      );
     }
     if (percentLabel) percentLabel.textContent = `${percentage}%`;
     if (summary) {
-      summary.textContent = currentLevel.nextThreshold === null
-        ? 'You have reached C2 Mastery. Keep practicing to maintain your skills.'
-        : `${totalPoints} / ${currentLevel.nextThreshold} points to reach ${currentLevel.nextLabel}`;
+      const translationKey = currentLevel.nextThreshold === null
+        ? 'dashboard.englishMastery'
+        : 'dashboard.englishPointsToLevel';
+      const params = {
+        points: totalPoints,
+        threshold: currentLevel.nextThreshold ?? 0,
+        level: currentLevel.nextLabel,
+      };
+      summary.dataset.i18n = translationKey;
+      summary.dataset.i18nParams = JSON.stringify(params);
+      summary.textContent = translateDashboard(translationKey, language, params);
     }
 
     const list = document.querySelector<HTMLElement>('[data-completed-list]');
@@ -256,7 +281,14 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
         return item;
       }));
     }
-    if (count) count.textContent = `${completed.length} materials`;
+    if (count) {
+      count.dataset.i18nParams = JSON.stringify({ count: completed.length });
+      count.textContent = translateDashboard(
+        'dashboard.completedCount',
+        language,
+        { count: completed.length },
+      );
+    }
     if (empty) empty.hidden = completed.length > 0;
   });
 </script>

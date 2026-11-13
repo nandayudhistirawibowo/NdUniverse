@@ -30,14 +30,18 @@ const startIndex = (sessionNumber - 1) * batchSize;
   profile={Astro.locals.profile}
 >
   <main class="practice-page">
-    <a class="back-link" href={`/dashboard-de/materi/${item.id}`}>
+    <a class="back-link" href={`/dashboard-de/materi/${item.id}`} data-i18n="material.backToDetail">
       ← Kembali ke Detail Materi
     </a>
     <header>
-      <p class="eyebrow">Latihan Materi</p>
+      <p class="eyebrow" data-i18n="material.practice">Latihan Materi</p>
       <h1>{label}: {item.data.judulMateri}</h1>
     </header>
-    <section aria-label={`Kuis ${item.data.judulMateri}`}>
+    <section
+      aria-label={`Kuis ${item.data.judulMateri}`}
+      data-i18n-aria-label="material.quiz"
+      data-i18n-params={JSON.stringify({ title: item.data.judulMateri })}
+    >
       <Quiz
         client:load
         items={item.data.vocab}

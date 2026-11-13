@@ -1,12 +1,17 @@
-# Handover NdUniverse
+# Handover NdUniverse V4
 
 ## Status Sesi
 
-Tanggal handover: 8 November 2026  
-Nama repositori Git lokal/package saat pemeriksaan: `sideutsch`  
-Nama produk/responsitori yang dituju: `NdUniverse`
+Tanggal handover: 13 November 2026
+Nama repository/package: `nandayudhistirawibowo/NdUniverse` / `nduniverse`
 
-Dokumen ini bersifat internal dan harus tetap diabaikan Git. Jangan commit file ini atau credential apa pun.
+## Status V4
+
+**V4 Selesai 100% untuk lingkup rilis.** Cakupan mencakup aplikasi Astro, modul German dan English, progress Supabase, flow kuis empat pilar, pencegahan XP saat Game Over, chatbot RAG, serta metadata SEO dan aset CDN.
+
+Penguncian sesi/pilar kuis saat ini disimpan di `localStorage`; ini menjaga urutan pada browser yang sama tetapi belum tersinkron antarperangkat atau menjadi otorisasi server-side.
+
+Handover ini mendokumentasikan sistem internal. Jangan commit credential atau nilai rahasia.
 
 ## Ringkasan Produk
 
@@ -14,16 +19,18 @@ NdUniverse adalah Super App pembelajaran bahasa multi-bahasa berdasarkan Astro 7
 
 - `/`: landing page NdUniverse tanpa login.
 - `/de`: modul bahasa Jerman, empat pilar CEFR, Goethe, Career, dan Boss Fight.
-- `/en`: fondasi Modul English selesai, mencakup Everyday English dan Exam Prep IELTS/TOEFL.
+- `/en`: Everyday dan Academic English, Career, serta persiapan IELTS/TOEFL.
 - Seluruh fitur pembelajaran wajib login; akses tanpa login telah dihapus.
 - Database progress dipisahkan berdasarkan `language_code` (`de` atau `en`).
-- Repository saat ini masih bernama `sideutsch` secara lokal/package; penggantian nama GitHub dapat dilakukan dari Settings repository.
+- Chatbot RAG mengambil konteks materi Markdown dari Supabase `documents` menggunakan embedding Cloudflare Workers AI dan model Groq.
 
 ## Stack dan Aturan Keras
 
 - Astro 7 SSR dengan adapter Vercel.
 - Preact dan JSX untuk komponen interaktif.
 - Supabase Auth, PostgreSQL, dan RLS.
+- Supabase `pgvector` untuk indeks dokumen RAG; Cloudflare Workers AI menghasilkan embedding 384 dimensi.
+- Groq menangani query rewriting dan jawaban chatbot; jsDelivr menyajikan aset audio/manifest yang diarahkan ke CDN.
 - CSS murni dengan CSS variables dan media queries.
 - Tidak boleh menggunakan Tailwind.
 - Simbol nama komponen bahasa dipisahkan dengan suffix `-de` dan `-en`.
@@ -34,8 +41,7 @@ NdUniverse adalah Super App pembelajaran bahasa multi-bahasa berdasarkan Astro 7
 
 ## Kondisi Implementasi Saat Ini
 
-Status finalisasi fase German: **SELESAI 100% untuk lingkup saat ini**.  
-Status modul English: **Fondasi UI & Routing Selesai**. Route Everyday English dan Exam Prep tersedia; pengisian konten skala penuh dan TTS menyusul.
+Status proyek V4: **SELESAI 100% untuk lingkup rilis**. Materi dan route German serta English, progress, chatbot RAG, kuis, ujian, dan fitur platform termasuk dalam implementasi V4.
 
 ## Validasi Performa
 
@@ -43,13 +49,15 @@ Status modul English: **Fondasi UI & Routing Selesai**. Route Everyday English d
 - Skor PageSpeed: **100/100/100/100**.
 - Laporan lengkap tersedia di [TESTING.md](TESTING.md).
 
-## Pencapaian Fase 1
+## Pencapaian V4
 
 - Modul German lengkap dan dinyatakan 100% selesai.
 - Kuis 4 Pilar CEFR, Ujian Goethe, Career, dan Boss Fight tersedia.
 - TTS 2 tombol untuk kata dan kalimat tersedia.
 - Mobile responsive dengan touch target minimal 44px.
 - Dashboard, Bookmark, progress, XP, materi A1-C2, dan sertifikat tersedia.
+- Chatbot RAG melakukan query rewrite, retrieval konteks, dan jawaban tutor.
+- Kuis memiliki urutan empat pilar per sesi dan tombol Next mengikuti urutan pilar.
 - Akses tanpa login dihapus; pengguna harus login sebelum mengakses dashboard atau pembelajaran.
 
 ### Konfigurasi tetap tersedia
@@ -63,24 +71,42 @@ Status modul English: **Fondasi UI & Routing Selesai**. Route Everyday English d
 - Client English mengirim `language_code: 'en'` dan menggunakan upsert `user_id, material_slug, language_code`.
 - Migrasi kolom `language_code` sudah dijalankan di Supabase. File `supabase/user_progress.sql` di repository belum sinkron dan perlu disesuaikan sebelum digunakan sebagai sumber migrasi berikutnya.
 - Pembagian komponen/asset German dan platform ke struktur modular.
-- Generator TTS German yang membaca koleksi materi German dari `src/content/materi` saat ini sudah tidak lagi sesuai struktur aktual dan perlu diperiksa/diperbarui ke `src/modules/german/content/materi`.
+- Generator TTS German dan English tersedia; audio/manifest yang diarahkan ke CDN diambil dari jsDelivr.
 
-Belum tersedia atau belum terverifikasi:
+Catatan operasional di luar status rilis:
 
-- Konten Everyday English dan bank soal IELTS/TOEFL skala penuh belum diisi; contoh A1 tersedia di `src/modules/english/content/everyday/` dan `src/modules/english/content/exam/`.
-- Schema collections `englishEveryday` dan `englishExam` sudah terdaftar di `src/content.config.ts`.
-- Audio English produksi dan manifest belum tersedia; TTS/browser fallback sudah disiapkan.
-- Penyimpanan progress `language_code = 'en'` ke Supabase masih perlu diuji end-to-end.
-- Generator TTS masih khusus German dan belum mendukung mode/target language English.
-- Nama repositori GitHub lama perlu diselaraskan manual dengan nama produk `NdUniverse`.
+- Perubahan konten Markdown tidak otomatis memperbarui indeks chatbot; jalankan ingest RAG penuh setelah perubahan materi yang ingin dicari oleh chatbot.
+- Penguncian sesi kuis berada di localStorage sehingga tidak otomatis berpindah browser/perangkat.
+- Pastikan environment variables Vercel dan lokal terisi pada environment yang sesuai; jangan menaruh service role key pada variabel `PUBLIC_*`.
 
-## Sisa Pekerjaan
+## Deploy dan Memperbarui Indeks RAG
 
-1. **Fase 2.5: Isi Konten Inggris (Materi & TTS)** menjadi langkah berikutnya.
-2. Isi materi Everyday English A1-C2 dan bank soal IELTS/TOEFL secara bertahap.
-3. Kembangkan generator, aset audio, dan manifest TTS English.
-4. Uji simpan/muat progress `language_code = 'en'` secara end-to-end.
-5. Sinkronkan file `supabase/user_progress.sql` dengan migrasi yang sudah dijalankan di Supabase setelah memverifikasi schema aktual.
+### Deploy aplikasi
+
+1. Pastikan project Vercel terhubung ke repository dan production branch yang benar.
+2. Set environment variables server-side di Vercel: `PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `GROQ_API_KEY`, `CLOUDFLARE_ACCOUNT_ID`, dan `CLOUDFLARE_API_TOKEN`.
+3. Jalankan `npm run build` secara lokal untuk memverifikasi perubahan, lalu push ke branch deployment agar Vercel menjalankan build dan deploy.
+4. Jangan mengekspos `SUPABASE_SERVICE_ROLE_KEY`, `GROQ_API_KEY`, atau `CLOUDFLARE_API_TOKEN` ke browser maupun variabel `PUBLIC_*`.
+
+### Re-ingest setelah materi berubah
+
+Script `scripts/ingest-rag.py` membaca seluruh file Markdown di `src/modules/german/content/` dan `src/modules/english/content/`, membuat chunk ukuran 500 karakter dengan overlap 50, lalu menyimpan embedding 384 dimensi ke Supabase.
+
+1. Siapkan Python dan pasang dependensi dari root repository:
+
+   ```bash
+   python -m pip install -r requirements-rag.txt
+   ```
+
+2. Isi `.env` lokal dengan `SUPABASE_URL` (atau `PUBLIC_SUPABASE_URL`), `SUPABASE_SERVICE_ROLE_KEY`, `CLOUDFLARE_ACCOUNT_ID`, dan `CLOUDFLARE_API_TOKEN`.
+3. Pastikan schema dan RPC dari `supabase/setup_rag.sql` sudah diterapkan pada project Supabase yang benar.
+4. Jalankan ingest penuh dengan perintah eksplisit:
+
+   ```bash
+   python scripts/ingest-rag.py --replace-all
+   ```
+
+**Peringatan:** ingest saat ini menghapus semua baris di `public.documents`, lalu mengisi ulang seluruh corpus. Jalankan hanya setelah memastikan kredensial menunjuk ke database yang benar dan proses embedding berhasil disiapkan. Script tidak dijalankan sebagai bagian dari deploy Vercel.
 
 ## Temuan Database Penting
 
@@ -110,55 +136,13 @@ Sebelum migration:
 
 `src/core/db/progress-client.js` juga harus mempertahankan pemulihan angka lama dan nama pilar baru tanpa menghapus format lama saat menyimpan kembali.
 
-## Backlog Prioritas
+## Catatan Pemeliharaan
 
-### 1. Sinkronkan File Migrasi Progress
+### Verifikasi Migrasi Progress Sebelum Penggunaan Ulang
 
 - Sesuaikan `supabase/user_progress.sql` dengan migrasi `language_code` yang sudah diterapkan di Supabase.
 - Verifikasi unique key `(user_id, material_slug, language_code)` dan default `'de'` terhadap schema aktual.
 - Jangan menjalankan ulang migrasi secara buta; lakukan perubahan staged setelah backup dan verifikasi.
-
-### 2. Isi Materi English
-
-- Tambahkan materi Everyday English ke `src/modules/english/content/everyday/`.
-- Tambahkan bank soal IELTS/TOEFL ke `src/modules/english/content/exam/`.
-- Gunakan schema collections `englishEveryday` dan `englishExam` yang sudah terdaftar.
-
-### 3. Produksi TTS English
-
-- Modifikasi atau buat generator terpisah untuk `src/modules/english/content/`.
-- Gunakan Edge TTS voice English `en-US` atau `en-GB`.
-- Simpan MP3 di `public/audio/tts-en/` dan buat manifest English.
-- Jangan mengubah manifest German tanpa kebutuhan eksplisit.
-
-Contoh dependensi Python saat ini tersedia melalui `requirements-tts.txt`.
-
-### 4. Jalankan E2E Modul English
-
-Uji:
-
-- Login dan navigasi `/en` pada desktop serta mobile.
-- Kuis English berhasil menyelesaikan pilar yang diharapkan.
-- Progress tersimpan dengan `language_code = 'en'`.
-- Progress German dan English tidak bercampur pada slug yang sama.
-- `sessions_passed` lama masih terbaca.
-- XP tidak diberikan saat percobaan yang kalah atau farming berulang.
-
-### 5. Perbarui Dokumentasi Publik
-
-- `README.md`.
-- `PRD_NDUNIVERSE.md`.
-- `ERD.md`.
-- `FLOWCHART.md`.
-
-### 6. Rename Repository GitHub
-
-Lakukan manual di GitHub:
-
-1. Masuk Settings repository.
-2. Ubah nama dari `sideutsch` menjadi `NdUniverse`.
-3. Perbarui remote URL lokal jika GitHub tidak melakukan redirect otomatis.
-4. Pastikan deployment Vercel dan custom domain tetap terhubung.
 
 ## Peraturan Konten German
 
@@ -195,8 +179,10 @@ Tetapkan hanya nilai yang diperlukan pada environment lokal, deployment Vercel, 
 - `PUBLIC_SUPABASE_URL`
 - `PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`, hanya untuk proses server yang benar-benar membutuhkan service role
+- `GROQ_API_KEY`, untuk query rewriting dan jawaban chatbot server-side
+- `CLOUDFLARE_ACCOUNT_ID` dan `CLOUDFLARE_API_TOKEN`, untuk embedding chatbot dan proses ingest RAG
 
-Jangan menaruh service role key pada variabel `PUBLIC_*`. Jangan commit environment file.
+Jangan menaruh service role key, Groq API key, atau Cloudflare API token pada variabel `PUBLIC_*`. Jangan commit environment file.
 
 ## Catatan Git
 

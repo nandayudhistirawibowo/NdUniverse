@@ -2,6 +2,8 @@
 import { createAvatarSignedUrl } from '@core/auth/avatar';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 import ChatbotWidget from '@core/ui/ChatbotWidget.jsx';
+import DashboardI18n from '@core/ui/DashboardI18n.astro';
+import DashboardLanguageSwitcher from '@core/ui/DashboardLanguageSwitcher.jsx';
 
 const {
   title = 'Dashboard | NdUniverse',
@@ -45,9 +47,15 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     <title>{title}</title>
   </head>
   <body>
+    <DashboardI18n />
     <div id="navigation-progress" class="navigation-progress" transition:persist="navigation-progress" aria-hidden="true"></div>
     <div class={`private-shell ${isAdmin ? 'admin-shell' : 'student-shell'}`}>
-      <aside class="private-sidebar" id="dashboard-sidebar" aria-label={isAdmin ? 'Navigasi admin' : 'Navigasi mahasiswa'}>
+      <aside
+        class="private-sidebar"
+        id="dashboard-sidebar"
+        aria-label={isAdmin ? 'Navigasi admin' : 'Navigasi mahasiswa'}
+        data-i18n-aria-label={isAdmin ? 'nav.adminNavigation' : 'nav.student'}
+      >
         <div class="sidebar-top-row">
           <a class="sidebar-logo" href={isAdmin ? '/admin' : '/de/dashboard'} aria-label="NdUniverse">
             <img src="/logo.png" alt="NdUniverse" />
@@ -62,45 +70,45 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
           {isAdmin ? (
             <a class={`nav-item ${active === 'users' ? 'active' : ''}`} href="/admin" aria-current={active === 'users' ? 'page' : undefined}>
               <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" /><path d="M8 9h9M8 13h9M8 17h5" /></svg>
-              <span>Manajemen User</span>
+              <span data-i18n="nav.admin">Manajemen Pengguna</span>
             </a>
           ) : (
             <>
               <a class={`nav-item ${active === 'home' ? 'active' : ''}`} href="/de/dashboard" aria-current={active === 'home' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10Z" /></svg>
-                <span>Beranda</span>
+                <span data-i18n="nav.home">Beranda</span>
               </a>
               <a class={`nav-item ${active === 'catalog' ? 'active' : ''}`} href="/de/materi" aria-current={active === 'catalog' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z" /><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h8" /></svg>
-                <span>Katalog Materi</span>
+                <span data-i18n="nav.materials">Katalog Materi</span>
               </a>
               <a class={`nav-item ${active === 'exam' ? 'active' : ''}`} href="/de/ujian" aria-current={active === 'exam' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5" /></svg>
-                <span>Ujian</span>
+                <span data-i18n="nav.exam">Ujian</span>
               </a>
               <a class={`nav-item ${active === 'alltagsdeutsch' ? 'active' : ''}`} href="/de/alltagsdeutsch" aria-current={active === 'alltagsdeutsch' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2 1.2-4.1A7.5 7.5 0 1 1 20 11.5Z" /><path d="M8 11h.01M12 11h.01M16 11h.01" /></svg>
-                <span>Alltagsdeutsch</span>
+                <span data-i18n="nav.alltags">Alltagsdeutsch</span>
               </a>
               <a class={`nav-item ${active === 'fachdeutsch' ? 'active' : ''}`} href="/de/fachdeutsch" aria-current={active === 'fachdeutsch' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 8 9-5 9 5-9 5-9-5Z" /><path d="M7 10.2V16c2.8 2.4 7.2 2.4 10 0v-5.8M21 8v7" /></svg>
-                <span>Fachdeutsch</span>
+                <span data-i18n="nav.fach">Fachdeutsch</span>
               </a>
               <a class={`nav-item ${active === 'bookmark' ? 'active' : ''}`} href="/de/dashboard/bookmark" aria-current={active === 'bookmark' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4V4.5Z" /></svg>
-                <span>Bookmark</span>
+                <span data-i18n="nav.bookmark">Penanda Buku</span>
               </a>
               <a class="nav-item" href="/de/pengucapan">
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 19h16M7 5v14M17 5v14" /><path d="m10 10 2 4 2-4" /></svg>
-                <span>Panduan Pengucapan</span>
+                <span data-i18n="nav.pronunciation">Panduan Pengucapan</span>
               </a>
               <a class="nav-item" href="/de/grammar">
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z" /><path d="M9 8h6M9 12h6M9 16h4" /></svg>
-                <span>Tata Bahasa</span>
+                <span data-i18n="nav.grammar">Tata Bahasa</span>
               </a>
               <a class={`nav-item ${active === 'career' ? 'active' : ''}`} href="/de/career" aria-current={active === 'career' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" /></svg>
-                <span>Career</span>
+                <span data-i18n="nav.career">Karier</span>
               </a>
               <FeedbackModal client:load variant="sidebar" />
             </>
@@ -109,7 +117,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 
       </aside>
 
-      <button class="sidebar-overlay" type="button" aria-label="Tutup navigasi"></button>
+      <button class="sidebar-overlay" type="button" aria-label="Tutup navigasi" data-i18n-aria-label="nav.close"></button>
 
       <div class="private-main-column">
         <header class="dashboard-header">
@@ -117,6 +125,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
             class="sidebar-toggle"
             type="button"
             aria-label="Buka navigasi"
+            data-i18n-aria-label="nav.open"
             aria-expanded="false"
             aria-controls="dashboard-sidebar"
           >
@@ -127,8 +136,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
           <a href={isAdmin ? '/admin' : '/de/dashboard'} aria-label="NdUniverse">
             <img src="/logo.png" alt="NdUniverse" />
           </a>
+          <DashboardLanguageSwitcher client:load />
           {user && (
-            <details class="account-dropdown">
+            <details class="account-dropdown" style="margin-left: 0">
               <summary class="account-trigger">
                 {avatarUrl ? (
                   <img class="account-avatar" data-avatar-image data-avatar-initial={accountInitial} src={avatarUrl} alt="" />
@@ -137,16 +147,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 )}
                 <span class="account-copy">
                   <strong>{displayName}</strong>
-                  <span>{hasNim ? `NIM ${nim}` : 'Umum'}</span>
+                  <span
+                    data-i18n={hasNim ? 'account.studentId' : 'account.general'}
+                    data-i18n-params={hasNim ? JSON.stringify({ id: nim }) : undefined}
+                  >{hasNim ? `NIM ${nim}` : 'Umum'}</span>
                 </span>
                 <svg class="account-chevron" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="m6 9 6 6 6-6" />
                 </svg>
               </summary>
               <div class="account-menu">
-                {!isAdmin && <a href="/dashboard-de/profil">Profil Saya</a>}
+                {!isAdmin && <a href="/dashboard-de/profil" data-i18n="account.profile">Profil Saya</a>}
                 <form action="/logout?module=de" method="post">
-                  <button type="submit">Logout</button>
+                  <button type="submit" data-i18n="account.logout">Keluar</button>
                 </form>
               </div>
             </details>
@@ -156,10 +169,10 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         <footer class="private-footer">
           <span>© 2026 NdUniverse. Connecting Languages & Cultures.</span>
           <span class="footer-separator" aria-hidden="true">·</span>
-          <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Kontak Admin (WhatsApp)</a>
+          <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer" data-i18n="footer.contact">Hubungi Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>
-          <a href="https://ndhistira.my.id" target="_blank" rel="noopener noreferrer">Created by Nanda Yudhistira · Lihat Portofolio</a>
-          <span class="audio-attribution">Audio powered by Microsoft Edge TTS</span>
+          <a href="https://ndhistira.my.id" target="_blank" rel="noopener noreferrer" data-i18n="footer.portfolio">Dibuat oleh Nanda Yudhistira · Lihat Portofolio</a>
+          <span class="audio-attribution" data-i18n="footer.audio">Audio didukung Microsoft Edge TTS</span>
         </footer>
       </div>
     </div>
@@ -168,12 +181,17 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 </html>
 
 <script>
+  import { getDashboardLanguage, translateDashboard } from '@core/i18n/dashboard-language';
+
   const setSidebarOpen = (isOpen: boolean, restoreFocus = false) => {
     const shell = document.querySelector<HTMLElement>('.private-shell');
     const sidebarToggle = document.querySelector<HTMLButtonElement>('.sidebar-toggle');
     shell?.classList.toggle('sidebar-open', isOpen);
     sidebarToggle?.setAttribute('aria-expanded', String(isOpen));
-    sidebarToggle?.setAttribute('aria-label', isOpen ? 'Tutup navigasi' : 'Buka navigasi');
+    sidebarToggle?.setAttribute(
+      'aria-label',
+      translateDashboard(isOpen ? 'nav.close' : 'nav.open', getDashboardLanguage()),
+    );
     if (!isOpen && restoreFocus) sidebarToggle?.focus();
   };
 

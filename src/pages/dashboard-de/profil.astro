@@ -13,7 +13,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
 ---
 
 <DashboardLayout
-  title="Profil Mahasiswa | siDeutsch"
+  title="Profil | NdUniverse"
   description="Kelola informasi profil mahasiswa siDeutsch."
   active="profile"
   user={user}
@@ -22,9 +22,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   <section class="profile-content">
       <div id="password-alert" class="password-alert" role="alert" aria-live="assertive" hidden></div>
       <header class="page-heading">
-        <p class="eyebrow">Akun Mahasiswa</p>
-        <h1>Profil</h1>
-        <p>Perbarui nama dan foto profilmu.</p>
+        <p class="eyebrow" data-i18n="profile.studentAccount">Akun Mahasiswa</p>
+        <h1 data-i18n="profile.title">Profil</h1>
+        <p data-i18n="profile.update">Perbarui nama dan foto profilmu.</p>
       </header>
 
       <form
@@ -41,21 +41,21 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
               </span>
             </div>
             <input id="file-upload" class="avatar-file-input" name="avatar" type="file" accept="image/png,image/jpeg,image/webp" />
-            <label class="avatar-camera" for="file-upload" title="Ganti foto profil">
+            <label class="avatar-camera" for="file-upload" title="Ganti foto profil" data-i18n-title="profile.changePhoto">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M14 5H8L6.5 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-2.5L16 5h-2Z" />
                 <circle cx="12" cy="13" r="3.5" />
               </svg>
-              <span class="visually-hidden">Pilih foto profil</span>
+              <span class="visually-hidden" data-i18n="profile.choosePhoto">Pilih foto profil</span>
             </label>
           </div>
           <div class="avatar-upload">
-            <span class="avatar-upload-title">Foto Profil</span>
-            <small>PNG, JPG, atau WebP. Maksimal 5 MB.</small>
+            <span class="avatar-upload-title" data-i18n="profile.photo">Foto Profil</span>
+            <small data-i18n="profile.photoHelp">PNG, JPG, atau WebP. Maksimal 5 MB.</small>
           </div>
         </div>
 
-        <label for="nama-lengkap">Nama Lengkap</label>
+        <label for="nama-lengkap" data-i18n="profile.fullName">Nama Lengkap</label>
         <input
           id="nama-lengkap"
           name="nama_lengkap"
@@ -63,24 +63,25 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
           value={displayName}
           autocomplete="name"
           placeholder="Masukkan nama lengkap"
+          data-i18n-placeholder="profile.namePlaceholder"
           required
         />
 
-        <label for="nim">{hasNim ? 'NIM' : 'Status Akun'}</label>
-        <input id="nim" name="nim" type="text" value={hasNim ? nim : 'Umum'} readonly />
+        <label for="nim" data-i18n={hasNim ? 'profile.studentNumber' : 'profile.accountStatus'}>{hasNim ? 'NIM' : 'Status Akun'}</label>
+        <input id="nim" name="nim" type="text" value={hasNim ? nim : 'Umum'} data-i18n-value={hasNim ? undefined : 'account.general'} readonly />
 
-        <button id="profile-submit" type="submit">Simpan Perubahan</button>
+        <button id="profile-submit" type="submit" data-i18n="profile.save">Simpan Perubahan</button>
         <p id="profile-message" class="profile-message" role="status" aria-live="polite"></p>
       </form>
 
       <section class="password-section" aria-labelledby="password-title">
         <header class="password-heading">
-          <p class="eyebrow">Keamanan Akun</p>
-          <h2 id="password-title">Ganti Password</h2>
-          <p>Gunakan kata sandi baru yang mudah kamu ingat dan sulit ditebak.</p>
+          <p class="eyebrow" data-i18n="profile.security">Keamanan Akun</p>
+          <h2 id="password-title" data-i18n="profile.changePassword">Ganti Kata Sandi</h2>
+          <p data-i18n="profile.passwordHelp">Gunakan kata sandi baru yang mudah diingat dan sulit ditebak.</p>
         </header>
         <form id="password-form" class="password-form" novalidate>
-          <label for="new-password">Password Baru</label>
+          <label for="new-password" data-i18n="profile.newPassword">Kata Sandi Baru</label>
           <div class="password-input-wrap">
             <input
               id="new-password"
@@ -88,10 +89,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
               type="password"
               autocomplete="new-password"
               placeholder="Masukkan password baru"
+              data-i18n-placeholder="profile.passwordPlaceholder"
               required
               minlength="6"
             />
-            <button type="button" class="password-toggle" data-password-toggle="new-password" aria-label="Tampilkan password" aria-pressed="false">
+            <button type="button" class="password-toggle" data-password-toggle="new-password" aria-label="Tampilkan kata sandi" data-i18n-aria-label="profile.showPassword" data-i18n-aria-label-pressed="profile.hidePassword" aria-pressed="false">
               <svg class="eye-open" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
                 <circle cx="12" cy="12" r="2.7" />
@@ -103,7 +105,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
             </button>
           </div>
 
-          <label for="confirm-password">Konfirmasi Password Baru</label>
+          <label for="confirm-password" data-i18n="profile.confirmPassword">Konfirmasi Kata Sandi Baru</label>
           <div class="password-input-wrap">
             <input
               id="confirm-password"
@@ -111,10 +113,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
               type="password"
               autocomplete="new-password"
               placeholder="Ulangi password baru"
+              data-i18n-placeholder="profile.confirmPlaceholder"
               required
               minlength="6"
             />
-            <button type="button" class="password-toggle" data-password-toggle="confirm-password" aria-label="Tampilkan password" aria-pressed="false">
+            <button type="button" class="password-toggle" data-password-toggle="confirm-password" aria-label="Tampilkan kata sandi" data-i18n-aria-label="profile.showPassword" data-i18n-aria-label-pressed="profile.hidePassword" aria-pressed="false">
               <svg class="eye-open" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                 <path d="M2.5 12s3.4-6 9.5-6 9.5 6 9.5 6-3.4 6-9.5 6-9.5-6-9.5-6Z" />
                 <circle cx="12" cy="12" r="2.7" />
@@ -126,7 +129,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
             </button>
           </div>
 
-          <button id="password-submit" type="submit">Simpan Password Baru</button>
+          <button id="password-submit" type="submit" data-i18n="profile.savePassword">Simpan Kata Sandi Baru</button>
         </form>
       </section>
   </section>
@@ -134,6 +137,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
 
 <script>
   import { createBrowserClient } from '@supabase/ssr';
+  import { getDashboardLanguage, translateDashboard } from '@core/i18n/dashboard-language';
 
   document.addEventListener('astro:page-load', () => {
   const form = document.querySelector<HTMLFormElement>('#profile-form');
@@ -175,7 +179,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
       const isVisible = target.type === 'text';
       target.type = isVisible ? 'password' : 'text';
       toggle.setAttribute('aria-pressed', String(!isVisible));
-      toggle.setAttribute('aria-label', isVisible ? 'Tampilkan password' : 'Sembunyikan password');
+      const labelKey = isVisible ? 'profile.showPassword' : 'profile.hidePassword';
+      toggle.dataset.i18nAriaLabel = labelKey;
+      toggle.setAttribute('aria-label', translateDashboard(labelKey, getDashboardLanguage()));
     });
   });
 
@@ -212,7 +218,8 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
       passwordForm.reset();
       passwordForm.querySelectorAll<HTMLButtonElement>('[data-password-toggle]').forEach((toggle) => {
         toggle.setAttribute('aria-pressed', 'false');
-        toggle.setAttribute('aria-label', 'Tampilkan password');
+        toggle.dataset.i18nAriaLabel = 'profile.showPassword';
+        toggle.setAttribute('aria-label', translateDashboard('profile.showPassword', getDashboardLanguage()));
       });
       showPasswordAlert('Password berhasil diubah!', 'success');
       window.setTimeout(() => {
