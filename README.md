@@ -1,121 +1,78 @@
 # NdUniverse
 
-Platform pembelajaran bahasa Jerman dan Inggris untuk persiapan akademik, sertifikasi, dan karir global.
+NdUniverse adalah platform belajar bahasa Jerman dan Inggris berbasis Astro. Kurikulum tetap menggunakan bahasa target; navigasi dan antarmuka aplikasi menggunakan Bahasa Indonesia hardcoded (tanpa sistem i18n).
 
 ## Status V4
 
-- **V4: Selesai 100% untuk lingkup rilis.** Mencakup modul belajar Jerman dan Inggris, chatbot RAG, progress dan XP, ujian, serta flow kuis 4 pilar.
-- Materi belajar dan audio tersedia lewat aset aplikasi dan CDN jsDelivr sesuai modul.
+**V4 selesai 100% untuk lingkup rilis.** Produk mencakup modul German dan English, latihan empat pilar tanpa urutan wajib, ujian dengan anti-cheat fullscreen, progress Supabase, serta chatbot RAG.
 
-NdUniverse adalah platform induk dengan gerbang utama di `/`, modul German di `/de`, dan modul English di `/en`. Setiap modul dapat memiliki kurikulum, latihan, ujian, Career, dan dashboard sendiri.
+## Fitur
 
-## Fitur Utama
-
-### Modul German (`/de`)
-
-- Alltagsdeutsch A1-C2 untuk komunikasi sehari-hari.
-- Fachdeutsch untuk kosakata akademik dan profesional.
-- Empat pilar CEFR: Reading, Listening, Writing, dan Speaking.
-- Simulasi Goethe-Zertifikat dan Mini-Mock Exam.
-- Career IT, Business, Health, dan Nutrition.
-- Boss Fight Visual Novel untuk latihan wawancara kerja.
-- Audio German berbasis Edge TTS dan fallback Web Speech API.
-
-### Modul English (`/en`)
-
-- Everyday dan Academic English serta persiapan ujian IELTS/TOEFL.
-- Career Prep dan English Interview Challenge.
-- Latihan Reading, Listening, Writing, dan Speaking.
-- Audio English disajikan melalui CDN jsDelivr.
-
-### Fondasi Platform
-
-- Landing NdUniverse dan language switch antara `/de` dan `/en`.
-- Multi-Language Progress: progress German dan English dipisahkan dengan `language_code` (`de`/`en`).
-- XP sementara dibatalkan saat Game Over dan tidak difinalisasi dua kali dalam satu run.
-- Flow kuis mengunci empat pilar per sesi secara berurutan: Reading → Listening → Writing → Speaking.
-- Chatbot tutor dengan retrieval materi (RAG), embedding Cloudflare Workers AI, dan model Groq.
-- Audio dan manifest tertentu didistribusikan melalui jsDelivr.
-- Responsive UI untuk desktop, tablet, dan mobile.
-- Supabase Auth, PostgreSQL, Storage, dan RLS.
+- **German (`/de`)**: Alltagsdeutsch A1-C2, Fachdeutsch, Goethe, Career, dan Boss Fight.
+- **English (`/en`)**: Everyday dan Academic English, IELTS/TOEFL, serta Career.
+- **Latihan empat pilar**: pilih sesi dan Reading, Listening, Writing, atau Speaking secara bebas. Progres tiap pasangan sesi-pilar disimpan, misalnya `s1-reading`.
+- **Chatbot RAG**: Supabase `pgvector` mengambil materi relevan; Cloudflare Workers AI membuat embedding dan Groq membantu penulisan ulang query serta jawaban.
+- **Anti-cheat ujian**: mode fullscreen mencatat pelanggaran; NdBot menampilkan status dan ujian dikirim otomatis pada strike ketiga.
+- **Audio**: Edge TTS, manifest dan MP3 di repo CDN `nduniverse-audio`, disajikan melalui jsDelivr; Web Speech API menjadi fallback.
+- **Progress dan autentikasi**: Supabase Auth/PostgreSQL/Storage dengan pemisahan progress German dan English.
 
 ## Tech Stack
 
-- **Framework:** Astro 7 SSR dengan Vercel adapter
-- **UI:** Preact 11 dan `@astrojs/preact`
-- **Routing:** Astro file-based routing dengan modul bahasa `/de` dan `/en`
-- **Database/Auth:** Supabase PostgreSQL, Auth, Storage, dan RLS
-- **Chatbot RAG:** Supabase `pgvector` untuk dokumen dan pencarian kemiripan; Cloudflare Workers AI untuk embedding 384 dimensi; Groq untuk rewrite query dan jawaban.
-- **CDN:** jsDelivr untuk aset audio dan manifest audio yang dikonfigurasi ke CDN.
-- **Multi-language progress:** kolom `user_progress.language_code` dan client progress terpisah untuk `de`/`en`
-- **Konten:** Astro Content Collections, Markdown, dan Zod
-- **Struktur modul:** `src/core/` untuk sistem platform serta `src/modules/german/` dan `src/modules/english/` untuk modul bahasa
-- **Styling:** CSS murni dengan CSS Variables dan Media Queries
-- **Audio:** Edge TTS, aset audio melalui jsDelivr, dan Web Speech API
-- **PDF:** `html2pdf.js`
-- **Hosting:** Vercel dengan `@astrojs/vercel`
-- **Client storage:** localStorage untuk bookmark, cache progress, dan status ujian
-
-## Struktur Navigasi
-
-```text
-NdUniverse (/)
-  -> Pilih Bahasa
-      -> German (/de)
-          -> Login
-          -> Alltagsdeutsch / Fachdeutsch / Career / Ujian
-      -> English (/en)
-          -> Login
-          -> Everyday English / Academic English / Career Prep / Ujian
-```
-
-## Struktur Folder Penting
-
-- `src/core/auth/`: Auth, avatar, middleware, dan admin helper.
-- `src/core/db/`: progress client German dan English.
-- `src/core/ui/`: Layout, dashboard layout, katalog, modal, dan hint universal.
-- `src/core/game/`: helper game bersama.
-- `src/modules/german/`: komponen, config, dan konten German.
-- `src/modules/english/`: komponen, config, materi Everyday/Academic, dan konten Exam Prep IELTS/TOEFL.
-- `src/content.config.ts`: Content Collections `englishEveryday` dan `englishExam` serta collection German.
-- `src/pages/`: routing Astro; halaman tidak dipindahkan saat refactor.
-
-## Dokumentasi
-
-- [PRD NdUniverse](PRD_NDUNIVERSE.md)
-- [PRD Modul German](PRD.md)
-- [ERD](ERD.md)
-- [Flowchart](FLOWCHART.md)
-- [Struktur Data dan Komponen](DATA_STRUCTURE.md)
-- [Handover](HANDOVER_NDUNIVERSE.md)
-- [Testing](TESTING.md)
+| Area | Teknologi |
+| --- | --- |
+| Framework dan rendering | Astro 7 SSR, Vercel adapter |
+| Komponen interaktif | Preact 11 |
+| Database dan autentikasi | Supabase PostgreSQL, Auth, Storage, RLS |
+| Retrieval | Supabase `pgvector`, tabel `public.documents`, RPC `match_documents` |
+| AI | Cloudflare Workers AI (`@cf/baai/bge-small-en-v1.5`, 384 dimensi) dan Groq |
+| Konten | Astro Content Collections, Markdown, Zod |
+| Audio/CDN | Edge TTS dan jsDelivr |
+| Styling | CSS |
 
 ## Menjalankan Proyek
 
-Persyaratan Node.js: `>=22.23.4`.
+Persyaratan: Node.js `>=22.23.4`.
 
 ```bash
 npm install
 npx astro dev --background
 ```
 
-Kelola server background dengan `npx astro dev status`, `npx astro dev logs`, dan `npx astro dev stop`.
-
-## Audio TTS
-
-Audio German dan English menggunakan Edge TTS. Aset audio yang dikonfigurasi sebagai CDN diambil dari jsDelivr; fallback Web Speech API digunakan jika audio tidak tersedia.
+Server background dapat dikelola dengan `npx astro dev status`, `npx astro dev logs`, dan `npx astro dev stop`. Sebelum menguji fitur yang memerlukan backend, siapkan variabel environment yang sesuai (lihat [HANDOVER.md](HANDOVER.md)). Untuk validasi produksi:
 
 ```bash
-python -m pip install -r requirements-tts.txt
-npm run generate:tts
+npm run build
 ```
 
-Repository ini sekarang bernama **NdUniverse** sebagai platform induk multi-bahasa.
+Jangan commit `.env`, service-role key, Groq API key, atau Cloudflare API token.
 
-## Memperbarui Indeks Chatbot
+## Memperbarui Audio dan Manifest CDN
 
-Jika materi Markdown berubah dan perlu diperbarui pada indeks RAG, lihat [Handover](HANDOVER_NDUNIVERSE.md) untuk dependensi, environment variables, dan langkah ingest penuh. Script ingest memakai `--replace-all` yang menghapus seluruh baris `public.documents` sebelum mengisi ulang indeks.
+Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di bawah `audio/`. Aplikasi membaca manifest TTS German (`audio/tts/manifest.json`) serta English (`audio/tts-en-us/manifest-en-us.json` dan `audio/tts-en-gb/manifest-en-gb.json`) melalui jsDelivr. Peta umum audio ujian berada di `manifest-cdn.json` repository ini.
 
-## Testing & Performance
+1. Buat atau perbarui MP3 dan manifest lokal. English menggunakan `npm run generate:tts:en` (dependensi: `python -m pip install -r requirements-tts.txt`); `npm run generate:tts` adalah generator German lama yang masih menunjuk ke `src/content/materi`, jadi periksa path sumber sebelum mengandalkannya untuk konten modular V4.
+2. Salin aset dan manifest yang akan diterbitkan ke direktori sepadan di `nduniverse-audio/audio/`. Pertahankan nama file dan format mapping teks-ke-path pada manifest.
+3. Commit dan push repository audio ke branch `main`, lalu tunggu jsDelivr menyajikan versi terbaru.
+4. Untuk memperbarui peta MP3 umum, siapkan checkout repo audio pada `D:\audio-cdn` (sehingga foldernya `D:\audio-cdn\audio`), lalu jalankan dari root NdUniverse:
 
-Platform telah diuji dengan k6 pada 100 VUs dan mencatat success rate 100% dengan rata-rata waktu respons 32ms. Lihat [laporan Load Testing](TESTING.md) untuk detail hasil.
+   ```bash
+   python scripts/migrate-audio-cdn.py
+   ```
+
+   Script ini membuat ulang `manifest-cdn.json`; commit dan push file tersebut ke branch aplikasi yang digunakan. Jangan hapus entri yang masih dipakai.
+
+## Memperbarui Indeks RAG
+
+Perubahan Markdown tidak otomatis memperbarui indeks. Lihat [HANDOVER.md](HANDOVER.md) untuk persiapan, variabel environment, dan langkah ingest. Ingest penuh menggunakan `--replace-all` dan menghapus seluruh baris `public.documents` sebelum mengisi ulang.
+
+## Sitemap dan Crawler
+
+`@astrojs/sitemap` menghasilkan sitemap statis dan mengikutsertakan sitemap materi dinamis `/sitemap-content.xml`. Endpoint tersebut mengambil koleksi materi German, English Everyday, dan English Academic. `public/robots.txt` mengizinkan crawler pada halaman publik dan mengecualikan `/admin/` serta `/api/`.
+
+## Dokumentasi
+
+- [PRD](PRD.md)
+- [ERD](ERD.md)
+- [Flowchart](FLOWCHART.md)
+- [Handover](HANDOVER.md)
+- [Pengujian](TESTING.md)

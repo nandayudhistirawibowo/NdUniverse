@@ -35,6 +35,7 @@ const isGermanRoute = currentPath === '/de'
   || currentPath.startsWith('/de/')
   || currentPath === '/dashboard-de'
   || currentPath.startsWith('/dashboard-de/');
+const openGraphLocale = isEnglishRoute ? 'en_US' : isGermanRoute ? 'de_DE' : 'id_ID';
 const accountHref = isAdminAccount ? '/admin' : isEnglishRoute ? '/en/dashboard' : isGermanRoute ? '/dashboard-de' : '/dashboard';
 const loginHref = isEnglishRoute ? '/login-en' : '/login-de';
 const organizationDescription = isEnglishRoute
@@ -61,17 +62,21 @@ const organizationSchema = {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
+    <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="robots" content="index, follow" />
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={openGraphLocale} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:image" content={imageURL} />
+    <meta property="og:image:alt" content="NdUniverse — platform belajar bahasa" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={imageURL} />
+    <meta name="twitter:image:alt" content="NdUniverse — platform belajar bahasa" />
     <meta property="og:site_name" content="NdUniverse" />
     <link rel="canonical" href={canonicalURL} />
     <link rel="sitemap" href="/sitemap-index.xml" />

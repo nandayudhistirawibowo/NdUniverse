@@ -2,7 +2,7 @@
 
 ## Status Modul
 
-NdUniverse V4 mencakup modul belajar German dan English, chatbot RAG, progress, dan ujian. Pengguna wajib login untuk mengakses dashboard dan fitur pembelajaran.
+NdUniverse V4 mencakup modul belajar German dan English, chatbot RAG, progress, dan ujian. Pengguna wajib login untuk mengakses dashboard dan fitur pembelajaran. Antarmuka menggunakan Bahasa Indonesia hardcoded; bahasa materi mengikuti modul.
 
 ## Alur Utama
 
@@ -95,24 +95,23 @@ flowchart TD
 
 Reading memakai teks dan pilihan ganda; Listening memakai audio/TTS dan pilihan ganda; Writing memakai text box fuzzy matching; Speaking memakai microphone atau text box. Anti-farming membuang XP sementara saat Game Over dan menggunakan guard finalisasi run agar XP tidak dikomit dua kali.
 
-## Locking Flow Kuis Empat Pilar
+## Pemilihan Sesi dan Pilar Kuis
 
 ```mermaid
 flowchart TD
-    A[Masuk dengan session dan type] --> B{Sesi sebelumnya lengkap?}
-    B -->|Tidak| C[Tampilkan peringatan dan hentikan akses]
-    B -->|Ya| D{Pilar sesuai urutan?}
-    D -->|Tidak| E[Tampilkan peringatan pilar berikutnya]
-    D -->|Ya| F[Kerjakan pilar aktif]
-    F --> G{Pilar selesai?}
-    G -->|Tidak| F
-    G -->|Ya| H[Simpan pilar pada localStorage browser]
-    H --> I{Reading, Listening, Writing, Speaking lengkap?}
-    I -->|Tidak| J[Next ke pilar berikutnya di sesi yang sama]
-    I -->|Ya| K[Buka Reading sesi berikutnya]
+    A[Buka detail materi] --> B[Pilih sesi yang tersedia]
+    B --> C[Pilih Reading, Listening, Writing, atau Speaking]
+    C --> D[Buka URL dengan session dan type]
+    D --> E[Ambil batch sesi dan data pilar]
+    E --> F[Kerjakan kuis]
+    F --> G{Kuis lulus?}
+    G -->|Belum| H[Ulangi atau kembali ke materi]
+    G -->|Ya| I[Simpan kunci s{session}-{pillar}]
+    I --> J[Perbarui indikator progres]
+    J --> K[Kembali ke materi]
 ```
 
-Status sesi/pilar untuk penguncian disimpan di browser, sehingga belum tersinkron lintas perangkat dan bukan validasi server-side.
+Sesi dan pilar tidak memerlukan progres sebelumnya, tidak memiliki urutan wajib, dan dapat dibuka langsung melalui URL. Kunci progres hanya menandai pasangan sesi-pilar yang telah selesai; tombol setelah kuis kembali ke materi, bukan memaksa kuis berikutnya.
 
 ## Chatbot RAG
 
@@ -134,22 +133,36 @@ flowchart TD
 
 Materi Markdown diindeks ke `public.documents` melalui script ingest. Pembaruan indeks adalah proses manual dan ingest penuh mengganti seluruh baris tabel tersebut.
 
+## Anti-Cheat Fullscreen (NdBot)
+
+```mermaid
+flowchart TD
+    A[Pengguna memulai ujian besar] --> B[Minta fullscreen dan aktifkan pengawasan]
+    B --> C[Awasi fullscreen, tab tersembunyi, dan window blur]
+    C --> D{Pelanggaran terdeteksi?}
+    D -->|Tidak| C
+    D -->|Ya| E[Tambah satu strike; cooldown 5 detik]
+    E --> F[NdBot menampilkan status strike]
+    F --> G{Strike mencapai 3?}
+    G -->|Tidak| C
+    G -->|Ya| H[Paksa kirim ujian]
+    H --> I[Hitung dan tampilkan hasil]
+```
+
+Anti-cheat dipakai oleh ujian besar. Strike ketiga memicu submit paksa; NdBot menampilkan tingkat pelanggaran. Jika browser menolak fullscreen, ujian tetap dapat berjalan sesuai dukungan browser.
+
 ## Sinkronisasi `sessions_passed`
 
 ```mermaid
 flowchart TD
     A[Muat progress materi] --> B{Format sessions_passed}
-    B -->|String pilar| C[Gunakan empat nama pilar]
-    B -->|Array lama| D[Konversi nomor sesi menjadi nama pilar]
-    C --> E[Gabungkan pilar yang lulus]
+    B -->|Kunci baru sN-pillar| C[Gunakan indikator sesi dan pilar]
+    B -->|Format lama| D[Normalisasi nilai lama]
+    C --> E[Gabungkan progres yang telah tersimpan]
     D --> E
-    E --> F{Keempat pilar lengkap?}
-    F -->|Ya| G[Materi lulus]
-    F -->|Tidak| H[Materi belum lulus]
-    G --> I{Track Alltagsdeutsch dan level CEFR?}
-    I -->|Ya| J[Tambahkan poin level sesuai A1 sampai C2]
-    I -->|Tidak| K[Fachdeutsch atau Career tidak menambah level]
-    E --> L[Upsert JSON array ke Supabase]
+    E --> F[Tampilkan centang untuk pasangan yang selesai]
+    F --> G[Pengguna tetap bebas memilih sesi dan pilar]
+    G --> H[Jika lulus, upsert kunci sesi-pilar]
 ```
 
 ## Alur Career dan Boss Fight Visual Novel

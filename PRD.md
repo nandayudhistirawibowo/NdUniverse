@@ -3,6 +3,10 @@
 **Status:** Dokumentasi implementasi V4
 **Produk:** Platform belajar bahasa Jerman universal A1–C2
 
+## Status Antarmuka
+
+Sistem i18n aplikasi telah dihapus. Navigasi, tombol, dan pesan antarmuka di-hardcode dalam Bahasa Indonesia; materi, soal, dan audio tetap menggunakan bahasa target German atau English.
+
 ## Ringkasan Produk
 
 Modul Jerman NdUniverse adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Seluruh fitur pembelajaran memerlukan login dan progress disinkronkan ke Supabase.
@@ -28,7 +32,7 @@ Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, men
 - Setiap materi memiliki kosakata Jerman, terjemahan Indonesia, konteks Jerman, dan terjemahan konteks.
 - Kosakata dibagi menjadi **4 sesi**, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20.
 - Detail materi menampilkan tabel kosakata per sesi beserta tombol speaker dan tombol latihan keempat pilar.
-- Route materi dan latihan hanya dapat diakses melalui dashboard setelah login: `/dashboard/materi/[slug]` dan `/dashboard/materi/[slug]/latihan`.
+- Halaman materi dan latihan tersedia pada route modul German dan English; fitur belajar yang memerlukan akun menggunakan autentikasi Supabase.
 
 ### Kuis 4 Pilar CEFR
 
@@ -40,8 +44,9 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - **Speaking / Sprechen:** menampilkan pertanyaan Jerman, menyediakan text box, dan mic-to-text menggunakan Web Speech API.
 - Pada setiap pilar, maksimal lima kosakata dari sesi aktif diproses sebagai lima soal.
 - Tipe soal lama bukan lagi generator acak global; tipe soal disesuaikan dengan pilar aktif.
-- Urutan pilar wajib pada tiap sesi adalah **Reading → Listening → Writing → Speaking**. Tombol Next membuka pilar berikutnya di sesi yang sama; sesi berikutnya baru tersedia setelah keempat pilar selesai.
-- Validasi sesi/pilar menggunakan `localStorage` browser. Validasi ini menjaga alur UI, tetapi belum menjadi kontrol keamanan server-side dan belum tersinkron antarperangkat.
+- Pengguna bebas memilih sesi yang tersedia dan pilar apa pun tanpa menyelesaikan sesi/pilar sebelumnya. URL latihan membawa `session` dan `type`; keduanya tidak dikunci berdasarkan progres sebelumnya.
+- Setelah kuis selesai, pengguna kembali ke halaman materi; aplikasi tidak mengarahkan ke pilar berikutnya secara paksa.
+- Status penyelesaian tetap dicatat per pasangan sesi-pilar, misalnya `s1-reading` atau `s2-writing`, untuk menampilkan indikator progres. Status ini bukan aturan akses.
 
 ### Sistem Nyawa, XP, dan Anti-Farming
 
@@ -59,7 +64,7 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - Pertanyaan terakhir dapat ditulis ulang oleh Groq untuk memperbaiki typo, memperluas singkatan, dan menyesuaikan bahasa pencarian; jika rewrite gagal, pertanyaan asli tetap digunakan.
 - Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` berdimensi 384. Supabase `pgvector` mencari hingga tiga potongan materi dengan ambang kemiripan 0.35.
 - Potongan materi yang relevan diberikan ke model Groq untuk menyusun jawaban tutor. Indeks memuat materi Markdown German dan English dari direktori konten modul.
-- Pembaruan materi tidak otomatis memperbarui indeks. Jalankan proses ingest penuh sesuai panduan di `HANDOVER_NDUNIVERSE.md`; script menghapus seluruh baris `documents` sebelum memasukkan kembali indeks.
+- Pembaruan materi tidak otomatis memperbarui indeks. Jalankan proses ingest penuh sesuai panduan di `HANDOVER.md`; script menghapus seluruh baris `documents` sebelum memasukkan kembali indeks.
 
 ### Career dan Boss Fight
 
@@ -79,9 +84,11 @@ Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wa
 ### Progress dan Pilar Lulus
 
 - Progress disimpan dalam `user_progress.sessions_passed` sebagai JSONB.
-- Format baru menggunakan string `reading`, `listening`, `writing`, dan `speaking`.
-- Materi baru dianggap selesai hanya jika keempat pilar terdapat pada progress.
-- Data lama berupa `[1, 2, 3, 4]` dinormalisasi ke empat nama pilar saat dibaca.
+- Format baru menyimpan identitas sesi dan pilar, misalnya `["s1-reading", "s2-writing"]`.
+- Menyelesaikan satu pasangan sesi-pilar menambahkan kuncinya tanpa menghapus progres lain; format tersebut dipakai untuk mencocokkan centang penyelesaian yang tepat.
+- Format lama berupa nama pilar (`reading`, `listening`, `writing`, `speaking`) atau angka sesi `[1, 2, 3, 4]` masih dinormalisasi saat dibaca untuk kompatibilitas data sebelumnya.
+- Pemilihan sesi/pilar tidak bergantung pada array progres tersebut.
+- Materi baru dianggap selesai hanya jika keempat pilar tercatat sebagai selesai sesuai aturan progress dashboard.
 - Peserta menerima XP kuis per jawaban benar, tetapi kartu materi menampilkan kemajuan 0/4 hingga 4/4 pilar.
 
 ### Level CEFR
@@ -138,6 +145,13 @@ Kelulusan seluruh simulasi mensyaratkan **skor minimal 60% pada setiap modul**, 
 
 Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus dapat dibuka dan diunduh sebagai PDF melalui `html2pdf.js`.
 
+### Anti-Cheat Fullscreen (NdBot)
+
+- Ujian besar mengaktifkan mode fullscreen melalui browser dan memantau perubahan fullscreen, tab yang disembunyikan, serta window yang kehilangan fokus.
+- Setiap pelanggaran menambah strike dengan cooldown lima detik. Strike ketiga memaksa pengumpulan/pengiriman ujian.
+- NdBot tetap tersedia dalam mode ujian untuk menampilkan tingkat strike; chat tutor dinonaktifkan dalam mode tersebut. Mode kuis juga mempertahankan NdBot sebagai pengunci chat selama latihan.
+- Jika browser menolak permintaan fullscreen, aplikasi mencatat peringatan; dukungan fullscreen tetap bergantung pada kebijakan browser.
+
 ### Audio TTS dan Microphone
 
 - Sistem TTS mencari teks pada manifest audio yang disajikan melalui jsDelivr.
@@ -182,6 +196,8 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 | PDF | html2pdf.js |
 | Hosting | Vercel |
 | Penyimpanan browser | localStorage |
+
+Semua UI aplikasi menggunakan Bahasa Indonesia hardcoded; tidak ada sistem i18n untuk menerjemahkan label antarmuka.
 
 ## Model Data
 

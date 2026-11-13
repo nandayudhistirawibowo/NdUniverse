@@ -39,7 +39,7 @@ erDiagram
         uuid id PK
         text content
         jsonb metadata
-        vector_384 embedding
+        vector_384 embedding "pgvector vector(384)"
     }
 ```
 
@@ -50,7 +50,7 @@ erDiagram
 | `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Login menerima email atau NIM lama yang dinormalisasi ke email akun. |
 | `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | `id` sama dengan `auth.users.id`. `nim` bersifat **nullable** karena pengguna email umum tidak selalu memiliki NIM. `avatar_url` menyimpan path objek, bukan URL publik. |
 | `public.user_progress` | `id`, `user_id`, `material_slug`, `language_code`, `xp`, `sessions_passed`, `notes`, `updated_at` | Kombinasi `(user_id, material_slug, language_code)` unik untuk memisahkan progress `de` dan `en`; `sessions_passed` harus JSON array melalui check JSONB; `xp` tidak boleh negatif; RLS membatasi akses ke pemilik baris. |
-| `public.documents` | `id`, `content`, `metadata`, `embedding` | Potongan materi untuk RAG. `embedding` bertipe `vector(384)` dari Cloudflare Workers AI; index HNSW memakai cosine distance. `metadata` menyimpan `source_file`, `language`, `content_hash`, `chunk_index`, dan `chunk_count`. |
+| `public.documents` | `id`, `content`, `metadata`, `embedding` | Satu baris per potongan materi RAG. `embedding` bertipe pgvector `vector(384)` dari Cloudflare Workers AI; index HNSW memakai cosine distance. `metadata` menyimpan `source_file`, `language`, `content_hash`, `chunk_index`, dan `chunk_count`. |
 
 ## Relasi dan Makna Kolom
 
@@ -65,17 +65,18 @@ erDiagram
 - Level dashboard tidak berasal dari satu kolom database; dihitung dari material CEFR yang telah menyelesaikan keempat pilar.
 - `documents` berdiri sendiri dan tidak memiliki foreign key ke `auth.users`, `profiles`, atau `user_progress`. Setiap baris mewakili satu chunk konten, dan `metadata.source_file` merujuk secara logis ke file Markdown sumber (bukan relasi SQL).
 - RPC `public.match_documents` membandingkan embedding query dengan `documents.embedding` dan mengembalikan chunk serta skor kemiripan. Endpoint chatbot saat ini memakai ambang 0.35 dan maksimal tiga hasil.
+- Embedding `documents.embedding` harus berukuran 384 dimensi agar sesuai dengan model Cloudflare Workers AI `@cf/baai/bge-small-en-v1.5`.
 
 ## Format `sessions_passed`
 
 Kolom JSONB mendukung dua format:
 
-- Format baru: `['reading', 'listening', 'writing', 'speaking']`
-- Format lama: `[1, 2, 3, 4]`
+- Format terbaru mencatat sesi dan pilar secara terpisah, misalnya `["s1-reading", "s1-listening", "s2-writing"]`. Nilai memakai pola `s{nomor-sesi}-{reading|listening|writing|speaking}`.
+- Format terdahulu dapat berisi nama pilar (`["reading", "listening", "writing", "speaking"]`) atau angka sesi (`[1, 2, 3, 4]`).
 
-Data lama wajib dinormalisasi saat dibaca menjadi nama pilar. Data lama lengkap `[1, 2, 3, 4]` diperlakukan sebagai keempat pilar lulus. Saat upsert, array yang dikirim dapat berupa string pilar JSONB yang kompatibel dengan PostgreSQL/Supabase tanpa mengubah tipe kolom.
+Data lama dinormalisasi saat dibaca untuk kompatibilitas. Nilai sesi-pilar baru menunjukkan bahwa pasangan tersebut telah diselesaikan; nilai ini dipakai untuk indikator progres, bukan untuk memberikan atau menolak akses ke kuis. Kuis tidak mensyaratkan sesi atau pilar sebelumnya.
 
-Materi baru dianggap lulus hanya jika keempat pilar ada setelah normalisasi. Materi Fachdeutsch dan Career tidak dihitung sebagai poin level CEFR meskipun progress pilar tersimpan.
+Upsert menggabungkan kunci progres yang sudah tersimpan dengan kunci baru tanpa mengganti progres sesi-pilar lain. Materi Fachdeutsch dan Career tidak dihitung sebagai poin level CEFR meskipun progress pilar tersimpan.
 
 ## Data di Luar Database
 
