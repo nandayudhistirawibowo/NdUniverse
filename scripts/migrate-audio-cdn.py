@@ -1,110 +1,72 @@
 #!/usr/bin/env python3
-"""Move public audio assets to a separate GitHub repository for jsDelivr."""
+"""Generate jsDelivr URLs for MP3 files already stored in the audio repository."""
 
 from __future__ import annotations
 
 import json
-import os
-import re
-import shutil
-import subprocess
+import logging
 from pathlib import Path
+from urllib.parse import quote
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SOURCE_AUDIO = ROOT / "public" / "audio"
-TARGET_ROOT = Path(r"D:\audio-cdn")
-TARGET_AUDIO = TARGET_ROOT / "audio"
-REMOTE_URL = "https://github.com/nandayudhistirawibowo/nduniverse-audio.git"
+SOURCE_AUDIO = Path(r"D:\audio-cdn\audio")
+MANIFEST_PATH = ROOT / "manifest-cdn.json"
 CDN_BASE = (
     "https://cdn.jsdelivr.net/gh/"
-    "nandayudhistirawibowo/nduniverse-audio@main/audio/"
+    "nandayudhistirawibowo/nduniverse-audio@main/audio"
 )
-LOCAL_AUDIO_PATH = re.compile(
-    r"(?<!https://cdn\.jsdelivr\.net/gh/"
-    r"nandayudhistirawibowo/nduniverse-audio@main)/audio/"
-)
-TEXT_EXTENSIONS = {".js", ".jsx", ".astro", ".json"}
-IGNORED_DIRECTORIES = {".git", ".astro", ".vercel", "dist", "node_modules"}
+
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+LOGGER = logging.getLogger("generate-audio-cdn-manifest")
 
 
-def update_audio_references() -> int:
-    replacements = 0
-    for current_dir, directories, filenames in os.walk(ROOT):
-        directories[:] = [
-            directory
-            for directory in directories
-            if directory not in IGNORED_DIRECTORIES
-        ]
-        for filename in filenames:
-            path = Path(current_dir) / filename
-            if path.is_symlink() or path.suffix.lower() not in TEXT_EXTENSIONS:
-                continue
-
-            original = path.read_bytes()
-            text = original.decode("utf-8")
-            updated, count = LOCAL_AUDIO_PATH.subn(CDN_BASE, text)
-            if not count:
-                continue
-            if path.suffix.lower() == ".json":
-                json.loads(updated)
-            path.write_bytes(updated.encode("utf-8"))
-            replacements += count
-
-    return replacements
-
-
-def update_project_gitignore() -> None:
-    gitignore = ROOT / ".gitignore"
-    lines = gitignore.read_text(encoding="utf-8").splitlines()
-    if "public/audio/" not in lines:
-        lines.append("public/audio/")
-        gitignore.write_text("\n".join(lines) + "\n", encoding="utf-8")
-
-
-def check_prerequisites() -> None:
+def build_manifest() -> dict[str, str]:
     if not SOURCE_AUDIO.is_dir():
         raise FileNotFoundError(f"Audio source directory does not exist: {SOURCE_AUDIO}")
-    if TARGET_ROOT.exists():
-        raise FileExistsError(
-            f"Migration target already exists: {TARGET_ROOT}; refusing to overwrite it."
+
+    files = sorted(
+        path
+        for path in SOURCE_AUDIO.rglob("*")
+        if path.is_file() and not path.is_symlink() and path.suffix.lower() == ".mp3"
+    )
+    if not files:
+        raise RuntimeError(f"No MP3 files found in {SOURCE_AUDIO}")
+
+    manifest: dict[str, str] = {}
+    for index, path in enumerate(files, start=1):
+        relative_path = path.relative_to(SOURCE_AUDIO).as_posix()
+        encoded_path = quote(relative_path, safe="/")
+        manifest[relative_path] = f"{CDN_BASE}/{encoded_path}"
+        if index % 100 == 0 or index == len(files):
+            LOGGER.info("Indexed %d/%d MP3 files.", index, len(files))
+
+    return manifest
+
+
+def write_manifest(manifest: dict[str, str]) -> None:
+    temporary_path = MANIFEST_PATH.with_name(f"{MANIFEST_PATH.name}.tmp")
+    try:
+        temporary_path.write_text(
+            json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+            encoding="utf-8",
         )
-
-    for setting in ("user.name", "user.email"):
-        result = subprocess.run(
-            ["git", "config", "--global", "--get", setting],
-            check=False,
-            capture_output=True,
-            text=True,
-        )
-        if result.returncode != 0 or not result.stdout.strip():
-            raise RuntimeError(f"Configure your global Git {setting} before migrating.")
+        temporary_path.replace(MANIFEST_PATH)
+    except OSError as error:
+        raise RuntimeError(f"Unable to write manifest {MANIFEST_PATH}: {error}") from error
 
 
-def run_git(*arguments: str) -> None:
-    subprocess.run(["git", *arguments], cwd=TARGET_ROOT, check=True)
+def main() -> int:
+    try:
+        manifest = build_manifest()
+        write_manifest(manifest)
+    except (FileNotFoundError, OSError, RuntimeError) as error:
+        LOGGER.error("%s", error)
+        return 1
 
-
-def main() -> None:
-    check_prerequisites()
-    replacement_count = update_audio_references()
-    if replacement_count == 0:
-        raise RuntimeError("No local /audio/ references were found; refusing to migrate.")
-    update_project_gitignore()
-
-    TARGET_ROOT.mkdir()
-    (TARGET_ROOT / ".gitignore").write_text(".git\n", encoding="utf-8")
-    run_git("init")
-    run_git("remote", "add", "origin", REMOTE_URL)
-
-    shutil.move(str(SOURCE_AUDIO), str(TARGET_AUDIO))
-    run_git("add", ".")
-    run_git("commit", "-m", "Upload all audio assets")
-    run_git("branch", "-M", "main")
-
-    print(f"Moved {TARGET_AUDIO} and updated {replacement_count} local audio references.")
-    print("No git push was performed.")
+    LOGGER.info("Wrote %d jsDelivr URLs to %s.", len(manifest), MANIFEST_PATH)
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())
