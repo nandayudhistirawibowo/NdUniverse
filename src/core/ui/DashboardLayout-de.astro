@@ -1,7 +1,7 @@
 ---
 import { createAvatarSignedUrl } from '@core/auth/avatar';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
-import ChatbotWidget from '@core/ui/ChatbotWidget.jsx';
+import NdBot from '@core/ui/NdBot.jsx';
 import DashboardI18n from '@core/ui/DashboardI18n.astro';
 import DashboardLanguageSwitcher from '@core/ui/DashboardLanguageSwitcher.jsx';
 
@@ -178,7 +178,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </footer>
       </div>
     </div>
-    <ChatbotWidget client:load />
+    <NdBot client:load mode="study" />
   </body>
 </html>
 

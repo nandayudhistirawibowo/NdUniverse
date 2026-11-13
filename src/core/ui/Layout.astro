@@ -4,7 +4,7 @@ import { createAvatarSignedUrl } from '@core/auth/avatar';
 import DashboardI18n from '@core/ui/DashboardI18n.astro';
 import DashboardLanguageSwitcher from '@core/ui/DashboardLanguageSwitcher.jsx';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
-import ChatbotWidget from '@core/ui/ChatbotWidget.jsx';
+import NdBot from '@core/ui/NdBot.jsx';
 
 const {
   title = 'NdUniverse - Platform Belajar Bahasa Jerman & Inggris',
@@ -176,7 +176,7 @@ const organizationSchema = {
         </div>
       </footer>
     </div>
-    <ChatbotWidget client:load />
+    <NdBot client:load mode="study" />
     <DashboardI18n />
   </body>
 </html>

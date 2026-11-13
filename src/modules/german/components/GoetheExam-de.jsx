@@ -3,6 +3,8 @@ import { playAudioTTS } from '@german/config/german-speech.js';
 import { calculateModuleScore, isPassed, saveExamResult } from '@core/game/exam-grading.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
+import NdBot from '@core/ui/NdBot.jsx';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')
@@ -78,6 +80,7 @@ function formatTime(seconds) {
 }
 
 export default function GoetheExam({ level, tasks, available = true }) {
+  const [isStarted, setIsStarted] = useState(false);
   const [activeModule, setActiveModule] = useState('lesen');
   const [completedModules, setCompletedModules] = useState([]);
   const [answers, setAnswers] = useState({});
@@ -92,6 +95,19 @@ export default function GoetheExam({ level, tasks, available = true }) {
   const [remainingSeconds, setRemainingSeconds] = useState(secondsByModule.lesen * 60);
   const remainingRef = useRef({});
 
+  const { strikeLevel, requestFullscreen, deactivate } = useExamAntiCheat({
+    onForceSubmit: () => {
+      submitExam(true);
+      deactivate();
+    },
+  });
+
+  const handleStartExam = () => {
+    playSound('click');
+    requestFullscreen();
+    setIsStarted(true);
+  };
+
   useEffect(() => {
     answersRef.current = answers;
   }, [answers]);
@@ -99,12 +115,14 @@ export default function GoetheExam({ level, tasks, available = true }) {
   useEffect(() => {
     setAnswers({});
     answersRef.current = {};
+    setIsStarted(false);
     setResult(null);
     setActiveModule('lesen');
     setCompletedModules([]);
     setPlayedAudio({});
     setSpeechMessage(null);
     setModuleWarning(null);
+    deactivate();
   }, [level]);
 
   const chooseAnswer = (moduleId, index, value) => {
@@ -221,6 +239,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     setResult(nextResult);
     playSound(passed ? 'success' : 'error');
     saveExamResult('goethe', level, nextResult);
+    deactivate();
   };
 
   const finishCurrentModule = (force = false) => {
@@ -256,7 +275,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
   };
 
   useEffect(() => {
-    if (result) return undefined;
+    if (!isStarted || result) return undefined;
     const timer = window.setInterval(() => {
       setRemainingSeconds((current) => {
         remainingRef.current[activeModule] = Math.max(current - 1, 0);
@@ -269,7 +288,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
       });
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [activeModule, result]);
+  }, [isStarted, activeModule, result]);
 
   const progressPercent = (moduleId) => {
     const total = tasks[moduleId]?.length ?? 0;
@@ -325,7 +344,17 @@ export default function GoetheExam({ level, tasks, available = true }) {
         </div>
       </header>
 
-      <nav class="module-progress" aria-label="Progress modul ujian" data-i18n-aria-label="exam.moduleProgress">
+      {!isStarted && !result ? (
+        <div class="goethe-task exam-start-card" style="text-align: center; padding: 2rem 1.5rem;">
+          <p style="font-weight: 700; margin-bottom: 0.5rem;">Ujian Goethe-Zertifikat {level} dilengkapi sistem Anti-Cheat.</p>
+          <p style="color: var(--muted); margin-bottom: 1.5rem;">Mode layar penuh (fullscreen) akan diaktifkan. Jangan berpindah tab atau keluar dari layar penuh selama ujian berlangsung.</p>
+          <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
+            Mulai Ujian
+          </button>
+        </div>
+      ) : (
+        <>
+          <nav class="module-progress" aria-label="Progress modul ujian" data-i18n-aria-label="exam.moduleProgress">
         {MODULES.map((module) => (
           <button
             type="button"
@@ -488,6 +517,9 @@ export default function GoetheExam({ level, tasks, available = true }) {
           )}
         </section>
       )}
+        </>
+      )}
+      <NdBot mode="exam" strikeLevel={strikeLevel} />
     </section>
   );
 }

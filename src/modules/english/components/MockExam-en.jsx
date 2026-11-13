@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { playAudioTTS } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
+import NdBot from '@core/ui/NdBot.jsx';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')
@@ -16,17 +18,33 @@ export default function MockExam({ level, tasks, unavailable = false }) {
   const examTasks = tasks ?? [];
   const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
   const [answers, setAnswers] = useState({});
+  const [isStarted, setIsStarted] = useState(false);
   const [finished, setFinished] = useState(false);
   const [score, setScore] = useState(null);
   const recognitionRef = useRef(null);
   const [isListening, setIsListening] = useState(false);
   const [speechMessage, setSpeechMessage] = useState(null);
 
+  const { strikeLevel, requestFullscreen, deactivate } = useExamAntiCheat({
+    onForceSubmit: () => {
+      submitExam();
+      deactivate();
+    },
+  });
+
+  const handleStartExam = () => {
+    playSound('click');
+    requestFullscreen();
+    setIsStarted(true);
+  };
+
   useEffect(() => {
     setAnswers({});
+    setIsStarted(false);
     setFinished(false);
     setScore(null);
     setSpeechMessage(null);
+    deactivate();
   }, [level]);
 
   const chooseAnswer = (index, value) => {
@@ -102,6 +120,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     const passed = percent >= 60;
     setScore({ correct, total: examTasks.length, percent, passed });
     setFinished(true);
+    deactivate();
     if (passed) {
       playSound('success');
       localStorage.setItem(storageKey, JSON.stringify({
@@ -133,7 +152,16 @@ export default function MockExam({ level, tasks, unavailable = false }) {
         </section>
       ) : (
         <>
-
+          {!isStarted && !finished ? (
+            <div class="exam-task" style="text-align: center; padding: 2rem 1.5rem;">
+              <p style="font-weight: 700; margin-bottom: 0.5rem;">Mock Exam {level} with Anti-Cheat protection.</p>
+              <p style="color: var(--muted); margin-bottom: 1.5rem;">The exam will run in fullscreen mode. Please do not switch tabs or exit fullscreen during the session.</p>
+              <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
+                Start Exam
+              </button>
+            </div>
+          ) : (
+            <>
       <ol class="exam-list">
         {examTasks.map((task, index) => (
           <li class="exam-task" key={`${task.kind}-${index}`}>
@@ -234,6 +262,9 @@ export default function MockExam({ level, tasks, unavailable = false }) {
       )}
             </>
           )}
+        </>
+      )}
+      <NdBot mode="exam" strikeLevel={strikeLevel} />
     </section>
   );
 }
