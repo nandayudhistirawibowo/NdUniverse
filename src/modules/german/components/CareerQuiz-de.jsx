@@ -44,7 +44,7 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
     <section class="career-quiz" aria-live="polite">
       {!started ? (
         <>
-          <p class="career-section-label">Latihan Kosakata</p>
+          <p class="career-section-label" data-i18n="career.vocabularyPractice">Latihan Kosakata</p>
           <div class="career-word-list">
             {vocab.map((word) => (
               <article key={word.german}>
@@ -53,19 +53,19 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
               </article>
             ))}
           </div>
-          <button class="career-primary-button" type="button" onClick={start}>Mulai Kuis</button>
+          <button class="career-primary-button" type="button" onClick={start} data-i18n="career.startQuiz">Mulai Kuis</button>
         </>
       ) : finished ? (
         <div class="career-quiz-result">
-          <p class="career-section-label">Hasil Kuis</p>
-          <h3>{score}/{vocab.length} jawaban benar</h3>
-          <p>Kosakata {profession} berhasil dilatih.</p>
-          <button class="career-secondary-button" type="button" onClick={start}>Ulangi Kuis</button>
+          <p class="career-section-label" data-i18n="career.quizResult">Hasil Kuis</p>
+          <h3 data-i18n="career.correctCount" data-i18n-params={JSON.stringify({ correct: score, total: vocab.length })}>{score}/{vocab.length} jawaban benar</h3>
+          <p data-i18n="career.wordsPracticed" data-i18n-params={JSON.stringify({ profession })}>Kosakata {profession} berhasil dilatih.</p>
+          <button class="career-secondary-button" type="button" onClick={start} data-i18n="career.retryQuiz">Ulangi Kuis</button>
         </div>
       ) : (
         <div>
-          <p class="career-section-label">Kuis {index + 1}/{vocab.length}</p>
-          <h3>Arti dari <span lang="de">{current.german}</span> adalah...</h3>
+          <p class="career-section-label" data-i18n="career.questionCount" data-i18n-params={JSON.stringify({ current: index + 1, total: vocab.length })}>Kuis {index + 1}/{vocab.length}</p>
+          <h3><span data-i18n="career.meaningPrompt">Arti dari</span> <span lang="de">{current.german}</span> ...</h3>
           <div class="career-options">
             {current.options.map((option) => (
               <button
@@ -81,7 +81,7 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
           </div>
           {selected && (
             <button class="career-primary-button" type="button" onClick={next}>
-              {index + 1 >= vocab.length ? 'Lihat Hasil' : 'Lanjut'}
+              <span data-i18n={index + 1 >= vocab.length ? 'career.seeResults' : 'career.next'}>{index + 1 >= vocab.length ? 'Lihat Hasil' : 'Lanjut'}</span>
             </button>
           )}
         </div>

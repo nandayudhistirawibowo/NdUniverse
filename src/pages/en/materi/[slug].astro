@@ -33,7 +33,7 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
 ---
 <DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <article class="material-page">
-    <a class="back-link" href={item.data.track === 'Academic English' ? '/en/dashboard' : '/en/everyday-english'} data-session-back>← Back to Materials</a>
+    <a class="back-link" href={item.data.track === 'Academic English' ? '/en/dashboard' : '/en/everyday-english'} data-session-back><span aria-hidden="true">←</span> <span data-i18n="quiz.backMaterial">Back to Materials</span></a>
     <header>
       <p class="eyebrow">{item.data.track ?? 'Everyday English'} · {item.data.level}</p>
       <h1>{item.data.title ?? item.id}</h1>
@@ -41,12 +41,18 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
     </header>
     {sessions.map((session) => (
       <section class="session-card">
-        <h2>Session {session.number}</h2>
+        <h2 data-i18n="material.session" data-i18n-params={JSON.stringify({ session: session.number })}>Session {session.number}</h2>
         <div class="table-wrap">
-          <p class="audio-legend">Audio: 🇺🇸 High Quality | 🇬🇧 Browser</p>
+          <p class="audio-legend" data-i18n="material.audioLegend">Audio: 🇺🇸 High Quality | 🇬🇧 Browser</p>
           <table>
             <thead>
-              <tr><th>English</th><th>Indonesian</th><th>Context</th><th>Word audio</th><th>Sentence audio</th></tr>
+              <tr>
+                <th data-i18n="material.english">English</th>
+                <th data-i18n="material.indonesian">Indonesian</th>
+                <th data-i18n="material.context">Context</th>
+                <th data-i18n="material.wordAudio">Word audio</th>
+                <th data-i18n="material.sentenceAudio">Sentence audio</th>
+              </tr>
             </thead>
             <tbody>
               {session.words.map((word) => (
@@ -56,14 +62,14 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
                   <td lang="en">{word.context}</td>
                   <td>
                     <div class="vocab-audio-controls">
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.german} aria-label={`Play word in US English: ${word.german}`} title="US English">🇺🇸</button>
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.german} aria-label={`Play word in UK English: ${word.german}`} title="UK English">🇬🇧</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.german} aria-label={`Play word in US English: ${word.german}`} data-i18n-aria-label="material.playWordUs" data-i18n-params={JSON.stringify({ word: word.german })} title="US English" data-i18n-title="material.usEnglish">🇺🇸</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.german} aria-label={`Play word in UK English: ${word.german}`} data-i18n-aria-label="material.playWordUk" data-i18n-params={JSON.stringify({ word: word.german })} title="UK English" data-i18n-title="material.ukEnglish">🇬🇧</button>
                     </div>
                   </td>
                   <td>
                     <div class="vocab-audio-controls">
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.context} aria-label={`Play sentence in US English: ${word.context}`} title="US English">🇺🇸</button>
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.context} aria-label={`Play sentence in UK English: ${word.context}`} title="UK English">🇬🇧</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.context} aria-label={`Play sentence in US English: ${word.context}`} data-i18n-aria-label="material.playSentenceUs" data-i18n-params={JSON.stringify({ sentence: word.context })} title="US English" data-i18n-title="material.usEnglish">🇺🇸</button>
+                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.context} aria-label={`Play sentence in UK English: ${word.context}`} data-i18n-aria-label="material.playSentenceUk" data-i18n-params={JSON.stringify({ sentence: word.context })} title="UK English" data-i18n-title="material.ukEnglish">🇬🇧</button>
                     </div>
                   </td>
                 </tr>
@@ -71,7 +77,7 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
             </tbody>
           </table>
         </div>
-        <nav class="pillar-links" aria-label={`Session ${session.number} practice pillars`}>
+        <nav class="pillar-links" aria-label={`Session ${session.number} practice pillars`} data-i18n-aria-label="material.practicePillars" data-i18n-params={JSON.stringify({ session: session.number })}>
           {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
             const label = pillar[0].toUpperCase() + pillar.slice(1);
             const isComplete = passedPillars.includes(pillar);
@@ -83,9 +89,10 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
                 data-progress-language="en"
                 data-pillar-label={label}
                 class={isComplete ? 'is-complete' : ''}
-                aria-label={`${label}${isComplete ? ' completed' : ''}`}
+                title={isComplete ? 'Completed' : undefined}
+                data-i18n-title={isComplete ? 'material.completed' : undefined}
               >
-                <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span>{label}
+                <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span><span data-i18n={`material.${pillar}`}>{label}</span>
               </a>
             );
           })}

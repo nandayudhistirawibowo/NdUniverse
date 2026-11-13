@@ -79,13 +79,13 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
     <section class="career-quiz" aria-live="polite">
       {phase === 'intro' && (
         <div class="quiz-intro">
-          <p class="career-section-label">Vocabulary Practice</p>
-          <h2>{profession} Vocabulary Quiz</h2>
-          <p>Practice {words.length} career words in batches of {WORDS_PER_BATCH}. Choose the Indonesian meaning that best matches each English word.</p>
+          <p class="career-section-label" data-i18n="career.vocabularyPractice">Vocabulary Practice</p>
+          <h2><span>{profession} </span><span data-i18n="career.vocabularyQuiz">Vocabulary Quiz</span></h2>
+          <p data-i18n="career.practiceDescription" data-i18n-params={JSON.stringify({ count: words.length, batch: WORDS_PER_BATCH })}>Practice {words.length} career words in batches of {WORDS_PER_BATCH}. Choose the Indonesian meaning that best matches each English word.</p>
           {words.length === 0 ? (
-            <p class="quiz-empty">Vocabulary content is not available yet.</p>
+            <p class="quiz-empty" data-i18n="career.vocabularyContentUnavailable">Vocabulary content is not available yet.</p>
           ) : (
-            <button class="career-primary-button" type="button" onClick={startQuiz}>Start Quiz</button>
+            <button class="career-primary-button" type="button" onClick={startQuiz} data-i18n="career.startQuiz">Start Quiz</button>
           )}
         </div>
       )}
@@ -93,10 +93,10 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
       {phase === 'quiz' && current && (
         <div class="quiz-question">
           <div class="quiz-progress">
-            <p class="career-section-label">Batch {batchIndex + 1} of {batchCount}</p>
-            <span>Word {questionIndex + 1} of {batchWords.length}</span>
+            <p class="career-section-label" data-i18n="career.batch" data-i18n-params={JSON.stringify({ current: batchIndex + 1, total: batchCount })}>Batch {batchIndex + 1} of {batchCount}</p>
+            <span data-i18n="career.word" data-i18n-params={JSON.stringify({ current: questionIndex + 1, total: batchWords.length })}>Word {questionIndex + 1} of {batchWords.length}</span>
           </div>
-          <h2>What does <span lang="en">{current.word}</span> mean?</h2>
+          <h2><span data-i18n="career.meaningOf" data-i18n-params={JSON.stringify({ word: current.word })}>What does {current.word} mean?</span></h2>
           <p class="quiz-context" lang="en">{current.context}</p>
           <div class="career-options">
             {getOptions().map((option) => (
@@ -113,10 +113,12 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
           </div>
           {selected && (
             <div class={selected === current.translation ? 'answer-feedback is-correct' : 'answer-feedback is-wrong'}>
-              <strong>{selected === current.translation ? 'Correct!' : `Not quite. The answer is: ${current.translation}`}</strong>
+              <strong data-i18n={selected === current.translation ? 'career.correct' : 'career.notQuite'} data-i18n-params={JSON.stringify({ answer: current.translation })}>{selected === current.translation ? 'Correct!' : `Not quite. The answer is: ${current.translation}`}</strong>
               {current.contextIndonesian && <p>{current.contextIndonesian}</p>}
               <button class="career-primary-button" type="button" onClick={advance}>
-                {questionIndex + 1 < batchWords.length ? 'Next Word' : batchIndex + 1 < batchCount ? 'Finish Batch' : 'See Results'}
+                <span data-i18n={questionIndex + 1 < batchWords.length ? 'career.nextWord' : batchIndex + 1 < batchCount ? 'career.finishBatch' : 'career.seeResults'}>
+                  {questionIndex + 1 < batchWords.length ? 'Next Word' : batchIndex + 1 < batchCount ? 'Finish Batch' : 'See Results'}
+                </span>
               </button>
             </div>
           )}
@@ -125,19 +127,19 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
 
       {phase === 'batch-complete' && (
         <div class="quiz-result">
-          <p class="career-section-label">Batch {batchIndex + 1} Complete</p>
-          <h2>{batchScore}/{batchWords.length} correct</h2>
-          <p>Ready to practice the next five {profession.toLowerCase()} words?</p>
-          <button class="career-primary-button" type="button" onClick={startNextBatch}>Start Next Batch</button>
+          <p class="career-section-label" data-i18n="career.batchComplete" data-i18n-params={JSON.stringify({ batch: batchIndex + 1 })}>Batch {batchIndex + 1} Complete</p>
+          <h2 data-i18n="career.correctOutOf" data-i18n-params={JSON.stringify({ correct: batchScore, total: batchWords.length })}>{batchScore}/{batchWords.length} correct</h2>
+          <p data-i18n="career.nextBatchPrompt" data-i18n-params={JSON.stringify({ profession: profession.toLowerCase() })}>Ready to practice the next five {profession.toLowerCase()} words?</p>
+          <button class="career-primary-button" type="button" onClick={startNextBatch} data-i18n="career.startNextBatch">Start Next Batch</button>
         </div>
       )}
 
       {phase === 'finished' && (
         <div class="quiz-result">
-          <p class="career-section-label">Quiz Complete</p>
-          <h2>{score}/{words.length} correct</h2>
-          <p>You completed all {batchCount} vocabulary batches for {profession}.</p>
-          <button class="career-secondary-button" type="button" onClick={startQuiz}>Try Again</button>
+          <p class="career-section-label" data-i18n="career.quizComplete">Quiz Complete</p>
+          <h2 data-i18n="career.correctOutOf" data-i18n-params={JSON.stringify({ correct: score, total: words.length })}>{score}/{words.length} correct</h2>
+          <p data-i18n="career.completedBatches" data-i18n-params={JSON.stringify({ count: batchCount, profession })}>You completed all {batchCount} vocabulary batches for {profession}.</p>
+          <button class="career-secondary-button" type="button" onClick={startQuiz} data-i18n="career.tryAgain">Try Again</button>
         </div>
       )}
 

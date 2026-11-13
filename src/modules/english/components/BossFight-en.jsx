@@ -157,9 +157,9 @@ export default function BossFight({
       <div class="cinematic-overlay" aria-live="polite">
         <div class={`cinematic-room room-${doorState}`}>
           <div class="cinematic-header">
-            <span class="career-section-label">Boss Fight: {profession}</span>
+            <span class="career-section-label" data-i18n="career.bossFightTitle" data-i18n-params={JSON.stringify({ profession })}>Boss Fight: {profession}</span>
             {gameState === 'interview' && (
-              <span class="boss-progress">
+              <span class="boss-progress" data-i18n="career.interviewProgress" data-i18n-params={JSON.stringify({ current: Math.min(questionIndex + 1, interviewQuestions.length), total: interviewQuestions.length })}>
                 Question {Math.min(questionIndex + 1, interviewQuestions.length)} of {interviewQuestions.length}
               </span>
             )}
@@ -170,7 +170,7 @@ export default function BossFight({
               <div class="door-zoom-room">
                 <div class="door-wall" />
                 <div class="door-frame">
-                  <span class="room-label">HRD ROOM</span>
+                  <span class="room-label" data-i18n="career.doorLabel">HRD ROOM</span>
                   <div class={`cinematic-door door-${doorState}`}>
                     <i aria-hidden="true" />
                   </div>
@@ -179,30 +179,30 @@ export default function BossFight({
               <div class="door-action">
                 {doorState === 'closed' && (
                   <>
-                    <p>Please enter the HRD room to begin.</p>
-                    <button class="boss-start-button" type="button" onClick={knockDoor}>Enter Room</button>
+                    <p data-i18n="career.enterRoomPrompt">Please enter the HRD room to begin.</p>
+                    <button class="boss-start-button" type="button" onClick={knockDoor} data-i18n="career.enterRoom">Enter Room</button>
                   </>
                 )}
-                {doorState === 'opening' && <p>The door is opening...</p>}
-                {doorState === 'entering' && <p>Entering the interview room...</p>}
+                {doorState === 'opening' && <p data-i18n="career.doorOpening">The door is opening...</p>}
+                {doorState === 'entering' && <p data-i18n="career.enteringRoom">Entering the interview room...</p>}
               </div>
             </div>
           )}
 
           <div class="inside-door-backdrop" aria-hidden="true">
-            <span class="room-label">HRD ROOM</span>
+            <span class="room-label" data-i18n="career.doorLabel">HRD ROOM</span>
             <div class="inside-door-panel" />
           </div>
 
           {doorState === 'inside' && gameState === 'intro' && (
             <div class="cinematic-intro">
-              <div class="cinematic-boss" aria-label="Mr. Müller, HR Manager">
+              <div class="cinematic-boss" aria-label="Mr. Müller, HR Manager" data-i18n-aria-label="career.bossCharacter">
                 <span class="boss-silhouette" aria-hidden="true"><i class="boss-head" /><i class="boss-hair" /><i class="boss-body" /><i class="boss-tie" /></span>
               </div>
               <div class="boss-speech-bubble">
                 <strong>Mr. Müller</strong>
                 <p>Good day! Please have a seat. I am Mr. Müller, the HR Manager.</p>
-                <button class="boss-start-button" type="button" onClick={startInterview}>Start Interview</button>
+                <button class="boss-start-button" type="button" onClick={startInterview} data-i18n="career.startInterview">Start Interview</button>
               </div>
             </div>
           )}
@@ -216,19 +216,19 @@ export default function BossFight({
                 </div>
                 <div class="boss-desk" aria-hidden="true"><span /></div>
                 <span>Mr. Müller</span>
-                <small>HR Manager</small>
+                <small data-i18n="career.interviewerRole">HR Manager</small>
               </div>
               <div class="cinematic-chat-panel">
                 <div class="boss-chat" aria-live="polite">
                   {messages.map((message, index) => (
                     <div key={`${message.speaker}-${index}`} class={`chat-message ${message.speaker}`}>
-                      <span class="chat-speaker">{message.speaker === 'hrd' ? 'HRD Manager' : message.speaker === 'user' ? 'You' : 'Info'}</span>
+                      <span class="chat-speaker" data-i18n={message.speaker === 'hrd' ? 'career.speakerManager' : message.speaker === 'user' ? 'career.speakerYou' : 'career.speakerInfo'}>{message.speaker === 'hrd' ? 'HRD Manager' : message.speaker === 'user' ? 'You' : 'Info'}</span>
                       {message.text}
                     </div>
                   ))}
                 </div>
                 <div class="boss-interview">
-                  <label for="boss-answer">Your Answer</label>
+                  <label for="boss-answer" data-i18n="career.answerLabel">Your Answer</label>
                   <textarea
                     id="boss-answer"
                     rows="4"
@@ -238,13 +238,14 @@ export default function BossFight({
                       setAnswer(event.currentTarget.value);
                     }}
                     placeholder="Answer in English..."
+                    data-i18n-placeholder="career.answerPlaceholderEnglish"
                   />
                   <div class="boss-actions">
                     <button class="boss-mic-button" type="button" onClick={startListening} disabled={listening}>
-                      {listening ? '🎤 Listening...' : '🎤 Use Microphone'}
+                      <span data-i18n={listening ? 'career.listening' : 'career.useMic'}>{listening ? '🎤 Listening...' : '🎤 Use Microphone'}</span>
                     </button>
                     <button class="boss-finish-button" type="button" onClick={submitAnswer} disabled={!answer.trim()}>
-                      Submit Answer
+                      <span data-i18n="career.sendAnswer">Submit Answer</span>
                     </button>
                   </div>
                 </div>
@@ -255,12 +256,15 @@ export default function BossFight({
           {doorState === 'inside' && gameState === 'finished' && (
             <div class={passedInterview ? 'boss-finished boss-victory' : 'boss-finished'}>
               <span class="finished-icon" aria-hidden="true">{passedInterview ? '🏆' : '📋'}</span>
-              <p class="career-section-label">Boss Fight Complete</p>
-              <h2>Interview Finished!</h2>
-              <p>{passedInterview ? `Congratulations! You passed the ${profession} interview.` : `You completed the ${profession} interview.`}</p>
-              <strong>{correctAnswers}/{interviewQuestions.length} answers included at least two key ideas.</strong>
-              {passedInterview && <p>Badge earned: {badge}.</p>}
-              <a class="boss-return-button" href={returnHref}>Back to Career Material</a>
+              <p class="career-section-label" data-i18n="career.bossFightComplete">Boss Fight Complete</p>
+              <h2 data-i18n="career.interviewFinished">Interview Finished!</h2>
+              <p
+                data-i18n={passedInterview ? 'career.passedInterview' : 'career.completedInterview'}
+                data-i18n-params={JSON.stringify({ profession })}
+              >{passedInterview ? `Congratulations! You passed the ${profession} interview.` : `You completed the ${profession} interview.`}</p>
+              <strong data-i18n="career.keywordScore" data-i18n-params={JSON.stringify({ correct: correctAnswers, total: interviewQuestions.length })}>{correctAnswers}/{interviewQuestions.length} answers included at least two key ideas.</strong>
+              {passedInterview && <p data-i18n="career.badgeEarned" data-i18n-params={JSON.stringify({ badge })}>Badge earned: {badge}.</p>}
+              <a class="boss-return-button" href={returnHref} data-i18n="career.backToMaterial">Back to Career Material</a>
             </div>
           )}
         </div>

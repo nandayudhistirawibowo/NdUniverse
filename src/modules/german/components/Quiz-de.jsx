@@ -619,26 +619,26 @@ export default function Quiz(props) {
   if (items.length === 0) {
     return (
       <div className="quiz-empty">
-        <p>Belum ada vocab untuk latihan saat ini.</p>
+        <p data-i18n="quiz.empty">Belum ada kosakata untuk latihan saat ini.</p>
       </div>
     );
   }
 
   if (sessionMode && pillarMode && sessionAccess === 'checking') {
-    return <p className="quiz-empty">Memeriksa progress pilar...</p>;
+    return <p className="quiz-empty" data-i18n="quiz.checkingPillars">Memeriksa progress pilar...</p>;
   }
 
   if (sessionMode && pillarMode && sessionAccess === 'locked') {
     return (
       <div className="quiz-empty" role="alert">
         <p>{sessionLockMessage}</p>
-        <a href={returnHref}>Kembali ke Materi</a>
+        <a href={returnHref} data-i18n="quiz.backMaterial">Kembali ke Materi</a>
       </div>
     );
   }
 
   if (sessionMode && !sessionInitialized) {
-    return <p className="quiz-empty">Menyiapkan progress sesi...</p>;
+    return <p className="quiz-empty" data-i18n="quiz.loadingProgress">Menyiapkan progress sesi...</p>;
   }
 
   function awardXp(amount) {
@@ -945,10 +945,10 @@ export default function Quiz(props) {
         <span className="track-tag">{track ?? 'Track'}</span>
         <span className="xp-badge">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></svg>
-          <span>XP sesi: {sessionXp} · Total: {xp}</span>
+          <span data-i18n="quiz.sessionXp" data-i18n-params={JSON.stringify({ sessionXp, xp })}>XP sesi: {sessionXp} · Total: {xp}</span>
         </span>
         <div className="game-controls">
-          <div className="hearts" role="img" aria-label={`Nyawa: ${lives} dari 3`}>
+          <div className="hearts" role="img" aria-label={`Nyawa: ${lives} dari 3`} data-i18n-aria-label="quiz.lives" data-i18n-params={JSON.stringify({ lives })}>
             {Array.from({ length: 3 }, (_, index) => (
               <span key={index} className={index < lives ? 'heart-active' : 'heart-empty'} aria-hidden="true">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -962,7 +962,9 @@ export default function Quiz(props) {
             className="restart-btn"
             onClick={restartGame}
             aria-label="Ulangi kuis dari awal"
+            data-i18n-aria-label="quiz.restart"
             title="Ulangi kuis"
+            data-i18n-title="quiz.restartTitle"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20 7v5h-5M4 17v-5h5" />
@@ -976,7 +978,15 @@ export default function Quiz(props) {
         <>
           <div className="progress-section">
             <div className="progress-label">
-              <span>
+              <span
+                data-i18n={sessionMode ? 'quiz.questionProgress' : 'quiz.questionProgressNoSession'}
+                data-i18n-params={JSON.stringify({
+                  session: activeSessionNumber,
+                  sessions: sessionCount,
+                  question: questionNumber,
+                  total: currentBatchItems.length,
+                })}
+              >
                 {sessionMode && `Sesi ${activeSessionNumber} dari ${sessionCount} · `}
                 Soal {questionNumber} dari {currentBatchItems.length}
               </span>
@@ -986,6 +996,7 @@ export default function Quiz(props) {
               className="progress-track"
               role="progressbar"
               aria-label="Progress kuis"
+              data-i18n-aria-label="quiz.progress"
               aria-valuemin="0"
               aria-valuemax={currentBatchItems.length}
               aria-valuenow={attemptedCount}
@@ -997,11 +1008,11 @@ export default function Quiz(props) {
               <div className="quiz-card question-card">
                 {currentQuestion.type === 'arrange' ? (
                   <>
-                    <p className="question-label">Tipe A · Susun kata</p>
-                    <h3>Susun dalam Bahasa Jerman: {currentQuestion.indonesian}</h3>
+                    <p className="question-label" data-i18n="quiz.arrangeType">Tipe A · Susun kata</p>
+                    <h3 data-i18n="quiz.arrangePrompt" data-i18n-params={JSON.stringify({ text: currentQuestion.indonesian })}>Susun dalam Bahasa Jerman: {currentQuestion.indonesian}</h3>
                     <div className="answer-box">
                       <div className="answer-content">
-                        {arrangeSelected.length === 0 && <span className="placeholder">Pilih kata untuk menyusun</span>}
+                        {arrangeSelected.length === 0 && <span className="placeholder" data-i18n="quiz.chooseWords">Pilih kata untuk menyusun</span>}
                         {arrangeSelected.map((optionIndex, index) => (
                           <span key={`${optionIndex}-${index}`} className="answer-token">
                             {arrangeOptions[optionIndex]}
@@ -1009,7 +1020,7 @@ export default function Quiz(props) {
                         ))}
                       </div>
                       <button type="button" className="reset-btn" onClick={resetArrange} disabled={checkedResult !== null}>
-                        Reset
+                        <span data-i18n="quiz.reset">Reset</span>
                       </button>
                     </div>
                     <div className="tokens-wrap">
@@ -1019,22 +1030,22 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Jawaban yang benar: {currentQuestion.german}</p>}
                   </>
                 ) : currentQuestion.type === 'matcher' ? (
                   <>
-                    <p className="question-label">Tipe D · Reading / Lesen</p>
-                    <h3>Bacalah teks berikut</h3>
+                    <p className="question-label" data-i18n="quiz.readingType">Tipe D · Reading / Lesen</p>
+                    <h3 data-i18n="quiz.readText">Bacalah teks berikut</h3>
                     <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
-                      {currentQuestion.lesen_teks || currentQuestion.context || currentQuestion.german || 'Teks bacaan tidak tersedia.'}
+                      {currentQuestion.lesen_teks || currentQuestion.context || currentQuestion.german || <span data-i18n="quiz.noReadingText">Teks bacaan tidak tersedia.</span>}
                     </div>
                   </>
                 ) : currentQuestion.type === 'reading' ? (
                   <>
-                    <p className="question-label">Tipe D · Reading / Lesen</p>
-                    <h3>Bacalah teks berikut</h3>
+                    <p className="question-label" data-i18n="quiz.readingType">Tipe D · Reading / Lesen</p>
+                    <h3 data-i18n="quiz.readText">Bacalah teks berikut</h3>
                     <div className="reading-text">
-                      {currentQuestion.lesen_teks || currentQuestion.context || 'Teks bacaan tidak tersedia.'}
+                      {currentQuestion.lesen_teks || currentQuestion.context || <span data-i18n="quiz.noReadingText">Teks bacaan tidak tersedia.</span>}
                     </div>
                     <h3 style={{ marginTop: '1rem' }}>{currentQuestion.lesen_pertanyaan}</h3>
                     <div className="multiple-choice-list">
@@ -1050,13 +1061,13 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.indonesian}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.indonesian })}>Jawaban yang benar: {currentQuestion.indonesian}</p>}
                   </>
                 ) : currentQuestion.type === 'listening' ? (
                   <>
-                    <p className="question-label">Tipe E · Listening / Hören</p>
-                    <h3>Dengarkan audio, lalu pilih arti yang tepat</h3>
-                    <p className="audio-text-box" aria-label="Teks audio">
+                    <p className="question-label" data-i18n="quiz.listeningType">Tipe E · Listening / Hören</p>
+                    <h3 data-i18n="quiz.listeningPrompt">Dengarkan audio, lalu pilih arti yang tepat</h3>
+                    <p className="audio-text-box" aria-label="Teks audio" data-i18n-aria-label="quiz.audioText">
                       „{getListeningPrompt(currentQuestion)}“
                     </p>
                     <button
@@ -1065,9 +1076,11 @@ export default function Quiz(props) {
                       onClick={playListeningAudio}
                       disabled={hasPlayedListening || checkedResult !== null}
                       aria-label={`Putar audio: ${currentQuestion.hoeren_audio}`}
+                      data-i18n-aria-label="quiz.playAudio"
                       title="Putar audio"
+                      data-i18n-title="quiz.playAudio"
                     >
-                      {hasPlayedListening ? '✓ Audio sudah diputar 1x' : '🔊 Putar audio (1x)'}
+                      <span data-i18n={hasPlayedListening ? 'quiz.audioPlayed' : 'quiz.playAudioOnce'}>{hasPlayedListening ? '✓ Audio sudah diputar 1x' : '🔊 Putar audio (1x)'}</span>
                     </button>
                     <div className="multiple-choice-list listening-options">
                       {multipleChoiceOptions.map((option) => (
@@ -1082,17 +1095,19 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.indonesian}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.indonesian })}>Jawaban yang benar: {currentQuestion.indonesian}</p>}
                   </>
                 ) : currentQuestion.type === 'writing' ? (
                   <>
-                    <p className="question-label">Tipe F · Writing / Schreiben</p>
-                    <h3>{currentQuestion.schreiben_instruksi || `Tulis dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
+                    <p className="question-label" data-i18n="quiz.writingType">Tipe F · Writing / Schreiben</p>
+                    <h3 data-i18n={currentQuestion.schreiben_instruksi ? undefined : 'quiz.writeGerman'} data-i18n-params={currentQuestion.schreiben_instruksi ? undefined : JSON.stringify({ text: currentQuestion.indonesian })}>{currentQuestion.schreiben_instruksi || `Tulis dalam Bahasa Jerman: ${currentQuestion.indonesian}`}</h3>
                     <textarea
                       value={userAnswer}
                       onInput={(event) => { playSound('click'); setUserAnswer(event.currentTarget.value); }}
                       placeholder="Tulis jawabanmu di sini"
+                      data-i18n-placeholder="quiz.writeAnswerPlaceholder"
                       aria-label="Jawaban tulisan"
+                      data-i18n-aria-label="quiz.writtenAnswer"
                       disabled={checkedResult !== null}
                       rows={5}
                       style={{
@@ -1108,19 +1123,21 @@ export default function Quiz(props) {
                         resize: 'vertical',
                       }}
                     />
-                    <small>{userAnswer.trim() ? userAnswer.trim().split(/\s+/).length : 0} kata</small>
-                    {checkedResult === false && <p className="correct-answer">Jawaban yang mendekati: {currentQuestion.german}</p>}
+                    <small data-i18n="quiz.wordCount" data-i18n-params={JSON.stringify({ count: userAnswer.trim() ? userAnswer.trim().split(/\s+/).length : 0 })}>{userAnswer.trim() ? userAnswer.trim().split(/\s+/).length : 0} kata</small>
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.nearAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Jawaban yang mendekati: {currentQuestion.german}</p>}
                   </>
                 ) : currentQuestion.type === 'speaking' ? (
                   <>
-                    <p className="question-label">Tipe G · Speaking / Sprechen</p>
+                    <p className="question-label" data-i18n="quiz.speakingType">Tipe G · Speaking / Sprechen</p>
                     <h3>{getSpeakingPrompt(currentQuestion)}</h3>
                     <button
                       type="button"
                       onClick={startSpeechRecognition}
                       disabled={checkedResult !== null || isListening}
                       aria-label="Mulai rekaman suara"
+                      data-i18n-aria-label="quiz.startRecording"
                       title="Ucapkan jawaban"
+                      data-i18n-title="quiz.speakAnswer"
                       style={{
                         width: '64px',
                         height: '64px',
@@ -1139,7 +1156,9 @@ export default function Quiz(props) {
                       value={userAnswer}
                       onInput={(event) => { playSound('click'); setUserAnswer(event.currentTarget.value); }}
                       placeholder="Lihat hasil rekaman atau ketik jawabanmu"
+                      data-i18n-placeholder="quiz.recordingPlaceholder"
                       aria-label="Jawaban kata kunci"
+                      data-i18n-aria-label="quiz.keywordAnswer"
                       disabled={checkedResult !== null}
                       autoComplete="off"
                       rows={4}
@@ -1156,12 +1175,12 @@ export default function Quiz(props) {
                         fontSize: '16px',
                       }}
                     />
-                    {checkedResult === false && <p className="correct-answer">Kata kunci: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.keyword" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Kata kunci: {currentQuestion.german}</p>}
                   </>
                 ) : (
                   <>
-                    <p className="question-label">Tipe C · Text Box</p>
-                    <h3>Bagaimana mengatakan „{currentQuestion.indonesian}“ dalam Bahasa Jerman?</h3>
+                    <p className="question-label" data-i18n="quiz.textBoxType">Tipe C · Text Box</p>
+                    <h3 data-i18n="quiz.sayGerman" data-i18n-params={JSON.stringify({ text: currentQuestion.indonesian })}>Bagaimana mengatakan „{currentQuestion.indonesian}“ dalam Bahasa Jerman?</h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', margin: '0.25rem 0 1rem' }}>
                       <input
                         type="text"
@@ -1175,7 +1194,9 @@ export default function Quiz(props) {
                           }
                         }}
                         placeholder="Ketik jawaban dalam Bahasa Jerman"
+                        data-i18n-placeholder="quiz.typeGermanAnswer"
                         aria-label="Jawaban dalam Bahasa Jerman"
+                        data-i18n-aria-label="quiz.germanAnswer"
                         autoComplete="off"
                         autoCapitalize="none"
                         spellCheck={false}
@@ -1195,14 +1216,14 @@ export default function Quiz(props) {
                         }}
                       />
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Jawaban yang benar: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Jawaban yang benar: {currentQuestion.german}</p>}
                   </>
                 )}
 
                 <div className="action-row">
                   {currentQuestion.type === 'arrange' && checkedResult === null && (
                     <button type="button" className="secondary-btn" onClick={removeArrangeToken} disabled={arrangeSelected.length === 0}>
-                      Hapus Terakhir
+                      <span data-i18n="quiz.removeLast">Hapus Terakhir</span>
                     </button>
                   )}
                   <button
@@ -1211,7 +1232,7 @@ export default function Quiz(props) {
                     onClick={() => { playSound('click'); handleQuestionAction(); }}
                     disabled={checkedResult === null && !canCheckAnswer}
                   >
-                    {checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Lanjutkan' : 'Periksa'}
+                    <span data-i18n={checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'quiz.continue' : 'quiz.check'}>{checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Lanjutkan' : 'Periksa'}</span>
                   </button>
                 </div>
               </div>
@@ -1222,37 +1243,49 @@ export default function Quiz(props) {
         <div className="quiz-overlay">
           <section className="summary-modal" role="dialog" aria-modal="true" aria-labelledby="summary-title">
             <p className={`summary-status ${sessionFailed ? 'game-over' : 'complete'}`}>
-              {sessionMode ? (sessionPassed ? 'Sesi LULUS' : 'Sesi GAGAL') : (isGameOver ? 'Game Over' : 'Sesi selesai')}
+              <span data-i18n={sessionMode ? (sessionPassed ? 'quiz.sessionPassed' : 'quiz.sessionFailed') : (isGameOver ? 'quiz.gameOver' : 'quiz.sessionComplete')}>{sessionMode ? (sessionPassed ? 'Sesi LULUS' : 'Sesi GAGAL') : (isGameOver ? 'Game Over' : 'Sesi selesai')}</span>
             </p>
             <h2 id="summary-title">
-              {sessionMode
-                ? (sessionPassed ? 'Target akurasi tercapai!' : 'Belum mencapai 80%')
-                : (isGameOver ? 'Nyawa kamu habis' : 'Latihan tuntas!')}
+              <span data-i18n={sessionMode ? (sessionPassed ? 'quiz.accuracyReached' : 'quiz.accuracyMissed') : (isGameOver ? 'quiz.noLives' : 'quiz.practiceComplete')}>
+                {sessionMode
+                  ? (sessionPassed ? 'Target akurasi tercapai!' : 'Belum mencapai 80%')
+                  : (isGameOver ? 'Nyawa kamu habis' : 'Latihan tuntas!')}
+              </span>
             </h2>
             {sessionMode && (
-              <p className="session-result-copy">
+              <p
+                className="session-result-copy"
+                data-i18n="quiz.sessionSummary"
+                data-i18n-params={JSON.stringify({
+                  session: activeSessionNumber,
+                  sessions: sessionCount,
+                  correct: correctCount,
+                  total: currentBatchItems.length,
+                  required: requiredCorrect,
+                })}
+              >
                 Sesi {activeSessionNumber} dari {sessionCount}: {correctCount} benar dari {currentBatchItems.length} soal (butuh {requiredCorrect}).
               </p>
             )}
             <div className="summary-stats">
               <div>
-                <span>Total XP didapat</span>
+                <span data-i18n="quiz.totalXp">Total XP didapat</span>
                 <strong>{sessionXp} XP</strong>
               </div>
               <div>
-                <span>Akurasi</span>
+                <span data-i18n="quiz.accuracy">Akurasi</span>
                 <strong>{accuracy}%</strong>
               </div>
               <div>
-                <span>Jawaban benar</span>
+                <span data-i18n="quiz.correctAnswers">Jawaban benar</span>
                 <strong>{correctCount} / {attemptedCount}</strong>
               </div>
             </div>
 
             <div className="review-panel">
-              <h3>Review Kata Sulit</h3>
+              <h3 data-i18n="quiz.reviewDifficult">Review Kata Sulit</h3>
               {wrongWords.length === 0 ? (
-                <p>Belum ada kata yang perlu diulang. Keren!</p>
+                <p data-i18n="quiz.noReview">Belum ada kata yang perlu diulang. Keren!</p>
               ) : (
                 <ul>
                   {wrongWords.map((word, index) => (
@@ -1265,7 +1298,10 @@ export default function Quiz(props) {
                         type="button"
                         className={`bookmark-btn ${bookmarkedWords.has(word.german) ? 'saved' : ''}`}
                         aria-label={`${bookmarkedWords.has(word.german) ? 'Tersimpan di' : 'Simpan ke'} Bookmark: ${word.german}`}
+                        data-i18n-aria-label={bookmarkedWords.has(word.german) ? 'quiz.savedToBookmark' : 'quiz.saveToBookmark'}
+                        data-i18n-params={JSON.stringify({ word: word.german })}
                         title={bookmarkedWords.has(word.german) ? 'Sudah tersimpan' : 'Simpan ke Bookmark'}
+                        data-i18n-title={bookmarkedWords.has(word.german) ? 'quiz.alreadySaved' : 'quiz.saveBookmark'}
                         onClick={() => bookmarkWord(word)}
                       >
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1282,27 +1318,29 @@ export default function Quiz(props) {
               {sessionMode && pillarMode && sessionPassed && nextPillarSession <= sessionCount ? (
                 pillarProgressSaved && nextPillarUrl ? (
                   <a className="primary-btn" href={nextPillarUrl}>
-                    Next: {nextPillarLabel} (Sesi {nextPillarSession})
+                    <span data-i18n="quiz.nextPillarSession" data-i18n-params={JSON.stringify({ pillar: nextPillarLabel, session: nextPillarSession })}>Next: {nextPillarLabel} (Sesi {nextPillarSession})</span>
                   </a>
                 ) : (
                   <button type="button" className="primary-btn" disabled>
-                    Menyimpan progress...
+                    <span data-i18n="quiz.savingProgress">Menyimpan progress...</span>
                   </button>
                 )
               ) : sessionMode && pillarMode && sessionPassed ? (
                 <button type="button" className="primary-btn" disabled>
-                  Semua sesi selesai
+                  <span data-i18n="quiz.allSessionsDone">Semua sesi selesai</span>
                 </button>
               ) : sessionMode && !pillarMode && sessionPassed && activeSessionNumber < sessionCount ? (
                 <button type="button" className="primary-btn" onClick={() => { playSound('click'); startSession(activeSessionNumber + 1); }}>
-                  Lanjut ke Sesi Berikutnya
+                  <span data-i18n="quiz.nextSession">Lanjut ke Sesi Berikutnya</span>
                 </button>
               ) : (
                 <button type="button" className="primary-btn" onClick={() => { playSound('click'); restartGame(); }}>
-                  {sessionMode ? 'Ulangi Sesi Ini' : (isGameOver ? 'Coba Lagi' : 'Ulangi Kuis')}
+                  <span data-i18n={sessionMode ? 'quiz.repeatSession' : (isGameOver ? 'quiz.tryAgain' : 'quiz.repeatQuiz')}>
+                    {sessionMode ? 'Ulangi Sesi Ini' : (isGameOver ? 'Coba Lagi' : 'Ulangi Kuis')}
+                  </span>
                 </button>
               )}
-              <a className="secondary-btn" href={returnHref}>Kembali ke Materi</a>
+              <a className="secondary-btn" href={returnHref} data-i18n="quiz.backMaterial">Kembali ke Materi</a>
             </div>
           </section>
         </div>

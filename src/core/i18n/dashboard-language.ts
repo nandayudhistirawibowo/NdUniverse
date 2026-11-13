@@ -72,45 +72,55 @@ export function applyDashboardTranslations(
   root: ParentNode = document,
   language: DashboardLanguage = getDashboardLanguage(),
 ): void {
+  const collect = <T extends HTMLElement>(selector: string): T[] => {
+    const matches = [...root.querySelectorAll<T>(selector)];
+    if (root instanceof HTMLElement && root.matches(selector)) matches.unshift(root as T);
+    return matches;
+  };
   const getParams = (element: HTMLElement): Record<string, string | number> =>
     element.dataset.i18nParams
       ? JSON.parse(element.dataset.i18nParams) as Record<string, string | number>
       : {};
 
-  root.querySelectorAll<HTMLElement>('[data-i18n]').forEach((element) => {
+  collect<HTMLElement>('[data-i18n]').forEach((element) => {
     const key = element.dataset.i18n as DashboardTranslationKey;
-    element.textContent = translateDashboard(key, language, getParams(element));
+    const translation = translateDashboard(key, language, getParams(element));
+    if (element.textContent !== translation) element.textContent = translation;
   });
 
-  root.querySelectorAll<HTMLElement>('[data-i18n-aria-label]').forEach((element) => {
+  collect<HTMLElement>('[data-i18n-aria-label]').forEach((element) => {
     const key = element.dataset.i18nAriaLabel as DashboardTranslationKey;
-    element.setAttribute('aria-label', translateDashboard(key, language, getParams(element)));
+    const translation = translateDashboard(key, language, getParams(element));
+    if (element.getAttribute('aria-label') !== translation) element.setAttribute('aria-label', translation);
   });
 
-  root.querySelectorAll<HTMLElement>('[data-i18n-title]').forEach((element) => {
+  collect<HTMLElement>('[data-i18n-title]').forEach((element) => {
     const key = element.dataset.i18nTitle as DashboardTranslationKey;
-    element.setAttribute('title', translateDashboard(key, language, getParams(element)));
+    const translation = translateDashboard(key, language, getParams(element));
+    if (element.getAttribute('title') !== translation) element.setAttribute('title', translation);
   });
 
-  root.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('[data-i18n-placeholder]').forEach((element) => {
+  collect<HTMLInputElement | HTMLTextAreaElement>('[data-i18n-placeholder]').forEach((element) => {
     const key = element.dataset.i18nPlaceholder as DashboardTranslationKey;
-    element.setAttribute('placeholder', translateDashboard(key, language, getParams(element)));
+    const translation = translateDashboard(key, language, getParams(element));
+    if (element.getAttribute('placeholder') !== translation) element.setAttribute('placeholder', translation);
   });
 
-  root.querySelectorAll<HTMLInputElement>('[data-i18n-value]').forEach((element) => {
+  collect<HTMLInputElement>('[data-i18n-value]').forEach((element) => {
     const key = element.dataset.i18nValue as DashboardTranslationKey;
-    element.value = translateDashboard(key, language, getParams(element));
+    const translation = translateDashboard(key, language, getParams(element));
+    if (element.value !== translation) element.value = translation;
   });
 
-  root.querySelectorAll<HTMLElement>('[data-i18n-aria-label-pressed]').forEach((element) => {
+  collect<HTMLElement>('[data-i18n-aria-label-pressed]').forEach((element) => {
     const key = element.getAttribute('aria-pressed') === 'true'
       ? element.dataset.i18nAriaLabelPressed
       : element.dataset.i18nAriaLabel;
     if (key) {
-      element.setAttribute(
-        'aria-label',
-        translateDashboard(key as DashboardTranslationKey, language, getParams(element)),
-      );
+      const translation = translateDashboard(key as DashboardTranslationKey, language, getParams(element));
+      if (element.getAttribute('aria-label') !== translation) {
+        element.setAttribute('aria-label', translation);
+      }
     }
   });
 }

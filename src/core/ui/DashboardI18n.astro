@@ -8,8 +8,18 @@
   const applyTranslations = () => {
     applyDashboardTranslations(document, getDashboardLanguage());
   };
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node instanceof HTMLElement) {
+          applyDashboardTranslations(node, getDashboardLanguage());
+        }
+      });
+    });
+  });
 
   document.addEventListener('astro:page-load', applyTranslations);
   subscribeDashboardLanguage(applyTranslations);
+  observer.observe(document.documentElement, { childList: true, subtree: true });
   applyTranslations();
 </script>

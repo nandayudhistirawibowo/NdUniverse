@@ -594,26 +594,26 @@ export default function Quiz(props) {
   if (items.length === 0) {
     return (
       <div className="quiz-empty">
-        <p>No vocabulary is available for practice yet.</p>
+        <p data-i18n="quiz.empty">No vocabulary is available for practice yet.</p>
       </div>
     );
   }
 
   if (sessionMode && pillarMode && sessionAccess === 'checking') {
-    return <p className="quiz-empty">Checking pillar progress...</p>;
+    return <p className="quiz-empty" data-i18n="quiz.checkingPillars">Checking pillar progress...</p>;
   }
 
   if (sessionMode && pillarMode && sessionAccess === 'locked') {
     return (
       <div className="quiz-empty" role="alert">
         <p>{sessionLockMessage}</p>
-        <a href={returnHref}>Back to Material</a>
+        <a href={returnHref} data-i18n="quiz.backMaterial">Back to Material</a>
       </div>
     );
   }
 
   if (sessionMode && !sessionInitialized) {
-    return <p className="quiz-empty">Loading session progress...</p>;
+    return <p className="quiz-empty" data-i18n="quiz.loadingProgress">Loading session progress...</p>;
   }
 
   function awardXp(amount) {
@@ -920,10 +920,10 @@ export default function Quiz(props) {
         <span className="track-tag">{track ?? 'Track'}</span>
         <span className="xp-badge">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></svg>
-          <span>Session XP: {sessionXp} · Total: {xp}</span>
+          <span data-i18n="quiz.sessionXp" data-i18n-params={JSON.stringify({ sessionXp, xp })}>Session XP: {sessionXp} · Total: {xp}</span>
         </span>
         <div className="game-controls">
-          <div className="hearts" role="img" aria-label={`Lives: ${lives} of 3`}>
+          <div className="hearts" role="img" aria-label={`Lives: ${lives} of 3`} data-i18n-aria-label="quiz.lives" data-i18n-params={JSON.stringify({ lives })}>
             {Array.from({ length: 3 }, (_, index) => (
               <span key={index} className={index < lives ? 'heart-active' : 'heart-empty'} aria-hidden="true">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -937,7 +937,9 @@ export default function Quiz(props) {
             className="restart-btn"
             onClick={restartGame}
             aria-label="Restart the quiz"
+            data-i18n-aria-label="quiz.restart"
             title="Restart quiz"
+            data-i18n-title="quiz.restartTitle"
           >
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M20 7v5h-5M4 17v-5h5" />
@@ -951,7 +953,15 @@ export default function Quiz(props) {
         <>
           <div className="progress-section">
             <div className="progress-label">
-              <span>
+              <span
+                data-i18n={sessionMode ? 'quiz.questionProgress' : 'quiz.questionProgressNoSession'}
+                data-i18n-params={JSON.stringify({
+                  session: activeSessionNumber,
+                  sessions: sessionCount,
+                  question: questionNumber,
+                  total: currentBatchItems.length,
+                })}
+              >
                 {sessionMode && `Session ${activeSessionNumber} of ${sessionCount} · `}
                 Question {questionNumber} of {currentBatchItems.length}
               </span>
@@ -961,6 +971,7 @@ export default function Quiz(props) {
               className="progress-track"
               role="progressbar"
               aria-label="Quiz progress"
+              data-i18n-aria-label="quiz.progress"
               aria-valuemin="0"
               aria-valuemax={currentBatchItems.length}
               aria-valuenow={attemptedCount}
@@ -972,11 +983,11 @@ export default function Quiz(props) {
               <div className="question-card">
                 {currentQuestion.type === 'arrange' ? (
                   <>
-                    <p className="question-label">Type A · Word order</p>
-                    <h3>Arrange in English: {currentQuestion.indonesian}</h3>
+                    <p className="question-label" data-i18n="quiz.arrangeType">Type A · Word order</p>
+                    <h3 data-i18n="quiz.arrangePromptEnglish" data-i18n-params={JSON.stringify({ text: currentQuestion.indonesian })}>Arrange in English: {currentQuestion.indonesian}</h3>
                     <div className="answer-box">
                       <div className="answer-content">
-                        {arrangeSelected.length === 0 && <span className="placeholder">Choose words to build your answer</span>}
+                        {arrangeSelected.length === 0 && <span className="placeholder" data-i18n="quiz.chooseWords">Choose words to build your answer</span>}
                         {arrangeSelected.map((optionIndex, index) => (
                           <span key={`${optionIndex}-${index}`} className="answer-token">
                             {arrangeOptions[optionIndex]}
@@ -984,7 +995,7 @@ export default function Quiz(props) {
                         ))}
                       </div>
                       <button type="button" className="reset-btn" onClick={resetArrange} disabled={checkedResult !== null}>
-                        Reset
+                        <span data-i18n="quiz.reset">Reset</span>
                       </button>
                     </div>
                     <div className="tokens-wrap">
@@ -994,16 +1005,16 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Correct answer: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Correct answer: {currentQuestion.german}</p>}
                   </>
                 ) : currentQuestion.type === 'matcher' ? (
                   <>
-                    <p className="question-label">Type B · Word match</p>
-                    <h3>Match each word with its meaning</h3>
+                    <p className="question-label" data-i18n="quiz.matchType">Type B · Word match</p>
+                    <h3 data-i18n="quiz.matchPrompt">Match each word with its meaning</h3>
                     <div className="matcher-board">
                       <div className="matcher-grid">
                         <div className="matcher-column">
-                          <p className="column-title">English</p>
+                          <p className="column-title" data-i18n="quiz.englishColumn">English</p>
                           {matcherSet?.germanWords.map((word) => {
                             const isMatched = Object.prototype.hasOwnProperty.call(matcherMatches, word);
                             const isWrong = matcherWrongPair?.german === word;
@@ -1022,7 +1033,7 @@ export default function Quiz(props) {
                           })}
                         </div>
                         <div className="matcher-column">
-                          <p className="column-title">Indonesian</p>
+                          <p className="column-title" data-i18n="quiz.indonesianColumn">Indonesian</p>
                           {matcherSet?.indonesianOptions.map((word) => {
                             const matchedGerman = Object.keys(matcherMatches).find((german) => matcherMatches[german] === word);
                             const isWrong = matcherWrongPair?.indonesian === word;
@@ -1044,18 +1055,19 @@ export default function Quiz(props) {
                     </div>
                     {checkedResult === false && (
                       <p className="correct-answer">
-                        Correct answer: {Object.entries(matcherSet.correctMap).map(([german, indonesian]) => `${german} = ${indonesian}`).join(', ')}
+                        <span data-i18n="quiz.correctAnswerLabel">Correct answer:</span>{' '}
+                        {Object.entries(matcherSet.correctMap).map(([german, indonesian]) => `${german} = ${indonesian}`).join(', ')}
                       </p>
                     )}
                   </>
                 ) : currentQuestion.type === 'reading' ? (
                   <>
-                    <p className="question-label">Type D · Reading</p>
-                    <h3>Read the following text</h3>
+                    <p className="question-label" data-i18n="quiz.readingType">Type D · Reading</p>
+                    <h3 data-i18n="quiz.readText">Read the following text</h3>
                     <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
                       {currentQuestion.reading_text || currentQuestion.context}
                     </div>
-                    <h3 style={{ marginTop: '1rem' }}>{currentQuestion.reading_question || 'Which English word is used in this sentence?'}</h3>
+                    <h3 style={{ marginTop: '1rem' }}>{currentQuestion.reading_question || <span data-i18n="quiz.readingQuestionFallback">Which English word is used in this sentence?</span>}</h3>
                     <div style={{ display: 'grid', gap: '0.65rem' }}>
                       {multipleChoiceOptions.map((option) => (
                         <button
@@ -1069,18 +1081,20 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Correct answer: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Correct answer: {currentQuestion.german}</p>}
                   </>
                 ) : currentQuestion.type === 'listening' ? (
                   <>
-                    <p className="question-label">Type E · Listening</p>
-                    <h3>Listen to the audio, then choose the correct meaning</h3>
+                    <p className="question-label" data-i18n="quiz.listeningType">Type E · Listening</p>
+                    <h3 data-i18n="quiz.listeningPrompt">Listen to the audio, then choose the correct meaning</h3>
                     <button
                       type="button"
                       className="vocab-speech-button"
                       onClick={playListeningAudio}
-                      aria-label={`Play audio: ${currentQuestion.listening_audio || currentQuestion.context || currentQuestion.german}`}
+                      aria-label="Play audio"
+                      data-i18n-aria-label="quiz.playAudio"
                       title="Play audio"
+                      data-i18n-title="quiz.playAudio"
                       style={{ width: '52px', height: '52px', fontSize: '1.35rem' }}
                     >
                       🔊
@@ -1098,17 +1112,19 @@ export default function Quiz(props) {
                         </button>
                       ))}
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Correct answer: {currentQuestion.indonesian}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.indonesian })}>Correct answer: {currentQuestion.indonesian}</p>}
                   </>
                 ) : currentQuestion.type === 'writing' ? (
                   <>
-                    <p className="question-label">Type F · Writing</p>
-                    <h3>{currentQuestion.writing_instruction || `Write in English: ${currentQuestion.indonesian}`}</h3>
+                    <p className="question-label" data-i18n="quiz.writingType">Type F · Writing</p>
+                    <h3 data-i18n={currentQuestion.writing_instruction ? undefined : 'quiz.writeEnglish'} data-i18n-params={currentQuestion.writing_instruction ? undefined : JSON.stringify({ text: currentQuestion.indonesian })}>{currentQuestion.writing_instruction || `Write in English: ${currentQuestion.indonesian}`}</h3>
                     <textarea
                       value={userAnswer}
                       onInput={(event) => setUserAnswer(event.currentTarget.value)}
                       placeholder="Write your answer here"
+                      data-i18n-placeholder="quiz.writeAnswerPlaceholder"
                       aria-label="Written answer"
+                      data-i18n-aria-label="quiz.writtenAnswer"
                       disabled={checkedResult !== null}
                       rows={5}
                       style={{
@@ -1123,18 +1139,20 @@ export default function Quiz(props) {
                         resize: 'vertical',
                       }}
                     />
-                    {checkedResult === false && <p className="correct-answer">Expected answer: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer"><span data-i18n="quiz.expectedAnswer">Expected answer:</span> {currentQuestion.german}</p>}
                   </>
                 ) : currentQuestion.type === 'speaking' ? (
                   <>
-                    <p className="question-label">Type G · Speaking</p>
+                    <p className="question-label" data-i18n="quiz.speakingType">Type G · Speaking</p>
                     <h3>{currentQuestion.speaking_question || `Say in English: ${currentQuestion.indonesian}`}</h3>
                     <button
                       type="button"
                       onClick={startSpeechRecognition}
                       disabled={checkedResult !== null || isListening}
                       aria-label="Start voice recording"
+                      data-i18n-aria-label="quiz.startRecording"
                       title="Speak your answer"
+                      data-i18n-title="quiz.speakAnswer"
                       style={{
                         width: '64px',
                         height: '64px',
@@ -1154,7 +1172,9 @@ export default function Quiz(props) {
                       value={userAnswer}
                       onInput={(event) => setUserAnswer(event.currentTarget.value)}
                       placeholder="Type a keyword from your answer"
+                      data-i18n-placeholder="quiz.recordingPlaceholder"
                       aria-label="Keyword answer"
+                      data-i18n-aria-label="quiz.keywordAnswer"
                       disabled={checkedResult !== null}
                       autoComplete="off"
                       style={{
@@ -1169,12 +1189,12 @@ export default function Quiz(props) {
                         font: 'inherit',
                       }}
                     />
-                    {checkedResult === false && <p className="correct-answer">Keyword: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer"><span data-i18n="quiz.keywordLabel">Keyword:</span> {currentQuestion.german}</p>}
                   </>
                 ) : (
                   <>
-                    <p className="question-label">Type C · Text response</p>
-                    <h3>How do you say “{currentQuestion.indonesian}” in English?</h3>
+                    <p className="question-label" data-i18n="quiz.textBoxType">Type C · Text response</p>
+                    <h3 data-i18n="quiz.sayEnglish" data-i18n-params={JSON.stringify({ text: currentQuestion.indonesian })}>How do you say “{currentQuestion.indonesian}” in English?</h3>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', margin: '0.25rem 0 1rem' }}>
                       <input
                         type="text"
@@ -1187,7 +1207,9 @@ export default function Quiz(props) {
                           }
                         }}
                         placeholder="Type your answer in English"
+                        data-i18n-placeholder="quiz.typeEnglishAnswer"
                         aria-label="Answer in English"
+                        data-i18n-aria-label="quiz.englishAnswer"
                         autoComplete="off"
                         autoCapitalize="none"
                         spellCheck={false}
@@ -1207,14 +1229,14 @@ export default function Quiz(props) {
                         }}
                       />
                     </div>
-                    {checkedResult === false && <p className="correct-answer">Correct answer: {currentQuestion.german}</p>}
+                    {checkedResult === false && <p className="correct-answer" data-i18n="quiz.correctAnswer" data-i18n-params={JSON.stringify({ answer: currentQuestion.german })}>Correct answer: {currentQuestion.german}</p>}
                   </>
                 )}
 
                 <div className="action-row">
                   {currentQuestion.type === 'arrange' && checkedResult === null && (
                     <button type="button" className="secondary-btn" onClick={removeArrangeToken} disabled={arrangeSelected.length === 0}>
-                      Remove Last
+                      <span data-i18n="quiz.removeLast">Remove Last</span>
                     </button>
                   )}
                   <button
@@ -1223,7 +1245,7 @@ export default function Quiz(props) {
                     onClick={handleQuestionAction}
                     disabled={checkedResult === null && !canCheckAnswer}
                   >
-                    {checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Continue' : 'Check Answer'}
+                    <span data-i18n={checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'quiz.continue' : 'quiz.check'}>{checkedResult !== null || (currentQuestion.type === 'matcher' && matcherIsComplete) ? 'Continue' : 'Check Answer'}</span>
                   </button>
                 </div>
               </div>
@@ -1234,37 +1256,47 @@ export default function Quiz(props) {
         <div className="quiz-overlay">
           <section className="summary-modal" role="dialog" aria-modal="true" aria-labelledby="summary-title">
             <p className={`summary-status ${sessionFailed ? 'game-over' : 'complete'}`}>
-              {sessionMode ? (sessionPassed ? 'SESSION PASSED' : 'SESSION FAILED') : (isGameOver ? 'Game Over' : 'Session Complete')}
+              <span data-i18n={sessionMode ? (sessionPassed ? 'quiz.sessionPassed' : 'quiz.sessionFailed') : (isGameOver ? 'quiz.gameOver' : 'quiz.sessionComplete')}>
+                {sessionMode ? (sessionPassed ? 'SESSION PASSED' : 'SESSION FAILED') : (isGameOver ? 'Game Over' : 'Session Complete')}
+              </span>
             </p>
             <h2 id="summary-title">
-              {sessionMode
-                ? (sessionPassed ? 'Accuracy target reached!' : 'The 80% target was not reached.')
-                : (isGameOver ? 'No lives remaining.' : 'Practice complete!')}
+              <span data-i18n={sessionMode ? (sessionPassed ? 'quiz.accuracyReached' : 'quiz.accuracyMissed') : (isGameOver ? 'quiz.noLives' : 'quiz.practiceComplete')}>
+                {sessionMode
+                  ? (sessionPassed ? 'Accuracy target reached!' : 'The 80% target was not reached.')
+                  : (isGameOver ? 'No lives remaining.' : 'Practice complete!')}
+              </span>
             </h2>
             {sessionMode && (
-              <p className="session-result-copy">
+              <p className="session-result-copy" data-i18n="quiz.sessionSummary" data-i18n-params={JSON.stringify({
+                session: activeSessionNumber,
+                sessions: sessionCount,
+                correct: correctCount,
+                total: currentBatchItems.length,
+                required: requiredCorrect,
+              })}>
                 Session {activeSessionNumber} of {sessionCount}: {correctCount} correct out of {currentBatchItems.length} questions ({requiredCorrect} needed).
               </p>
             )}
             <div className="summary-stats">
               <div>
-                <span>Total XP Earned</span>
+                <span data-i18n="quiz.totalXp">Total XP Earned</span>
                 <strong>{sessionXp} XP</strong>
               </div>
               <div>
-                <span>Accuracy</span>
+                <span data-i18n="quiz.accuracy">Accuracy</span>
                 <strong>{accuracy}%</strong>
               </div>
               <div>
-                <span>Correct Answers</span>
+                <span data-i18n="quiz.correctAnswers">Correct Answers</span>
                 <strong>{correctCount} / {attemptedCount}</strong>
               </div>
             </div>
 
             <div className="review-panel">
-              <h3>Review Challenging Words</h3>
+              <h3 data-i18n="quiz.reviewDifficult">Review Challenging Words</h3>
               {wrongWords.length === 0 ? (
-                <p>No words need another review. Great work!</p>
+                <p data-i18n="quiz.noReview">No words need another review. Great work!</p>
               ) : (
                 <ul>
                   {wrongWords.map((word, index) => (
@@ -1277,7 +1309,10 @@ export default function Quiz(props) {
                         type="button"
                         className={`bookmark-btn ${bookmarkedWords.has(word.german) ? 'saved' : ''}`}
                         aria-label={`${bookmarkedWords.has(word.german) ? 'Saved to' : 'Save to'} bookmarks: ${word.german}`}
+                        data-i18n-aria-label={bookmarkedWords.has(word.german) ? 'quiz.savedToBookmark' : 'quiz.saveToBookmark'}
+                        data-i18n-params={JSON.stringify({ word: word.german })}
                         title={bookmarkedWords.has(word.german) ? 'Already saved' : 'Save to bookmarks'}
+                        data-i18n-title={bookmarkedWords.has(word.german) ? 'quiz.alreadySaved' : 'quiz.saveBookmark'}
                         onClick={() => bookmarkWord(word)}
                       >
                         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -1294,27 +1329,29 @@ export default function Quiz(props) {
               {sessionMode && pillarMode && sessionPassed && nextPillarSession <= sessionCount ? (
                 pillarProgressSaved && nextPillarUrl ? (
                   <a className="primary-btn" href={nextPillarUrl}>
-                    Next: {nextPillarLabel} (Session {nextPillarSession})
+                    <span data-i18n="quiz.nextPillarSession" data-i18n-params={JSON.stringify({ pillar: nextPillarLabel, session: nextPillarSession })}>Next: {nextPillarLabel} (Session {nextPillarSession})</span>
                   </a>
                 ) : (
                   <button type="button" className="primary-btn" disabled>
-                    Saving progress...
+                    <span data-i18n="quiz.savingProgress">Saving progress...</span>
                   </button>
                 )
               ) : sessionMode && pillarMode && sessionPassed ? (
                 <button type="button" className="primary-btn" disabled>
-                  All sessions complete
+                  <span data-i18n="quiz.allSessionsDone">All sessions complete</span>
                 </button>
               ) : sessionMode && !pillarMode && sessionPassed && activeSessionNumber < sessionCount ? (
                 <button type="button" className="primary-btn" onClick={() => { playSound('click'); startSession(activeSessionNumber + 1); }}>
-                  Next Session
+                  <span data-i18n="quiz.nextSession">Next Session</span>
                 </button>
               ) : (
                 <button type="button" className="primary-btn" onClick={() => { playSound('click'); restartGame(); }}>
-                  {sessionMode ? 'Retry This Session' : (isGameOver ? 'Try Again' : 'Restart Quiz')}
+                  <span data-i18n={sessionMode ? 'quiz.repeatSession' : (isGameOver ? 'quiz.tryAgain' : 'quiz.repeatQuiz')}>
+                    {sessionMode ? 'Retry This Session' : (isGameOver ? 'Try Again' : 'Restart Quiz')}
+                  </span>
                 </button>
               )}
-              <a className="secondary-btn" href={returnHref}>Back to Material</a>
+              <a className="secondary-btn" href={returnHref} data-i18n="quiz.backMaterial">Back to Material</a>
             </div>
           </section>
         </div>

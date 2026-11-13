@@ -20,13 +20,13 @@ export default function MockExam({ level, tasks, unavailable = false }) {
   const [score, setScore] = useState(null);
   const recognitionRef = useRef(null);
   const [isListening, setIsListening] = useState(false);
-  const [speechMessage, setSpeechMessage] = useState('');
+  const [speechMessage, setSpeechMessage] = useState(null);
 
   useEffect(() => {
     setAnswers({});
     setFinished(false);
     setScore(null);
-    setSpeechMessage('');
+    setSpeechMessage(null);
   }, [level]);
 
   const chooseAnswer = (index, value) => {
@@ -38,7 +38,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     playSound('click');
     const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (!Recognition) {
-      setSpeechMessage('Speech recognition is not supported by this browser. Please type your answer.');
+      setSpeechMessage({ key: 'exam.speechUnsupported', fallback: 'Speech recognition is not supported by this browser. Please type your answer.' });
       return;
     }
     recognitionRef.current?.abort?.();
@@ -50,23 +50,31 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     recognition.onresult = (event) => {
       const transcript = event.results?.[0]?.[0]?.transcript ?? '';
       chooseAnswer(index, transcript);
-      setSpeechMessage(transcript ? 'Speech captured successfully.' : 'No speech was captured. Please try again.');
+      setSpeechMessage(transcript
+        ? { key: 'exam.speechCaptured', fallback: 'Speech captured successfully.' }
+        : { key: 'exam.noSpeech', fallback: 'No speech was captured. Please try again.' });
     };
     recognition.onerror = (event) => {
       setIsListening(false);
-      setSpeechMessage(`Speech was not recognized (${event.error}). Please try again or type your answer.`);
+      setSpeechMessage({
+        key: 'exam.speechError',
+        params: { error: event.error },
+        fallback: `Speech was not recognized (${event.error}). Please try again or type your answer.`,
+      });
     };
     recognition.onend = () => {
       setIsListening(false);
-      setSpeechMessage((message) => message === 'Recording...' ? 'No speech was captured. Please try again.' : message);
+      setSpeechMessage((message) => message?.key === 'exam.recording'
+        ? { key: 'exam.noSpeech', fallback: 'No speech was captured. Please try again.' }
+        : message);
     };
     try {
       recognition.start();
       setIsListening(true);
-      setSpeechMessage('Recording...');
+      setSpeechMessage({ key: 'exam.recording', fallback: 'Recording...' });
     } catch (error) {
       setIsListening(false);
-      setSpeechMessage('Recording could not be started. Please try again or type your answer.');
+      setSpeechMessage({ key: 'exam.recordingFailed', fallback: 'Recording could not be started. Please try again or type your answer.' });
       console.error('Unable to start English mock exam speech recognition.', error);
     }
   };
@@ -111,17 +119,17 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     <section class="mock-exam">
       <header class="exam-heading">
         <div>
-          <p class="eyebrow">IELTS/TOEFL Preparation</p>
-          <h1>English Mock Exam {level}</h1>
-          <p>22 tasks: 10 Reading, 10 Listening, 1 Writing, and 1 Speaking</p>
+          <p class="eyebrow" data-i18n="exam.englishExamPrep">IELTS/TOEFL Preparation</p>
+          <h1 data-i18n="exam.titleMock" data-i18n-params={JSON.stringify({ level })}>English Mock Exam {level}</h1>
+          <p data-i18n="exam.tasksSummaryEn">22 tasks: 10 Reading, 10 Listening, 1 Writing, and 1 Speaking</p>
         </div>
-        <span class="exam-status">Passing score: 60%</span>
+        <span class="exam-status" data-i18n="exam.passingScore">Passing score: 60%</span>
       </header>
 
       {unavailable || examTasks.length === 0 ? (
         <section class="exam-result failed" role="alert">
-          <h2>No questions are available for this level yet.</h2>
-          <p>Contact an administrator or try another level once content is available.</p>
+          <h2 data-i18n="exam.unavailableTitle">No questions are available for this level yet.</h2>
+          <p data-i18n="exam.unavailableDescription">Contact an administrator or try another level once content is available.</p>
         </section>
       ) : (
         <>
@@ -130,8 +138,8 @@ export default function MockExam({ level, tasks, unavailable = false }) {
         {examTasks.map((task, index) => (
           <li class="exam-task" key={`${task.kind}-${index}`}>
             <div class="task-meta">
-              <span>{task.kindLabel}</span>
-              <strong>Task {index + 1}</strong>
+              <span data-i18n={task.kind === 'reading' ? 'exam.module.lesen' : task.kind === 'listening' ? 'exam.module.hoeren' : task.kind === 'writing' ? 'exam.module.schreiben' : 'exam.module.sprechen'}>{task.kindLabel}</span>
+              <strong data-i18n="exam.taskNumber" data-i18n-params={JSON.stringify({ number: index + 1 })}>Task {index + 1}</strong>
             </div>
             {task.passage && <blockquote>{task.passage}</blockquote>}
             {task.kind === 'listening' && (
@@ -140,8 +148,9 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                 type="button"
                 onClick={(event) => playListeningAudio(event, task)}
                 aria-label="Play question audio"
+                data-i18n-aria-label="exam.playQuestionAudio"
               >
-                🔊 Play Audio
+                <span data-i18n="exam.playAudio">🔊 Play Audio</span>
               </button>
             )}
             <p class="prompt">{task.prompt}</p>
@@ -176,7 +185,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                     onClick={() => startSpeaking(index)}
                     disabled={finished || isListening}
                   >
-                    {isListening ? '🎤 Recording...' : '🎤 Record Answer'}
+                    <span data-i18n={isListening ? 'exam.recording' : 'exam.recordAnswer'}>{isListening ? '🎤 Recording...' : '🎤 Record Answer'}</span>
                   </button>
                 )}
                 <textarea
@@ -188,8 +197,15 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                   }}
                   disabled={finished}
                   placeholder={task.kind === 'writing' ? 'Write your answer in English...' : 'Your recording or written response...'}
+                  data-i18n-placeholder={task.kind === 'writing' ? 'exam.writeEnglish' : 'exam.recordingOrWritten'}
                 />
-                {task.kind === 'speaking' && speechMessage && <p role="status">{speechMessage}</p>}
+                {task.kind === 'speaking' && speechMessage && (
+                  <p
+                    role="status"
+                    data-i18n={speechMessage.key}
+                    data-i18n-params={speechMessage.params ? JSON.stringify(speechMessage.params) : undefined}
+                  >{speechMessage.fallback}</p>
+                )}
               </div>
             )}
           </li>
@@ -198,17 +214,20 @@ export default function MockExam({ level, tasks, unavailable = false }) {
 
       {!finished ? (
         <button class="submit-button" type="button" onClick={submitExam}>
-          Complete Exam
+          <span data-i18n="exam.complete">Complete Exam</span>
         </button>
       ) : (
         <section class={`exam-result ${score.passed ? 'passed' : 'failed'}`} aria-live="polite">
-          <p class="result-label">{score.passed ? 'Passed!' : 'Not Passed'}</p>
+          <p class="result-label" data-i18n={score.passed ? 'exam.resultPassed' : 'exam.resultFailed'}>{score.passed ? 'Passed!' : 'Not Passed'}</p>
           <h2>{score.percent}%</h2>
-          <p>{score.correct} of {score.total} tasks correct. {score.passed ? 'You met the 60% passing standard.' : 'Review the material and try again.'}</p>
+          <p>
+            <span data-i18n="exam.correctTasksEn" data-i18n-params={JSON.stringify({ correct: score.correct, total: score.total })}>{score.correct} of {score.total} tasks correct.</span>{' '}
+            <span data-i18n={score.passed ? 'exam.meetStandard' : 'exam.reviewRetry'}>{score.passed ? 'You met the 60% passing standard.' : 'Review the material and try again.'}</span>
+          </p>
           {score.passed && (
             <>
-              <a href={`/sertifikat/en/ielts/${level.toLowerCase()}`}>View Certificate</a>
-              <a href="/en/dashboard">Back to English Dashboard</a>
+              <a href={`/sertifikat/en/ielts/${level.toLowerCase()}`} data-i18n="exam.certificate">View Certificate</a>
+              <a href="/en/dashboard" data-i18n="exam.backDashboard">Back to English Dashboard</a>
             </>
           )}
         </section>
