@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
-import { normalizePassedPillars } from '@core/db/progress-client.js';
+import { hasCompletedPillarSession } from '@core/db/progress-client.js';
 import { getCollection } from 'astro:content';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
@@ -27,7 +27,7 @@ const materialBySlug = new Map(materials.map((item) => [item.id, item]));
 const cefrPoints = progressRows.reduce((total, row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material || material.data.track !== 'Alltagsdeutsch' || !material.data.level) return total;
-  if (normalizePassedPillars(row.sessions_passed).length !== 4) return total;
+  if (!hasCompletedPillarSession(row.sessions_passed)) return total;
   return total + POINTS_PER_LEVEL[material.data.level];
 }, 0);
 const currentLevel = [...LEVEL_STEPS].reverse().find((step) => cefrPoints >= step.threshold) ?? LEVEL_STEPS[0];
@@ -80,7 +80,7 @@ const levelMaterials = materials
 </DashboardLayout>
 
 <script>
-  import { normalizePassedPillars } from '@core/db/progress-client.js';
+  import { hasCompletedPillarSession } from '@core/db/progress-client.js';
 
   const renderLevelCard = () => {
     const dashboard = document.querySelector<HTMLElement>('[data-progress-dashboard]');
@@ -93,8 +93,6 @@ const levelMaterials = materials
         sessions_passed: unknown;
       }>).map((row) => [row.material_slug, row]),
     );
-    rows.set(slug, { material_slug: slug, xp, sessions_passed: pillars });
-    dashboard.dataset.progressRows = JSON.stringify([...rows.values()]);
 
     const levelMaterials = JSON.parse(dashboard.dataset.levelMaterials ?? '[]') as Array<{
       slug: string;
@@ -108,7 +106,7 @@ const levelMaterials = materials
     }>;
     const totalPoints = levelMaterials.reduce((total, material) => {
       const progress = rows.get(material.slug);
-      return progress && normalizePassedPillars(progress.sessions_passed).length === 4
+      return progress && hasCompletedPillarSession(progress.sessions_passed)
         ? total + material.points
         : total;
     }, 0);
@@ -148,6 +146,9 @@ const levelMaterials = materials
     const { slug, languageCode, pillars, xp } = (event as CustomEvent<{
       slug: string;
       languageCode: string;
+      session: number | null;
+      pillar: string | null;
+      xpEarned: number;
       pillars: string[];
       xp: number;
     }>).detail;

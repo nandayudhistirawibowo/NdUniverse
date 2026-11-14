@@ -53,6 +53,20 @@ export function normalizePassedPillars(value) {
   return [...new Set(converted.filter(Boolean))];
 }
 
+export function hasCompletedPillarSession(value) {
+  const passed = normalizePassedPillars(value);
+  const pillars = ['reading', 'listening', 'writing', 'speaking'];
+
+  if (pillars.every((pillar) => passed.includes(pillar))) return true;
+
+  const sessions = new Set(
+    passed.map((pillar) => /^s(\d+)-/.exec(pillar)?.[1]).filter(Boolean),
+  );
+  return [...sessions].some((session) =>
+    pillars.every((pillar) => passed.includes(`s${session}-${pillar}`)),
+  );
+}
+
 export async function fetchUserProgress(client, userId, materialSlug) {
   const { data, error } = await client
     .from('user_progress')
@@ -112,6 +126,9 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
         slug: materialSlug,
         languageCode: 'en',
         pilar: normalizePassedPillars(updates.sessions_passed).at(-1) ?? null,
+        session: updates.session ?? null,
+        pillar: updates.pillar ?? null,
+        xpEarned: Math.max(0, xpDelta),
         pillars: mergedSessions,
         xp: payload.xp,
       },

@@ -1,6 +1,6 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
-import { normalizePassedPillars } from '@core/db/progress-client-en.js';
+import { hasCompletedPillarSession } from '@core/db/progress-client-en.js';
 import { getCollection } from 'astro:content';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
@@ -38,13 +38,17 @@ const materialBySlug = new Map(materials.map((material) => [material.id, materia
 const progressRows = progressData ?? [];
 const completedMaterials = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
-  if (!material || normalizePassedPillars(row.sessions_passed).length !== 4) return [];
+  if (!material || !hasCompletedPillarSession(row.sessions_passed)) return [];
   return [{
     slug: material.id.split('/').at(-1) ?? material.id,
     title: material.data.title ?? material.id,
     level: material.data.level ?? '',
   }];
 });
+const totalXp = progressRows.reduce(
+  (total, row) => total + Math.max(0, Number(row.xp) || 0),
+  0,
+);
 const totalPoints = completedMaterials.reduce(
   (total, material) => total + (POINTS_PER_LEVEL[material.level] ?? 0),
   0,
@@ -99,7 +103,9 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
         <p class="level-eyebrow">Level Bahasa Inggris Sehari-hari</p>
         <p class="level-caption">Level CEFR Saat Ini</p>
         <h2 id="level-title" data-level-label>{currentLevel.label}</h2>
-        <p class="level-points" data-level-points>{totalPoints} poin dari materi yang lulus di keempat keterampilan.</p>
+        <p class="level-points" data-level-points>
+          {totalPoints} poin dari materi yang lulus di keempat keterampilan · {totalXp} XP
+        </p>
       </div>
       <div class="level-next-step">
         {currentLevel.nextThreshold !== null ? (
@@ -158,7 +164,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
 </DashboardLayout>
 
 <script>
-  import { normalizePassedPillars } from '@core/db/progress-client-en.js';
+  import { hasCompletedPillarSession } from '@core/db/progress-client-en.js';
 
   const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
 
@@ -166,6 +172,9 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     const { slug, languageCode, pillars, xp } = (event as CustomEvent<{
       slug: string;
       languageCode: string;
+      session: number | null;
+      pillar: string | null;
+      xpEarned: number;
       pillars: string[];
       xp: number;
     }>).detail;
@@ -184,6 +193,10 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     );
     rows.set(slug, { material_slug: slug, language_code: 'en', xp, sessions_passed: pillars });
     dashboard.dataset.progressRows = JSON.stringify([...rows.values()]);
+    const totalXp = [...rows.values()].reduce(
+      (total, row) => total + Math.max(0, Number(row.xp) || 0),
+      0,
+    );
 
     const materials = JSON.parse(dashboard.dataset.levelMaterials ?? '[]') as Array<{
       slug: string;
@@ -197,7 +210,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
       nextLabel: string | null;
     }>;
     const completed = materials.filter((material) => (
-      normalizePassedPillars(rows.get(material.slug)?.sessions_passed).length === 4
+      hasCompletedPillarSession(rows.get(material.slug)?.sessions_passed)
     ));
     const totalPoints = completed.reduce(
       (total, material) => total + (POINTS_PER_LEVEL[material.level] ?? 0),
@@ -219,7 +232,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     const nextLabel = dashboard.querySelector<HTMLElement>('[data-level-next-label]');
     const percentLabel = dashboard.querySelector<HTMLElement>('[data-level-percent]');
     if (label) label.textContent = currentLevel.label;
-    if (points) points.textContent = `${totalPoints} poin dari materi yang lulus di keempat keterampilan.`;
+    if (points) points.textContent = `${totalPoints} poin dari materi yang lulus di keempat keterampilan · ${totalXp} XP`;
     if (progress) {
       progress.setAttribute('aria-valuenow', String(percentage));
       progress.setAttribute('aria-label', currentLevel.nextThreshold === null

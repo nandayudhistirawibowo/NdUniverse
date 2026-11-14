@@ -547,7 +547,11 @@ export default function Quiz(props) {
       }
       const pillarsPassed = readSessionPillars(materialId, activeSessionNumber).map((p) => `s${activeSessionNumber}-${p}`);
       completedSessionsRef.current = pillarsPassed;
-      queueProgressUpdate({ sessions_passed: [sessionPillarKey] });
+      queueProgressUpdate({
+        sessions_passed: [sessionPillarKey],
+        session: activeSessionNumber,
+        pillar: pillarType,
+      });
       return;
     }
 
@@ -574,8 +578,12 @@ export default function Quiz(props) {
     earnedXpRef.current += sessionXp;
     setXp((total) => total + sessionXp);
     setMaterialXp((total) => total + sessionXp);
-    queueProgressUpdate({ xpDelta: sessionXp });
-  }, [queue.length, isGameOver, sessionXp]);
+    queueProgressUpdate({
+      xpDelta: sessionXp,
+      session: activeSessionNumber,
+      pillar: pillarMode ? pillarType : null,
+    });
+  }, [queue.length, isGameOver, sessionXp, activeSessionNumber, pillarMode, pillarType]);
 
   if (items.length === 0) {
     return (
