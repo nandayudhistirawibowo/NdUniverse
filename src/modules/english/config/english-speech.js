@@ -60,6 +60,61 @@ export function normalizeText(text) {
   return String(text ?? '').replace(/\s+/g, ' ').trim();
 }
 
+async function getAudioHttpStatus(audioUrl) {
+  try {
+    const response = await fetch(audioUrl, { method: 'HEAD', cache: 'no-store' });
+    return response.status;
+  } catch (error) {
+    console.error(`Unable to verify English audio URL: ${audioUrl}`, error);
+    return null;
+  }
+}
+
+async function playAudioFile(audioUrl, fallbackText, language, button) {
+  if (typeof Audio === 'undefined') {
+    speakWithBrowserVoice(fallbackText, language, button);
+    return;
+  }
+
+  const audio = new Audio(audioUrl);
+  currentAudio = audio;
+  let failurePromise = null;
+  const handleAudioFailure = (error) => {
+    if (!failurePromise) {
+      button?.classList.remove('is-playing');
+      failurePromise = (async () => {
+        const status = await getAudioHttpStatus(audioUrl);
+        if (currentAudio !== audio) return;
+        currentAudio = null;
+
+        if (status === 404) {
+          speakWithBrowserVoice(fallbackText, language, button);
+        } else if (error?.name === 'NotAllowedError') {
+          console.warn('Browser blocked English audio playback; retry from a user action.', error);
+        } else {
+          console.error(`Unable to play English audio (HTTP status ${status ?? 'unknown'}).`, error);
+        }
+      })();
+    }
+    return failurePromise;
+  };
+
+  button?.classList.add('is-playing');
+  audio.onended = () => {
+    button?.classList.remove('is-playing');
+    if (currentAudio === audio) currentAudio = null;
+  };
+  audio.onerror = () => {
+    void handleAudioFailure(audio.error);
+  };
+
+  try {
+    await audio.play();
+  } catch (error) {
+    await handleAudioFailure(error);
+  }
+}
+
 /**
  * @param {string} text
  * @param {'us' | 'uk'} [accent='us']
@@ -86,30 +141,7 @@ export async function playAudioTTS(text, accent = 'us', button = null, fallbackT
 
   if (/^(\/|https?:\/\/)/i.test(spokenText)) {
     const directAudioPath = await resolveCdnAudioUrl(spokenText) || spokenText;
-    if (typeof Audio === 'undefined') {
-      speakWithBrowserVoice(spokenFallback, language, button);
-      return;
-    }
-    const directAudio = new Audio(directAudioPath);
-    currentAudio = directAudio;
-    button?.classList.add('is-playing');
-    directAudio.onended = () => {
-      button?.classList.remove('is-playing');
-      if (currentAudio === directAudio) currentAudio = null;
-    };
-    directAudio.onerror = () => {
-      button?.classList.remove('is-playing');
-      if (currentAudio === directAudio) currentAudio = null;
-      speakWithBrowserVoice(spokenFallback, language, button);
-    };
-    try {
-      await directAudio.play();
-    } catch (error) {
-      console.error(`Unable to play direct TTS audio: ${directAudioPath}`, error);
-      button?.classList.remove('is-playing');
-      if (currentAudio === directAudio) currentAudio = null;
-      speakWithBrowserVoice(spokenFallback, language, button);
-    }
+    await playAudioFile(directAudioPath, spokenFallback, language, button);
     return;
   }
 
@@ -120,35 +152,5 @@ export async function playAudioTTS(text, accent = 'us', button = null, fallbackT
     return;
   }
 
-  if (typeof Audio === 'undefined') {
-    speakWithBrowserVoice(spokenText, language, button);
-    return;
-  }
-
-  const audio = new Audio(cdnAudioPath);
-  currentAudio = audio;
-  let fellBackToSpeech = false;
-  const fallBack = () => {
-    if (fellBackToSpeech) return;
-    fellBackToSpeech = true;
-    if (currentAudio === audio) currentAudio = null;
-    speakWithBrowserVoice(spokenText, language, button);
-  };
-
-  button?.classList.add('is-playing');
-  audio.onended = () => {
-    button?.classList.remove('is-playing');
-    if (currentAudio === audio) currentAudio = null;
-  };
-  audio.onerror = () => {
-    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, audio.error);
-    fallBack();
-  };
-
-  try {
-    await audio.play();
-  } catch (error) {
-    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, error);
-    fallBack();
-  }
+  await playAudioFile(cdnAudioPath, spokenText, language, button);
 }

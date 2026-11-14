@@ -92,9 +92,14 @@ export async function resolveEnglishTtsAudioUrl(text, accent = 'us') {
     const manifest = await getCdnManifest();
     const indexedUrl = manifest?.[audioKey];
 
-    return typeof indexedUrl === 'string' && indexedUrl.startsWith(`${AUDIO_REPO_BASE}/`)
-      ? indexedUrl
-      : null;
+    if (typeof indexedUrl === 'string' && indexedUrl.startsWith(`${AUDIO_REPO_BASE}/`)) {
+      return indexedUrl;
+    }
+
+    return `${AUDIO_REPO_BASE}/${audioKey
+      .split('/')
+      .map((segment) => encodeURIComponent(segment))
+      .join('/')}`;
   } catch (error) {
     console.error('Unable to resolve hashed English TTS audio.', error);
     return null;
