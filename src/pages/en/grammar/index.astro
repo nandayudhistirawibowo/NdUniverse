@@ -162,7 +162,7 @@ const quantityExamples = [
   description="Panduan tata bahasa Inggris untuk penutur bahasa Indonesia."
 >
   <main class="grammar-page">
-    <a class="back-link" href="/en">← Kembali ke Beranda</a>
+    <a class="back-link" href="/en/dashboard">← Kembali ke Dashboard</a>
 
     <header class="page-heading">
       <p class="eyebrow">Panduan Pemula · Tata Bahasa Inggris</p>
@@ -585,12 +585,25 @@ const quantityExamples = [
 </script>
 
 <style>
+  :global(html:root body) {
+    --bg-main: #0b1520;
+    --bg-dark: #071019;
+    --accent-gold: #e5a93b;
+    --accent-red: #d93838;
+    --text-main: #f8fafc;
+    --card-bg: #071019;
+    --muted: rgba(248, 250, 252, 0.66);
+    --border: rgba(229, 169, 59, 0.28);
+    background: var(--bg-main);
+    color: var(--text-main);
+  }
+
   .grammar-page {
     --grammar-accent: var(--accent-gold, #e5a93b);
-    --grammar-ink: var(--text-main, #2b2d42);
-    --grammar-muted: var(--muted, #6b7280);
-    --grammar-border: var(--border, rgba(43, 45, 66, 0.13));
-    --grammar-card: var(--card-bg, #fff);
+    --grammar-ink: var(--text-main, #f8fafc);
+    --grammar-muted: var(--muted, rgba(248, 250, 252, 0.66));
+    --grammar-border: var(--border, rgba(229, 169, 59, 0.28));
+    --grammar-card: var(--card-bg, #071019);
     --grammar-soft: rgba(229, 169, 59, 0.1);
     display: grid;
     gap: 2.7rem;
@@ -702,8 +715,8 @@ const quantityExamples = [
   }
 
   .guide-table thead th {
-    background: var(--bg-dark, var(--text-main, #2b2d42));
-    color: var(--card-bg, #fff);
+    background: var(--bg-dark, #071019);
+    color: var(--text-main, #f8fafc);
     font-size: 0.8rem;
     font-weight: 700;
   }

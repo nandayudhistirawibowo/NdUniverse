@@ -78,7 +78,7 @@ const trickySounds = [
   description="Panduan praktis huruf, vokal, dan konsonan bahasa Inggris untuk penutur bahasa Indonesia."
 >
   <main class="pronunciation-page">
-    <a class="back-link" href="/en">← Kembali ke Beranda</a>
+    <a class="back-link" href="/en/dashboard">← Kembali ke Dashboard</a>
 
     <header class="page-heading">
       <p class="eyebrow">Panduan Pemula · Pelafalan Bahasa Inggris</p>
@@ -236,12 +236,25 @@ const trickySounds = [
 </script>
 
 <style>
+  :global(html:root body) {
+    --bg-main: #0b1520;
+    --bg-dark: #071019;
+    --accent-gold: #e5a93b;
+    --accent-red: #d93838;
+    --text-main: #f8fafc;
+    --card-bg: #071019;
+    --muted: rgba(248, 250, 252, 0.66);
+    --border: rgba(229, 169, 59, 0.28);
+    background: var(--bg-main);
+    color: var(--text-main);
+  }
+
   .pronunciation-page {
     --guide-accent: var(--accent-gold, #e5a93b);
-    --guide-ink: var(--text-main, #2b2d42);
-    --guide-muted: var(--muted, #6b7280);
-    --guide-border: var(--border, rgba(43, 45, 66, 0.13));
-    --guide-card: var(--card-bg, #fff);
+    --guide-ink: var(--text-main, #f8fafc);
+    --guide-muted: var(--muted, rgba(248, 250, 252, 0.66));
+    --guide-border: var(--border, rgba(229, 169, 59, 0.28));
+    --guide-card: var(--card-bg, #071019);
     --guide-soft: rgba(229, 169, 59, 0.1);
     display: grid;
     gap: 2.7rem;
@@ -349,8 +362,8 @@ const trickySounds = [
   }
 
   .guide-table thead th {
-    background: var(--bg-dark, var(--text-main, #2b2d42));
-    color: var(--card-bg, #fff);
+    background: var(--bg-dark, #071019);
+    color: var(--text-main, #f8fafc);
     font-size: 0.8rem;
     font-weight: 700;
   }

@@ -3,7 +3,7 @@ import Layout from '@core/ui/Layout.astro';
 ---
 <Layout title="Grammatik | NdUniverse" description="Ringkasan tata bahasa bahasa Jerman.">
   <main class="simple-page">
-    <a href="/de" class="back-link">← Zurück zum Deutsch-Modul</a>
+    <a href="/de/dashboard" class="back-link">← Kembali ke Dashboard</a>
     <p class="eyebrow">Grammatik</p>
     <h1>Tata Bahasa Jerman</h1>
     <p>Panduan singkat untuk membangun kalimat bahasa Jerman.</p>
@@ -19,4 +19,11 @@ import Layout from '@core/ui/Layout.astro';
     <a class="full-link" href="/grammar">Lihat panduan lengkap →</a>
   </main>
 </Layout>
-<style>.simple-page{display:grid;gap:.9rem;width:min(900px,100%);margin:0 auto}.back-link,.full-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.simple-page p{color:var(--muted)}h1{margin:0}section{padding:1rem;border:1px solid var(--border);border-radius:10px;background:var(--card-bg)}section h2{margin-top:0}</style>
+<style>
+  :global(html:root body){--bg-main:#0b1520;--bg-dark:#071019;--accent-gold:#e5a93b;--accent-red:#d93838;--text-main:#f8fafc;--card-bg:#071019;--muted:rgba(248,250,252,.66);--border:rgba(229,169,59,.28);background:var(--bg-main);color:var(--text-main)}
+  .simple-page{display:grid;gap:.9rem;width:min(900px,100%);margin:0 auto}
+  .back-link,.full-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}
+  .eyebrow{color:var(--accent-gold);font-size:.78rem;font-weight:800;text-transform:uppercase}
+  .simple-page p{color:var(--muted)}h1{margin:0}
+  section{padding:1rem;border:1px solid var(--border);border-radius:10px;background:var(--card-bg)}section h2{margin-top:0}
+</style>
