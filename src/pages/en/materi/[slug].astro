@@ -155,7 +155,7 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
 <style>
   .material-page { display: grid; gap: 1.25rem; }
   .back-link { width: fit-content; color: var(--text-main); font-weight: 800; text-decoration: none; }
-  .eyebrow { color: #966313; font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+  .eyebrow { color: var(--accent-gold); font-size: .78rem; font-weight: 800; text-transform: uppercase; }
   .session-card { display: grid; gap: .75rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
   .table-wrap { overflow-x: auto; }
   .audio-legend { margin: 0 0 .4rem; color: var(--muted); font-size: .75rem; }
@@ -163,9 +163,9 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   th, td { padding: .65rem; border-bottom: 1px solid var(--border); text-align: left; }
   .vocab-audio-controls { display: flex; align-items: center; gap: .25rem; }
   .vocab-speech-button { width: 28px; height: 28px; padding: 0; border: 1px solid var(--border); border-radius: 5px; background: var(--card-bg); font-size: .8rem; line-height: 1; cursor: pointer; }
-  .vocab-speech-button.is-playing { border-color: var(--accent-gold); background: #fff4dc; }
+  .vocab-speech-button.is-playing { border-color: var(--accent-gold); background: color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg)); }
   .pillar-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
   .pillar-links a { min-height: 42px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
-  .pillar-links a.is-complete { border-color: #3a8b55; background: #eaf6ed; color: #236b38; }
+  .pillar-links a.is-complete { border-color: var(--accent-gold); background: color-mix(in srgb, var(--accent-gold) 14%, var(--card-bg)); color: var(--text-main); }
   @media (max-width: 700px) { .pillar-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 </style>

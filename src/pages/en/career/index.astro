@@ -56,12 +56,25 @@ const professions = [
 </Layout>
 
 <style>
+  :global(html:root body) {
+    --bg-main: #0b1520;
+    --bg-dark: #071019;
+    --accent-gold: #e5a93b;
+    --accent-red: #d93838;
+    --text-main: #f8fafc;
+    --card-bg: #071019;
+    --muted: rgba(248, 250, 252, 0.66);
+    --border: rgba(229, 169, 59, 0.28);
+    background: var(--bg-main);
+    color: var(--text-main);
+  }
+
   .career-page {
-    --career-accent: var(--accent-gold, #e5a93b);
-    --career-ink: var(--text-main, #2b2d42);
-    --career-muted: var(--muted, #6b7280);
-    --career-border: var(--border, rgba(43, 45, 66, 0.13));
-    --career-card: var(--card-bg, #fff);
+    --career-accent: var(--accent-gold);
+    --career-ink: var(--text-main);
+    --career-muted: var(--muted);
+    --career-border: var(--border);
+    --career-card: var(--card-bg);
     display: grid;
     gap: 1.5rem;
     width: min(1120px, 100%);
@@ -137,7 +150,7 @@ const professions = [
   .career-card:hover {
     transform: translateY(-4px);
     border-color: var(--career-accent);
-    box-shadow: 0 12px 28px rgba(43, 45, 66, 0.12);
+    box-shadow: 0 12px 28px color-mix(in srgb, var(--bg-dark) 60%, transparent);
   }
 
   .career-card-main {
@@ -185,8 +198,8 @@ const professions = [
     justify-content: center;
     padding: 0.65rem 0.9rem;
     border-radius: 0.65rem;
-    background: var(--accent-red, #d93838);
-    color: #fff;
+    background: var(--accent-red);
+    color: var(--text-main);
     font-weight: 800;
     text-decoration: none;
   }

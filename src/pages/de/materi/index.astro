@@ -40,14 +40,15 @@ const sortedMateri = materi.toSorted((first, second) =>
           class="materi-card"
           href={`/de/materi/${item.id}`}
           data-material-card
+          data-level={item.data.level ?? ''}
           data-title={item.data.judulMateri.toLocaleLowerCase('id')}
         >
-          <p class="category">{item.data.track}</p>
+          <span class="track-label">{item.data.track}</span>
           <h2>{item.data.judulMateri}</h2>
           <p class="description">{item.data.deskripsi}</p>
           <div class="card-meta">
-            {item.data.level && <span>{item.data.level}</span>}
-            {item.data.jurusan && <span>{item.data.jurusan}</span>}
+            {item.data.level && <span class="level-badge" data-level={item.data.level}>{item.data.level}</span>}
+            {item.data.jurusan && <span class="meta-badge">{item.data.jurusan}</span>}
           </div>
         </a>
       ))}
@@ -105,39 +106,45 @@ const sortedMateri = materi.toSorted((first, second) =>
   }
 
   .catalog-page {
-    padding-top: 1rem;
+    display: grid;
+    gap: 1.5rem;
+    width: min(1120px, 100%);
+    margin: 0 auto;
+    padding: 1rem 0 3rem;
   }
 
   .page-hero {
-    margin-bottom: 1.5rem;
+    display: grid;
+    gap: 0.75rem;
   }
 
   .eyebrow {
-    margin: 0 0 0.5rem;
-    color: var(--text-main);
-    font-size: 0.8rem;
-    font-weight: 700;
+    margin: 0;
+    color: var(--accent-gold);
+    font-size: 0.78rem;
+    font-weight: 800;
     letter-spacing: 0.12em;
     text-transform: uppercase;
   }
 
   h1 {
     margin: 0;
+    color: var(--text-main);
     font-size: clamp(2rem, 4vw, 3rem);
   }
 
   .intro {
-    margin: 0.75rem 0 0;
+    margin: 0;
     max-width: 700px;
     color: var(--muted);
-    line-height: 1.7;
+    line-height: 1.75;
   }
 
   .search-field {
     display: grid;
     gap: 0.5rem;
     max-width: 560px;
-    color: var(--text-dark);
+    color: var(--text-main);
     font-size: 0.9rem;
     font-weight: 600;
   }
@@ -146,20 +153,20 @@ const sortedMateri = materi.toSorted((first, second) =>
     width: 100%;
     min-height: 48px;
     padding: 0.7rem 0.9rem;
-    border: 1px solid #cbd5e1;
-    border-radius: 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
     background: var(--card-bg);
-    color: var(--text-dark);
+    color: var(--text-main);
     font: inherit;
   }
 
   .search-field input:focus-visible {
-    outline: 3px solid rgba(229, 169, 59, 0.24);
+    outline: 3px solid color-mix(in srgb, var(--accent-gold) 35%, transparent);
     border-color: var(--accent-gold);
   }
 
   .search-status {
-    margin: 1.25rem 0 0.75rem;
+    margin: -0.75rem 0 0;
     color: var(--muted);
     font-size: 0.8rem;
     font-weight: 700;
@@ -167,74 +174,103 @@ const sortedMateri = materi.toSorted((first, second) =>
 
   .materi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 1rem;
   }
 
   .materi-card {
-    display: flex;
-    min-height: 210px;
-    flex-direction: column;
-    align-items: flex-start;
-    padding: 1.15rem;
+    display: grid;
+    align-content: start;
+    gap: 0.5rem;
+    padding: 1rem;
     border: 1px solid var(--border);
-    border-radius: 12px;
+    border-radius: 8px;
     background: var(--card-bg);
-    color: var(--text-dark);
+    color: var(--text-main);
     text-decoration: none;
-    box-shadow: 0 8px 20px rgba(26, 26, 30, 0.05);
-    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: border-color 0.2s ease;
   }
 
   .materi-card:hover {
-    transform: translateY(-4px);
     border-color: var(--accent-gold);
-    box-shadow: 0 10px 20px rgba(229, 169, 59, 0.18);
   }
 
-  .category {
-    margin: 0 0 0.5rem;
-    color: var(--text-main);
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
+  .track-label {
+    color: var(--accent-gold);
+    font-size: 0.75rem;
+    font-weight: 800;
     text-transform: uppercase;
   }
 
   .materi-card h2 {
-    margin: 0 0 0.5rem;
-    font-size: 1.05rem;
+    margin: 0;
+    font-size: 1.1rem;
   }
 
   .materi-card .description {
     margin: 0;
     color: var(--muted);
-    line-height: 1.6;
-    flex: 1;
+    line-height: 1.55;
   }
 
   .card-meta {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 1rem;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
   }
 
   .card-meta span {
-    padding: 0.25rem 0.55rem;
-    border-radius: 999px;
-    background: var(--accent-red);
-    color: #ffffff;
-    font-size: 0.72rem;
+    padding: 0.15rem 0.45rem;
+    border-radius: 4px;
+    background: var(--bg-dark);
+    color: var(--text-main);
+    font-size: 0.68rem;
     font-weight: 700;
   }
 
+  .card-meta .level-badge {
+    border-radius: 999px;
+    background: var(--level-accent, var(--accent-gold));
+    color: #071019;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .materi-card[data-level="A1"],
+  .materi-card[data-level="A2"] {
+    --level-accent: #10B981;
+  }
+
+  .materi-card[data-level="B1"],
+  .materi-card[data-level="B2"] {
+    --level-accent: #3B82F6;
+  }
+
+  .materi-card[data-level="C1"],
+  .materi-card[data-level="C2"] {
+    --level-accent: #7C3AED;
+  }
+
+  .card-meta .level-badge[data-level="B1"],
+  .card-meta .level-badge[data-level="B2"],
+  .card-meta .level-badge[data-level="C1"],
+  .card-meta .level-badge[data-level="C2"] {
+    color: #FFFFFF;
+  }
+
   .no-results {
-    margin-top: 1.5rem;
+    margin: 0;
     color: var(--muted);
   }
 
   [hidden] {
     display: none !important;
+  }
+
+  @media (max-width: 700px) {
+    .materi-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

@@ -68,13 +68,13 @@ const words = entry?.data.vocab ?? [];
   .table-scroll { overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--card-bg); }
   .vocabulary-table { width:100%; min-width:620px; border-collapse:collapse; text-align:left; }
   .vocabulary-table th,.vocabulary-table td { padding:.75rem .9rem; border-bottom:1px solid var(--border); color:var(--text-main); vertical-align:top; }
-  .vocabulary-table thead th { background:var(--bg-dark,var(--text-main)); color:var(--card-bg); }
-  .vocabulary-table tbody tr:nth-child(even) { background:var(--bg-main,#f8f9fa); }
+  .vocabulary-table thead th { background:var(--bg-dark); color:var(--text-main); }
+  .vocabulary-table tbody tr:nth-child(even) { background:color-mix(in srgb, var(--text-main) 4%, var(--card-bg)); }
   .vocabulary-table tbody tr:last-child th,.vocabulary-table tbody tr:last-child td { border-bottom:0; }
   .boss-card { display:grid; grid-template-columns:auto 1fr auto; align-items:center; gap:1rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:var(--card-bg); }
   .boss-card > span { font-size:1.8rem; }
   .boss-card p,.boss-card h2 { margin:.1rem 0; color:var(--text-main); }
   .boss-card div > p:first-child { color:var(--accent-gold); font-size:.72rem; font-weight:800; text-transform:uppercase; }
-  .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; font-weight:800; text-decoration:none; }
+  .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:var(--text-main); font-weight:800; text-decoration:none; }
   @media(max-width:700px) { .section-heading { align-items:flex-start; flex-direction:column; }.boss-card { grid-template-columns:auto 1fr; } .boss-card a { grid-column:1/-1; justify-content:center; } }
 </style>

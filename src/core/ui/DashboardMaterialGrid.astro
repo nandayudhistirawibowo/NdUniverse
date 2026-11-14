@@ -199,7 +199,14 @@ const cards = materials.map((material) => {
   .material-meta .level-badge {
     border-radius: 999px;
     background: var(--level-accent, var(--accent-gold));
-    color: var(--bg-dark);
+    color: #071019;
+  }
+
+  .material-card[data-material-level="B1"] .material-meta .level-badge,
+  .material-card[data-material-level="B2"] .material-meta .level-badge,
+  .material-card[data-material-level="C1"] .material-meta .level-badge,
+  .material-card[data-material-level="C2"] .material-meta .level-badge {
+    color: #FFFFFF;
   }
 
   .progress-copy {

@@ -167,29 +167,29 @@ const pillars = [
 <style>
   .academic-material { display:grid; gap:1.25rem; padding:1rem 0 3rem; }
   .back-link { width:fit-content; color:var(--text-main); font-weight:700; text-decoration:none; }
-  .back-link:hover { color:var(--accent-gold,#966313); }
-  .eyebrow { margin:0 0 .45rem; color:var(--accent-gold,#966313); font-size:.75rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+  .back-link:hover { color:var(--accent-gold); }
+  .eyebrow { margin:0 0 .45rem; color:var(--accent-gold); font-size:.75rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
   .material-heading h1 { margin:0; color:var(--text-main); font-size:clamp(2rem,5vw,3rem); }
   .material-heading > p:last-child { max-width:760px; margin:.75rem 0 0; color:var(--muted); line-height:1.7; }
   .vocabulary-section { display:grid; gap:.8rem; min-width:0; }
   .section-heading { display:flex; align-items:center; justify-content:space-between; gap:1rem; }
   .section-heading h2 { margin:0; color:var(--text-main); }
-  .primary-link { min-height:48px; display:inline-flex; align-items:center; justify-content:center; padding:.7rem 1rem; border-radius:8px; background:var(--accent-red); color:#fff; font-weight:900; text-decoration:none; }
+  .primary-link { min-height:48px; display:inline-flex; align-items:center; justify-content:center; padding:.7rem 1rem; border-radius:8px; background:var(--accent-red); color:var(--text-main); font-weight:900; text-decoration:none; }
   .table-scroll { overflow-x:auto; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); }
   .vocabulary-table { width:100%; min-width:660px; border-collapse:collapse; text-align:left; }
   .vocabulary-table th,.vocabulary-table td { padding:.7rem .8rem; border-bottom:1px solid var(--border); color:var(--text-main); vertical-align:middle; }
-  .vocabulary-table thead th { background:var(--bg-dark,var(--text-main)); color:var(--card-bg); }
-  .vocabulary-table tbody tr:nth-child(even) { background:var(--bg-main,#f8f9fa); }
+  .vocabulary-table thead th { background:var(--bg-dark); color:var(--text-main); }
+  .vocabulary-table tbody tr:nth-child(even) { background:color-mix(in srgb, var(--text-main) 4%, var(--card-bg)); }
   .vocabulary-table tbody tr:last-child th,.vocabulary-table tbody tr:last-child td { border-bottom:0; }
   .audio-example { display:inline-flex; align-items:center; gap:.5rem; }
   .speaker-button { width:34px; height:34px; flex:0 0 auto; border:1px solid var(--border); border-radius:7px; background:var(--card-bg); cursor:pointer; }
-  .speaker-button.is-playing { border-color:var(--accent-gold); background:var(--bg-main,#fff4dc); }
+  .speaker-button.is-playing { border-color:var(--accent-gold); background:color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg)); }
   .pillar-sessions { display:grid; gap:.75rem; }
   .pillar-session { display:grid; gap:.55rem; }
   .pillar-session h2 { margin:0; color:var(--text-main); font-size:1rem; }
   .pillar-links { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.55rem; }
   .pillar-links a { min-height:44px; display:grid; place-items:center; border:1px solid var(--border); border-radius:8px; color:var(--text-main); font-weight:800; text-decoration:none; }
-  .pillar-links a.is-complete { border-color:#3a8b55; background:#eaf6ed; color:#236b38; }
+  .pillar-links a.is-complete { border-color:var(--accent-gold); background:color-mix(in srgb, var(--accent-gold) 14%, var(--card-bg)); color:var(--text-main); }
   @media(max-width:700px) {
     .section-heading { align-items:stretch; flex-direction:column; }
     .primary-link { width:100%; box-sizing:border-box; }
