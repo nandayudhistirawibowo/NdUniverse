@@ -172,6 +172,7 @@ export default function NdBot({
   // ── Kirim pesan ke API ───────────────────────────────────────────────────
   async function sendMessage(event) {
     event.preventDefault();
+    if (isLocked) return;
     const content = input.trim();
     if (!content || isSending) return;
 
