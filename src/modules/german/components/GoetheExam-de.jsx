@@ -517,7 +517,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
           ) : (
             <div class="result-navigation">
               <a class="certificate-link" href={`/sertifikat/goethe/${level.toLowerCase()}`}>Ambil Sertifikat</a>
-              <a class="certificate-link" href="/de/dashboard">Kembali ke Dasbor</a>
+              <a class="certificate-link" href="/dashboard-de">Kembali ke Dasbor</a>
             </div>
           )}
         </section>

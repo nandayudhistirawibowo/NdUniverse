@@ -9,7 +9,7 @@ const sessions = Array.from({ length: Math.ceil(item.data.vocab.length / 5) }, (
 ---
 <DashboardLayout title={`${item.data.judulMateri} | NdUniverse`} description={item.data.deskripsi} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <article class="material-page">
-    <a class="back-link" href={item.data.track === 'Alltagsdeutsch' ? '/de/alltagsdeutsch' : '/de/dashboard'} data-session-back><span aria-hidden="true">←</span> <span>Kembali ke Materi</span></a>
+    <a class="back-link" href="/dashboard-de" data-session-back><span aria-hidden="true">←</span> <span>Kembali ke Dashboard</span></a>
     <header><p class="eyebrow">{item.data.track} · {item.data.level ?? item.data.jurusan}</p><h1>{item.data.judulMateri}</h1><p>{item.data.deskripsi}</p></header>
     {sessions.map((session) => (
       <section class="session-card">
@@ -62,9 +62,6 @@ const sessions = Array.from({ length: Math.ceil(item.data.vocab.length / 5) }, (
       link.onclick = () => {
         const session = new URLSearchParams(window.location.search).get('session');
         if (session) window.sessionStorage.setItem('nduniverse-last-session', session);
-        if (document.referrer && new URL(document.referrer, window.location.origin).pathname.includes('/de/alltagsdeutsch')) {
-          link.href = '/de/alltagsdeutsch';
-        }
       };
     });
   };

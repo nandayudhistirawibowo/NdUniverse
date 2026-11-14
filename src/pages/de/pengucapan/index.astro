@@ -1,9 +1,9 @@
 ---
-import Layout from '@core/ui/Layout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 ---
-<Layout title="Aussprache | NdUniverse" description="Panduan pengucapan bahasa Jerman.">
+<DashboardLayout title="Aussprache | NdUniverse" description="Panduan pengucapan bahasa Jerman." user={Astro.locals.user} profile={Astro.locals.profile}>
   <main class="simple-page">
-    <a href="/de/dashboard" class="back-link">← Kembali ke Dashboard</a>
+    <a href="/dashboard-de" class="back-link">← Kembali ke Dashboard</a>
     <p class="eyebrow">Aussprache</p>
     <h1>Panduan Pengucapan</h1>
     <p>Kenali umlaut, diftong, dan bunyi khas bahasa Jerman.</p>
@@ -23,7 +23,7 @@ import Layout from '@core/ui/Layout.astro';
     </section>
     <a class="full-link" href="/pengucapan">Lihat panduan lengkap →</a>
   </main>
-</Layout>
+</DashboardLayout>
 <script>
   import { playAudioTTS } from '@german/config/german-speech.js';
   document.querySelectorAll<HTMLButtonElement>('[data-speech]').forEach((button) => {

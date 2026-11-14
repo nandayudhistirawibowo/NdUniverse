@@ -1,16 +1,17 @@
 ---
-import Layout from '@core/ui/Layout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 import { getCollection } from 'astro:content';
 
 const hasAlltagsMaterial = (await getCollection('materi')).some((item) => item.data.track === 'Alltagsdeutsch');
 ---
-<Layout title="Ujian Bahasa Jerman | NdUniverse" description="Ujian Goethe dan Mini-Mock bahasa Jerman.">
+<DashboardLayout title="Ujian Bahasa Jerman | NdUniverse" description="Ujian Goethe dan Mini-Mock bahasa Jerman." active="exam" user={Astro.locals.user} profile={Astro.locals.profile}>
   <main class="exam-page">
+    <a class="back-link" href="/dashboard-de">← Kembali ke Dashboard</a>
     <header><p class="eyebrow">Ujian Bahasa Jerman</p><h1>Pilih jenis ujian</h1></header>
     <div class="exam-grid">
       <article><span class="badge">Goethe-Zertifikat</span><h2>Ujian Goethe-Zertifikat</h2><p>4 bagian · Pengatur waktu · Membaca, Menyimak, Menulis, dan Berbicara.</p><a class="exam-link" href="/de/ujian/goethe" aria-disabled={!hasAlltagsMaterial}>Pilih Level Ujian Goethe →</a></article>
       <article><span class="badge">Ujian Simulasi Mini</span><h2>Ujian Simulasi Mini</h2><p>22 soal · Membaca, Menyimak, Menulis, dan Berbicara.</p><a class="exam-link" href="/de/ujian/a1">Mulai Ujian Simulasi Mini A1 →</a></article>
     </div>
   </main>
-</Layout>
-<style>.exam-page{width:min(1100px,100%);margin:0 auto;display:grid;gap:1.5rem}.eyebrow{color:#966313;font-size:.78rem;font-weight:800;text-transform:uppercase}.exam-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.exam-grid article{display:grid;gap:.8rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}.exam-grid h2,.exam-grid p{margin:0}.badge{width:fit-content;padding:.35rem .6rem;border-radius:999px;background:var(--accent-red);color:white;font-size:.75rem;font-weight:800}.exam-link{width:fit-content;min-height:44px;display:inline-flex;align-items:center;padding:.65rem 1rem;border-radius:8px;background:var(--accent-gold);color:#4b3508;font-weight:900;text-decoration:none}@media(max-width:700px){.exam-grid{grid-template-columns:1fr}}</style>
+</DashboardLayout>
+<style>.exam-page{width:min(1100px,100%);margin:0 auto;display:grid;gap:1.5rem}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:var(--accent-gold);font-size:.78rem;font-weight:800;text-transform:uppercase}.exam-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}.exam-grid article{display:grid;gap:.8rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main)}.exam-grid h2,.exam-grid p{margin:0}.badge{width:fit-content;padding:.35rem .6rem;border-radius:999px;background:var(--accent-red);color:var(--text-main);font-size:.75rem;font-weight:800}.exam-link{width:fit-content;min-height:44px;display:inline-flex;align-items:center;padding:.65rem 1rem;border-radius:8px;background:var(--accent-gold);color:var(--bg-dark);font-weight:900;text-decoration:none}@media(max-width:700px){.exam-grid{grid-template-columns:1fr}}</style>

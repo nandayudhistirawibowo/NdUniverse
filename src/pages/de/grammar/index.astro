@@ -1,9 +1,9 @@
 ---
-import Layout from '@core/ui/Layout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 ---
-<Layout title="Grammatik | NdUniverse" description="Ringkasan tata bahasa bahasa Jerman.">
+<DashboardLayout title="Grammatik | NdUniverse" description="Ringkasan tata bahasa bahasa Jerman." user={Astro.locals.user} profile={Astro.locals.profile}>
   <main class="simple-page">
-    <a href="/de/dashboard" class="back-link">← Kembali ke Dashboard</a>
+    <a href="/dashboard-de" class="back-link">← Kembali ke Dashboard</a>
     <p class="eyebrow">Grammatik</p>
     <h1>Tata Bahasa Jerman</h1>
     <p>Panduan singkat untuk membangun kalimat bahasa Jerman.</p>
@@ -18,7 +18,7 @@ import Layout from '@core/ui/Layout.astro';
     </section>
     <a class="full-link" href="/grammar">Lihat panduan lengkap →</a>
   </main>
-</Layout>
+</DashboardLayout>
 <style>
   :global(html:root body){--bg-main:#0b1520;--bg-dark:#071019;--accent-gold:#e5a93b;--accent-red:#d93838;--text-main:#f8fafc;--card-bg:#071019;--muted:rgba(248,250,252,.66);--border:rgba(229,169,59,.28);background:var(--bg-main);color:var(--text-main)}
   .simple-page{display:grid;gap:.9rem;width:min(900px,100%);margin:0 auto}

@@ -85,9 +85,9 @@ const completedMaterials = progressRows.flatMap((row) => {
           <p class="eyebrow">Lanjutkan belajar</p>
           <h2>Saatnya memulai sesi baru.</h2>
           <p>Pilih materi, pelajari kosakata, lalu selesaikan latihan secara bertahap.</p>
-          <a href="/materi"><span>Buka katalog</span> <span aria-hidden="true">→</span></a>
+          <a href="/dashboard-de/katalog"><span>Buka katalog</span> <span aria-hidden="true">→</span></a>
         </div>
-        <a class="welcome-mark" href="/materi" aria-label="Buka katalog materi">
+        <a class="welcome-mark" href="/dashboard-de/katalog" aria-label="Buka katalog materi">
           <svg viewBox="0 0 24 24" aria-hidden="true">
             <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4H18a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6.5A2.5 2.5 0 0 1 4 17.5v-11Z" />
             <path d="M8 8h8M8 12h8M8 16h5" />
@@ -139,10 +139,10 @@ const completedMaterials = progressRows.flatMap((row) => {
             <p class="eyebrow">Jalur Belajar</p>
             <h2 id="learning-title">Pilih ruang belajarmu</h2>
           </div>
-          <a href="/materi"><span>Semua Materi</span> <span aria-hidden="true">→</span></a>
+          <a href="/dashboard-de/katalog"><span>Semua Materi</span> <span aria-hidden="true">→</span></a>
         </div>
         <div class="learning-grid">
-          <a class="learning-card" href="/materi">
+          <a class="learning-card" href="/dashboard-de/katalog">
             <span class="learning-index">01</span>
             <h3>Katalog Materi</h3>
             <p>Jelajahi seluruh materi bahasa Jerman.</p>
@@ -154,7 +154,7 @@ const completedMaterials = progressRows.flatMap((row) => {
             <p>Bangun komunikasi sehari-hari dari A1 sampai C2.</p>
             <span class="learning-arrow" aria-hidden="true">→</span>
           </a>
-          <a class="learning-card" href="/fachdeutsch">
+          <a class="learning-card" href="/dashboard-de/fach">
             <span class="learning-index">03</span>
             <h3>Fachdeutsch</h3>
             <p>Pelajari kosakata sesuai bidang studi.</p>
@@ -192,7 +192,7 @@ const completedMaterials = progressRows.flatMap((row) => {
         {completedMaterials.length > 0 ? (
           <ul class="completed-list">
             {completedMaterials.map((material) => (
-              <li><a href={`/materi/${material.slug}`}>{material.title}<span aria-hidden="true">→</span></a></li>
+              <li><a href={`/dashboard-de/materi/${material.slug}`}>{material.title}<span aria-hidden="true">→</span></a></li>
             ))}
           </ul>
         ) : (
@@ -232,8 +232,8 @@ const completedMaterials = progressRows.flatMap((row) => {
     padding: 0.8rem 1rem;
     border: 1px solid var(--accent-red);
     border-radius: 8px;
-    background: #FCE7E7;
-    color: var(--accent-red);
+    background: color-mix(in srgb, var(--accent-red) 14%, var(--bg-dark));
+    color: var(--text-main);
     font-size: 0.86rem;
     font-weight: 700;
   }
@@ -259,7 +259,7 @@ const completedMaterials = progressRows.flatMap((row) => {
 
   .dashboard-heading > p:last-child {
     margin: 0.6rem 0 0;
-    color: #64748b;
+    color: var(--muted);
   }
 
   .welcome-strip {
@@ -270,7 +270,7 @@ const completedMaterials = progressRows.flatMap((row) => {
     padding: clamp(1.25rem, 3vw, 2rem);
     border-radius: 12px;
     background: var(--bg-dark);
-    color: #e2e8f0;
+    color: var(--text-main);
   }
 
   .welcome-strip .eyebrow {
@@ -279,14 +279,14 @@ const completedMaterials = progressRows.flatMap((row) => {
 
   .welcome-strip h2 {
     margin: 0;
-    color: #fff;
+    color: var(--text-main);
     font-size: clamp(1.35rem, 3vw, 1.9rem);
   }
 
   .welcome-strip p:not(.eyebrow) {
     max-width: 520px;
     margin: 0.6rem 0 0.9rem;
-    color: #b6c5d9;
+    color: var(--muted);
     font-size: 0.9rem;
   }
 
@@ -342,8 +342,8 @@ const completedMaterials = progressRows.flatMap((row) => {
     border: 1px solid var(--accent-gold);
     border-radius: 12px;
     background: var(--bg-dark);
-    color: #F9F9FB;
-    box-shadow: 0 16px 36px rgba(26, 26, 30, 0.13);
+    color: var(--text-main);
+    box-shadow: var(--shadow);
   }
 
   .level-eyebrow {
@@ -356,19 +356,19 @@ const completedMaterials = progressRows.flatMap((row) => {
 
   .level-caption {
     margin: 0 0 0.15rem;
-    color: rgba(249, 249, 251, 0.68);
+    color: var(--muted);
     font-size: 0.8rem;
   }
 
   .level-summary h2 {
     margin: 0;
-    color: #fff;
+    color: var(--text-main);
     font-size: clamp(1.5rem, 2.4vw, 2rem);
   }
 
   .level-points {
     margin: 0.55rem 0 0;
-    color: rgba(249, 249, 251, 0.66);
+    color: var(--muted);
     font-size: 0.76rem;
   }
 
@@ -386,7 +386,7 @@ const completedMaterials = progressRows.flatMap((row) => {
     align-items: center;
     justify-content: space-between;
     gap: 0.75rem;
-    color: rgba(249, 249, 251, 0.82);
+    color: var(--text-main);
     font-size: 0.8rem;
   }
 
@@ -400,7 +400,7 @@ const completedMaterials = progressRows.flatMap((row) => {
     overflow: hidden;
     margin-top: 0.6rem;
     border-radius: 999px;
-    background: rgba(249, 249, 251, 0.15);
+    background: color-mix(in srgb, var(--text-main) 15%, var(--bg-dark));
   }
 
   .level-progress-track span {
@@ -413,7 +413,7 @@ const completedMaterials = progressRows.flatMap((row) => {
 
   .level-next-step > p {
     margin: 0.6rem 0 0;
-    color: rgba(249, 249, 251, 0.68);
+    color: var(--muted);
     font-size: 0.76rem;
     line-height: 1.5;
   }
@@ -472,7 +472,7 @@ const completedMaterials = progressRows.flatMap((row) => {
   }
 
   .completed-list a span {
-    color: #966313;
+    color: var(--accent-gold);
   }
 
   .completed-empty {
@@ -528,7 +528,7 @@ const completedMaterials = progressRows.flatMap((row) => {
     padding: 1rem;
     border: 1px solid var(--border);
     border-radius: 10px;
-    background: #fff;
+    background: var(--card-bg);
     color: var(--text-main);
     text-decoration: none;
     transition: all 0.2s ease;
@@ -541,7 +541,7 @@ const completedMaterials = progressRows.flatMap((row) => {
   }
 
   .learning-index {
-    color: #966313;
+    color: var(--accent-gold);
     font-size: 0.72rem;
     font-weight: 800;
   }
@@ -562,7 +562,7 @@ const completedMaterials = progressRows.flatMap((row) => {
   .learning-arrow {
     align-self: flex-end;
     margin-top: auto;
-    color: #966313;
+    color: var(--accent-gold);
     font-size: 1.1rem;
     font-weight: 800;
   }
@@ -571,14 +571,14 @@ const completedMaterials = progressRows.flatMap((row) => {
     padding: 1.2rem;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: #fff;
+    background: var(--card-bg);
     transition: all 0.2s ease;
   }
 
   .dashboard-card:hover {
     transform: translateY(-5px);
     border-color: var(--accent-gold);
-    box-shadow: 0 12px 26px rgba(26, 26, 30, 0.12);
+    box-shadow: var(--shadow);
   }
 
   .card-icon {
@@ -600,7 +600,7 @@ const completedMaterials = progressRows.flatMap((row) => {
 
   .card-label {
     margin: 0.7rem 0 0.3rem;
-    color: #64748b;
+    color: var(--muted);
     font-size: 0.76rem;
     font-weight: 700;
   }
@@ -614,7 +614,7 @@ const completedMaterials = progressRows.flatMap((row) => {
   .dashboard-card > p:not(.card-label) {
     min-height: 2.8rem;
     margin: 0.55rem 0 0.85rem;
-    color: #64748b;
+    color: var(--muted);
     font-size: 0.84rem;
   }
 

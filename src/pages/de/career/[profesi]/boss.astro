@@ -1,5 +1,5 @@
 ---
-import Layout from '@core/ui/Layout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 import BossFight from '@german/components/BossFight-de.jsx';
 import { getEntry } from 'astro:content';
 const profession = String(Astro.params.profesi ?? '').replace(/(^\w)/, (letter) => letter.toUpperCase());
@@ -7,5 +7,5 @@ const slug = String(Astro.params.profesi ?? '').toLowerCase();
 const entry = await getEntry('career', slug);
 const questions = (entry?.data.boss_questions ?? []).slice(0, 10);
 ---
-<Layout title={`${profession} Interview | NdUniverse`} description="Simulasi wawancara karir bahasa Jerman."><main><a href="/de/career">← Zurück zu Career</a><BossFight client:load profession={profession} questions={questions} returnHref={`/de/career/${slug}`}/></main></Layout>
+<DashboardLayout title={`${profession} Interview | NdUniverse`} description="Simulasi wawancara karir bahasa Jerman." active="career" user={Astro.locals.user} profile={Astro.locals.profile}><main><a class="back-link" href="/dashboard-de">← Kembali ke Dashboard</a><BossFight client:load profession={profession} questions={questions} returnHref="/dashboard-de"/></main></DashboardLayout>
 <style>main{display:grid;gap:1rem;width:min(1100px,100%);margin:0 auto}main>a{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}</style>

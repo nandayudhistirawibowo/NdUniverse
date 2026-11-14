@@ -253,7 +253,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
           {score.passed && (
             <>
               <a href={`/sertifikat/${level.toLowerCase()}`}>Lihat Sertifikat</a>
-              <a href="/dashboard">Kembali ke Dasbor</a>
+              <a href="/dashboard-de">Kembali ke Dasbor</a>
             </>
           )}
         </section>

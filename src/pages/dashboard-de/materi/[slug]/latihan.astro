@@ -30,8 +30,8 @@ const startIndex = (sessionNumber - 1) * batchSize;
   profile={Astro.locals.profile}
 >
   <main class="practice-page">
-    <a class="back-link" href={`/dashboard-de/materi/${item.id}`}>
-      ← Kembali ke Detail Materi
+    <a class="back-link" href="/dashboard-de">
+      ← Kembali ke Dashboard
     </a>
     <header>
       <p class="eyebrow">Latihan Materi</p>
@@ -46,7 +46,7 @@ const startIndex = (sessionNumber - 1) * batchSize;
         track={item.data.track}
         level={item.data.level}
         jurusan={item.data.jurusan}
-        returnHref={`/dashboard-de/materi/${item.id}`}
+        returnHref="/dashboard-de"
         startIndex={startIndex}
         session={sessionNumber}
         batchSize={batchSize}

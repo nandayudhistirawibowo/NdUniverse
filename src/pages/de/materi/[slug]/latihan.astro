@@ -36,7 +36,7 @@ const startIndex = (sessionNumber - 1) * batchSize;
   profile={Astro.locals.profile}
 >
   <main class="practice-page">
-    <a class="back-link" href={`/de/materi/${item.id}`}>← Kembali ke Detail Materi</a>
+    <a class="back-link" href="/dashboard-de">← Kembali ke Dashboard</a>
     <header>
       <p class="eyebrow">Latihan Materi</p>
       <h1>{labels[type]}: {item.data.judulMateri}</h1>
@@ -50,7 +50,7 @@ const startIndex = (sessionNumber - 1) * batchSize;
         track={item.data.track}
         level={item.data.level}
         jurusan={item.data.jurusan}
-        returnHref={`/de/materi/${item.id}`}
+        returnHref="/dashboard-de"
         startIndex={startIndex}
         session={sessionNumber}
         batchSize={batchSize}
@@ -65,7 +65,7 @@ const startIndex = (sessionNumber - 1) * batchSize;
 <style>
   .practice-page { display:grid; gap:1rem; width:min(1000px,100%); margin:0 auto; }
   .back-link { width:fit-content; color:var(--text-main); font-weight:800; text-decoration:none; }
-  header .eyebrow { margin:0; color:#966313; font-size:.78rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  header .eyebrow { margin:0; color:var(--accent-gold); font-size:.78rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
   header h1 { margin:.35rem 0; }
   header > p:last-child { margin:.5rem 0 0; color:var(--muted); }
   .practice-panel { padding:clamp(1rem,3vw,2rem); border:1px solid var(--border); border-radius:10px; background:var(--card-bg); }

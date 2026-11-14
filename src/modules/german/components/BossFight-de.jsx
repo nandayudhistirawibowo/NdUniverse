@@ -280,7 +280,7 @@ export default function BossFight({
                 >{passedInterview ? `Selamat, Anda Lulus Wawancara ${profession}!` : `Anda menyelesaikan wawancara ${profession}.`}</p>
                 <strong>{correctAnswers}/{interviewQuestions.length} pertanyaan memenuhi kata kunci.</strong>
                 {passedInterview && <p>Lencana {badge} berhasil diperoleh.</p>}
-                <a class="boss-return-button" href={returnHref}>Kembali ke Materi Karier</a>
+                <a class="boss-return-button" href={returnHref}>Kembali ke Dashboard</a>
               </div>
             )}
           </div>

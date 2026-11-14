@@ -6,7 +6,7 @@ const materials = await getCollection('materi');
 ---
 <DashboardLayout title="Katalog Materi | NdUniverse" description="Katalog materi bahasa Jerman." active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <section class="catalog-content">
-    <a class="back-link" href="/de/dashboard">← Kembali ke Dashboard</a>
+    <a class="back-link" href="/dashboard-de">← Kembali ke Dashboard</a>
     <header><p class="eyebrow">Katalog Materi</p><h1>Belajar Bahasa Jerman</h1><p>Pilih materi berdasarkan level CEFR.</p></header>
     {levels.map((level) => {
       const items = materials.filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level);

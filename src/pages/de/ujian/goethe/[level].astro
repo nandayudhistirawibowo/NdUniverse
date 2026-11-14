@@ -1,6 +1,6 @@
 ---
 // @ts-nocheck
-import Layout from '@core/ui/Layout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 import GoetheExam from '@german/components/GoetheExam-de.jsx';
 import { getCollection } from 'astro:content';
 
@@ -116,38 +116,40 @@ const available = vocabPool.length > 0
   && speaking.length > 0;
 ---
 
-<Layout title={`Ujian Goethe-Zertifikat ${level} | NdUniverse`} description={`Ujian resmi Goethe-Zertifikat level ${level}.`}>
+<DashboardLayout title={`Ujian Goethe-Zertifikat ${level} | NdUniverse`} description={`Ujian resmi Goethe-Zertifikat level ${level}.`} active="exam" user={Astro.locals.user} profile={Astro.locals.profile}>
   <main class="goethe-shell">
+    <a class="back-link" href="/dashboard-de">← Kembali ke Dashboard</a>
     <GoetheExam client:load level={level} tasks={tasks} available={available} />
   </main>
-</Layout>
+</DashboardLayout>
 
 <style is:global>
-  .goethe-shell { width:min(980px,calc(100% - 2rem)); min-width:0; margin:2rem auto 4rem; }
+  .goethe-shell { width:min(980px,calc(100% - 2rem)); min-width:0; margin:1rem auto 4rem; }
+  .goethe-shell > .back-link { display:inline-flex; margin-bottom:1rem; color:var(--text-main); font-weight:800; text-decoration:none; }
   .goethe-exam { display:grid; gap:1.25rem; }
   .goethe-heading { padding:1.4rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
   .goethe-heading { display:flex; min-width:0; align-items:center; justify-content:space-between; gap:1rem; }
   .goethe-heading > div { min-width:0; }
-  .exam-timer { flex:0 0 auto; min-width:110px; display:grid; gap:.15rem; text-align:center; padding:.65rem .8rem; border:1px solid var(--accent-gold); border-radius:.75rem; background:#fffaf0; }
+  .exam-timer { flex:0 0 auto; min-width:110px; display:grid; gap:.15rem; text-align:center; padding:.65rem .8rem; border:1px solid var(--accent-gold); border-radius:.75rem; background:var(--card-bg); }
   .exam-timer span { font-size:.72rem; font-weight:800; text-transform:uppercase; color:var(--muted); }
-  .exam-timer strong { font-size:1.35rem; color:#966313; font-variant-numeric:tabular-nums; }
+  .exam-timer strong { font-size:1.35rem; color:var(--accent-gold); font-variant-numeric:tabular-nums; }
   .goethe-heading h1 { margin:.15rem 0 .35rem; }
   .goethe-heading p { margin:.25rem 0; color:var(--muted); }
   .module-progress { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
   .module-progress button { display:grid; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:.75rem; background:var(--card-bg); color:var(--text-main); text-align:left; cursor:pointer; }
   .module-progress button.active { border-color:var(--accent-gold); box-shadow:0 0 0 3px rgba(229,169,59,.12); }
   .module-progress strong { font-size:.78rem; color:var(--muted); }
-  .module-track { height:5px; overflow:hidden; border-radius:999px; background:#e8e8e8; }
+  .module-track { height:5px; overflow:hidden; border-radius:999px; background:color-mix(in srgb,var(--text-main) 15%,var(--bg-dark)); }
   .module-track span { display:block; height:100%; border-radius:inherit; background:var(--accent-gold); }
   .module-panel { display:grid; gap:1rem; }
   .module-panel > header { padding:.75rem 0; }
-  .module-panel > header p { margin:0; color:#966313; font-weight:800; text-transform:uppercase; }
+  .module-panel > header p { margin:0; color:var(--accent-gold); font-weight:800; text-transform:uppercase; }
   .module-panel > header h2 { margin:.25rem 0 0; }
   .goethe-task { display:grid; gap:.8rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
   .task-meta { color:var(--muted); font-size:.82rem; font-weight:800; text-transform:uppercase; }
-  .goethe-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); background:#fffaf0; line-height:1.65; overflow-wrap:anywhere; }
+  .goethe-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); background:var(--card-bg); line-height:1.65; overflow-wrap:anywhere; }
   .prompt { margin:0; font-weight:700; overflow-wrap:anywhere; }
-  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
+  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-gold); color:var(--bg-dark); font-weight:800; cursor:pointer; }
   .audio-button:disabled { opacity:.65; cursor:not-allowed; }
   .audio-controls { display:flex; }
   .text-answer small { color:var(--muted); line-height:1.5; }
@@ -158,18 +160,18 @@ const available = vocabPool.length > 0
   .text-answer textarea { width:100%; box-sizing:border-box; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; resize:vertical; font:inherit; }
   .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
   .goethe-result { display:grid; gap:1rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; text-align:center; }
-  .goethe-result.passed { background:#edf8ef; border-color:#9bd0a5; }
-  .goethe-result.failed { background:#fff2f2; border-color:#e6a3a3; }
+  .goethe-result.passed { background:color-mix(in srgb,var(--nd-status-safe) 14%,var(--bg-dark)); border-color:var(--nd-status-safe); }
+  .goethe-result.failed { background:color-mix(in srgb,var(--accent-red) 14%,var(--bg-dark)); border-color:var(--accent-red); }
   .result-label { margin:0; font-size:.78rem; font-weight:900; letter-spacing:.08em; }
   .module-results { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
-  .module-results article { padding:.75rem; border-radius:.65rem; border:1px solid var(--border); background:#fff; }
+  .module-results article { padding:.75rem; border-radius:.65rem; border:1px solid var(--border); background:var(--card-bg); }
   .module-results article p { margin:.25rem 0 0; color:var(--muted); }
-  .module-results article.failed strong { color:#b42318; }
-  .module-results article.passed strong { color:#218838; }
+  .module-results article.failed strong { color:var(--accent-red); }
+  .module-results article.passed strong { color:var(--nd-status-safe); }
   .retry-message { margin:0; font-weight:700; }
   .result-navigation { display:flex; justify-content:center; flex-wrap:wrap; gap:.75rem; }
   .certificate-link { justify-self:center; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
-  .failure-link { background:#966313; }
+  .failure-link { background:var(--accent-gold); }
   @media(max-width:768px) {
     .module-progress,.module-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .options { grid-template-columns:1fr; }

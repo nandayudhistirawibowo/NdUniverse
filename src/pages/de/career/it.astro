@@ -1,5 +1,5 @@
 ---
-import Layout from '@core/ui/Layout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 import CareerQuiz from '@german/components/CareerQuiz-de.jsx';
 import { getEntry } from 'astro:content';
 
@@ -19,9 +19,9 @@ const words = vocab.slice(0, 50).map((word, index) => {
 });
 ---
 
-<Layout title="IT & Software Engineering | Career | siDeutsch" description="Materi dan kuis kosakata IT berbahasa Jerman.">
+<DashboardLayout title="IT & Software Engineering | Career | siDeutsch" description="Materi dan kuis kosakata IT berbahasa Jerman." active="career" user={Astro.locals.user} profile={Astro.locals.profile}>
   <main class="career-profession">
-    <a class="back-link" href="/de/career">← Kembali ke Career</a>
+    <a class="back-link" href="/dashboard-de">← Kembali ke Dashboard</a>
     <header>
       <p class="eyebrow">Career · IT</p>
       <h1>IT &amp; Software Engineering</h1>
@@ -49,18 +49,18 @@ const words = vocab.slice(0, 50).map((word, index) => {
       </article>
     </section>
   </main>
-</Layout>
+</DashboardLayout>
 
 <style>
   .career-profession{display:grid;gap:1rem;width:min(1100px,100%);margin:0 auto}
   .back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}
-  .eyebrow{margin:0;color:#966313;font-size:.72rem;font-weight:800;text-transform:uppercase}
+  .eyebrow{margin:0;color:var(--accent-gold);font-size:.72rem;font-weight:800;text-transform:uppercase}
   header h1{margin:.35rem 0}
   header p:last-child{color:var(--muted)}
   .career-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
   .career-actions article{display:grid;grid-template-columns:auto 1fr;gap:.8rem;padding:1rem;border:1px solid var(--border);border-radius:12px;background:var(--card-bg)}
   .career-actions article>span{font-size:1.6rem}
   .career-actions p{margin:.25rem 0;color:var(--muted)}
-  .career-actions a{grid-column:1/-1;min-height:44px;display:grid;place-items:center;border-radius:8px;background:var(--accent-red);color:#fff;text-decoration:none;font-weight:800}
+  .career-actions a{grid-column:1/-1;min-height:44px;display:grid;place-items:center;border-radius:8px;background:var(--accent-red);color:var(--text-main);text-decoration:none;font-weight:800}
   @media(max-width:700px){.career-profession{padding:0 .25rem}.career-actions{grid-template-columns:1fr}.career-actions a{width:100%;box-sizing:border-box}}
 </style>

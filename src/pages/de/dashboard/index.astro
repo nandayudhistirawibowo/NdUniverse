@@ -78,10 +78,10 @@ const levelMaterials = materials
     </article>
 
     <nav class="shortcut-grid" aria-label="Menu cepat">
-      <a href="/de/materi"><strong>Katalog Materi</strong><span>Jelajahi seluruh materi bahasa Jerman.</span></a>
+      <a href="/dashboard-de/katalog"><strong>Katalog Materi</strong><span>Jelajahi seluruh materi bahasa Jerman.</span></a>
       <a href="/de/ujian"><strong>Ujian Goethe-Zertifikat</strong><span>Mulai ujian Goethe resmi.</span></a>
       <a href="/de/career"><strong>Karier</strong><span>Siapkan karier profesional.</span></a>
-      <a href="/de/dashboard/bookmark"><strong>Penanda Buku</strong><span>Buka kosakata tersimpan</span></a>
+      <a href="/dashboard-de/bookmark"><strong>Penanda Buku</strong><span>Buka kosakata tersimpan</span></a>
     </nav>
   </section>
 </DashboardLayout>
@@ -182,11 +182,11 @@ const levelMaterials = materials
   .dashboard-content { display: grid; gap: 1.25rem; }
   .dashboard-heading h1 { margin: .3rem 0; font-size: clamp(2rem, 4vw, 3rem); }
   .dashboard-heading p:last-child { margin: 0; color: var(--muted); }
-  .eyebrow { color: #966313; font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+  .eyebrow { color: var(--accent-gold); font-size: .78rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
   .level-card { display: grid; gap: .85rem; padding: 1.25rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
   .level-card > div:first-child { display: flex; justify-content: space-between; align-items: baseline; }
-  .level-card strong { color: #966313; font-size: 2rem; }
-  .progress-track { height: 10px; overflow: hidden; border-radius: 999px; background: #e8e5de; }
+  .level-card strong { color: var(--accent-gold); font-size: 2rem; }
+  .progress-track { height: 10px; overflow: hidden; border-radius: 999px; background: color-mix(in srgb, var(--text-main) 15%, var(--bg-dark)); }
   .progress-track span { display: block; width: 25%; height: 100%; background: var(--accent-gold); }
   .level-card small { color: var(--muted); }
   .shortcut-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
