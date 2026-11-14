@@ -10,12 +10,23 @@ const {
   active = '',
   user = null,
   profile = null,
+  userLevel = null,
 } = Astro.props;
 import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
 const accountDashboardHref = isAdmin ? '/admin' : '/en/dashboard';
 const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
+const botUserName = profile?.nama_lengkap
+  || user?.user_metadata?.nama_lengkap
+  || user?.email?.split('@')[0]
+  || 'teman';
+const botLevelFromProfile = profile?.cefr_level || user?.user_metadata?.cefr_level;
+const botUserLevel = typeof userLevel === 'string' && userLevel.trim()
+  ? userLevel.trim()
+  : typeof botLevelFromProfile === 'string' && botLevelFromProfile.trim()
+    ? botLevelFromProfile.trim()
+    : 'A1 Pemula';
 const nimValue = profile?.nim || user?.user_metadata?.nim || '';
 const nim = typeof nimValue === 'string' ? nimValue.trim() : '';
 const hasNim = Boolean(nim && (/^\d+$/.test(nim) || nim !== displayName));
@@ -167,7 +178,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </footer>
       </div>
     </div>
-    {active !== 'exam' && <NdBot client:load mode="study" />}
+    {active !== 'exam' && (
+      <NdBot client:load mode="study" userName={botUserName} userLevel={botUserLevel} />
+    )}
   </body>
 </html>
 

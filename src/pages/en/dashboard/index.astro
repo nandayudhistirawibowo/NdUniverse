@@ -72,6 +72,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
   active="home"
   user={user}
   profile={profile}
+  userLevel={currentLevel.label}
 >
   <section class="dashboard-content">
     {accessDenied && <p class="access-notice" role="alert">Akses Admin ditolak. Akun ini tidak memiliki izin administrator.</p>}

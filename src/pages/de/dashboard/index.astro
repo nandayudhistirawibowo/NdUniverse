@@ -43,7 +43,14 @@ const levelMaterials = materials
   }));
 ---
 
-<DashboardLayout title="Dashboard | NdUniverse" description="Dashboard pembelajaran bahasa Jerman." active="home" user={user} profile={profile}>
+<DashboardLayout
+  title="Dashboard | NdUniverse"
+  description="Dashboard pembelajaran bahasa Jerman."
+  active="home"
+  user={user}
+  profile={profile}
+  userLevel={currentLevel.label}
+>
   <section class="dashboard-content">
     <header class="dashboard-heading">
       <p class="eyebrow">Level Bahasa Jerman</p>

@@ -16,8 +16,14 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 
 // ── Konstanta ───────────────────────────────────────────────────────────────
 
-const WELCOME_MESSAGE =
-  'Halo! Saya NdUniverse Assistant. Ada yang ingin kamu tanyakan tentang materi atau latihan?';
+const STUDY_BUBBLES = [
+  'Eh, masih di sini? Yuk lanjutin sesi berikutnya!',
+  'Butuh bantuan materi? Tanya gua aja!',
+];
+
+function getWelcomeMessage(userName, userLevel) {
+  return `Eh, halo ${userName}! 👋 Lu masih di ${userLevel} nih, mau gua temenin naik ke level berikutnya? Atau lu mau curhat dulu? Gua bisa dua-duanya kok.`;
+}
 
 /** Warna FAB sesuai strike level saat mode ujian aktif */
 const STRIKE_COLORS = {
@@ -99,45 +105,22 @@ function renderAssistantMessage(content) {
   return blocks;
 }
 
-// ── SVG Robot Icon ───────────────────────────────────────────────────────────
-
-function RobotIcon({ faceColor }) {
-  const c = faceColor || '#1A1A1E';
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="none"
-      aria-hidden="true"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      {/* Antena */}
-      <line x1="12" y1="5.5" x2="12" y2="3" stroke={c} strokeWidth="1.6" strokeLinecap="round" />
-      <circle cx="12" cy="2.5" r="1.2" fill={c} />
-      {/* Kepala */}
-      <rect x="6" y="5.5" width="12" height="8" rx="2.5" fill={c} />
-      {/* Mata */}
-      <circle cx="9.5" cy="9.5" r="1.4" fill="white" opacity="0.9" />
-      <circle cx="14.5" cy="9.5" r="1.4" fill="white" opacity="0.9" />
-      {/* Badan */}
-      <rect x="7" y="14.5" width="10" height="6.5" rx="2" fill={c} />
-      {/* Telinga / konektor */}
-      <rect x="4" y="7" width="2" height="4" rx="1" fill={c} />
-      <rect x="18" y="7" width="2" height="4" rx="1" fill={c} />
-    </svg>
-  );
-}
-
 // ── Komponen Utama: NdBot ───────────────────────────────────────────────────
 
-export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
+export default function NdBot({
+  mode = 'study',
+  strikeLevel = 0,
+  userName = 'teman',
+  userLevel = 'A1 Pemula',
+}) {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
   const [isSending, setIsSending] = useState(false);
   const [examFlash, setExamFlash] = useState(false);
+  const [bubbleIndex, setBubbleIndex] = useState(STUDY_BUBBLES.length - 1);
+  const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: WELCOME_MESSAGE },
+    { role: 'assistant', content: getWelcomeMessage(userName, userLevel) },
   ]);
   const messagesEndRef = useRef(null);
 
@@ -151,6 +134,25 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
   useEffect(() => {
     if (isLocked) setIsOpen(false);
   }, [isLocked]);
+
+  useEffect(() => {
+    if (mode !== 'study') {
+      setIsBubbleVisible(false);
+      return undefined;
+    }
+
+    let hideTimer;
+    const bubbleInterval = setInterval(() => {
+      setBubbleIndex((current) => (current + 1) % STUDY_BUBBLES.length);
+      setIsBubbleVisible(true);
+      hideTimer = setTimeout(() => setIsBubbleVisible(false), 3500);
+    }, 15000);
+
+    return () => {
+      clearInterval(bubbleInterval);
+      clearTimeout(hideTimer);
+    };
+  }, [mode]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
@@ -230,7 +232,7 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
 
   // ── Render ───────────────────────────────────────────────────────────────
   return (
-    <div class="ndbot">
+    <div class={`ndbot ndbot--${mode}`}>
       {/* Toast: muncul di exam atau quiz mode saat diklik */}
       <div
         class={`ndbot-exam-toast${examFlash ? ' ndbot-exam-toast--visible' : ''}`}
@@ -241,6 +243,15 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
           ? 'Fokus kerjain kuisnya dulu ya! Nanti kalau udah selesai baru tanya-tanya.'
           : '🔒 Mode Ujian Aktif. Fokus!'}
       </div>
+
+      {mode === 'study' && (
+        <aside
+          class={`ndbot-bubble${isBubbleVisible ? ' is-visible' : ''}`}
+          aria-live="polite"
+        >
+          {STUDY_BUBBLES[bubbleIndex]}
+        </aside>
+      )}
 
       {/* Chat window — hanya di mode study */}
       {!isLocked && isOpen && (
@@ -320,7 +331,21 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
         }
         aria-expanded={!isLocked ? isOpen : undefined}
       >
-        <RobotIcon faceColor={isExamMode ? '#fff' : 'var(--bg-dark)'} />
+        <span class="ndbot-character" aria-hidden="true">
+          <span class="ndbot-antenna" />
+          <span class="ndbot-head">
+            <span class="ndbot-eyes">
+              <i class="ndbot-eye" />
+              <i class="ndbot-eye" />
+            </span>
+            <span class="ndbot-mouth" />
+          </span>
+          <span class="ndbot-body" />
+          <span class="ndbot-arm ndbot-arm--left" />
+          <span class="ndbot-arm ndbot-arm--wave">
+            <span class="ndbot-hand" />
+          </span>
+        </span>
         {/* Badge strike — hanya exam mode & strike > 0 */}
         {isExamMode && clampedStrike > 0 && (
           <span class="ndbot-strike-badge" aria-hidden="true">
@@ -343,6 +368,34 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
           bottom: max(1rem, env(safe-area-inset-bottom));
           font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
           color: var(--ndbot-text);
+        }
+
+        .ndbot--exam { --ndbot-eye-color: var(--ndbot-fab-bg); }
+        .ndbot--quiz { --ndbot-eye-color: var(--accent-gold, #E5A93B); }
+
+        .ndbot-bubble {
+          position: absolute;
+          right: .2rem;
+          bottom: calc(100% + .65rem);
+          width: max-content;
+          max-width: min(250px, calc(100vw - 2.5rem));
+          padding: .6rem .8rem;
+          border: 1px solid var(--ndbot-border);
+          border-radius: .8rem .8rem .2rem .8rem;
+          background: var(--ndbot-surface);
+          color: var(--ndbot-text);
+          font-size: .78rem;
+          font-weight: 700;
+          line-height: 1.4;
+          box-shadow: 0 8px 24px color-mix(in srgb, var(--bg-dark, #1A1A1E) 16%, transparent);
+          opacity: 0;
+          pointer-events: none;
+          transform: translateY(6px) scale(.96);
+          transition: opacity .2s ease, transform .2s ease;
+        }
+        .ndbot-bubble.is-visible {
+          opacity: 1;
+          transform: translateY(0) scale(1);
         }
 
         /* ── Toast exam & quiz ────────────────────────────────────── */
@@ -512,32 +565,143 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
         .ndbot-fab {
           position: relative;
           display: grid;
-          width: 3.5rem;
-          height: 3.5rem;
+          width: 4.75rem;
+          height: 5rem;
           margin-left: auto;
           place-items: center;
           border: 0;
-          border-radius: 50%;
-          background: var(--ndbot-fab-bg);
+          border-radius: 1.5rem;
+          background: transparent;
           color: var(--bg-dark, #1A1A1E);
           cursor: pointer;
-          box-shadow:
-            0 6px 20px color-mix(in srgb, var(--ndbot-fab-ring) 35%, transparent),
-            0 0 0 0 color-mix(in srgb, var(--ndbot-fab-ring) 50%, transparent);
-          transition:
-            background .25s ease,
-            box-shadow .25s ease,
-            transform .15s ease;
+          transition: transform .2s ease, filter .2s ease;
         }
         .ndbot-fab:hover {
-          transform: scale(1.07);
-          box-shadow:
-            0 8px 24px color-mix(in srgb, var(--ndbot-fab-ring) 45%, transparent),
-            0 0 0 4px color-mix(in srgb, var(--ndbot-fab-ring) 20%, transparent);
+          transform: translateY(-2px);
+          filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--ndbot-fab-ring) 40%, transparent));
         }
         .ndbot-fab:focus-visible {
           outline: 3px solid var(--ndbot-fab-bg);
           outline-offset: 3px;
+        }
+
+        .ndbot-character {
+          position: relative;
+          display: block;
+          width: 4.2rem;
+          height: 4.6rem;
+          transform-origin: center bottom;
+          animation: ndbot-breathe 3s ease-in-out infinite;
+        }
+        .ndbot-antenna {
+          position: absolute;
+          top: .05rem;
+          left: 2rem;
+          width: .18rem;
+          height: .5rem;
+          border-radius: 1rem;
+          background: var(--accent-gold, #E5A93B);
+        }
+        .ndbot-antenna::after {
+          position: absolute;
+          top: -.17rem;
+          left: -.13rem;
+          width: .44rem;
+          height: .32rem;
+          border-radius: 50%;
+          background: var(--accent-gold, #E5A93B);
+          content: '';
+        }
+        .ndbot-head {
+          position: absolute;
+          top: .48rem;
+          left: .65rem;
+          display: grid;
+          width: 2.9rem;
+          height: 2.25rem;
+          place-items: center;
+          border: 2px solid var(--accent-gold, #E5A93B);
+          border-radius: .9rem;
+          background: var(--bg-dark, #1A1A1E);
+        }
+        .ndbot-eyes {
+          display: flex;
+          gap: .55rem;
+          transform-origin: center;
+          animation: ndbot-blink 3s ease-in-out infinite;
+        }
+        .ndbot-eye {
+          width: .42rem;
+          height: .42rem;
+          border-radius: 50%;
+          background: var(--ndbot-eye-color, var(--accent-gold, #E5A93B));
+        }
+        .ndbot-mouth {
+          position: absolute;
+          bottom: .34rem;
+          width: .55rem;
+          height: .13rem;
+          border-radius: 1rem;
+          background: var(--accent-gold, #E5A93B);
+        }
+        .ndbot-body {
+          position: absolute;
+          bottom: .05rem;
+          left: 1.05rem;
+          width: 2.1rem;
+          height: 1.65rem;
+          border: 2px solid var(--accent-gold, #E5A93B);
+          border-radius: 1rem 1rem .55rem .55rem;
+          background: var(--bg-dark, #1A1A1E);
+        }
+        .ndbot-arm {
+          position: absolute;
+          z-index: 1;
+          width: .48rem;
+          height: 1.25rem;
+          border: 2px solid var(--accent-gold, #E5A93B);
+          border-radius: 1rem;
+          background: var(--bg-dark, #1A1A1E);
+        }
+        .ndbot-arm--left {
+          top: 2.55rem;
+          left: .55rem;
+          transform: rotate(24deg);
+        }
+        .ndbot-arm--wave {
+          top: 1.05rem;
+          right: .12rem;
+          transform: translateX(10px) rotate(35deg);
+          transform-origin: center bottom;
+          animation: ndbot-wave 5s ease-in-out infinite;
+        }
+        .ndbot-hand {
+          position: absolute;
+          top: -.24rem;
+          left: -.12rem;
+          width: .62rem;
+          height: .5rem;
+          border: 2px solid var(--accent-gold, #E5A93B);
+          border-radius: 50%;
+          background: var(--bg-dark, #1A1A1E);
+        }
+        .ndbot--exam .ndbot-arm--wave,
+        .ndbot--quiz .ndbot-arm--wave { display: none; }
+
+        @keyframes ndbot-breathe {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-3px); }
+        }
+        @keyframes ndbot-blink {
+          0%, 44%, 51%, 100% { transform: scaleY(1); opacity: 1; }
+          47%, 49% { transform: scaleY(.08); opacity: .65; }
+        }
+        @keyframes ndbot-wave {
+          0%, 82%, 100% { opacity: 0; transform: translateX(10px) rotate(35deg); }
+          84% { opacity: 1; transform: translateX(0) rotate(25deg); }
+          86%, 90% { transform: translateX(0) rotate(-24deg); }
+          88%, 92% { transform: translateX(0) rotate(28deg); }
+          94% { opacity: 0; transform: translateX(10px) rotate(35deg); }
         }
 
         /* Pulse animasi untuk exam mode saat strike > 0 */
@@ -604,7 +768,11 @@ export default function NdBot({ mode = 'study', strikeLevel = 0 }) {
         /* Hormat ke prefers-reduced-motion */
         @media (prefers-reduced-motion: reduce) {
           .ndbot-fab--exam { animation: none; }
+          .ndbot-character,
+          .ndbot-eyes,
+          .ndbot-arm--wave { animation: none; }
           .ndbot-exam-toast { transition-duration: .01ms; }
+          .ndbot-bubble { transition-duration: .01ms; }
         }
       `}</style>
     </div>

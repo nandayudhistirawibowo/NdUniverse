@@ -70,6 +70,7 @@ const completedMaterials = progressRows.flatMap((row) => {
   active="home"
   user={user}
   profile={profile}
+  userLevel={currentLevel.label}
 >
   <section class="dashboard-content">
       {accessDenied && <p class="access-notice" role="alert">Akses Admin ditolak. Akun ini tidak memiliki izin administrator.</p>}
