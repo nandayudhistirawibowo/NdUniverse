@@ -7,13 +7,18 @@ const {
   eyebrow = 'Portal Belajar',
   heading = 'Halo! Selamat datang kembali.',
   description = 'Masuk dengan email atau NIM kamu.',
+  seoDescription = description,
+  storyKicker,
+  storyHeading,
+  storyDetail,
+  dashboardPath,
   buttonText = 'Masuk ke Portal',
   language = 'id',
 } = Astro.props;
 const isAdminPortal = portal === 'admin';
 const isEnglish = language === 'en';
 const isGerman = language === 'de';
-const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
+const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashboard-de');
 ---
 
 <!doctype html>
@@ -22,7 +27,7 @@ const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
-    <meta name="description" content={description} />
+    <meta name="description" content={seoDescription} />
     <link rel="icon" href="/favicon.ico" sizes="any" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
@@ -42,15 +47,15 @@ const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
       <section class="auth-story" aria-label={isEnglish ? 'NdUniverse English' : isGerman ? 'NdUniverse German' : 'NdUniverse'}>
         <a class="brand" href="/">NdUniverse<span>.</span></a>
         <div class="story-copy">
-          <p class="story-kicker">{isEnglish ? (isAdminPortal ? 'Restricted access' : 'English learning space') : isGerman ? (isAdminPortal ? 'Zugang beschränkt' : 'MODUL JERMAN') : (isAdminPortal ? 'Akses terbatas' : 'MODUL JERMAN')}</p>
+          <p class="story-kicker">{storyKicker ?? (isEnglish ? (isAdminPortal ? 'Restricted access' : 'English learning space') : isGerman ? (isAdminPortal ? 'Zugang beschränkt' : 'MODUL JERMAN') : (isAdminPortal ? 'Akses terbatas' : 'MODUL JERMAN'))}</p>
           {isAdminPortal && <p class="portal-stamp">{isEnglish ? 'ADMIN PORTAL' : isGerman ? 'ADMIN-BEREICH' : 'PORTAL ADMIN'}</p>}
-          <h1>{isEnglish ? <>Build English,<br />one session closer.</> : isGerman ? <>Deutsch lernen,<br />Sitzung für Sitzung mit NdUniverse.</> : <>Belajar Jerman,<br />satu sesi lebih dekat bersama NdUniverse.</>}</h1>
+          <h1>{storyHeading ?? (isEnglish ? <>Build English,<br />one session closer.</> : isGerman ? <>Deutsch lernen,<br />Sitzung für Sitzung mit NdUniverse.</> : <>Belajar Jerman,<br />satu sesi lebih dekat bersama NdUniverse.</>)}</h1>
           <p class="story-detail">
-            {isEnglish
+            {storyDetail ?? (isEnglish
               ? (isAdminPortal ? 'Manage the NdUniverse learning space and student accounts.' : 'Build a steady English learning habit, one focused session at a time.')
               : isGerman
                 ? (isAdminPortal ? 'Verwalten Sie den NdUniverse-Lernbereich und die Benutzerkonten.' : 'Entwickeln Sie eine beständige Lernroutine, Schritt für Schritt.')
-                : (isAdminPortal ? 'Kelola ruang belajar dan akun mahasiswa NdUniverse.' : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.')}
+                : (isAdminPortal ? 'Kelola ruang belajar dan akun mahasiswa NdUniverse.' : 'Bangun kebiasaan belajar yang terasa ringan, satu sesi setiap kali.'))}
           </p>
         </div>
         <p class="story-footer">{isEnglish ? 'NdUniverse · Learn at your own pace' : isGerman ? 'NdUniverse · Lernen Sie in Ihrem eigenen Tempo' : 'NdUniverse · Belajar dengan ritme sendiri'}</p>
@@ -118,7 +123,7 @@ const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
           </form>
           {!isAdminPortal && (
             <p class="first-login-note">
-              {isEnglish ? 'New account? Enter a new email and password, click Sign in, and an account will be created automatically.' : isGerman ? 'Noch kein Konto? Geben Sie eine neue E-Mail und ein Passwort ein, klicken Sie auf Anmelden, und ein Konto wird automatisch erstellt.' : 'Belum punya akun? Masukkan email dan kata sandi baru, klik Masuk, akun akan dibuat otomatis.'}
+              {isEnglish ? 'New account? Enter a new email and password, click Sign in, and an account will be created automatically.' : isGerman ? 'Noch kein Konto? Geben Sie eine neue E-Mail und ein Passwort ein, klicken Sie auf Anmelden, und ein Konto wird automatisch erstellt.' : 'Belum punya akun? Masukkan email dan kata sandi baru, lalu klik tombol di atas. Akun akan dibuat otomatis.'}
             </p>
           )}
         </div>
@@ -176,7 +181,7 @@ const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
     }
 
     if (!isAdminPortal && !isEmail && !isValidNim) {
-      showMessage(localizedText('Enter a valid email address or an ID with 3-32 characters.', 'Geben Sie eine gültige E-Mail-Adresse oder eine Matrikelnummer mit 3 bis 32 Zeichen ein.', 'Masukkan email yang valid atau NIM 3-32 karakter.'), 'error');
+      showMessage(localizedText('Enter a valid email address or an ID with 3-32 characters.', 'Geben Sie eine gültige E-Mail-Adresse oder eine Matrikelnummer mit 3 bis 32 Zeichen ein.', 'Masukkan email yang valid atau username 3-32 karakter.'), 'error');
       return;
     }
 
@@ -282,7 +287,7 @@ const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
       if (!invalidCredentials || isAdminPortal || isPrivilegedNim) {
         throw new Error(isAdminPortal
           ? localizedText('Admin sign-in failed. Check the admin ID and password.', 'Die Admin-Anmeldung ist fehlgeschlagen. Überprüfen Sie die Admin-Kennung und das Passwort.', 'Login admin gagal. Periksa NIM dan password admin.')
-          : localizedText('Sign-in failed. Check your connection and email or ID format.', 'Die Anmeldung ist fehlgeschlagen. Überprüfen Sie Ihre Verbindung und das Format Ihrer E-Mail-Adresse oder Matrikelnummer.', 'Login gagal. Periksa koneksi dan format email atau NIM.'));
+          : localizedText('Sign-in failed. Check your connection and email or ID format.', 'Die Anmeldung ist fehlgeschlagen. Überprüfen Sie Ihre Verbindung und das Format Ihrer E-Mail-Adresse oder Matrikelnummer.', 'Login gagal. Periksa koneksi dan format email atau username.'));
       }
 
       showMessage(localizedText('Account not found. Creating account...', 'Konto nicht gefunden. Konto wird erstellt...', 'Akun belum ditemukan. Membuat akun...'), 'loading');
@@ -301,7 +306,7 @@ const defaultDashboard = isEnglish ? '/en/dashboard' : '/dashboard-de';
         || /already registered|already exists/i.test(signUpError?.message ?? '')
         || signUpData.user?.identities?.length === 0;
       if (accountAlreadyExists) {
-        throw new Error(localizedText('This email or ID is already registered, but the password is incorrect.', 'Diese E-Mail-Adresse oder Matrikelnummer ist bereits registriert, aber das Passwort ist falsch.', 'Email/NIM sudah terdaftar, tetapi password salah.'));
+        throw new Error(localizedText('This email or ID is already registered, but the password is incorrect.', 'Diese E-Mail-Adresse oder Matrikelnummer ist bereits registriert, aber das Passwort ist falsch.', 'Email atau username sudah terdaftar, tetapi kata sandi salah.'));
       }
       if (signUpError || !signUpData.user) {
         throw new Error(localizedText('Unable to create the account. Check your email and password, then try again.', 'Das Konto konnte nicht erstellt werden. Überprüfen Sie Ihre E-Mail-Adresse und Ihr Passwort und versuchen Sie es erneut.', 'Akun gagal dibuat. Periksa email dan password, lalu coba lagi.'));

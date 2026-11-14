@@ -27,10 +27,10 @@ function getWelcomeMessage(userName, userLevel) {
 
 /** Warna FAB sesuai strike level saat mode ujian aktif */
 const STRIKE_COLORS = {
-  0: { bg: '#22c55e', ring: '#16a34a', label: 'Aman' },
-  1: { bg: '#eab308', ring: '#ca8a04', label: 'Peringatan 1' },
-  2: { bg: '#f97316', ring: '#ea580c', label: 'Peringatan 2' },
-  3: { bg: '#ef4444', ring: '#dc2626', label: 'Bahaya!' },
+  0: { bg: 'var(--nd-status-safe)', ring: 'var(--nd-status-safe-ring)', label: 'Aman' },
+  1: { bg: 'var(--nd-status-warning)', ring: 'var(--nd-status-warning-ring)', label: 'Peringatan 1' },
+  2: { bg: 'var(--nd-status-alert)', ring: 'var(--nd-status-alert-ring)', label: 'Peringatan 2' },
+  3: { bg: 'var(--nd-status-critical)', ring: 'var(--nd-status-critical-ring)', label: 'Bahaya!' },
 };
 
 // ── Helpers: inline markdown renderer ───────────────────────────────────────
@@ -357,11 +357,11 @@ export default function NdBot({
       <style>{`
         /* ── Wrapper ──────────────────────────────────────────────── */
         .ndbot {
-          --ndbot-surface: var(--card-bg, #fff);
-          --ndbot-text: var(--text-main, #2B2D42);
-          --ndbot-border: var(--border, rgba(43,45,66,.13));
-          --ndbot-fab-bg: var(--accent-gold, #E5A93B);
-          --ndbot-fab-ring: var(--primary-hover, #C98D23);
+          --ndbot-surface: var(--card-bg);
+          --ndbot-text: var(--text-main);
+          --ndbot-border: var(--border);
+          --ndbot-fab-bg: var(--accent-gold);
+          --ndbot-fab-ring: var(--primary-hover);
           position: fixed;
           z-index: 9999;
           right: max(1rem, env(safe-area-inset-right));
@@ -371,7 +371,7 @@ export default function NdBot({
         }
 
         .ndbot--exam { --ndbot-eye-color: var(--ndbot-fab-bg); }
-        .ndbot--quiz { --ndbot-eye-color: var(--accent-gold, #E5A93B); }
+        .ndbot--quiz { --ndbot-eye-color: var(--accent-gold); }
 
         .ndbot-bubble {
           position: absolute;
@@ -387,7 +387,7 @@ export default function NdBot({
           font-size: .78rem;
           font-weight: 700;
           line-height: 1.4;
-          box-shadow: 0 8px 24px color-mix(in srgb, var(--bg-dark, #1A1A1E) 16%, transparent);
+          box-shadow: 0 8px 24px color-mix(in srgb, var(--bg-dark) 16%, transparent);
           opacity: 0;
           pointer-events: none;
           transform: translateY(6px) scale(.96);
@@ -407,13 +407,13 @@ export default function NdBot({
           max-width: min(300px, calc(100vw - 2.5rem));
           padding: .65rem .95rem;
           border-radius: .7rem;
-          background: var(--bg-dark, #1A1A1E);
-          color: #fff;
+          background: var(--bg-dark);
+          color: var(--text-main);
           font-size: .82rem;
           font-weight: 700;
           line-height: 1.4;
           letter-spacing: .01em;
-          box-shadow: 0 6px 20px rgba(0,0,0,.22);
+          box-shadow: 0 6px 20px color-mix(in srgb, var(--bg-dark) 22%, transparent);
           pointer-events: none;
           opacity: 0;
           transform: translateY(6px) scale(.95);
@@ -437,7 +437,7 @@ export default function NdBot({
           border: 1px solid var(--ndbot-border);
           border-radius: 1rem;
           background: var(--ndbot-surface);
-          box-shadow: 0 16px 48px color-mix(in srgb, var(--bg-dark, #1A1A1E) 24%, transparent);
+          box-shadow: 0 16px 48px color-mix(in srgb, var(--bg-dark) 24%, transparent);
         }
 
         /* ── Header ───────────────────────────────────────────────── */
@@ -447,8 +447,8 @@ export default function NdBot({
           justify-content: space-between;
           gap: .75rem;
           padding: .9rem 1rem;
-          background: var(--bg-dark, #1A1A1E);
-          color: var(--accent-gold, #E5A93B);
+          background: var(--bg-dark);
+          color: var(--accent-gold);
         }
         .ndbot-header div { display: grid; gap: .15rem; }
         .ndbot-header span { font-size: .75rem; opacity: .82; color: inherit; }
@@ -466,7 +466,7 @@ export default function NdBot({
           cursor: pointer;
           line-height: 1;
         }
-        .ndbot-close:hover { background: rgba(255,255,255,.12); }
+        .ndbot-close:hover { background: color-mix(in srgb, var(--text-main) 12%, transparent); }
 
         /* ── Messages ─────────────────────────────────────────────── */
         .ndbot-messages {
@@ -498,13 +498,13 @@ export default function NdBot({
         }
         .ndbot-message--user {
           align-self: flex-end;
-          background: var(--accent-gold, #E5A93B);
-          color: var(--bg-dark, #1A1A1E);
+          background: var(--accent-gold);
+          color: var(--bg-dark);
         }
         .ndbot-status {
           align-self: flex-start;
           margin: 0;
-          color: var(--muted, #6B7280);
+          color: var(--muted);
           font-size: .8rem;
         }
 
@@ -516,13 +516,13 @@ export default function NdBot({
           padding: .55rem .8rem;
           border: 0;
           border-radius: .55rem;
-          background: #128c7e;
-          color: #fff;
+          background: var(--nd-whatsapp-bg);
+          color: var(--text-main);
           font: inherit;
           font-weight: 700;
           cursor: pointer;
         }
-        .ndbot-whatsapp:hover { background: #0e7265; }
+        .ndbot-whatsapp:hover { background: var(--nd-whatsapp-hover); }
 
         /* ── Form ─────────────────────────────────────────────────── */
         .ndbot-form {
@@ -544,22 +544,22 @@ export default function NdBot({
           font-size: 16px; /* cegah iOS zoom */
         }
         .ndbot-form input:focus-visible {
-          outline: 2px solid var(--accent-gold, #E5A93B);
+          outline: 2px solid var(--accent-gold);
           outline-offset: 1px;
         }
         .ndbot-form button {
           padding: 0 .85rem;
           border: 0;
           border-radius: .6rem;
-          background: var(--accent-gold, #E5A93B);
-          color: var(--bg-dark, #1A1A1E);
+          background: var(--accent-gold);
+          color: var(--bg-dark);
           font: inherit;
           font-weight: 700;
           cursor: pointer;
           min-height: 40px;
         }
         .ndbot-form button:disabled { opacity: .5; cursor: not-allowed; }
-        .ndbot-form button:not(:disabled):hover { background: var(--primary-hover, #C98D23); }
+        .ndbot-form button:not(:disabled):hover { background: var(--primary-hover); }
 
         /* ── FAB ──────────────────────────────────────────────────── */
         .ndbot-fab {
@@ -572,7 +572,7 @@ export default function NdBot({
           border: 0;
           border-radius: 1.5rem;
           background: transparent;
-          color: var(--bg-dark, #1A1A1E);
+          color: var(--bg-dark);
           cursor: pointer;
           transition: transform .2s ease, filter .2s ease;
         }
@@ -600,7 +600,7 @@ export default function NdBot({
           width: .18rem;
           height: .5rem;
           border-radius: 1rem;
-          background: var(--accent-gold, #E5A93B);
+          background: var(--accent-gold);
         }
         .ndbot-antenna::after {
           position: absolute;
@@ -609,7 +609,7 @@ export default function NdBot({
           width: .44rem;
           height: .32rem;
           border-radius: 50%;
-          background: var(--accent-gold, #E5A93B);
+          background: var(--accent-gold);
           content: '';
         }
         .ndbot-head {
@@ -620,9 +620,9 @@ export default function NdBot({
           width: 2.9rem;
           height: 2.25rem;
           place-items: center;
-          border: 2px solid var(--accent-gold, #E5A93B);
+          border: 2px solid var(--accent-gold);
           border-radius: .9rem;
-          background: var(--bg-dark, #1A1A1E);
+          background: var(--bg-dark);
         }
         .ndbot-eyes {
           display: flex;
@@ -634,7 +634,7 @@ export default function NdBot({
           width: .42rem;
           height: .42rem;
           border-radius: 50%;
-          background: var(--ndbot-eye-color, var(--accent-gold, #E5A93B));
+          background: var(--ndbot-eye-color, var(--accent-gold));
         }
         .ndbot-mouth {
           position: absolute;
@@ -642,7 +642,7 @@ export default function NdBot({
           width: .55rem;
           height: .13rem;
           border-radius: 1rem;
-          background: var(--accent-gold, #E5A93B);
+          background: var(--accent-gold);
         }
         .ndbot-body {
           position: absolute;
@@ -650,18 +650,18 @@ export default function NdBot({
           left: 1.05rem;
           width: 2.1rem;
           height: 1.65rem;
-          border: 2px solid var(--accent-gold, #E5A93B);
+          border: 2px solid var(--accent-gold);
           border-radius: 1rem 1rem .55rem .55rem;
-          background: var(--bg-dark, #1A1A1E);
+          background: var(--bg-dark);
         }
         .ndbot-arm {
           position: absolute;
           z-index: 1;
           width: .48rem;
           height: 1.25rem;
-          border: 2px solid var(--accent-gold, #E5A93B);
+          border: 2px solid var(--accent-gold);
           border-radius: 1rem;
-          background: var(--bg-dark, #1A1A1E);
+          background: var(--bg-dark);
         }
         .ndbot-arm--left {
           top: 2.55rem;
@@ -681,9 +681,9 @@ export default function NdBot({
           left: -.12rem;
           width: .62rem;
           height: .5rem;
-          border: 2px solid var(--accent-gold, #E5A93B);
+          border: 2px solid var(--accent-gold);
           border-radius: 50%;
-          background: var(--bg-dark, #1A1A1E);
+          background: var(--bg-dark);
         }
         .ndbot--exam .ndbot-arm--wave,
         .ndbot--quiz .ndbot-arm--wave { display: none; }
@@ -742,9 +742,9 @@ export default function NdBot({
           height: 1.15rem;
           place-items: center;
           border-radius: 50%;
-          background: #1A1A1E;
+          background: var(--bg-dark);
           border: 2px solid var(--ndbot-fab-bg);
-          color: #fff;
+          color: var(--text-main);
           font-size: .62rem;
           font-weight: 800;
           line-height: 1;
@@ -768,9 +768,6 @@ export default function NdBot({
         /* Hormat ke prefers-reduced-motion */
         @media (prefers-reduced-motion: reduce) {
           .ndbot-fab--exam { animation: none; }
-          .ndbot-character,
-          .ndbot-eyes,
-          .ndbot-arm--wave { animation: none; }
           .ndbot-exam-toast { transition-duration: .01ms; }
           .ndbot-bubble { transition-duration: .01ms; }
         }
