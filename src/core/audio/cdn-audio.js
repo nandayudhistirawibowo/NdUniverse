@@ -74,3 +74,29 @@ export async function resolveCdnAudioUrl(audioPath) {
     .map((segment) => encodeURIComponent(segment))
     .join('/')}`;
 }
+
+export async function resolveEnglishTtsAudioUrl(text, accent = 'us') {
+  const spokenText = String(text ?? '').replace(/\s+/g, ' ').trim();
+  if (!spokenText || typeof window === 'undefined' || !globalThis.crypto?.subtle) return null;
+
+  const locale = accent === 'uk' ? 'gb' : 'us';
+  try {
+    const digest = await globalThis.crypto.subtle.digest(
+      'SHA-256',
+      new TextEncoder().encode(spokenText),
+    );
+    const textHash = [...new Uint8Array(digest)]
+      .map((byte) => byte.toString(16).padStart(2, '0'))
+      .join('');
+    const audioKey = `tts-en-${locale}/${textHash}-${locale}.mp3`;
+    const manifest = await getCdnManifest();
+    const indexedUrl = manifest?.[audioKey];
+
+    return typeof indexedUrl === 'string' && indexedUrl.startsWith(`${AUDIO_REPO_BASE}/`)
+      ? indexedUrl
+      : null;
+  } catch (error) {
+    console.error('Unable to resolve hashed English TTS audio.', error);
+    return null;
+  }
+}

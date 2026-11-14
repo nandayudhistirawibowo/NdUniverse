@@ -4,7 +4,6 @@ import hashlib
 import json
 import os
 import re
-import time
 from pathlib import Path
 
 import edge_tts
@@ -18,6 +17,11 @@ except ImportError:
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTENT_ROOT = ROOT / "src" / "modules" / "english" / "content"
+CDN_MANIFEST_PATH = ROOT / "manifest-cdn.json"
+CDN_AUDIO_BASE = (
+    "https://cdn.jsdelivr.net/gh/"
+    "nandayudhistirawibowo/nduniverse-audio@main/audio"
+)
 OUTPUTS = {
     "us": {
         "voice": os.environ.get("EDGE_TTS_EN_US_VOICE", "en-US-AriaNeural"),
@@ -40,6 +44,7 @@ SPOKEN_FIELDS = {
 }
 MAX_ATTEMPTS = 3
 INITIAL_RETRY_DELAY = 5
+MAX_CONCURRENT_DOWNLOADS = 10
 
 
 def get_frontmatter(path):
@@ -81,19 +86,19 @@ def collect_exam_transcript_words(exam, texts):
 
 
 def content_groups():
-    groups = {"us": set(), "gb": set()}
+    texts = set()
     for path in sorted(CONTENT_ROOT.rglob("*.md")):
-        relative = path.relative_to(CONTENT_ROOT)
-        accent = "gb" if relative.parts[:2] == ("exam", "ielts") else "us"
         content = get_frontmatter(path)
-        collect_spoken_texts(content, groups[accent])
-        if relative.parts and relative.parts[0] == "exam":
-            collect_exam_transcript_words(content, groups[accent])
-    return groups
+        collect_spoken_texts(content, texts)
+        if path.relative_to(CONTENT_ROOT).parts[0] == "exam":
+            collect_exam_transcript_words(content, texts)
+    return {accent: set(texts) for accent in OUTPUTS}
 
 
-def audio_filename(text):
-    return f"{hashlib.sha256(text.encode('utf-8')).hexdigest()}.mp3"
+def audio_filename(text, accent):
+    normalized_text = re.sub(r"\s+", " ", text).strip()
+    text_hash = hashlib.sha256(normalized_text.encode("utf-8")).hexdigest()
+    return f"{text_hash}-{accent}.mp3"
 
 
 async def generate_audio(text, output_path, voice):
@@ -123,10 +128,20 @@ async def generate_audio(text, output_path, voice):
 def write_manifest(path, manifest):
     temporary_path = path.with_suffix(f".json.{os.getpid()}.tmp")
     temporary_path.write_text(
-        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n",
+        json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
     temporary_path.replace(path)
+
+
+def read_cdn_manifest():
+    if not CDN_MANIFEST_PATH.is_file():
+        return {}
+
+    manifest = json.loads(CDN_MANIFEST_PATH.read_text(encoding="utf-8"))
+    if not isinstance(manifest, dict):
+        raise ValueError(f"CDN manifest must be a path-to-URL mapping: {CDN_MANIFEST_PATH}")
+    return manifest
 
 
 def log_failure(accent, text, error):
@@ -145,14 +160,15 @@ async def main(dry_run, limit):
             print(f"{accent.upper()}: {len(texts)} unique text(s), voice {settings['voice']}.")
             directory = settings["directory"]
             missing_count += sum(
-                not (directory / audio_filename(text)).is_file()
-                or (directory / audio_filename(text)).stat().st_size == 0
+                not (directory / audio_filename(text, accent)).is_file()
+                or (directory / audio_filename(text, accent)).stat().st_size == 0
                 for text in texts
             )
         planned_count = missing_count if limit is None else min(missing_count, limit)
         print(f"Dry run: would attempt {planned_count} missing MP3 file(s); no audio generated.")
         return
 
+    cdn_manifest = read_cdn_manifest()
     for accent, settings in OUTPUTS.items():
         texts = sorted(groups[accent])
         print(f"{accent.upper()}: {len(texts)} unique text(s), voice {settings['voice']}.")
@@ -169,11 +185,13 @@ async def main(dry_run, limit):
 
         pending_texts = []
         for text in texts:
-            filename = audio_filename(text)
+            filename = audio_filename(text, accent)
             output_path = directory / filename
             audio_path = f"/audio/{directory.name}/{filename}"
             if output_path.is_file() and output_path.stat().st_size > 0:
                 manifest[text] = audio_path
+                relative_audio_path = f"{directory.name}/{filename}"
+                cdn_manifest[relative_audio_path] = f"{CDN_AUDIO_BASE}/{relative_audio_path}"
             else:
                 pending_texts.append(text)
 
@@ -183,25 +201,52 @@ async def main(dry_run, limit):
         elif remaining == 0 and limit is not None:
             print(f"Batch limit reached after {attempts} attempted download(s).")
 
-        progress = tqdm(pending_texts, desc="Downloading TTS", unit="file") if tqdm else pending_texts
-        for index, text in enumerate(progress, start=1):
-            filename = audio_filename(text)
+        semaphore = asyncio.Semaphore(MAX_CONCURRENT_DOWNLOADS)
+
+        async def download_one(text):
+            filename = audio_filename(text, accent)
             output_path = directory / filename
-            audio_path = f"/audio/{directory.name}/{filename}"
-            attempts += 1
-            error = await generate_audio(text, output_path, settings["voice"])
-            if error is not None:
-                log_failure(accent, text, error)
-                manifest.pop(text, None)
-                print(f"Skipping failed {accent.upper()} text; logged to error_log.txt.")
-            else:
-                manifest[text] = audio_path
-                time.sleep(0.01)
-            if tqdm is None and (index % 100 == 0 or index == len(pending_texts)):
-                print(f"Downloading TTS: {index}/{len(pending_texts)} files.")
+            async with semaphore:
+                error = await generate_audio(text, output_path, settings["voice"])
+            return text, filename, error
+
+        progress = tqdm(
+            total=len(pending_texts),
+            desc="Downloading TTS",
+            unit="file",
+        ) if tqdm else None
+        try:
+            for start in range(0, len(pending_texts), MAX_CONCURRENT_DOWNLOADS):
+                batch = pending_texts[start:start + MAX_CONCURRENT_DOWNLOADS]
+                results = await asyncio.gather(*(download_one(text) for text in batch))
+                attempts += len(batch)
+
+                for text, filename, error in results:
+                    audio_path = f"/audio/{directory.name}/{filename}"
+                    if error is not None:
+                        log_failure(accent, text, error)
+                        manifest.pop(text, None)
+                        print(f"Skipping failed {accent.upper()} text; logged to error_log.txt.")
+                    else:
+                        manifest[text] = audio_path
+                        relative_audio_path = f"{directory.name}/{filename}"
+                        cdn_manifest[relative_audio_path] = (
+                            f"{CDN_AUDIO_BASE}/{relative_audio_path}"
+                        )
+
+                if progress:
+                    progress.update(len(batch))
+                elif batch:
+                    completed = start + len(batch)
+                    if completed % 100 == 0 or completed == len(pending_texts):
+                        print(f"Downloading TTS: {completed}/{len(pending_texts)} files.")
+        finally:
+            if progress:
+                progress.close()
 
         write_manifest(manifest_path, manifest)
 
+    write_manifest(CDN_MANIFEST_PATH, cdn_manifest)
     print(f"Run complete: {attempts} missing MP3 file(s) attempted.")
 
 

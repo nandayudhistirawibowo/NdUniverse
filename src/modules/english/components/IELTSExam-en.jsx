@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
-import { playAudioTTS } from '@german/config/german-speech.js';
+import { playAudioTTS } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
@@ -188,7 +188,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     if (playedAudio[audioKey] || result) return;
     playSound('click');
     setPlayedAudio((current) => ({ ...current, [audioKey]: true }));
-    playAudioTTS(task.audio, event.currentTarget, task.audioFallback || task.audio);
+    playAudioTTS(task.audio, 'uk', event.currentTarget, task.audioFallback || task.audio);
   };
 
   const submitExam = () => {

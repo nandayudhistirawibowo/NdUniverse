@@ -205,6 +205,7 @@ export default function Quiz(props) {
   );
   const [xp, setXp] = useState(0);
   const [sessionXp, setSessionXp] = useState(0);
+  const [audioAccent, setAudioAccent] = useState('us');
   const [lives, setLives] = useState(3);
   const [sessionInitialized, setSessionInitialized] = useState(!sessionMode);
   const currentBatchItems = useMemo(
@@ -253,6 +254,15 @@ export default function Quiz(props) {
   const finalizedXpRef = useRef(false);
   const completedSessionsRef = useRef([]);
   const hasAnsweredRef = useRef(false);
+
+  useEffect(() => {
+    try {
+      const savedAccent = window.localStorage.getItem('nd-audio-accent');
+      if (savedAccent === 'us' || savedAccent === 'uk') setAudioAccent(savedAccent);
+    } catch (error) {
+      console.error('Unable to load the saved English audio accent.', error);
+    }
+  }, []);
 
   function queueProgressUpdate(updates) {
     if (!materialId) return;
@@ -764,26 +774,40 @@ export default function Quiz(props) {
     recognition.start();
   }
 
-  function playListeningAudio(event) {
+  function getListeningAudioSource() {
     const audioSource = currentQuestion?.listening_audio?.trim()
       || currentQuestion?.context?.trim()
       || currentQuestion?.german?.trim();
-    if (!audioSource) return;
+    return audioSource;
+  }
 
-    if (/^(\/|https?:\/\/)/i.test(audioSource)) {
-      const button = event.currentTarget;
-      button.classList.add('is-playing');
-      if (typeof Audio === 'undefined') return;
-      const audio = new Audio(audioSource);
-      audio.onended = () => button.classList.remove('is-playing');
-      audio.onerror = () => {
-        button.classList.remove('is-playing');
-      };
-      audio.play().catch(() => button.classList.remove('is-playing'));
-      return;
+  function changeAudioAccent(accent) {
+    setAudioAccent(accent);
+    try {
+      window.localStorage.setItem('nd-audio-accent', accent);
+    } catch (error) {
+      console.error('Unable to save the English audio accent.', error);
     }
 
-    playAudioTTS(audioSource, 'us', event.currentTarget);
+    const audioSource = currentQuestion?.type === 'listening'
+      ? getListeningAudioSource()
+      : '';
+    if (audioSource) {
+      const fallbackText = currentQuestion?.context?.trim()
+        || currentQuestion?.german?.trim()
+        || audioSource;
+      void playAudioTTS(audioSource, accent, null, fallbackText);
+    }
+  }
+
+  function playListeningAudio(event) {
+    const audioSource = getListeningAudioSource();
+    if (!audioSource) return;
+
+    const fallbackText = currentQuestion?.context?.trim()
+      || currentQuestion?.german?.trim()
+      || audioSource;
+    void playAudioTTS(audioSource, audioAccent, event.currentTarget, fallbackText);
   }
 
   function addArrangeToken(index) {
@@ -868,6 +892,22 @@ export default function Quiz(props) {
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" /></svg>
           <span>XP sesi: {sessionXp} · Total: {xp}</span>
         </span>
+        <div className="audio-accent-toggle" role="group" aria-label="Aksen audio">
+          <button
+            type="button"
+            aria-pressed={audioAccent === 'us'}
+            onClick={() => changeAudioAccent('us')}
+          >
+            🇺🇸 US
+          </button>
+          <button
+            type="button"
+            aria-pressed={audioAccent === 'uk'}
+            onClick={() => changeAudioAccent('uk')}
+          >
+            🇬🇧 UK
+          </button>
+        </div>
         <div className="game-controls">
           <div className="hearts" role="img" aria-label={`Nyawa: ${lives} dari 3`}>
             {Array.from({ length: 3 }, (_, index) => (
@@ -1364,6 +1404,36 @@ export default function Quiz(props) {
             stroke-width: 1.8;
             stroke-linecap: round;
             stroke-linejoin: round;
+          }
+
+          .audio-accent-toggle {
+            display: inline-flex;
+            gap: 0.2rem;
+            padding: 0.2rem;
+            border: 1px solid var(--border);
+            border-radius: 0.6rem;
+            background: var(--card-bg);
+          }
+
+          .audio-accent-toggle button {
+            min-height: 32px;
+            padding: 0.35rem 0.55rem;
+            border: 1px solid transparent;
+            border-radius: 0.4rem;
+            background: transparent;
+            color: var(--text-main);
+            font: inherit;
+            cursor: pointer;
+          }
+
+          .audio-accent-toggle button[aria-pressed="true"] {
+            border-color: var(--accent-gold);
+            background: var(--bg-main, #fff4dc);
+          }
+
+          .audio-accent-toggle button:focus-visible {
+            outline: 2px solid var(--accent-gold);
+            outline-offset: 2px;
           }
 
           .game-controls {

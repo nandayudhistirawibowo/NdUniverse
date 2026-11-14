@@ -112,6 +112,49 @@ const pronounExamples = [
   { sentence: 'Your bag is here.', meaning: 'Tasmu ada di sini.' },
   { sentence: 'Their house is big.', meaning: 'Rumah mereka besar.' },
 ];
+
+const demonstratives = [
+  { word: 'This', distance: 'Dekat', number: 'Tunggal', meaning: 'ini' },
+  { word: 'That', distance: 'Jauh', number: 'Tunggal', meaning: 'itu' },
+  { word: 'These', distance: 'Dekat', number: 'Jamak', meaning: 'ini' },
+  { word: 'Those', distance: 'Jauh', number: 'Jamak', meaning: 'itu' },
+];
+
+const demonstrativeExamples = [
+  { sentence: 'This is my book.', meaning: 'Ini buku saya.' },
+  { sentence: 'That is your bag.', meaning: 'Itu tasmu.' },
+  { sentence: 'These are fresh apples.', meaning: 'Apel-apel ini segar.' },
+  { sentence: 'Those are your shoes.', meaning: 'Sepatu-sepatu itu milikmu.' },
+];
+
+const questionWords = [
+  { word: 'What', meaning: 'Apa' },
+  { word: 'Where', meaning: 'Di mana' },
+  { word: 'When', meaning: 'Kapan' },
+  { word: 'Who', meaning: 'Siapa' },
+  { word: 'Why', meaning: 'Kenapa' },
+  { word: 'How', meaning: 'Bagaimana' },
+];
+
+const questionExamples = [
+  { statement: 'You are tired.', question: 'Are you tired?', meaning: 'Kamu lelah? / Apakah kamu lelah?' },
+  { statement: 'He is a doctor.', question: 'Is he a doctor?', meaning: 'Dia seorang dokter? / Apakah dia seorang dokter?' },
+  { statement: 'They are at home.', question: 'Where are they?', meaning: 'Mereka di rumah. / Di mana mereka?' },
+];
+
+const quantityWords = [
+  { word: 'Many', usage: 'Benda yang bisa dihitung', example: 'apples' },
+  { word: 'Much', usage: 'Benda yang tidak bisa dihitung', example: 'water' },
+  { word: 'Some', usage: 'Kalimat positif', example: 'some rice' },
+  { word: 'Any', usage: 'Kalimat negatif atau pertanyaan', example: 'any money' },
+];
+
+const quantityExamples = [
+  { sentence: 'I have many apples.', meaning: 'Saya punya banyak apel.' },
+  { sentence: 'There is much water.', meaning: 'Ada banyak air.' },
+  { sentence: 'We have some rice.', meaning: 'Kami punya sedikit nasi.' },
+  { sentence: 'Do you have any money?', meaning: 'Apa kamu punya uang?' },
+];
 ---
 
 <Layout
@@ -353,6 +396,161 @@ const pronounExamples = [
 
       <div class="article-grid">
         {pronounExamples.map(({ sentence, meaning }) => (
+          <article class="article-card">
+            <div class="example-with-speech">
+              <span lang="en">{sentence}</span>
+              <button class="speaker-button" type="button" data-speak={sentence}
+                aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
+                <span aria-hidden="true">🔊</span>
+              </button>
+            </div>
+            <p class="card-description">{meaning}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section" aria-labelledby="demonstratives-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">07 / Penunjuk Benda</p>
+          <h2 id="demonstratives-heading">Demonstratives: This, That, These, Those</h2>
+        </div>
+        <p class="section-note">
+          Dalam bahasa Indonesia, “ini” dan “itu” tidak berubah untuk benda tunggal
+          atau jamak. Dalam bahasa Inggris, “this/that” berubah menjadi “these/those”
+          untuk benda jamak.
+        </p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel demonstratives" tabindex="0">
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th scope="col">Kata</th>
+              <th scope="col">Jarak</th>
+              <th scope="col">Jumlah</th>
+              <th scope="col">Arti</th>
+            </tr>
+          </thead>
+          <tbody>
+            {demonstratives.map(({ word, distance, number, meaning }) => (
+              <tr>
+                <th scope="row" class="row-heading" lang="en">{word}</th>
+                <td>{distance}</td>
+                <td>{number}</td>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-grid">
+        {demonstrativeExamples.map(({ sentence, meaning }) => (
+          <article class="article-card">
+            <div class="example-with-speech">
+              <span lang="en">{sentence}</span>
+              <button class="speaker-button" type="button" data-speak={sentence}
+                aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
+                <span aria-hidden="true">🔊</span>
+              </button>
+            </div>
+            <p class="card-description">{meaning}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section" aria-labelledby="questions-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">08 / Kalimat Tanya</p>
+          <h2 id="questions-heading">WH-Questions</h2>
+        </div>
+        <p class="section-note">
+          Dalam bahasa Indonesia, kata tanya sering ditambahkan tanpa membalik
+          urutan subjek dan predikat. Dalam bahasa Inggris, “to be” atau kata
+          bantu biasanya berpindah ke depan subjek: “You are” menjadi “Are you”.
+        </p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Daftar kata tanya bahasa Inggris" tabindex="0">
+        <table class="guide-table">
+          <thead>
+            <tr><th scope="col">Kata tanya</th><th scope="col">Arti</th></tr>
+          </thead>
+          <tbody>
+            {questionWords.map(({ word, meaning }) => (
+              <tr>
+                <th scope="row" class="row-heading" lang="en">{word}</th>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-grid">
+        {questionExamples.map(({ statement, question, meaning }) => (
+          <article class="article-card">
+            <div class="example-with-speech">
+              <span lang="en">{statement}</span>
+              <button class="speaker-button" type="button" data-speak={statement}
+                aria-label={`Dengarkan ${statement}`} title={`Dengarkan ${statement}`}>
+                <span aria-hidden="true">🔊</span>
+              </button>
+            </div>
+            <div class="example-with-speech">
+              <span lang="en">{question}</span>
+              <button class="speaker-button" type="button" data-speak={question}
+                aria-label={`Dengarkan ${question}`} title={`Dengarkan ${question}`}>
+                <span aria-hidden="true">🔊</span>
+              </button>
+            </div>
+            <p class="card-description">{meaning}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section" aria-labelledby="quantity-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">09 / Hitung Benda</p>
+          <h2 id="quantity-heading">Countable dan Uncountable</h2>
+        </div>
+        <p class="section-note">
+          Bahasa Indonesia memakai “banyak” untuk apel maupun air. Dalam bahasa
+          Inggris, gunakan “many” untuk benda yang bisa dihitung dan “much” untuk
+          benda yang tidak bisa dihitung. “Some” umum dipakai di kalimat positif;
+          “any” di kalimat negatif atau pertanyaan.
+        </p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel many, much, some, dan any" tabindex="0">
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th scope="col">Kata</th>
+              <th scope="col">Penggunaan</th>
+              <th scope="col">Contoh benda</th>
+            </tr>
+          </thead>
+          <tbody>
+            {quantityWords.map(({ word, usage, example }) => (
+              <tr>
+                <th scope="row" class="row-heading" lang="en">{word}</th>
+                <td>{usage}</td>
+                <td lang="en">{example}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-grid">
+        {quantityExamples.map(({ sentence, meaning }) => (
           <article class="article-card">
             <div class="example-with-speech">
               <span lang="en">{sentence}</span>

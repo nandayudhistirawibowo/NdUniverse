@@ -1,40 +1,12 @@
-import { preloadCdnAudioManifest, resolveCdnAudioUrl } from '../../../core/audio/cdn-audio.js';
+import {
+  preloadCdnAudioManifest,
+  resolveCdnAudioUrl,
+  resolveEnglishTtsAudioUrl,
+} from '../../../core/audio/cdn-audio.js';
 
-const manifestPromises = new Map();
 let currentAudio = null;
 
-function getManifest(accent) {
-  const manifestUrl = accent === 'exam-uk'
-    ? 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-gb/manifest-en-gb.json'
-    : 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-us/manifest-en-us.json';
-  if (!manifestPromises.has(accent)) {
-    manifestPromises.set(accent, fetch(manifestUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`TTS manifest request failed: ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then((manifest) => {
-        if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
-          throw new Error('TTS manifest must be a text-to-audio mapping.');
-        }
-
-        return manifest;
-      })
-      .catch((error) => {
-        console.error(`Unable to load the ${accent} TTS audio manifest.`, error);
-        manifestPromises.delete(accent);
-        return null;
-      }));
-  }
-
-  return manifestPromises.get(accent);
-}
-
 if (typeof window !== 'undefined') {
-  getManifest('us');
   preloadCdnAudioManifest();
 }
 
@@ -90,11 +62,14 @@ export function normalizeText(text) {
 
 /**
  * @param {string} text
- * @param {string} [accent='us']
+ * @param {'us' | 'uk'} [accent='us']
  * @param {HTMLButtonElement | null} [button=null]
+ * @param {string} [fallbackText=text]
  */
-export async function playAudioTTS(text, accent = 'us', button = null) {
+export async function playAudioTTS(text, accent = 'us', button = null, fallbackText = text) {
   const spokenText = normalizeText(text);
+  const spokenFallback = normalizeText(fallbackText) || spokenText;
+  const language = accent === 'uk' ? 'en-GB' : 'en-US';
 
   if (!spokenText) {
     button?.classList.remove('is-playing');
@@ -109,19 +84,10 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
     currentAudio = null;
   }
 
-  if (accent === 'uk') {
-    speakWithBrowserVoice(spokenText, 'en-GB', button);
-    return;
-  }
-
   if (/^(\/|https?:\/\/)/i.test(spokenText)) {
     const directAudioPath = await resolveCdnAudioUrl(spokenText) || spokenText;
     if (typeof Audio === 'undefined') {
-      speakWithBrowserVoice(
-        spokenText,
-        accent === 'exam-uk' ? 'en-GB' : 'en-US',
-        button,
-      );
+      speakWithBrowserVoice(spokenFallback, language, button);
       return;
     }
     const directAudio = new Audio(directAudioPath);
@@ -134,11 +100,7 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
     directAudio.onerror = () => {
       button?.classList.remove('is-playing');
       if (currentAudio === directAudio) currentAudio = null;
-      speakWithBrowserVoice(
-        spokenText,
-        accent === 'exam-uk' ? 'en-GB' : 'en-US',
-        button,
-      );
+      speakWithBrowserVoice(spokenFallback, language, button);
     };
     try {
       await directAudio.play();
@@ -146,29 +108,20 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
       console.error(`Unable to play direct TTS audio: ${directAudioPath}`, error);
       button?.classList.remove('is-playing');
       if (currentAudio === directAudio) currentAudio = null;
-      speakWithBrowserVoice(
-        spokenText,
-        accent === 'exam-uk' ? 'en-GB' : 'en-US',
-        button,
-      );
+      speakWithBrowserVoice(spokenFallback, language, button);
     }
     return;
   }
 
-  const manifestAccent = accent === 'exam-uk' ? 'exam-uk' : 'us';
-  const audioDirectory = manifestAccent === 'exam-uk'
-    ? 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-gb/'
-    : 'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts-en-us/';
-  const manifest = await getManifest(manifestAccent);
-  const audioPath = manifest?.[spokenText];
-  const cdnAudioPath = await resolveCdnAudioUrl(audioPath);
+  const cdnAudioPath = await resolveEnglishTtsAudioUrl(spokenText, accent);
 
-  if (typeof audioPath !== 'string' || !audioPath.startsWith(audioDirectory) || !cdnAudioPath) {
-    speakWithBrowserVoice(
-      spokenText,
-      manifestAccent === 'exam-uk' ? 'en-GB' : 'en-US',
-      button,
-    );
+  if (!cdnAudioPath) {
+    speakWithBrowserVoice(spokenText, language, button);
+    return;
+  }
+
+  if (typeof Audio === 'undefined') {
+    speakWithBrowserVoice(spokenText, language, button);
     return;
   }
 
@@ -179,11 +132,7 @@ export async function playAudioTTS(text, accent = 'us', button = null) {
     if (fellBackToSpeech) return;
     fellBackToSpeech = true;
     if (currentAudio === audio) currentAudio = null;
-    speakWithBrowserVoice(
-      spokenText,
-      manifestAccent === 'exam-uk' ? 'en-GB' : 'en-US',
-      button,
-    );
+    speakWithBrowserVoice(spokenText, language, button);
   };
 
   button?.classList.add('is-playing');
