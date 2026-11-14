@@ -4,8 +4,8 @@ import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 import NdBot from '@core/ui/NdBot.jsx';
 
 const {
-  title = 'English Dashboard | NdUniverse',
-  description = 'English learning dashboard for NdUniverse.',
+  title = 'Dashboard | NdUniverse',
+  description = 'Portal pembelajaran bahasa NdUniverse.',
   variant = 'student',
   active = '',
   user = null,
@@ -59,7 +59,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
   <body>
     <div id="navigation-progress" class="navigation-progress" transition:persist="navigation-progress" aria-hidden="true"></div>
     <div class={`private-shell ${isAdmin ? 'admin-shell' : 'student-shell'}`}>
-      <aside class="private-sidebar" id="dashboard-sidebar" aria-label="Navigasi mahasiswa">
+      <aside
+        class="private-sidebar"
+        id="dashboard-sidebar"
+        aria-label={isAdmin ? 'Navigasi admin' : 'Navigasi mahasiswa'}
+      >
         <div class="sidebar-top-row">
           <a class="sidebar-logo" href={isAdmin ? '/admin' : '/en/dashboard'} aria-label="NdUniverse">
             <img src="/logo.png" alt="NdUniverse" />

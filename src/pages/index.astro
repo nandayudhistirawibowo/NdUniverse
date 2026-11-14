@@ -1,6 +1,6 @@
 ---
-const title = 'NdUniverse - Platform Belajar Bahasa Jerman & Inggris';
-const description = 'Belajar bahasa Jerman dan Inggris dengan materi CEFR, latihan empat pilar, persiapan Goethe, IELTS, TOEFL, dan dukungan tutor AI.';
+const title = 'Belajar Bahasa Jerman & Inggris Gratis | NdUniverse';
+const description = 'Platform belajar bahasa Jerman dan Inggris interaktif gratis. Dilengkapi simulasi ujian Goethe, IELTS, TOEFL, audio TTS, materi CEFR, dan Chatbot AI untuk belajar bahasa asing dari nol hingga mahir.';
 const siteUrl = Astro.site ?? 'https://nduniverse.ndhistira.my.id';
 const canonicalUrl = new URL('/', siteUrl).toString();
 const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
@@ -36,8 +36,8 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
       <section class="hero-section" aria-labelledby="page-title">
         <p class="hero-kicker">A global learning platform</p>
         <img src="/logo-nduniverse.png" alt="NdUniverse" class="brand-logo" />
-        <h1 id="page-title">NdUniverse</h1>
-        <p class="tagline">Connecting Languages &amp; Cultures</p>
+        <h1 id="page-title">Kuasai Bahasa Asing dari Nol Hingga Mahir</h1>
+        <p class="hero-description">Belajar bahasa Jerman dan Inggris lewat materi interaktif serta simulasi ujian Goethe, IELTS, dan TOEFL. Latih kemampuan menyimak dengan audio TTS dan belajar bersama Chatbot AI kapan saja.</p>
       </section>
 
       <section class="about-section content-section" aria-labelledby="about-title">
@@ -72,8 +72,33 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
         </div>
       </section>
 
+      <section class="account-guide-section content-section" aria-labelledby="account-guide-title">
+        <div class="section-marker">03 / MULAI BELAJAR</div>
+        <div>
+          <h2 id="account-guide-title" class="section-title">Baru di NdUniverse? Cara Membuat Akun:</h2>
+          <ol class="account-steps">
+            <li class="account-step">
+              <span class="step-number" aria-hidden="true">01</span>
+              <span>Pilih modul bahasa Jerman atau Inggris.</span>
+            </li>
+            <li class="account-step">
+              <span class="step-number" aria-hidden="true">02</span>
+              <span>Klik <strong>Masuk / Daftar</strong>.</span>
+            </li>
+            <li class="account-step">
+              <span class="step-number" aria-hidden="true">03</span>
+              <span>Isi <strong>username/email dan password</strong>. Tidak perlu NIM.</span>
+            </li>
+            <li class="account-step">
+              <span class="step-number" aria-hidden="true">04</span>
+              <span>Mulai belajar!</span>
+            </li>
+          </ol>
+        </div>
+      </section>
+
       <section class="language-section content-section" aria-labelledby="language-title">
-        <div class="section-marker">03 / CHOOSE YOUR MODULE</div>
+        <div class="section-marker">04 / PILIH MODUL</div>
         <div>
           <h2 id="language-title" class="section-title">Mulai dari bahasa yang ingin Anda kuasai.</h2>
           <nav class="language-grid" aria-label="Pilih modul bahasa">
@@ -116,8 +141,8 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
   .hero-kicker,.section-marker { color:var(--nd-gold); font-size:.7rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; }
   .hero-kicker { margin:0 0 1.4rem; }
   .brand-logo { width:180px; max-width:60vw; height:auto; margin-bottom:1.2rem; object-fit:contain; }
-  h1 { margin:0; color:var(--nd-text); font-size:clamp(3.5rem,11vw,9rem); letter-spacing:.015em; line-height:.9; }
-  .tagline { margin:1.25rem 0 0; color:var(--nd-muted); font-size:clamp(1rem,2.4vw,1.35rem); letter-spacing:.06em; }
+  h1 { max-width:1100px; margin:0; color:var(--nd-text); font-size:clamp(2.5rem,8vw,6.8rem); letter-spacing:.015em; line-height:1; }
+  .hero-description { max-width:760px; margin:1.5rem 0 0; color:var(--nd-muted); font-size:clamp(1rem,2vw,1.2rem); line-height:1.8; }
   .content-section { position:relative; display:grid; grid-template-columns:minmax(150px,.38fr) minmax(0,1.62fr); gap:clamp(1.5rem,6vw,6rem); max-width:1200px; margin:0 auto; padding:clamp(4rem,9vw,8rem) 0; border-top:1px solid var(--nd-line); }
   .section-marker { padding-top:.35rem; }
   .about-copy { max-width:820px; }
@@ -129,6 +154,10 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
   .feature-icon { display:block; margin-bottom:2.5rem; color:var(--nd-gold); font-size:2rem; line-height:1; }
   .feature-card h3 { margin:0; color:var(--nd-text); font-size:1.05rem; }
   .feature-card p { margin:.65rem 0 0; color:var(--nd-muted); font-size:.85rem; line-height:1.65; }
+  .account-steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1rem; margin:2rem 0 0; padding:0; list-style:none; }
+  .account-step { display:grid; min-height:170px; align-content:start; gap:1.25rem; padding:1.25rem; border:1px solid var(--nd-line); border-radius:.8rem; background:rgba(255,255,255,.035); color:var(--nd-muted); line-height:1.65; }
+  .step-number { color:var(--nd-gold); font-size:1.5rem; font-weight:800; letter-spacing:.06em; }
+  .account-step strong { color:var(--nd-text); }
   .language-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:2rem; }
   .language-card { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:1rem; min-height:125px; padding:1.25rem; border:1px solid var(--nd-line); border-radius:.8rem; background:rgba(255,255,255,.045); color:var(--nd-text); text-decoration:none; transition:transform .2s ease,background-color .2s ease,border-color .2s ease; }
   .language-card:hover,.language-card:focus-visible { border-color:var(--nd-gold); background:rgba(229,169,59,.1); transform:translateY(-4px); }
@@ -139,6 +168,6 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
   .arrow { color:var(--nd-gold); font-size:1.35rem; }
   .landing-footer { display:flex; max-width:1200px; align-items:center; justify-content:space-between; gap:1rem; margin:0 auto; padding:1.5rem 0 .5rem; border-top:1px solid var(--nd-line); color:rgba(248,250,252,.46); font-size:.72rem; }
   .landing-footer span:first-child { color:var(--nd-gold-soft); font-weight:800; letter-spacing:.08em; }
-  @media (max-width:768px) { .landing-shell { padding-inline:1rem; } .hero-section { min-height:70vh; padding-bottom:4rem; } .brand-logo { width:min(180px,70vw); max-height:180px; } .content-section { grid-template-columns:1fr; gap:1.5rem; padding:4rem 0; } .feature-grid,.language-grid { grid-template-columns:1fr; } .feature-card { min-height:0; } .feature-icon { margin-bottom:1.5rem; } .language-card { min-width:0; } .landing-footer { align-items:flex-start; flex-direction:column; } }
+  @media (max-width:768px) { .landing-shell { padding-inline:1rem; } .hero-section { min-height:70vh; padding-bottom:4rem; } .brand-logo { width:min(180px,70vw); max-height:180px; } .content-section { grid-template-columns:1fr; gap:1.5rem; padding:4rem 0; } .feature-grid,.language-grid,.account-steps { grid-template-columns:1fr; } .feature-card,.account-step { min-height:0; } .feature-icon { margin-bottom:1.5rem; } .language-card { min-width:0; } .landing-footer { align-items:flex-start; flex-direction:column; } }
   @media (prefers-reduced-motion:reduce) { .feature-card,.language-card { transition:none; } }
 </style>

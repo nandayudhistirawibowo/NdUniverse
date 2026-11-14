@@ -15,6 +15,7 @@ const {
 import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
+const accountDashboardHref = isAdmin ? '/admin' : '/de/dashboard';
 const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
 const botUserName = profile?.nama_lengkap
   || user?.user_metadata?.nama_lengkap
@@ -89,10 +90,6 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z" /><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h8" /></svg>
                 <span>Katalog Materi</span>
               </a>
-              <a class={`nav-item ${active === 'exam' ? 'active' : ''}`} href="/de/ujian" aria-current={active === 'exam' ? 'page' : undefined}>
-                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5" /></svg>
-                <span>Ujian</span>
-              </a>
               <a class={`nav-item ${active === 'alltagsdeutsch' ? 'active' : ''}`} href="/de/alltagsdeutsch" aria-current={active === 'alltagsdeutsch' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2 1.2-4.1A7.5 7.5 0 1 1 20 11.5Z" /><path d="M8 11h.01M12 11h.01M16 11h.01" /></svg>
                 <span>Alltagsdeutsch</span>
@@ -100,6 +97,10 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
               <a class={`nav-item ${active === 'fachdeutsch' ? 'active' : ''}`} href="/de/fachdeutsch" aria-current={active === 'fachdeutsch' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 8 9-5 9 5-9 5-9-5Z" /><path d="M7 10.2V16c2.8 2.4 7.2 2.4 10 0v-5.8M21 8v7" /></svg>
                 <span>Fachdeutsch</span>
+              </a>
+              <a class={`nav-item ${active === 'exam' ? 'active' : ''}`} href="/de/ujian" aria-current={active === 'exam' ? 'page' : undefined}>
+                <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v16H4zM8 8h8M8 12h8M8 16h5" /></svg>
+                <span>Ujian</span>
               </a>
               <a class={`nav-item ${active === 'bookmark' ? 'active' : ''}`} href="/de/dashboard/bookmark" aria-current={active === 'bookmark' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-4-6 4V4.5Z" /></svg>
@@ -160,6 +161,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                   </svg>
                 </summary>
                 <div class="account-menu">
+                  {!isAdmin && <a href={accountDashboardHref}>Dasbor</a>}
                   {!isAdmin && <a href="/dashboard-de/profil">Profil Saya</a>}
                   <form action="/logout?module=de" method="post">
                     <button type="submit">Keluar</button>
@@ -506,9 +508,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     outline-offset: 2px;
   }
 
-  .private-content button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 7px 16px rgba(26, 26, 30, 0.14);
+  @media (hover: hover) {
+    .private-content button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 16px rgba(26, 26, 30, 0.14);
+    }
   }
 
   .nav-item.active {
