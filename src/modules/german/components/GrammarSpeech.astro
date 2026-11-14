@@ -70,10 +70,19 @@ const { text } = Astro.props;
     stroke-linejoin: round;
   }
 
-  .grammar-speech-button:hover:not(:disabled) {
-    transform: scale(1.08);
-    background: var(--accent-gold);
-    color: var(--text-main);
+  @media (hover: hover) {
+    .grammar-speech-button:hover:not(:disabled) {
+      transform: scale(1.08);
+      background: var(--accent-gold);
+      color: var(--text-main);
+    }
+  }
+  @media (hover: none) {
+    .grammar-speech-button:active:not(:disabled) {
+      transform: scale(1.08);
+      background: var(--accent-gold);
+      color: var(--text-main);
+    }
   }
 
   .grammar-speech-button.is-playing {

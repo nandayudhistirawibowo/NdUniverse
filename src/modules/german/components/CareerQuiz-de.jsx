@@ -105,6 +105,12 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
         .career-quiz-result p:last-of-type { color:var(--muted); }
         @media(max-width:768px){ .career-quiz{padding:1rem;border-radius:12px;} .career-word-list{grid-template-columns:repeat(2,minmax(0,1fr));}.career-options{grid-template-columns:1fr;} .career-primary-button,.career-secondary-button{width:100%;} }
         @media(max-width:420px){ .career-word-list{grid-template-columns:1fr;} }
+        @media (max-width: 767px) {
+          .career-word-list,
+          .career-options {
+            grid-template-columns: minmax(0, 1fr);
+          }
+        }
       `}</style>
     </section>
   );

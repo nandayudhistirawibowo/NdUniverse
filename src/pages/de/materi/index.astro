@@ -100,9 +100,17 @@ const sortedMateri = materi.toSorted((first, second) =>
     text-decoration: none;
   }
 
-  .dashboard-back-link:hover {
-    border-color: var(--accent-gold);
-    background: rgba(229, 169, 59, 0.1);
+  @media (hover: hover) {
+    .dashboard-back-link:hover {
+      border-color: var(--accent-gold);
+      background: rgba(229, 169, 59, 0.1);
+    }
+  }
+  @media (hover: none) {
+    .dashboard-back-link:active {
+      border-color: var(--accent-gold);
+      background: rgba(229, 169, 59, 0.1);
+    }
   }
 
   .catalog-page {
@@ -191,8 +199,15 @@ const sortedMateri = materi.toSorted((first, second) =>
     transition: border-color 0.2s ease;
   }
 
-  .materi-card:hover {
-    border-color: var(--accent-gold);
+  @media (hover: hover) {
+    .materi-card:hover {
+      border-color: var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .materi-card:active {
+      border-color: var(--accent-gold);
+    }
   }
 
   .track-label {
@@ -271,6 +286,11 @@ const sortedMateri = materi.toSorted((first, second) =>
   @media (max-width: 700px) {
     .materi-grid {
       grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 767px) {
+    .materi-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

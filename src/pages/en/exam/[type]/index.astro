@@ -50,7 +50,21 @@ const label = examType.toUpperCase();
   header p:last-child,.empty-state { color:var(--muted); }
   .level-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:.8rem; }
   .level-card { display:grid; gap:.45rem; min-height:130px; align-content:center; padding:1rem; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); color:var(--text-main); text-decoration:none; }
-  .level-card:hover { border-color:var(--accent-gold); }
+  @media (hover: hover) {
+    .level-card:hover {
+      border-color:var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .level-card:active {
+      border-color:var(--accent-gold);
+    }
+  }
   .level-card span { color:#966313; font-size:.8rem; font-weight:900; }
   .level-card small { color:var(--muted); }
+  @media (max-width: 767px) {
+    .level-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>

@@ -129,10 +129,19 @@ const { showPublicLink = false } = Astro.props;
     text-decoration: none;
   }
 
-  .public-guide-link a:hover,
-  .help-answer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 3px;
+  @media (hover: hover) {
+    .public-guide-link a:hover,
+    .help-answer a:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+  @media (hover: none) {
+    .public-guide-link a:active,
+    .help-answer a:active {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
   }
 
   .help-list {

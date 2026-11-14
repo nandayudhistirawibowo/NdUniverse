@@ -100,9 +100,17 @@ const vocab = item.data.vocab.map((entry) => ({
     stroke-linejoin: round;
   }
 
-  .back-link:hover {
-    color: var(--text-main);
-    transform: translateX(-2px);
+  @media (hover: hover) {
+    .back-link:hover {
+      color: var(--text-main);
+      transform: translateX(-2px);
+    }
+  }
+  @media (hover: none) {
+    .back-link:active {
+      color: var(--text-main);
+      transform: translateX(-2px);
+    }
   }
 
   .page-heading {

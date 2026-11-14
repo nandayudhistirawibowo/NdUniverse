@@ -405,7 +405,8 @@ export default function NdBot({
           right: 0;
           bottom: calc(100% + .6rem);
           width: max-content;
-          max-width: min(300px, calc(100vw - 2.5rem));
+          max-width: min(90vw, 300px);
+          box-sizing: border-box;
           padding: .65rem .95rem;
           border-radius: .7rem;
           background: var(--bg-dark);
@@ -467,7 +468,16 @@ export default function NdBot({
           cursor: pointer;
           line-height: 1;
         }
-        .ndbot-close:hover { background: color-mix(in srgb, var(--text-main) 12%, transparent); }
+        @media (hover: hover) {
+          .ndbot-close:hover {
+            background: color-mix(in srgb, var(--text-main) 12%, transparent);
+          }
+        }
+        @media (hover: none) {
+          .ndbot-close:active {
+            background: color-mix(in srgb, var(--text-main) 12%, transparent);
+          }
+        }
 
         /* ── Messages ─────────────────────────────────────────────── */
         .ndbot-messages {
@@ -523,7 +533,16 @@ export default function NdBot({
           font-weight: 700;
           cursor: pointer;
         }
-        .ndbot-whatsapp:hover { background: var(--nd-whatsapp-hover); }
+        @media (hover: hover) {
+          .ndbot-whatsapp:hover {
+            background: var(--nd-whatsapp-hover);
+          }
+        }
+        @media (hover: none) {
+          .ndbot-whatsapp:active {
+            background: var(--nd-whatsapp-hover);
+          }
+        }
 
         /* ── Form ─────────────────────────────────────────────────── */
         .ndbot-form {
@@ -560,7 +579,16 @@ export default function NdBot({
           min-height: 40px;
         }
         .ndbot-form button:disabled { opacity: .5; cursor: not-allowed; }
-        .ndbot-form button:not(:disabled):hover { background: var(--primary-hover); }
+        @media (hover: hover) {
+          .ndbot-form button:not(:disabled):hover {
+            background: var(--primary-hover);
+          }
+        }
+        @media (hover: none) {
+          .ndbot-form button:not(:disabled):active {
+            background: var(--primary-hover);
+          }
+        }
 
         /* ── FAB ──────────────────────────────────────────────────── */
         .ndbot-fab {
@@ -577,9 +605,17 @@ export default function NdBot({
           cursor: pointer;
           transition: transform .2s ease, filter .2s ease;
         }
-        .ndbot-fab:hover {
-          transform: translateY(-2px);
-          filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--ndbot-fab-ring) 40%, transparent));
+        @media (hover: hover) {
+          .ndbot-fab:hover {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--ndbot-fab-ring) 40%, transparent));
+          }
+        }
+        @media (hover: none) {
+          .ndbot-fab:active {
+            transform: translateY(-2px);
+            filter: drop-shadow(0 6px 10px color-mix(in srgb, var(--ndbot-fab-ring) 40%, transparent));
+          }
         }
         .ndbot-fab:focus-visible {
           outline: 3px solid var(--ndbot-fab-bg);
@@ -759,7 +795,23 @@ export default function NdBot({
         }
 
         /* ── Responsive ───────────────────────────────────────────── */
+        @media (max-width: 767px) {
+          .ndbot-bubble {
+            display: none;
+          }
+        }
+
         @media (max-width: 480px) {
+          .ndbot-fab {
+            width: 60px;
+            max-width: 60px;
+            height: 64px;
+          }
+
+          .ndbot-character {
+            scale: .82;
+          }
+
           .ndbot-window {
             width: calc(100vw - 2rem);
             height: min(450px, calc(100dvh - 6rem));

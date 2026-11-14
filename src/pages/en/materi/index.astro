@@ -26,4 +26,9 @@ const materials = await getCollection('englishEveryday');
   .material-card h3,.material-card p{margin:0}.material-card p{color:var(--muted);line-height:1.55}
   .material-card small{color:var(--level-accent);font-weight:800}
   .empty{color:var(--muted)}@media(max-width:700px){.material-grid{grid-template-columns:1fr}}
+@media (max-width: 767px) {
+  .material-grid {
+    grid-template-columns: minmax(0, 1fr)
+  }
+}
 </style>

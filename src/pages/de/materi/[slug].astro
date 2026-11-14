@@ -465,10 +465,19 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     stroke-linejoin: round;
   }
 
-  .vocab-speech-button:hover:not(:disabled) {
-    transform: scale(1.08);
-    background: var(--accent-gold);
-    color: var(--text-main);
+  @media (hover: hover) {
+    .vocab-speech-button:hover:not(:disabled) {
+      transform: scale(1.08);
+      background: var(--accent-gold);
+      color: var(--text-main);
+    }
+  }
+  @media (hover: none) {
+    .vocab-speech-button:active:not(:disabled) {
+      transform: scale(1.08);
+      background: var(--accent-gold);
+      color: var(--text-main);
+    }
   }
 
   .vocab-speech-button.is-playing {
@@ -495,9 +504,17 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     text-decoration: none;
   }
 
-  .practice-button:hover {
-    background: #F0B84F;
-    transform: translateY(-2px);
+  @media (hover: hover) {
+    .practice-button:hover {
+      background: #F0B84F;
+      transform: translateY(-2px);
+    }
+  }
+  @media (hover: none) {
+    .practice-button:active {
+      background: #F0B84F;
+      transform: translateY(-2px);
+    }
   }
 
   .session-list { display: grid; gap: 1rem; margin-top: 1rem; }
@@ -515,7 +532,16 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   .pillar-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; margin-top: 1rem; }
   .pillar-buttons a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
   .pillar-buttons a.is-complete { border-color: #3a8b55; background: #eaf6ed; color: #236b38; }
-  .pillar-buttons a:hover { border-color: var(--accent-gold); }
+  @media (hover: hover) {
+    .pillar-buttons a:hover {
+      border-color: var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .pillar-buttons a:active {
+      border-color: var(--accent-gold);
+    }
+  }
 
   .vocabulary-table-panel { padding: 1.25rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }
   .vocabulary-table-panel header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
@@ -616,10 +642,19 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
   }
 
-  .session-link:hover {
-    transform: translateY(-2px);
-    border-color: #C98D23;
-    background: #F0B84F;
+  @media (hover: hover) {
+    .session-link:hover {
+      transform: translateY(-2px);
+      border-color: #C98D23;
+      background: #F0B84F;
+    }
+  }
+  @media (hover: none) {
+    .session-link:active {
+      transform: translateY(-2px);
+      border-color: #C98D23;
+      background: #F0B84F;
+    }
   }
 
   .session-name {
@@ -743,9 +778,17 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     background: var(--bg-main);
   }
 
-  .pillar-card:hover {
-    border-color: var(--accent-gold);
-    transform: translateY(-2px);
+  @media (hover: hover) {
+    .pillar-card:hover {
+      border-color: var(--accent-gold);
+      transform: translateY(-2px);
+    }
+  }
+  @media (hover: none) {
+    .pillar-card:active {
+      border-color: var(--accent-gold);
+      transform: translateY(-2px);
+    }
   }
 
   .pillar-card.passed {
@@ -784,6 +827,13 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     .content-panel,
     .notes-panel {
       padding: 1rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .pillar-buttons,
+    .session-grid,
+    .pillar-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

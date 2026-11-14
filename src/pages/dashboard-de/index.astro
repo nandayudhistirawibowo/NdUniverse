@@ -295,7 +295,16 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
   .level-progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--accent-gold); }
   .shortcut-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
   .shortcut-grid a { display: grid; gap: .45rem; min-height: 95px; align-content: center; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
-  .shortcut-grid a:hover { border-color: var(--accent-gold); }
+  @media (hover: hover) {
+    .shortcut-grid a:hover {
+      border-color: var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .shortcut-grid a:active {
+      border-color: var(--accent-gold);
+    }
+  }
   .shortcut-grid span { color: var(--muted); }
   .completed-section { display: grid; gap: .75rem; }
   .completed-heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; }
@@ -307,5 +316,11 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     .level-card { grid-template-columns: 1fr; }
     .shortcut-grid { grid-template-columns: 1fr; }
     .welcome-mark { display: none; }
+  }
+  @media (max-width: 767px) {
+    .level-card,
+    .shortcut-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

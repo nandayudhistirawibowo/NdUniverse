@@ -416,10 +416,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     color: var(--text-main);
   }
 
-  .sidebar-nav a:hover,
-  .logout-form button:hover {
-    background: color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg));
-    color: var(--text-main);
+  @media (hover: hover) {
+    .sidebar-nav a:hover,
+    .logout-form button:hover {
+      background: color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg));
+      color: var(--text-main);
+    }
+  }
+  @media (hover: none) {
+    .sidebar-nav a:active,
+    .logout-form button:active {
+      background: color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg));
+      color: var(--text-main);
+    }
   }
 
   .logout-form {
@@ -604,9 +613,17 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     transition: all 0.18s ease;
   }
 
-  .avatar-camera:hover {
-    transform: scale(1.08);
-    background: #F0B84F;
+  @media (hover: hover) {
+    .avatar-camera:hover {
+      transform: scale(1.08);
+      background: #F0B84F;
+    }
+  }
+  @media (hover: none) {
+    .avatar-camera:active {
+      transform: scale(1.08);
+      background: #F0B84F;
+    }
   }
 
   .avatar-camera svg {
@@ -659,8 +676,15 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     cursor: pointer;
   }
 
-  .profile-form > button:hover:not(:disabled) {
-    background: #F0B84F;
+  @media (hover: hover) {
+    .profile-form > button:hover:not(:disabled) {
+      background: #F0B84F;
+    }
+  }
+  @media (hover: none) {
+    .profile-form > button:active:not(:disabled) {
+      background: #F0B84F;
+    }
   }
 
   .profile-form > button:disabled {
@@ -749,9 +773,17 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     cursor: pointer;
   }
 
-  .password-toggle:hover {
-    background: color-mix(in srgb, var(--text-main) 7%, var(--card-bg));
-    color: var(--text-main);
+  @media (hover: hover) {
+    .password-toggle:hover {
+      background: color-mix(in srgb, var(--text-main) 7%, var(--card-bg));
+      color: var(--text-main);
+    }
+  }
+  @media (hover: none) {
+    .password-toggle:active {
+      background: color-mix(in srgb, var(--text-main) 7%, var(--card-bg));
+      color: var(--text-main);
+    }
   }
 
   .password-toggle:focus-visible {
@@ -789,8 +821,15 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     cursor: pointer;
   }
 
-  .password-form > button:hover:not(:disabled) {
-    background: #F0B84F;
+  @media (hover: hover) {
+    .password-form > button:hover:not(:disabled) {
+      background: #F0B84F;
+    }
+  }
+  @media (hover: none) {
+    .password-form > button:active:not(:disabled) {
+      background: #F0B84F;
+    }
   }
 
   .password-form > button:disabled {
@@ -799,5 +838,10 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   @media (max-width: 760px) {
+  }
+  @media (max-width: 767px) {
+    .profile-layout {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

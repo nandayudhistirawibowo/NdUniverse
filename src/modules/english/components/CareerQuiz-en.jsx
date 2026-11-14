@@ -183,6 +183,11 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
           .career-options { grid-template-columns:1fr; }
           .quiz-progress { align-items:flex-start; flex-direction:column; gap:.35rem; }
         }
+        @media (max-width: 767px) {
+          .career-options {
+            grid-template-columns: minmax(0, 1fr);
+          }
+        }
       `}</style>
     </section>
   );

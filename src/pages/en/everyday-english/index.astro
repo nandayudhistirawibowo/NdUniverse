@@ -124,4 +124,9 @@ const materials = (await getCollection('englishEveryday'))
 		.level-filter select, .exam-link { width: 100%; }
 		.exam-actions { display: grid; grid-template-columns: 1fr; }
 	}
+	@media (max-width: 767px) {
+	  .material-grid {
+	    grid-template-columns: minmax(0, 1fr);
+	  }
+	}
 </style>

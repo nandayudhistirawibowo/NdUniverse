@@ -115,10 +115,26 @@ export const prerender = false;
   .bookmark-terms p, .bookmark-context p { margin-top: .3rem; color: var(--muted); line-height: 1.5; }
   .bookmark-context p { color: var(--text-main); }
   .remove-bookmark { padding: .5rem .75rem; border: 1px solid var(--border); border-radius: 7px; background: transparent; color: var(--accent-red); font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; }
-  .remove-bookmark:hover { border-color: var(--accent-red); background: rgba(180, 55, 55, .06); }
+  @media (hover: hover) {
+    .remove-bookmark:hover {
+      border-color: var(--accent-red);
+      background: rgba(180, 55, 55, .06);
+    }
+  }
+  @media (hover: none) {
+    .remove-bookmark:active {
+      border-color: var(--accent-red);
+      background: rgba(180, 55, 55, .06);
+    }
+  }
   @media (max-width: 680px) {
     .bookmark-card { grid-template-columns: minmax(0, 1fr) auto; align-items: start; }
     .bookmark-context { grid-column: 1 / -1; grid-row: 2; }
     .remove-bookmark { grid-column: 2; grid-row: 1; }
+  }
+  @media (max-width: 767px) {
+    .bookmark-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
   }
 </style>

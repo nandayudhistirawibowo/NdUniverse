@@ -57,4 +57,9 @@ const words = vocab.map((word) => ({
   .boss-card div > p:first-child { color:#966313; font-size:.72rem; font-weight:800; text-transform:uppercase; }
   .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
   @media(max-width:700px){.boss-card{grid-template-columns:auto 1fr}.boss-card a{grid-column:1/-1;justify-content:center}}
+  @media (max-width: 767px) {
+    .boss-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>

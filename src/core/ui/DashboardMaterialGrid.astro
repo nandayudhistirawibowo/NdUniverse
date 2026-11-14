@@ -119,10 +119,19 @@ const cards = materials.map((material) => {
     transition: all 0.2s ease;
   }
 
-  .material-card:hover {
-    transform: translateY(-5px);
-    border-color: var(--accent-gold);
-    box-shadow: 0 14px 28px rgba(26, 26, 30, 0.14);
+  @media (hover: hover) {
+    .material-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 14px 28px rgba(26, 26, 30, 0.14);
+    }
+  }
+  @media (hover: none) {
+    .material-card:active {
+      transform: translateY(-5px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 14px 28px rgba(26, 26, 30, 0.14);
+    }
   }
 
   .material-card h2 { font-size: 1.35rem; }
@@ -254,6 +263,11 @@ const cards = materials.map((material) => {
   }
 
   @media (max-width: 520px) {
+    .material-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 767px) {
     .material-grid {
       grid-template-columns: minmax(0, 1fr);
     }

@@ -42,10 +42,24 @@ const exams = [
   header p:last-child { color: var(--muted); }
   .exam-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
   .exam-card { display: grid; min-height: 190px; align-content: start; gap: .6rem; padding: 1.25rem; border: 1px solid var(--border); border-radius: 10px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
-  .exam-card:hover { border-color: var(--accent-gold); }
+  @media (hover: hover) {
+    .exam-card:hover {
+      border-color: var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .exam-card:active {
+      border-color: var(--accent-gold);
+    }
+  }
   .exam-label { color: #966313; font-size: .8rem; font-weight: 900; }
   .exam-card h2, .exam-card p { margin: 0; }
   .exam-card p { color: var(--muted); line-height: 1.55; }
   .exam-card strong { align-self: end; }
   @media (max-width: 640px) { .exam-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 767px) {
+    .exam-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>

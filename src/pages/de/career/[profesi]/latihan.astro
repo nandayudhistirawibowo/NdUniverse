@@ -43,7 +43,16 @@ const words = entry.data.vocab;
 <style>
   .quiz-page { display:grid; gap:1rem; }
   .back-link { width:fit-content; color:var(--text-main); font-weight:800; text-decoration:none; }
-  .back-link:hover { color:var(--accent-gold); }
+  @media (hover: hover) {
+    .back-link:hover {
+      color:var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .back-link:active {
+      color:var(--accent-gold);
+    }
+  }
   .eyebrow { margin:0; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
   header h1 { margin:.35rem 0; color:var(--text-main); }
   header > p:last-child { margin:0; color:var(--muted); }

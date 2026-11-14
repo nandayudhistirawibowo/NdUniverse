@@ -87,6 +87,11 @@ const materials = (await getCollection('materi'))
     .level-filter select, .exam-link { width: 100%; }
     .exam-link { justify-content: center; }
   }
+  @media (max-width: 767px) {
+    .material-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>
 <script>
   const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');

@@ -268,8 +268,15 @@ const trickySounds = [
     text-decoration: none;
   }
 
-  .back-link:hover {
-    color: var(--guide-accent);
+  @media (hover: hover) {
+    .back-link:hover {
+      color: var(--guide-accent);
+    }
+  }
+  @media (hover: none) {
+    .back-link:active {
+      color: var(--guide-accent);
+    }
   }
 
   .page-heading {
@@ -410,10 +417,19 @@ const trickySounds = [
     transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
   }
 
-  .speaker-button:hover {
-    transform: scale(1.06);
-    border-color: var(--guide-accent);
-    background: var(--guide-card);
+  @media (hover: hover) {
+    .speaker-button:hover {
+      transform: scale(1.06);
+      border-color: var(--guide-accent);
+      background: var(--guide-card);
+    }
+  }
+  @media (hover: none) {
+    .speaker-button:active {
+      transform: scale(1.06);
+      border-color: var(--guide-accent);
+      background: var(--guide-card);
+    }
   }
 
   .speaker-button.is-playing {
@@ -529,6 +545,12 @@ const trickySounds = [
     .guide-table th,
     .guide-table td {
       padding: 0.65rem 0.75rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .contrast-grid,
+    .tricky-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

@@ -42,7 +42,7 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
     {sessions.map((session) => (
       <section class="session-card">
         <h2>Sesi {session.number}</h2>
-        <div class="table-wrap">
+        <div class="table-wrap table-scroll" role="region" aria-label="Kosakata dan audio" tabindex="0">
           <p class="audio-legend">Audio: 🇺🇸 Kualitas Tinggi | 🇬🇧 Browser</p>
           <table>
             <thead>
@@ -168,4 +168,9 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   .pillar-links a { min-height: 42px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
   .pillar-links a.is-complete { border-color: var(--accent-gold); background: color-mix(in srgb, var(--accent-gold) 14%, var(--card-bg)); color: var(--text-main); }
   @media (max-width: 700px) { .pillar-links { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 767px) {
+    .pillar-links {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>

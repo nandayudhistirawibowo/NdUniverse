@@ -59,8 +59,15 @@ if (!item) return new Response('Materi Career tidak ditemukan.', { status: 404 }
     text-decoration: none;
   }
 
-  .back-link:hover {
-    color: var(--accent-gold);
+  @media (hover: hover) {
+    .back-link:hover {
+      color: var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .back-link:active {
+      color: var(--accent-gold);
+    }
   }
 
   .page-heading h1 {
@@ -130,6 +137,11 @@ if (!item) return new Response('Materi Career tidak ditemukan.', { status: 404 }
     .vocabulary-card {
       grid-template-columns: 1fr;
       gap: 0.5rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .vocabulary-card {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

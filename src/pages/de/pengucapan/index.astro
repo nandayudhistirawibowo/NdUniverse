@@ -368,10 +368,19 @@ const diphthongs = [
     stroke-linejoin: round;
   }
 
-  .speech-button:hover:not(:disabled) {
-    transform: scale(1.08);
-    background: var(--accent-gold);
-    color: var(--text-main);
+  @media (hover: hover) {
+    .speech-button:hover:not(:disabled) {
+      transform: scale(1.08);
+      background: var(--accent-gold);
+      color: var(--text-main);
+    }
+  }
+  @media (hover: none) {
+    .speech-button:active:not(:disabled) {
+      transform: scale(1.08);
+      background: var(--accent-gold);
+      color: var(--text-main);
+    }
   }
 
   .speech-button.is-playing {
@@ -450,6 +459,11 @@ const diphthongs = [
 
     .special-grid {
       grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 767px) {
+    .special-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

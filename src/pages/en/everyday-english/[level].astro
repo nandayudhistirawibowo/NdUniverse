@@ -60,4 +60,9 @@ const materials = (await getCollection('englishEveryday'))
   .material-card a, .exam-links a { color: var(--accent-gold); font-weight: 800; text-decoration: none; }
   .exam-links { display: flex; flex-wrap: wrap; gap: 1rem; }
   @media (max-width: 700px) { .material-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 767px) {
+    .material-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>

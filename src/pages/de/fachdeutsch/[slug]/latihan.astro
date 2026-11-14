@@ -68,7 +68,18 @@ const pillarLabel = labels[type] ?? 'Kosakata';
   .practice-page { display:grid; max-width:1000px; min-height:calc(100svh - 8.5rem); align-content:center; gap:.9rem; margin:0 auto; padding:1.25rem 0; }
   .back-link { display:inline-flex; width:fit-content; align-items:center; gap:.45rem; margin-bottom:.2rem; color:var(--text-main); font-weight:700; text-decoration:none; }
   .back-link svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-  .back-link:hover { color:var(--accent-gold,#966313); transform:translateX(-2px); }
+  @media (hover: hover) {
+    .back-link:hover {
+      color:var(--accent-gold,#966313);
+      transform:translateX(-2px);
+    }
+  }
+  @media (hover: none) {
+    .back-link:active {
+      color:var(--accent-gold,#966313);
+      transform:translateX(-2px);
+    }
+  }
   .page-heading { margin-bottom:.25rem; }
   .eyebrow { margin:0 0 .5rem; color:var(--accent-gold,#966313); font-size:.8rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; }
   h1 { margin:0; color:var(--text-main); font-size:clamp(1.8rem,3vw,2.45rem); }

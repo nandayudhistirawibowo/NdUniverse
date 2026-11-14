@@ -617,8 +617,15 @@ const quantityExamples = [
     text-decoration: none;
   }
 
-  .back-link:hover {
-    color: var(--grammar-accent);
+  @media (hover: hover) {
+    .back-link:hover {
+      color: var(--grammar-accent);
+    }
+  }
+  @media (hover: none) {
+    .back-link:active {
+      color: var(--grammar-accent);
+    }
   }
 
   .page-heading {
@@ -777,10 +784,19 @@ const quantityExamples = [
     transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
   }
 
-  .speaker-button:hover {
-    transform: scale(1.06);
-    border-color: var(--grammar-accent);
-    background: var(--grammar-card);
+  @media (hover: hover) {
+    .speaker-button:hover {
+      transform: scale(1.06);
+      border-color: var(--grammar-accent);
+      background: var(--grammar-card);
+    }
+  }
+  @media (hover: none) {
+    .speaker-button:active {
+      transform: scale(1.06);
+      border-color: var(--grammar-accent);
+      background: var(--grammar-card);
+    }
   }
 
   .speaker-button.is-playing {
@@ -875,6 +891,11 @@ const quantityExamples = [
     .guide-table th,
     .guide-table td {
       padding: 0.65rem 0.75rem;
+    }
+  }
+  @media (max-width: 767px) {
+    .article-grid {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

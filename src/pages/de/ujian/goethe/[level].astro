@@ -185,4 +185,10 @@ const available = vocabPool.length > 0
     .module-progress,.module-results { grid-template-columns:minmax(0,1fr); }
     .module-progress button { min-height:58px; }
   }
+  @media (max-width: 767px) {
+    .module-progress,
+    .module-results {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>

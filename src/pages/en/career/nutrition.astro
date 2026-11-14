@@ -64,7 +64,18 @@ const words = entry?.data.vocab ?? [];
   .eyebrow { margin:0 0 .25rem; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
   .section-heading h2 { margin:0; color:var(--text-main); font-size:1.25rem; }
   .quiz-link { color:var(--text-main); font-weight:800; text-decoration:none; }
-  .quiz-link:hover,.back-link:hover { color:var(--accent-gold); }
+  @media (hover: hover) {
+    .quiz-link:hover,
+    .back-link:hover {
+      color:var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .quiz-link:active,
+    .back-link:active {
+      color:var(--accent-gold);
+    }
+  }
   .table-scroll { overflow-x:auto; border:1px solid var(--border); border-radius:12px; background:var(--card-bg); }
   .vocabulary-table { width:100%; min-width:620px; border-collapse:collapse; text-align:left; }
   .vocabulary-table th,.vocabulary-table td { padding:.75rem .9rem; border-bottom:1px solid var(--border); color:var(--text-main); vertical-align:top; }
@@ -77,4 +88,9 @@ const words = entry?.data.vocab ?? [];
   .boss-card div > p:first-child { color:var(--accent-gold); font-size:.72rem; font-weight:800; text-transform:uppercase; }
   .boss-card a { min-height:44px; display:inline-flex; align-items:center; padding:.65rem 1rem; border-radius:.65rem; background:var(--accent-red); color:var(--text-main); font-weight:800; text-decoration:none; }
   @media(max-width:700px) { .section-heading { align-items:flex-start; flex-direction:column; }.boss-card { grid-template-columns:auto 1fr; } .boss-card a { grid-column:1/-1; justify-content:center; } }
+  @media (max-width: 767px) {
+    .boss-card {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 </style>

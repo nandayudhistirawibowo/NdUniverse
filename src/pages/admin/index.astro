@@ -352,8 +352,15 @@ if (!isAdminNim(nim)) {
     color: var(--text-main);
   }
 
-  .primary-button:hover:not(:disabled) {
-    background: #F0B84F;
+  @media (hover: hover) {
+    .primary-button:hover:not(:disabled) {
+      background: #F0B84F;
+    }
+  }
+  @media (hover: none) {
+    .primary-button:active:not(:disabled) {
+      background: #F0B84F;
+    }
   }
 
   .primary-button:disabled {
@@ -373,8 +380,15 @@ if (!isAdminNim(nim)) {
     color: #fff;
   }
 
-  .admin-logout:hover {
-    background: rgba(255, 255, 255, 0.1);
+  @media (hover: hover) {
+    .admin-logout:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+  }
+  @media (hover: none) {
+    .admin-logout:active {
+      background: rgba(255, 255, 255, 0.1);
+    }
   }
 
   .user-panel {
@@ -478,8 +492,15 @@ if (!isAdminNim(nim)) {
     cursor: pointer;
   }
 
-  .row-button:hover {
-    background: var(--accent-gold);
+  @media (hover: hover) {
+    .row-button:hover {
+      background: var(--accent-gold);
+    }
+  }
+  @media (hover: none) {
+    .row-button:active {
+      background: var(--accent-gold);
+    }
   }
 
   .row-button.delete-button {
@@ -488,9 +509,17 @@ if (!isAdminNim(nim)) {
     color: var(--accent-red);
   }
 
-  .row-button.delete-button:hover {
-    background: var(--accent-red);
-    color: #fff;
+  @media (hover: hover) {
+    .row-button.delete-button:hover {
+      background: var(--accent-red);
+      color: #fff;
+    }
+  }
+  @media (hover: none) {
+    .row-button.delete-button:active {
+      background: var(--accent-red);
+      color: #fff;
+    }
   }
 
   .user-dialog {

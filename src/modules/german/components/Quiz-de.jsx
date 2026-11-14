@@ -1290,14 +1290,17 @@ export default function Quiz(props) {
           }
 
           .quiz-toast {
+            box-sizing: border-box;
             display: flex;
             position: fixed;
-            top: 20px;
-            left: 16px;
-            right: 16px;
+            top: max(4.5rem, calc(env(safe-area-inset-top) + 3.5rem));
+            left: 50%;
+            right: auto;
             z-index: 9999;
-            width: min(400px, calc(100% - 32px));
-            margin: 0 auto;
+            width: max-content;
+            max-width: min(90vw, 400px);
+            margin: 0;
+            transform: translateX(-50%);
             padding: 12px 24px;
             border: 1px solid;
             border-radius: 12px;
@@ -1427,10 +1430,19 @@ export default function Quiz(props) {
             cursor: pointer;
           }
 
-          .restart-btn:hover {
-            border-color: var(--accent-gold);
-            background: var(--bg-soft);
-            color: var(--accent-gold);
+          @media (hover: hover) {
+            .restart-btn:hover {
+              border-color: var(--accent-gold);
+              background: var(--bg-soft);
+              color: var(--accent-gold);
+            }
+          }
+          @media (hover: none) {
+            .restart-btn:active {
+              border-color: var(--accent-gold);
+              background: var(--bg-soft);
+              color: var(--accent-gold);
+            }
           }
 
           .restart-btn svg {
@@ -1571,10 +1583,19 @@ export default function Quiz(props) {
             margin-top: 1rem;
           }
 
-          .token-chip:hover,
-          .match-choice:hover {
-            border-color: var(--accent-gold);
-            background: var(--bg-soft);
+          @media (hover: hover) {
+            .token-chip:hover,
+            .match-choice:hover {
+              border-color: var(--accent-gold);
+              background: var(--bg-soft);
+            }
+          }
+          @media (hover: none) {
+            .token-chip:active,
+            .match-choice:active {
+              border-color: var(--accent-gold);
+              background: var(--bg-soft);
+            }
           }
 
           .token-chip:disabled,
@@ -1714,9 +1735,17 @@ export default function Quiz(props) {
             color: var(--text-main);
           }
 
-          .cloze-choice:hover:not(:disabled) {
-            border-color: var(--accent-gold);
-            background: var(--bg-soft);
+          @media (hover: hover) {
+            .cloze-choice:hover:not(:disabled) {
+              border-color: var(--accent-gold);
+              background: var(--bg-soft);
+            }
+          }
+          @media (hover: none) {
+            .cloze-choice:active:not(:disabled) {
+              border-color: var(--accent-gold);
+              background: var(--bg-soft);
+            }
           }
 
           .column-title {
@@ -1756,9 +1785,17 @@ export default function Quiz(props) {
             flex: 1;
           }
 
-          .primary-btn:hover:not(:disabled),
-          .next-btn:hover {
-            background: var(--primary-hover);
+          @media (hover: hover) {
+            .primary-btn:hover:not(:disabled),
+            .next-btn:hover {
+              background: var(--primary-hover);
+            }
+          }
+          @media (hover: none) {
+            .primary-btn:active:not(:disabled),
+            .next-btn:active {
+              background: var(--primary-hover);
+            }
           }
 
           .secondary-btn {
@@ -1971,10 +2008,21 @@ export default function Quiz(props) {
             cursor: pointer;
           }
 
-          .bookmark-btn:hover,
           .bookmark-btn.saved {
             border-color: var(--accent-gold);
             color: var(--accent-gold);
+          }
+          @media (hover: hover) {
+            .bookmark-btn:hover {
+              border-color: var(--accent-gold);
+              color: var(--accent-gold);
+            }
+          }
+          @media (hover: none) {
+            .bookmark-btn:active {
+              border-color: var(--accent-gold);
+              color: var(--accent-gold);
+            }
           }
 
           .bookmark-btn svg {
@@ -2119,6 +2167,14 @@ export default function Quiz(props) {
 
             .progress-track > span {
               transition: none;
+            }
+          }
+          @media (max-width: 767px) {
+            .matcher-grid,
+            .cloze-options,
+            .summary-stats {
+              grid-template-columns: minmax(0, 1fr);
+            }
           }
         `}
       </style>
