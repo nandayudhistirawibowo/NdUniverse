@@ -18,7 +18,16 @@ export default defineConfig({
   },
   integrations: [
     preact(),
-    sitemap({ customSitemaps: [`${site}/sitemap-content.xml`] }),
+    sitemap({
+      customSitemaps: [`${site}/sitemap-content.xml`],
+      filter: (page) => {
+        const pathname = new URL(page).pathname.replace(/\/+$/, '') || '/';
+        const privatePrefixes = ['/admin', '/dashboard', '/dashboard-de', '/de/dashboard', '/en/dashboard'];
+        const corePublicPaths = ['/', '/de', '/en', '/login-de', '/login-en'];
+        return !corePublicPaths.includes(pathname)
+          && !privatePrefixes.some((prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`));
+      },
+    }),
   ],
   adapter: vercel()
 });

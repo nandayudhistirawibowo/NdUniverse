@@ -13,6 +13,7 @@ export const GET: APIRoute = async ({ site }) => {
     getCollection('englishAcademic'),
   ]);
   const urls = [
+    ...['/', '/de', '/en', '/login-de', '/login-en'].map((path) => new URL(path, site)),
     ...germanMaterials.map((item) => new URL(`/de/materi/${encodeURIComponent(item.id)}`, site)),
     ...englishMaterials.map((item) => {
       const slug = item.id.split('/').at(-1) ?? item.id;
