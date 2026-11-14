@@ -1,6 +1,6 @@
 # NdUniverse
 
-NdUniverse adalah platform belajar bahasa Jerman dan Inggris berbasis Astro. Kurikulum tetap menggunakan bahasa target; navigasi dan antarmuka aplikasi menggunakan Bahasa Indonesia hardcoded (tanpa sistem i18n).
+NdUniverse adalah platform belajar bahasa Jerman dan Inggris berbasis Astro. UI menggunakan Bahasa Indonesia secara hardcoded (Indonesian-first) tanpa sistem i18n. Tautan `/en` dan `/de` hanya navigasi antar modul pembelajaran, bukan pengubah bahasa UI. Materi belajar tetap memakai bahasa target.
 
 ## Status V4
 
@@ -11,9 +11,9 @@ NdUniverse adalah platform belajar bahasa Jerman dan Inggris berbasis Astro. Kur
 - **German (`/de`)**: Alltagsdeutsch A1-C2, Fachdeutsch, Goethe, Career, dan Boss Fight.
 - **English (`/en`)**: Everyday dan Academic English, IELTS/TOEFL, serta Career.
 - **Latihan empat pilar**: pilih sesi dan Reading, Listening, Writing, atau Speaking secara bebas. Progres tiap pasangan sesi-pilar disimpan, misalnya `s1-reading`.
-- **Chatbot RAG**: Supabase `pgvector` mengambil materi relevan; Cloudflare Workers AI membuat embedding dan Groq membantu penulisan ulang query serta jawaban.
+- **NdBot v2 (RAG)**: Supabase `pgvector` mengambil materi relevan; Cloudflare Workers AI membuat embedding dan Groq membantu penulisan ulang query serta jawaban.
 - **Anti-cheat ujian**: mode fullscreen mencatat pelanggaran; NdBot menampilkan status dan ujian dikirim otomatis pada strike ketiga.
-- **Audio**: Edge TTS, manifest dan MP3 di repo CDN `nduniverse-audio`, disajikan melalui jsDelivr; Web Speech API menjadi fallback.
+- **Audio dua aksen**: Generator English menghasilkan audio `en-US` dan `en-GB`; manifest dan MP3 di repo CDN `nduniverse-audio` disajikan melalui jsDelivr. Web Speech API menjadi fallback.
 - **Progress dan autentikasi**: Supabase Auth/PostgreSQL/Storage dengan pemisahan progress German dan English.
 
 ## Tech Stack
@@ -50,7 +50,7 @@ Jangan commit `.env`, service-role key, Groq API key, atau Cloudflare API token.
 
 Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di bawah `audio/`. Aplikasi membaca manifest TTS German (`audio/tts/manifest.json`) serta English (`audio/tts-en-us/manifest-en-us.json` dan `audio/tts-en-gb/manifest-en-gb.json`) melalui jsDelivr. Peta umum audio ujian berada di `manifest-cdn.json` repository ini.
 
-1. Buat atau perbarui MP3 dan manifest lokal. English menggunakan `npm run generate:tts:en` (dependensi: `python -m pip install -r requirements-tts.txt`); `npm run generate:tts` adalah generator German lama yang masih menunjuk ke `src/content/materi`, jadi periksa path sumber sebelum mengandalkannya untuk konten modular V4.
+1. Preview audio English yang belum ada dengan `npm run generate:tts:en -- --dry-run`; jalankan `npm run generate:tts:en` untuk membuat kedua aksen, manifest `manifest-en-us.json`/`manifest-en-gb.json`, dan memperbarui `manifest-cdn.json`. Dependensi: `python -m pip install -r requirements-tts.txt`. Generator German `npm run generate:tts` masih menunjuk ke sumber legacy `src/content/materi`; periksa path sebelum menggunakannya untuk konten modular V4.
 2. Salin aset dan manifest yang akan diterbitkan ke direktori sepadan di `nduniverse-audio/audio/`. Pertahankan nama file dan format mapping teks-ke-path pada manifest.
 3. Commit dan push repository audio ke branch `main`, lalu tunggu jsDelivr menyajikan versi terbaru.
 4. Untuk memperbarui peta MP3 umum, siapkan checkout repo audio pada `D:\audio-cdn` (sehingga foldernya `D:\audio-cdn\audio`), lalu jalankan dari root NdUniverse:
@@ -67,7 +67,7 @@ Perubahan Markdown tidak otomatis memperbarui indeks. Lihat [HANDOVER.md](HANDOV
 
 ## Sitemap dan Crawler
 
-`@astrojs/sitemap` menghasilkan sitemap statis dan mengikutsertakan sitemap materi dinamis `/sitemap-content.xml`. Endpoint tersebut mengambil koleksi materi German, English Everyday, dan English Academic. `public/robots.txt` mengizinkan crawler pada halaman publik dan mengecualikan `/admin/` serta `/api/`.
+Landing memakai `index, follow`; layout dashboard memakai `noindex, nofollow`. Sitemap mencakup `/`, `/de`, `/en`, halaman login, dan materi; rute dashboard/admin difilter. `robots.txt` mencantumkan larangan crawl admin, API, dan dashboard.
 
 ## Dokumentasi
 

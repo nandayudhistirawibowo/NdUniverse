@@ -1,5 +1,9 @@
 # NdUniverse Development Plan
 
+## Status V4
+
+**V4 selesai 100% untuk lingkup rilis.** Item riset/peningkatan yang belum menjadi bagian dari lingkup rilis dicatat sebagai backlog pasca-V4 di bawah.
+
 ## Fase 1 — Modul German dan Fondasi Platform
 
 Status: **SELESAI**
@@ -21,17 +25,18 @@ Status: **SELESAI**
 
 ## Fase 2.5 — Isi Konten Inggris (Materi & TTS)
 
-Status: **BERIKUTNYA**
+Status: **TERCAKUP V4; generator dual-accent tersedia, ekspansi konten/aset audio menjadi backlog pasca-V4**
 
-- Isi materi Everyday English bertahap untuk level A1-C2.
-- Kembangkan bank soal Reading, Listening, Writing, dan Speaking untuk IELTS/TOEFL.
-- Produksi audio/TTS English dan manifest dengan voice `en-US` atau `en-GB`.
-- Beresin TTS sampai 13.385 file kelar. Cek file yang corrupt/0KB.
-- Uji konten, audio, dan alur belajar English end-to-end.
+#### Backlog ekspansi pasca-V4
 
-## Fase 2.5.1 — Perbaikan Kualitas Speaking & STT
+- Lanjutkan penambahan materi Everyday English A1-C2 dan bank soal IELTS/TOEFL.
+- Perluas produksi audio English dengan generator dua aksen `en-US` dan `en-GB`.
+- Lanjutkan audit kelengkapan hingga target 13.385 file audio, termasuk pemeriksaan file corrupt/0KB.
+- Jalankan regresi konten, audio, dan alur belajar English end-to-end setelah perubahan besar.
 
-Status: **BELUM DIMULAI**
+## Backlog Pasca-V4 — Perbaikan Kualitas Speaking & STT
+
+Status: **BACKLOG PASCA-V4**
 
 - Tutup bolong Speaking: hapus input teks (text box) di mode Speaking. Verifikasi jawaban hanya berdasarkan hasil STT (Web Speech API); user wajib ngomong.
 - Benerin bahasa STT secara dinamis: jika materi Jerman, gunakan `recognition.lang = "de-DE"`; jika materi Inggris, gunakan `recognition.lang = "en-US"`.
@@ -39,7 +44,7 @@ Status: **BELUM DIMULAI**
 
 ## Fase 2.6 — Standarisasi Grading Ujian (Goethe, IELTS, TOEFL)
 
-Status: **RENCANA (Belum Dieksekusi)**
+Status: **BACKLOG PASCA-V4**
 
 ### Utility Grading Bersama
 
@@ -81,36 +86,28 @@ Jangan menghitung atau mengubah mapping ini secara dinamis:
 - Jangan hapus data localStorage lama; implementasi harus backward-compatible.
 - Jangan ubah timer atau UI yang sudah berjalan.
 
-## Fase 3 — Backend dan RLS
+## Backlog Pasca-V4 — Audit Backend dan RLS
 
-Status: **BELUM DIMULAI**
+Status: **BACKLOG PASCA-V4**
 
 - Audit kebijakan akses data dan row-level security.
 - Finalisasi kebutuhan backend multi-bahasa.
 
 ## Fase 3.5 — Eksperimen SSML (Suara Manusiawi)
 
-Status: **BELUM DIMULAI**
+Status: **BACKLOG PASCA-V4**
 
 - Riset penggunaan SSML (Speech Synthesis Markup Language) pada Edge TTS.
 - Buat 10 contoh kalimat menggunakan tag `<break>`, `<prosody>`, dan `<emphasis>`.
 - Jika hasilnya bagus dan terdengar tidak robotik, terapkan ke semua 13.385 file generate TTS.
 
-## Fase 4 — Validasi dan Rilis
+## Status Fase 4 — Validasi dan Rilis
 
-- **Fase 1 (Modul German & Fondasi Platform): SELESAI**
-- **Fase 2 (Modul Inggris - Fondasi): SELESAI**
-- **Fase 2.5 (Konten Inggris & TTS): BERIKUTNYA**
-- **Fase 2.5.1 (Perbaikan Kualitas Speaking & STT): BELUM DIMULAI**
-- **Fase 2.6 (Standarisasi Grading): RENCANA (Belum Dieksekusi)**
-- **Fase 3 (Backend/RLS): BELUM DIMULAI**
-- **Fase 3.5 (Eksperimen SSML - Suara Manusiawi): BELUM DIMULAI**
-- **Fase 4.5 (AI Advanced - Whisper & LLM): BELUM DIMULAI**
-- Uji regresi dan kesiapan rilis dilaksanakan setelah konten fase 2.5 tersedia.
+- Lingkup rilis V4 telah selesai; item lanjutan di bawah tidak memblokir status V4.
 
-## Fase 4.5 — AI Advanced (Whisper & LLM)
+## Backlog Pasca-V4 — AI Advanced (Whisper & LLM)
 
-Status: **BELUM DIMULAI**
+Status: **BACKLOG PASCA-V4**
 
 - Riset integrasi Whisper API untuk Pronunciation Assessment dengan nilai 0-100.
 - Riset integrasi LLM untuk Grammar Correction pada Writing dan Speaking.

@@ -67,7 +67,7 @@ flowchart TD
     G --> H
 ```
 
-## Alur Kuis 4 Pilar
+## Alur Kuis 4 Pilar (Tanpa Locking)
 
 ```mermaid
 flowchart TD
@@ -111,9 +111,9 @@ flowchart TD
     J --> K[Kembali ke materi]
 ```
 
-Sesi dan pilar tidak memerlukan progres sebelumnya, tidak memiliki urutan wajib, dan dapat dibuka langsung melalui URL. Kunci progres hanya menandai pasangan sesi-pilar yang telah selesai; tombol setelah kuis kembali ke materi, bukan memaksa kuis berikutnya.
+Sesi dan pilar tidak memerlukan progres sebelumnya, tidak memiliki urutan wajib/locking, dan dapat dibuka langsung melalui URL. Kunci progres hanya menandai pasangan sesi-pilar yang telah selesai; tombol setelah kuis kembali ke materi, bukan memaksa kuis berikutnya.
 
-## Chatbot RAG
+## NdBot v2 — Chatbot RAG
 
 ```mermaid
 flowchart TD
@@ -133,7 +133,7 @@ flowchart TD
 
 Materi Markdown diindeks ke `public.documents` melalui script ingest. Pembaruan indeks adalah proses manual dan ingest penuh mengganti seluruh baris tabel tersebut.
 
-## Anti-Cheat Fullscreen (NdBot)
+## Anti-Cheat Fullscreen (NdBot v2 — 3 Strikes)
 
 ```mermaid
 flowchart TD

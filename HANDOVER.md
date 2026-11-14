@@ -13,8 +13,8 @@ Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengu
 - **Chatbot RAG:** materi Markdown dipecah menjadi chunk dan disimpan pada `public.documents`; Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` (384 dimensi), Supabase `pgvector` melakukan retrieval, dan Groq menulis ulang query/menyusun jawaban.
 - **Kuis:** pengguna bebas memilih sesi dan pilar. `sessions_passed` menyimpan key seperti `s1-reading` dan `s2-writing` untuk indikator selesai; key tersebut tidak mengunci akses.
 - **Ujian besar:** fullscreen anti-cheat memantau perubahan fullscreen, tab tersembunyi, dan window blur. Strike ketiga memaksa submit; NdBot menampilkan status strike.
-- **UI:** seluruh antarmuka menggunakan Bahasa Indonesia hardcoded. Materi dan soal tetap memakai bahasa target.
-- **SEO:** sitemap Astro mencantumkan sitemap dinamis materi di `/sitemap-content.xml`; `robots.txt` mengizinkan crawler pada halaman publik.
+- **UI:** Bahasa Indonesia hardcoded (Indonesian-first), tanpa sistem i18n. Tautan `/en` ↔ `/de` hanya navigasi antar modul. Dashboard `/de/dashboard` dan `/en/dashboard`, termasuk NdBot, layout, dan menu, menggunakan Bahasa Indonesia penuh; landing dan portal/login masih memiliki sisa copy Inggris yang perlu audit. Materi/soal tetap dalam bahasa target.
+- **SEO:** landing `index, follow` dengan canonical; layout dashboard `noindex, nofollow`. Sitemap mencakup URL publik dan memfilter admin/dashboard; `robots.txt` melarang crawl rute privat.
 - **Audio:** manifest dan MP3 TTS utama disajikan dari `nandayudhistirawibowo/nduniverse-audio` melalui jsDelivr.
 
 ## Pengembangan Lokal
@@ -75,7 +75,7 @@ Audio yang dibaca aplikasi berada di repo terpisah `nandayudhistirawibowo/nduniv
 
 Alur publikasi:
 
-1. Generate/perbarui MP3 dan manifest lokal. English dapat dibuat dengan `npm run generate:tts:en`; dependensi Python tersedia lewat `python -m pip install -r requirements-tts.txt`.
+1. Jalankan `npm run generate:tts:en -- --dry-run` untuk melihat aset yang kurang atau `npm run generate:tts:en` untuk membuat audio English US/UK, kedua manifest, dan mapping `manifest-cdn.json`. Dependensi tersedia lewat `python -m pip install -r requirements-tts.txt`.
 2. Generator German `npm run generate:tts` saat ini masih membaca sumber legacy `src/content/materi`. Konten German V4 berada di `src/modules/german/content/materi`; jangan menganggap generator German memperbarui semua konten modul sampai path tersebut diselaraskan.
 3. Salin aset dan manifest yang akan diterbitkan ke lokasi yang sama di checkout repo audio, misalnya `D:\audio-cdn\audio`. Pertahankan format manifest sebagai mapping teks ke path audio dan pertahankan nama file yang digunakan aplikasi.
 4. Commit dan push aset repo audio ke branch `main`:
@@ -103,6 +103,15 @@ Alur publikasi:
    ```
 
 Manifest TTS German/English yang dibaca langsung dari repo audio harus ikut dipush bersama MP3. `manifest-cdn.json` adalah peta untuk resolver CDN aplikasi dan disajikan dari branch `main` repository NdUniverse.
+
+### Synchronous Audio Resolver
+
+`src/core/audio/cdn-audio.js` menyediakan `getSyncAudioUrl(text, accent)` untuk membentuk URL English US/UK secara sinkron dari teks ternormalisasi dan hash SHA-256, serta `resolveCdnAudioUrlSync(path)` untuk memetakan path audio ke jsDelivr tanpa menunggu fetch manifest. `src/modules/english/config/english-speech.js` memakai resolver tersebut dan browser speech sebagai fallback. Jika format hash, nama file, atau direktori audio diubah, selaraskan generator, resolver, manifest, dan aset CDN.
+
+### Known Issues / Backlog UI
+
+- Audit sisa English copy pada `src/pages/index.astro`, portal DE/EN, dan halaman login agar UI konsisten 100% berbahasa Indonesia.
+- Audit label UI di rute `/en` dan `/de`; jangan mengubah bahasa materi belajar.
 
 ## Memperbarui Indeks RAG
 

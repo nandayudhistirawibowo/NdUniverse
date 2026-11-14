@@ -3,9 +3,14 @@
 **Status:** Dokumentasi implementasi V4
 **Produk:** Platform belajar bahasa Jerman universal A1–C2
 
-## Status Antarmuka
+## Status Bahasa UI
 
-Sistem i18n aplikasi telah dihapus. Navigasi, tombol, dan pesan antarmuka di-hardcode dalam Bahasa Indonesia; materi, soal, dan audio tetap menggunakan bahasa target German atau English.
+UI menggunakan Bahasa Indonesia secara hardcoded (Indonesian-first) tanpa sistem i18n. Tautan `/en` dan `/de` hanya navigasi antar modul pembelajaran, bukan pengubah bahasa antarmuka. Landing dan portal/login DE/EN mayoritas berbahasa Indonesia dengan sisa copy Inggris yang perlu diaudit; dashboard `/de/dashboard` dan `/en/dashboard`, termasuk NdBot, layout, dan menu, menggunakan Bahasa Indonesia penuh. Materi belajar tetap menggunakan bahasa target.
+
+### Known Issues / Backlog UI
+
+- Audit ulang sisa English copy di landing, portal DE/EN, dan login agar UI konsisten 100% berbahasa Indonesia. Temuan landing ada di `src/pages/index.astro` (kicker, penanda section, dan tagline footer); layout bersama juga masih memiliki label Inggris pada rute `/en`.
+- Verifikasi setiap label UI di rute `/en` dan `/de` agar tidak ada sisa copy bahasa target yang bocor ke UI, selain materi belajar.
 
 ## Ringkasan Produk
 
@@ -58,7 +63,7 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - `finalizedXpRef` mencegah finalisasi ganda untuk run kuis yang sama.
 - Sistem anti-farming membatalkan XP sementara dari sesi yang berakhir Game Over dan mencegah finalisasi XP ganda pada run yang sama. Ini bukan deteksi farming lintas akun/perangkat.
 
-### Chatbot Tutor berbasis RAG
+### NdBot v2 — Chatbot Tutor berbasis RAG
 
 - Chatbot menjawab pertanyaan belajar menggunakan potongan materi Markdown yang diindeks pada tabel Supabase `public.documents`.
 - Pertanyaan terakhir dapat ditulis ulang oleh Groq untuk memperbaiki typo, memperluas singkatan, dan menyesuaikan bahasa pencarian; jika rewrite gagal, pertanyaan asli tetap digunakan.
@@ -154,8 +159,8 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### Audio TTS dan Microphone
 
-- Sistem TTS mencari teks pada manifest audio yang disajikan melalui jsDelivr.
-- Aset audio dibuat dengan Edge TTS; jika manifest atau MP3 gagal, aplikasi memakai Web Speech API dengan bahasa `de-DE`.
+- Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`), dengan generator dan resolver sinkron di `src/core/audio/cdn-audio.js`; audio German memakai manifest TTS German.
+- Aset dibuat dengan Edge TTS dan disajikan melalui jsDelivr. Fallback Web Speech menggunakan locale sesuai aksen/bahasa audio.
 - Speaking memakai browser Speech Recognition untuk mengubah rekaman suara menjadi teks sebelum fuzzy matching.
 
 ### Autentikasi dan Profil
@@ -180,6 +185,12 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 - Halaman Bantuan, profil, bookmark, dan dashboard dilindungi middleware sesuai akses.
 - Admin mengelola akun melalui portal admin terproteksi.
 
+### SEO dan Crawler
+
+- Landing menyatakan `index, follow` dan memakai canonical URL.
+- Layout dashboard menggunakan `noindex, nofollow`; sitemap mengecualikan dashboard dan admin.
+- `robots.txt` melarang crawl `/dashboard/`, `/de/dashboard/`, dan `/en/dashboard/`.
+
 ## Tech Stack
 
 | Area | Teknologi |
@@ -197,7 +208,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 | Hosting | Vercel |
 | Penyimpanan browser | localStorage |
 
-Semua UI aplikasi menggunakan Bahasa Indonesia hardcoded; tidak ada sistem i18n untuk menerjemahkan label antarmuka.
+UI Indonesian-first dan hardcoded tanpa sistem i18n; pengecualian copy Inggris yang diketahui dicatat sebagai backlog di atas.
 
 ## Model Data
 

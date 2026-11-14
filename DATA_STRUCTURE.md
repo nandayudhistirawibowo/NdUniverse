@@ -1,6 +1,8 @@
 # Struktur Data dan Komponen NdUniverse
 
-Dokumen ini merangkum struktur source code NdUniverse untuk membantu maintenance dan handover. Struktur berikut mencerminkan isi repository saat dokumen dibuat; beberapa folder konten berisi banyak file materi, sehingga hanya contoh file yang ditampilkan.
+Dokumen ini merangkum struktur source code NdUniverse untuk membantu maintenance dan handover. Struktur berikut mencerminkan isi repository saat ini; beberapa folder konten berisi banyak file materi, sehingga hanya contoh file yang ditampilkan.
+
+UI menggunakan Bahasa Indonesia secara hardcoded (Indonesian-first) tanpa sistem i18n. Tautan `/en` dan `/de` hanya navigasi antar modul pembelajaran, bukan pengubah bahasa antarmuka.
 
 ## Gambaran Struktur `src/`
 
@@ -12,6 +14,8 @@ src/
 │   │   ├── AuthPortal.astro
 │   │   ├── avatar.ts
 │   │   └── middleware.ts
+│   ├── audio/
+│   │   └── cdn-audio.js
 │   ├── db/
 │   │   ├── progress-client.js
 │   │   └── progress-client-en.js
@@ -26,7 +30,8 @@ src/
 │       ├── FeedbackModal.jsx
 │       ├── HelpContent.astro
 │       ├── HelpHint.jsx
-│       └── Layout.astro
+│       ├── Layout.astro
+│       └── NdBot.jsx
 ├── modules/
 │   ├── english/
 │   │   ├── components/
@@ -107,7 +112,7 @@ Modul English mengikuti struktur modular yang simetris dengan German.
 - **`components/`** — komponen English untuk kuis, Career, IELTS/TOEFL Exam, dan Boss Fight, semuanya dengan suffix `-en`.
 - **`content/everyday/`** — materi harian English per level CEFR; materi A1 tersedia sebagai contoh.
 - **`content/exam/ielts/` dan `content/exam/toefl/`** — konten ujian per tipe, dengan contoh soal A1 untuk validasi schema.
-- **`config/`** — konfigurasi speech English melalui `english-speech.js`; produksi audio/TTS masih menjadi pekerjaan lanjutan.
+- **`config/`** — konfigurasi speech English melalui `english-speech.js`; generator TTS mendukung aksen US/UK, dengan resolver CDN sinkron di `src/core/audio/cdn-audio.js`.
 - Astro Content Collections memisahkan konten menjadi `englishEveryday` dan `englishExam`.
 
 ### `src/pages/`
