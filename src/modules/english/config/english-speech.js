@@ -1,7 +1,7 @@
 import {
   preloadCdnAudioManifest,
-  resolveCdnAudioUrl,
-  resolveEnglishTtsAudioUrl,
+  resolveCdnAudioUrlSync,
+  resolveEnglishTtsAudioUrlSync,
 } from '../../../core/audio/cdn-audio.js';
 
 let activeAudio = null;
@@ -99,14 +99,31 @@ async function playAudioFile(audioUrl, fallbackText, language, button, playbackI
   const audio = new Audio(audioUrl);
   activeAudio = audio;
   activeAudioButton = button;
-  audio.load();
   let failurePromise = null;
-  const handleAudioFailure = (error) => {
+  const handleAudioFailure = (initialError) => {
     if (playbackId !== activePlaybackId || activeAudio !== audio) return;
 
     if (!failurePromise) {
-      button?.classList.remove('is-playing');
       failurePromise = (async () => {
+        let error = initialError;
+        if (error?.name === 'NotAllowedError') {
+          try {
+            await audio.play();
+            return;
+          } catch (retryError) {
+            if (playbackId !== activePlaybackId || activeAudio !== audio) return;
+            if (retryError?.name === 'NotAllowedError') {
+              button?.classList.remove('is-playing');
+              activeAudio = null;
+              activeAudioButton = null;
+              console.warn('Browser blocked English audio playback after one retry.', retryError);
+              return;
+            }
+            error = retryError;
+          }
+        }
+
+        button?.classList.remove('is-playing');
         const status = await getAudioHttpStatus(audioUrl);
         if (playbackId !== activePlaybackId || activeAudio !== audio) return;
         activeAudio = null;
@@ -136,6 +153,7 @@ async function playAudioFile(audioUrl, fallbackText, language, button, playbackI
     void handleAudioFailure(audio.error);
   };
 
+  audio.load();
   try {
     await audio.play();
   } catch (error) {
@@ -166,19 +184,16 @@ export async function playAudioTTS(text, accent = 'us', button = null, fallbackT
   }
 
   if (/^(\/|https?:\/\/)/i.test(spokenText)) {
-    const directAudioPath = await resolveCdnAudioUrl(spokenText) || spokenText;
-    if (playbackId !== activePlaybackId) return;
-    await playAudioFile(directAudioPath, spokenFallback, language, button, playbackId);
-    return;
+    const directAudioPath = resolveCdnAudioUrlSync(spokenText) || spokenText;
+    return playAudioFile(directAudioPath, spokenFallback, language, button, playbackId);
   }
 
-  const cdnAudioPath = await resolveEnglishTtsAudioUrl(spokenText, accent);
-  if (playbackId !== activePlaybackId) return;
+  const cdnAudioPath = resolveEnglishTtsAudioUrlSync(spokenText, accent);
 
   if (!cdnAudioPath) {
     speakWithBrowserVoice(spokenText, language, button);
     return;
   }
 
-  await playAudioFile(cdnAudioPath, spokenText, language, button, playbackId);
+  return playAudioFile(cdnAudioPath, spokenText, language, button, playbackId);
 }
