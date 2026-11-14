@@ -41,7 +41,7 @@ const features = [
 </Layout>
 
 <style>
-  :global(html:root) {
+  :global(html:root body) {
     --bg-main: #0b1520;
     --bg-dark: #071019;
     --accent-gold: #e5a93b;
@@ -53,6 +53,9 @@ const features = [
     --shadow: 0 18px 40px color-mix(in srgb, var(--bg-dark) 28%, transparent);
     --primary-hover: #C98D23;
     --bg-soft: color-mix(in srgb, var(--accent-gold) 12%, var(--bg-main));
+    --text: var(--text-main);
+    background: var(--bg-main);
+    color: var(--text-main);
   }
 
   .module-page { display:grid; gap:2rem; width:min(1120px,100%); margin:0 auto; padding:1rem 0 3rem; }

@@ -41,7 +41,7 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 </Layout>
 
 <style>
-  :global(html:root) {
+  :global(html:root body) {
     --bg-main: #0b1520;
     --bg-dark: #071019;
     --accent-gold: #e5a93b;
@@ -53,6 +53,9 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
     --shadow: 0 18px 40px color-mix(in srgb, var(--bg-dark) 28%, transparent);
     --primary-hover: #C98D23;
     --bg-soft: color-mix(in srgb, var(--accent-gold) 12%, var(--bg-main));
+    --text: var(--text-main);
+    background: var(--bg-main);
+    color: var(--text-main);
   }
 
   .page-shell { display:grid; gap:1.5rem; padding-top:1rem; }
