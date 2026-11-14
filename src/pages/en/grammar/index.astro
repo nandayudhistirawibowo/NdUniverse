@@ -79,6 +79,39 @@ const plurals = [
     ],
   },
 ];
+
+const beForms = [
+  { subject: 'I', form: 'am' },
+  { subject: 'You', form: 'are' },
+  { subject: 'He', form: 'is' },
+  { subject: 'She', form: 'is' },
+  { subject: 'It', form: 'is' },
+  { subject: 'We', form: 'are' },
+  { subject: 'They', form: 'are' },
+];
+
+const beExamples = [
+  { sentence: 'I am tired.', meaning: 'Saya lelah.' },
+  { sentence: 'You are ready.', meaning: 'Kamu siap.' },
+  { sentence: 'She is a student.', meaning: 'Dia seorang pelajar.' },
+  { sentence: 'They are at home.', meaning: 'Mereka di rumah.' },
+];
+
+const pronouns = [
+  { subject: 'I', possessive: 'my', meaning: 'saya' },
+  { subject: 'You', possessive: 'your', meaning: 'kamu' },
+  { subject: 'He', possessive: 'his', meaning: 'dia (laki-laki)' },
+  { subject: 'She', possessive: 'her', meaning: 'dia (perempuan)' },
+  { subject: 'It', possessive: 'its', meaning: 'benda/hewan' },
+  { subject: 'We', possessive: 'our', meaning: 'kami/kita' },
+  { subject: 'They', possessive: 'their', meaning: 'mereka' },
+];
+
+const pronounExamples = [
+  { sentence: 'This is my book.', meaning: 'Ini buku saya.' },
+  { sentence: 'Your bag is here.', meaning: 'Tasmu ada di sini.' },
+  { sentence: 'Their house is big.', meaning: 'Rumah mereka besar.' },
+];
 ---
 
 <Layout
@@ -236,6 +269,101 @@ const plurals = [
             ))}
           </tbody>
         </table>
+      </div>
+    </section>
+
+    <section class="guide-section" aria-labelledby="to-be-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">05 / Kata Kerja “To Be”</p>
+          <h2 id="to-be-heading">To Be: Am, Are, dan Is</h2>
+        </div>
+        <p class="section-note">
+          Bahasa Indonesia bisa mengatakan “Saya lelah” tanpa kata kerja.
+          Dalam bahasa Inggris, kalimat seperti ini perlu memakai “to be”:
+          <span lang="en">I am tired.</span>
+        </p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel konjugasi to be" tabindex="0">
+        <table class="guide-table">
+          <thead>
+            <tr><th scope="col">Subjek</th><th scope="col">To be</th></tr>
+          </thead>
+          <tbody>
+            {beForms.map(({ subject, form }) => (
+              <tr>
+                <th scope="row" class="row-heading" lang="en">{subject}</th>
+                <td lang="en">{subject} <strong>{form}</strong></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-grid">
+        {beExamples.map(({ sentence, meaning }) => (
+          <article class="article-card">
+            <div class="example-with-speech">
+              <span lang="en">{sentence}</span>
+              <button class="speaker-button" type="button" data-speak={sentence}
+                aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
+                <span aria-hidden="true">🔊</span>
+              </button>
+            </div>
+            <p class="card-description">{meaning}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+
+    <section class="guide-section" aria-labelledby="pronouns-heading">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">06 / Kata Ganti</p>
+          <h2 id="pronouns-heading">Subject dan Kata Kepemilikan</h2>
+        </div>
+        <p class="section-note">
+          Dalam bahasa Indonesia, kepemilikan sering ditandai setelah benda
+          (“buku saya”). Dalam bahasa Inggris, kata seperti “my” diletakkan
+          sebelum benda: <span lang="en">my book</span>.
+        </p>
+      </div>
+
+      <div class="table-scroll" role="region" aria-label="Tabel subject dan kata kepemilikan" tabindex="0">
+        <table class="guide-table">
+          <thead>
+            <tr>
+              <th scope="col">Subject</th>
+              <th scope="col">Possessive adjective</th>
+              <th scope="col">Arti</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pronouns.map(({ subject, possessive, meaning }) => (
+              <tr>
+                <th scope="row" class="row-heading" lang="en">{subject}</th>
+                <td lang="en">{possessive}</td>
+                <td>{meaning}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="article-grid">
+        {pronounExamples.map(({ sentence, meaning }) => (
+          <article class="article-card">
+            <div class="example-with-speech">
+              <span lang="en">{sentence}</span>
+              <button class="speaker-button" type="button" data-speak={sentence}
+                aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
+                <span aria-hidden="true">🔊</span>
+              </button>
+            </div>
+            <p class="card-description">{meaning}</p>
+          </article>
+        ))}
       </div>
     </section>
   </main>
