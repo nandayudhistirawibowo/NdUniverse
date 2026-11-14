@@ -1,7 +1,7 @@
 import {
+  getSyncAudioUrl,
   preloadCdnAudioManifest,
   resolveCdnAudioUrlSync,
-  resolveEnglishTtsAudioUrlSync,
 } from '../../../core/audio/cdn-audio.js';
 
 let activeAudio = null;
@@ -88,7 +88,7 @@ async function getAudioHttpStatus(audioUrl) {
   }
 }
 
-async function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
+function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
   if (playbackId !== activePlaybackId) return;
 
   if (typeof Audio === 'undefined') {
@@ -99,46 +99,32 @@ async function playAudioFile(audioUrl, fallbackText, language, button, playbackI
   const audio = new Audio(audioUrl);
   activeAudio = audio;
   activeAudioButton = button;
-  let failurePromise = null;
+  let failureCheckStarted = false;
   const handleAudioFailure = (initialError) => {
     if (playbackId !== activePlaybackId || activeAudio !== audio) return;
 
-    if (!failurePromise) {
-      failurePromise = (async () => {
-        let error = initialError;
-        if (error?.name === 'NotAllowedError') {
-          try {
-            await audio.play();
-            return;
-          } catch (retryError) {
-            if (playbackId !== activePlaybackId || activeAudio !== audio) return;
-            if (retryError?.name === 'NotAllowedError') {
-              button?.classList.remove('is-playing');
-              activeAudio = null;
-              activeAudioButton = null;
-              console.warn('Browser blocked English audio playback after one retry.', retryError);
-              return;
-            }
-            error = retryError;
-          }
-        }
-
-        button?.classList.remove('is-playing');
-        const status = await getAudioHttpStatus(audioUrl);
-        if (playbackId !== activePlaybackId || activeAudio !== audio) return;
-        activeAudio = null;
-        activeAudioButton = null;
-
-        if (status === 404) {
-          speakWithBrowserVoice(fallbackText, language, button);
-        } else if (error?.name === 'NotAllowedError') {
-          console.warn('Browser blocked English audio playback; retry from a user action.', error);
-        } else {
-          console.error(`Unable to play English audio (HTTP status ${status ?? 'unknown'}).`, error);
-        }
-      })();
+    if (initialError?.name === 'NotAllowedError') {
+      button?.classList.remove('is-playing');
+      activeAudio = null;
+      activeAudioButton = null;
+      console.warn('Browser blocked English audio playback; tap the audio button again.', initialError);
+      return;
     }
-    return failurePromise;
+
+    if (failureCheckStarted) return;
+    failureCheckStarted = true;
+    button?.classList.remove('is-playing');
+    getAudioHttpStatus(audioUrl).then((status) => {
+      if (playbackId !== activePlaybackId || activeAudio !== audio) return;
+      activeAudio = null;
+      activeAudioButton = null;
+
+      if (status === 404) {
+        speakWithBrowserVoice(fallbackText, language, button);
+      } else {
+        console.error(`Unable to play English audio (HTTP status ${status ?? 'unknown'}).`, initialError);
+      }
+    });
   };
 
   button?.classList.add('is-playing');
@@ -153,11 +139,12 @@ async function playAudioFile(audioUrl, fallbackText, language, button, playbackI
     void handleAudioFailure(audio.error);
   };
 
-  audio.load();
   try {
-    await audio.play();
+    audio.load();
+    const playPromise = audio.play();
+    playPromise?.catch(handleAudioFailure);
   } catch (error) {
-    await handleAudioFailure(error);
+    handleAudioFailure(error);
   }
 }
 
@@ -167,7 +154,7 @@ async function playAudioFile(audioUrl, fallbackText, language, button, playbackI
  * @param {HTMLButtonElement | null} [button=null]
  * @param {string} [fallbackText=text]
  */
-export async function playAudioTTS(text, accent = 'us', button = null, fallbackText = text) {
+export function playAudioTTS(text, accent = 'us', button = null, fallbackText = text) {
   const spokenText = normalizeText(text);
   const spokenFallback = normalizeText(fallbackText) || spokenText;
   const language = accent === 'uk' ? 'en-GB' : 'en-US';
@@ -185,15 +172,16 @@ export async function playAudioTTS(text, accent = 'us', button = null, fallbackT
 
   if (/^(\/|https?:\/\/)/i.test(spokenText)) {
     const directAudioPath = resolveCdnAudioUrlSync(spokenText) || spokenText;
-    return playAudioFile(directAudioPath, spokenFallback, language, button, playbackId);
+    playAudioFile(directAudioPath, spokenFallback, language, button, playbackId);
+    return;
   }
 
-  const cdnAudioPath = resolveEnglishTtsAudioUrlSync(spokenText, accent);
+  const cdnAudioPath = getSyncAudioUrl(spokenText, accent);
 
   if (!cdnAudioPath) {
     speakWithBrowserVoice(spokenText, language, button);
     return;
   }
 
-  return playAudioFile(cdnAudioPath, spokenText, language, button, playbackId);
+  playAudioFile(cdnAudioPath, spokenText, language, button, playbackId);
 }
