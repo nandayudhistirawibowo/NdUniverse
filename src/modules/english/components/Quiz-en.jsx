@@ -1428,7 +1428,14 @@ export default function Quiz(props) {
 
           .audio-accent-toggle button[aria-pressed="true"] {
             border-color: var(--accent-gold);
-            background: var(--bg-main, #fff4dc);
+            background: var(--card-bg);
+            box-shadow: inset 0 0 0 1px var(--accent-gold);
+          }
+
+          @media (hover: hover) {
+            .audio-accent-toggle button:hover:not(:disabled) {
+              background: var(--bg-main, #fff4dc);
+            }
           }
 
           .audio-accent-toggle button:focus-visible {

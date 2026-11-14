@@ -491,9 +491,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     outline-offset: 2px;
   }
 
-  .private-content button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 7px 16px rgba(26, 26, 30, 0.14);
+  @media (hover: hover) {
+    .private-content button:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 7px 16px rgba(26, 26, 30, 0.14);
+    }
   }
 
   .nav-item.active {

@@ -4,10 +4,27 @@ import {
   resolveEnglishTtsAudioUrl,
 } from '../../../core/audio/cdn-audio.js';
 
-let currentAudio = null;
+let activeAudio = null;
+let activeAudioButton = null;
+let activePlaybackId = 0;
 
 if (typeof window !== 'undefined') {
   preloadCdnAudioManifest();
+}
+
+function stopActiveAudio() {
+  if (!activeAudio) return;
+
+  const audio = activeAudio;
+  activeAudio = null;
+  activeAudioButton?.classList.remove('is-playing');
+  activeAudioButton = null;
+  audio.onended = null;
+  audio.onerror = null;
+  audio.pause();
+  audio.currentTime = 0;
+  audio.removeAttribute('src');
+  audio.load();
 }
 
 function showUkSpeechError(button, error) {
@@ -33,12 +50,13 @@ function speakWithBrowserVoice(text, language, button) {
   utterance.rate = 1;
   utterance.onend = () => button?.classList.remove('is-playing');
   utterance.onerror = (event) => {
+    button?.classList.remove('is-playing');
+    if (event.error === 'interrupted' || event.error === 'canceled') return;
+
     if (language === 'en-GB') {
       showUkSpeechError(button, event.error);
-    } else {
-      button?.classList.remove('is-playing');
     }
-    if (language !== 'en-GB' && event.error !== 'interrupted' && event.error !== 'canceled') {
+    if (language !== 'en-GB') {
       console.error('Unable to speak English text with US browser speech synthesis.', event.error);
     }
   };
@@ -70,22 +88,29 @@ async function getAudioHttpStatus(audioUrl) {
   }
 }
 
-async function playAudioFile(audioUrl, fallbackText, language, button) {
+async function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
+  if (playbackId !== activePlaybackId) return;
+
   if (typeof Audio === 'undefined') {
     speakWithBrowserVoice(fallbackText, language, button);
     return;
   }
 
   const audio = new Audio(audioUrl);
-  currentAudio = audio;
+  activeAudio = audio;
+  activeAudioButton = button;
+  audio.load();
   let failurePromise = null;
   const handleAudioFailure = (error) => {
+    if (playbackId !== activePlaybackId || activeAudio !== audio) return;
+
     if (!failurePromise) {
       button?.classList.remove('is-playing');
       failurePromise = (async () => {
         const status = await getAudioHttpStatus(audioUrl);
-        if (currentAudio !== audio) return;
-        currentAudio = null;
+        if (playbackId !== activePlaybackId || activeAudio !== audio) return;
+        activeAudio = null;
+        activeAudioButton = null;
 
         if (status === 404) {
           speakWithBrowserVoice(fallbackText, language, button);
@@ -102,7 +127,10 @@ async function playAudioFile(audioUrl, fallbackText, language, button) {
   button?.classList.add('is-playing');
   audio.onended = () => {
     button?.classList.remove('is-playing');
-    if (currentAudio === audio) currentAudio = null;
+    if (activeAudio === audio) {
+      activeAudio = null;
+      activeAudioButton = null;
+    }
   };
   audio.onerror = () => {
     void handleAudioFailure(audio.error);
@@ -126,31 +154,31 @@ export async function playAudioTTS(text, accent = 'us', button = null, fallbackT
   const spokenFallback = normalizeText(fallbackText) || spokenText;
   const language = accent === 'uk' ? 'en-GB' : 'en-US';
 
+  if (typeof window === 'undefined') return;
+
+  const playbackId = ++activePlaybackId;
+  stopActiveAudio();
+  window.speechSynthesis?.cancel();
+
   if (!spokenText) {
     button?.classList.remove('is-playing');
     return;
   }
 
-  if (typeof window === 'undefined') return;
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.removeAttribute('src');
-    currentAudio.load();
-    currentAudio = null;
-  }
-
   if (/^(\/|https?:\/\/)/i.test(spokenText)) {
     const directAudioPath = await resolveCdnAudioUrl(spokenText) || spokenText;
-    await playAudioFile(directAudioPath, spokenFallback, language, button);
+    if (playbackId !== activePlaybackId) return;
+    await playAudioFile(directAudioPath, spokenFallback, language, button, playbackId);
     return;
   }
 
   const cdnAudioPath = await resolveEnglishTtsAudioUrl(spokenText, accent);
+  if (playbackId !== activePlaybackId) return;
 
   if (!cdnAudioPath) {
     speakWithBrowserVoice(spokenText, language, button);
     return;
   }
 
-  await playAudioFile(cdnAudioPath, spokenText, language, button);
+  await playAudioFile(cdnAudioPath, spokenText, language, button, playbackId);
 }
