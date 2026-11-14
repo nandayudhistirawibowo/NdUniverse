@@ -67,6 +67,20 @@ const vocab = item.data.vocab.map((entry) => ({
 </Layout>
 
 <style>
+  :global(html:root body) {
+    --bg-main: #0b1520;
+    --bg-dark: #071019;
+    --accent-gold: #e5a93b;
+    --accent-red: #d93838;
+    --text-main: #f8fafc;
+    --card-bg: #071019;
+    --muted: rgba(248, 250, 252, 0.66);
+    --border: rgba(229, 169, 59, 0.28);
+    --bg-soft: color-mix(in srgb, var(--accent-gold) 12%, var(--bg-dark));
+    background: var(--bg-main);
+    color: var(--text-main);
+  }
+
   .practice-page {
     display: grid;
     max-width: 1000px;
@@ -109,7 +123,7 @@ const vocab = item.data.vocab.map((entry) => ({
 
   .eyebrow {
     margin: 0 0 0.5rem;
-    color: var(--text-main);
+    color: var(--muted);
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -132,7 +146,7 @@ const vocab = item.data.vocab.map((entry) => ({
     border: 1px solid var(--border);
     border-radius: 10px;
     background: var(--card-bg);
-    box-shadow: 0 20px 50px rgba(26, 26, 30, 0.1);
+    box-shadow: var(--shadow);
   }
 
   @media (max-width: 640px) {

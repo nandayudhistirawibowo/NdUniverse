@@ -1128,8 +1128,8 @@ export default function Quiz(props) {
                         height: '64px',
                         borderRadius: '50%',
                         border: '1px solid var(--border)',
-                        background: isListening ? '#e5484d' : 'var(--card-bg)',
-                        color: isListening ? '#fff' : 'var(--text-main)',
+                        background: isListening ? 'var(--accent-red)' : 'var(--card-bg)',
+                        color: 'var(--text-main)',
                         fontSize: '1.5rem',
                         cursor: 'pointer',
                         marginBottom: '0.75rem',
@@ -1305,10 +1305,13 @@ export default function Quiz(props) {
       <style>
         {`
           .quiz-shell {
+            --bg-soft: color-mix(in srgb, var(--accent-gold) 12%, var(--bg-dark));
             display: grid;
             gap: 0.9rem;
             min-width: 0;
             position: relative;
+            background: var(--bg-main);
+            color: var(--text-main);
           }
 
           .quiz-toast {
@@ -1323,7 +1326,7 @@ export default function Quiz(props) {
             padding: 12px 24px;
             border: 1px solid;
             border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: var(--shadow);
             font-weight: 800;
             text-align: center;
             animation: toast-slide-fade 3s ease forwards;
@@ -1334,15 +1337,15 @@ export default function Quiz(props) {
           }
 
           .quiz-toast.success {
-            border-color: #22c55e;
-            background: #dcfce7;
-            color: #166534;
+            border-color: var(--nd-status-safe);
+            background: color-mix(in srgb, var(--nd-status-safe) 15%, var(--bg-dark));
+            color: var(--text-main);
           }
 
           .quiz-toast.error {
-            border-color: #ef4444;
-            background: #fee2e2;
-            color: #991b1b;
+            border-color: var(--accent-red);
+            background: color-mix(in srgb, var(--accent-red) 15%, var(--bg-dark));
+            color: var(--text-main);
           }
 
           .quiz-toast svg {
@@ -1378,7 +1381,7 @@ export default function Quiz(props) {
           }
 
           .track-tag {
-            color: var(--text-main);
+            color: var(--muted);
           }
 
           .xp-badge {
@@ -1387,9 +1390,9 @@ export default function Quiz(props) {
             gap: 0.45rem;
             min-height: 36px;
             padding: 0.4rem 0.7rem;
-            border: 1px solid rgba(229, 169, 59, 0.55);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            background: #FFF4DC;
+            background: var(--bg-soft);
             color: var(--text-main);
             font-size: 0.75rem;
             letter-spacing: 0;
@@ -1400,7 +1403,7 @@ export default function Quiz(props) {
             height: 16px;
             flex: 0 0 auto;
             fill: none;
-            stroke: #966313;
+            stroke: var(--accent-gold);
             stroke-width: 1.8;
             stroke-linecap: round;
             stroke-linejoin: round;
@@ -1434,7 +1437,7 @@ export default function Quiz(props) {
 
           @media (hover: hover) {
             .audio-accent-toggle button:hover:not(:disabled) {
-              background: var(--bg-main, #fff4dc);
+              background: var(--bg-soft);
             }
           }
 
@@ -1478,7 +1481,7 @@ export default function Quiz(props) {
           }
 
           .heart-empty {
-            color: #A7A7B0;
+            color: var(--muted);
           }
 
           .restart-btn {
@@ -1488,15 +1491,15 @@ export default function Quiz(props) {
             place-items: center;
             border: 1px solid var(--border);
             border-radius: 8px;
-            background: #fff;
+            background: var(--card-bg);
             color: var(--text-main);
             cursor: pointer;
           }
 
           .restart-btn:hover {
             border-color: var(--accent-gold);
-            background: #FFF4DC;
-            color: #966313;
+            background: var(--bg-soft);
+            color: var(--accent-gold);
             transform: rotate(-18deg);
           }
 
@@ -1528,7 +1531,7 @@ export default function Quiz(props) {
             height: 10px;
             overflow: hidden;
             border-radius: 999px;
-            background: #F7E5C2;
+            background: var(--bg-soft);
           }
 
           .progress-track > span {
@@ -1544,7 +1547,8 @@ export default function Quiz(props) {
             border: 1px solid var(--border);
             border-radius: 10px;
             padding: clamp(1rem, 2.5vw, 1.6rem);
-            box-shadow: 0 12px 30px rgba(26, 26, 30, 0.07);
+            color: var(--text-main);
+            box-shadow: var(--shadow);
           }
 
           .question-label {
@@ -1552,7 +1556,7 @@ export default function Quiz(props) {
             font-size: 0.72rem;
             font-weight: 800;
             letter-spacing: 0.08em;
-            color: var(--text-main);
+            color: var(--muted);
             text-transform: uppercase;
           }
 
@@ -1573,8 +1577,8 @@ export default function Quiz(props) {
             margin-bottom: 1rem;
             padding: 0.8rem;
             border-radius: 10px;
-            background: #f8fafc;
-            border: 1px dashed rgba(148, 163, 184, 0.7);
+            background: var(--bg-main);
+            border: 1px dashed var(--border);
           }
 
           .answer-content {
@@ -1586,7 +1590,7 @@ export default function Quiz(props) {
           }
 
           .placeholder {
-            color: #94a3b8;
+            color: var(--muted);
             font-size: 0.85rem;
           }
 
@@ -1597,7 +1601,7 @@ export default function Quiz(props) {
             justify-content: center;
             padding: 0.45rem 0.75rem;
             border-radius: 999px;
-            background: #F7E5C2;
+            background: var(--bg-soft);
             color: var(--text-main);
             font-weight: 700;
           }
@@ -1611,9 +1615,9 @@ export default function Quiz(props) {
 
           .token-chip,
           .match-choice {
-            border: 1px solid rgba(148, 163, 184, 0.4);
+            border: 1px solid var(--border);
             border-radius: 8px;
-            background: #fff;
+            background: var(--card-bg);
             color: var(--text-main);
             padding: 0.65rem 0.85rem;
             font-weight: 600;
@@ -1624,6 +1628,7 @@ export default function Quiz(props) {
           .token-chip:hover,
           .match-choice:hover {
             border-color: var(--accent-gold);
+            background: var(--bg-soft);
           }
 
           .token-chip:disabled,
@@ -1638,34 +1643,34 @@ export default function Quiz(props) {
           .reset-btn {
             flex: 0 0 auto;
             padding: 0.35rem 0.65rem;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--border);
             border-radius: 999px;
-            background: #fff;
-            color: #334155;
+            background: var(--card-bg);
+            color: var(--text-main);
             font-size: 0.75rem;
             font-weight: 700;
             cursor: pointer;
           }
 
           .match-choice.active {
-            background: #F7E5C2;
+            background: var(--bg-soft);
             border-color: var(--accent-gold);
             color: var(--text-main);
           }
 
           .match-choice.correct,
           .cloze-choice.correct {
-            background: #dcfce7;
-            border-color: #16a34a;
-            color: #166534;
+            background: color-mix(in srgb, var(--nd-status-safe) 15%, var(--bg-dark));
+            border-color: var(--nd-status-safe);
+            color: var(--text-main);
             animation: choice-pop 0.28s ease-out;
           }
 
           .match-choice.wrong,
           .cloze-choice.wrong {
-            background: #fee2e2;
+            background: color-mix(in srgb, var(--accent-red) 15%, var(--bg-dark));
             border-color: var(--accent-red);
-            color: #991b1b;
+            color: var(--text-main);
             animation: choice-shake 0.28s ease-in-out;
           }
 
@@ -1705,26 +1710,26 @@ export default function Quiz(props) {
             min-height: 48px;
             overflow-wrap: anywhere;
             text-align: left;
-            background: #fff;
+            background: var(--card-bg);
           }
 
           .matcher-column .match-choice.active {
-            background: #F7E5C2;
+            background: var(--bg-soft);
             border-color: var(--accent-gold);
             color: var(--text-main);
           }
 
           .matcher-column .match-choice.correct {
-            background: #dcfce7;
+            background: color-mix(in srgb, var(--nd-status-safe) 15%, var(--bg-dark));
           }
 
           .matcher-column .match-choice.wrong {
-            background: #fee2e2;
+            background: color-mix(in srgb, var(--accent-red) 15%, var(--bg-dark));
           }
 
           .match-choice.selectable:not(:disabled) {
             border-color: var(--accent-gold);
-            box-shadow: 0 0 0 3px rgba(229, 169, 59, 0.2);
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-gold) 25%, transparent);
           }
 
           .cloze-options {
@@ -1737,10 +1742,10 @@ export default function Quiz(props) {
           .cloze-choice {
             min-height: 48px;
             padding: 0.7rem 0.9rem;
-            border: 1px solid #cbd5e1;
+            border: 1px solid var(--border);
             border-radius: 10px;
-            background: #fff;
-            color: #1e293b;
+            background: var(--card-bg);
+            color: var(--text-main);
             font-weight: 700;
             text-align: left;
             cursor: pointer;
@@ -1749,18 +1754,19 @@ export default function Quiz(props) {
 
           .cloze-choice.selected:not(.correct):not(.wrong) {
             border-color: var(--accent-gold);
-            background: #FFF4DC;
+            background: var(--bg-soft);
             color: var(--text-main);
           }
 
           .cloze-choice:hover:not(:disabled) {
             border-color: var(--accent-gold);
+            background: var(--bg-soft);
             transform: translateY(-1px);
           }
 
           .column-title {
             margin: 0 0 0.2rem;
-            color: #475569;
+            color: var(--muted);
             font-size: 0.74rem;
             font-weight: 800;
             letter-spacing: 0.08em;
@@ -1791,26 +1797,28 @@ export default function Quiz(props) {
 
           .primary-btn {
             background: var(--accent-gold);
-            color: var(--text-main);
+            color: var(--bg-dark);
             flex: 1;
           }
 
           .primary-btn:hover:not(:disabled),
           .next-btn:hover {
-            background: #F0B84F;
+            background: var(--primary-hover);
           }
 
           .secondary-btn {
-            background: rgba(148, 163, 184, 0.12);
-            color: #0f172a;
+            border: 1px solid var(--border);
+            background: var(--bg-main);
+            color: var(--text-main);
           }
 
           .correct-answer {
             margin: 0.9rem 0 0;
             padding: 0.75rem 0.9rem;
             border-radius: 10px;
-            background: #FCE7E7;
-            color: var(--accent-red);
+            border: 1px solid var(--accent-red);
+            background: color-mix(in srgb, var(--accent-red) 15%, var(--bg-dark));
+            color: var(--text-main);
             font-weight: 600;
             line-height: 1.5;
           }
@@ -1823,7 +1831,7 @@ export default function Quiz(props) {
             border: 0;
             border-radius: 10px;
             background: var(--accent-gold);
-            color: var(--text-main);
+            color: var(--bg-dark);
             font-size: 1rem;
             font-weight: 800;
             cursor: pointer;
@@ -1832,7 +1840,7 @@ export default function Quiz(props) {
           .meta-stack {
             text-align: right;
             font-size: 0.75rem;
-            color: #475569;
+            color: var(--muted);
             font-weight: 700;
             letter-spacing: 0.06em;
             text-transform: uppercase;
@@ -1840,9 +1848,9 @@ export default function Quiz(props) {
 
           .quiz-empty {
             padding: 1rem;
-            border: 1px dashed rgba(148, 163, 184, 0.6);
+            border: 1px dashed var(--border);
             border-radius: 0.8rem;
-            color: #475569;
+            color: var(--muted);
             text-align: center;
           }
 
@@ -1877,7 +1885,7 @@ export default function Quiz(props) {
             place-items: center;
             overflow-y: auto;
             padding: 1rem;
-            background: rgba(26, 26, 30, 0.72);
+            background: color-mix(in srgb, var(--bg-dark) 78%, transparent);
           }
 
           .summary-modal {
@@ -1887,8 +1895,9 @@ export default function Quiz(props) {
             padding: 1.4rem;
             border: 1px solid var(--border);
             border-radius: 16px;
-            background: #fff;
-            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.28);
+            background: var(--card-bg);
+            color: var(--text-main);
+            box-shadow: var(--shadow);
           }
 
           .summary-status {
@@ -1901,13 +1910,13 @@ export default function Quiz(props) {
           }
 
           .summary-status.game-over {
-            background: var(--accent-red);
-            color: #ffffff;
+            background: color-mix(in srgb, var(--accent-red) 15%, var(--bg-dark));
+            color: var(--text-main);
           }
 
           .summary-status.complete {
-            background: #dcfce7;
-            color: #166534;
+            background: color-mix(in srgb, var(--nd-status-safe) 15%, var(--bg-dark));
+            color: var(--text-main);
           }
 
           .summary-modal h2 {
@@ -1927,11 +1936,12 @@ export default function Quiz(props) {
             align-content: start;
             padding: 0.75rem;
             border-radius: 10px;
-            background: #FFF4DC;
+            border: 1px solid var(--border);
+            background: var(--bg-main);
           }
 
           .summary-stats span {
-            color: #475569;
+            color: var(--muted);
             font-size: 0.72rem;
             line-height: 1.4;
           }
@@ -1955,7 +1965,7 @@ export default function Quiz(props) {
 
           .review-panel p {
             margin: 0;
-            color: #475569;
+            color: var(--muted);
             font-size: 0.9rem;
           }
 
@@ -1976,7 +1986,7 @@ export default function Quiz(props) {
             gap: 0.75rem;
             padding-bottom: 0.45rem;
             border-bottom: 1px solid var(--border);
-            color: #475569;
+            color: var(--muted);
             font-size: 0.88rem;
           }
 
@@ -2051,7 +2061,8 @@ export default function Quiz(props) {
 
           .summary-actions .secondary-btn {
             flex: 1;
-            background: #ECECF0;
+            border: 1px solid var(--border);
+            background: var(--bg-main);
             color: var(--text-main);
           }
 
