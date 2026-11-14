@@ -14,7 +14,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
 
 <DashboardLayout
   title="Profil | NdUniverse"
-  description="Kelola informasi profil mahasiswa siDeutsch."
+  description="Kelola profil NdUniverse."
   active="profile"
   user={user}
   profile={profile}
@@ -185,19 +185,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     const confirmPassword = passwordForm.querySelector<HTMLInputElement>('#confirm-password')?.value ?? '';
 
     if (newPassword.length < 6) {
-      showPasswordAlert('Password baru minimal 6 karakter.', 'error');
+      showPasswordAlert('Your new password must be at least 6 characters.', 'error');
       return;
     }
 
     if (newPassword !== confirmPassword) {
-      showPasswordAlert('Konfirmasi password tidak sama.', 'error');
+      showPasswordAlert('The passwords do not match.', 'error');
       return;
     }
 
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
-      showPasswordAlert('Konfigurasi Supabase belum tersedia.', 'error');
+      showPasswordAlert('Account configuration is unavailable.', 'error');
       return;
     }
 
@@ -214,13 +214,13 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
         toggle.setAttribute('aria-pressed', 'false');
         toggle.setAttribute('aria-label', 'Tampilkan kata sandi');
       });
-      showPasswordAlert('Password berhasil diubah!', 'success');
+      showPasswordAlert('Password updated successfully!', 'success');
       window.setTimeout(() => {
         window.location.href = '/dashboard-de';
       }, 2000);
     } catch (error) {
       showPasswordAlert(
-        error instanceof Error ? `Password gagal diubah: ${error.message}` : 'Password gagal diubah. Coba lagi.',
+        error instanceof Error ? `Could not update password: ${error.message}` : 'Could not update password. Please try again.',
         'error'
       );
     } finally {
@@ -235,7 +235,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     if (!['image/png', 'image/jpeg', 'image/webp'].includes(selectedAvatar.type) || selectedAvatar.size > 5 * 1024 * 1024) {
       selectedAvatar = null;
       fileInput.value = '';
-      message.textContent = 'File harus berupa PNG, JPG, atau WebP dengan ukuran maksimal 5 MB.';
+      message.textContent = 'Choose a PNG, JPG, or WebP image no larger than 5 MB.';
       message.dataset.state = 'error';
       return;
     }
@@ -254,7 +254,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
     const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
     if (!supabaseUrl || !supabaseAnonKey) {
-      message.textContent = 'Konfigurasi Supabase belum tersedia.';
+      message.textContent = 'Account configuration is unavailable.';
       message.dataset.state = 'error';
       return;
     }
@@ -262,7 +262,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     const supabase = createBrowserClient(supabaseUrl, supabaseAnonKey);
     const { data: { user }, error: authError } = await supabase.auth.getUser();
     if (authError || !user) {
-      message.textContent = 'Sesi login berakhir. Silakan login kembali.';
+      message.textContent = 'Your session has expired. Please sign in again.';
       message.dataset.state = 'error';
       return;
     }
@@ -274,7 +274,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     let avatarSignedUrlError: string | null = null;
 
     submitButton.disabled = true;
-    message.textContent = 'Menyimpan profil...';
+    message.textContent = 'Saving profile...';
     message.dataset.state = 'loading';
 
     try {
@@ -316,7 +316,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
         .maybeSingle();
 
       if (saveError) throw saveError;
-      if (!savedProfile) throw new Error('Profil tidak ditemukan.');
+      if (!savedProfile) throw new Error('Profile not found.');
 
       form.dataset.avatarPath = nextAvatarPath ?? '';
       if (avatarPreview && avatarFallback) {
@@ -333,13 +333,13 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
       selectedAvatar = null;
       if (fileInput) fileInput.value = '';
       message.textContent = avatarSignedUrlError
-        ? `Profil berhasil disimpan, tetapi foto belum dapat ditampilkan: ${avatarSignedUrlError}`
-        : 'Profil berhasil disimpan.';
+        ? `Profile saved, but the photo could not be displayed: ${avatarSignedUrlError}`
+        : 'Profile saved successfully.';
       message.dataset.state = 'success';
     } catch (error) {
       message.textContent = error instanceof Error
-        ? `Profil gagal disimpan: ${error.message}`
-        : 'Profil gagal disimpan. Coba lagi.';
+        ? `Could not save profile: ${error.message}`
+        : 'Could not save profile. Please try again.';
       message.dataset.state = 'error';
     } finally {
       submitButton.disabled = false;
@@ -412,14 +412,14 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .sidebar-nav a.active {
-    background: color-mix(in srgb, var(--accent-gold) 14%, var(--bg-dark));
-    color: var(--accent-gold);
+    background: color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg));
+    color: var(--text-main);
   }
 
   .sidebar-nav a:hover,
   .logout-form button:hover {
-    background: color-mix(in srgb, var(--accent-gold) 14%, var(--bg-dark));
-    color: var(--accent-gold);
+    background: color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg));
+    color: var(--text-main);
   }
 
   .logout-form {
@@ -446,19 +446,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     width: min(560px, calc(100vw - 2rem));
     padding: 0.9rem 1rem;
     transform: translateX(-50%);
-    border: 1px solid var(--nd-status-safe);
+    border: 1px solid #86efac;
     border-radius: 12px;
-    background: color-mix(in srgb, var(--nd-status-safe) 14%, var(--bg-dark));
-    color: var(--nd-status-safe);
+    background: color-mix(in srgb, #22c55e 12%, var(--card-bg));
+    color: #86efac;
     box-shadow: 0 12px 32px rgba(22, 101, 52, 0.16);
     font-size: 0.88rem;
     font-weight: 700;
   }
 
   .password-alert[data-state='error'] {
-    border-color: var(--accent-red);
-    background: color-mix(in srgb, var(--accent-red) 14%, var(--bg-dark));
-    color: var(--accent-red);
+    border-color: color-mix(in srgb, var(--accent-red) 42%, var(--border));
+    background: color-mix(in srgb, var(--accent-red) 12%, var(--card-bg));
+    color: #fca5a5;
     box-shadow: 0 12px 32px rgba(185, 28, 28, 0.14);
   }
 
@@ -509,7 +509,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     padding: 0.7rem 0.85rem;
     border: 1px solid var(--border);
     border-radius: 8px;
-    background: var(--bg-dark);
+    background: var(--card-bg);
     color: var(--text-main);
     font: inherit;
   }
@@ -521,7 +521,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .profile-form > input[readonly] {
-    background: color-mix(in srgb, var(--text-main) 8%, var(--bg-dark));
+    background: color-mix(in srgb, var(--text-main) 7%, var(--card-bg));
     color: var(--muted);
   }
 
@@ -547,7 +547,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     overflow: hidden;
     border: 3px solid var(--accent-gold);
     border-radius: 50%;
-    background: var(--card-bg);
+    background: #F7E5C2;
     box-shadow: 0 4px 12px rgba(26, 26, 30, 0.1);
   }
 
@@ -595,7 +595,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     width: 34px;
     height: 34px;
     place-items: center;
-    border: 2px solid var(--bg-dark);
+    border: 2px solid var(--border);
     border-radius: 50%;
     background: var(--accent-gold);
     color: var(--bg-dark);
@@ -606,7 +606,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
 
   .avatar-camera:hover {
     transform: scale(1.08);
-    background: var(--primary-hover);
+    background: #F0B84F;
   }
 
   .avatar-camera svg {
@@ -660,7 +660,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .profile-form > button:hover:not(:disabled) {
-    background: var(--primary-hover);
+    background: #F0B84F;
   }
 
   .profile-form > button:disabled {
@@ -671,7 +671,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   .profile-message {
     min-height: 1.2rem;
     margin: 0;
-    color: var(--nd-status-safe);
+    color: #86efac;
     font-size: 0.82rem;
   }
 
@@ -723,7 +723,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     padding: 0.7rem 3rem 0.7rem 0.85rem;
     border: 1px solid var(--border);
     border-radius: 8px;
-    background: var(--bg-dark);
+    background: var(--card-bg);
     color: var(--text-main);
     font: inherit;
   }
@@ -750,7 +750,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .password-toggle:hover {
-    background: color-mix(in srgb, var(--accent-gold) 12%, var(--bg-dark));
+    background: color-mix(in srgb, var(--text-main) 7%, var(--card-bg));
     color: var(--text-main);
   }
 
@@ -790,7 +790,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .password-form > button:hover:not(:disabled) {
-    background: var(--primary-hover);
+    background: #F0B84F;
   }
 
   .password-form > button:disabled {

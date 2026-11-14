@@ -1,0 +1,65 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
+import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
+const level = String(Astro.params.level ?? '').toUpperCase();
+if (!levels.includes(level)) {
+  return new Response('Level tidak ditemukan.', { status: 404 });
+}
+
+const materials = (await getCollection('materi'))
+  .filter((item) => item.data.track === 'Alltagsdeutsch' && item.data.level === level)
+  .sort((left, right) => left.data.judulMateri.localeCompare(right.data.judulMateri, 'id'));
+---
+
+<DashboardLayout
+  title={`Alltagsdeutsch ${level} | NdUniverse`}
+  description={`Materi bahasa Jerman sehari-hari untuk level ${level}.`}
+  active="alltagsdeutsch"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="level-page">
+    <a class="back-link" href="/de/alltagsdeutsch">← Semua level Alltagsdeutsch</a>
+    <header>
+      <p class="eyebrow">Alltagsdeutsch · Level {level}</p>
+      <h1>Materi bahasa Jerman sehari-hari</h1>
+      <p>Pilih materi untuk mempelajari kosakata dan berlatih empat keterampilan.</p>
+    </header>
+
+    <a class="exam-link" href={`/de/ujian/goethe/${level.toLowerCase()}`}>
+      Latihan Goethe-Zertifikat {level}
+    </a>
+
+    {materials.length ? (
+      <div class="material-grid">
+        {materials.map((item) => (
+          <article class="material-card">
+            <h2>{item.data.judulMateri}</h2>
+            <p>{item.data.deskripsi}</p>
+            <a href={`/de/materi/${item.id}`}>Buka materi →</a>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-state">Belum ada materi untuk level {level}.</p>
+    )}
+  </main>
+</DashboardLayout>
+
+<style>
+  .level-page { display: grid; gap: 1.25rem; width: min(1120px, 100%); margin: 0 auto; }
+  .back-link { width: fit-content; color: var(--text-main); font-weight: 800; text-decoration: none; }
+  .eyebrow { margin: 0 0 .4rem; color: var(--accent-gold); font-size: .78rem; font-weight: 800; text-transform: uppercase; }
+  h1 { margin: 0; }
+  header p:last-child, .empty-state { color: var(--muted); }
+  .exam-link { width: fit-content; padding: .7rem 1rem; border-radius: .65rem; background: var(--accent-gold); color: var(--bg-dark); font-weight: 800; text-decoration: none; }
+  .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .material-card { display: grid; align-content: start; gap: .65rem; padding: 1rem; border: 1px solid var(--border); border-radius: .8rem; background: var(--card-bg); }
+  .material-card h2, .material-card p { margin: 0; }
+  .material-card p { color: var(--muted); line-height: 1.55; }
+  .material-card a { color: var(--accent-gold); font-weight: 800; text-decoration: none; }
+</style>

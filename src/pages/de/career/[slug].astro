@@ -1,6 +1,6 @@
 ---
 import { getEntry } from 'astro:content';
-import DashboardLayout from '@core/ui/DashboardLayout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 import HelpHint from '@core/ui/HelpHint.jsx';
 
 export const prerender = false;
@@ -17,7 +17,7 @@ if (!item) return new Response('Materi Career tidak ditemukan.', { status: 404 }
   profile={Astro.locals.profile}
 >
   <article class="career-material">
-    <a class="back-link" href="/career">← Kembali ke Career</a>
+    <a class="back-link" href="/de/career">← Kembali ke Career</a>
     <header class="page-heading">
       <p class="eyebrow">Career • Kosakata profesional</p>
       <div class="heading-title">

@@ -86,15 +86,15 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1V10Z" /></svg>
                 <span>Beranda</span>
               </a>
-              <a class={`nav-item ${active === 'catalog' ? 'active' : ''}`} href="/dashboard-de/katalog" aria-current={active === 'catalog' ? 'page' : undefined}>
+              <a class={`nav-item ${active === 'catalog' ? 'active' : ''}`} href="/de/materi" aria-current={active === 'catalog' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v17H6.5A2.5 2.5 0 0 1 4 17.5v-12Z" /><path d="M4 17.5A2.5 2.5 0 0 1 6.5 15H20M8 7h8M8 10h8" /></svg>
                 <span>Katalog Materi</span>
               </a>
-              <a class={`nav-item ${active === 'alltagsdeutsch' ? 'active' : ''}`} href="/dashboard-de/alltags" aria-current={active === 'alltagsdeutsch' ? 'page' : undefined}>
+              <a class={`nav-item ${active === 'alltagsdeutsch' ? 'active' : ''}`} href="/de/alltagsdeutsch" aria-current={active === 'alltagsdeutsch' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H6l-3 2 1.2-4.1A7.5 7.5 0 1 1 20 11.5Z" /><path d="M8 11h.01M12 11h.01M16 11h.01" /></svg>
                 <span>Alltagsdeutsch</span>
               </a>
-              <a class={`nav-item ${active === 'fachdeutsch' ? 'active' : ''}`} href="/dashboard-de/fach" aria-current={active === 'fachdeutsch' ? 'page' : undefined}>
+              <a class={`nav-item ${active === 'fachdeutsch' ? 'active' : ''}`} href="/de/fachdeutsch" aria-current={active === 'fachdeutsch' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3 8 9-5 9 5-9 5-9-5Z" /><path d="M7 10.2V16c2.8 2.4 7.2 2.4 10 0v-5.8M21 8v7" /></svg>
                 <span>Fachdeutsch</span>
               </a>

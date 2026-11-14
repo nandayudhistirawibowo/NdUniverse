@@ -1,0 +1,50 @@
+---
+import { getGermanCareers, getGermanMaterials } from '@core/i18n/german-content.js';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
+import CareerQuiz from '@german/components/CareerQuiz-de.jsx';
+
+export const prerender = false;
+
+const profession = String(Astro.params.profesi ?? '').toLowerCase();
+const titles = {
+  it: ['Teknologi Informasi & Rekayasa Perangkat Lunak', 'Teknologi Informasi'],
+  business: ['Bisnis & E-Commerce', 'Bisnis'],
+  health: ['Layanan Kesehatan', 'Layanan Kesehatan'],
+  nutrition: ['Nutrisi', 'Nutrisi'],
+};
+const titleData = titles[profession];
+if (!titleData) return new Response('Profesi karier tidak ditemukan.', { status: 404 });
+
+const careers = await getGermanCareers();
+const entry = careers.find((career) => career.id === profession);
+if (!entry) return new Response('Profesi karier tidak ditemukan.', { status: 404 });
+
+const words = entry.data.vocab;
+---
+
+<DashboardLayout
+  title={`Kuis Kosakata ${titleData[0]} | NdUniverse`}
+  description={`Latih kosakata bahasa Inggris untuk bidang ${titleData[0]}.`}
+  active="career"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <main class="quiz-page">
+    <a class="back-link" href={`/de/career/${profession}`}>← Kembali ke {titleData[1]}</a>
+    <header>
+      <p class="eyebrow">Persiapan Karier · Kuis Kosakata</p>
+      <h1>{titleData[0]}</h1>
+      <p>Latih kosakata bahasa Inggris untuk profesi ini dalam kelompok kuis singkat.</p>
+    </header>
+    <CareerQuiz client:load words={words} profession={titleData[1]} />
+  </main>
+</DashboardLayout>
+
+<style>
+  .quiz-page { display:grid; gap:1rem; }
+  .back-link { width:fit-content; color:var(--text-main); font-weight:800; text-decoration:none; }
+  .back-link:hover { color:var(--accent-gold); }
+  .eyebrow { margin:0; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.06em; text-transform:uppercase; }
+  header h1 { margin:.35rem 0; color:var(--text-main); }
+  header > p:last-child { margin:0; color:var(--muted); }
+</style>

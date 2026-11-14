@@ -1,11 +1,157 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
-const professions = [
-  { slug:'it', name:'IT', description:'Digitale Systeme, Software und Sicherheit.' },
-  { slug:'business', name:'Business', description:'Management, Vertrieb und Unternehmenskommunikation.' },
-  { slug:'health', name:'Health', description:'Gesundheit, Pflege und medizinische Kommunikation.' },
-  { slug:'nutrition', name:'Nutrition', description:'Ernährung, Lebensmittel und Gesundheitserziehung.' },
-];
+import HelpHint from '@core/ui/HelpHint.jsx';
+
+export const prerender = false;
+
 ---
-<DashboardLayout title="Career | NdUniverse" description="Karir berbahasa Jerman." active="career" user={Astro.locals.user} profile={Astro.locals.profile}><main class="career-page"><a class="back-link" href="/dashboard-de">← Kembali ke Dashboard</a><header><p class="eyebrow">Career</p><h1>Karir Profesional</h1><p>Latih kosakata dan wawancara kerja untuk empat profesi.</p></header><div class="career-grid">{professions.map((profession)=><a href={`/de/career/${profession.slug}`}><span>Career</span><h2>{profession.name}</h2><p>{profession.description}</p><small>Mulai belajar →</small></a>)}</div></main></DashboardLayout>
-<style>.career-page{display:grid;gap:1.5rem;width:min(1120px,100%);margin:auto}.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}.eyebrow{color:var(--accent-gold);font-size:.78rem;font-weight:800;text-transform:uppercase}.career-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}.career-grid a{display:grid;gap:.75rem;min-height:220px;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main);text-decoration:none}.career-grid span,.career-grid small{color:var(--accent-gold);font-weight:800}.career-grid h2,.career-grid p{margin:0}@media(max-width:800px){.career-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:500px){.career-grid{grid-template-columns:1fr}}</style>
+<DashboardLayout
+  title="Career | siDeutsch"
+  description="Katalog profesi untuk mempersiapkan karir berbahasa Jerman."
+  active="career"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <section class="career-catalog">
+    <header class="page-heading">
+      <p class="eyebrow">Persiapan dunia kerja</p>
+      <div class="heading-title">
+        <h1>Career</h1>
+        <HelpHint title="Apa ini?" text="Pilih rumpun profesi untuk melatih kosakata dan simulasi wawancara kerja di Jerman." client:load />
+      </div>
+      <p>Pilih rumpun profesi untuk mempersiapkan karir berbahasa Jerman.</p>
+    </header>
+
+    <div class="career-grid">
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">💻</span>
+        <h2>IT &amp; Software Engineering</h2>
+        <p>Siapkan dirimu untuk wawancara kerja sebagai Software Engineer di Jerman.</p>
+        <a href="/de/career/it">Mulai Belajar</a>
+      </article>
+
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">📈</span>
+        <h2>Digital Business &amp; E-Commerce</h2>
+        <p>Pelajari kosakata pemasaran digital &amp; bisnis untuk karir di Eropa.</p>
+        <a href="/de/career/business">Mulai Belajar</a>
+      </article>
+
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">🏥</span>
+        <h2>Pflege &amp; Gesundheitswesen</h2>
+        <p>Persiapkan bahasa Jerman medis untuk bekerja di rumah sakit Jerman.</p>
+        <a href="/de/career/health">Mulai Belajar</a>
+      </article>
+
+      <article class="career-card">
+        <span class="career-icon" aria-hidden="true">🧑‍🍼</span>
+        <h2>Gizi &amp; Kebidanan</h2>
+        <p>Kosakata khusus untuk ahli gizi dan bidan dalam dunia kerja Jerman.</p>
+        <a href="/de/career/nutrition">Mulai Belajar</a>
+      </article>
+    </div>
+  </section>
+</DashboardLayout>
+
+<style>
+  .career-catalog {
+    display: grid;
+    gap: 1.5rem;
+  }
+
+  .page-heading h1 {
+    margin: 0.35rem 0 0;
+    color: var(--text-main);
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .heading-title {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    flex-wrap: wrap;
+  }
+
+  .page-heading > p:last-child {
+    margin: 0.5rem 0 0;
+    color: var(--muted);
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: #966313;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .career-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  .career-card {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+    min-height: 220px;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+  }
+
+  .career-icon {
+    display: grid;
+    width: 48px;
+    height: 48px;
+    place-items: center;
+    border-radius: 12px;
+    background: rgba(229, 169, 59, 0.14);
+    font-size: 1.5rem;
+  }
+
+  .career-card h2 {
+    margin: 0;
+    color: var(--text-main);
+    font-size: 1.15rem;
+  }
+
+  .career-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .career-card a {
+    display: inline-flex;
+    width: fit-content;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0.65rem 1rem;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent-red);
+    color: #fff;
+    font-size: 0.84rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  @media (min-width: 1100px) {
+    .career-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 700px) {
+    .career-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

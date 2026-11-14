@@ -106,7 +106,7 @@ const organizationSchema = {
       {!hideNavbar && (
         <header class="topbar">
           <nav class="navbar" aria-label="Navigasi utama">
-            <a href={isEnglishRoute ? '/en' : '/'} class="brand" aria-label="NdUniverse">
+            <a href={isEnglishRoute ? '/en' : isGermanRoute ? '/de' : '/'} class="brand" aria-label="NdUniverse">
               <img src="/logo-nduniverse.png" alt="NdUniverse" style="height: 35px;" />
             </a>
             <button
@@ -137,10 +137,10 @@ const organizationSchema = {
                       </>
                     ) : (
                       <>
-                        <a href="/">Beranda</a>
-                        <a href="/materi">Semua Materi</a>
-                        <a href="/pengucapan">Panduan Pengucapan</a>
-                        <a href="/grammar">Tata Bahasa</a>
+                        <a href="/de">Beranda</a>
+                        <a href="/de/materi">Semua Materi</a>
+                        <a href="/de/pengucapan">Panduan Pengucapan</a>
+                        <a href="/de/grammar">Tata Bahasa</a>
                       </>
                     )}
                   </>
@@ -154,7 +154,7 @@ const organizationSchema = {
                 </>
               )}
               <div class="mobile-feedback">
-                {!isAdminLogin && <FeedbackModal client:load variant="mobile" language={isEnglishRoute ? 'en' : 'id'} />}
+                {!isAdminLogin && <FeedbackModal client:load variant="mobile" language={isEnglishRoute ? 'en' : isGermanRoute ? 'de' : 'id'} />}
               </div>
               <div class="nav-account" data-nav-account>
                 {!isAdminLogin && (user ? (

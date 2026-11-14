@@ -1,48 +1,62 @@
 ---
-import Layout from '@core/ui/Layout.astro';
+import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 import Quiz from '@german/components/Quiz-de.jsx';
-import { getEntry } from 'astro:content';
+import { getGermanCareers, getGermanMaterials } from '@core/i18n/german-content.js';
 
 export const prerender = false;
 
-const item = await getEntry('materi', Astro.params.slug ?? '');
+const slug = Astro.url.searchParams.get('slug') ?? '';
+const materials = await getGermanMaterials();
+const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
 if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 
 const type = Astro.url.searchParams.get('type') ?? '';
 const validTypes = ['reading', 'listening', 'writing', 'speaking'];
 if (!validTypes.includes(type)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
 const pillarLabels = { reading: 'Membaca', listening: 'Menyimak', writing: 'Menulis', speaking: 'Berbicara' };
-const pillarLabel = pillarLabels[type] ?? 'Latihan Materi';
+const pillarLabel = pillarLabels[type] ?? 'Latihan';
 const batchSize = 5;
 const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
 const startIndex = (sessionNumber - 1) * batchSize;
 const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
+const materialSlug = item.id.split('/').at(-1) ?? item.id;
+const vocab = item.data.vocab.map((entry) => ({
+  german: entry.word,
+  indonesian: entry.translation,
+  context: entry.context,
+  reading_text: entry.reading_text,
+  reading_question: entry.reading_question,
+  listening_audio: entry.listening_audio,
+  writing_instruction: entry.writing_instruction,
+  speaking_question: entry.speaking_question,
+}));
 ---
 
-<Layout
-  title={`Latihan: ${item.data.judulMateri} | siDeutsch`}
-  description={`Latihan kosakata dari materi ${item.data.judulMateri}.`}
-  hideNavbar={true}
+<DashboardLayout
+  title={`Latihan: ${item.data.title ?? materialSlug} | NdUniverse`}
+  description={`Latihan Bahasa Jerman untuk ${item.data.title ?? materialSlug}.`}
+  active="catalog"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
 >
   <main class="practice-page">
-    <a class="back-link" href={`/materi/${item.id}`} data-track={item.data.track} data-practice-back>
+    <a class="back-link" href={`/de/materi/${materialSlug}`} data-practice-back>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 18-6-6 6-6M8 12h12" /></svg>
       <span data-back-label>Kembali ke Materi</span>
     </a>
     <header class="page-heading">
-      <p class="eyebrow">Latihan Materi</p>
-      <h1>{pillarLabel}: {item.data.judulMateri}</h1>
-      <p>Maksimal {batchSize} soal untuk pilar ini.</p>
+      <p class="eyebrow">Latihan Bahasa Jerman</p>
+      <h1>{pillarLabel}: {item.data.title ?? materialSlug}</h1>
+      <p>Kerjakan hingga {batchSize} soal pada sesi ini.</p>
     </header>
 
-    <section class="practice-panel" aria-label={`Kuis ${item.data.judulMateri}`}>
+    <section class="practice-panel" aria-label={`Latihan ${item.data.title ?? materialSlug}`}>
       <Quiz
         client:load
-        items={item.data.vocab}
+        items={vocab}
         track={item.data.track}
         level={item.data.level}
-        jurusan={item.data.jurusan}
-        returnHref={`/materi/${item.id}`}
+        returnHref={`/de/materi/${materialSlug}`}
         startIndex={startIndex}
         session={sessionNumber}
         batchSize={batchSize}
@@ -52,7 +66,7 @@ const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
       />
     </section>
   </main>
-</Layout>
+</DashboardLayout>
 
 <style>
   .practice-page {
@@ -73,7 +87,7 @@ const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
     margin-bottom: 0.2rem;
     color: var(--text-main);
     font-weight: 700;
-    text-decoration: none;
+    text-encoration: none;
   }
 
   .back-link svg {

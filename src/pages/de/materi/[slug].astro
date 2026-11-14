@@ -1,87 +1,789 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
-import { getCollection } from 'astro:content';
-const slug = Astro.params.slug ?? '';
-const materials = await getCollection('materi');
-const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
-if (!item) return new Response('Material nicht gefunden.', { status: 404 });
-const sessions = Array.from({ length: Math.ceil(item.data.vocab.length / 5) }, (_, index) => ({ number: index + 1, words: item.data.vocab.slice(index * 5, index * 5 + 5) }));
+import { getEntry, render } from 'astro:content';
+import { normalizePassedPillars } from '@core/db/progress-client.js';
+
+export const prerender = false;
+
+const user = Astro.locals.user;
+if (!user) return Astro.redirect('/login-de');
+
+const item = await getEntry('materi', Astro.params.slug ?? '');
+if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
+
+const { Content } = await render(item);
+const trackLabel = item.data.track === 'Alltagsdeutsch' ? 'Alltagsdeutsch' : 'Fachdeutsch';
+const levelOrJurusan = item.data.track === 'Alltagsdeutsch' ? item.data.level : item.data.jurusan;
+const batchSize = 5;
+const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
+const notesKey = `catatan_materi_${item.id}`;
+const dashboardReturnHref = '/dashboard-de';
+const publicReturnHref = item.data.track === 'Alltagsdeutsch' ? '/de/alltagsdeutsch' : '/de/fachdeutsch';
+const returnHref = user ? dashboardReturnHref : publicReturnHref;
+const { data: savedProgress } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('sessions_passed, notes')
+    .eq('user_id', user.id)
+    .eq('material_slug', item.id)
+    .eq('language_code', 'de')
+    .maybeSingle()
+  : { data: null };
+const passedPillars = normalizePassedPillars(savedProgress?.sessions_passed);
+const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
+  sessionNumber: index + 1,
+  vocab: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize),
+}));
 ---
-<DashboardLayout title={`${item.data.judulMateri} | NdUniverse`} description={item.data.deskripsi} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
-  <article class="material-page">
-    <a class="back-link" href="/dashboard-de" data-session-back><span aria-hidden="true">←</span> <span>Kembali ke Dashboard</span></a>
-    <header><p class="eyebrow">{item.data.track} · {item.data.level ?? item.data.jurusan}</p><h1>{item.data.judulMateri}</h1><p>{item.data.deskripsi}</p></header>
-    {sessions.map((session) => (
-      <section class="session-card">
-        <h2>Sesi {session.number}</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Bahasa Jerman</th><th>Bahasa Indonesia</th><th>Konteks</th></tr></thead>
-            <tbody>
-              {session.words.map((word) => (
-                <tr>
-                  <td lang="de">
-                    <span class="speech-inline">
-                      <span>{word.german}</span>
-                      <button class="speaker-button" type="button" data-speech={word.german} aria-label={`Dengarkan kata ${word.german}`} title={`Dengarkan kata: ${word.german}`}>🔊</button>
-                    </span>
-                  </td>
-                  <td>{word.indonesian}</td>
-                  <td>
-                    <span class="speech-inline">
-                      <span>{word.context}</span>
-                      <button class="speaker-button" type="button" data-speech={word.context} aria-label={`Dengarkan kalimat ${word.context}`} title={`Dengarkan kalimat: ${word.context}`}>🔊</button>
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+
+<DashboardLayout
+  title={`${item.data.judulMateri} | siDeutsch`}
+  description={item.data.deskripsi}
+  hideNavbar={true}
+>
+  <article class="page-shell">
+    <header class="page-header">
+      <p class="eyebrow">{item.data.fakultas ?? item.data.jurusan ?? 'Materi'} • {trackLabel}</p>
+      <h1>{item.data.judulMateri}</h1>
+      <div class="meta-row">
+        <div class="meta-badges">
+          <span class="pill">{trackLabel}</span>
+          {levelOrJurusan && <span class="pill soft">{levelOrJurusan}</span>}
         </div>
-        <nav>
-          <a href={`/de/materi/${item.id}/latihan?type=reading&session=${session.number}`}>Membaca</a>
-          <a href={`/de/materi/${item.id}/latihan?type=listening&session=${session.number}`}>Menyimak</a>
-          <a href={`/de/materi/${item.id}/latihan?type=writing&session=${session.number}`}>Menulis</a>
-          <a href={`/de/materi/${item.id}/latihan?type=speaking&session=${session.number}`}>Berbicara</a>
-        </nav>
+        <a href={returnHref}>← Kembali ke Dashboard</a>
+      </div>
+    </header>
+
+    <section class="content-panel">
+      <div class="lesson-copy prose">
+        <Content />
+      </div>
+
+      <section class="session-list" aria-labelledby="vocabulary-title">
+        <header class="vocabulary-heading">
+          <div>
+            <p class="eyebrow">Bantuan</p>
+            <h2 id="vocabulary-title">Kosakata per Sesi</h2>
+            <p>Hafalkan kosakata berikut sebelum memulai latihan.</p>
+          </div>
+          <span>{item.data.vocab.length} kosakata</span>
+        </header>
+
+        {vocabSessions.map((session) => (
+          <section class="sesi-card" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
+            <div class="sesi-heading">
+              <h3 id={`session-vocab-${session.sessionNumber}`}>
+                Sesi {session.sessionNumber}: Kosakata {((session.sessionNumber - 1) * batchSize) + 1}-{Math.min(session.sessionNumber * batchSize, item.data.vocab.length)}
+              </h3>
+              <span>{session.vocab.length} kata</span>
+            </div>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Bahasa Jerman</th>
+                    <th scope="col">Bahasa Indonesia</th>
+                    <th scope="col">Dengar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {session.vocab.map((entry) => (
+                    <tr>
+                      <td lang="de">{entry.german}</td>
+                      <td>{entry.indonesian}</td>
+                      <td>
+                        <button
+                          class="vocab-speech-button"
+                          type="button"
+                          data-speech={entry.german}
+                          aria-label={`Dengarkan ${entry.german}`}
+                          title={`Dengarkan ${entry.german}`}
+                        >🔊</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
+              {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
+                const label = pillar === 'reading' ? 'Membaca' : pillar === 'listening' ? 'Menyimak' : pillar === 'writing' ? 'Menulis' : 'Berbicara';
+                const sessionPillarKey = `s${session.sessionNumber}-${pillar}`;
+                const isComplete = passedPillars.includes(sessionPillarKey) || (session.sessionNumber === 1 && passedPillars.includes(pillar));
+                return (
+                  <a
+                    href={`/de/materi/${item.id}/latihan?type=${pillar}&session=${session.sessionNumber}`}
+                    data-progress-pillar={pillar}
+                    data-progress-session={session.sessionNumber}
+                    data-progress-slug={item.id}
+                    data-progress-language="de"
+                    data-pillar-label={label}
+                    class={isComplete ? 'is-complete' : ''}
+                    aria-label={`${label}${isComplete ? ' selesai' : ''}`}
+                  >
+                    <span data-pillar-check aria-hidden="true">{isComplete ? '✓ ' : ''}</span>{label}
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        ))}
       </section>
-    ))}
+    </section>
+
+    {user && (
+      <section class="notes-panel" aria-labelledby="notes-title">
+        <label id="notes-title" for="learning-notes">Catatan Belajar Lu</label>
+        <textarea
+          id="learning-notes"
+          data-learning-notes
+          data-notes-key={notesKey}
+          placeholder="Tulis catatan atau rangkuman lu di sini..."
+          rows="6"
+        >{savedProgress?.notes ?? ''}</textarea>
+        <p class="notes-status" data-notes-status aria-live="polite">Catatan tersimpan otomatis.</p>
+      </section>
+    )}
   </article>
 </DashboardLayout>
-<script>
-  import { normalizeText, playAudioTTS } from '@german/config/german-speech.js';
 
-  const bindVocabularyAudio = () => {
-    document.querySelectorAll<HTMLButtonElement>('[data-speech]').forEach((button) => {
+<script>
+  import { playAudioTTS } from '@german/config/german-speech.js';
+
+  import {
+    fetchUserProgress,
+    getProgressClient,
+    normalizePassedSessions,
+    upsertUserProgress,
+  } from '@core/db/progress-client.js';
+
+  window.addEventListener('nd:progress-updated', (event) => {
+    const { slug, languageCode, pillars } = (event as CustomEvent<{
+      slug: string;
+      languageCode: string;
+      pillars: string[];
+    }>).detail;
+    if (languageCode !== 'de') return;
+
+    document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {
+      if (link.dataset.progressSlug !== slug) return;
+      const sessionNum = Number(link.dataset.progressSession || 1);
+      const pillarType = link.dataset.progressPillar ?? '';
+      const sessionPillarKey = `s${sessionNum}-${pillarType}`;
+      const isComplete = pillars.includes(sessionPillarKey) || (sessionNum === 1 && pillars.includes(pillarType));
+      const label = link.dataset.pillarLabel ?? '';
+      link.classList.toggle('is-complete', isComplete);
+      link.setAttribute('aria-label', `${label}${isComplete ? ' selesai' : ''}`);
+      const check = link.querySelector<HTMLElement>('[data-pillar-check]');
+      if (check) check.textContent = isComplete ? '✓ ' : '';
+    });
+  });
+
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {
       button.onclick = () => {
-        const speechText = normalizeText(button.dataset.speech ?? '');
+        const speechText = String(button.dataset.speech ?? '').replace(/\s+/g, ' ').trim();
         playAudioTTS(speechText, button);
       };
     });
-    document.querySelectorAll<HTMLAnchorElement>('[data-session-back]').forEach((link) => {
-      link.onclick = () => {
-        const session = new URLSearchParams(window.location.search).get('session');
-        if (session) window.sessionStorage.setItem('nduniverse-last-session', session);
-      };
-    });
-  };
 
-  bindVocabularyAudio();
-  document.addEventListener('astro:page-load', bindVocabularyAudio);
+  const notesField = document.querySelector<HTMLTextAreaElement>('[data-learning-notes]');
+  const notesStatus = document.querySelector<HTMLElement>('[data-notes-status]');
+  const notesKey = notesField?.dataset.notesKey;
+  const progressClient = getProgressClient();
+  let notesUserId: string | null = null;
+  let notesEdited = false;
+  let notesSaveTimer = 0;
+
+  if (notesField && notesKey) {
+    try {
+      notesField.value = window.localStorage.getItem(notesKey) ?? '';
+    } catch {
+      if (notesStatus) notesStatus.textContent = 'Penyimpanan lokal tidak tersedia di browser ini.';
+    }
+
+    notesField.addEventListener('input', () => {
+      notesEdited = true;
+      try {
+        window.localStorage.setItem(notesKey, notesField.value);
+        if (notesStatus) notesStatus.textContent = 'Catatan tersimpan.';
+      } catch {
+        if (notesStatus) notesStatus.textContent = 'Catatan belum bisa disimpan di browser ini.';
+      }
+
+      if (notesUserId) {
+        window.clearTimeout(notesSaveTimer);
+        notesSaveTimer = window.setTimeout(async () => {
+          try {
+            await upsertUserProgress(progressClient, notesUserId, notesKey.replace('catatan_materi_', ''), {
+              notes: notesField.value,
+            });
+            if (notesStatus) notesStatus.textContent = 'Catatan tersimpan.';
+          } catch {
+            if (notesStatus) notesStatus.textContent = 'Catatan tersimpan di browser; sinkronisasi tertunda.';
+          }
+        }, 500);
+      }
+    });
+
+    if (progressClient) {
+      void (async () => {
+        try {
+          const { data: { user } } = await progressClient.auth.getUser();
+          if (!user) return;
+          const materialSlug = notesKey.replace('catatan_materi_', '');
+          const remoteProgress = await fetchUserProgress(progressClient, user.id, materialSlug);
+          notesUserId = user.id;
+
+          if (notesEdited) {
+            await upsertUserProgress(progressClient, user.id, materialSlug, { notes: notesField.value });
+          } else if (remoteProgress?.notes) {
+            notesField.value = remoteProgress.notes;
+            window.localStorage.setItem(notesKey, remoteProgress.notes);
+          } else if (notesField.value) {
+            await upsertUserProgress(progressClient, user.id, materialSlug, { notes: notesField.value });
+          }
+        } catch {
+          if (notesStatus) notesStatus.textContent = 'Catatan tetap tersedia di browser; sinkronisasi tertunda.';
+        }
+      })();
+    }
+  }
+  });
 </script>
+
 <style>
-.material-page{display:grid;gap:1.25rem}
-.back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}
-.eyebrow{color:var(--accent-gold);font-size:.78rem;font-weight:800;text-transform:uppercase}
-.material-page header p:last-child{color:var(--muted)}
-.session-card{display:grid;gap:.75rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg)}
-.table-wrap{overflow-x:auto}
-table{width:100%;border-collapse:collapse}
-th,td{padding:.65rem;border-bottom:1px solid var(--border);text-align:left}
-.speech-inline{display:inline-flex;align-items:flex-start;gap:.35rem}
-.speaker-button{width:28px;height:28px;flex:0 0 28px;display:grid;place-items:center;padding:0;border:1px solid var(--border);border-radius:6px;background:var(--card-bg);color:var(--text-main);font-size:.8rem;line-height:1;cursor:pointer}
-.speaker-button:hover,.speaker-button.is-playing{border-color:var(--accent-gold)}
-nav{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}
-.session-card nav a{min-height:42px;display:grid;place-items:center;border:1px solid var(--border);border-radius:8px;color:var(--text-main);text-decoration:none;font-weight:800}
-@media(max-width:700px){nav{grid-template-columns:repeat(2,1fr)}}
+  .page-shell {
+    padding-top: 1rem;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .eyebrow {
+    margin: 0 0 0.5rem;
+    color: var(--text-main);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(2rem, 3vw, 3rem);
+    line-height: 1.2;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .meta-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.45rem 0.8rem;
+    border-radius: 999px;
+    background: var(--accent-red);
+    color: #ffffff;
+    font-size: 0.8rem;
+    font-weight: 700;
+  }
+
+  .pill.soft {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .content-panel {
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+
+  .lesson-copy :global(table) {
+    display: none;
+  }
+
+  .lesson-copy :global(h1) {
+    display: none;
+  }
+
+  .vocabulary-list {
+    margin-top: 1.5rem;
+  }
+
+  .vocabulary-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .vocabulary-heading .eyebrow {
+    margin-bottom: 0.3rem;
+  }
+
+  .vocabulary-heading h2 {
+    margin: 0;
+    font-size: 1.45rem;
+  }
+
+  .vocabulary-heading > span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .vocabulary-session + .vocabulary-session {
+    margin-top: 1.5rem;
+  }
+
+  .locked-vocabulary {
+    padding: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-bg);
+  }
+
+  .vocabulary-session h3 {
+    margin: 0 0 0.7rem;
+    color: var(--text-main);
+    font-size: 1.1rem;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card-bg);
+  }
+
+  .vocabulary-session table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 580px;
+  }
+
+  .vocabulary-session th,
+  .vocabulary-session td {
+    padding: 0.75rem 0.85rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    text-align: left;
+    vertical-align: top;
+    line-height: 1.6;
+  }
+
+  .vocabulary-session th {
+    background: var(--bg-dark);
+    color: #ffffff;
+    font-size: 0.82rem;
+    font-weight: 800;
+  }
+
+  .vocabulary-session tbody tr:last-child td {
+    border-bottom: 0;
+  }
+
+  .vocabulary-session td:first-child {
+    font-weight: 700;
+  }
+
+  .vocabulary-session .vocab-german-cell {
+    display: flex;
+    min-width: 150px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.6rem;
+  }
+
+  .vocab-context-cell {
+    display: flex;
+    min-width: 220px;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.65rem;
+  }
+
+  .vocab-context-cell > span {
+    min-width: 0;
+    flex: 1;
+  }
+
+  .vocab-context-copy {
+    display: grid;
+    min-width: 0;
+    flex: 1;
+    gap: 0.2rem;
+  }
+
+  .vocab-context-copy small {
+    color: var(--muted);
+    font-size: 0.78rem;
+    font-weight: 400;
+    line-height: 1.45;
+  }
+
+  .vocab-speech-button {
+    display: inline-grid;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    place-items: center;
+    padding: 0;
+    border: 1px solid rgba(229, 169, 59, 0.55);
+    border-radius: 6px;
+    background: rgba(229, 169, 59, 0.12);
+    color: var(--accent-gold);
+    cursor: pointer;
+    transition: transform 0.16s ease, color 0.16s ease, background-color 0.16s ease;
+  }
+
+  .vocab-speech-button svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .vocab-speech-button:hover:not(:disabled) {
+    transform: scale(1.08);
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .vocab-speech-button.is-playing {
+    background: var(--accent-gold);
+    color: var(--text-main);
+  }
+
+  .vocab-speech-button:focus-visible {
+    outline: 3px solid var(--accent-gold);
+    outline-offset: 2px;
+  }
+
+  .practice-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 52px;
+    margin-top: 1.5rem;
+    padding: 0.9rem 1.5rem;
+    border-radius: 12px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .practice-button:hover {
+    background: #F0B84F;
+    transform: translateY(-2px);
+  }
+
+  .session-list { display: grid; gap: 1rem; margin-top: 1rem; }
+  .vocabulary-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .vocabulary-heading h2 { margin: 0; }
+  .vocabulary-heading div > p:last-child { margin: 0.35rem 0 0; color: var(--muted); }
+  .vocabulary-heading > span { color: var(--muted); font-weight: 700; }
+  .sesi-card { padding: 1rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }
+  .sesi-heading { display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
+  .sesi-heading h3 { margin: 0; }
+  .sesi-heading span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
+  .sesi-card table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+  .sesi-card th, .sesi-card td { padding: 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .sesi-card .vocab-speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
+  .pillar-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; margin-top: 1rem; }
+  .pillar-buttons a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
+  .pillar-buttons a.is-complete { border-color: #3a8b55; background: #eaf6ed; color: #236b38; }
+  .pillar-buttons a:hover { border-color: var(--accent-gold); }
+
+  .vocabulary-table-panel { padding: 1.25rem; border: 1px solid var(--border); border-radius: 12px; background: var(--card-bg); }
+  .vocabulary-table-panel header { display: flex; justify-content: space-between; gap: 1rem; align-items: center; }
+  .vocabulary-table-panel header p { color: var(--muted); }
+  .vocabulary-table-panel table { width: 100%; border-collapse: collapse; }
+  .vocabulary-table-panel th, .vocabulary-table-panel td { padding: 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
+  .vocabulary-table-panel .vocab-speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
+
+  .notes-panel {
+    display: grid;
+    gap: 0.65rem;
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card-bg);
+  }
+
+  .notes-panel label {
+    color: var(--text-dark);
+    font-size: 1.1rem;
+    font-weight: 800;
+  }
+
+  .notes-panel textarea {
+    width: 100%;
+    min-height: 150px;
+    resize: vertical;
+    padding: 0.85rem 1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: var(--card-bg);
+    color: var(--text-dark);
+    font: inherit;
+    line-height: 1.6;
+  }
+
+  .notes-panel textarea:focus-visible {
+    outline: 3px solid rgba(229, 169, 59, 0.24);
+    border-color: var(--accent-gold);
+  }
+
+  .notes-status {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.78rem;
+  }
+
+  .session-picker {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card-bg);
+  }
+
+  .session-heading {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .session-heading .eyebrow {
+    margin-bottom: 0.3rem;
+  }
+
+  .session-heading h2 {
+    margin: 0;
+    font-size: 1.35rem;
+  }
+
+  .session-heading > span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .session-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 0.65rem;
+  }
+
+  .session-link {
+    display: flex;
+    min-height: 56px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--accent-gold);
+    border-radius: 10px;
+    background: var(--accent-gold);
+    color: var(--text-main);
+    text-decoration: none;
+    transition: background-color 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .session-link:hover {
+    transform: translateY(-2px);
+    border-color: #C98D23;
+    background: #F0B84F;
+  }
+
+  .session-name {
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .session-status {
+    flex: 0 0 auto;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .session-hint {
+    margin: 0.9rem 0 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+  }
+
+  .meta-row a {
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  @media (max-width: 640px) {
+    .pillar-buttons { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .pillar-grid {
+      grid-template-columns: 1fr;
+    }
+
+  }
+
+  .prose :global(h1),
+  .prose :global(h2),
+  .prose :global(h3) {
+    margin-top: 1.5rem;
+    margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+
+  .prose :global(p),
+  .prose :global(li) {
+    color: var(--text-main);
+    line-height: 1.8;
+  }
+
+  .prose :global(table) {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+    background: var(--card-bg);
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    overflow: hidden;
+    border-radius: 0.75rem;
+  }
+
+  .prose :global(th),
+  .prose :global(td) {
+    padding: 0.8rem 0.9rem;
+    border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose :global(th) {
+    background: var(--bg-dark);
+    color: #ffffff;
+    font-weight: 700;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    padding-left: 1.25rem;
+  }
+
+  .pillar-picker {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card-bg);
+  }
+
+  .pillar-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .pillar-heading h2 {
+    margin: 0;
+  }
+
+  .pillar-heading > span {
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+
+  .pillar-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 130px;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text-main);
+    text-decoration: none;
+    background: var(--bg-main);
+  }
+
+  .pillar-card:hover {
+    border-color: var(--accent-gold);
+    transform: translateY(-2px);
+  }
+
+  .pillar-card.passed {
+    border-color: rgba(76, 151, 111, 0.55);
+  }
+
+  .pillar-card h3 {
+    margin: 0.35rem 0;
+  }
+
+  .pillar-card p {
+    margin: 0;
+    color: var(--muted);
+  }
+
+  .pillar-status {
+    color: var(--accent-red);
+    font-size: 0.72rem;
+    font-weight: 800;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 640px) {
+    .session-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .vocabulary-heading {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .content-panel,
+    .notes-panel {
+      padding: 1rem;
+    }
+  }
 </style>
