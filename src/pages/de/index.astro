@@ -58,19 +58,20 @@ const levels = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
     color: var(--text-main);
   }
 
-  .page-shell { display:grid; gap:1.5rem; padding-top:1rem; }
+  .page-shell { display:grid; gap:2rem; width:min(1120px,100%); margin:0 auto; padding:1rem 0 3rem; }
   .back-link { width:fit-content; color:var(--text-main); font-weight:700; text-decoration:none; }
   .back-link:hover { color:var(--accent-gold); }
   .level-heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; }
   .eyebrow { margin:0 0 .5rem; color:var(--accent-gold); font-size:.8rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-  h1 { margin:0; color:var(--text-main); font-size:clamp(2rem,5vw,3.2rem); }
+  h1 { margin:0; color:var(--text-main); font-size:clamp(2.2rem,6vw,4.8rem); line-height:1; }
   .lead { max-width:720px; margin:.75rem 0 0; color:var(--muted); line-height:1.7; }
   .exam-button { display:inline-flex; min-height:44px; align-items:center; padding:.72rem 1rem; border:1px solid var(--accent-gold); border-radius:.65rem; background:var(--accent-gold); color:var(--bg-dark); font-weight:900; text-decoration:none; }
-  .level-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; }
-  .level-card { display:block; min-height:170px; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); color:var(--text-main); text-decoration:none; box-shadow:var(--shadow); transition:transform .18s ease,border-color .18s ease; }
+  .level-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+  .level-card { display:grid; min-height:220px; align-content:start; gap:.75rem; padding:1.35rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); color:var(--text-main); text-decoration:none; box-shadow:var(--shadow); transition:transform .18s ease,border-color .18s ease; }
   .level-card:hover { border-color:var(--accent-gold); transform:translateY(-3px); }
+  .level-card h2 { margin:.25rem 0; font-size:1.2rem; }
   .level-badge { display:inline-flex; padding:.35rem .65rem; border-radius:999px; background:var(--accent-red); color:var(--text-main); font-size:.72rem; font-weight:800; }
   h2 { margin:.85rem 0 .35rem; }
   .level-card p { margin:0; color:var(--muted); line-height:1.6; }
-  @media (max-width:768px) { .level-heading { align-items:flex-start; flex-direction:column; } .level-grid { grid-template-columns:1fr; } }
+  @media (max-width:768px) { .level-heading { align-items:flex-start; flex-direction:column; } .level-grid { grid-template-columns:1fr; } .level-card { min-height:0; } }
 </style>

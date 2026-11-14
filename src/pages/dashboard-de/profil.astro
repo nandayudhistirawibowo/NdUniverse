@@ -363,7 +363,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     padding: 1.25rem 1rem;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: #fff;
+    background: var(--card-bg);
   }
 
   .sidebar-brand {
@@ -394,7 +394,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     border: 0;
     border-radius: 8px;
     background: transparent;
-    color: #475569;
+    color: var(--muted);
     font: inherit;
     font-size: 0.86rem;
     font-weight: 700;
@@ -406,20 +406,20 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   .sidebar-nav a span,
   .logout-form button span {
     width: 1.2rem;
-    color: #64748b;
+    color: var(--muted);
     font-size: 1.05rem;
     text-align: center;
   }
 
   .sidebar-nav a.active {
-    background: #F7E5C2;
-    color: var(--text-main);
+    background: color-mix(in srgb, var(--accent-gold) 14%, var(--bg-dark));
+    color: var(--accent-gold);
   }
 
   .sidebar-nav a:hover,
   .logout-form button:hover {
-    background: #F7E5C2;
-    color: var(--text-main);
+    background: color-mix(in srgb, var(--accent-gold) 14%, var(--bg-dark));
+    color: var(--accent-gold);
   }
 
   .logout-form {
@@ -446,19 +446,19 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     width: min(560px, calc(100vw - 2rem));
     padding: 0.9rem 1rem;
     transform: translateX(-50%);
-    border: 1px solid #86efac;
+    border: 1px solid var(--nd-status-safe);
     border-radius: 12px;
-    background: #f0fdf4;
-    color: #166534;
+    background: color-mix(in srgb, var(--nd-status-safe) 14%, var(--bg-dark));
+    color: var(--nd-status-safe);
     box-shadow: 0 12px 32px rgba(22, 101, 52, 0.16);
     font-size: 0.88rem;
     font-weight: 700;
   }
 
   .password-alert[data-state='error'] {
-    border-color: #fecaca;
-    background: #fef2f2;
-    color: #b91c1c;
+    border-color: var(--accent-red);
+    background: color-mix(in srgb, var(--accent-red) 14%, var(--bg-dark));
+    color: var(--accent-red);
     box-shadow: 0 12px 32px rgba(185, 28, 28, 0.14);
   }
 
@@ -483,7 +483,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
 
   .page-heading > p:last-child {
     margin: 0.6rem 0 0;
-    color: #64748b;
+    color: var(--muted);
   }
 
   .profile-form {
@@ -492,13 +492,13 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     padding: 1.35rem;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: #fff;
+    background: var(--card-bg);
   }
 
   .profile-form > label,
   .avatar-upload label {
     margin-top: 0.35rem;
-    color: #334155;
+    color: var(--text-main);
     font-size: 0.84rem;
     font-weight: 700;
   }
@@ -507,9 +507,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     width: 100%;
     min-height: 46px;
     padding: 0.7rem 0.85rem;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background: #fff;
+    background: var(--bg-dark);
     color: var(--text-main);
     font: inherit;
   }
@@ -521,8 +521,8 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .profile-form > input[readonly] {
-    background: #f1f5f9;
-    color: #64748b;
+    background: color-mix(in srgb, var(--text-main) 8%, var(--bg-dark));
+    color: var(--muted);
   }
 
   .avatar-editor {
@@ -547,7 +547,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     overflow: hidden;
     border: 3px solid var(--accent-gold);
     border-radius: 50%;
-    background: #F7E5C2;
+    background: var(--card-bg);
     box-shadow: 0 4px 12px rgba(26, 26, 30, 0.1);
   }
 
@@ -595,7 +595,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     width: 34px;
     height: 34px;
     place-items: center;
-    border: 2px solid #fff;
+    border: 2px solid var(--bg-dark);
     border-radius: 50%;
     background: var(--accent-gold);
     color: var(--bg-dark);
@@ -606,7 +606,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
 
   .avatar-camera:hover {
     transform: scale(1.08);
-    background: #F0B84F;
+    background: var(--primary-hover);
   }
 
   .avatar-camera svg {
@@ -637,13 +637,13 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .avatar-upload-title {
-    color: #334155;
+    color: var(--text-main);
     font-size: 0.84rem;
     font-weight: 700;
   }
 
   .avatar-upload small {
-    color: #64748b;
+    color: var(--muted);
     font-size: 0.74rem;
   }
 
@@ -660,7 +660,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .profile-form > button:hover:not(:disabled) {
-    background: #F0B84F;
+    background: var(--primary-hover);
   }
 
   .profile-form > button:disabled {
@@ -671,7 +671,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   .profile-message {
     min-height: 1.2rem;
     margin: 0;
-    color: #15803d;
+    color: var(--nd-status-safe);
     font-size: 0.82rem;
   }
 
@@ -703,12 +703,12 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     padding: 1.35rem;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: #fff;
+    background: var(--card-bg);
   }
 
   .password-form > label {
     margin-top: 0.35rem;
-    color: #334155;
+    color: var(--text-main);
     font-size: 0.84rem;
     font-weight: 700;
   }
@@ -721,9 +721,9 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
     width: 100%;
     min-height: 46px;
     padding: 0.7rem 3rem 0.7rem 0.85rem;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--border);
     border-radius: 8px;
-    background: #fff;
+    background: var(--bg-dark);
     color: var(--text-main);
     font: inherit;
   }
@@ -750,7 +750,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .password-toggle:hover {
-    background: #f1f5f9;
+    background: color-mix(in srgb, var(--accent-gold) 12%, var(--bg-dark));
     color: var(--text-main);
   }
 
@@ -790,7 +790,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, avatarPath)
   }
 
   .password-form > button:hover:not(:disabled) {
-    background: #F0B84F;
+    background: var(--primary-hover);
   }
 
   .password-form > button:disabled {
