@@ -1,9 +1,49 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
+const EMPTY_BOSS_INTRO = [];
+const DEFAULT_BOSS_INTRO = [
+  { detik: 0, aksi: 'Pintu tertutup; kamera gelap.', dialog: '' },
+  { detik: 2, aksi: 'Pintu terbuka perlahan dan cahaya masuk.', dialog: '' },
+  { detik: 5, aksi: 'Der Personalverantwortliche betritt den Raum.', dialog: '' },
+  { detik: 8, aksi: 'Der Personalverantwortliche begrüßt den Kandidaten.', dialog: 'Guten Tag! Bitte nehmen Sie Platz. Was interessiert Sie an dieser Stelle?' },
+];
+
+function ChatBubble({ text, isUser, isSystem, speakerLabel }) {
+  const [visibleText, setVisibleText] = useState('');
+
+  useEffect(() => {
+    const characters = Array.from(text);
+    const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion || characters.length === 0) {
+      setVisibleText(text);
+      return undefined;
+    }
+
+    let visibleLength = 0;
+    setVisibleText('');
+    const timer = window.setInterval(() => {
+      visibleLength += 1;
+      setVisibleText(characters.slice(0, visibleLength).join(''));
+      if (visibleLength >= characters.length) window.clearInterval(timer);
+    }, 22);
+
+    return () => window.clearInterval(timer);
+  }, [text]);
+
+  const messageClass = isSystem ? 'system' : isUser ? 'user' : 'hrd';
+  return (
+    <div class={`chat-message ${messageClass}`} role="article" aria-label={`${speakerLabel}: ${text}`}>
+      <span class="chat-speaker">{speakerLabel}</span>
+      <span aria-hidden="true">{visibleText}</span>
+    </div>
+  );
+}
+
 export default function BossFight({
   questions = [],
+  bossIntro = EMPTY_BOSS_INTRO,
   badge = 'Career',
   profession = 'Karir',
   returnHref = '/career',
@@ -12,10 +52,19 @@ export default function BossFight({
     question: 'Erzählen Sie mir von sich.',
     keywords: ['nama', 'pengalaman', 'belajar'],
   };
-  const interviewQuestions = questions.length > 0 ? questions : [fallbackQuestion];
+  const interviewQuestions = useMemo(
+    () => questions.length > 0 ? questions : [fallbackQuestion],
+    [questions],
+  );
+  const introTimeline = useMemo(
+    () => [...(bossIntro.length > 0 ? bossIntro : DEFAULT_BOSS_INTRO)].sort((a, b) => a.detik - b.detik),
+    [bossIntro],
+  );
   const [gameState, setGameState] = useState('intro');
   const [bossEntered, setBossEntered] = useState(false);
   const [doorState, setDoorState] = useState('closed');
+  const [elapsedSeconds, setElapsedSeconds] = useState(0);
+  const [introEventIndex, setIntroEventIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [messages, setMessages] = useState([]);
@@ -26,6 +75,7 @@ export default function BossFight({
   const cinematicActive = true;
 
   const currentQuestion = interviewQuestions[questionIndex];
+  const activeIntroEvent = introTimeline[introEventIndex] ?? introTimeline[0];
 
   useEffect(() => {
     if (!cinematicActive) return undefined;
@@ -53,14 +103,50 @@ export default function BossFight({
     }, 700);
   };
 
-  const startInterview = () => {
+  const startInterview = useCallback(() => {
     playSound('click');
     setGameState('interview');
-    setMessages([{ speaker: 'hrd', text: interviewQuestions[0].question }]);
+    const greeting = introTimeline.slice().reverse().find((event) => event.dialog?.trim())?.dialog;
+    setMessages([
+      ...(greeting ? [{ speaker: 'hrd', text: greeting }] : []),
+      { speaker: 'hrd', text: interviewQuestions[0].question },
+    ]);
     setQuestionIndex(0);
     setAnswer('');
     setCorrectAnswers(0);
-  };
+  }, [interviewQuestions, introTimeline]);
+
+  useEffect(() => {
+    if (gameState !== 'intro') return undefined;
+
+    let elapsed = 0;
+    const finalSecond = introTimeline[introTimeline.length - 1]?.detik ?? 8;
+    const interval = window.setInterval(() => {
+      elapsed += 1;
+      setElapsedSeconds(elapsed);
+
+      let nextIndex = 0;
+      for (let index = 1; index < introTimeline.length; index += 1) {
+        if (introTimeline[index].detik <= elapsed) nextIndex = index;
+        else break;
+      }
+
+      setIntroEventIndex(nextIndex);
+      setDoorState(
+        nextIndex === 0 ? 'closed'
+          : nextIndex === 1 ? 'opening'
+            : nextIndex === 2 ? 'entering'
+              : 'inside',
+      );
+
+      if (elapsed > finalSecond) {
+        window.clearInterval(interval);
+        startInterview();
+      }
+    }, 1000);
+
+    return () => window.clearInterval(interval);
+  }, [gameState, introTimeline, startInterview]);
 
   const startListening = () => {
     playSound('click');
@@ -177,6 +263,12 @@ export default function BossFight({
           <div class={`cinematic-room room-${doorState}`}>
             <div class="cinematic-header">
               <span class="career-section-label">Tantangan Akhir: {profession}</span>
+              {gameState === 'intro' && (
+                <div class="cinematic-timeline" aria-live="polite">
+                  <span class="cinematic-clock">00:{String(elapsedSeconds).padStart(2, '0')}</span>
+                  <span>{activeIntroEvent?.aksi}</span>
+                </div>
+              )}
               {gameState === 'interview' && (
                 <span class="boss-progress">
                   Pertanyaan {Math.min(questionIndex + 1, interviewQuestions.length)} dari {interviewQuestions.length}
@@ -196,14 +288,7 @@ export default function BossFight({
                   </div>
                 </div>
                 <div class="door-action">
-                  {doorState === 'closed' && (
-                    <>
-                      <p>Silakan masuk ke ruang HRD untuk memulai.</p>
-                      <button class="boss-start-button" type="button" onClick={knockDoor}>Masuk ke Ruangan</button>
-                    </>
-                  )}
-                  {doorState === 'opening' && <p>Pintu sedang terbuka...</p>}
-                  {doorState === 'entering' && <p>Memasuki ruang wawancara...</p>}
+                  <p>{activeIntroEvent?.aksi}</p>
                 </div>
               </div>
             )}
@@ -220,8 +305,7 @@ export default function BossFight({
                 </div>
                 <div class="boss-speech-bubble">
                   <strong>Herr Müller</strong>
-                  <p>Selamat datang! Silakan duduk. Saya Bapak Müller, HRD di sini.</p>
-                  <button class="boss-start-button" type="button" onClick={startInterview}>Mulai Wawancara</button>
+                  <p>{activeIntroEvent?.dialog}</p>
                 </div>
               </div>
             )}
@@ -240,10 +324,13 @@ export default function BossFight({
                 <div class="cinematic-chat-panel">
                   <div class="boss-chat" aria-live="polite">
                     {messages.map((message, index) => (
-                      <div key={`${message.speaker}-${index}`} class={`chat-message ${message.speaker}`}>
-                        <span class="chat-speaker">{message.speaker === 'hrd' ? 'HRD' : message.speaker === 'user' ? 'Anda' : 'Info'}</span>
-                        {message.text}
-                      </div>
+                      <ChatBubble
+                        key={`${message.speaker}-${index}`}
+                        text={message.text}
+                        isUser={message.speaker === 'user'}
+                        isSystem={message.speaker === 'system'}
+                        speakerLabel={message.speaker === 'hrd' ? 'HRD' : message.speaker === 'user' ? 'Anda' : 'Info'}
+                      />
                     ))}
                   </div>
                   <div class="boss-interview">
@@ -486,6 +573,131 @@ export default function BossFight({
           .cinematic-boss { min-height:110px; font-size:6rem; }
           .cinematic-interview { width:calc(100% - .8rem); }
           .cinematic-boss-panel .cinematic-boss { font-size:3.5rem; }
+        }
+        .cinematic-overlay {
+          --cinematic-ink: var(--text-main);
+          --cinematic-muted: var(--muted);
+          --cinematic-line: var(--border);
+          background: var(--bg-dark);
+        }
+        .cinematic-room {
+          color: var(--text-main);
+          background: radial-gradient(circle at 50% 20%, color-mix(in srgb, var(--accent-gold) 12%, transparent), transparent 34%), linear-gradient(180deg, var(--bg-main), var(--bg-dark));
+        }
+        .cinematic-room.room-closed::before { opacity: .08; }
+        .cinematic-room.room-opening::before { opacity: .95; }
+        .cinematic-room.room-opening .door-wall { animation: cinematicCameraReveal .8s ease both; }
+        .door-sequence.door-entering .door-zoom-room { transform: scale(2.4) translateY(-1.5rem); }
+        .cinematic-header .career-section-label,
+        .career-section-label { color: var(--accent-gold); }
+        .cinematic-header .boss-progress { color: var(--muted); }
+        .cinematic-timeline {
+          display: flex;
+          min-width: 0;
+          max-width: min(100%, 38rem);
+          align-items: center;
+          gap: .75rem;
+          padding: .55rem .85rem;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+          color: var(--muted);
+          font-size: .82rem;
+        }
+        .cinematic-clock { flex: 0 0 auto; color: var(--accent-gold); font-variant-numeric: tabular-nums; font-weight: 800; }
+        .cinematic-timeline span:last-child { min-width: 0; overflow-wrap: anywhere; }
+        .cinematic-intro { color: var(--text-main); animation: cinematicBossEntrance .8s ease both; }
+        .cinematic-intro .boss-speech-bubble {
+          border-color: var(--accent-gold);
+          background: color-mix(in srgb, var(--card-bg) 92%, transparent);
+          color: var(--text-main);
+        }
+        .cinematic-intro .boss-speech-bubble::before { border-color: var(--accent-gold); background: var(--card-bg); }
+        .cinematic-intro .boss-speech-bubble p { color: var(--muted); }
+        .cinematic-chat-panel {
+          border-color: var(--border);
+          background: color-mix(in srgb, var(--bg-dark) 92%, transparent);
+        }
+        .cinematic-chat-panel .boss-chat {
+          display: flex;
+          min-width: 0;
+          flex-direction: column;
+          gap: .3rem;
+        }
+        .chat-message {
+          width: fit-content;
+          max-width: min(82%, 40rem);
+          box-sizing: border-box;
+          overflow-wrap: anywhere;
+          word-break: break-word;
+        }
+        .chat-message.hrd {
+          align-self: flex-start;
+          border: 1px solid var(--border);
+          background: var(--card-bg);
+          color: var(--text-main);
+        }
+        .chat-message.user {
+          align-self: flex-end;
+          border: 1px solid var(--accent-gold);
+          background: var(--accent-gold);
+          color: var(--bg-dark);
+        }
+        .chat-message.system {
+          align-self: center;
+          border: 1px dashed var(--border);
+          background: color-mix(in srgb, var(--card-bg) 88%, transparent);
+          color: var(--muted);
+        }
+        .chat-speaker { color: var(--accent-gold); }
+        .cinematic-chat-panel .boss-interview label { color: var(--text-main); }
+        .cinematic-chat-panel .boss-interview textarea {
+          border-color: var(--border);
+          background: var(--bg-dark);
+          color: var(--text-main);
+        }
+        .cinematic-chat-panel .boss-interview textarea::placeholder { color: var(--muted); }
+        .boss-start-button,
+        .boss-finish-button,
+        .boss-return-button {
+          border: 1px solid var(--accent-gold);
+          background: var(--accent-gold);
+          color: var(--bg-dark);
+        }
+        .boss-mic-button {
+          border-color: var(--border);
+          background: var(--card-bg);
+          color: var(--text-main);
+        }
+        .boss-finished { background: var(--bg-main); color: var(--text-main); }
+        .boss-finished h2,
+        .boss-finished p,
+        .boss-finished strong { color: var(--text-main); }
+        .boss-victory {
+          border-color: var(--nd-status-safe);
+          background: color-mix(in srgb, var(--nd-status-safe) 15%, var(--bg-dark));
+        }
+        @keyframes cinematicCameraReveal {
+          from { opacity: 0; transform: translateY(12px) translateZ(-20px); }
+          to { opacity: 1; transform: translateY(0) translateZ(-20px); }
+        }
+        @keyframes cinematicBossEntrance {
+          from { opacity: 0; transform: translateY(24px) scale(.96); }
+          to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media(max-width:768px) {
+          .cinematic-timeline { max-width: 100%; border-radius: .75rem; }
+          .door-sequence.door-entering .door-zoom-room { transform: scale(2) translateY(-1rem); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          *,
+          *::before,
+          *::after {
+            animation-duration: .01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: .01ms !important;
+            scroll-behavior: auto !important;
+          }
         }
       `}</style>
     </section>

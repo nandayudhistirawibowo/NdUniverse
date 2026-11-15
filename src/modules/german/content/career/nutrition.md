@@ -2,6 +2,19 @@
 track: "Career"
 judulMateri: "Gizi & Kebidanan"
 deskripsi: "Kosakata dan simulasi wawancara untuk gizi dan pelayanan kesehatan ibu serta anak."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "Konsultan gizi dan kebidanan memasuki ruangan."
+    dialog: ""
+  - detik: 8
+    aksi: "Konsultan gizi dan kebidanan menyapa kandidat."
+    dialog: "Guten Tag! Ich bin Herr Müller aus der Ernährungs- und Hebammenberatung. Wie unterstützen Sie Familien mit Einfühlungsvermögen und Fachwissen?"
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Ausbildung"]

@@ -1,6 +1,19 @@
 ---
 title: "Pflege & Gesundheitswesen"
 description: "Vocabulary and interview simulation for the nursing and health sector."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "The nursing manager enters the room."
+    dialog: ""
+  - detik: 8
+    aksi: "The nursing manager greets the candidate."
+    dialog: "Welcome. I'm Mr. Müller, the nursing manager. How do you help patients feel safe, respected, and well cared for?"
 boss_questions:
   - question: "Tell me about yourself."
     keywords: ["name", "Experience", "Training"]

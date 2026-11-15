@@ -1,6 +1,19 @@
 ---
 title: "Digital Business & E-Commerce"
 description: "Vocabulary and interview simulation for digital marketing and online business."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "The E-Commerce manager enters the room."
+    dialog: ""
+  - detik: 8
+    aksi: "The E-Commerce manager greets the candidate."
+    dialog: "Welcome. I'm Mr. Müller from our e-commerce team. How would you grow a campaign while keeping customer needs in focus?"
 boss_questions:
   - question: "Tell me about yourself."
     keywords: ["name", "Experience", "Study"]

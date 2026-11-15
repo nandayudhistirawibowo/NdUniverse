@@ -13,6 +13,14 @@ const vocabItemSchema = z.object({
   sprechen_pertanyaan: z.string().optional(),
 });
 
+const bossIntroSchema = z.array(
+  z.object({
+    detik: z.number(),
+    aksi: z.string(),
+    dialog: z.string(),
+  })
+).optional();
+
 const materi = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/modules/german/content/materi' }),
   schema: z.object({
@@ -42,6 +50,7 @@ const career = defineCollection({
     track: z.literal('Career'),
     judulMateri: z.string(),
     deskripsi: z.string(),
+    boss_intro: bossIntroSchema,
     boss_questions: z.array(
       z.object({
         question: z.string(),
@@ -117,6 +126,7 @@ const englishCareer = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    boss_intro: bossIntroSchema,
     vocab: z.array(z.object({
       word: z.string(),
       translation: z.string(),

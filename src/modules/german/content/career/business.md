@@ -2,6 +2,19 @@
 track: "Career"
 judulMateri: "Digital Business & E-Commerce"
 deskripsi: "Kosakata dan simulasi wawancara untuk pemasaran digital dan bisnis daring."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "Manajer E-Commerce memasuki ruangan."
+    dialog: ""
+  - detik: 8
+    aksi: "Manajer E-Commerce menyapa kandidat."
+    dialog: "Guten Tag! Ich bin Herr Müller aus unserem E-Commerce-Team. Wie würden Sie eine Kampagne für unsere Zielgruppe planen?"
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Studium"]

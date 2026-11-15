@@ -1,6 +1,19 @@
 ---
 title: "IT & Software Engineering"
 description: "Vocabulary and interview simulation for the field of IT and software development."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "The IT manager enters the room."
+    dialog: ""
+  - detik: 8
+    aksi: "The IT manager greets the candidate."
+    dialog: "Welcome. I'm Mr. Müller, the hiring manager for our IT team. How do you approach a challenging software problem?"
 boss_questions:
   - question: "Tell me about yourself."
     keywords: ["name", "Experience", "Study"]

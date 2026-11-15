@@ -2,6 +2,19 @@
 track: "Career"
 judulMateri: "Pflege & Gesundheitswesen"
 deskripsi: "Kosakata dan simulasi wawancara untuk bidang perawatan dan kesehatan."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "Kepala layanan keperawatan memasuki ruangan."
+    dialog: ""
+  - detik: 8
+    aksi: "Kepala layanan keperawatan menyapa kandidat."
+    dialog: "Guten Tag! Ich bin Herr Müller, Pflegedienstleiter. Wie sorgen Sie für eine respektvolle und sichere Betreuung unserer Patienten?"
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Ausbildung"]

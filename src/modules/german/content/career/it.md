@@ -2,6 +2,19 @@
 track: "Career"
 judulMateri: "IT & Software Engineering"
 deskripsi: "Kosakata dan simulasi wawancara untuk bidang IT dan pengembangan perangkat lunak."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "Manajer IT memasuki ruangan."
+    dialog: ""
+  - detik: 8
+    aksi: "Manajer IT menyapa kandidat."
+    dialog: "Guten Tag! Ich bin Herr Müller, der Personalverantwortliche unseres IT-Teams. Wie lösen Sie ein technisches Problem Schritt für Schritt?"
 boss_questions:
   - question: "Erzählen Sie mir von sich."
     keywords: ["Name", "Erfahrung", "Studium"]

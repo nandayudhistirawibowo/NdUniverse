@@ -17,6 +17,7 @@ if (!titleData) return new Response('Profesi tidak ditemukan.', { status: 404 })
 
 const entry = await getEntry('career', profesi);
 const questions = entry?.data.boss_questions ?? [];
+const bossIntro = entry?.data.boss_intro ?? [];
 ---
 
 <DashboardLayout
@@ -35,6 +36,7 @@ const questions = entry?.data.boss_questions ?? [];
     <BossFight
       client:load
       questions={questions}
+      bossIntro={bossIntro}
       badge={titleData[1]}
       profession={titleData[0]}
       returnHref={`/de/career/${profesi}`}

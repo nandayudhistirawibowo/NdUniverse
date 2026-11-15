@@ -19,6 +19,7 @@ const careers = await getCollection('englishCareer');
 const entry = careers.find((career) => career.id === profesi);
 if (!entry) return new Response('Profesi karier tidak ditemukan.', { status: 404 });
 const questions = entry?.data.boss_questions ?? [];
+const bossIntro = entry?.data.boss_intro ?? [];
 ---
 
 <DashboardLayout
@@ -37,6 +38,7 @@ const questions = entry?.data.boss_questions ?? [];
     <BossFight
       client:load
       questions={questions}
+      bossIntro={bossIntro}
       badge={titleData[1]}
       profession={titleData[0]}
       returnHref={`/en/career/${profesi}`}

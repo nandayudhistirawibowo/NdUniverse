@@ -1,6 +1,19 @@
 ---
 title: "Nutrition & Midwifery"
 description: "Vocabulary and interview simulation for nutrition and maternal and child health services."
+boss_intro:
+  - detik: 0
+    aksi: "Pintu tertutup; kamera gelap."
+    dialog: ""
+  - detik: 2
+    aksi: "Pintu terbuka perlahan dan cahaya masuk."
+    dialog: ""
+  - detik: 5
+    aksi: "The nutrition and midwifery manager enters the room."
+    dialog: ""
+  - detik: 8
+    aksi: "The nutrition and midwifery manager greets the candidate."
+    dialog: "Welcome. I'm Mr. Müller from our nutrition and midwifery team. How do you support families with empathy and evidence-based advice?"
 boss_questions:
   - question: "Tell me about yourself."
     keywords: ["name", "Experience", "Training"]
