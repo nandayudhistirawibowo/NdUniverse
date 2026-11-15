@@ -2,7 +2,7 @@
 
 ## Status
 
-**V4 Selesai 100% untuk lingkup rilis.** Produk mencakup platform Astro SSR, modul German dan English, latihan bebas pilih sesi/pilar, progress Supabase, chatbot RAG, ujian besar dengan anti-cheat fullscreen, serta audio CDN.
+**V4 Selesai 100% untuk lingkup rilis.** Produk mencakup platform Astro SSR, modul German dan English, latihan bebas pilih sesi/pilar, progress Supabase, chatbot RAG, ujian besar dengan anti-cheat fullscreen, audio CDN, dan Cinematic Boss Fight dengan voice acting TTS serta typewriter sync.
 
 Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengubah credential di repository atau memasukkan secret ke browser.
 
@@ -13,6 +13,8 @@ Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengu
 - **Chatbot RAG:** materi Markdown dipecah menjadi chunk dan disimpan pada `public.documents`; Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` (384 dimensi), Supabase `pgvector` melakukan retrieval, dan Groq menulis ulang query/menyusun jawaban.
 - **Kuis:** pengguna bebas memilih sesi dan pilar. `sessions_passed` menyimpan key seperti `s1-reading` dan `s2-writing` untuk indikator selesai; key tersebut tidak mengunci akses.
 - **Ujian besar:** fullscreen anti-cheat memantau perubahan fullscreen, tab tersembunyi, dan window blur. Strike ketiga memaksa submit; NdBot menampilkan status strike.
+- **Cinematic Boss Fight:** overlay memenuhi viewport, dengan audio TTS untuk dialog HRD dan typewriter yang diselaraskan dengan audio. Audio Boss Fight dibuat dengan `npm run generate:tts:boss`.
+- **Landing:** tombol modul memakai SVG `public/flags/gb.svg` dan `public/flags/de.svg`, bukan emoji, agar konsisten lintas perangkat.
 - **UI:** Indonesian-first dengan string hardcoded dan tanpa sistem i18n terpusat. Tautan `/en` ↔ `/de` memilih modul pembelajaran, bukan bahasa global UI. Dashboard German berada di `/dashboard-de` dan English di `/en/dashboard`; materi/soal tetap dalam bahasa target. Landing masih memiliki beberapa label pemasaran Inggris yang dapat diaudit jika dibutuhkan.
 - **SEO:** landing `index, follow` dengan canonical; layout dashboard `noindex, nofollow`. Sitemap mencakup URL publik dan memfilter admin/dashboard; `robots.txt` melarang crawl rute privat.
 - **Audio:** manifest dan MP3 TTS utama disajikan dari `nandayudhistirawibowo/nduniverse-audio` melalui jsDelivr.
@@ -29,6 +31,15 @@ npm run build
 ```
 
 Server background dapat dihentikan dengan `npx astro dev stop` dan log dibaca dengan `npx astro dev logs`.
+
+Karena project memakai Vercel adapter, `astro preview` bukan cara yang didukung untuk menguji output deploy adapter ini. Untuk menguji hasil build lokal, jalankan:
+
+```bash
+npm run build
+node scripts/serve-vercel-output.mjs
+```
+
+Server custom menyajikan output `.vercel/output` pada `http://127.0.0.1:4321` (atau port dari `PORT`). Hentikan proses dengan `Ctrl+C`.
 
 Isi `.env` lokal sesuai layanan yang digunakan:
 
@@ -76,9 +87,10 @@ Audio yang dibaca aplikasi berada di repo terpisah `nandayudhistirawibowo/nduniv
 Alur publikasi:
 
 1. Jalankan `npm run generate:tts:en -- --dry-run` untuk melihat aset yang kurang atau `npm run generate:tts:en` untuk membuat audio English US/UK, kedua manifest, dan mapping `manifest-cdn.json`. Dependensi tersedia lewat `python -m pip install -r requirements-tts.txt`.
-2. Generator German `npm run generate:tts` saat ini masih membaca sumber legacy `src/content/materi`. Konten German V4 berada di `src/modules/german/content/materi`; jangan menganggap generator German memperbarui semua konten modul sampai path tersebut diselaraskan.
-3. Salin aset dan manifest yang akan diterbitkan ke lokasi yang sama di checkout repo audio, misalnya `D:\audio-cdn\audio`. Pertahankan format manifest sebagai mapping teks ke path audio dan pertahankan nama file yang digunakan aplikasi.
-4. Commit dan push aset repo audio ke branch `main`:
+2. Untuk voice acting Boss Fight, jalankan `npm run generate:tts:boss -- --dry-run` untuk memeriksa file yang dibutuhkan atau `npm run generate:tts:boss` untuk menghasilkan audio. Generator menyediakan suara German dan English. Pastikan dependensi TTS pada `requirements-tts.txt` sudah terpasang.
+3. Generator German `npm run generate:tts` saat ini masih membaca sumber legacy `src/content/materi`. Konten German V4 berada di `src/modules/german/content/materi`; jangan menganggap generator German memperbarui semua konten modul sampai path tersebut diselaraskan.
+4. Salin aset dan manifest yang akan diterbitkan ke lokasi yang sama di checkout repo audio, misalnya `D:\audio-cdn\audio`. Pertahankan format manifest sebagai mapping teks ke path audio dan pertahankan nama file yang digunakan aplikasi.
+5. Commit dan push aset repo audio ke branch `main`:
 
    ```bash
    git -C D:\audio-cdn status --short
@@ -87,7 +99,7 @@ Alur publikasi:
    git -C D:\audio-cdn push origin main
    ```
 
-5. Setelah MP3 tersedia di repo audio, dari root repository NdUniverse jalankan:
+6. Setelah MP3 tersedia di repo audio, dari root repository NdUniverse jalankan:
 
    ```bash
    python scripts/migrate-audio-cdn.py
@@ -112,7 +124,6 @@ Manifest TTS German/English yang dibaca langsung dari repo audio harus ikut dipu
 
 - Jika targetnya konsistensi Bahasa Indonesia penuh, audit kicker, penanda bagian, dan tagline berbahasa Inggris di `src/pages/index.astro`. Teks UI hardcoded; belum ada i18n terpusat.
 - NdBot mengunci chat pada mode `quiz` dan `exam`; kunci ini tidak mengunci akses memilih sesi/pilar. Strike ketiga pada ujian menjalankan force-submit.
-- `public/robots.txt` masih mencantumkan `/de/dashboard/`, sedangkan dashboard German aktif berada di `/dashboard-de`; selaraskan crawler config saat mengerjakan pembaruan SEO.
 
 ## Memperbarui Indeks RAG
 
@@ -144,5 +155,5 @@ Jalankan ingest setelah materi Markdown German/English yang dipakai chatbot beru
 - `sessions_passed` terbaru berupa array key sesi-pilar, misalnya `["s1-reading", "s2-writing"]`. Data lama dinormalisasi saat dibaca.
 - Bookmark, status ujian tertentu, dan hasil sertifikat client-side disimpan di browser.
 - File `supabase/user_progress.sql` dapat tertinggal dari schema live; sebelum migrasi, verifikasi schema dan constraint aktual, backup data, lalu uji bertahap.
-- Untuk memeriksa sitemap, buka `/sitemap-index.xml` dan `/sitemap-content.xml` pada deployment. Endpoint konten mengambil koleksi materi German, English Everyday, dan English Academic.
+- Untuk memeriksa sitemap, buka `/sitemap-index.xml` dan `/sitemap-content.xml` pada deployment. Sitemap konten mencakup landing, portal, halaman login, dan koleksi materi German, English Everyday, serta English Academic; rute privat tidak dimasukkan.
 - Sebelum menyerahkan perubahan, periksa `git status --short`, `git diff --check`, lalu jalankan `npm run build`.

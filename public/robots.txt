@@ -3,7 +3,7 @@ Allow: /
 Disallow: /admin/
 Disallow: /api/
 Disallow: /dashboard/
-Disallow: /dashboard-de/
+Disallow: /dashboard-de
 Disallow: /en/dashboard/
 
 Sitemap: https://nduniverse.ndhistira.my.id/sitemap-index.xml

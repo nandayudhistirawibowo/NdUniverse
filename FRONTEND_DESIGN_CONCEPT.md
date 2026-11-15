@@ -14,6 +14,8 @@ Landing memperkenalkan produk melalui hero dengan judul utama, deskripsi yang me
 
 Hero memakai struktur heading dan deskripsi yang jelas untuk SEO. Halaman menetapkan description, canonical URL, Open Graph/Twitter metadata, alternate `hreflang`, serta `index, follow`.
 
+Kartu pemilihan modul memakai SVG bendera dari `public/flags/gb.svg` dan `public/flags/de.svg`, bukan emoji. Rasio dan ukuran gambar ditentukan CSS agar tampil konsisten lintas browser, sistem operasi, dan perangkat. Tautan tetap menuju `/login-en` dan `/login-de`.
+
 Panduan mulai membuat akun di halaman:
 
 1. Pilih modul bahasa Jerman atau Inggris.
@@ -22,6 +24,12 @@ Panduan mulai membuat akun di halaman:
 4. Akun baru dibuat otomatis saat kredensial baru digunakan; setelah masuk, pengguna dapat mulai belajar.
 
 UI landing secara umum berbahasa Indonesia, tetapi beberapa kicker dan penanda bagian masih berbahasa Inggris. Karena tidak ada sistem lokalisasi terpusat, konsistensi copy perlu diperiksa langsung pada komponen terkait.
+
+## Tema Gelap dan Konsistensi
+
+Landing, portal, dashboard, halaman materi, katalog karier, dan pengalaman Boss Fight memakai tema dasar gelap dengan teks terang serta aksen emas. Halaman karier memakai token warna bersama (`--bg-dark`, `--bg-main`, `--card-bg`, `--text-main`, dan `--accent-gold`) agar kartu dan navigasi tetap selaras dengan dashboard. Boss Fight juga memakai palet gelap pada overlay cinematic, panel dialog, dan area wawancara; state hasil dapat memakai warna status khusus untuk menonjolkan kelulusan.
+
+Gunakan token semantik dari layout yang menaungi komponen dan pertahankan kontras teks. Periksa konteks state sebelum mengganti warna status agar feedback benar/salah atau kelulusan tetap mudah dikenali.
 
 ## Portal Publik (`/de` dan `/en`)
 
@@ -51,6 +59,12 @@ Card katalog menampilkan nama, ringkasan, progres, dan badge CEFR:
 ## Katalog dan Detail Materi
 
 Katalog menggunakan grid card responsif dengan progres materi dan navigasi ke detail. Halaman detail menampilkan materi dan tabel kosakata. Tabel lebar ditempatkan dalam wrapper `.table-scroll` agar dapat digeser secara horizontal tanpa merusak lebar halaman.
+
+## Cinematic Boss Fight
+
+Boss Fight karier menyajikan adegan wawancara dalam overlay yang memenuhi viewport, dengan urutan pintu terbuka, HRD masuk, dan dialog pengantar. Dialog HRD memakai voice acting dari audio TTS; teks ditampilkan dengan typewriter yang kecepatannya diselaraskan dengan durasi audio. Jika audio tidak tersedia atau pengguna memilih reduced motion, teks tetap tampil dengan fallback yang sesuai. Pengalaman dapat digunakan pada desktop dan layar kecil; overlay ini adalah tampilan penuh di halaman, bukan permintaan browser Fullscreen API.
+
+Setelah adegan pengantar, pengguna menjawab pertanyaan wawancara bertahap melalui teks atau Speech Recognition. Jawaban dinilai dengan pencocokan kata kunci, lalu layar hasil menampilkan status wawancara.
 
 ## Kuis, Latihan, dan Ujian
 

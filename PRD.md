@@ -1,6 +1,6 @@
 # PRD Modul Jerman (NdUniverse)
 
-**Status:** Dokumentasi implementasi V4
+**Status:** V4 selesai 100% untuk lingkup rilis
 **Produk:** Platform belajar bahasa Jerman universal A1–C2
 
 ## Status Bahasa UI
@@ -81,7 +81,7 @@ Katalog `/de/career` menyediakan empat profesi:
 
 Setiap profesi memiliki **50 kosakata** pada Astro Content Collections Markdown di `src/modules/german/content/career/`. Halaman materi menampilkan Latihan Kosakata lima kata dasar per batch, kuis pilihan ganda sederhana, dan card Boss Fight.
 
-Boss Fight dipisahkan ke route `/de/career/[profesi]/boss`. Pengalaman end-to-end dimulai dengan layar visual novel ruangan kantor: pintu terbuka dengan animasi, Boss HRD masuk, lalu ucapan salam `"Guten Tag! Bitte setzen Sie sich..."` ditampilkan. User kemudian menjawab **10 pertanyaan wawancara bertahap** melalui text box atau Speech Recognition/microphone. Jawaban dinilai secara fuzzy sederhana terhadap keywords yang berasal dari frontmatter Markdown `boss_questions`. Pertanyaan berikutnya baru muncul setelah jawaban dikirim.
+Boss Fight dipisahkan ke route `/de/career/[profesi]/boss` dan memakai overlay cinematic yang memenuhi viewport. Pengalaman dimulai dengan adegan ruangan kantor: pintu terbuka dengan animasi, Boss HRD masuk, dan dialog pengantar dibacakan melalui audio TTS. Typewriter menampilkan teks dengan kecepatan yang diselaraskan ke durasi audio, dengan fallback jika audio tidak tersedia. User kemudian menjawab **10 pertanyaan wawancara bertahap** melalui text box atau Speech Recognition/microphone. Jawaban dinilai secara fuzzy sederhana terhadap keywords yang berasal dari frontmatter Markdown `boss_questions`. Pertanyaan berikutnya baru muncul setelah jawaban dikirim.
 
 Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wawancara Selesai!** beserta status kelulusan, badge profesi, dan tombol kembali ke materi profesi. Konten Career disimpan di `src/modules/german/content/career/*.md`, bukan database Supabase.
 
@@ -159,8 +159,14 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 ### Audio TTS dan Microphone
 
 - Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`), dengan generator dan resolver sinkron di `src/core/audio/cdn-audio.js`; audio German memakai manifest TTS German.
+- Boss Fight menggunakan voice acting audio TTS untuk dialog HRD; generatornya tersedia melalui `npm run generate:tts:boss`.
 - Aset dibuat dengan Edge TTS dan disajikan melalui jsDelivr. Fallback Web Speech menggunakan locale sesuai aksen/bahasa audio.
 - Speaking memakai browser Speech Recognition untuk mengubah rekaman suara menjadi teks sebelum fuzzy matching.
+
+### Landing dan SVG Flags
+
+- Landing memakai title `Belajar Bahasa Jerman & Inggris Gratis | NdUniverse` dan description yang memuat keyword belajar bahasa, ujian, TTS, CEFR, dan tutor AI.
+- Pilihan modul English dan German menggunakan aset `public/flags/gb.svg` dan `public/flags/de.svg`, bukan emoji, supaya tampil konsisten lintas perangkat tanpa mengubah tujuan tautan login.
 
 ### Autentikasi dan Profil
 
@@ -186,9 +192,10 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### SEO dan Crawler
 
-- Landing menyatakan `index, follow` dan memakai canonical URL.
-- Layout dashboard menggunakan `noindex, nofollow`; sitemap mengecualikan dashboard dan admin.
-- `robots.txt` melarang crawl `/dashboard/`, `/de/dashboard/`, dan `/en/dashboard/`. Rute dashboard German aktif adalah `/dashboard-de`, sehingga daftar robots saat ini masih perlu diselaraskan dengan rute aktif.
+- Landing menetapkan title dan description yang SEO-friendly, `index, follow`, canonical URL, Open Graph, dan Twitter Cards.
+- `src/core/ui/Layout.astro` menerima title, description, image, serta canonical URL per halaman dan menghasilkan Open Graph/Twitter metadata dari nilai tersebut. Layout khusus dashboard mengatur kebijakan indexing untuk rute privat.
+- `src/pages/sitemap-content.xml.ts` menghasilkan URL publik `/`, `/de`, `/en`, `/login-de`, `/login-en`, serta materi; rute dashboard/admin tidak dimasukkan.
+- `public/robots.txt` mengizinkan `/` dan melarang `/dashboard/`, `/dashboard-de`, `/en/dashboard/`, `/admin/`, serta `/api/`.
 
 ## Tech Stack
 
