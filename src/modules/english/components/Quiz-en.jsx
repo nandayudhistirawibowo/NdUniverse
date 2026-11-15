@@ -1040,7 +1040,7 @@ export default function Quiz(props) {
                   <>
                     <p className="question-label">Tipe D · Membaca</p>
                     <h3>Bacalah teks berikut</h3>
-                    <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
+                    <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', color: 'var(--text-main)', lineHeight: 1.7 }}>
                       {currentQuestion.reading_text || currentQuestion.context}
                     </div>
                     <h3 style={{ marginTop: '1rem' }}>{currentQuestion.reading_question || <span>Kata bahasa Inggris apa yang digunakan dalam kalimat ini?</span>}</h3>
@@ -1575,6 +1575,7 @@ export default function Quiz(props) {
             margin: 0 0 1rem;
             font-size: 1.15rem;
             line-height: 1.5;
+            color: var(--text-main);
           }
 
           .answer-box {

@@ -967,7 +967,7 @@ export default function Quiz(props) {
                   <>
                     <p className="question-label">Tipe D · Membaca</p>
                     <h3>Bacalah teks berikut</h3>
-                    <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', lineHeight: 1.7 }}>
+                    <div style={{ padding: '1rem', border: '1px solid var(--border)', borderRadius: '12px', background: 'var(--bg-main)', color: 'var(--text-main)', lineHeight: 1.7 }}>
                       {currentQuestion.lesen_teks || currentQuestion.context || currentQuestion.german || <span>Teks bacaan tidak tersedia.</span>}
                     </div>
                   </>

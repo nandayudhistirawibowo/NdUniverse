@@ -459,11 +459,11 @@ export default function EnglishExam({ exam, type, level }) {
         .exam-timer { display:grid; min-width:150px; gap:.2rem; padding:.55rem .8rem; border:1px solid var(--border); border-radius:8px; background:var(--card-bg); text-align:center; }
         .exam-timer span { color:var(--muted); font-size:.72rem; font-weight:800; text-transform:uppercase; }
         .exam-timer strong { font-size:1.65rem; font-variant-numeric:tabular-nums; }
-        .exam-timer.urgent { border-color:#c83c3c; color:#a51d1d; }
+        .exam-timer.urgent { border-color:#c83c3c; color:var(--accent-red); }
         .module-steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.55rem; }
         .module-step { display:flex; min-height:48px; align-items:center; gap:.55rem; padding:.6rem; border:1px solid var(--border); border-radius:6px; background:var(--card-bg); color:var(--muted); font-size:.82rem; font-weight:800; }
         .module-step.active { border-color:var(--accent-gold); color:var(--text-main); }
-        .module-step.complete { border-color:#72a982; color:#23723a; }
+        .module-step.complete { border-color:#72a982; color:var(--nd-status-safe); }
         .step-number { display:grid; width:27px; height:27px; flex:0 0 27px; place-items:center; border-radius:50%; background:var(--bg-main); font-size:.72rem; }
         .module-panel,.exam-results { display:grid; gap:1rem; padding:clamp(1rem, 3vw, 1.5rem); border:1px solid var(--border); border-radius:8px; background:var(--card-bg); }
         .module-heading { display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding-bottom:.75rem; border-bottom:1px solid var(--border); }
@@ -509,8 +509,8 @@ export default function EnglishExam({ exam, type, level }) {
         .score-card { display:grid; gap:.25rem; padding:.8rem; border:1px solid var(--border); border-radius:6px; background:var(--bg-main); }
         .score-card span,.score-card small { color:var(--muted); font-size:.75rem; }
         .score-card strong { font-size:1.35rem; }
-        .score-card.passed strong { color:#23723a; }
-        .score-card.failed strong { color:#a51d1d; }
+        .score-card.passed strong { color:var(--nd-status-safe); }
+        .score-card.failed strong { color:var(--accent-red); }
         .result-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:.65rem; }
         .empty-module { margin:0; color:var(--muted); }
         .unavailable { padding:2rem; }

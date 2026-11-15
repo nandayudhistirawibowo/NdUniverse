@@ -145,12 +145,12 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
 
       <style>{`
         .career-quiz {
-          --quiz-ink: var(--text-main, #2b2d42);
-          --quiz-muted: var(--muted, #6b7280);
+          --quiz-ink: var(--text-main);
+          --quiz-muted: var(--muted);
           --quiz-border: var(--border, rgba(43,45,66,.13));
           --quiz-card: var(--card-bg, #fff);
-          --quiz-success: #218838;
-          --quiz-error: #b42318;
+          --quiz-success: var(--nd-status-safe);
+          --quiz-error: var(--accent-red);
           display:grid;
           gap:1rem;
           padding:1.25rem;

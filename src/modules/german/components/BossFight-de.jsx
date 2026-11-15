@@ -482,7 +482,7 @@ export default function BossFight({
         .cinematic-chat-panel .chat-message { border-radius:1rem; animation:cinematicTextIn .35s ease both; }
         .cinematic-chat-panel .chat-message.hrd { border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
         .cinematic-chat-panel .chat-message.user { border:1px solid var(--accent-gold); background:var(--accent-gold); color:var(--bg-dark); }
-        .cinematic-chat-panel .chat-message.system { color:#b42318; }
+        .cinematic-chat-panel .chat-message.system { color:var(--accent-red); }
         .door-sequence { position:absolute; z-index:1; inset:0; width:100%; height:100%; perspective:1400px; overflow:hidden; }
         .door-zoom-room { position:absolute; inset:0; width:100%; height:100%; transform-style:preserve-3d; transform-origin:center 55%; transition:transform 5s ease-in-out; will-change:transform; }
         .door-wall { position:absolute; inset:0; border:0; border-radius:0; background:radial-gradient(ellipse at 50% 22%,rgba(255,230,167,.2),transparent 38%),linear-gradient(90deg,rgba(0,0,0,.38),transparent 24% 76%,rgba(0,0,0,.38)),linear-gradient(180deg,#263a49 0%,#172633 58%,#080d12 100%); box-shadow:none; transform:translateZ(-20px); }
@@ -562,7 +562,7 @@ export default function BossFight({
         .chat-message { max-width:82%; padding:.65rem .75rem; border-radius:.75rem; line-height:1.45; overflow-wrap:anywhere; word-break:break-word; }
         .chat-message.hrd { justify-self:start; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
         .chat-message.user { justify-self:end; background:var(--accent-gold); color:var(--bg-dark); }
-        .chat-message.system { justify-self:center; color:#b42318; }
+        .chat-message.system { justify-self:center; color:var(--accent-red); }
         .boss-interview { display:grid; gap:.75rem; }
         .boss-interview label { font-weight:800; color:var(--text-main); }
         .boss-interview textarea { width:100%; box-sizing:border-box; border:1px solid var(--border); border-radius:.65rem; padding:.75rem; background:var(--bg-main); color:var(--text-main); font:inherit; resize:vertical; }
