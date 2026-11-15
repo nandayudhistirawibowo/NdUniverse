@@ -139,7 +139,7 @@ const hasCompleteMockExam = tasks.length === 22
   .task-meta { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; }
   .task-meta span { padding:.32rem .55rem; border-radius:999px; background:var(--accent-red); color:#fff; font-weight:800; }
   .task-meta strong { color:var(--text-main); }
-  .exam-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); border-radius:.4rem; background:var(--card-bg)af0; color:var(--text-main); line-height:1.65; overflow-wrap:anywhere; }
+  .exam-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); border-radius:.4rem; background:var(--card-bg); color:var(--text-main); line-height:1.65; overflow-wrap:anywhere; }
   .prompt { margin:0; font-weight:700; line-height:1.55; overflow-wrap:anywhere; }
   .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.7rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
   .options { display:flex; flex-direction:column; gap:12px; }
@@ -150,8 +150,8 @@ const hasCompleteMockExam = tasks.length === 22
   .text-answer textarea { width:100%; box-sizing:border-box; resize:vertical; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; font:inherit; }
   .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
   .exam-result { padding:1.25rem; border-radius:1rem; text-align:center; border:1px solid var(--border); }
-  .exam-result.passed { background:#edf8ef; border-color:#9bd0a5; }
-  .exam-result.failed { background:var(--card-bg)2f2; border-color:#e6a3a3; }
+  .exam-result.passed { background:#edf8ef; border-color:#9bd0a5; color:#17202a; }
+  .exam-result.failed { background:#fff2f2; border-color:#e6a3a3; color:#17202a; }
   .exam-result h2 { margin:.2rem 0; font-size:2rem; }
   .exam-result a { display:inline-flex; margin-top:.5rem; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
   @media (max-width:768px) {
