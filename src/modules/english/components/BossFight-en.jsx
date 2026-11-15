@@ -71,6 +71,7 @@ export default function BossFight({
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
+  const messagesEndRef = useRef(null);
   const currentQuestion = interviewQuestions[questionIndex];
   const activeIntroEvent = introTimeline[introEventIndex] ?? introTimeline[0];
 
@@ -89,6 +90,14 @@ export default function BossFight({
       void playAudioTTS(currentQuestion.question, 'us');
     }
   }, [gameState, questionIndex, currentQuestion?.question]);
+
+  useEffect(() => {
+    const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    messagesEndRef.current?.scrollIntoView?.({
+      behavior: reducedMotion ? 'auto' : 'smooth',
+      block: 'end',
+    });
+  }, [messages]);
 
   const startInterview = useCallback(() => {
     playSound('click');
@@ -300,25 +309,46 @@ export default function BossFight({
                       speakerLabel={message.speaker === 'hrd' ? 'Manajer HRD' : message.speaker === 'user' ? 'Kamu' : 'Info'}
                     />
                   ))}
+                  <div ref={messagesEndRef} class="chat-scroll-anchor" aria-hidden="true" />
                 </div>
                 <div class="boss-interview">
-                  <label for="boss-answer">Jawaban Anda</label>
-                  <textarea
-                    id="boss-answer"
-                    rows="4"
-                    value={answer}
-                    onInput={(event) => {
-                      if (!answer) playSound('click');
-                      setAnswer(event.currentTarget.value);
-                    }}
-                    placeholder="Jawab dalam bahasa Inggris..."
-                  />
-                  <div class="boss-actions">
-                    <button class="boss-mic-button" type="button" onClick={startListening} disabled={listening}>
-                      <span>{listening ? '🎤 Mendengarkan...' : '🎤 Gunakan Mikrofon'}</span>
+                  <label class="sr-only" for="boss-answer">Jawaban Anda</label>
+                  <div class="boss-composer">
+                    <button
+                      class="boss-mic-button"
+                      type="button"
+                      onClick={startListening}
+                      disabled={listening}
+                      aria-label={listening ? 'Sedang mendengarkan' : 'Gunakan mikrofon'}
+                      title={listening ? 'Sedang mendengarkan' : 'Gunakan mikrofon'}
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <rect x="9" y="2.5" width="6" height="12" rx="3" />
+                        <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5M8.5 21.5h7" />
+                      </svg>
                     </button>
-                    <button class="boss-finish-button" type="button" onClick={submitAnswer} disabled={!answer.trim()}>
-                      <span>Kirim Jawaban</span>
+                    <textarea
+                      id="boss-answer"
+                      rows="2"
+                      value={answer}
+                      onInput={(event) => {
+                        if (!answer) playSound('click');
+                        setAnswer(event.currentTarget.value);
+                      }}
+                      placeholder="Jawab dalam bahasa Inggris..."
+                    />
+                    <button
+                      class="boss-finish-button"
+                      type="button"
+                      onClick={submitAnswer}
+                      disabled={!answer.trim()}
+                      aria-label="Kirim jawaban"
+                      title="Kirim jawaban"
+                    >
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="m21 3-7.2 18-3.8-7-7-3.8L21 3Z" />
+                        <path d="M21 3 10 14" />
+                      </svg>
                     </button>
                   </div>
                 </div>
@@ -585,6 +615,105 @@ export default function BossFight({
         @media(max-width:768px) {
           .cinematic-timeline { max-width: 100%; border-radius: .75rem; }
           .door-sequence.door-entering .door-zoom-room { transform: scale(2) translateY(-1rem); }
+        }
+        .cinematic-interview,
+        .cinematic-chat-panel,
+        .cinematic-chat-panel .boss-chat,
+        .cinematic-chat-panel .boss-interview { min-width: 0; max-width: 100%; box-sizing: border-box; }
+        .cinematic-chat-panel .boss-chat { width: 100%; overflow-x: hidden; }
+        .cinematic-chat-panel .boss-interview {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr);
+          gap: .45rem;
+          width: 100%;
+        }
+        .cinematic-chat-panel .boss-interview label { grid-column: 1; }
+        .chat-message {
+          padding: 12px 16px;
+          border-radius: 16px;
+          font-size: .9rem;
+        }
+        .chat-message.hrd { border-radius: 16px 16px 16px 4px; }
+        .chat-message.user { border-radius: 16px 16px 4px 16px; }
+        .chat-message.user .chat-speaker { color: var(--bg-dark); opacity: .72; }
+        .chat-scroll-anchor { flex: 0 0 1px; min-height: 1px; }
+        .sr-only {
+          position: absolute;
+          overflow: hidden;
+          width: 1px;
+          height: 1px;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          clip-path: inset(50%);
+        }
+        .boss-composer {
+          display: flex;
+          width: 100%;
+          max-width: 100%;
+          min-width: 0;
+          align-items: flex-end;
+          gap: .25rem;
+          box-sizing: border-box;
+          padding: .35rem;
+          border: 1px solid var(--border);
+          border-radius: 24px;
+          background: var(--card-bg);
+          transition: border-color .16s ease, box-shadow .16s ease;
+        }
+        .boss-composer:focus-within {
+          border-color: var(--accent-gold);
+          box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-gold) 18%, transparent);
+        }
+        .boss-composer textarea {
+          flex: 1 1 auto;
+          width: 100%;
+          min-width: 0;
+          min-height: 2.5rem;
+          max-height: 3.4rem;
+          resize: none;
+          overflow-y: auto;
+          padding: .55rem .65rem;
+          border: 0 !important;
+          border-radius: 0;
+          outline: 0;
+          background: transparent !important;
+          color: var(--text-main) !important;
+          font: inherit;
+          font-size: .9rem;
+          line-height: 1.35;
+        }
+        .boss-composer textarea::placeholder { color: var(--muted) !important; }
+        .boss-composer .boss-mic-button,
+        .boss-composer .boss-finish-button {
+          display: grid;
+          flex: 0 0 auto;
+          place-items: center;
+          padding: 0;
+          border-radius: 50%;
+        }
+        .boss-composer .boss-mic-button {
+          width: 36px;
+          height: 36px;
+          min-height: 36px;
+          border: 0;
+          background: transparent;
+          color: var(--muted);
+        }
+        .boss-composer .boss-mic-button:disabled { opacity: .55; }
+        .boss-composer .boss-finish-button {
+          width: 40px;
+          height: 40px;
+          min-height: 40px;
+          border: 0;
+          background: var(--accent-gold);
+          color: var(--bg-dark);
+        }
+        .boss-composer .boss-finish-button:disabled { opacity: .45; }
+        .boss-composer .boss-mic-button svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.8; }
+        .boss-composer .boss-finish-button svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2; }
+        @media(max-width:700px) {
+          .cinematic-chat-panel { right: .75rem; left: .75rem; width: auto; max-width: calc(100vw - 1.5rem); }
+          .boss-composer { width: 100%; max-width: 100%; }
         }
         @media (prefers-reduced-motion: reduce) {
           *,
