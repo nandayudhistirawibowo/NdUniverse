@@ -58,6 +58,8 @@ export const prerender = false;
   .career-catalog {
     display: grid;
     gap: 1.5rem;
+    background: var(--bg-dark);
+    color: var(--text-main);
   }
 
   .page-heading h1 {
@@ -80,7 +82,7 @@ export const prerender = false;
 
   .eyebrow {
     margin: 0;
-    color: #966313;
+    color: var(--accent-gold);
     font-size: 0.74rem;
     font-weight: 800;
     letter-spacing: 0.12em;
@@ -111,7 +113,7 @@ export const prerender = false;
     height: 48px;
     place-items: center;
     border-radius: 12px;
-    background: rgba(229, 169, 59, 0.14);
+    background: color-mix(in srgb, var(--accent-gold) 14%, transparent);
     font-size: 1.5rem;
   }
 
@@ -136,8 +138,8 @@ export const prerender = false;
     padding: 0.65rem 1rem;
     border: 0;
     border-radius: 999px;
-    background: var(--accent-red);
-    color: #fff;
+    background: var(--accent-gold);
+    color: var(--bg-dark);
     font-size: 0.84rem;
     font-weight: 700;
     text-decoration: none;

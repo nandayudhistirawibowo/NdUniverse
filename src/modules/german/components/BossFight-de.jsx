@@ -480,8 +480,8 @@ export default function BossFight({
         .cinematic-chat-panel .boss-interview textarea { border-color:var(--cinematic-line); background:#f8fafb; color:var(--cinematic-ink); }
         .chat-speaker { display:block; margin-bottom:.2rem; color:#966313; font-size:.68rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
         .cinematic-chat-panel .chat-message { border-radius:1rem; animation:cinematicTextIn .35s ease both; }
-        .cinematic-chat-panel .chat-message.hrd { border-color:var(--cinematic-line); background:#fff; color:var(--cinematic-ink); }
-        .cinematic-chat-panel .chat-message.user { background:var(--accent-red); color:#fff; }
+        .cinematic-chat-panel .chat-message.hrd { border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
+        .cinematic-chat-panel .chat-message.user { border:1px solid var(--accent-gold); background:var(--accent-gold); color:var(--bg-dark); }
         .cinematic-chat-panel .chat-message.system { color:#b42318; }
         .door-sequence { position:absolute; z-index:1; inset:0; width:100%; height:100%; perspective:1400px; overflow:hidden; }
         .door-zoom-room { position:absolute; inset:0; width:100%; height:100%; transform-style:preserve-3d; transform-origin:center 55%; transition:transform 5s ease-in-out; will-change:transform; }
@@ -561,7 +561,7 @@ export default function BossFight({
         .boss-chat { display:grid; gap:.55rem; max-height:320px; overflow-y:auto; padding:.75rem; border:1px solid var(--border); border-radius:.65rem; background:var(--bg-main); }
         .chat-message { max-width:82%; padding:.65rem .75rem; border-radius:.75rem; line-height:1.45; overflow-wrap:anywhere; word-break:break-word; }
         .chat-message.hrd { justify-self:start; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
-        .chat-message.user { justify-self:end; background:var(--accent-red); color:#fff; }
+        .chat-message.user { justify-self:end; background:var(--accent-gold); color:var(--bg-dark); }
         .chat-message.system { justify-self:center; color:#b42318; }
         .boss-interview { display:grid; gap:.75rem; }
         .boss-interview label { font-weight:800; color:var(--text-main); }

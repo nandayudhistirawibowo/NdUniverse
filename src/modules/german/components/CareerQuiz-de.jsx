@@ -1,5 +1,6 @@
 import { useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { playAudioTTS } from '@german/config/german-speech.js';
 
 /** @param {{ words?: Array<{ german: string; indonesian: string; options: string[] }>; profession?: string }} props */
 export default function CareerQuiz({ words, profession = 'Profesi' }) {
@@ -48,7 +49,17 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
           <div class="career-word-list">
             {vocab.map((word) => (
               <article key={word.german}>
-                <strong lang="de">{word.german}</strong>
+                <div class="career-word">
+                  <strong lang="de">{word.german}</strong>
+                  <button
+                    class="career-word-audio"
+                    type="button"
+                    aria-label={`Putar pelafalan ${word.german}`}
+                    onClick={(event) => playAudioTTS(word.german, event.currentTarget)}
+                  >
+                    <span aria-hidden="true">🔊</span>
+                  </button>
+                </div>
                 <span>{word.indonesian}</span>
               </article>
             ))}
@@ -91,9 +102,12 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
         .career-section-label { margin:0; color:#966313; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
         .career-word-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
         .career-word-list article { display:grid; min-width:0; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:10px; }
+        .career-word { display:flex; min-width:0; align-items:flex-start; justify-content:space-between; gap:.5rem; }
         .career-word-list strong,.career-word-list span { overflow-wrap:anywhere; word-break:break-word; }
         .career-word-list strong { color:var(--text-main); }
         .career-word-list span { color:var(--muted); font-size:.85rem; }
+        .career-word-audio { display:grid; flex:0 0 36px; width:36px; height:36px; place-items:center; padding:0; border:1px solid var(--border); border-radius:50%; background:var(--bg-main); color:var(--text-main); cursor:pointer; }
+        .career-word-audio:focus-visible { outline:2px solid var(--accent-gold); outline-offset:2px; }
         .career-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; margin:.8rem 0; }
         .career-options button,.career-primary-button,.career-secondary-button { min-height:44px; border-radius:.65rem; padding:.65rem .85rem; font-weight:800; cursor:pointer; }
         .career-options button { border:1px solid var(--border); background:var(--bg-main); color:var(--text-main); }

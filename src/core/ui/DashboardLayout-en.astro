@@ -11,6 +11,7 @@ const {
   user = null,
   profile = null,
   userLevel = null,
+  hideBot = false,
 } = Astro.props;
 import { ClientRouter } from 'astro:transitions';
 
@@ -182,7 +183,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </footer>
       </div>
     </div>
-    {active !== 'exam' && (
+    {active !== 'exam' && !hideBot && (
       <NdBot client:load mode="study" userName={botUserName} userLevel={botUserLevel} />
     )}
   </body>

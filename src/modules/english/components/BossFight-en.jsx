@@ -446,8 +446,8 @@ export default function BossFight({
         .cinematic-chat-panel .boss-chat { height:clamp(110px,22vh,220px); overflow-y:auto; padding:.2rem .25rem; border:0; background:transparent; }
         .chat-message { max-width:82%; margin:.35rem 0; padding:.65rem .75rem; border-radius:1rem; line-height:1.45; overflow-wrap:anywhere; word-break:break-word; animation:cinematicTextIn .35s ease both; }
         .chat-speaker { display:block; margin-bottom:.2rem; color:#966313; font-size:.68rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
-        .cinematic-chat-panel .chat-message.hrd { justify-self:start; border:1px solid #d8dee5; background:#fff; color:#17202a; }
-        .cinematic-chat-panel .chat-message.user { justify-self:end; background:var(--accent-red); color:#fff; }
+        .cinematic-chat-panel .chat-message.hrd { justify-self:start; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
+        .cinematic-chat-panel .chat-message.user { justify-self:end; border:1px solid var(--accent-gold); background:var(--accent-gold); color:var(--bg-dark); }
         .cinematic-chat-panel .chat-message.system { justify-self:center; color:#ffb4a9; }
         .cinematic-chat-panel .boss-interview { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:end; gap:.65rem; padding:0; border:0; background:transparent; box-shadow:none; }
         .cinematic-chat-panel .boss-interview label { grid-column:1 / -1; color:#f1dfb2; font-size:.75rem; letter-spacing:.08em; text-transform:uppercase; }
