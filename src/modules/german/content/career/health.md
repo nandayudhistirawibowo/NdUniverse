@@ -14,10 +14,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "Kepala layanan keperawatan menyapa kandidat."
-    dialog: "Guten Tag! Ich bin Herr Müller, Pflegedienstleiter. Wie sorgen Sie für eine respektvolle und sichere Betreuung unserer Patienten?"
+    dialog: "Guten Tag! Ich bin Herr Müller, Pflegedienstleiter. Nehmen Sie bitte Platz. Erzählen Sie mir zum Einstieg etwas über sich."
 boss_questions:
-  - question: "Erzählen Sie mir von sich."
-    keywords: ["Name", "Erfahrung", "Ausbildung"]
+  - question: "Welche Erfahrung bereitet Sie am besten auf die Pflege unserer Patienten vor?"
+    keywords: ["Patientenpflege", "Pflege", "Erfahrung"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Geduld", "Teamarbeit", "Empathie"]
   - question: "Was sind Ihre Schwächen?"

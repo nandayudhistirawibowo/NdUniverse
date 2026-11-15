@@ -8,7 +8,7 @@ const DEFAULT_BOSS_INTRO = [
   { detik: 0, aksi: 'Pintu tertutup; kamera gelap.', dialog: '' },
   { detik: 2, aksi: 'Pintu terbuka perlahan dan cahaya masuk.', dialog: '' },
   { detik: 5, aksi: 'The hiring manager enters the room.', dialog: '' },
-  { detik: 8, aksi: 'The hiring manager greets the candidate.', dialog: 'Welcome. Please have a seat. Tell me what interests you about this role.' },
+  { detik: 8, aksi: 'The hiring manager greets the candidate.', dialog: 'Welcome. Please have a seat. To start, tell me a little about yourself.' },
 ];
 
 function ChatBubble({ text, isUser, isSystem, speakerLabel }) {
@@ -28,7 +28,7 @@ function ChatBubble({ text, isUser, isSystem, speakerLabel }) {
       visibleLength += 1;
       setVisibleText(characters.slice(0, visibleLength).join(''));
       if (visibleLength >= characters.length) window.clearInterval(timer);
-    }, 22);
+    }, 60);
 
     return () => window.clearInterval(timer);
   }, [text]);
@@ -50,8 +50,8 @@ export default function BossFight({
   returnHref = '/en/career',
 }) {
   const fallbackQuestion = {
-    question: 'Tell me about yourself.',
-    keywords: ['experience', 'skills', 'goals'],
+    question: 'Which experience is most relevant to this role?',
+    keywords: ['experience', 'project', 'role'],
   };
   const interviewQuestions = useMemo(
     () => questions.length > 0 ? questions : [fallbackQuestion],
@@ -63,7 +63,6 @@ export default function BossFight({
   );
   const [gameState, setGameState] = useState('intro');
   const [doorState, setDoorState] = useState('closed');
-  const [elapsedSeconds, setElapsedSeconds] = useState(0);
   const [introEventIndex, setIntroEventIndex] = useState(0);
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState('');
@@ -102,15 +101,11 @@ export default function BossFight({
   const startInterview = useCallback(() => {
     playSound('click');
     setGameState('interview');
-    const greeting = introTimeline.slice().reverse().find((event) => event.dialog?.trim())?.dialog;
-    setMessages([
-      ...(greeting ? [{ speaker: 'hrd', text: greeting }] : []),
-      { speaker: 'hrd', text: interviewQuestions[0].question },
-    ]);
+    setMessages([{ speaker: 'hrd', text: interviewQuestions[0].question }]);
     setQuestionIndex(0);
     setAnswer('');
     setCorrectAnswers(0);
-  }, [interviewQuestions, introTimeline]);
+  }, [interviewQuestions]);
 
   useEffect(() => {
     if (gameState !== 'intro') return undefined;
@@ -119,7 +114,6 @@ export default function BossFight({
     const finalSecond = introTimeline[introTimeline.length - 1]?.detik ?? 8;
     const interval = window.setInterval(() => {
       elapsed += 1;
-      setElapsedSeconds(elapsed);
 
       let nextIndex = 0;
       for (let index = 1; index < introTimeline.length; index += 1) {
@@ -240,12 +234,6 @@ export default function BossFight({
         <div class={`cinematic-room room-${doorState}`}>
           <div class="cinematic-header">
             <span class="career-section-label">Tantangan Akhir: {profession}</span>
-            {gameState === 'intro' && (
-              <div class="cinematic-timeline" aria-live="polite">
-                <span class="cinematic-clock">00:{String(elapsedSeconds).padStart(2, '0')}</span>
-                <span>{activeIntroEvent?.aksi}</span>
-              </div>
-            )}
             {gameState === 'interview' && (
               <span class="boss-progress">
                 Pertanyaan {Math.min(questionIndex + 1, interviewQuestions.length)} dari {interviewQuestions.length}
@@ -264,16 +252,8 @@ export default function BossFight({
                   </div>
                 </div>
               </div>
-              <div class="door-action">
-                <p>{activeIntroEvent?.aksi}</p>
-              </div>
             </div>
           )}
-
-          <div class="inside-door-backdrop" aria-hidden="true">
-            <span class="room-label">RUANG HRD</span>
-            <div class="inside-door-panel" />
-          </div>
 
           {doorState === 'inside' && gameState === 'intro' && (
             <div class="cinematic-intro">
@@ -423,8 +403,7 @@ export default function BossFight({
         .boss-tie { z-index:4; bottom:12%; left:45%; width:11%; height:48%; clip-path:polygon(50% 0,100% 18%,70% 100%,30% 100%,0 18%); background:linear-gradient(90deg,#6e1d24,#d65a43 48%,#601722); }
         .cinematic-boss-panel .cinematic-boss::before { content:""; position:absolute; z-index:-1; top:-18%; left:50%; width:clamp(180px,23vw,300px); height:clamp(230px,40vh,390px); transform:translateX(-50%); background:radial-gradient(ellipse,rgba(250,220,150,.36),rgba(250,220,150,.07) 45%,transparent 72%); filter:blur(10px); }
         .door-sequence { position:relative; z-index:4; display:grid; min-height:0; align-content:center; justify-items:center; gap:1.25rem; perspective:1400px; overflow:hidden; }
-        .door-zoom-room { position:relative; width:min(78vw,680px); height:min(62vh,500px); transform-style:preserve-3d; transition:transform .9s cubic-bezier(.2,.8,.2,1); }
-        .door-sequence.door-entering .door-zoom-room { transform:scale(3); }
+        .door-zoom-room { position:relative; width:min(78vw,680px); height:min(62vh,500px); transform-style:preserve-3d; transform-origin:center 55%; transition:transform 1.35s cubic-bezier(.16,1,.3,1); will-change:transform; }
         .door-wall { position:absolute; inset:0; border:1px solid rgba(220,179,93,.3); border-radius:1rem; background:radial-gradient(circle at 50% 30%,rgba(255,230,167,.18),transparent 34%),linear-gradient(135deg,#263a49,#101b25 72%); box-shadow:inset 0 0 80px rgba(0,0,0,.7),0 30px 60px rgba(0,0,0,.5); transform:translateZ(-20px); }
         .door-frame { position:absolute; top:7%; bottom:0; left:50%; width:min(48vw,360px); transform:translateX(-50%) translateZ(30px); border:14px solid #6b432a; border-bottom:0; border-radius:.6rem .6rem 0 0; background:#1b2731; box-shadow:0 0 0 4px rgba(224,175,79,.24),inset 0 0 30px rgba(0,0,0,.8); }
         .room-label { position:absolute; z-index:4; top:-2.45rem; left:50%; transform:translateX(-50%); color:#f1dfb2; font-size:clamp(.75rem,1.8vw,1rem); font-weight:900; letter-spacing:.16em; text-align:center; text-shadow:0 2px 8px rgba(0,0,0,.8); white-space:nowrap; }
@@ -432,11 +411,6 @@ export default function BossFight({
         .cinematic-door::before { content:""; position:absolute; inset:10%; border:2px solid rgba(244,202,116,.42); border-radius:.25rem; box-shadow:inset 0 0 20px rgba(0,0,0,.25); }
         .cinematic-door i { position:absolute; z-index:2; right:12%; width:14px; height:14px; border:2px solid #f1c76e; border-radius:50%; background:#4d2c20; box-shadow:0 0 12px rgba(244,190,84,.5); }
         .door-sequence.door-opening .cinematic-door,.door-sequence.door-entering .cinematic-door { transform:rotateY(-90deg); }
-        .door-action { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:.9rem; min-height:54px; padding:0 1rem 1rem; color:#fff; text-align:center; }
-        .door-action p { margin:0; color:#d5dde5; font-weight:700; }
-        .inside-door-backdrop { position:absolute; z-index:0; inset:12% 0 auto; display:flex; flex-direction:column; align-items:center; gap:.45rem; opacity:0; pointer-events:none; transition:opacity .5s ease; }
-        .room-inside .inside-door-backdrop { opacity:.62; }
-        .inside-door-panel { width:min(22vw,260px); height:min(38vh,300px); display:grid; place-items:center; border:8px solid #6b432a; border-radius:.5rem .5rem 0 0; background:linear-gradient(105deg,#9a5d32,#633a29 52%,#321f1e); box-shadow:inset 0 0 30px rgba(0,0,0,.5),0 25px 35px rgba(0,0,0,.5); }
         .cinematic-room::before { content:""; position:absolute; z-index:0; top:-18%; left:50%; width:min(60vw,760px); height:78vh; background:linear-gradient(180deg,rgba(255,244,204,.42),rgba(226,174,77,.06) 70%,transparent); clip-path:polygon(42% 0,58% 0,100% 100%,0 100%); filter:blur(16px); opacity:.8; }
         .cinematic-room::after { content:""; position:absolute; z-index:0; right:-10%; bottom:-23%; left:-10%; height:58%; background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 9%),linear-gradient(170deg,transparent 0 18%,rgba(0,0,0,.7) 18%); transform:perspective(500px) rotateX(58deg); transform-origin:bottom; opacity:.5; }
         .cinematic-room > .cinematic-header,.cinematic-room > .cinematic-intro,.cinematic-room > .cinematic-interview,.cinematic-room > .boss-finished { position:relative; z-index:1; }
@@ -454,10 +428,6 @@ export default function BossFight({
         @media(max-width:768px) {
           .door-zoom-room { width:min(88vw,560px); height:min(58vh,430px); }
           .door-frame { width:min(62vw,300px); border-width:10px; }
-          .door-sequence.door-entering .door-zoom-room { transform:scale(2.35); }
-          .inside-door-backdrop { inset:16% 0 auto; }
-          .inside-door-panel { width:min(32vw,180px); height:min(30vh,220px); }
-          .door-action { padding-bottom:1.5rem; }
           .cinematic-room { height:100vh; height:100dvh; }
           .cinematic-overlay { overflow-y:auto; }
           .cinematic-interview { height:auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
@@ -514,25 +484,9 @@ export default function BossFight({
         .cinematic-room.room-closed::before { opacity: .08; }
         .cinematic-room.room-opening::before { opacity: .95; }
         .cinematic-room.room-opening .door-wall { animation: cinematicCameraReveal .8s ease both; }
-        .door-sequence.door-entering .door-zoom-room { transform: scale(2.4) translateY(-1.5rem); }
         .cinematic-header .career-section-label,
         .career-section-label { color: var(--accent-gold); }
         .cinematic-header .boss-progress { color: var(--muted); }
-        .cinematic-timeline {
-          display: flex;
-          min-width: 0;
-          max-width: min(100%, 38rem);
-          align-items: center;
-          gap: .75rem;
-          padding: .55rem .85rem;
-          border: 1px solid var(--border);
-          border-radius: 999px;
-          background: color-mix(in srgb, var(--card-bg) 88%, transparent);
-          color: var(--muted);
-          font-size: .82rem;
-        }
-        .cinematic-clock { flex: 0 0 auto; color: var(--accent-gold); font-variant-numeric: tabular-nums; font-weight: 800; }
-        .cinematic-timeline span:last-child { min-width: 0; overflow-wrap: anywhere; }
         .cinematic-intro { color: var(--text-main); animation: cinematicBossEntrance .8s ease both; }
         .cinematic-intro .boss-speech-bubble {
           border-color: var(--accent-gold);
@@ -613,8 +567,6 @@ export default function BossFight({
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @media(max-width:768px) {
-          .cinematic-timeline { max-width: 100%; border-radius: .75rem; }
-          .door-sequence.door-entering .door-zoom-room { transform: scale(2) translateY(-1rem); }
         }
         .cinematic-interview,
         .cinematic-chat-panel,
@@ -714,6 +666,10 @@ export default function BossFight({
         @media(max-width:700px) {
           .cinematic-chat-panel { right: .75rem; left: .75rem; width: auto; max-width: calc(100vw - 1.5rem); }
           .boss-composer { width: 100%; max-width: 100%; }
+        }
+        .door-sequence.door-entering .door-zoom-room { transform: scale(1.12) translateY(-.3rem); }
+        @media(max-width:768px) {
+          .door-sequence.door-entering .door-zoom-room { transform: scale(1.08); }
         }
         @media (prefers-reduced-motion: reduce) {
           *,

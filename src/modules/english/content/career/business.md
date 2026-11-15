@@ -13,10 +13,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "The E-Commerce manager greets the candidate."
-    dialog: "Welcome. I'm Mr. Müller from our e-commerce team. How would you grow a campaign while keeping customer needs in focus?"
+    dialog: "Welcome. I'm Mr. Müller from our e-commerce team. Please have a seat. To start, tell me a little about yourself."
 boss_questions:
-  - question: "Tell me about yourself."
-    keywords: ["name", "Experience", "Study"]
+  - question: "Which experience is most relevant to this e-commerce role?"
+    keywords: ["e-commerce", "campaign", "sales"]
   - question: "What are your strengths?"
     keywords: ["Communication", "Teamwork", "Sales"]
   - question: "What are your weaknesses?"

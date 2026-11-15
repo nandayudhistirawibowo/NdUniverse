@@ -14,10 +14,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "Konsultan gizi dan kebidanan menyapa kandidat."
-    dialog: "Guten Tag! Ich bin Herr Müller aus der Ernährungs- und Hebammenberatung. Wie unterstützen Sie Familien mit Einfühlungsvermögen und Fachwissen?"
+    dialog: "Guten Tag! Ich bin Herr Müller aus der Ernährungs- und Hebammenberatung. Nehmen Sie bitte Platz. Erzählen Sie mir zum Einstieg etwas über sich."
 boss_questions:
-  - question: "Erzählen Sie mir von sich."
-    keywords: ["Name", "Erfahrung", "Ausbildung"]
+  - question: "Welche Erfahrung bereitet Sie am besten auf die Ernährungs- oder Hebammenberatung vor?"
+    keywords: ["Ernährung", "Familie", "Beratung"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Empathie", "Geduld", "Teamarbeit"]
   - question: "Was sind Ihre Schwächen?"

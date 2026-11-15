@@ -14,10 +14,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "Manajer IT menyapa kandidat."
-    dialog: "Guten Tag! Ich bin Herr Müller, der Personalverantwortliche unseres IT-Teams. Wie lösen Sie ein technisches Problem Schritt für Schritt?"
+    dialog: "Guten Tag! Ich bin Herr Müller, der Personalverantwortliche unseres IT-Teams. Nehmen Sie bitte Platz. Erzählen Sie mir zum Einstieg etwas über sich."
 boss_questions:
-  - question: "Erzählen Sie mir von sich."
-    keywords: ["Name", "Erfahrung", "Studium"]
+  - question: "Welche Erfahrung bereitet Sie am besten auf diese Stelle in der Softwareentwicklung vor?"
+    keywords: ["Softwareprojekt", "Programmierung", "Erfahrung"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Teamarbeit", "Kommunikation", "Lernfähigkeit"]
   - question: "Was sind Ihre Schwächen?"

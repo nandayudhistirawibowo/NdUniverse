@@ -14,10 +14,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "Manajer E-Commerce menyapa kandidat."
-    dialog: "Guten Tag! Ich bin Herr Müller aus unserem E-Commerce-Team. Wie würden Sie eine Kampagne für unsere Zielgruppe planen?"
+    dialog: "Guten Tag! Ich bin Herr Müller aus unserem E-Commerce-Team. Nehmen Sie bitte Platz. Erzählen Sie mir zum Einstieg etwas über sich."
 boss_questions:
-  - question: "Erzählen Sie mir von sich."
-    keywords: ["Name", "Erfahrung", "Studium"]
+  - question: "Welche Erfahrung ist für diese E-Commerce-Stelle am relevantesten?"
+    keywords: ["E-Commerce", "Kampagne", "Vertrieb"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Kommunikation", "Teamarbeit", "Vertrieb"]
   - question: "Was sind Ihre Schwächen?"

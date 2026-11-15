@@ -13,10 +13,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "The nursing manager greets the candidate."
-    dialog: "Welcome. I'm Mr. Müller, the nursing manager. How do you help patients feel safe, respected, and well cared for?"
+    dialog: "Welcome. I'm Mr. Müller, the nursing manager. Please have a seat. To start, tell me a little about yourself."
 boss_questions:
-  - question: "Tell me about yourself."
-    keywords: ["name", "Experience", "Training"]
+  - question: "Which experience best prepares you to care for patients in this role?"
+    keywords: ["patient care", "nursing", "experience"]
   - question: "What are your strengths?"
     keywords: ["Patience", "Teamwork", "Empathy"]
   - question: "What are your weaknesses?"

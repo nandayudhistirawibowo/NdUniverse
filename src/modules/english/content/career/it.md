@@ -13,10 +13,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "The IT manager greets the candidate."
-    dialog: "Welcome. I'm Mr. Müller, the hiring manager for our IT team. How do you approach a challenging software problem?"
+    dialog: "Welcome. I'm Mr. Müller, the hiring manager for our IT team. Please have a seat. To start, tell me a little about yourself."
 boss_questions:
-  - question: "Tell me about yourself."
-    keywords: ["name", "Experience", "Study"]
+  - question: "Which experience best prepares you for this software engineering role?"
+    keywords: ["software project", "programming", "experience"]
   - question: "What are your strengths?"
     keywords: ["Teamwork", "Communication", "Learning ability"]
   - question: "What are your weaknesses?"

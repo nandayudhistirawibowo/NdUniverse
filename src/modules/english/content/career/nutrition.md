@@ -13,10 +13,10 @@ boss_intro:
     dialog: ""
   - detik: 8
     aksi: "The nutrition and midwifery manager greets the candidate."
-    dialog: "Welcome. I'm Mr. Müller from our nutrition and midwifery team. How do you support families with empathy and evidence-based advice?"
+    dialog: "Welcome. I'm Mr. Müller from our nutrition and midwifery team. Please have a seat. To start, tell me a little about yourself."
 boss_questions:
-  - question: "Tell me about yourself."
-    keywords: ["name", "Experience", "Training"]
+  - question: "Which experience best prepares you to support families in nutrition or midwifery?"
+    keywords: ["nutrition", "family", "counseling"]
   - question: "What are your strengths?"
     keywords: ["Empathy", "Patience", "Teamwork"]
   - question: "What are your weaknesses?"
