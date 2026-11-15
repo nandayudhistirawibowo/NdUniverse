@@ -8,12 +8,15 @@ export default defineConfig({
   use: {
     baseURL: 'http://localhost:4321',
     headless: true,
+    launchOptions: { slowMo: 300 },
     screenshot: 'only-on-failure',
+    video: { mode: 'on', size: { width: 1920, height: 1080 } },
+    viewport: { width: 1920, height: 1080 },
   },
   webServer: {
     command: 'npm run dev',
     url: 'http://localhost:4321',
     reuseExistingServer: true,
-    timeout: 120_000,
+    timeout: 180_000,
   },
 });
