@@ -450,7 +450,7 @@ export default function EnglishExam({ exam, type, level }) {
         .exam-heading h1 { margin:.25rem 0; font-size:clamp(1.8rem, 5vw, 2.6rem); }
         .exam-heading p { max-width:680px; margin:.4rem 0 0; color:var(--muted); line-height:1.6; }
         .exam-back-link { display:inline-block; margin-bottom:.75rem; color:var(--text-main); font-weight:700; text-decoration:none; }
-        .exam-eyebrow,.results-eyebrow { margin:0; color:#966313; font-size:.75rem; font-weight:900; text-transform:uppercase; }
+        .exam-eyebrow,.results-eyebrow { margin:0; color:var(--accent-gold); font-size:.75rem; font-weight:900; text-transform:uppercase; }
         .exam-start-card { display:grid; gap:1rem; padding:clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 2rem); border:2px solid var(--accent-gold); border-radius:1rem; background:var(--card-bg); text-align:center; }
         .exam-start-card h2 { margin:.25rem 0; font-size:clamp(1.4rem, 4vw, 1.9rem); }
         .exam-start-card p { margin:0; color:var(--muted); line-height:1.6; }
@@ -472,7 +472,7 @@ export default function EnglishExam({ exam, type, level }) {
         .module-heading h2 { margin-top:.15rem; font-size:1.45rem; }
         .question-list { display:grid; gap:1rem; }
         .exam-question { display:grid; gap:.75rem; padding:1rem; border:1px solid var(--border); border-radius:6px; background:var(--bg-main); }
-        .question-count { margin:0; color:#966313; font-size:.76rem; font-weight:900; text-transform:uppercase; }
+        .question-count { margin:0; color:var(--accent-gold); font-size:.76rem; font-weight:900; text-transform:uppercase; }
         .exam-question blockquote { max-height:200px; overflow-y:auto; overflow-wrap:anywhere; margin:0; padding:1rem; border-left:3px solid var(--accent-gold); background:var(--card-bg); line-height:1.7; overscroll-behavior:contain; }
         .exam-question h3 { margin:0; font-size:1rem; }
         .answer-options { display:flex; flex-direction:column; gap:12px; min-width:0; }

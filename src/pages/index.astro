@@ -103,7 +103,7 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
           <h2 id="language-title" class="section-title">Mulai dari bahasa yang ingin Anda kuasai.</h2>
           <nav class="language-grid" aria-label="Pilih modul bahasa">
             <a class="language-card" href="/login-en">
-              <span class="flag" aria-hidden="true">🇬🇧</span>
+              <img class="flag" src="/flags/gb.svg" alt="" aria-hidden="true" />
               <span class="language-copy">
                 <strong>English</strong>
                 <span>IELTS/TOEFL Prep</span>
@@ -111,7 +111,7 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
               <span class="arrow" aria-hidden="true">↗</span>
             </a>
             <a class="language-card" href="/login-de">
-              <span class="flag" aria-hidden="true">🇩🇪</span>
+              <img class="flag" src="/flags/de.svg" alt="" aria-hidden="true" />
               <span class="language-copy">
                 <strong>German</strong>
                 <span>Goethe-Zertifikat Prep</span>
@@ -188,7 +188,7 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
       transform:translateY(-4px);
     }
   }
-  .flag { font-size:2.2rem; line-height:1; }
+  .flag { display:block; height:2rem; width:auto; }
   .language-copy { display:grid; min-width:0; gap:.3rem; }
   .language-copy strong { font-size:1.2rem; }
   .language-copy span { color:var(--nd-muted); font-size:.8rem; overflow-wrap:anywhere; }

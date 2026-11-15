@@ -99,7 +99,7 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
       )}
       <style>{`
         .career-quiz { display:grid; gap:.9rem; padding:1.25rem; border:1px solid var(--border); border-radius:14px; background:var(--card-bg); }
-        .career-section-label { margin:0; color:#966313; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .career-section-label { margin:0; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
         .career-word-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
         .career-word-list article { display:grid; min-width:0; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:10px; }
         .career-word { display:flex; min-width:0; align-items:flex-start; justify-content:space-between; gap:.5rem; }

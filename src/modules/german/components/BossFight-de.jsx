@@ -457,10 +457,10 @@ export default function BossFight({
 
       <style>{`
         .boss-fight { display:grid; gap:.75rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:radial-gradient(circle at top right,rgba(229,169,59,.16),transparent 45%),var(--card-bg); }
-        .cinematic-overlay { --cinematic-ink:#17202a; --cinematic-muted:#65717d; --cinematic-line:#d8dee5; position:fixed; z-index:9999; inset:0; display:grid; place-items:center; background:#000; overflow:hidden; }
+        .cinematic-overlay { --cinematic-ink:var(--text-main); --cinematic-muted:var(--muted); --cinematic-line:#d8dee5; position:fixed; z-index:9999; inset:0; display:grid; place-items:center; background:#000; overflow:hidden; }
         .cinematic-room { position:relative; isolation:isolate; perspective:1200px; width:100vw; height:100vh; height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; color:var(--cinematic-ink); background:radial-gradient(circle at 50% 20%,rgba(111,83,48,.3),transparent 30%),linear-gradient(180deg,#101820 0%,#172633 54%,#080d12 100%); animation:cinematicRoomIn .5s cubic-bezier(.2,.8,.2,1) both; }
         .cinematic-header { position:relative; z-index:10; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:clamp(1rem,3vw,2rem) clamp(1rem,5vw,5rem) 0; }
-        .cinematic-header .career-section-label { color:#966313; }
+        .cinematic-header .career-section-label { color:var(--accent-gold); }
         .cinematic-header .boss-progress { color:var(--cinematic-muted); }
         .cinematic-intro { position:relative; z-index:10; display:grid; grid-template-columns:minmax(180px,.8fr) minmax(280px,1.2fr); align-items:center; gap:clamp(1rem,5vw,5rem); width:min(1100px,calc(100% - 2rem)); margin:auto; }
         .cinematic-boss { display:grid; place-items:center; min-height:180px; font-size:clamp(7rem,18vw,13rem); line-height:1; filter:drop-shadow(0 18px 14px rgba(23,32,42,.18)); }
@@ -478,7 +478,7 @@ export default function BossFight({
         .cinematic-chat-panel .boss-interview { padding:1rem; border:1px solid var(--cinematic-line); border-radius:1rem; background:#fff; box-shadow:0 12px 30px rgba(23,32,42,.08); }
         .cinematic-chat-panel .boss-interview label { color:var(--cinematic-ink); }
         .cinematic-chat-panel .boss-interview textarea { border-color:var(--cinematic-line); background:#f8fafb; color:var(--cinematic-ink); }
-        .chat-speaker { display:block; margin-bottom:.2rem; color:#966313; font-size:.68rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+        .chat-speaker { display:block; margin-bottom:.2rem; color:var(--accent-gold); font-size:.68rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
         .cinematic-chat-panel .chat-message { border-radius:1rem; animation:cinematicTextIn .35s ease both; }
         .cinematic-chat-panel .chat-message.hrd { border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
         .cinematic-chat-panel .chat-message.user { border:1px solid var(--accent-gold); background:var(--accent-gold); color:var(--bg-dark); }
@@ -533,7 +533,7 @@ export default function BossFight({
         .cinematic-boss-panel .cinematic-boss::before { content:""; position:absolute; z-index:-1; top:-18%; left:50%; width:clamp(180px,23vw,300px); height:clamp(230px,40vh,390px); transform:translateX(-50%); background:radial-gradient(ellipse,rgba(250,220,150,.36),rgba(250,220,150,.07) 45%,transparent 72%); filter:blur(10px); }
         @keyframes cinematicRoomIn { from { opacity:0; transform:scale(.8); } to { opacity:1; transform:scale(1); } }
         @keyframes cinematicTextIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
-        .career-section-label { margin:0; color:#966313; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .career-section-label { margin:0; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
         .boss-start-button,.boss-finish-button,.boss-return-button { width:fit-content; min-height:44px; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; text-decoration:none; }
         .office-intro { display:grid; gap:.8rem; }
         .office-room { position:relative; height:280px; overflow:hidden; border:1px solid var(--border); border-radius:.75rem; background:linear-gradient(to bottom,#dde4ec 0 68%,#8b7355 68% 100%); }

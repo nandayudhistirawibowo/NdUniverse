@@ -160,7 +160,7 @@ export default function CareerQuiz({ words = [], profession = 'Career' }) {
           color:var(--quiz-ink);
         }
         .quiz-intro,.quiz-result,.quiz-question { display:grid; gap:.75rem; }
-        .career-section-label { margin:0; color:var(--accent-gold,#966313); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .career-section-label { margin:0; color:var(--accent-gold,#e5a93b); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
         .career-quiz h2 { margin:0; color:var(--quiz-ink); font-size:clamp(1.2rem,3vw,1.6rem); }
         .quiz-intro > p:not(.career-section-label),.quiz-result > p:not(.career-section-label) { margin:0; color:var(--quiz-muted); line-height:1.6; }
         .quiz-empty { color:var(--quiz-error)!important; }

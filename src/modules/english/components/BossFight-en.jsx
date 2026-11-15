@@ -417,10 +417,10 @@ export default function BossFight({
 
       <style>{`
         .boss-fight { display:grid; gap:.75rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:radial-gradient(circle at top right,rgba(229,169,59,.16),transparent 45%),var(--card-bg); }
-        .cinematic-overlay { --cinematic-ink:#17202a; --cinematic-muted:#65717d; --cinematic-line:#d8dee5; position:fixed; z-index:9999; inset:0; display:grid; place-items:center; background:#000; overflow:hidden; }
+        .cinematic-overlay { --cinematic-ink:var(--text-main); --cinematic-muted:var(--muted); --cinematic-line:#d8dee5; position:fixed; z-index:9999; inset:0; display:grid; place-items:center; background:#000; overflow:hidden; }
         .cinematic-room { position:relative; isolation:isolate; perspective:1200px; width:100vw; height:100vh; height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; color:var(--cinematic-ink); background:radial-gradient(circle at 50% 20%,rgba(111,83,48,.3),transparent 30%),linear-gradient(180deg,#101820 0%,#172633 54%,#080d12 100%); animation:cinematicRoomIn .5s cubic-bezier(.2,.8,.2,1) both; }
         .cinematic-header { position:relative; z-index:10; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:clamp(1rem,3vw,2rem) clamp(1rem,5vw,5rem) 0; }
-        .cinematic-header .career-section-label { color:#966313; text-shadow:0 2px 12px rgba(0,0,0,.8); }
+        .cinematic-header .career-section-label { color:var(--accent-gold); text-shadow:0 2px 12px rgba(0,0,0,.8); }
         .cinematic-header .boss-progress { color:#d5dde5; text-shadow:0 2px 10px rgba(0,0,0,.8); }
         .cinematic-intro { position:relative; z-index:10; display:grid; grid-template-columns:minmax(180px,.8fr) minmax(280px,1.2fr); align-items:center; gap:clamp(1rem,5vw,5rem); width:min(1100px,calc(100% - 2rem)); margin:auto; color:#fff; }
         .cinematic-boss { display:grid; place-items:center; min-height:180px; font-size:clamp(7rem,18vw,13rem); line-height:1; filter:drop-shadow(0 18px 14px rgba(23,32,42,.18)); }
@@ -445,7 +445,7 @@ export default function BossFight({
         .cinematic-chat-panel { position:absolute; z-index:3; right:clamp(1rem,5vw,5rem); bottom:clamp(1rem,3vh,2rem); left:clamp(1rem,5vw,5rem); display:grid; grid-template-rows:minmax(0,1fr) auto; gap:.7rem; min-height:0; padding:clamp(.65rem,1.5vw,1rem); border:1px solid rgba(209,166,83,.8); border-radius:1rem; background:rgba(8,15,21,.78); box-shadow:0 18px 55px rgba(0,0,0,.58),inset 0 1px rgba(255,255,255,.12); backdrop-filter:blur(14px); }
         .cinematic-chat-panel .boss-chat { height:clamp(110px,22vh,220px); overflow-y:auto; padding:.2rem .25rem; border:0; background:transparent; }
         .chat-message { max-width:82%; margin:.35rem 0; padding:.65rem .75rem; border-radius:1rem; line-height:1.45; overflow-wrap:anywhere; word-break:break-word; animation:cinematicTextIn .35s ease both; }
-        .chat-speaker { display:block; margin-bottom:.2rem; color:#966313; font-size:.68rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
+        .chat-speaker { display:block; margin-bottom:.2rem; color:var(--accent-gold); font-size:.68rem; font-weight:900; letter-spacing:.08em; text-transform:uppercase; }
         .cinematic-chat-panel .chat-message.hrd { justify-self:start; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
         .cinematic-chat-panel .chat-message.user { justify-self:end; border:1px solid var(--accent-gold); background:var(--accent-gold); color:var(--bg-dark); }
         .cinematic-chat-panel .chat-message.system { justify-self:center; color:#ffb4a9; }
@@ -485,7 +485,7 @@ export default function BossFight({
         .boss-victory { border:1px solid #9bd0a5; background:linear-gradient(135deg,rgba(25,75,43,.9),rgba(8,15,21,.92)); }
         .finished-icon { font-size:64px; animation:bossVictory 1s ease both; }
         .boss-return-button { margin-top:.5rem; }
-        .career-section-label { margin:0; color:#966313; font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+        .career-section-label { margin:0; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
         @keyframes cinematicRoomIn { from { opacity:0; transform:scale(.8); } to { opacity:1; transform:scale(1); } }
         @keyframes cinematicTextIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:translateY(0); } }
         @keyframes bossVictory { from { opacity:0; transform:translateY(20px) scale(.6); } to { opacity:1; transform:translateY(0) scale(1); } }
