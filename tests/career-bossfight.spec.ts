@@ -12,7 +12,7 @@ test('completes the IT Boss Fight interview through the UI', async ({ page }) =>
   await page.getByRole('button', { name: 'Mulai Wawancara' }).click();
 
   const answers = [
-    'Mein Name ist Testing',
+    'Erfahrung',
     'Teamarbeit',
     'Perfektionismus',
     'Programmierung',
@@ -35,4 +35,85 @@ test('completes the IT Boss Fight interview through the UI', async ({ page }) =>
   }
 
   await expect(page.getByRole('heading', { name: 'Wawancara Selesai!' })).toBeVisible();
+  await expect(page.getByText('Selamat kamu telah menyelesaikan simulasi wawancara!')).toBeVisible();
+});
+
+test('accepts basic German keywords and gives the consideration response', async ({ page }) => {
+  await page.goto('/de/career/it');
+  await page.getByRole('link', { name: 'Mulai Boss Fight' }).click();
+  await page.getByRole('button', { name: 'Masuk ke Ruangan' }).click();
+  await page.getByRole('button', { name: 'Mulai Wawancara' }).click();
+
+  const answers = [
+    'Erfahrung',
+    'Teamarbeit',
+    'Verbesserung',
+    'Fähigkeiten',
+    'Erfahrung',
+    'Gehalt',
+    'Unternehmen',
+    'Fehler',
+    'Sprache',
+    'Fragen',
+  ];
+
+  for (const [index, answer] of answers.entries()) {
+    await expect(page.locator('.boss-progress')).toHaveText(`Pertanyaan ${index + 1} dari 10`);
+    await page.locator('#boss-answer').fill(answer);
+    await page.getByRole('button', { name: 'Kirim Jawaban' }).click();
+  }
+
+  await expect(page.getByText('Bagus, akan saya pertimbangkan, silahkan selanjutnya!')).toBeVisible();
+});
+
+test('accepts basic English keywords and gives the consideration response', async ({ page }) => {
+  await page.goto('/en/career/it/boss');
+  await expect(page.locator('.boss-progress')).toHaveText('Pertanyaan 1 dari 10', { timeout: 20_000 });
+
+  const answers = [
+    'experience',
+    'Teamwork',
+    'Improvement',
+    'skills',
+    'experience',
+    'Salary',
+    'Company',
+    'bug',
+    'language',
+    'Questions',
+  ];
+
+  for (const [index, answer] of answers.entries()) {
+    await expect(page.locator('.boss-progress')).toHaveText(`Pertanyaan ${index + 1} dari 10`);
+    await page.locator('#boss-answer').fill(answer);
+    await page.getByRole('button', { name: 'Kirim jawaban' }).click();
+  }
+
+  await expect(page.getByText('Bagus, akan saya pertimbangkan, silahkan selanjutnya!')).toBeVisible();
+});
+
+test('accepts an intermediate English keyword and completes the simulation', async ({ page }) => {
+  await page.goto('/en/career/it/boss');
+  await expect(page.locator('.boss-progress')).toHaveText('Pertanyaan 1 dari 10', { timeout: 20_000 });
+
+  const answers = [
+    'experience',
+    'Communication',
+    'Improvement',
+    'skills',
+    'experience',
+    'Salary',
+    'Company',
+    'bug',
+    'language',
+    'Questions',
+  ];
+
+  for (const [index, answer] of answers.entries()) {
+    await expect(page.locator('.boss-progress')).toHaveText(`Pertanyaan ${index + 1} dari 10`);
+    await page.locator('#boss-answer').fill(answer);
+    await page.getByRole('button', { name: 'Kirim jawaban' }).click();
+  }
+
+  await expect(page.getByText('Selamat kamu telah menyelesaikan simulasi wawancara!')).toBeVisible();
 });

@@ -18,24 +18,39 @@ boss_intro:
 boss_questions:
   - question: "Welche Erfahrung ist für diese E-Commerce-Stelle am relevantesten?"
     keywords: ["E-Commerce", "Kampagne", "Vertrieb"]
+    basicKeywords: ["Erfahrung"]
+    advancedKeywords: ["E-Commerce", "Kampagne"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Kommunikation", "Teamarbeit", "Vertrieb"]
+    advancedKeywords: ["Kommunikation", "Vertrieb"]
   - question: "Was sind Ihre Schwächen?"
     keywords: ["Perfektionismus", "Ungeduld", "Verbesserung"]
+    advancedKeywords: ["Perfektionismus", "Ungeduld"]
   - question: "Welche Fähigkeiten bringen Sie mit?"
     keywords: ["Marketing", "Kommunikation", "Analyse"]
+    basicKeywords: ["Fähigkeiten"]
+    advancedKeywords: ["Marketing", "Analyse"]
   - question: "Welche Erfahrungen haben Sie?"
     keywords: ["E-Commerce", "Marketing", "Berufserfahrung"]
+    basicKeywords: ["Erfahrung"]
+    advancedKeywords: ["E-Commerce", "Marketing", "Berufserfahrung"]
   - question: "Was sind Ihre Gehaltsvorstellungen?"
     keywords: ["Gehalt", "Vergütung", "Euro"]
+    advancedKeywords: ["Vergütung", "Euro"]
   - question: "Warum möchten Sie bei uns arbeiten?"
     keywords: ["Motivation", "Unternehmen", "Entwicklung"]
+    advancedKeywords: ["Motivation", "Entwicklung"]
   - question: "Wie entwickeln Sie eine erfolgreiche Marketingkampagne?"
     keywords: ["Zielgruppe", "Kampagne", "Budget"]
+    basicKeywords: ["Menschen", "Kosten"]
+    advancedKeywords: ["Zielgruppe", "Kampagne", "Budget"]
   - question: "Wie analysieren Sie Verkaufszahlen im E-Commerce?"
     keywords: ["Verkaufszahlen", "Analyse", "Optimierung"]
+    basicKeywords: ["Verkauf"]
+    advancedKeywords: ["Verkaufszahlen", "Analyse", "Optimierung"]
   - question: "Haben Sie Fragen an uns?"
     keywords: ["Fragen", "Aufgaben", "Unternehmen"]
+    advancedKeywords: ["Aufgaben"]
 vocab:
   - { german: "das Marketing", indonesian: "pemasaran", context: "Das Marketing erreicht neue Kunden." }
   - { german: "der Vertrieb", indonesian: "penjualan", context: "Der Vertrieb plant die Verkaufsziele." }

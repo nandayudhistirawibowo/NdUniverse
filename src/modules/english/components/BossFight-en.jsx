@@ -106,6 +106,7 @@ export default function BossFight({
   const fallbackQuestion = {
     question: 'Which experience is most relevant to this role?',
     keywords: ['experience', 'project', 'role'],
+    basicKeywords: ['experience'],
   };
   const interviewQuestions = useMemo(
     () => questions.length > 0 ? questions : [fallbackQuestion],
@@ -122,6 +123,7 @@ export default function BossFight({
   const [answer, setAnswer] = useState('');
   const [messages, setMessages] = useState([]);
   const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [hasAdvancedVocabulary, setHasAdvancedVocabulary] = useState(false);
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
@@ -158,6 +160,7 @@ export default function BossFight({
     setQuestionIndex(0);
     setAnswer('');
     setCorrectAnswers(0);
+    setHasAdvancedVocabulary(false);
   }, [interviewQuestions]);
 
   useEffect(() => {
@@ -236,10 +239,18 @@ export default function BossFight({
     if (!answer.trim() || gameState !== 'interview') return;
     playSound('click');
 
-    const matchedKeywords = (currentQuestion.keywords ?? []).filter((keyword) =>
+    const acceptedKeywords = [
+      ...(currentQuestion.keywords ?? []),
+      ...(currentQuestion.basicKeywords ?? []),
+      ...(currentQuestion.advancedKeywords ?? []),
+    ];
+    const matchedKeywords = [...new Set(acceptedKeywords)].filter((keyword) =>
       isFuzzyMatch(answer, keyword)
     );
-    const passed = matchedKeywords.length >= 2;
+    const matchedAdvancedKeywords = (currentQuestion.advancedKeywords ?? []).filter((keyword) =>
+      isFuzzyMatch(answer, keyword)
+    );
+    const passed = matchedKeywords.length > 0;
     const userMessage = { speaker: 'user', text: answer };
 
     if (!passed) {
@@ -249,7 +260,7 @@ export default function BossFight({
         userMessage,
         {
           speaker: 'hrd',
-          text: `Coba lagi dan sertakan setidaknya dua gagasan kunci. Jawabanmu cocok dengan ${matchedKeywords.length} dari ${currentQuestion.keywords?.length ?? 0} kata kunci. ${currentQuestion.question}`,
+          text: `Coba lagi dan sertakan setidaknya satu kata kunci yang relevan. ${currentQuestion.question}`,
         },
       ]);
       setAnswer('');
@@ -257,13 +268,20 @@ export default function BossFight({
     }
 
     playSound('success');
+    const qualifiesForCompletion = hasAdvancedVocabulary || matchedAdvancedKeywords.length > 0;
+    if (matchedAdvancedKeywords.length > 0) setHasAdvancedVocabulary(true);
     const totalCorrect = correctAnswers + 1;
     setCorrectAnswers(totalCorrect);
     const nextQuestionIndex = questionIndex + 1;
-    const feedback = `Jawaban bagus! Kamu menyertakan ${matchedKeywords.length} gagasan kunci.`;
+    const feedback = matchedAdvancedKeywords.length > 0
+      ? `Jawaban bagus! Kata kunci tingkat menengah/lanjutan diterima: ${matchedAdvancedKeywords.join(', ')}.`
+      : 'Jawaban diterima. Silakan lanjut ke pertanyaan berikutnya.';
 
     if (nextQuestionIndex >= interviewQuestions.length) {
-      setMessages((current) => [...current, userMessage, { speaker: 'hrd', text: feedback }]);
+      const finalFeedback = qualifiesForCompletion
+        ? 'Selamat kamu telah menyelesaikan simulasi wawancara!'
+        : 'Bagus, akan saya pertimbangkan, silahkan selanjutnya!';
+      setMessages((current) => [...current, userMessage, { speaker: 'hrd', text: finalFeedback }]);
       setAnswer('');
       setGameState('finished');
       return;
@@ -280,7 +298,7 @@ export default function BossFight({
     setAnswer('');
   };
 
-  const passedInterview = correctAnswers >= Math.ceil(interviewQuestions.length / 2);
+  const passedInterview = hasAdvancedVocabulary;
 
   return (
     <section class="boss-fight">
@@ -406,8 +424,10 @@ export default function BossFight({
               <p class="career-section-label">Tantangan Selesai</p>
               <h2>Wawancara Selesai!</h2>
               <p
-              >{passedInterview ? `Selamat, kamu lulus wawancara ${profession}.` : `Kamu telah menyelesaikan wawancara ${profession}.`}</p>
-              <strong>{correctAnswers}/{interviewQuestions.length} jawaban memuat setidaknya dua gagasan kunci.</strong>
+              >{passedInterview
+                  ? 'Selamat kamu telah menyelesaikan simulasi wawancara!'
+                  : 'Bagus, akan saya pertimbangkan, silahkan selanjutnya!'}</p>
+              <strong>{correctAnswers}/{interviewQuestions.length} pertanyaan dijawab dengan kata kunci.</strong>
               {passedInterview && <p>Lencana diperoleh: {badge}.</p>}
               <a class="boss-return-button" href={returnHref}>Kembali ke Materi Karier</a>
             </div>

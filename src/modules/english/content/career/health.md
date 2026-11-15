@@ -17,24 +17,39 @@ boss_intro:
 boss_questions:
   - question: "Which experience best prepares you to care for patients in this role?"
     keywords: ["patient care", "nursing", "experience"]
+    basicKeywords: ["care"]
+    advancedKeywords: ["patient care", "nursing"]
   - question: "What are your strengths?"
     keywords: ["Patience", "Teamwork", "Empathy"]
+    advancedKeywords: ["Empathy"]
   - question: "What are your weaknesses?"
     keywords: ["Perfectionism", "Impatience", "Improvement"]
+    advancedKeywords: ["Perfectionism", "Impatience"]
   - question: "What skills do you bring with you?"
     keywords: ["Care", "Patient care", "Communication"]
+    basicKeywords: ["skills"]
+    advancedKeywords: ["Patient care", "Communication"]
   - question: "What experiences do you have?"
     keywords: ["Care", "Patients", "Professional experience"]
+    basicKeywords: ["experience"]
+    advancedKeywords: ["Patients", "Professional experience"]
   - question: "What are your salary expectations?"
     keywords: ["Salary", "Compensation", "Euros"]
+    advancedKeywords: ["Compensation", "Euros"]
   - question: "Why do you want to work with us?"
     keywords: ["Motivation", "Company", "Development"]
+    advancedKeywords: ["Motivation", "Development"]
   - question: "How do you deal with patients?"
     keywords: ["Patience", "Communication", "Respect"]
+    basicKeywords: ["patients"]
+    advancedKeywords: ["Communication", "Respect"]
   - question: "How do you react in an emergency?"
     keywords: ["Silence", "Emergency", "First aid"]
+    basicKeywords: ["help"]
+    advancedKeywords: ["Emergency", "First aid"]
   - question: "Do you have any questions for us?"
     keywords: ["Questions", "Tasks", "Company"]
+    advancedKeywords: ["Tasks"]
 vocab:
   - { word: "care", translation: "perawatan", context: "Care depends on needs.", contextIndonesian: "Perawatan tergantung kebutuhan." }
   - { word: "the patient", translation: "pasien", context: "The patient needs support.", contextIndonesian: "Pasien membutuhkan dukungan." }

@@ -17,24 +17,39 @@ boss_intro:
 boss_questions:
   - question: "Which experience best prepares you to support families in nutrition or midwifery?"
     keywords: ["nutrition", "family", "counseling"]
+    basicKeywords: ["experience"]
+    advancedKeywords: ["nutrition", "counseling"]
   - question: "What are your strengths?"
     keywords: ["Empathy", "Patience", "Teamwork"]
+    advancedKeywords: ["Empathy"]
   - question: "What are your weaknesses?"
     keywords: ["Perfectionism", "Impatience", "Improvement"]
+    advancedKeywords: ["Perfectionism", "Impatience"]
   - question: "What skills do you bring with you?"
     keywords: ["Nutritional advice", "Communication", "Empathy"]
+    basicKeywords: ["skills"]
+    advancedKeywords: ["Nutritional advice", "Communication", "Empathy"]
   - question: "What experiences do you have?"
     keywords: ["Nutrition", "Advice", "Professional experience"]
+    basicKeywords: ["experience"]
+    advancedKeywords: ["Nutrition", "Professional experience"]
   - question: "What are your salary expectations?"
     keywords: ["Salary", "Compensation", "Euros"]
+    advancedKeywords: ["Compensation", "Euros"]
   - question: "Why do you want to work with us?"
     keywords: ["Motivation", "Company", "Development"]
+    advancedKeywords: ["Motivation", "Development"]
   - question: "How do you advise a mother on nutrition?"
     keywords: ["Nutrition", "Mother", "Advice"]
+    basicKeywords: ["food"]
+    advancedKeywords: ["Nutrition", "Advice"]
   - question: "How do you support a pregnant woman during pregnancy?"
     keywords: ["Pregnant women", "Advice", "Security"]
+    basicKeywords: ["woman"]
+    advancedKeywords: ["Pregnant women", "Advice", "Security"]
   - question: "Do you have any questions for us?"
     keywords: ["Questions", "Tasks", "Company"]
+    advancedKeywords: ["Tasks"]
 vocab:
   - { word: "the diet", translation: "gizi atau pola makan", context: "Diet influences health.", contextIndonesian: "Pola makan mempengaruhi kesehatan." }
   - { word: "the pregnant woman", translation: "ibu hamil", context: "The pregnant woman receives advice.", contextIndonesian: "Wanita hamil menerima nasehat." }

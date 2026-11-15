@@ -17,24 +17,39 @@ boss_intro:
 boss_questions:
   - question: "Which experience is most relevant to this e-commerce role?"
     keywords: ["e-commerce", "campaign", "sales"]
+    basicKeywords: ["experience"]
+    advancedKeywords: ["e-commerce", "campaign"]
   - question: "What are your strengths?"
     keywords: ["Communication", "Teamwork", "Sales"]
+    advancedKeywords: ["Communication", "Sales"]
   - question: "What are your weaknesses?"
     keywords: ["Perfectionism", "Impatience", "Improvement"]
+    advancedKeywords: ["Perfectionism", "Impatience"]
   - question: "What skills do you bring with you?"
     keywords: ["Marketing", "Communication", "Analysis"]
+    basicKeywords: ["skills"]
+    advancedKeywords: ["Marketing", "Analysis"]
   - question: "What experiences do you have?"
     keywords: ["E-commerce", "Marketing", "Professional experience"]
+    basicKeywords: ["experience"]
+    advancedKeywords: ["E-commerce", "Marketing", "Professional experience"]
   - question: "What are your salary expectations?"
     keywords: ["Salary", "Compensation", "Euros"]
+    advancedKeywords: ["Compensation", "Euros"]
   - question: "Why do you want to work with us?"
     keywords: ["Motivation", "Company", "Development"]
+    advancedKeywords: ["Motivation", "Development"]
   - question: "How do you develop a successful marketing campaign?"
     keywords: ["Target group", "Campaign", "Budget"]
+    basicKeywords: ["people", "cost"]
+    advancedKeywords: ["Target group", "Campaign", "Budget"]
   - question: "How do you analyze sales figures in e-commerce?"
     keywords: ["Sales figures", "Analysis", "Optimization"]
+    basicKeywords: ["sales"]
+    advancedKeywords: ["Sales figures", "Analysis", "Optimization"]
   - question: "Do you have any questions for us?"
     keywords: ["Questions", "Tasks", "Company"]
+    advancedKeywords: ["Tasks"]
 vocab:
   - { word: "marketing", translation: "pemasaran", context: "Marketing reaches new customers.", contextIndonesian: "Pemasaran menjangkau pelanggan baru." }
   - { word: "sales", translation: "penjualan", context: "Sales plans the sales targets.", contextIndonesian: "Penjualan merencanakan target penjualan." }

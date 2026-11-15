@@ -18,24 +18,39 @@ boss_intro:
 boss_questions:
   - question: "Welche Erfahrung bereitet Sie am besten auf die Pflege unserer Patienten vor?"
     keywords: ["Patientenpflege", "Pflege", "Erfahrung"]
+    basicKeywords: ["Arbeit"]
+    advancedKeywords: ["Patientenpflege"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Geduld", "Teamarbeit", "Empathie"]
+    advancedKeywords: ["Empathie"]
   - question: "Was sind Ihre Schwächen?"
     keywords: ["Perfektionismus", "Ungeduld", "Verbesserung"]
+    advancedKeywords: ["Perfektionismus", "Ungeduld"]
   - question: "Welche Fähigkeiten bringen Sie mit?"
     keywords: ["Pflege", "Patientenbetreuung", "Kommunikation"]
+    basicKeywords: ["Fähigkeiten"]
+    advancedKeywords: ["Patientenbetreuung", "Kommunikation"]
   - question: "Welche Erfahrungen haben Sie?"
     keywords: ["Pflege", "Patienten", "Berufserfahrung"]
+    basicKeywords: ["Erfahrung"]
+    advancedKeywords: ["Patienten", "Berufserfahrung"]
   - question: "Was sind Ihre Gehaltsvorstellungen?"
     keywords: ["Gehalt", "Vergütung", "Euro"]
+    advancedKeywords: ["Vergütung", "Euro"]
   - question: "Warum möchten Sie bei uns arbeiten?"
     keywords: ["Motivation", "Unternehmen", "Entwicklung"]
+    advancedKeywords: ["Motivation", "Entwicklung"]
   - question: "Wie gehen Sie mit Patienten um?"
     keywords: ["Geduld", "Kommunikation", "Respekt"]
+    basicKeywords: ["Patienten"]
+    advancedKeywords: ["Kommunikation", "Respekt"]
   - question: "Wie reagieren Sie in einem Notfall?"
     keywords: ["Ruhe", "Notfall", "Erste Hilfe"]
+    basicKeywords: ["Hilfe"]
+    advancedKeywords: ["Notfall", "Erste Hilfe"]
   - question: "Haben Sie Fragen an uns?"
     keywords: ["Fragen", "Aufgaben", "Unternehmen"]
+    advancedKeywords: ["Aufgaben"]
 vocab:
   - { german: "die Pflege", indonesian: "perawatan", context: "Die Pflege richtet sich nach den Bedürfnissen." }
   - { german: "der Patient", indonesian: "pasien", context: "Der Patient braucht Unterstützung." }

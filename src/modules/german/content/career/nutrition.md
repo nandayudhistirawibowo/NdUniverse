@@ -18,24 +18,39 @@ boss_intro:
 boss_questions:
   - question: "Welche Erfahrung bereitet Sie am besten auf die Ernährungs- oder Hebammenberatung vor?"
     keywords: ["Ernährung", "Familie", "Beratung"]
+    basicKeywords: ["Erfahrung"]
+    advancedKeywords: ["Ernährung", "Beratung"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Empathie", "Geduld", "Teamarbeit"]
+    advancedKeywords: ["Empathie"]
   - question: "Was sind Ihre Schwächen?"
     keywords: ["Perfektionismus", "Ungeduld", "Verbesserung"]
+    advancedKeywords: ["Perfektionismus", "Ungeduld"]
   - question: "Welche Fähigkeiten bringen Sie mit?"
     keywords: ["Ernährungsberatung", "Kommunikation", "Empathie"]
+    basicKeywords: ["Fähigkeiten"]
+    advancedKeywords: ["Ernährungsberatung", "Kommunikation", "Empathie"]
   - question: "Welche Erfahrungen haben Sie?"
     keywords: ["Ernährung", "Beratung", "Berufserfahrung"]
+    basicKeywords: ["Erfahrung"]
+    advancedKeywords: ["Ernährung", "Berufserfahrung"]
   - question: "Was sind Ihre Gehaltsvorstellungen?"
     keywords: ["Gehalt", "Vergütung", "Euro"]
+    advancedKeywords: ["Vergütung", "Euro"]
   - question: "Warum möchten Sie bei uns arbeiten?"
     keywords: ["Motivation", "Unternehmen", "Entwicklung"]
+    advancedKeywords: ["Motivation", "Entwicklung"]
   - question: "Wie beraten Sie eine Mutter zur Ernährung?"
     keywords: ["Ernährung", "Mutter", "Beratung"]
+    basicKeywords: ["Essen"]
+    advancedKeywords: ["Ernährung", "Beratung"]
   - question: "Wie unterstützen Sie eine Schwangere während der Schwangerschaft?"
     keywords: ["Schwangere", "Beratung", "Sicherheit"]
+    basicKeywords: ["Frau"]
+    advancedKeywords: ["Schwangere", "Beratung", "Sicherheit"]
   - question: "Haben Sie Fragen an uns?"
     keywords: ["Fragen", "Aufgaben", "Unternehmen"]
+    advancedKeywords: ["Aufgaben"]
 vocab:
   - { german: "die Ernährung", indonesian: "gizi atau pola makan", context: "Die Ernährung beeinflusst die Gesundheit." }
   - { german: "die Schwangere", indonesian: "ibu hamil", context: "Die Schwangere erhält eine Beratung." }

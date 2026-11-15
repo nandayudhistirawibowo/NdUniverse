@@ -17,24 +17,39 @@ boss_intro:
 boss_questions:
   - question: "Which experience best prepares you for this software engineering role?"
     keywords: ["software project", "programming", "experience"]
+    basicKeywords: ["work experience"]
+    advancedKeywords: ["software project", "programming"]
   - question: "What are your strengths?"
     keywords: ["Teamwork", "Communication", "Learning ability"]
+    advancedKeywords: ["Communication", "Learning ability"]
   - question: "What are your weaknesses?"
     keywords: ["Perfectionism", "Impatience", "Improvement"]
+    advancedKeywords: ["Perfectionism", "Impatience"]
   - question: "What skills do you bring with you?"
     keywords: ["Programming", "Problem solving", "Technology"]
+    basicKeywords: ["skills"]
+    advancedKeywords: ["Problem solving", "Technology"]
   - question: "What experiences do you have?"
     keywords: ["Software projects", "Programming", "Professional experience"]
+    basicKeywords: ["experience"]
+    advancedKeywords: ["Software projects", "Professional experience"]
   - question: "What are your salary expectations?"
     keywords: ["Salary", "Compensation", "Euros"]
+    advancedKeywords: ["Compensation", "Euros"]
   - question: "Why do you want to work with us?"
     keywords: ["Motivation", "Company", "Development"]
+    advancedKeywords: ["Motivation", "Development"]
   - question: "How do you deal with a bug?"
     keywords: ["Analysis", "Debugging", "Tests"]
+    basicKeywords: ["bug", "error"]
+    advancedKeywords: ["Analysis", "Debugging", "Tests"]
   - question: "Which programming languages ​​do you know?"
     keywords: ["Programming languages", "JavaScript", "Python"]
+    basicKeywords: ["language"]
+    advancedKeywords: ["Programming languages", "JavaScript", "Python"]
   - question: "Do you have any questions for us?"
     keywords: ["Questions", "Tasks", "Company"]
+    advancedKeywords: ["Tasks"]
 vocab:
   - { word: "the software", translation: "perangkat lunak", context: "The software is running stable.", contextIndonesian: "Perangkat lunak berjalan stabil." }
   - { word: "program", translation: "memprogram", context: "I am programming a new application.", contextIndonesian: "Saya sedang memprogram aplikasi baru." }
