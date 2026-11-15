@@ -496,6 +496,14 @@ export default function NdBot({
           font-size: .9rem;
           line-height: 1.45;
           overflow-wrap: anywhere;
+          animation: ndbot-message-in .24s ease-out both;
+        }
+        @keyframes ndbot-message-in {
+          from { opacity: 0; transform: translateY(8px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .ndbot-message { animation: none; }
         }
         .ndbot-message p { margin: 0; }
         .ndbot-message p + p { margin-top: .55rem; }

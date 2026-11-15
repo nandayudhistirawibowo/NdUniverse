@@ -1,4 +1,12 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Locator, type Page } from '@playwright/test';
+
+async function hoverClick(page: Page, locator: Locator) {
+  const box = await locator.boundingBox();
+  if (box) await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await locator.hover();
+  await page.waitForTimeout(120);
+  await locator.click();
+}
 
 test('records the 30-second NdUniverse promo journey', async ({ page }) => {
   const startedAt = Date.now();
@@ -19,13 +27,13 @@ test('records the 30-second NdUniverse promo journey', async ({ page }) => {
   await page.goto('/en/materi/latihan?slug=english-a1-animals&type=reading&session=1');
   const questionCard = page.locator('.question-card');
   await expect(questionCard).toBeVisible();
-  await questionCard.locator('.match-choice').first().click();
-  await page.getByRole('button', { name: 'Periksa Jawaban' }).click();
+  await hoverClick(page, questionCard.locator('.match-choice').first());
+  await hoverClick(page, page.getByRole('button', { name: 'Periksa Jawaban' }));
   await waitUntil(15_000);
 
   await page.goto('/en');
   await expect(page).toHaveURL(/\/en$/);
-  await page.getByRole('button', { name: 'Buka NdUniverse Assistant' }).click();
+  await hoverClick(page, page.getByRole('button', { name: 'Buka NdUniverse Assistant' }));
   const chatInput = page.getByRole('textbox', { name: 'Pesan' });
   await chatInput.fill('NdUniverse itu apa ya?');
   await chatInput.press('Enter');
