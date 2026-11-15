@@ -18,7 +18,6 @@ boss_intro:
 boss_questions:
   - question: "Welche Erfahrung bereitet Sie am besten auf die Ernährungs- oder Hebammenberatung vor?"
     keywords: ["Ernährung", "Familie", "Beratung"]
-    basicKeywords: ["Erfahrung"]
     advancedKeywords: ["Ernährung", "Beratung"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Empathie", "Geduld", "Teamarbeit"]
@@ -28,11 +27,9 @@ boss_questions:
     advancedKeywords: ["Perfektionismus", "Ungeduld"]
   - question: "Welche Fähigkeiten bringen Sie mit?"
     keywords: ["Ernährungsberatung", "Kommunikation", "Empathie"]
-    basicKeywords: ["Fähigkeiten"]
     advancedKeywords: ["Ernährungsberatung", "Kommunikation", "Empathie"]
   - question: "Welche Erfahrungen haben Sie?"
     keywords: ["Ernährung", "Beratung", "Berufserfahrung"]
-    basicKeywords: ["Erfahrung"]
     advancedKeywords: ["Ernährung", "Berufserfahrung"]
   - question: "Was sind Ihre Gehaltsvorstellungen?"
     keywords: ["Gehalt", "Vergütung", "Euro"]
@@ -42,11 +39,9 @@ boss_questions:
     advancedKeywords: ["Motivation", "Entwicklung"]
   - question: "Wie beraten Sie eine Mutter zur Ernährung?"
     keywords: ["Ernährung", "Mutter", "Beratung"]
-    basicKeywords: ["Essen"]
     advancedKeywords: ["Ernährung", "Beratung"]
   - question: "Wie unterstützen Sie eine Schwangere während der Schwangerschaft?"
     keywords: ["Schwangere", "Beratung", "Sicherheit"]
-    basicKeywords: ["Frau"]
     advancedKeywords: ["Schwangere", "Beratung", "Sicherheit"]
   - question: "Haben Sie Fragen an uns?"
     keywords: ["Fragen", "Aufgaben", "Unternehmen"]

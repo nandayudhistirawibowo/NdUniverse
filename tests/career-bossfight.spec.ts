@@ -38,24 +38,13 @@ test('completes the IT Boss Fight interview through the UI', async ({ page }) =>
   await expect(page.getByText('Selamat kamu telah menyelesaikan simulasi wawancara!')).toBeVisible();
 });
 
-test('accepts basic German keywords and gives the consideration response', async ({ page }) => {
+test('accepts every German answer and assesses it only after question ten', async ({ page }) => {
   await page.goto('/de/career/it');
   await page.getByRole('link', { name: 'Mulai Boss Fight' }).click();
   await page.getByRole('button', { name: 'Masuk ke Ruangan' }).click();
   await page.getByRole('button', { name: 'Mulai Wawancara' }).click();
 
-  const answers = [
-    'Erfahrung',
-    'Teamarbeit',
-    'Verbesserung',
-    'Fähigkeiten',
-    'Erfahrung',
-    'Gehalt',
-    'Unternehmen',
-    'Fehler',
-    'Sprache',
-    'Fragen',
-  ];
+  const answers = Array(10).fill('Keine Ahnung');
 
   for (const [index, answer] of answers.entries()) {
     await expect(page.locator('.boss-progress')).toHaveText(`Pertanyaan ${index + 1} dari 10`);
@@ -66,22 +55,11 @@ test('accepts basic German keywords and gives the consideration response', async
   await expect(page.getByText('Bagus, akan saya pertimbangkan, silahkan selanjutnya!')).toBeVisible();
 });
 
-test('accepts basic English keywords and gives the consideration response', async ({ page }) => {
+test('accepts every English answer and assesses it only after question ten', async ({ page }) => {
   await page.goto('/en/career/it/boss');
   await expect(page.locator('.boss-progress')).toHaveText('Pertanyaan 1 dari 10', { timeout: 20_000 });
 
-  const answers = [
-    'experience',
-    'Teamwork',
-    'Improvement',
-    'skills',
-    'experience',
-    'Salary',
-    'Company',
-    'bug',
-    'language',
-    'Questions',
-  ];
+  const answers = Array(10).fill("I don't know.");
 
   for (const [index, answer] of answers.entries()) {
     await expect(page.locator('.boss-progress')).toHaveText(`Pertanyaan ${index + 1} dari 10`);

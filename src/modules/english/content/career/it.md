@@ -17,7 +17,6 @@ boss_intro:
 boss_questions:
   - question: "Which experience best prepares you for this software engineering role?"
     keywords: ["software project", "programming", "experience"]
-    basicKeywords: ["work experience"]
     advancedKeywords: ["software project", "programming"]
   - question: "What are your strengths?"
     keywords: ["Teamwork", "Communication", "Learning ability"]
@@ -27,11 +26,9 @@ boss_questions:
     advancedKeywords: ["Perfectionism", "Impatience"]
   - question: "What skills do you bring with you?"
     keywords: ["Programming", "Problem solving", "Technology"]
-    basicKeywords: ["skills"]
     advancedKeywords: ["Problem solving", "Technology"]
   - question: "What experiences do you have?"
     keywords: ["Software projects", "Programming", "Professional experience"]
-    basicKeywords: ["experience"]
     advancedKeywords: ["Software projects", "Professional experience"]
   - question: "What are your salary expectations?"
     keywords: ["Salary", "Compensation", "Euros"]
@@ -41,11 +38,9 @@ boss_questions:
     advancedKeywords: ["Motivation", "Development"]
   - question: "How do you deal with a bug?"
     keywords: ["Analysis", "Debugging", "Tests"]
-    basicKeywords: ["bug", "error"]
     advancedKeywords: ["Analysis", "Debugging", "Tests"]
   - question: "Which programming languages ​​do you know?"
     keywords: ["Programming languages", "JavaScript", "Python"]
-    basicKeywords: ["language"]
     advancedKeywords: ["Programming languages", "JavaScript", "Python"]
   - question: "Do you have any questions for us?"
     keywords: ["Questions", "Tasks", "Company"]

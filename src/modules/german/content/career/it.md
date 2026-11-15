@@ -18,7 +18,6 @@ boss_intro:
 boss_questions:
   - question: "Welche Erfahrung bereitet Sie am besten auf diese Stelle in der Softwareentwicklung vor?"
     keywords: ["Softwareprojekt", "Programmierung", "Erfahrung"]
-    basicKeywords: ["Arbeitserfahrung"]
     advancedKeywords: ["Softwareprojekt", "Programmierung"]
   - question: "Was sind Ihre Stärken?"
     keywords: ["Teamarbeit", "Kommunikation", "Lernfähigkeit"]
@@ -28,11 +27,9 @@ boss_questions:
     advancedKeywords: ["Perfektionismus", "Ungeduld"]
   - question: "Welche Fähigkeiten bringen Sie mit?"
     keywords: ["Programmierung", "Problemlösung", "Technologie"]
-    basicKeywords: ["Fähigkeiten"]
     advancedKeywords: ["Problemlösung", "Technologie"]
   - question: "Welche Erfahrungen haben Sie?"
     keywords: ["Softwareprojekte", "Programmierung", "Berufserfahrung"]
-    basicKeywords: ["Erfahrung"]
     advancedKeywords: ["Softwareprojekte", "Programmierung", "Berufserfahrung"]
   - question: "Was sind Ihre Gehaltsvorstellungen?"
     keywords: ["Gehalt", "Vergütung", "Euro"]
@@ -42,11 +39,9 @@ boss_questions:
     advancedKeywords: ["Motivation", "Entwicklung"]
   - question: "Wie gehen Sie mit einem Bug um?"
     keywords: ["Analyse", "Debugging", "Tests"]
-    basicKeywords: ["Fehler"]
     advancedKeywords: ["Analyse", "Debugging", "Tests"]
   - question: "Welche Programmiersprachen beherrschen Sie?"
     keywords: ["Programmiersprachen", "JavaScript", "Python"]
-    basicKeywords: ["Sprache"]
     advancedKeywords: ["Programmiersprachen", "JavaScript", "Python"]
   - question: "Haben Sie Fragen an uns?"
     keywords: ["Fragen", "Aufgaben", "Unternehmen"]

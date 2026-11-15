@@ -17,7 +17,6 @@ boss_intro:
 boss_questions:
   - question: "Which experience best prepares you to care for patients in this role?"
     keywords: ["patient care", "nursing", "experience"]
-    basicKeywords: ["care"]
     advancedKeywords: ["patient care", "nursing"]
   - question: "What are your strengths?"
     keywords: ["Patience", "Teamwork", "Empathy"]
@@ -27,11 +26,9 @@ boss_questions:
     advancedKeywords: ["Perfectionism", "Impatience"]
   - question: "What skills do you bring with you?"
     keywords: ["Care", "Patient care", "Communication"]
-    basicKeywords: ["skills"]
     advancedKeywords: ["Patient care", "Communication"]
   - question: "What experiences do you have?"
     keywords: ["Care", "Patients", "Professional experience"]
-    basicKeywords: ["experience"]
     advancedKeywords: ["Patients", "Professional experience"]
   - question: "What are your salary expectations?"
     keywords: ["Salary", "Compensation", "Euros"]
@@ -41,11 +38,9 @@ boss_questions:
     advancedKeywords: ["Motivation", "Development"]
   - question: "How do you deal with patients?"
     keywords: ["Patience", "Communication", "Respect"]
-    basicKeywords: ["patients"]
     advancedKeywords: ["Communication", "Respect"]
   - question: "How do you react in an emergency?"
     keywords: ["Silence", "Emergency", "First aid"]
-    basicKeywords: ["help"]
     advancedKeywords: ["Emergency", "First aid"]
   - question: "Do you have any questions for us?"
     keywords: ["Questions", "Tasks", "Company"]

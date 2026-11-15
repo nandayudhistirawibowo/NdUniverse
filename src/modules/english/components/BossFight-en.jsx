@@ -106,7 +106,6 @@ export default function BossFight({
   const fallbackQuestion = {
     question: 'Which experience is most relevant to this role?',
     keywords: ['experience', 'project', 'role'],
-    basicKeywords: ['experience'],
   };
   const interviewQuestions = useMemo(
     () => questions.length > 0 ? questions : [fallbackQuestion],
@@ -122,7 +121,7 @@ export default function BossFight({
   const [questionIndex, setQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [messages, setMessages] = useState([]);
-  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [answeredQuestions, setAnsweredQuestions] = useState(0);
   const [hasAdvancedVocabulary, setHasAdvancedVocabulary] = useState(false);
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
@@ -159,7 +158,7 @@ export default function BossFight({
     setMessages([{ speaker: 'hrd', text: interviewQuestions[0].question }]);
     setQuestionIndex(0);
     setAnswer('');
-    setCorrectAnswers(0);
+    setAnsweredQuestions(0);
     setHasAdvancedVocabulary(false);
   }, [interviewQuestions]);
 
@@ -239,43 +238,18 @@ export default function BossFight({
     if (!answer.trim() || gameState !== 'interview') return;
     playSound('click');
 
-    const acceptedKeywords = [
-      ...(currentQuestion.keywords ?? []),
-      ...(currentQuestion.basicKeywords ?? []),
-      ...(currentQuestion.advancedKeywords ?? []),
-    ];
-    const matchedKeywords = [...new Set(acceptedKeywords)].filter((keyword) =>
-      isFuzzyMatch(answer, keyword)
-    );
     const matchedAdvancedKeywords = (currentQuestion.advancedKeywords ?? []).filter((keyword) =>
       isFuzzyMatch(answer, keyword)
     );
-    const passed = matchedKeywords.length > 0;
     const userMessage = { speaker: 'user', text: answer };
-
-    if (!passed) {
-      playSound('error');
-      setMessages((current) => [
-        ...current,
-        userMessage,
-        {
-          speaker: 'hrd',
-          text: `Coba lagi dan sertakan setidaknya satu kata kunci yang relevan. ${currentQuestion.question}`,
-        },
-      ]);
-      setAnswer('');
-      return;
-    }
 
     playSound('success');
     const qualifiesForCompletion = hasAdvancedVocabulary || matchedAdvancedKeywords.length > 0;
     if (matchedAdvancedKeywords.length > 0) setHasAdvancedVocabulary(true);
-    const totalCorrect = correctAnswers + 1;
-    setCorrectAnswers(totalCorrect);
+    const totalAnswered = answeredQuestions + 1;
+    setAnsweredQuestions(totalAnswered);
     const nextQuestionIndex = questionIndex + 1;
-    const feedback = matchedAdvancedKeywords.length > 0
-      ? `Jawaban bagus! Kata kunci tingkat menengah/lanjutan diterima: ${matchedAdvancedKeywords.join(', ')}.`
-      : 'Jawaban diterima. Silakan lanjut ke pertanyaan berikutnya.';
+    const feedback = 'Terima kasih atas jawabanmu. Silakan lanjut ke pertanyaan berikutnya.';
 
     if (nextQuestionIndex >= interviewQuestions.length) {
       const finalFeedback = qualifiesForCompletion
@@ -427,7 +401,7 @@ export default function BossFight({
               >{passedInterview
                   ? 'Selamat kamu telah menyelesaikan simulasi wawancara!'
                   : 'Bagus, akan saya pertimbangkan, silahkan selanjutnya!'}</p>
-              <strong>{correctAnswers}/{interviewQuestions.length} pertanyaan dijawab dengan kata kunci.</strong>
+              <strong>{answeredQuestions}/{interviewQuestions.length} pertanyaan telah dijawab.</strong>
               {passedInterview && <p>Lencana diperoleh: {badge}.</p>}
               <a class="boss-return-button" href={returnHref}>Kembali ke Materi Karier</a>
             </div>

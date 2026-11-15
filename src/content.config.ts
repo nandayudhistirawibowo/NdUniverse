@@ -55,7 +55,6 @@ const career = defineCollection({
       z.object({
         question: z.string(),
         keywords: z.array(z.string()),
-        basicKeywords: z.array(z.string()).optional(),
         advancedKeywords: z.array(z.string()).optional(),
       })
     ).optional(),
@@ -138,7 +137,6 @@ const englishCareer = defineCollection({
     boss_questions: z.array(z.object({
       question: z.string(),
       keywords: z.array(z.string()).length(3),
-      basicKeywords: z.array(z.string()).optional(),
       advancedKeywords: z.array(z.string()).optional(),
     })).length(10),
   }),
