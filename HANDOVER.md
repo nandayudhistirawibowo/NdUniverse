@@ -13,7 +13,7 @@ Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengu
 - **Chatbot RAG:** materi Markdown dipecah menjadi chunk dan disimpan pada `public.documents`; Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` (384 dimensi), Supabase `pgvector` melakukan retrieval, dan Groq menulis ulang query/menyusun jawaban.
 - **Kuis:** pengguna bebas memilih sesi dan pilar. `sessions_passed` menyimpan key seperti `s1-reading` dan `s2-writing` untuk indikator selesai; key tersebut tidak mengunci akses.
 - **Ujian besar:** fullscreen anti-cheat memantau perubahan fullscreen, tab tersembunyi, dan window blur. Strike ketiga memaksa submit; NdBot menampilkan status strike.
-- **UI:** Bahasa Indonesia hardcoded (Indonesian-first), tanpa sistem i18n. Tautan `/en` ↔ `/de` hanya navigasi antar modul. Dashboard `/de/dashboard` dan `/en/dashboard`, termasuk NdBot, layout, dan menu, menggunakan Bahasa Indonesia penuh; landing dan portal/login masih memiliki sisa copy Inggris yang perlu audit. Materi/soal tetap dalam bahasa target.
+- **UI:** Indonesian-first dengan string hardcoded dan tanpa sistem i18n terpusat. Tautan `/en` ↔ `/de` memilih modul pembelajaran, bukan bahasa global UI. Dashboard German berada di `/dashboard-de` dan English di `/en/dashboard`; materi/soal tetap dalam bahasa target. Landing masih memiliki beberapa label pemasaran Inggris yang dapat diaudit jika dibutuhkan.
 - **SEO:** landing `index, follow` dengan canonical; layout dashboard `noindex, nofollow`. Sitemap mencakup URL publik dan memfilter admin/dashboard; `robots.txt` melarang crawl rute privat.
 - **Audio:** manifest dan MP3 TTS utama disajikan dari `nandayudhistirawibowo/nduniverse-audio` melalui jsDelivr.
 
@@ -110,8 +110,9 @@ Manifest TTS German/English yang dibaca langsung dari repo audio harus ikut dipu
 
 ### Known Issues / Backlog UI
 
-- Audit sisa English copy pada `src/pages/index.astro`, portal DE/EN, dan halaman login agar UI konsisten 100% berbahasa Indonesia.
-- Audit label UI di rute `/en` dan `/de`; jangan mengubah bahasa materi belajar.
+- Jika targetnya konsistensi Bahasa Indonesia penuh, audit kicker, penanda bagian, dan tagline berbahasa Inggris di `src/pages/index.astro`. Teks UI hardcoded; belum ada i18n terpusat.
+- NdBot mengunci chat pada mode `quiz` dan `exam`; kunci ini tidak mengunci akses memilih sesi/pilar. Strike ketiga pada ujian menjalankan force-submit.
+- `public/robots.txt` masih mencantumkan `/de/dashboard/`, sedangkan dashboard German aktif berada di `/dashboard-de`; selaraskan crawler config saat mengerjakan pembaruan SEO.
 
 ## Memperbarui Indeks RAG
 

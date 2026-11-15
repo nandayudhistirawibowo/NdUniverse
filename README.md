@@ -12,7 +12,7 @@ NdUniverse adalah platform belajar bahasa Jerman dan Inggris berbasis Astro. UI 
 - **English (`/en`)**: Everyday dan Academic English, IELTS/TOEFL, serta Career.
 - **Latihan empat pilar**: pilih sesi dan Reading, Listening, Writing, atau Speaking secara bebas. Progres tiap pasangan sesi-pilar disimpan, misalnya `s1-reading`.
 - **NdBot v2 (RAG)**: Supabase `pgvector` mengambil materi relevan; Cloudflare Workers AI membuat embedding dan Groq membantu penulisan ulang query serta jawaban.
-- **Anti-cheat ujian**: mode fullscreen mencatat pelanggaran; NdBot menampilkan status dan ujian dikirim otomatis pada strike ketiga.
+- **Anti-cheat ujian**: mode fullscreen mencatat pelanggaran; NdBot menampilkan status dan ujian dikirim otomatis pada strike ketiga. NdBot juga mengunci chat pada mode kuis, tanpa mengunci pilihan materi/sesi/pilar berdasarkan progres.
 - **Audio dua aksen**: Generator English menghasilkan audio `en-US` dan `en-GB`; manifest dan MP3 di repo CDN `nduniverse-audio` disajikan melalui jsDelivr. Web Speech API menjadi fallback.
 - **Progress dan autentikasi**: Supabase Auth/PostgreSQL/Storage dengan pemisahan progress German dan English.
 
@@ -67,10 +67,11 @@ Perubahan Markdown tidak otomatis memperbarui indeks. Lihat [HANDOVER.md](HANDOV
 
 ## Sitemap dan Crawler
 
-Landing memakai `index, follow`; layout dashboard memakai `noindex, nofollow`. Sitemap mencakup `/`, `/de`, `/en`, halaman login, dan materi; rute dashboard/admin difilter. `robots.txt` mencantumkan larangan crawl admin, API, dan dashboard.
+Landing memakai `index, follow`; layout dashboard memakai `noindex, nofollow`. Sitemap mencakup `/`, `/de`, `/en`, halaman login, dan materi; rute dashboard/admin difilter. `robots.txt` melarang crawl admin, API, dan beberapa rute dashboard. Catatan: daftar saat ini masih memuat rute DE lama `/de/dashboard/`; dashboard DE aktif berada di `/dashboard-de`.
 
 ## Dokumentasi
 
+- [Konsep Desain Frontend](FRONTEND_DESIGN_CONCEPT.md)
 - [PRD](PRD.md)
 - [ERD](ERD.md)
 - [Flowchart](FLOWCHART.md)

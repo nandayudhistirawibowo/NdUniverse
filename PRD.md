@@ -5,12 +5,11 @@
 
 ## Status Bahasa UI
 
-UI menggunakan Bahasa Indonesia secara hardcoded (Indonesian-first) tanpa sistem i18n. Tautan `/en` dan `/de` hanya navigasi antar modul pembelajaran, bukan pengubah bahasa antarmuka. Landing dan portal/login DE/EN mayoritas berbahasa Indonesia dengan sisa copy Inggris yang perlu diaudit; dashboard `/de/dashboard` dan `/en/dashboard`, termasuk NdBot, layout, dan menu, menggunakan Bahasa Indonesia penuh. Materi belajar tetap menggunakan bahasa target.
+UI Indonesian-first menggunakan string hardcoded tanpa sistem i18n terpusat. Tautan `/en` dan `/de` memilih modul pembelajaran, bukan pengubah bahasa global. Beberapa komponen dapat memiliki varian bahasa hardcoded; materi dan soal tetap memakai bahasa target. Dashboard German berada di `/dashboard-de`, sedangkan dashboard English berada di `/en/dashboard`.
 
 ### Known Issues / Backlog UI
 
-- Audit ulang sisa English copy di landing, portal DE/EN, dan login agar UI konsisten 100% berbahasa Indonesia. Temuan landing ada di `src/pages/index.astro` (kicker, penanda section, dan tagline footer); layout bersama juga masih memiliki label Inggris pada rute `/en`.
-- Verifikasi setiap label UI di rute `/en` dan `/de` agar tidak ada sisa copy bahasa target yang bocor ke UI, selain materi belajar.
+- Audit copy pemasaran yang masih berbahasa Inggris di `src/pages/index.astro` (kicker, penanda section, dan tagline footer) jika targetnya adalah UI yang sepenuhnya berbahasa Indonesia. String saat ini hardcoded dan tidak dikelola melalui i18n.
 
 ## Ringkasan Produk
 
@@ -73,18 +72,18 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 
 ### Career dan Boss Fight
 
-Katalog `/career` menyediakan empat profesi:
+Katalog `/de/career` menyediakan empat profesi:
 
-1. IT & Software Engineering melalui `/career/it`
-2. Digital Business & E-Commerce melalui `/career/business`
-3. Pflege & Gesundheitswesen melalui `/career/health`
-4. Gizi & Kebidanan melalui `/career/nutrition`
+1. IT & Software Engineering melalui `/de/career/it`
+2. Digital Business & E-Commerce melalui `/de/career/business`
+3. Pflege & Gesundheitswesen melalui `/de/career/health`
+4. Gizi & Kebidanan melalui `/de/career/nutrition`
 
-Setiap profesi memiliki **50 kosakata** pada Astro Content Collections Markdown. Halaman materi menampilkan Latihan Kosakata lima kata dasar per batch, kuis pilihan ganda sederhana, dan card Boss Fight.
+Setiap profesi memiliki **50 kosakata** pada Astro Content Collections Markdown di `src/modules/german/content/career/`. Halaman materi menampilkan Latihan Kosakata lima kata dasar per batch, kuis pilihan ganda sederhana, dan card Boss Fight.
 
-Boss Fight dipisahkan ke route `/career/[profesi]/boss`. Pengalaman end-to-end dimulai dengan layar visual novel ruangan kantor: pintu terbuka dengan animasi, Boss HRD masuk, lalu ucapan salam `"Guten Tag! Bitte setzen Sie sich..."` ditampilkan. User kemudian menjawab **10 pertanyaan wawancara bertahap** melalui text box atau Speech Recognition/microphone. Jawaban dinilai secara fuzzy sederhana terhadap keywords yang berasal dari frontmatter Markdown `boss_questions`. Pertanyaan berikutnya baru muncul setelah jawaban dikirim.
+Boss Fight dipisahkan ke route `/de/career/[profesi]/boss`. Pengalaman end-to-end dimulai dengan layar visual novel ruangan kantor: pintu terbuka dengan animasi, Boss HRD masuk, lalu ucapan salam `"Guten Tag! Bitte setzen Sie sich..."` ditampilkan. User kemudian menjawab **10 pertanyaan wawancara bertahap** melalui text box atau Speech Recognition/microphone. Jawaban dinilai secara fuzzy sederhana terhadap keywords yang berasal dari frontmatter Markdown `boss_questions`. Pertanyaan berikutnya baru muncul setelah jawaban dikirim.
 
-Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wawancara Selesai!** beserta status kelulusan, badge profesi, dan tombol kembali ke materi profesi. Konten Career disimpan di `src/content/career/*.md`, bukan database Supabase.
+Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wawancara Selesai!** beserta status kelulusan, badge profesi, dan tombol kembali ke materi profesi. Konten Career disimpan di `src/modules/german/content/career/*.md`, bukan database Supabase.
 
 ### Progress dan Pilar Lulus
 
@@ -113,7 +112,7 @@ Total level dihitung berdasarkan materi yang sudah lulus seluruh pilar. Materi F
 
 ### Mock Exam 22 Soal
 
-Route `/ujian/[level]` menyediakan Mock Exam mini:
+Route `/de/ujian/[level]` menyediakan Mock Exam mini:
 
 - 10 Lesen
 - 10 Hören
@@ -127,7 +126,7 @@ Komposisi Mini-Mock tetap 22 soal: 10 Lesen, 10 Hören, 1 Schreiben, dan 1 Sprec
 
 ### Simulasi Goethe-Zertifikat
 
-Route `/ujian/goethe/[level]` menyediakan simulasi resmi yang dibagi menjadi empat modul terpisah:
+Route `/de/ujian/goethe/[level]` menyediakan simulasi resmi yang dibagi menjadi empat modul terpisah:
 
 - Lesen: teks panjang, pilihan ganda, dan timer modul.
 - Hören: audio TTS, pilihan ganda, dan pembatasan audio maksimal satu kali per soal.
@@ -154,7 +153,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 - Ujian besar mengaktifkan mode fullscreen melalui browser dan memantau perubahan fullscreen, tab yang disembunyikan, serta window yang kehilangan fokus.
 - Setiap pelanggaran menambah strike dengan cooldown lima detik. Strike ketiga memaksa pengumpulan/pengiriman ujian.
-- NdBot tetap tersedia dalam mode ujian untuk menampilkan tingkat strike; chat tutor dinonaktifkan dalam mode tersebut. Mode kuis juga mempertahankan NdBot sebagai pengunci chat selama latihan.
+- NdBot tetap tersedia dalam mode ujian untuk menampilkan tingkat strike; chat tutor dinonaktifkan dalam mode tersebut. Mode kuis juga mengunci chat. Kunci chat ini tidak membatasi pemilihan materi, sesi, atau pilar berdasarkan progres; pengguna tetap dapat memilih sesi/pilar yang tersedia.
 - Jika browser menolak permintaan fullscreen, aplikasi mencatat peringatan; dukungan fullscreen tetap bergantung pada kebijakan browser.
 
 ### Audio TTS dan Microphone
@@ -189,7 +188,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 - Landing menyatakan `index, follow` dan memakai canonical URL.
 - Layout dashboard menggunakan `noindex, nofollow`; sitemap mengecualikan dashboard dan admin.
-- `robots.txt` melarang crawl `/dashboard/`, `/de/dashboard/`, dan `/en/dashboard/`.
+- `robots.txt` melarang crawl `/dashboard/`, `/de/dashboard/`, dan `/en/dashboard/`. Rute dashboard German aktif adalah `/dashboard-de`, sehingga daftar robots saat ini masih perlu diselaraskan dengan rute aktif.
 
 ## Tech Stack
 
