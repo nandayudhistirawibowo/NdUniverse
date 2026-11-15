@@ -335,11 +335,14 @@ export default function BossFight({
             </div>
 
             {doorState !== 'inside' && (
+              <div class="cinematic-scene-label">RUANGAN HRD</div>
+            )}
+
+            {doorState !== 'inside' && (
               <div class={`door-sequence door-${doorState}`}>
                 <div class="door-zoom-room">
                   <div class="door-wall" />
                   <div class="door-frame">
-                    <span class="room-label">RUANG HRD</span>
                     <div class={`cinematic-door door-${doorState}`}>
                       <i aria-hidden="true" />
                     </div>
@@ -455,17 +458,17 @@ export default function BossFight({
       <style>{`
         .boss-fight { display:grid; gap:.75rem; padding:1.25rem; border:1px solid var(--accent-gold); border-radius:14px; background:radial-gradient(circle at top right,rgba(229,169,59,.16),transparent 45%),var(--card-bg); }
         .cinematic-overlay { --cinematic-ink:#17202a; --cinematic-muted:#65717d; --cinematic-line:#d8dee5; position:fixed; z-index:9999; inset:0; display:grid; place-items:center; background:#000; overflow:hidden; }
-        .cinematic-room { width:100vw; height:100vh; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; color:var(--cinematic-ink); background:linear-gradient(135deg,#fff 0%,#f4f7f9 52%,#e7edf1 100%); animation:cinematicRoomIn .5s cubic-bezier(.2,.8,.2,1) both; }
-        .cinematic-header { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:clamp(1rem,3vw,2rem) clamp(1rem,5vw,5rem) 0; }
+        .cinematic-room { position:relative; isolation:isolate; perspective:1200px; width:100vw; height:100vh; height:100dvh; display:grid; grid-template-rows:auto minmax(0,1fr); overflow:hidden; color:var(--cinematic-ink); background:radial-gradient(circle at 50% 20%,rgba(111,83,48,.3),transparent 30%),linear-gradient(180deg,#101820 0%,#172633 54%,#080d12 100%); animation:cinematicRoomIn .5s cubic-bezier(.2,.8,.2,1) both; }
+        .cinematic-header { position:relative; z-index:10; display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:clamp(1rem,3vw,2rem) clamp(1rem,5vw,5rem) 0; }
         .cinematic-header .career-section-label { color:#966313; }
         .cinematic-header .boss-progress { color:var(--cinematic-muted); }
-        .cinematic-intro { display:grid; grid-template-columns:minmax(180px,.8fr) minmax(280px,1.2fr); align-items:center; gap:clamp(1rem,5vw,5rem); width:min(1100px,calc(100% - 2rem)); margin:auto; }
+        .cinematic-intro { position:relative; z-index:10; display:grid; grid-template-columns:minmax(180px,.8fr) minmax(280px,1.2fr); align-items:center; gap:clamp(1rem,5vw,5rem); width:min(1100px,calc(100% - 2rem)); margin:auto; }
         .cinematic-boss { display:grid; place-items:center; min-height:180px; font-size:clamp(7rem,18vw,13rem); line-height:1; filter:drop-shadow(0 18px 14px rgba(23,32,42,.18)); }
         .boss-speech-bubble { position:relative; max-width:620px; padding:clamp(1.25rem,3vw,2.25rem); border:1px solid var(--cinematic-line); border-radius:1rem; background:#fff; box-shadow:0 24px 60px rgba(23,32,42,.14); animation:cinematicTextIn .65s .2s ease both; }
         .boss-speech-bubble::before { content:""; position:absolute; left:-15px; top:50%; width:28px; height:28px; border-left:1px solid var(--cinematic-line); border-bottom:1px solid var(--cinematic-line); background:#fff; transform:translateY(-50%) rotate(45deg); }
         .boss-speech-bubble strong { font-size:1.1rem; }
         .boss-speech-bubble p { margin:.6rem 0 1.25rem; color:var(--cinematic-muted); font-size:clamp(1rem,2vw,1.2rem); line-height:1.6; }
-        .cinematic-interview { display:grid; grid-template-columns:minmax(190px,.65fr) minmax(0,1.35fr); gap:clamp(1rem,4vw,4rem); width:min(1160px,calc(100% - 2rem)); min-height:0; margin:auto; padding:clamp(1rem,3vw,2rem) 0 clamp(1rem,4vw,4rem); }
+        .cinematic-interview { position:relative; z-index:10; display:grid; grid-template-columns:minmax(190px,.65fr) minmax(0,1.35fr); gap:clamp(1rem,4vw,4rem); width:min(1160px,calc(100% - 2rem)); min-height:0; margin:auto; padding:clamp(1rem,3vw,2rem) 0 clamp(1rem,4vw,4rem); }
         .cinematic-boss-panel { display:flex; flex-direction:column; align-items:center; justify-content:center; min-height:0; padding:1rem; border-right:1px solid var(--cinematic-line); }
         .cinematic-boss-panel .cinematic-boss { min-height:0; font-size:clamp(6rem,13vw,10rem); }
         .cinematic-boss-panel span { font-weight:900; font-size:1.1rem; }
@@ -480,19 +483,18 @@ export default function BossFight({
         .cinematic-chat-panel .chat-message.hrd { border-color:var(--cinematic-line); background:#fff; color:var(--cinematic-ink); }
         .cinematic-chat-panel .chat-message.user { background:var(--accent-red); color:#fff; }
         .cinematic-chat-panel .chat-message.system { color:#b42318; }
-        .cinematic-room { position:relative; isolation:isolate; perspective:1200px; background:radial-gradient(circle at 50% 20%,rgba(111,83,48,.3),transparent 30%),linear-gradient(180deg,#101820 0%,#172633 54%,#080d12 100%); }
-        .door-sequence { position:relative; z-index:4; display:grid; min-height:0; align-content:center; justify-items:center; gap:1.25rem; perspective:1400px; overflow:hidden; }
-        .door-zoom-room { position:relative; width:min(78vw,680px); height:min(62vh,500px); transform-style:preserve-3d; transform-origin:center 55%; transition:transform 1.35s cubic-bezier(.16,1,.3,1); will-change:transform; }
-        .door-wall { position:absolute; inset:0; border:1px solid rgba(220,179,93,.3); border-radius:1rem; background:radial-gradient(circle at 50% 30%,rgba(255,230,167,.18),transparent 34%),linear-gradient(135deg,#263a49,#101b25 72%); box-shadow:inset 0 0 80px rgba(0,0,0,.7),0 30px 60px rgba(0,0,0,.5); transform:translateZ(-20px); }
-        .door-frame { position:absolute; top:7%; bottom:0; left:50%; width:min(48vw,360px); transform:translateX(-50%) translateZ(30px); border:14px solid #6b432a; border-bottom:0; border-radius:.6rem .6rem 0 0; background:#1b2731; box-shadow:0 0 0 4px rgba(224,175,79,.24),inset 0 0 30px rgba(0,0,0,.8); }
-        .room-label { position:absolute; z-index:4; top:-2.45rem; left:50%; transform:translateX(-50%); color:#f1dfb2; font-size:clamp(.75rem,1.8vw,1rem); font-weight:900; letter-spacing:.16em; text-align:center; text-shadow:0 2px 8px rgba(0,0,0,.8); white-space:nowrap; }
-        .cinematic-door { position:absolute; inset:0; display:grid; place-items:center; transform-origin:left center; border:7px solid #a26b3a; background:linear-gradient(105deg,#9a5d32,#633a29 52%,#321f1e); box-shadow:inset 14px 0 rgba(255,221,148,.14),inset -18px 0 rgba(0,0,0,.36),0 18px 25px rgba(0,0,0,.5); transition:transform .7s cubic-bezier(.2,.8,.2,1); }
+        .door-sequence { position:absolute; z-index:1; inset:0; width:100%; height:100%; perspective:1400px; overflow:hidden; }
+        .door-zoom-room { position:absolute; inset:0; width:100%; height:100%; transform-style:preserve-3d; transform-origin:center 55%; transition:transform 5s ease-in-out; will-change:transform; }
+        .door-wall { position:absolute; inset:0; border:0; border-radius:0; background:radial-gradient(ellipse at 50% 22%,rgba(255,230,167,.2),transparent 38%),linear-gradient(90deg,rgba(0,0,0,.38),transparent 24% 76%,rgba(0,0,0,.38)),linear-gradient(180deg,#263a49 0%,#172633 58%,#080d12 100%); box-shadow:none; transform:translateZ(-20px); }
+        .door-frame { position:absolute; top:12%; bottom:0; left:50%; width:min(38vw,520px); transform:translateX(-50%) translateZ(30px); border:14px solid #6b432a; border-bottom:0; border-radius:0; background:transparent; box-shadow:none; }
+        .cinematic-scene-label { position:absolute; z-index:10; top:clamp(4.5rem,10vh,7rem); left:50%; transform:translateX(-50%); color:#f1dfb2; font-size:clamp(.75rem,1.8vw,1rem); font-weight:900; letter-spacing:.16em; text-align:center; text-shadow:0 2px 12px rgba(0,0,0,.9); white-space:nowrap; }
+        .cinematic-door { position:absolute; inset:0; display:grid; place-items:center; transform-origin:left center; border:7px solid #a26b3a; border-radius:0; background:linear-gradient(105deg,#9a5d32,#633a29 52%,#321f1e); box-shadow:inset 14px 0 rgba(255,221,148,.14),inset -18px 0 rgba(0,0,0,.36),0 18px 25px rgba(0,0,0,.5); transition:transform .7s cubic-bezier(.2,.8,.2,1); }
         .cinematic-door::before { content:""; position:absolute; inset:10%; border:2px solid rgba(244,202,116,.42); border-radius:.25rem; box-shadow:inset 0 0 20px rgba(0,0,0,.25); }
         .cinematic-door i { position:absolute; z-index:2; right:12%; width:14px; height:14px; border:2px solid #f1c76e; border-radius:50%; background:#4d2c20; box-shadow:0 0 12px rgba(244,190,84,.5); }
         .door-sequence.door-opening .cinematic-door,.door-sequence.door-entering .cinematic-door { transform:rotateY(-90deg); }
         .cinematic-room::before { content:""; position:absolute; z-index:0; top:-18%; left:50%; width:min(60vw,760px); height:78vh; background:linear-gradient(180deg,rgba(255,244,204,.42),rgba(226,174,77,.06) 70%,transparent); clip-path:polygon(42% 0,58% 0,100% 100%,0 100%); filter:blur(16px); opacity:.8; }
         .cinematic-room::after { content:""; position:absolute; z-index:0; right:-10%; bottom:-23%; left:-10%; height:58%; background:repeating-linear-gradient(90deg,rgba(255,255,255,.07) 0 1px,transparent 1px 9%),linear-gradient(170deg,transparent 0 18%,rgba(0,0,0,.7) 18%); transform:perspective(500px) rotateX(58deg); transform-origin:bottom; opacity:.5; }
-        .cinematic-room > .cinematic-header,.cinematic-room > .cinematic-intro,.cinematic-room > .cinematic-interview,.cinematic-room > .boss-finished { position:relative; z-index:1; }
+        .cinematic-room > .cinematic-header,.cinematic-room > .cinematic-intro,.cinematic-room > .cinematic-interview,.cinematic-room > .boss-finished { position:relative; z-index:10; }
         .cinematic-header .career-section-label { text-shadow:0 2px 12px rgba(0,0,0,.8); }
         .cinematic-header .boss-progress { color:#d5dde5; text-shadow:0 2px 10px rgba(0,0,0,.8); }
         .cinematic-intro { color:#fff; }
@@ -617,8 +619,7 @@ export default function BossFight({
           .cinematic-chat-panel .boss-actions { grid-template-columns:1fr; }
         }
         @media(max-width:768px){
-          .door-zoom-room { width:min(88vw,560px); height:min(58vh,430px); }
-          .door-frame { width:min(62vw,300px); border-width:10px; }
+          .door-frame { top:16%; width:min(72vw,460px); border-width:10px; }
           .cinematic-room { height:100vh; height:100dvh; }
           .cinematic-overlay { overflow-y:auto; }
           .cinematic-interview { height:auto; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
@@ -838,9 +839,11 @@ export default function BossFight({
           .cinematic-chat-panel { right: .75rem; left: .75rem; width: auto; max-width: calc(100vw - 1.5rem); }
           .boss-composer { width: 100%; max-width: 100%; }
         }
-        .door-sequence.door-entering .door-zoom-room { transform: scale(1.12) translateY(-.3rem); }
+        .door-sequence.door-opening .door-zoom-room,
+        .door-sequence.door-entering .door-zoom-room { transform:scale(1.2); }
         @media(max-width:768px) {
-          .door-sequence.door-entering .door-zoom-room { transform: scale(1.08); }
+          .door-sequence.door-opening .door-zoom-room,
+          .door-sequence.door-entering .door-zoom-room { transform:scale(1.12); }
         }
         @media (prefers-reduced-motion: reduce) {
           *,
