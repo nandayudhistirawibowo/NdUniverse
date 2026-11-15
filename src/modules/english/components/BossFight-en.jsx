@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { playAudioTTS } from '../config/english-speech.js';
+import { playBossAudio } from '@core/audio/boss-audio.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
 const EMPTY_BOSS_INTRO = [];
@@ -11,29 +11,83 @@ const DEFAULT_BOSS_INTRO = [
   { detik: 8, aksi: 'The hiring manager greets the candidate.', dialog: 'Welcome. Please have a seat. To start, tell me a little about yourself.' },
 ];
 
-function ChatBubble({ text, isUser, isSystem, speakerLabel }) {
+function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, onComplete }) {
   const [visibleText, setVisibleText] = useState('');
 
   useEffect(() => {
     const characters = Array.from(text);
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion || characters.length === 0) {
+    let cancelled = false;
+    let completed = false;
+    let timer;
+    const controller = new AbortController();
+    const complete = () => {
+      if (cancelled || completed) return;
+      completed = true;
+      onComplete?.();
+    };
+    const finishAfterAudio = (audio) => {
+      if (!audio || audio.ended) {
+        complete();
+        return;
+      }
+      audio.addEventListener('ended', complete, { once: true });
+    };
+    const typeText = (intervalMs, audio) => {
+      if (prefersReducedMotion) {
+        setVisibleText(text);
+        finishAfterAudio(audio);
+        return;
+      }
+
+      let visibleLength = 0;
+      setVisibleText('');
+      const revealNextCharacter = () => {
+        if (cancelled) return;
+        visibleLength += 1;
+        setVisibleText(characters.slice(0, visibleLength).join(''));
+        if (visibleLength >= characters.length) {
+          finishAfterAudio(audio);
+          return;
+        }
+        timer = window.setTimeout(revealNextCharacter, intervalMs);
+      };
+      revealNextCharacter();
+    };
+
+    if (characters.length === 0) {
       setVisibleText(text);
+      complete();
       return undefined;
     }
 
-    let visibleLength = 0;
-    setVisibleText('');
-    const timer = window.setInterval(() => {
-      visibleLength += 1;
-      setVisibleText(characters.slice(0, visibleLength).join(''));
-      if (visibleLength >= characters.length) window.clearInterval(timer);
-    }, 60);
+    const hasBossVoice = !isUser && !isSystem;
+    const audioPromise = hasBossVoice
+      ? playBossAudio(text, language, controller.signal)
+      : Promise.resolve(null);
+    audioPromise
+      .then((audio) => {
+        if (cancelled) return;
+        const intervalMs = audio && Number.isFinite(audio.duration) && audio.duration > 0
+          ? Math.max(10, (audio.duration * 1000) / characters.length)
+          : 60;
+        typeText(intervalMs, audio);
+      })
+      .catch((error) => {
+        console.warn('Unable to prepare Boss Fight voice; using the default typewriter speed.', error);
+        if (!cancelled) typeText(60, null);
+      });
 
-    return () => window.clearInterval(timer);
-  }, [text]);
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [isSystem, isUser, language, onComplete, text]);
 
   const messageClass = isSystem ? 'system' : isUser ? 'user' : 'hrd';
+  if (isIntro) return <p>{visibleText}</p>;
+
   return (
     <div class={`chat-message ${messageClass}`} role="article" aria-label={`${speakerLabel}: ${text}`}>
       <span class="chat-speaker">{speakerLabel}</span>
@@ -71,8 +125,13 @@ export default function BossFight({
   const [listening, setListening] = useState(false);
   const recognitionRef = useRef(null);
   const messagesEndRef = useRef(null);
+  const introSpeechDoneRef = useRef(false);
   const currentQuestion = interviewQuestions[questionIndex];
   const activeIntroEvent = introTimeline[introEventIndex] ?? introTimeline[0];
+
+  const markIntroSpeechComplete = useCallback(() => {
+    introSpeechDoneRef.current = true;
+  }, []);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -83,12 +142,6 @@ export default function BossFight({
       recognitionRef.current?.abort?.();
     };
   }, []);
-
-  useEffect(() => {
-    if (gameState === 'interview' && currentQuestion?.question) {
-      void playAudioTTS(currentQuestion.question, 'us');
-    }
-  }, [gameState, questionIndex, currentQuestion?.question]);
 
   useEffect(() => {
     const reducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
@@ -129,7 +182,8 @@ export default function BossFight({
               : 'inside',
       );
 
-      if (elapsed > finalSecond) {
+      const finalDialog = introTimeline[introTimeline.length - 1]?.dialog?.trim();
+      if (elapsed > finalSecond && (!finalDialog || introSpeechDoneRef.current)) {
         window.clearInterval(interval);
         startInterview();
       }
@@ -262,7 +316,13 @@ export default function BossFight({
               </div>
               <div class="boss-speech-bubble">
                 <strong>Bapak Müller</strong>
-                <p>{activeIntroEvent?.dialog}</p>
+                <ChatBubble
+                  text={activeIntroEvent?.dialog ?? ''}
+                  isIntro
+                  speakerLabel="Bapak Müller"
+                  language="en"
+                  onComplete={markIntroSpeechComplete}
+                />
               </div>
             </div>
           )}
@@ -287,6 +347,7 @@ export default function BossFight({
                       isUser={message.speaker === 'user'}
                       isSystem={message.speaker === 'system'}
                       speakerLabel={message.speaker === 'hrd' ? 'Manajer HRD' : message.speaker === 'user' ? 'Kamu' : 'Info'}
+                      language="en"
                     />
                   ))}
                   <div ref={messagesEndRef} class="chat-scroll-anchor" aria-hidden="true" />
