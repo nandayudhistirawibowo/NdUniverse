@@ -169,11 +169,11 @@ flowchart TD
 
 ```mermaid
 flowchart TD
-    A[User membuka /career] --> B[Pilih salah satu profesi]
+    A[User membuka /de/career] --> B[Pilih salah satu profesi]
     B --> C[IT atau Business atau Health atau Nutrition]
     C --> D[Buka Materi 50 kosakata dan kuis kosakata]
     D --> E[Klik Mulai Wawancara]
-    E --> F[Masuk /career/profesi/boss]
+    E --> F[Masuk /de/career/profesi/boss]
     F --> G[Tampilkan layar intro ruangan kantor]
     G --> H[User klik Ketuk Pintu]
     H --> I[Animasi pintu terbuka dan Boss masuk]
@@ -198,7 +198,7 @@ flowchart TD
     X --> Y
 ```
 
-Data Career diambil dari Markdown pada `src/content/career/*.md`. Pertanyaan disimpan pada `boss_questions` dan jawaban dinilai berdasarkan `keywords` dari pertanyaan aktif. Boss Fight tidak menyimpan progress ke Supabase; badge dan hasil ditampilkan state-side di browser.
+Data Career German diambil dari Markdown pada `src/modules/german/content/career/*.md` melalui Astro Content Collection `career`. Pertanyaan disimpan pada `boss_questions` dan jawaban dinilai berdasarkan `keywords` dari pertanyaan aktif. Boss Fight juga tersedia di `/en/career/[profesi]/boss` dengan data English pada `src/modules/english/content/career/`. Hasil wawancara ditampilkan di browser; progress Boss Fight tidak disimpan ke Supabase.
 
 ## Alur Mock Exam 22 Soal
 

@@ -2,7 +2,7 @@
 
 ## Status
 
-**V4 Selesai 100% untuk lingkup rilis.** Produk mencakup platform Astro SSR, modul German dan English, latihan bebas pilih sesi/pilar, progress Supabase, chatbot RAG, ujian besar dengan anti-cheat fullscreen, audio CDN, dan Cinematic Boss Fight dengan voice acting TTS serta typewriter sync.
+Dokumen ini menggambarkan fitur yang tersedia pada source V4: platform Astro SSR, modul German dan English, latihan bebas pilih sesi/pilar, progress Supabase, chatbot RAG, ujian dengan anti-cheat fullscreen, audio CDN, dan Cinematic Boss Fight dengan voice acting TTS serta typewriter sync. Status deployment serta migrasi layanan eksternal harus diverifikasi pada environment tujuan.
 
 Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengubah credential di repository atau memasukkan secret ke browser.
 
@@ -25,12 +25,13 @@ Persyaratan Node.js `>=22.23.4`.
 
 ```bash
 npm install
-npx astro dev --background
-npx astro dev status
+npm install
+astro dev --background
+astro dev status
 npm run build
 ```
 
-Server background dapat dihentikan dengan `npx astro dev stop` dan log dibaca dengan `npx astro dev logs`.
+Server background dapat dihentikan dengan `astro dev stop` dan log dibaca dengan `astro dev logs`.
 
 Karena project memakai Vercel adapter, `astro preview` bukan cara yang didukung untuk menguji output deploy adapter ini. Untuk menguji hasil build lokal, jalankan:
 
@@ -77,18 +78,18 @@ CLOUDFLARE_API_TOKEN=
 
 ## Memperbarui Audio dan Manifest CDN
 
-Audio yang dibaca aplikasi berada di repo terpisah `nandayudhistirawibowo/nduniverse-audio`, dengan struktur di bawah `audio/`:
+Audio MP3 runtime berada di repo terpisah `nandayudhistirawibowo/nduniverse-audio`, dengan struktur di bawah `audio/`:
 
-- German: `audio/tts/manifest.json` dan MP3 terkait.
-- English US: `audio/tts-en-us/manifest-en-us.json` dan MP3 terkait.
-- English UK: `audio/tts-en-gb/manifest-en-gb.json` dan MP3 terkait.
-- Audio ujian: folder seperti `audio/exam-listening/`.
+- German TTS: MP3 di `audio/tts/`, dengan nama berbasis SHA-256 teks ternormalisasi.
+- English US/UK: MP3 di `audio/tts-en-us/` dan `audio/tts-en-gb/`, dengan nama berbasis SHA-256 teks serta akhiran locale.
+- Audio statis/ujian: folder seperti `audio/exam-listening/`, dirujuk melalui `manifest-cdn.json`.
+- Boss Fight: MP3 di `audio/boss/`; `manifest-boss.json` di repository aplikasi memetakan baris dialog ke URL CDN.
 
 Alur publikasi:
 
 1. Jalankan `npm run generate:tts:en -- --dry-run` untuk melihat aset yang kurang atau `npm run generate:tts:en` untuk membuat audio English US/UK, kedua manifest, dan mapping `manifest-cdn.json`. Dependensi tersedia lewat `python -m pip install -r requirements-tts.txt`.
 2. Untuk voice acting Boss Fight, jalankan `npm run generate:tts:boss -- --dry-run` untuk memeriksa file yang dibutuhkan atau `npm run generate:tts:boss` untuk menghasilkan audio. Generator menyediakan suara German dan English. Pastikan dependensi TTS pada `requirements-tts.txt` sudah terpasang.
-3. Generator German `npm run generate:tts` saat ini masih membaca sumber legacy `src/content/materi`. Konten German V4 berada di `src/modules/german/content/materi`; jangan menganggap generator German memperbarui semua konten modul sampai path tersebut diselaraskan.
+3. Generator German umum `npm run generate:tts` masih membaca sumber legacy `src/content/materi` dan halaman root lama yang tidak ada pada struktur aktif. Perintah ini tidak dapat digunakan pada checkout saat ini, termasuk dalam mode `--dry-run`; jangan mengandalkannya untuk memperbarui audio German. Generator Boss Fight adalah jalur terpisah.
 4. Salin aset dan manifest yang akan diterbitkan ke lokasi yang sama di checkout repo audio, misalnya `D:\audio-cdn\audio`. Pertahankan format manifest sebagai mapping teks ke path audio dan pertahankan nama file yang digunakan aplikasi.
 5. Commit dan push aset repo audio ke branch `main`:
 
@@ -114,11 +115,11 @@ Alur publikasi:
    git push origin <branch-aplikasi>
    ```
 
-Manifest TTS German/English yang dibaca langsung dari repo audio harus ikut dipush bersama MP3. `manifest-cdn.json` adalah peta untuk resolver CDN aplikasi dan disajikan dari branch `main` repository NdUniverse.
+Manifest TTS yang dihasilkan untuk inventaris/publikasi tidak menjadi lookup runtime untuk TTS berbasis hash. Pastikan MP3 dengan nama/path yang diharapkan sudah tersedia di repo audio. `manifest-cdn.json` memetakan audio statis yang membutuhkan lookup dan dibaca oleh resolver CDN; `manifest-boss.json` memetakan voice line Boss Fight.
 
 ### Synchronous Audio Resolver
 
-`src/core/audio/cdn-audio.js` menyediakan `getSyncAudioUrl(text, accent)` untuk membentuk URL English US/UK secara sinkron dari teks ternormalisasi dan hash SHA-256, serta `resolveCdnAudioUrlSync(path)` untuk memetakan path audio ke jsDelivr tanpa menunggu fetch manifest. `src/modules/english/config/english-speech.js` memakai resolver tersebut dan browser speech sebagai fallback. Jika format hash, nama file, atau direktori audio diubah, selaraskan generator, resolver, manifest, dan aset CDN.
+`src/core/audio/cdn-audio.js` menyediakan URL German/English berbasis teks ternormalisasi dan hash SHA-256, serta resolver path statis melalui `manifest-cdn.json`. `src/modules/english/config/english-speech.js` dan `src/modules/german/config/german-speech.js` memakai URL tersebut dengan browser speech sebagai fallback. Jika format hash, nama file, atau direktori audio diubah, selaraskan generator, resolver, manifest terkait, dan aset CDN.
 
 ### Known Issues / Backlog UI
 

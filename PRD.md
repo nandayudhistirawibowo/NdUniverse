@@ -1,6 +1,6 @@
 # PRD Modul Jerman (NdUniverse)
 
-**Status:** V4 selesai 100% untuk lingkup rilis
+**Status:** Requirements dan ringkasan fitur source saat ini; bukan konfirmasi status deployment
 **Produk:** Platform belajar bahasa Jerman universal A1–C2
 
 ## Status Bahasa UI
@@ -17,7 +17,7 @@ Modul Jerman NdUniverse adalah platform pembelajaran bahasa Jerman dengan materi
 
 **Catatan:** Modul English menyediakan Everyday dan Academic English, persiapan IELTS/TOEFL, serta latihan empat pilar. Aset audio yang dikonfigurasi sebagai CDN diambil dari jsDelivr.
 
-Koleksi saat ini berisi **425+ file materi** dan sekitar **8.500 kosakata**, mencakup Alltagsdeutsch A1–C2, Fachdeutsch, dan empat rumpun Career.
+Jumlah file materi dan kosakata berubah seiring penambahan konten; dokumen ini tidak menetapkan angka inventaris tetap. Konten mencakup Alltagsdeutsch A1–C2, Fachdeutsch, Career, serta koleksi English.
 
 ## Tujuan dan Pengguna
 
@@ -67,7 +67,7 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - Chatbot menjawab pertanyaan belajar menggunakan potongan materi Markdown yang diindeks pada tabel Supabase `public.documents`.
 - Pertanyaan terakhir dapat ditulis ulang oleh Groq untuk memperbaiki typo, memperluas singkatan, dan menyesuaikan bahasa pencarian; jika rewrite gagal, pertanyaan asli tetap digunakan.
 - Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` berdimensi 384. Supabase `pgvector` mencari hingga tiga potongan materi dengan ambang kemiripan 0.35.
-- Potongan materi yang relevan diberikan ke model Groq untuk menyusun jawaban tutor. Indeks memuat materi Markdown German dan English dari direktori konten modul.
+- Potongan materi yang relevan diberikan ke model Groq untuk menyusun jawaban tutor. Ingest mengambil Markdown German dan English dari direktori konten modul serta subset dokumentasi proyek yang dikonfigurasi di `scripts/ingest-rag.py`.
 - Pembaruan materi tidak otomatis memperbarui indeks. Jalankan proses ingest penuh sesuai panduan di `HANDOVER.md`; script menghapus seluruh baris `documents` sebelum memasukkan kembali indeks.
 
 ### Career dan Boss Fight
@@ -158,7 +158,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### Audio TTS dan Microphone
 
-- Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`), dengan generator dan resolver sinkron di `src/core/audio/cdn-audio.js`; audio German memakai manifest TTS German.
+- Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`), dengan URL berbasis hash dan resolver di `src/core/audio/cdn-audio.js`; TTS German juga menggunakan URL berbasis hash, sedangkan audio statis dapat di-resolve dari manifest CDN.
 - Boss Fight menggunakan voice acting audio TTS untuk dialog HRD; generatornya tersedia melalui `npm run generate:tts:boss`.
 - Aset dibuat dengan Edge TTS dan disajikan melalui jsDelivr. Fallback Web Speech menggunakan locale sesuai aksen/bahasa audio.
 - Speaking memakai browser Speech Recognition untuk mengubah rekaman suara menjadi teks sebelum fuzzy matching.

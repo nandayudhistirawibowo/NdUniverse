@@ -22,6 +22,7 @@ erDiagram
         text nama_lengkap
         text nomor_wa
         text avatar_url "path objek Private Storage"
+        text current_level "ditambahkan oleh migration opsional"
     }
 
     USER_PROGRESS {
@@ -48,7 +49,7 @@ erDiagram
 | Tabel | Kolom yang digunakan aplikasi | Constraint / catatan |
 | --- | --- | --- |
 | `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Login menerima email atau NIM lama yang dinormalisasi ke email akun. |
-| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | `id` sama dengan `auth.users.id`. `nim` bersifat **nullable** karena pengguna email umum tidak selalu memiliki NIM. `avatar_url` menyimpan path objek, bukan URL publik. |
+| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | `id` sama dengan `auth.users.id`. `nim` bersifat **nullable** karena pengguna email umum tidak selalu memiliki NIM. `avatar_url` menyimpan path objek, bukan URL publik. `supabase/profile_current_level.sql` menambahkan `current_level`, tetapi source dashboard menghitung level dari progress dan tidak membacanya. |
 | `public.user_progress` | `id`, `user_id`, `material_slug`, `language_code`, `xp`, `sessions_passed`, `notes`, `updated_at` | Kombinasi `(user_id, material_slug, language_code)` unik untuk memisahkan progress `de` dan `en`; `sessions_passed` harus JSON array melalui check JSONB; `xp` tidak boleh negatif; RLS membatasi akses ke pemilik baris. |
 | `public.documents` | `id`, `content`, `metadata`, `embedding` | Satu baris per potongan materi RAG. `embedding` bertipe pgvector `vector(384)` dari Cloudflare Workers AI; index HNSW memakai cosine distance. `metadata` menyimpan `source_file`, `language`, `content_hash`, `chunk_index`, dan `chunk_count`. |
 
@@ -89,7 +90,7 @@ Upsert menggabungkan kunci progres yang sudah tersimpan dengan kunci baru tanpa 
 - Status kelulusan Simulasi Goethe disimpan pada `localStorage` key `nduniverse-goethe-[level]`.
 - **Sertifikat PDF adalah artefak client-side** yang dibuat melalui `html2pdf.js`; sertifikat tidak disimpan sebagai entitas atau blob database.
 - Avatar disimpan di bucket Private `avatars` pada Supabase Storage. Aplikasi membuat Signed URL untuk ditampilkan. Bookmark dan sertifikat tidak memiliki tabel SQL.
-- Aset audio dan manifest yang dikonfigurasi sebagai CDN disajikan melalui jsDelivr; `manifest-cdn.json` di root repository tetap merupakan aset deployment.
+- MP3 TTS berbasis hash dan audio statis yang dipetakan melalui manifest disajikan dari jsDelivr. `manifest-cdn.json` memetakan path audio statis; voice line Boss Fight memakai `manifest-boss.json`.
 
 ## RLS dan Keamanan
 

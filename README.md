@@ -4,7 +4,7 @@ NdUniverse adalah platform belajar bahasa Jerman dan Inggris berbasis Astro. UI 
 
 ## Status V4
 
-**V4 selesai 100% untuk lingkup rilis.** Produk mencakup modul German dan English, latihan empat pilar tanpa urutan wajib, ujian dengan anti-cheat fullscreen, progress Supabase, chatbot RAG, serta Cinematic Boss Fight dengan voice acting TTS dan typewriter sync.
+Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latihan empat pilar tanpa urutan wajib, ujian dengan anti-cheat fullscreen, progress Supabase, chatbot RAG, serta Cinematic Boss Fight dengan voice acting TTS dan typewriter sync. Status deployment dan konfigurasi layanan eksternal bergantung pada environment masing-masing.
 
 ## Fitur
 
@@ -38,10 +38,10 @@ Persyaratan: Node.js `>=22.23.4`.
 
 ```bash
 npm install
-npx astro dev --background
+astro dev --background
 ```
 
-Server background dapat dikelola dengan `npx astro dev status`, `npx astro dev logs`, dan `npx astro dev stop`. Sebelum menguji fitur yang memerlukan backend, siapkan variabel environment yang sesuai (lihat [HANDOVER.md](HANDOVER.md)). Untuk validasi produksi:
+Server background dapat dikelola dengan `astro dev status`, `astro dev logs`, dan `astro dev stop`. Sebelum menguji fitur yang memerlukan backend, siapkan variabel environment yang sesuai (lihat [HANDOVER.md](HANDOVER.md)). Untuk validasi produksi:
 
 ```bash
 npm run build
@@ -59,11 +59,11 @@ Jangan commit `.env`, service-role key, Groq API key, atau Cloudflare API token.
 
 ## Memperbarui Audio dan Manifest CDN
 
-Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di bawah `audio/`. Aplikasi membaca manifest TTS German (`audio/tts/manifest.json`) serta English (`audio/tts-en-us/manifest-en-us.json` dan `audio/tts-en-gb/manifest-en-gb.json`) melalui jsDelivr. Peta umum audio ujian berada di `manifest-cdn.json` repository ini.
+Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di bawah `audio/`. Runtime membentuk URL TTS German dan English dari hash teks; `manifest-cdn.json` memetakan audio statis yang membutuhkan lookup path-ke-URL. Boss Fight memakai `manifest-boss.json` untuk memetakan dialog ke URL CDN. Generator English juga membuat manifest per aksen sebagai artefak generator.
 
 1. Preview audio English yang belum ada dengan `npm run generate:tts:en -- --dry-run`; jalankan `npm run generate:tts:en` untuk membuat kedua aksen, manifest `manifest-en-us.json`/`manifest-en-gb.json`, dan memperbarui `manifest-cdn.json`.
 2. Untuk voice acting Boss Fight, gunakan `npm run generate:tts:boss -- --dry-run` untuk memeriksa file yang dibutuhkan atau `npm run generate:tts:boss` untuk membuat audio TTS German dan English.
-3. Dependensi generator tersedia melalui `python -m pip install -r requirements-tts.txt`. Generator German umum `npm run generate:tts` masih menunjuk ke sumber legacy `src/content/materi`; periksa path sebelum menggunakannya untuk konten modular V4.
+3. Dependensi generator tersedia melalui `python -m pip install -r requirements-tts.txt`. Generator German umum `npm run generate:tts` masih menunjuk ke sumber legacy `src/content/materi` dan halaman root lama yang tidak tersedia di struktur aktif. Jangan gunakan generator tersebut pada checkout ini; gunakan generator English atau Boss Fight sesuai kebutuhan.
 4. Salin aset dan manifest yang akan diterbitkan ke direktori sepadan di `nduniverse-audio/audio/`. Pertahankan nama file dan format mapping teks-ke-path pada manifest.
 5. Commit dan push repository audio ke branch `main`, lalu tunggu jsDelivr menyajikan versi terbaru.
 6. Untuk memperbarui peta MP3 umum, siapkan checkout repo audio pada `D:\audio-cdn` (sehingga foldernya `D:\audio-cdn\audio`), lalu jalankan dari root NdUniverse:
@@ -72,11 +72,11 @@ Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di 
    python scripts/migrate-audio-cdn.py
    ```
 
-   Script ini membuat ulang `manifest-cdn.json`; commit dan push file tersebut ke branch aplikasi yang digunakan. Jangan hapus entri yang masih dipakai.
+   Script ini membuat ulang `manifest-cdn.json`; commit dan push file tersebut ke branch aplikasi yang digunakan. Jangan hapus entri yang masih dipakai. Untuk Boss Fight, generator memperbarui `manifest-boss.json` dan salinan di `public/`.
 
 ## Memperbarui Indeks RAG
 
-Perubahan Markdown tidak otomatis memperbarui indeks. Lihat [HANDOVER.md](HANDOVER.md) untuk persiapan, variabel environment, dan langkah ingest. Ingest penuh menggunakan `--replace-all` dan menghapus seluruh baris `public.documents` sebelum mengisi ulang.
+Perubahan Markdown tidak otomatis memperbarui indeks. Sumber ingest mencakup materi German/English dan subset dokumentasi proyek yang ditentukan di `scripts/ingest-rag.py`. Lihat [HANDOVER.md](HANDOVER.md) untuk persiapan, variabel environment, dan langkah ingest. Ingest penuh menggunakan `--replace-all` dan menghapus seluruh baris `public.documents` sebelum mengisi ulang.
 
 ## Sitemap dan Crawler
 
@@ -84,9 +84,22 @@ Landing memakai title `Belajar Bahasa Jerman & Inggris Gratis | NdUniverse`, des
 
 ## Dokumentasi
 
-- [Konsep Desain Frontend](FRONTEND_DESIGN_CONCEPT.md)
-- [PRD](PRD.md)
-- [ERD](ERD.md)
-- [Flowchart](FLOWCHART.md)
-- [Handover](HANDOVER.md)
-- [Pengujian](TESTING.md)
+### Produk dan desain
+
+- [PRD modul pembelajaran](PRD.md)
+- [Visi produk NdUniverse](PRD_NDUNIVERSE.md)
+- [Konsep desain frontend](FRONTEND_DESIGN_CONCEPT.md)
+- [Rencana pengembangan dan backlog](PLAN.md)
+
+### Arsitektur dan pemeliharaan
+
+- [Peta kode dan alur fitur](CODEBASE_SUMMARY.md)
+- [Struktur source dan konten](DATA_STRUCTURE.md)
+- [ERD dan model data](ERD.md)
+- [Flowchart aplikasi](FLOWCHART.md)
+- [Panduan handover dan operasional](HANDOVER.md)
+
+### Validasi
+
+- [Pengembangan dan pengujian](TESTING.md)
+- [Catatan historis k6 dan security](tests/grafana-k6-testing.md)

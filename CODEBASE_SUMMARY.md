@@ -65,7 +65,7 @@ Lihat `package.json` dan `README.md` untuk perintah proyek dan langkah operasion
 
 ### `public/` — aset statis
 
-Berkas di sini disajikan langsung dari URL publik tanpa melalui komponen Astro. Contohnya logo, favicon, SVG bendera, `robots.txt`, dan audio statis yang ada di repository. `public/manifest-boss.json` memetakan dialog Boss Fight ke URL audio; `manifest-cdn.json` di root repository memetakan path audio umum ke URL CDN. Folder audio yang sangat besar/penuh aset berada di repository CDN terpisah, jadi tidak semua MP3 harus ada lokal.
+Berkas di sini disajikan langsung dari URL publik tanpa melalui komponen Astro. Contohnya logo, favicon, SVG bendera, `robots.txt`, dan audio statis yang ada di repository. `manifest-boss.json` di root repository memetakan dialog Boss Fight ke URL audio CDN; `manifest-cdn.json` memetakan path audio umum ke URL CDN. Folder audio yang besar berada di repository CDN terpisah, jadi tidak semua MP3 harus ada lokal.
 
 ## Alur Data Hulu ke Hilir
 
@@ -99,8 +99,8 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 
 ### Audio TTS English
 
-1. Saat generator dijalankan, `scripts/generate-tts-en.py` menghasilkan audio English untuk aksen US dan UK, manifest aksen (`manifest-en-us.json` / `manifest-en-gb.json`), dan memperbarui `manifest-cdn.json`. Manifest aksen dapat tersedia bersama aset di CDN; beberapa file manifest juga ada di `public/audio/`.
-2. `src/core/audio/cdn-audio.js` menyediakan utilitas shared untuk memuat peta path-ke-URL dari `manifest-cdn.json`, menyelesaikan path audio, dan membuat URL TTS English dari hash teks yang dinormalisasi plus kode aksen.
+1. Saat generator dijalankan, `scripts/generate-tts-en.py` menghasilkan audio English untuk aksen US dan UK, manifest aksen (`manifest-en-us.json` / `manifest-en-gb.json`), dan memperbarui `manifest-cdn.json`.
+2. `src/core/audio/cdn-audio.js` menyediakan utilitas shared untuk memuat peta path-ke-URL dari `manifest-cdn.json`, menyelesaikan path audio, dan membuat URL TTS German/English dari hash teks yang dinormalisasi. TTS English memilih direktori hash sesuai aksen.
 3. `src/modules/english/config/english-speech.js` adalah API pemutaran yang dipakai kuis, halaman materi, grammar, dan pronunciation. `playAudioTTS()` memilih aksen, mencoba MP3 dari CDN, dan mengelola pemutaran aktif. Jika audio tidak tersedia (misalnya respons 404), atau browser tidak mendukung pemutar audio, fungsi beralih ke `SpeechSynthesisUtterance`. Kegagalan jaringan/status lain dicatat sebagai error; pemutaran yang diblokir browser meminta pengguna mencoba lagi.
 4. Audio statis/URL langsung juga dapat diteruskan ke pemutar. Jadi untuk mengubah perilaku fallback atau playback, mulai dari `english-speech.js`; untuk mengubah pembuatan URL dan resolver bersama, lihat `cdn-audio.js`; untuk menghasilkan ulang audio, lihat script generator dan petunjuk di `README.md`.
 
@@ -109,7 +109,7 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 1. Rute `src/pages/en/career/[profesi]/boss.astro` dan `src/pages/de/career/[profesi]/boss.astro` mengambil data karier lalu meneruskannya ke `BossFight-en.jsx` atau `BossFight-de.jsx`.
 2. Data pembuka (`boss_intro`) dan daftar pertanyaan/kata kunci (`boss_questions`) ditulis di konten karier Markdown. `src/content.config.ts` memvalidasi bentuk data English dan German.
 3. Komponen Boss Fight mengatur state cinematic, urutan dialog, pertanyaan wawancara, jawaban, dan hasil. Chat bubble memanggil `playBossAudio()` dari `src/core/audio/boss-audio.js`.
-4. `boss-audio.js` membaca `public/manifest-boss.json`, mencari audio berdasarkan teks dialog dan bahasa, lalu memutar URL CDN. Audio dialog diserialkan agar satu voice line berjalan pada satu waktu.
+4. `boss-audio.js` membaca `manifest-boss.json` dari root repository, mencari audio berdasarkan teks dialog dan bahasa, lalu memutar URL CDN. Audio dialog diserialkan agar satu voice line berjalan pada satu waktu.
 5. Typewriter menampilkan teks bertahap. Jika audio tersedia, interval per karakter disesuaikan dengan durasi audio dan penyelesaian teks menunggu audio; jika audio tak tersedia/gagal, typewriter memakai kecepatan default.
 6. Pertanyaan dan kata kunci menentukan evaluasi jawaban serta syarat penyelesaian. Untuk mengubah narasi/soal suatu karier, ubah Markdown profesinya; untuk mengubah tampilan dan state cinematic, ubah komponen Boss Fight; untuk mapping audio, generator, atau pemutar voice acting, lihat manifest, script TTS, dan `boss-audio.js`.
 
@@ -129,7 +129,7 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 - **Mau mengubah retrieval RAG atau cara materi diindeks?** Endpoint/RPC ada di `src/pages/api/chat.ts` dan `supabase/setup_rag.sql`; proses memasukkan materi ada di `scripts/ingest-rag.py`.
 - **Mau mengubah aksen, playback, atau fallback TTS English?** Buka `src/modules/english/config/english-speech.js`; URL/hash dan resolver CDN ada di `src/core/audio/cdn-audio.js`.
 - **Mau menghasilkan ulang audio English/Boss Fight?** Lihat `scripts/generate-tts-en.py` atau `scripts/generate-boss-tts.py`, lalu ikuti aturan publikasi audio/manifest di `README.md`.
-- **Mau mengubah adegan Boss Fight?** Ubah `BossFight-en.jsx` / `BossFight-de.jsx` untuk UI dan state, atau Markdown profesi untuk intro/pertanyaan/kata kunci. Voice acting memakai `src/core/audio/boss-audio.js` dan `public/manifest-boss.json`.
+- **Mau mengubah adegan Boss Fight?** Ubah `BossFight-en.jsx` / `BossFight-de.jsx` untuk UI dan state, atau Markdown profesi untuk intro/pertanyaan/kata kunci. Voice acting memakai `src/core/audio/boss-audio.js` dan `manifest-boss.json`.
 - **Mau menambah rute/halaman?** Buat atau ubah berkas Astro di lokasi yang mencerminkan URL dalam `src/pages/`; gunakan `[parameter]` untuk rute dinamis.
 
 ## Automated Testing & Video Promo (Playwright)

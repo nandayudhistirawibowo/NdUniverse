@@ -8,9 +8,9 @@ Platform ini menjadi gerbang utama untuk berbagai modul bahasa. Setiap modul dap
 
 ## Status Rilis
 
-- NdUniverse V4: **Selesai 100% untuk lingkup rilis.**
-- Modul German dan English memiliki materi belajar, latihan, ujian, dan progress sesuai route yang tersedia.
-- NdBot v2 berbasis RAG, audio English dua aksen, latihan empat pilar tanpa urutan/locking paksa, dan anti-cheat ujian tiga strike termasuk dalam lingkup V4.
+- Source saat ini menyediakan modul German dan English dengan materi belajar, latihan, ujian, dan progress pada route yang tersedia.
+- NdBot v2 berbasis RAG, audio English dua aksen, latihan empat pilar tanpa urutan/locking paksa, dan anti-cheat ujian tiga strike termasuk dalam lingkup fitur.
+- Status deployment, migrasi database, dan kesiapan rilis harus diverifikasi pada environment tujuan; dokumen ini tidak mengklaim validasi production.
 
 ## Target User
 

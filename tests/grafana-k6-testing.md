@@ -1,6 +1,12 @@
-# Laporan Pengujian NdUniverse V4 (K6 & Security)
+# Catatan Historis Pengujian NdUniverse (k6 dan security)
 
-**Tanggal:** 17 November 2026
+**Run yang dicatat:** 17 November 2026
+
+**Status catatan:** hasil run tersebut, bukan status tes atau performa terkini.
+
+Gunakan [panduan pengujian](../TESTING.md) untuk menjalankan suite yang tersedia.
+`load-test.js` saat ini menargetkan URL production secara langsung; jangan
+jalankan load test tanpa otorisasi dan koordinasi.
 
 ## A. Hasil Security Audit (Playwright)
 
@@ -9,7 +15,7 @@
 
 - **PASS:** Middleware aman; celah *Auth Bypass* telah tertambal. API Chat mengembalikan `401` untuk permintaan tanpa autentikasi, dan proses logout membersihkan sesi dengan benar.
 - **SKIP:** Pengujian Leaderboard dan RLS memerlukan setup tambahan.
-- **FAIL:** `04-env.spec.ts` gagal karena mencoba mengambil script internal Astro (`@id/...`). Ini bukan celah keamanan; script pengujian perlu diperbaiki agar memfilter URL `@id`.
+- **FAIL:** `04-env.spec.ts` gagal saat mencoba mengambil script internal Astro (`@id/...`). Karena pemeriksaan bundle tidak selesai, hasil ini tidak membuktikan ada ataupun tidak adanya kebocoran; evaluasi pemilihan script sebelum mengulang tes.
 
 ## B. Hasil Load Testing (Grafana k6)
 
@@ -23,15 +29,16 @@
 | `http_req_duration` — median | 1,03 s | — |
 | `http_req_duration` — p(95) | **4,81 s** | GAGAL (ambang batas < 500 ms) |
 
-Tidak ada request yang gagal dan server tetap stabil tanpa crash. Latensi yang tinggi kemungkinan disebabkan *bottleneck* koneksi internet lokal saat mengirim beban 100 VUs dari satu mesin, bukan karena Vercel tidak tersedia.
+Tidak ada request yang gagal pada run yang dicatat, tetapi ambang p95 tidak tercapai. Catatan ini tidak cukup untuk menentukan penyebab latensi; ukur ulang pada environment dan kondisi jaringan yang terkendali sebelum menarik kesimpulan.
 
 ## C. Optimasi yang Dilakukan
 
-- Menggunakan SSG (*Static Site Generation*) untuk Landing, Portal DE/EN, dan Login.
-- Memuat NdBot secara *lazy* dengan `client:idle`.
-- Menghosting 100% audio melalui CDN jsDelivr.
+- Optimasi yang dicatat saat itu: SSG untuk Landing, Portal DE/EN, dan Login; lazy-load NdBot dengan `client:idle`; audio melalui CDN jsDelivr.
+- Verifikasi ulang konfigurasi dan hasil build saat ini sebelum menganggap semua optimasi tersebut masih berlaku.
 
-## D. Action Items (Backlog)
+## D. Follow-up yang tercatat saat run tersebut
+
+Status di bawah tidak diperiksa ulang dalam run historis ini; cocokkan dengan source dan kebutuhan saat ini sebelum menganggapnya masih terbuka.
 
 - [ ] Memperbaiki test Env (`04-env.spec.ts`) dengan memfilter URL `@id`.
 - [ ] Melakukan *lazy-load* `html2pdf.js` (913 KB).

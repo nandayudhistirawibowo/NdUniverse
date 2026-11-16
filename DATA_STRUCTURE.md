@@ -15,12 +15,16 @@ src/
 │   │   ├── avatar.ts
 │   │   └── middleware.ts
 │   ├── audio/
+│   │   ├── boss-audio.js
 │   │   └── cdn-audio.js
 │   ├── db/
 │   │   ├── progress-client.js
 │   │   └── progress-client-en.js
 │   ├── game/
-│   │   └── quiz-sounds.js
+│   │   ├── exam-grading.js
+│   │   ├── fuzzy-match.js
+│   │   ├── quiz-sounds.js
+│   │   └── useExamAntiCheat.js
 │   └── ui/
 │       ├── DashboardLayout.astro
 │       ├── DashboardLayout-de.astro
@@ -48,9 +52,11 @@ src/
 │   │       │   ├── english-a1-colors.md
 │   │       │   ├── english-a1-family.md
 │   │       │   └── ...
-│   │       ├── exam/ielts/ielts-a1-example.md
-│   │       ├── exam/toefl/toefl-a1-example.md
-│   │       └── alltags/ (legacy placeholder folders)
+│   │       ├── academic/
+│   │       ├── career/
+│   │       └── exam/
+│   │           ├── ielts/
+│   │           └── toefl/
 │   └── german/
 │       ├── components/
 │       │   ├── BossFight-de.jsx
@@ -94,8 +100,9 @@ Kode platform bersama yang dapat digunakan lintas bahasa.
 
 - **`auth/`** — autentikasi dan akses akun, portal auth, avatar, middleware auth, serta fungsi admin. File penting: `AuthPortal.astro`, `middleware.ts`, `avatar.ts`, dan `admin.ts`.
 - **`db/`** — akses dan sinkronisasi progress pengguna. `progress-client.js` menangani progress modul Jerman/default, sedangkan `progress-client-en.js` menangani progress English.
+- **`audio/`** — pembentukan URL dan pemutaran audio CDN, termasuk voice acting Boss Fight.
 - **`ui/`** — layout dan komponen antarmuka yang dipakai oleh beberapa route atau bahasa. Layout dashboard terpisah tersedia untuk umum, German, dan English.
-- **`game/`** — helper game bersama; `quiz-sounds.js` mengatur efek suara kuis.
+- **`game/`** — helper bersama untuk suara kuis, fuzzy matching, grading ujian, dan anti-cheat fullscreen.
 
 ### `src/modules/german/`
 
@@ -113,7 +120,7 @@ Modul English mengikuti struktur modular yang simetris dengan German.
 - **`content/everyday/`** — materi harian English per level CEFR; materi A1 tersedia sebagai contoh.
 - **`content/exam/ielts/` dan `content/exam/toefl/`** — konten ujian per tipe, dengan contoh soal A1 untuk validasi schema.
 - **`config/`** — konfigurasi speech English melalui `english-speech.js`; generator TTS mendukung aksen US/UK, dengan resolver CDN sinkron di `src/core/audio/cdn-audio.js`.
-- Astro Content Collections memisahkan konten menjadi `englishEveryday` dan `englishExam`.
+- Astro Content Collections English mencakup `englishEveryday`, `englishAcademic`, `englishCareer`, dan `englishExam`.
 
 ### `src/pages/`
 
@@ -123,14 +130,10 @@ Route Astro berbasis nama file dan struktur folder. Komponen halaman biasanya me
 - **`en/`** — route modul English, termasuk dashboard, materi, Everyday English, Academic English, Career, Grammar, Pronunciation, dan Exam Prep di `/en/exam/[type]/[level]`.
 - **`login-de.astro` dan `login-en.astro`** — halaman login untuk pilihan bahasa masing-masing.
 - **`dashboard-de/`** — route dashboard German aktif dengan halaman utama, profil, dan bookmark, pada URL `/dashboard-de`. Katalog, detail materi, dan latihan German berada di bawah `/de/...`. Dashboard English berada di `pages/en/dashboard/` pada URL `/en/dashboard`.
-- Halaman di root `pages/` seperti `index.astro`, `bantuan.astro`, `panduan.astro`, dan `pengucapan.astro` menyediakan entry point atau route platform yang masih ada.
+- Root `pages/` berisi landing, login, dan dashboard umum. Halaman bantuan dan pengucapan berada di bawah route modul (`/de/...` atau `/en/...`), bukan sebagai halaman root.
 - Folder route lain termasuk `api/`, `admin/`, `career/`, `materi/`, `ujian/`, dan `sertifikat/`. Periksa implementasi route terkait sebelum menambah atau memindahkan URL.
 
 Komponen universal ditempatkan di `src/core/ui/`. Folder root `src/components/` dan `src/content/` sudah tidak digunakan; komponen serta konten English berada di `src/modules/english/`.
-
-### `src/lib/`
-
-Folder `src/lib/` tidak ada pada struktur repository saat ini. Jika menemukan dokumentasi atau import lama yang merujuk ke folder tersebut, verifikasi sebelum mengubahnya; helper aktif berada terutama di `src/core/` dan kode khusus bahasa di `src/modules/german/`.
 
 ### File pendukung di root `src/`
 
@@ -143,5 +146,5 @@ Folder `src/lib/` tidak ada pada struktur repository saat ini. Jika menemukan do
 - Letakkan helper lintas bahasa di `src/core/` sesuai domainnya.
 - Letakkan komponen dan konten German di `src/modules/german/`.
 - Letakkan komponen, config, dan konten English di `src/modules/english/`.
-- Gunakan collection `englishEveryday` untuk materi sehari-hari dan `englishExam` untuk IELTS/TOEFL.
+- Gunakan collection yang sesuai dengan domain: `englishEveryday`, `englishAcademic`, `englishCareer`, atau `englishExam`.
 - Route ditentukan oleh struktur file `src/pages/`; periksa route dan link terkait sebelum mengubah lokasi halaman.
