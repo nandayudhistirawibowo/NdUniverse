@@ -11,12 +11,16 @@ const titles = {
   business: ['Digital Business & E-Commerce', 'Business'],
   health: ['Pflege & Gesundheitswesen', 'Pflege'],
   nutrition: ['Gizi & Kebidanan', 'Gizi dan Kebidanan'],
-};
-const titleData = titles[profesi];
-if (!titleData) return new Response('Profesi tidak ditemukan.', { status: 404 });
+} as const;
+if (!Object.hasOwn(titles, profesi)) {
+  return new Response('Profesi tidak ditemukan.', { status: 404 });
+}
+const category = profesi as keyof typeof titles;
+const titleData = titles[category];
 
 const entry = await getEntry('career', profesi);
-const questions = entry?.data.boss_questions ?? [];
+const questions: { question: string; keywords: string[]; advancedKeywords?: string[] }[] =
+  entry?.data.boss_questions ?? [];
 const bossIntro = entry?.data.boss_intro ?? [];
 ---
 

@@ -9,10 +9,17 @@ const item = await getEntry('materi', Astro.params.slug ?? '');
 if (!item) return new Response('Materi tidak ditemukan.', { status: 404 });
 
 const type = Astro.url.searchParams.get('type') ?? '';
-const validTypes = ['reading', 'listening', 'writing', 'speaking'];
-if (!validTypes.includes(type)) return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
-const pillarLabels = { reading: 'Membaca', listening: 'Menyimak', writing: 'Menulis', speaking: 'Berbicara' };
-const pillarLabel = pillarLabels[type] ?? 'Latihan Materi';
+const pillarLabels = {
+  reading: 'Membaca',
+  listening: 'Menyimak',
+  writing: 'Menulis',
+  speaking: 'Berbicara',
+} as const;
+if (!Object.hasOwn(pillarLabels, type)) {
+  return new Response('Pilar latihan tidak ditemukan.', { status: 404 });
+}
+const skill = type as keyof typeof pillarLabels;
+const pillarLabel = pillarLabels[skill];
 const batchSize = 5;
 const sessionNumber = Math.max(1, Number(Astro.url.searchParams.get('session')) || 1);
 const startIndex = (sessionNumber - 1) * batchSize;
