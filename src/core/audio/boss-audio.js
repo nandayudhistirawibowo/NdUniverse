@@ -41,7 +41,7 @@ function getManifest() {
 }
 
 function playAudioWhenReady(audioUrl, signal) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     if (signal?.aborted || typeof Audio === 'undefined') {
       resolve(null);
       return;
@@ -50,17 +50,23 @@ function playAudioWhenReady(audioUrl, signal) {
     let settled = false;
     let startupTimeout;
     let resolveCompletion;
+    let playRequested = false;
+    let playbackReady = false;
     const completion = new Promise((done) => {
       resolveCompletion = done;
     });
-    const audio = new Audio(audioUrl);
+    const audio = new Audio();
+    audio.crossOrigin = 'anonymous';
+    audio.preload = 'auto';
     audioCompletions.set(audio, completion);
     activeAudio = audio;
 
     const cleanup = () => {
-      audio.onplay = null;
-      audio.onended = null;
-      audio.onerror = null;
+      window.clearTimeout(startupTimeout);
+      audio.removeEventListener('loadedmetadata', handleReady);
+      audio.removeEventListener('canplay', handleReady);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('error', handleError);
       signal?.removeEventListener('abort', stopAudio);
       resolveCompletion();
       if (activeAudio === audio) {
@@ -78,37 +84,82 @@ function playAudioWhenReady(audioUrl, signal) {
 
     const stopAudio = () => {
       audio.pause();
+      cleanup();
       audio.removeAttribute('src');
       audio.load();
-      cleanup();
       settle(null);
     };
 
     activeAudioStop = stopAudio;
-    audio.onplay = () => settle(audio);
-    audio.onended = cleanup;
-    audio.onerror = () => {
-      console.warn('Boss audio could not be loaded; using the default typewriter speed.', audio.error);
-      cleanup();
-      settle(null);
-    };
-    signal?.addEventListener('abort', stopAudio, { once: true });
-    startupTimeout = window.setTimeout(() => {
+    const failAudio = (error) => {
       if (settled) return;
-      console.warn('Boss audio did not start in time; using the default typewriter speed.');
-      stopAudio();
-    }, 10000);
+      settled = true;
+      cleanup();
+      audio.pause();
+      audio.removeAttribute('src');
+      audio.load();
+      reject(error);
+    };
+    const handleReady = () => {
+      if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
+      if (playbackReady) {
+        settle(audio);
+        return;
+      }
+      if (!playRequested) {
+        playRequested = true;
+        try {
+          const playPromise = audio.play();
+          if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.then(() => {
+              playbackReady = true;
+              if (Number.isFinite(audio.duration) && audio.duration > 0) {
+                settle(audio);
+              }
+            }, failAudio);
+          } else {
+            playbackReady = true;
+            settle(audio);
+          }
+        } catch (error) {
+          failAudio(error);
+          return;
+        }
+      }
+    };
+    const handleEnded = () => {
+      if (!settled) {
+        failAudio(new Error('Boss audio ended before metadata was ready.'));
+        return;
+      }
+      cleanup();
+    };
+    const handleError = () => {
+      const error = new Error('Boss audio could not be loaded.');
+      if (!settled) {
+        failAudio(error);
+        return;
+      }
+
+      console.warn('Boss audio failed during playback.', audio.error);
+      cleanup();
+    };
+
+    audio.addEventListener('loadedmetadata', handleReady);
+    audio.addEventListener('canplay', handleReady);
+    audio.addEventListener('ended', handleEnded, { once: true });
+    audio.addEventListener('error', handleError, { once: true });
+    signal?.addEventListener('abort', stopAudio, { once: true });
+    startupTimeout = window.setTimeout(
+      () => failAudio(new Error('Boss audio did not load valid metadata within 5 seconds.')),
+      5000,
+    );
 
     try {
-      audio.play()?.catch((error) => {
-        console.warn('Boss audio playback failed; using the default typewriter speed.', error);
-        cleanup();
-        settle(null);
-      });
+      audio.src = audioUrl;
+      audio.load();
     } catch (error) {
-      console.warn('Boss audio playback failed; using the default typewriter speed.', error);
-      cleanup();
-      settle(null);
+      failAudio(error);
     }
   });
 }

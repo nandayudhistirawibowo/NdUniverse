@@ -11,53 +11,6 @@ const DEFAULT_BOSS_INTRO = [
   { detik: 8, aksi: 'The hiring manager greets the candidate.', dialog: 'Welcome. Please have a seat. To start, tell me a little about yourself.' },
 ];
 
-function waitForAudioDuration(audio, signal) {
-  if (!audio) return Promise.resolve({ audio: null, duration: null });
-
-  return new Promise((resolve) => {
-    let timer;
-    let settled = false;
-    const cleanup = () => {
-      window.clearTimeout(timer);
-      audio.removeEventListener('loadedmetadata', checkDuration);
-      audio.removeEventListener('durationchange', checkDuration);
-      audio.removeEventListener('ended', handleUnavailableAudio);
-      audio.removeEventListener('error', handleUnavailableAudio);
-      signal?.removeEventListener('abort', handleUnavailableAudio);
-    };
-    const settle = (duration, keepAudio = true) => {
-      if (settled) return;
-      settled = true;
-      cleanup();
-      resolve({ audio: keepAudio ? audio : null, duration });
-    };
-    const checkDuration = () => {
-      if (audio.ended) {
-        settle(null, false);
-        return;
-      }
-
-      if (Number.isFinite(audio.duration) && audio.duration > 0) {
-        settle(audio.duration);
-      }
-    };
-    const handleUnavailableAudio = () => settle(null, false);
-
-    if (signal?.aborted) {
-      handleUnavailableAudio();
-      return;
-    }
-
-    audio.addEventListener('loadedmetadata', checkDuration);
-    audio.addEventListener('durationchange', checkDuration);
-    audio.addEventListener('ended', handleUnavailableAudio, { once: true });
-    audio.addEventListener('error', handleUnavailableAudio, { once: true });
-    signal?.addEventListener('abort', handleUnavailableAudio, { once: true });
-    timer = window.setTimeout(() => settle(null), 1000);
-    checkDuration();
-  });
-}
-
 function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, onComplete }) {
   const [visibleText, setVisibleText] = useState('');
 
@@ -79,6 +32,7 @@ function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, o
         return;
       }
       audio.addEventListener('ended', complete, { once: true });
+      audio.addEventListener('error', complete, { once: true });
     };
     const typeText = (intervalMs, audio) => {
       if (prefersReducedMotion) {
@@ -113,17 +67,21 @@ function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, o
       ? playBossAudio(text, language, controller.signal)
       : Promise.resolve(null);
     audioPromise
-      .then((audio) => waitForAudioDuration(audio, controller.signal))
-      .then(({ audio, duration }) => {
+      .then((audio) => {
         if (cancelled) return;
+        const duration = audio?.duration ?? null;
         const intervalMs = Number.isFinite(duration) && duration > 0
           ? (duration * 1000) / characters.length
           : 60;
+        console.log('[Desktop Debug] Duration:', duration, 'Interval:', intervalMs);
         typeText(intervalMs, audio);
       })
       .catch((error) => {
         console.warn('Unable to prepare Boss Fight voice; using the default typewriter speed.', error);
-        if (!cancelled) typeText(60, null);
+        if (!cancelled) {
+          console.log('[Desktop Debug] Duration:', null, 'Interval:', 60);
+          typeText(60, null);
+        }
       });
 
     return () => {
