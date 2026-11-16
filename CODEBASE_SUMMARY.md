@@ -132,6 +132,134 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 - **Mau mengubah adegan Boss Fight?** Ubah `BossFight-en.jsx` / `BossFight-de.jsx` untuk UI dan state, atau Markdown profesi untuk intro/pertanyaan/kata kunci. Voice acting memakai `src/core/audio/boss-audio.js` dan `public/manifest-boss.json`.
 - **Mau menambah rute/halaman?** Buat atau ubah berkas Astro di lokasi yang mencerminkan URL dalam `src/pages/`; gunakan `[parameter]` untuk rute dinamis.
 
+## Automated Testing & Video Promo (Playwright)
+
+Playwright dipakai untuk menjalankan browser test, merekam video perjalanan promo, dan memeriksa interaksi/layout. Jalankan perintah dari root repository:
+
+```powershell
+# Test perjalanan promo dan rekam video
+npx playwright test tests/e2e-promo.spec.ts
+
+# Test bug hunter / pemeriksaan interaksi lintas halaman
+npx playwright test tests/e2e-comprehensive.spec.ts
+
+# Jalankan semua file test Playwright di tests/
+npx playwright test
+```
+
+### Server test otomatis
+
+Tidak perlu menjalankan `npm run dev` secara manual. `playwright.config.ts` mengatur `webServer` untuk menjalankan `npm run build` lalu `node scripts/serve-vercel-output.mjs` pada `http://localhost:4321` sebelum test. Playwright akan memakai server yang sudah berjalan di URL tersebut jika tersedia (`reuseExistingServer: true`).
+
+### Melihat laporan dan hasil
+
+Setelah test selesai, buka laporan HTML dengan:
+
+```powershell
+npx playwright show-report
+```
+
+Laporan menampilkan status test, langkah yang gagal, pesan error, dan tautan ke lampiran test seperti screenshot/video jika tersedia.
+
+Artefak test disimpan sementara di `test-results/`. Test promo merekam video karena konfigurasi global mengaktifkan video; test yang menonaktifkannya secara eksplisit, seperti bug hunter, tidak menghasilkan video. Playwright membersihkan output directory saat memulai run baru, jadi salin artefak yang ingin disimpan sebelum run berikutnya. `test-results/` dan `playwright-report/` tercantum di `.gitignore`, sehingga hasil ini tidak ikut Git.
+
+### Mengonversi video promo menjadi MP4
+
+Jalankan test promo terlebih dahulu. Dengan FFmpeg terpasang dan tersedia di `PATH`, perintah PowerShell berikut mencari video terbaru di `test-results/`, mengonversinya ke H.264/AAC, lalu memindahkan hasilnya ke Desktop:
+
+```powershell
+$promoVideo = Get-ChildItem .\test-results -Filter video.webm -Recurse |
+  Sort-Object LastWriteTime -Descending |
+  Select-Object -First 1
+
+if (-not $promoVideo) {
+  throw "video.webm tidak ditemukan. Jalankan test promo terlebih dahulu."
+}
+
+ffmpeg -i "$($promoVideo.FullName)" -c:v libx264 -preset medium -crf 18 `
+  -pix_fmt yuv420p -c:a aac -b:a 192k -movflags +faststart `
+  .\Promo_NdUniverse.mp4
+
+Move-Item .\Promo_NdUniverse.mp4 "$env:USERPROFILE\Desktop\Promo_NdUniverse.mp4" -Force
+```
+
+Jalankan bagian ini segera setelah test promo agar yang diambil adalah video promo dan belum terhapus oleh test run baru. `-Force` mengganti file MP4 bernama sama yang sudah ada di Desktop.
+
+### Bug report
+
+`tests/e2e-comprehensive.spec.ts` menambahkan kegagalan langkah yang ditangkap ke `bug-report.txt` di root repository. Setiap baris berformat:
+
+```text
+[timestamp ISO] - Nama langkah - Pesan error
+```
+
+File ini adalah catatan teks untuk investigasi; laporan Playwright dan bug report memiliki tujuan berbeda.
+
+## Cara Memanipulasi Automated Testing
+
+### Menambah skenario atau mengubah langkah
+
+Mulai dari `tests/e2e-promo.spec.ts` untuk alur promo/video atau `tests/e2e-comprehensive.spec.ts` untuk pemeriksaan lintas fitur. Test ditulis dengan Playwright Test dan menggunakan objek `page` untuk mengendalikan browser. Contoh:
+
+```ts
+await page.goto('/url');
+await page.getByRole('button', { name: 'Teks Tombol' }).click();
+await page.fill('input', 'Teks');
+await page.waitForTimeout(500);
+```
+
+`page.goto()` membuka rute relatif terhadap `baseURL`. `getByRole()` memilih elemen berdasarkan peran aksesibilitas dan nama yang terlihat, sehingga biasanya lebih tahan perubahan markup. `page.fill(selector, value)` mengisi kontrol form. Untuk menunggu perubahan UI, utamakan assertion seperti `await expect(locator).toBeVisible()`; gunakan `waitForTimeout(ms)` hanya jika memang perlu jeda waktu tertentu, karena jeda tetap dapat memperlambat test dan membuatnya rapuh.
+
+### Mengubah kecepatan dan ukuran viewport
+
+Di `playwright.config.ts`, `use.launchOptions.slowMo` menentukan jeda (milidetik) di antara aksi browser. Konfigurasi sekarang memakai `300`; ubah, misalnya, menjadi `1000` untuk memperlambat gerakan agar lebih mudah diamati dan lebih dramatis saat direkam:
+
+```ts
+launchOptions: { slowMo: 1000 },
+```
+
+Resolusi browser/video diatur oleh `use.viewport`. Konfigurasi sekarang sudah memakai 1920 × 1080; sesuaikan nilainya bila ingin ukuran lain:
+
+```ts
+viewport: { width: 1920, height: 1080 },
+```
+
+Perubahan pada konfigurasi berlaku untuk semua test kecuali test atau fixture yang mengganti pengaturan tersebut sendiri. Setelah mengubahnya, jalankan ulang test yang terkait dan periksa video/laporan.
+
+## Alur Hulu ke Hilir (End-to-End Flow) - Deep Dive
+
+### 1. Chatbot NdBot
+
+1. Pengguna mengetik di UI `src/core/ui/NdBot.jsx`, lalu menekan tombol kirim/Enter. Komponen menambahkan pesan pengguna ke state percakapan dan mengirim paling banyak 12 pesan terakhir melalui `fetch('/api/chat', { method: 'POST', ... })`.
+2. `src/pages/api/chat.ts` membaca dan memvalidasi body, role, panjang pesan, dan jumlah riwayat. Permintaan yang dikenali sebagai permintaan jawaban kuis/ujian ditolak; kata kunci bantuan dapat menghasilkan tautan WhatsApp tanpa melanjutkan RAG.
+3. Untuk pertanyaan materi, endpoint mencoba merapikan pertanyaan menggunakan Groq query-rewriter (memperbaiki typo, memperluas singkatan, dan menerjemahkan jika perlu). Jika rewrite gagal, endpoint memakai pertanyaan asli.
+4. Pertanyaan hasil rewrite dikirim ke Cloudflare Workers AI untuk menghasilkan embedding 384 dimensi. Backend lalu memanggil Supabase RPC `match_documents` dengan embedding tersebut, ambang kemiripan, dan batas jumlah hasil. RPC mencari potongan terdekat di tabel `documents`.
+5. Potongan materi yang ditemukan dimasukkan ke system prompt bersama persona dan aturan NdBot. Endpoint mengirim prompt, konteks, serta riwayat percakapan ke Groq Chat Completions; beberapa model dicoba sebagai fallback bila model sebelumnya gagal.
+6. Endpoint mengembalikan objek JSON berisi `type` dan `message` (atau data tautan bantuan). `NdBot.jsx` membaca respons dan menambahkan jawaban assistant ke state untuk ditampilkan. Jika request gagal, UI menampilkan pesan gagal kirim.
+
+Tempat perubahan: UI/state/request ada di `src/core/ui/NdBot.jsx`; validasi, prompt, Groq, Cloudflare embedding, dan pemanggilan Supabase ada di `src/pages/api/chat.ts`; fungsi RPC dan tabel ada di `supabase/setup_rag.sql`.
+
+### 2. Kuis English dan penyimpanan progres
+
+1. Halaman Astro mengambil item materi dari koleksi konten, lalu memberikannya ke `src/modules/english/components/Quiz-en.jsx`. Komponen membangun antrean dan menyimpan jawaban, soal aktif, XP, nyawa, dan statistik sesi di state Preact.
+2. Setelah pengguna memilih/menulis jawaban lalu memeriksanya, handler kuis membandingkan jawaban dengan kunci. Untuk jawaban teks, `isFuzzyMatch()` dari `src/core/game/fuzzy-match.js` mengizinkan variasi kecil; bentuk soal lain menggunakan aturan kecocokan yang sesuai.
+3. Jawaban benar memperbarui jumlah benar, XP sesi, dan antrean; jawaban salah mengurangi nyawa, mencatat soal untuk diulang, dan dapat mengakhiri sesi jika nyawa habis. Ini adalah state interaktif di browser, belum berarti setiap klik langsung ditulis ke database.
+4. Saat XP/sesi memenuhi kondisi simpan (misalnya XP sesi difinalisasi atau pilar/sesi lulus), `Quiz-en.jsx` memanggil `queueProgressUpdate()`. Antrean lokal mengurutkan penulisan agar update tidak saling mendahului.
+5. `src/core/db/progress-client-en.js` memakai Supabase browser client, membaca progres yang ada, menggabungkan XP dan sesi/pilar yang lulus, lalu melakukan `upsert` ke `user_progress` dengan `language_code: 'en'` dan konflik unik `user_id,material_slug,language_code`.
+6. Setelah tersimpan, helper mengirim event `nd:progress-updated` agar UI yang mendengarkan dapat menyegarkan tampilan. Error penyimpanan dicatat dan ditampilkan melalui pesan toast oleh kuis.
+
+Tempat perubahan: alur state dan pemeriksaan jawaban di `Quiz-en.jsx`; toleransi jawaban di `src/core/game/fuzzy-match.js`; pembacaan/upsert progres di `src/core/db/progress-client-en.js`; data soal di Markdown dan schema `src/content.config.ts`.
+
+### 3. Audio TTS English
+
+1. Tombol speaker pada kuis atau halaman materi memanggil `playAudioTTS()` dari `src/modules/english/config/english-speech.js`, dengan teks dan aksen yang dipilih (US atau UK).
+2. `english-speech.js` merapikan whitespace teks dan menghentikan audio aktif sebelumnya. Untuk teks biasa, ia meminta `getSyncAudioUrl()` dari `src/core/audio/cdn-audio.js`; helper membuat SHA-256 dari teks yang dinormalisasi dan membentuk path MP3 seperti `tts-en-us/<hash>-us.mp3` atau `tts-en-gb/<hash>-gb.mp3`.
+3. URL MP3 menunjuk ke repository audio di jsDelivr. `cdn-audio.js` juga menyediakan loader/resolver manifest CDN untuk path audio yang dipetakan; generator English menghasilkan manifest US/UK dan memperbarui mapping umum `manifest-cdn.json`.
+4. `english-speech.js` membuat `new Audio(audioUrl)`, memuat audio, lalu memanggil `audio.play()`. Event selesai/error mengatur status tombol dan mengelola referensi audio aktif.
+5. Jika audio tidak tersedia (misalnya 404), tidak ada URL TTS yang dapat dibentuk, atau browser tidak mendukung `Audio`, pemutar menggunakan `SpeechSynthesisUtterance` dengan locale `en-US` atau `en-GB`. Kegagalan jaringan/status lain dicatat sebagai error; jika browser memblokir autoplay, pengguna diminta menekan tombol lagi.
+
+Tempat perubahan: handler playback dan fallback di `src/modules/english/config/english-speech.js`; normalisasi, hash, serta resolver CDN di `src/core/audio/cdn-audio.js`; pembuatan aset dan manifest di `scripts/generate-tts-en.py`.
+
 ## Catatan Saat Mengubah Kode
 
 - Data Markdown harus sesuai schema koleksinya di `src/content.config.ts`; perubahan format data biasanya perlu perubahan schema dan pemakai data.
