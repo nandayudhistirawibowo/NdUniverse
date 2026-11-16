@@ -1,4 +1,5 @@
 import BOSS_AUDIO_MANIFEST from '../../../manifest-boss.json' with { type: 'json' };
+import { preloadAudioUrl } from './audio-cache.js';
 
 const AUDIO_CDN_BASE =
   'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio';
@@ -18,10 +19,13 @@ function playAudioWhenReady(audioUrl, signal) {
     let startupTimeout;
     let playbackStarted = false;
     let metadataReady = false;
-    const audio = new Audio();
-    audio.preload = 'auto';
-    audio.crossOrigin = 'anonymous';
+    const audio = preloadAudioUrl(audioUrl);
+    if (!audio) {
+      resolve(null);
+      return;
+    }
     activeAudio = audio;
+    metadataReady = Number.isFinite(audio.duration) && audio.duration > 0;
 
     const cleanup = () => {
       window.clearTimeout(startupTimeout);
@@ -46,8 +50,7 @@ function playAudioWhenReady(audioUrl, signal) {
     const stopAudio = () => {
       audio.pause();
       cleanup();
-      audio.removeAttribute('src');
-      audio.load();
+      audio.currentTime = 0;
       settle(null);
     };
 
@@ -57,8 +60,7 @@ function playAudioWhenReady(audioUrl, signal) {
       settled = true;
       cleanup();
       audio.pause();
-      audio.removeAttribute('src');
-      audio.load();
+      audio.currentTime = 0;
       reject(error);
     };
     const handleReady = () => {
@@ -95,7 +97,7 @@ function playAudioWhenReady(audioUrl, signal) {
     );
 
     try {
-      audio.src = audioUrl;
+      audio.currentTime = 0;
       const playPromise = audio.play();
       if (playPromise && typeof playPromise.then === 'function') {
         playPromise.then(() => {
@@ -110,6 +112,17 @@ function playAudioWhenReady(audioUrl, signal) {
       failAudio(error);
     }
   });
+}
+
+export function preloadBossAudio(text, language) {
+  const spokenText = String(text ?? '').trim();
+  if (!spokenText || (language !== 'en' && language !== 'de')) return null;
+
+  const audioUrl = BOSS_AUDIO_MANIFEST?.[spokenText];
+  const languagePath = `${AUDIO_CDN_BASE}/boss/${language}/`;
+  if (typeof audioUrl !== 'string' || !audioUrl.startsWith(languagePath)) return null;
+
+  return preloadAudioUrl(audioUrl);
 }
 
 export function playBossAudio(text, language, signal) {

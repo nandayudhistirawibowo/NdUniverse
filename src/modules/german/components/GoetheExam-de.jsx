@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { playAudioTTS } from '@german/config/german-speech.js';
+import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { calculateModuleScore, isPassed, saveExamResult } from '@core/game/exam-grading.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
@@ -89,6 +89,11 @@ function formatTime(seconds) {
 }
 
 export default function GoetheExam({ level, tasks, available = true }) {
+  useEffect(() => {
+    (tasks ?? []).forEach((task) => {
+      if (task.audio) preloadGermanTtsAudio(task.audio);
+    });
+  }, [tasks]);
   const [isStarted, setIsStarted] = useState(false);
   const [activeModule, setActiveModule] = useState('lesen');
   const [completedModules, setCompletedModules] = useState([]);

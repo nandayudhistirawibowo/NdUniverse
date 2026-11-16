@@ -1,10 +1,13 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { playAudioTTS } from '@german/config/german-speech.js';
+import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 
 /** @param {{ words?: Array<{ german: string; indonesian: string; options: string[] }>; profession?: string }} props */
 export default function CareerQuiz({ words, profession = 'Profesi' }) {
   const vocab = words ?? [];
+  useEffect(() => {
+    vocab.forEach((word) => preloadGermanTtsAudio(word.german));
+  }, [vocab]);
   const [started, setStarted] = useState(false);
   const [index, setIndex] = useState(0);
   const [score, setScore] = useState(0);
@@ -52,7 +55,7 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
                 <div class="career-word">
                   <strong lang="de">{word.german}</strong>
                   <button
-                    class="career-word-audio"
+                    class="career-word-audio audio-btn"
                     type="button"
                     aria-label={`Putar pelafalan ${word.german}`}
                     onClick={(event) => playAudioTTS(word.german, event.currentTarget)}

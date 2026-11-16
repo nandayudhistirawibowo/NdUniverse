@@ -1,5 +1,6 @@
 ---
 import { createAvatarSignedUrl } from '@core/auth/avatar';
+import './audio-controls.css';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 
 const {
@@ -353,6 +354,24 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     display: grid;
     min-height: 100vh;
     grid-template-columns: 252px minmax(0, 1fr);
+  }
+
+  .admin-shell {
+    --bg-main: #0e0e12;
+    --bg-dark: #0e0e12;
+    --bg-card: #17171d;
+    --card-bg: #17171d;
+    --text-main: #f5f5f7;
+    --muted: #9a9aa3;
+    --accent-gold: #d4a437;
+    --border: #26262e;
+    background: var(--bg-dark);
+    color: var(--text-main);
+  }
+
+  .admin-shell .private-sidebar {
+    border-right: 1px solid var(--border);
+    background: var(--bg-card);
   }
 
   .private-sidebar {

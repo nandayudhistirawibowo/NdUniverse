@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { playAudioTTS } from '@german/config/german-speech.js';
+import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 import NdBot from '@core/ui/NdBot.jsx';
@@ -212,6 +212,13 @@ export default function Quiz(props) {
     type: pillarType,
   } = props;
   const items = suppliedQuestions ?? suppliedItems ?? [];
+  useEffect(() => {
+    items.forEach((item) => {
+      [item.german, item.context, item.hoeren_audio].forEach((text) => {
+        if (text) preloadGermanTtsAudio(text);
+      });
+    });
+  }, [items]);
   const pillarMode = PILLAR_TYPES.includes(pillarType);
   const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
   const sessionCount = Math.max(1, Math.ceil(items.length / effectiveBatchSize));
@@ -990,7 +997,7 @@ export default function Quiz(props) {
                     </p>
                     <button
                       type="button"
-                      className="vocab-speech-button"
+                      className="vocab-speech-button audio-btn"
                       onClick={playListeningAudio}
                       disabled={hasPlayedListening || checkedResult !== null}
                       aria-label={`Putar audio: ${currentQuestion.hoeren_audio}`}
@@ -1261,7 +1268,8 @@ export default function Quiz(props) {
 
           @media (hover: none) {
             .vocab-speech-button:active:not(:disabled) {
-              transform: scale(0.95);
+              transform: scale(0.94);
+              transition: transform 80ms ease;
             }
           }
 

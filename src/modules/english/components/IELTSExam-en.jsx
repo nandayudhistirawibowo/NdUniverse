@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
-import { playAudioTTS } from '../config/english-speech.js';
+import { playAudioTTS, preloadEnglishTtsAudio } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
@@ -79,6 +79,11 @@ function formatTime(seconds) {
 }
 
 export default function GoetheExam({ level, tasks, available = true }) {
+  useEffect(() => {
+    (tasks ?? []).forEach((task) => {
+      if (task.audio) preloadEnglishTtsAudio(task.audio, 'uk');
+    });
+  }, [tasks]);
   const storageKey = `sideutsch-goethe-${level.toLowerCase()}`;
   const [isStarted, setIsStarted] = useState(false);
   const [activeModule, setActiveModule] = useState('lesen');

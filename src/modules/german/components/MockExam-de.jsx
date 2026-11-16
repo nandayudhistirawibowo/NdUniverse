@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
-import { playAudioTTS } from '@german/config/german-speech.js';
+import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
@@ -16,6 +16,11 @@ function normalizeAnswer(answer) {
 /** @param {{ level: string; tasks?: Array<any>; unavailable?: boolean }} props */
 export default function MockExam({ level, tasks, unavailable = false }) {
   const examTasks = tasks ?? [];
+  useEffect(() => {
+    examTasks.forEach((task) => {
+      if (task.audio) preloadGermanTtsAudio(task.audio);
+    });
+  }, [examTasks]);
   const storageKey = `sideutsch-ujian-${level.toLowerCase()}`;
   const [answers, setAnswers] = useState({});
   const [isStarted, setIsStarted] = useState(false);

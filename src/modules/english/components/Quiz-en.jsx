@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
-import { playAudioTTS } from '../config/english-speech.js';
+import { playAudioTTS, preloadEnglishTtsAudio } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 import NdBot from '@core/ui/NdBot.jsx';
@@ -192,6 +192,15 @@ export default function Quiz(props) {
     type: pillarType,
   } = props;
   const items = suppliedItems ?? [];
+  useEffect(() => {
+    items.forEach((item) => {
+      [item.german, item.english, item.context, item.listening_audio].forEach((text) => {
+        if (!text) return;
+        preloadEnglishTtsAudio(text, 'us');
+        preloadEnglishTtsAudio(text, 'uk');
+      });
+    });
+  }, [items]);
   const pillarMode = PILLAR_TYPES.includes(pillarType);
   const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
   const sessionCount = Math.max(1, Math.ceil(items.length / effectiveBatchSize));
@@ -895,6 +904,7 @@ export default function Quiz(props) {
         <div className="audio-accent-toggle" role="group" aria-label="Aksen audio">
           <button
             type="button"
+            className="audio-btn"
             aria-pressed={audioAccent === 'us'}
             onClick={() => changeAudioAccent('us')}
           >
@@ -902,6 +912,7 @@ export default function Quiz(props) {
           </button>
           <button
             type="button"
+            className="audio-btn"
             aria-pressed={audioAccent === 'uk'}
             onClick={() => changeAudioAccent('uk')}
           >
@@ -1065,7 +1076,7 @@ export default function Quiz(props) {
                     <h3>Dengarkan audio, lalu pilih arti yang tepat</h3>
                     <button
                       type="button"
-                      className="vocab-speech-button"
+                      className="vocab-speech-button audio-btn"
                       onClick={playListeningAudio}
                       aria-label="Putar audio"
                       title="Putar audio"
@@ -1436,7 +1447,7 @@ export default function Quiz(props) {
             box-shadow: inset 0 0 0 1px var(--accent-gold);
           }
 
-          @media (hover: hover) {
+          @media (hover: hover) and (pointer: fine) {
             .audio-accent-toggle button:hover:not(:disabled) {
               background: var(--bg-soft);
             }
@@ -1449,22 +1460,15 @@ export default function Quiz(props) {
 
           @media (hover: none) {
             .vocab-speech-button:active:not(:disabled) {
-              transform: scale(0.95);
+              transform: scale(0.94);
+              transition: transform 80ms ease;
             }
-          }
-
-          .flag-icon {
-            width: 1.2rem;
-            height: auto;
-            display: inline-block;
-            vertical-align: middle;
-            border-radius: 2px;
-            object-fit: cover;
           }
 
           @media (hover: none) {
             .audio-accent-toggle button:active:not(:disabled) {
-              transform: scale(0.95);
+              transform: scale(0.94);
+              transition: transform 80ms ease;
             }
           }
 

@@ -125,10 +125,11 @@ const pillars = [
 </DashboardLayout>
 
 <script>
-  import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
+  import { playAudioTTS, preloadEnglishTtsAudio } from '../../../modules/english/config/english-speech.js';
 
   const bindSpeakers = () => {
     document.querySelectorAll<HTMLButtonElement>('[data-speak]').forEach((button) => {
+      preloadEnglishTtsAudio(button.dataset.speak ?? '', 'us');
       if (button.dataset.speechBound) return;
       button.dataset.speechBound = 'true';
       button.addEventListener('click', () => {
@@ -191,7 +192,7 @@ const pillars = [
   .vocabulary-table tbody tr:nth-child(even) { background:color-mix(in srgb, var(--text-main) 4%, var(--card-bg)); }
   .vocabulary-table tbody tr:last-child th,.vocabulary-table tbody tr:last-child td { border-bottom:0; }
   .audio-example { display:inline-flex; align-items:center; gap:.5rem; }
-  .speaker-button { width:34px; height:34px; flex:0 0 auto; border:1px solid var(--border); border-radius:7px; background:var(--card-bg); cursor:pointer; }
+  .speaker-button { width:36px; height:36px; flex:0 0 auto; border:1px solid var(--border); border-radius:7px; background:var(--card-bg); cursor:pointer; }
   .speaker-button.is-playing { border-color:var(--accent-gold); background:color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg)); }
   .pillar-sessions { display:grid; gap:.75rem; }
   .pillar-session { display:grid; gap:.55rem; }

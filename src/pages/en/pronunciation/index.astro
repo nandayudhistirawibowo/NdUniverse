@@ -219,9 +219,16 @@ const trickySounds = [
 </Layout>
 
 <script>
-  import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
+  import { playAudioTTS, preloadEnglishTtsAudio } from '../../../modules/english/config/english-speech.js';
 
   const speechDocument = document as Document & { __ndUniverseEnglishPronunciationHandler?: boolean };
+  const preloadPronunciationAudio = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-speak]').forEach((button) => {
+      preloadEnglishTtsAudio(button.dataset.speak ?? '', 'us');
+    });
+  };
+  preloadPronunciationAudio();
+  document.addEventListener('astro:page-load', preloadPronunciationAudio);
   if (!speechDocument.__ndUniverseEnglishPronunciationHandler) {
     speechDocument.__ndUniverseEnglishPronunciationHandler = true;
     document.addEventListener('click', (event) => {
@@ -268,7 +275,7 @@ const trickySounds = [
     text-decoration: none;
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .back-link:hover {
       color: var(--guide-accent);
     }
@@ -417,7 +424,7 @@ const trickySounds = [
     transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .speaker-button:hover {
       transform: scale(1.06);
       border-color: var(--guide-accent);
@@ -426,9 +433,10 @@ const trickySounds = [
   }
   @media (hover: none) {
     .speaker-button:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
       border-color: var(--guide-accent);
       background: var(--guide-card);
+      transition: transform 80ms ease;
     }
   }
 

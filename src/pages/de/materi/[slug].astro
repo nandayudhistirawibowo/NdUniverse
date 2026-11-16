@@ -37,7 +37,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 ---
 
 <DashboardLayout
-  title={`${item.data.judulMateri} | siDeutsch`}
+  title={`${item.data.judulMateri} | NdUniverse`}
   description={item.data.deskripsi}
   hideNavbar={true}
 >
@@ -148,7 +148,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 </DashboardLayout>
 
 <script>
-  import { playAudioTTS } from '@german/config/german-speech.js';
+  import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 
   import {
     fetchUserProgress,
@@ -181,6 +181,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 
   document.addEventListener('astro:page-load', () => {
     document.querySelectorAll<HTMLButtonElement>('.vocab-speech-button').forEach((button) => {
+      preloadGermanTtsAudio(button.dataset.speech ?? '');
       button.onclick = () => {
         const speechText = String(button.dataset.speech ?? '').replace(/\s+/g, ' ').trim();
         playAudioTTS(speechText, button);
@@ -443,8 +444,8 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 
   .vocab-speech-button {
     display: inline-grid;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     flex: 0 0 auto;
     place-items: center;
     padding: 0;
@@ -465,7 +466,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     stroke-linejoin: round;
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .vocab-speech-button:hover:not(:disabled) {
       transform: scale(1.08);
       background: var(--accent-gold);
@@ -474,9 +475,10 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   }
   @media (hover: none) {
     .vocab-speech-button:active:not(:disabled) {
-      transform: scale(0.95);
+      transform: scale(0.94);
       background: var(--accent-gold);
       color: var(--text-main);
+      transition: transform 80ms ease;
     }
   }
 
@@ -504,7 +506,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
     text-decoration: none;
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .practice-button:hover {
       background: #F0B84F;
       transform: translateY(-2px);

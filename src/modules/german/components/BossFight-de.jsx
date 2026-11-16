@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { playBossAudio } from '@core/audio/boss-audio.js';
+import { playBossAudio, preloadBossAudio } from '@core/audio/boss-audio.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
 
 const EMPTY_BOSS_INTRO = [];
@@ -143,6 +143,11 @@ export default function BossFight({
 
   const currentQuestion = interviewQuestions[questionIndex];
   const activeIntroEvent = introTimeline[introEventIndex] ?? introTimeline[0];
+
+  useEffect(() => {
+    interviewQuestions.forEach(({ question }) => preloadBossAudio(question, 'de'));
+    introTimeline.forEach(({ dialog }) => preloadBossAudio(dialog, 'de'));
+  }, [interviewQuestions, introTimeline]);
 
   useEffect(() => {
     if (!cinematicActive) return undefined;

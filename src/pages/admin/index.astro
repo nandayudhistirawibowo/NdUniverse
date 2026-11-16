@@ -15,8 +15,8 @@ if (!isAdminNim(nim)) {
 ---
 
 <DashboardLayout
-  title="Admin Panel | siDeutsch"
-  description="Panel administrasi akun mahasiswa siDeutsch."
+  title="Admin Panel | NdUniverse"
+  description="Panel administrasi akun mahasiswa NdUniverse."
   variant="admin"
   active="users"
   user={user}
@@ -295,7 +295,10 @@ if (!isAdminNim(nim)) {
   .admin-page {
     display: grid;
     gap: 1.25rem;
-    padding-top: 0.5rem;
+    width: 100%;
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: clamp(1rem, 4vw, 2rem);
   }
 
   .admin-header {
@@ -306,7 +309,7 @@ if (!isAdminNim(nim)) {
     padding: 1.35rem 1.5rem;
     border-radius: 12px;
     background: var(--bg-dark);
-    color: #fff;
+    color: var(--text-main);
   }
 
   .eyebrow {
@@ -320,13 +323,13 @@ if (!isAdminNim(nim)) {
 
   .admin-header h1 {
     margin: 0;
-    color: #fff;
+    color: var(--text-main);
     font-size: 2rem;
   }
 
   .admin-header > div > p:last-child {
     margin: 0.45rem 0 0;
-    color: #d3d3d8;
+    color: var(--muted);
     font-size: 0.88rem;
   }
 
@@ -349,7 +352,7 @@ if (!isAdminNim(nim)) {
 
   .primary-button {
     background: var(--accent-gold);
-    color: var(--text-main);
+    color: var(--bg-dark);
   }
 
   @media (hover: hover) {
@@ -375,9 +378,9 @@ if (!isAdminNim(nim)) {
   }
 
   .admin-logout {
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--border);
     background: transparent;
-    color: #fff;
+    color: var(--text-main);
   }
 
   @media (hover: hover) {
@@ -395,7 +398,7 @@ if (!isAdminNim(nim)) {
     overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 12px;
-    background: #fff;
+    background: var(--card-bg);
   }
 
   .table-heading {
@@ -414,7 +417,7 @@ if (!isAdminNim(nim)) {
   }
 
   .table-heading span {
-    color: #686873;
+    color: var(--muted);
     font-size: 0.8rem;
     font-weight: 700;
   }
@@ -422,7 +425,7 @@ if (!isAdminNim(nim)) {
   .admin-message {
     margin: 0;
     padding: 0 1.15rem;
-    color: #42774f;
+    color: #86d39a;
     font-size: 0.83rem;
   }
 
@@ -448,7 +451,7 @@ if (!isAdminNim(nim)) {
   th,
   td {
     padding: 0.8rem 1rem;
-    border-bottom: 1px solid #eeedf0;
+    border-bottom: 1px solid var(--border);
     color: var(--text-main);
     font-size: 0.84rem;
     text-align: left;
@@ -456,8 +459,8 @@ if (!isAdminNim(nim)) {
   }
 
   th {
-    background: #F1F1F3;
-    color: #54545e;
+    background: var(--card-bg);
+    color: var(--muted);
     font-size: 0.73rem;
     font-weight: 800;
     letter-spacing: 0.05em;
@@ -468,9 +471,13 @@ if (!isAdminNim(nim)) {
     border-bottom: 0;
   }
 
+  tbody tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.02);
+  }
+
   .empty-cell {
     height: 100px;
-    color: #686873;
+    color: var(--muted);
     text-align: center;
   }
 
@@ -484,7 +491,7 @@ if (!isAdminNim(nim)) {
     padding: 0.35rem 0.6rem;
     border: 1px solid var(--accent-gold);
     border-radius: 7px;
-    background: #FFF4DC;
+    background: transparent;
     color: var(--text-main);
     font: inherit;
     font-size: 0.74rem;
@@ -504,21 +511,21 @@ if (!isAdminNim(nim)) {
   }
 
   .row-button.delete-button {
-    border-color: #efb1b1;
-    background: #FCE7E7;
-    color: var(--accent-red);
+    border-color: rgba(239, 68, 68, 0.45);
+    background: rgba(239, 68, 68, 0.1);
+    color: #ff8585;
   }
 
   @media (hover: hover) {
     .row-button.delete-button:hover {
       background: var(--accent-red);
-      color: #fff;
+      color: var(--text-main);
     }
   }
   @media (hover: none) {
     .row-button.delete-button:active {
       background: var(--accent-red);
-      color: #fff;
+      color: var(--text-main);
     }
   }
 
@@ -526,15 +533,15 @@ if (!isAdminNim(nim)) {
     width: min(100% - 2rem, 480px);
     max-height: 90vh;
     padding: 0;
-    border: 1px solid #4a4a50;
+    border: 1px solid var(--border);
     border-radius: 12px;
-    background: #fff;
+    background: var(--card-bg);
     color: var(--text-main);
-    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
   }
 
   .user-dialog::backdrop {
-    background: rgba(26, 26, 30, 0.72);
+    background: rgba(0, 0, 0, 0.72);
   }
 
   .user-form {
@@ -561,7 +568,7 @@ if (!isAdminNim(nim)) {
     height: 34px;
     border: 1px solid var(--border);
     border-radius: 50%;
-    background: #f1f1f3;
+    background: transparent;
     color: var(--text-main);
     font-size: 1.2rem;
     cursor: pointer;
@@ -578,9 +585,9 @@ if (!isAdminNim(nim)) {
     width: 100%;
     min-height: 42px;
     padding: 0.6rem 0.75rem;
-    border: 1px solid #c9c9cf;
+    border: 1px solid var(--border);
     border-radius: 7px;
-    background: #fff;
+    background: var(--card-bg);
     color: var(--text-main);
     font: inherit;
   }
@@ -591,8 +598,8 @@ if (!isAdminNim(nim)) {
   }
 
   .user-form input:disabled {
-    background: #f1f1f3;
-    color: #686873;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--muted);
   }
 
   .user-form > div:not(.dialog-header) {
@@ -603,7 +610,7 @@ if (!isAdminNim(nim)) {
   .dialog-message {
     min-height: 1.1rem;
     margin: 0.2rem 0;
-    color: #42774f;
+    color: #86d39a;
     font-size: 0.8rem;
   }
 
@@ -616,11 +623,40 @@ if (!isAdminNim(nim)) {
 
   .cancel-button {
     border: 1px solid var(--border);
-    background: #f1f1f3;
+    background: transparent;
     color: var(--text-main);
   }
 
-  @media (max-width: 640px) {
+  .user-form input,
+  .user-form select,
+  .user-form textarea {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: var(--card-bg);
+    color: var(--text-main);
+    font: inherit;
+  }
+
+  .user-form input::placeholder,
+  .user-form select::placeholder,
+  .user-form textarea::placeholder {
+    color: var(--muted);
+  }
+
+  .user-form input:disabled {
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--muted);
+  }
+
+  .icon-button {
+    background: transparent;
+    color: var(--text-main);
+  }
+
+  @media (max-width: 767px) {
     .admin-header {
       align-items: flex-start;
       flex-direction: column;
@@ -630,5 +666,9 @@ if (!isAdminNim(nim)) {
       width: 100%;
       flex-wrap: wrap;
     }
+  }
+
+  @media (max-width: 640px) {
+    .admin-header { padding: 1.1rem; }
   }
 </style>

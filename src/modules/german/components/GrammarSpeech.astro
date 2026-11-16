@@ -9,7 +9,7 @@ const { text } = Astro.props;
 <span class="grammar-speech-unit">
   <span lang="de">{text}</span>
   <button
-    class="grammar-speech-button"
+    class="grammar-speech-button audio-btn"
     type="button"
     data-grammar-speech={text}
     aria-label={`Dengarkan ${text}`}
@@ -23,9 +23,16 @@ const { text } = Astro.props;
 </span>
 
 <script>
-  import { playAudioTTS } from '@german/config/german-speech.js';
+  import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 
   const speechDocument = document as Document & { __ndUniverseGrammarSpeechHandler?: boolean };
+  const preloadGrammarAudio = () => {
+    document.querySelectorAll<HTMLButtonElement>('.grammar-speech-button').forEach((button) => {
+      preloadGermanTtsAudio(button.dataset.grammarSpeech ?? '');
+    });
+  };
+  preloadGrammarAudio();
+  document.addEventListener('astro:page-load', preloadGrammarAudio);
   if (!speechDocument.__ndUniverseGrammarSpeechHandler) {
     speechDocument.__ndUniverseGrammarSpeechHandler = true;
     document.addEventListener('click', (event) => {
@@ -48,8 +55,8 @@ const { text } = Astro.props;
 
   .grammar-speech-button {
     display: inline-grid;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     flex: 0 0 auto;
     place-items: center;
     padding: 0;
@@ -70,18 +77,19 @@ const { text } = Astro.props;
     stroke-linejoin: round;
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .grammar-speech-button:hover:not(:disabled) {
       transform: scale(1.08);
       background: var(--accent-gold);
       color: var(--text-main);
     }
   }
-  @media (hover: none) {
+  @media (hover: none) and (pointer: coarse) {
     .grammar-speech-button:active:not(:disabled) {
-      transform: scale(0.95);
+      transform: scale(0.94);
       background: var(--accent-gold);
       color: var(--text-main);
+      transition: transform 80ms ease;
     }
   }
 

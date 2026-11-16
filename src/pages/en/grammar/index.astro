@@ -198,7 +198,7 @@ const quantityExamples = [
                   {wrong && <p class="incorrect-example"><span lang="en">{wrong}</span> <span aria-label="salah">❌</span></p>}
                   <div class="example-with-speech">
                     <span lang="en">{example} <span aria-label="benar">✅</span></span>
-                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                    <button class="speaker-button audio-btn" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
                       <span aria-hidden="true">🔊</span>
                     </button>
                   </div>
@@ -568,9 +568,16 @@ const quantityExamples = [
 </Layout>
 
 <script>
-  import { playAudioTTS } from '../../../modules/english/config/english-speech.js';
+  import { playAudioTTS, preloadEnglishTtsAudio } from '../../../modules/english/config/english-speech.js';
 
   const grammarDocument = document as Document & { __ndUniverseEnglishGrammarHandler?: boolean };
+  const preloadGrammarAudio = () => {
+    document.querySelectorAll<HTMLButtonElement>('[data-speak]').forEach((button) => {
+      preloadEnglishTtsAudio(button.dataset.speak ?? '', 'us');
+    });
+  };
+  preloadGrammarAudio();
+  document.addEventListener('astro:page-load', preloadGrammarAudio);
   if (!grammarDocument.__ndUniverseEnglishGrammarHandler) {
     grammarDocument.__ndUniverseEnglishGrammarHandler = true;
     document.addEventListener('click', (event) => {
@@ -617,7 +624,7 @@ const quantityExamples = [
     text-decoration: none;
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .back-link:hover {
       color: var(--grammar-accent);
     }
@@ -784,7 +791,7 @@ const quantityExamples = [
     transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
   }
 
-  @media (hover: hover) {
+  @media (hover: hover) and (pointer: fine) {
     .speaker-button:hover {
       transform: scale(1.06);
       border-color: var(--grammar-accent);
@@ -793,9 +800,10 @@ const quantityExamples = [
   }
   @media (hover: none) {
     .speaker-button:active {
-      transform: scale(0.95);
+      transform: scale(0.94);
       border-color: var(--grammar-accent);
       background: var(--grammar-card);
+      transition: transform 80ms ease;
     }
   }
 
