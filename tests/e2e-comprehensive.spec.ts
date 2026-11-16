@@ -125,6 +125,7 @@ async function checkLandingLayout(page: Page, route: string) {
 test('hunts layout and interaction bugs across NdUniverse', async ({ page }) => {
   test.setTimeout(180_000);
   let isAuthenticated = false;
+  const hasE2EPassword = Boolean(process.env.E2E_PASSWORD?.trim());
 
   for (const route of ['/', '/de', '/en']) {
     await captureStep(`Landing and portal layout: ${route}`, async () => {
@@ -132,29 +133,31 @@ test('hunts layout and interaction bugs across NdUniverse', async ({ page }) => 
     });
   }
 
-  await captureStep('Auth: login with the configured dummy student account', async () => {
-    await login(page);
-    isAuthenticated = true;
-  });
-
-  if (isAuthenticated) {
-    await captureStep('Dashboard: open dashboard', async () => {
-      await page.goto('/dashboard-de');
-      await page.waitForLoadState('domcontentloaded');
-      await page.waitForTimeout(1_000);
+  if (hasE2EPassword) {
+    await captureStep('Auth: login with the configured dummy student account', async () => {
+      await login(page);
+      isAuthenticated = true;
     });
 
-    await captureStep('Dashboard: sidebar is visible', async () => {
-      await expect(page.locator('.private-sidebar')).toBeVisible();
-    });
+    if (isAuthenticated) {
+      await captureStep('Dashboard: open dashboard', async () => {
+        await page.goto('/dashboard-de');
+        await page.waitForLoadState('domcontentloaded');
+        await page.waitForTimeout(1_000);
+      });
 
-    await captureStep('Dashboard: XP card is visible', async () => {
-      await expect(page.locator('.level-card .level-points')).toContainText('XP');
-    });
+      await captureStep('Dashboard: sidebar is visible', async () => {
+        await expect(page.locator('.private-sidebar')).toBeVisible();
+      });
 
-    await captureStep('Dashboard: NdBot button is visible', async () => {
-      await expect(page.locator('.ndbot-fab')).toBeVisible();
-    });
+      await captureStep('Dashboard: XP card is visible', async () => {
+        await expect(page.locator('.level-card .level-points')).toContainText('XP');
+      });
+
+      await captureStep('Dashboard: NdBot button is visible', async () => {
+        await expect(page.locator('.ndbot-fab')).toBeVisible();
+      });
+    }
   }
 
   for (const pillar of ['reading', 'listening', 'writing', 'speaking'] as const) {

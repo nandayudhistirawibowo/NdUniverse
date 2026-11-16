@@ -69,7 +69,22 @@ def collect_spoken_texts(value, texts):
             collect_spoken_texts(child, texts)
 
 
-def collect_exam_transcript_words(exam, texts):
+def split_exam_transcript_sentences(transcript):
+    normalized = re.sub(r"\s+", " ", transcript).strip()
+    if not normalized:
+        return []
+
+    return [
+        sentence.strip()
+        for sentence in re.split(
+            r"(?<=[.!?])\s+(?=[\"'“‘(\[]*[A-Z0-9])",
+            normalized,
+        )
+        if sentence.strip()
+    ]
+
+
+def collect_exam_transcript_sentences(exam, texts):
     listening = exam.get("listening", []) if isinstance(exam, dict) else []
     if not isinstance(listening, list):
         return
@@ -81,8 +96,9 @@ def collect_exam_transcript_words(exam, texts):
         if not isinstance(transcript, str):
             transcript = item.get("audio_text")
         if isinstance(transcript, str) and transcript.strip():
-            normalized = re.sub(r"[^\w\s]|_", " ", transcript.lower(), flags=re.UNICODE)
-            texts.update(normalized.split())
+            normalized = re.sub(r"\s+", " ", transcript).strip()
+            texts.add(normalized)
+            texts.update(split_exam_transcript_sentences(normalized))
 
 
 def content_groups():
@@ -91,7 +107,7 @@ def content_groups():
         content = get_frontmatter(path)
         collect_spoken_texts(content, texts)
         if path.relative_to(CONTENT_ROOT).parts[0] == "exam":
-            collect_exam_transcript_words(content, texts)
+            collect_exam_transcript_sentences(content, texts)
     return {accent: set(texts) for accent in OUTPUTS}
 
 
