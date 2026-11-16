@@ -19,6 +19,16 @@ SOURCE_ROOTS = {
     "german": ROOT / "src" / "modules" / "german" / "content",
     "english": ROOT / "src" / "modules" / "english" / "content",
 }
+DOC_SOURCES = [
+    "README.md",
+    "PRD.md",
+    "PRD_NDUNIVERSE.md",
+    "FRONTEND_DESIGN_CONCEPT.md",
+    "FLOWCHART.md",
+    "ERD.md",
+    "CODEBASE_SUMMARY.md",
+    "DATA_STRUCTURE.md",
+]
 EMBEDDING_MODEL = "@cf/baai/bge-small-en-v1.5"
 EMBEDDING_DIMENSIONS = 384
 CHUNK_SIZE = 500
@@ -69,15 +79,20 @@ def chunk_text(
 def collect_documents() -> list[MarkdownDocument]:
     documents: list[MarkdownDocument] = []
     markdown_files = [
-        (language, path)
+        (language, path, path.relative_to(ROOT).as_posix())
         for language, source_root in SOURCE_ROOTS.items()
         for path in sorted(source_root.rglob("*.md"))
     ]
+    for filename in DOC_SOURCES:
+        path = ROOT / filename
+        if not path.is_file():
+            raise FileNotFoundError(f"Required documentation source was not found: {path}")
+        markdown_files.append(("system", path, f"docs/{filename}"))
+
     if not markdown_files:
         raise RuntimeError("No Markdown files found in the German or English content directories.")
 
-    for language, path in markdown_files:
-        source_file = path.relative_to(ROOT).as_posix()
+    for language, path, source_file in markdown_files:
         text = path.read_text(encoding="utf-8")
         content_hash = hashlib.sha256(text.encode("utf-8")).hexdigest()
         chunks = chunk_text(text)
