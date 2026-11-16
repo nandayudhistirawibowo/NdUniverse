@@ -342,8 +342,10 @@ export default function NdBot({
             <span class="ndbot-mouth" />
           </span>
           <span class="ndbot-body" />
-          <span class="ndbot-arm ndbot-arm--left" />
-          <span class="ndbot-arm ndbot-arm--wave">
+          <span class="ndbot-arm ndbot-arm--left ndbot-arm--wave">
+            <span class="ndbot-hand" />
+          </span>
+          <span class="ndbot-arm ndbot-arm--right">
             <span class="ndbot-hand" />
           </span>
         </span>
@@ -364,7 +366,7 @@ export default function NdBot({
           --ndbot-fab-bg: var(--accent-gold);
           --ndbot-fab-ring: var(--primary-hover);
           position: fixed;
-          z-index: 9999;
+          z-index: 40;
           right: max(1rem, env(safe-area-inset-right));
           bottom: max(1rem, env(safe-area-inset-bottom));
           font-family: var(--font-body, 'Plus Jakarta Sans', system-ui, sans-serif);
@@ -379,7 +381,8 @@ export default function NdBot({
           right: .2rem;
           bottom: calc(100% + .65rem);
           width: max-content;
-          max-width: min(250px, calc(100vw - 2.5rem));
+          box-sizing: border-box;
+          max-width: min(90vw, 250px);
           padding: .6rem .8rem;
           border: 1px solid var(--ndbot-border);
           border-radius: .8rem .8rem .2rem .8rem;
@@ -706,19 +709,25 @@ export default function NdBot({
           height: 1.25rem;
           border: 2px solid var(--accent-gold);
           border-radius: 1rem;
-          background: var(--bg-dark);
+          background: var(--accent-gold);
         }
         .ndbot-arm--left {
           top: 2.55rem;
           left: .55rem;
           transform: rotate(24deg);
         }
+        .ndbot-arm--right {
+          top: 2.55rem;
+          right: .55rem;
+          transform: rotate(-24deg);
+        }
         .ndbot-arm--wave {
-          top: 1.05rem;
-          right: .12rem;
-          transform: translateX(10px) rotate(35deg);
           transform-origin: center bottom;
           animation: ndbot-wave 5s ease-in-out infinite;
+        }
+        .ndbot-arm--right .ndbot-hand {
+          right: -.12rem;
+          left: auto;
         }
         .ndbot-hand {
           position: absolute;
@@ -728,10 +737,12 @@ export default function NdBot({
           height: .5rem;
           border: 2px solid var(--accent-gold);
           border-radius: 50%;
-          background: var(--bg-dark);
+          background: var(--accent-gold);
         }
         .ndbot--exam .ndbot-arm--wave,
-        .ndbot--quiz .ndbot-arm--wave { display: none; }
+        .ndbot--quiz .ndbot-arm--wave {
+          animation: none;
+        }
 
         @keyframes ndbot-breathe {
           0%, 100% { transform: translateY(0); }
@@ -742,11 +753,10 @@ export default function NdBot({
           47%, 49% { transform: scaleY(.08); opacity: .65; }
         }
         @keyframes ndbot-wave {
-          0%, 82%, 100% { opacity: 0; transform: translateX(10px) rotate(35deg); }
-          84% { opacity: 1; transform: translateX(0) rotate(25deg); }
-          86%, 90% { transform: translateX(0) rotate(-24deg); }
-          88%, 92% { transform: translateX(0) rotate(28deg); }
-          94% { opacity: 0; transform: translateX(10px) rotate(35deg); }
+          0%, 20%, 40%, 100% { transform: rotate(24deg); }
+          22%, 32% { transform: rotate(-45deg); }
+          24%, 28% { transform: rotate(-65deg); }
+          26%, 30% { transform: rotate(-35deg); }
         }
 
         /* Pulse animasi untuk exam mode saat strike > 0 */
@@ -807,9 +817,7 @@ export default function NdBot({
           .ndbot-bubble {
             display: none;
           }
-        }
 
-        @media (max-width: 480px) {
           .ndbot-fab {
             width: 60px;
             max-width: 60px;
@@ -817,11 +825,11 @@ export default function NdBot({
           }
 
           .ndbot-character {
-            scale: .82;
+            scale: .8;
           }
 
           .ndbot-window {
-            width: calc(100vw - 2rem);
+            width: min(350px, calc(100vw - 2rem));
             height: min(450px, calc(100dvh - 6rem));
           }
         }
@@ -829,6 +837,7 @@ export default function NdBot({
         /* Hormat ke prefers-reduced-motion */
         @media (prefers-reduced-motion: reduce) {
           .ndbot-fab--exam { animation: none; }
+          .ndbot-arm--wave { animation: none; }
           .ndbot-exam-toast { transition-duration: .01ms; }
           .ndbot-bubble { transition-duration: .01ms; }
         }
