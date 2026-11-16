@@ -1,7 +1,7 @@
 ---
 import Layout from '@core/ui/Layout.astro';
 
-if (Astro.locals.user) return Astro.redirect('/en/dashboard');
+export const prerender = true;
 
 const features = [
   { href: '/en/everyday-english', title: 'Bahasa Inggris Sehari-hari', text: 'Latih kosakata praktis dan empat keterampilan utama bahasa Inggris.' },

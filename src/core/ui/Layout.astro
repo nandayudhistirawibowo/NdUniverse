@@ -188,7 +188,7 @@ const organizationSchema = {
       </footer>
     </div>
     {!hideBot && !isExamRoute && (
-      <NdBot client:load mode="study" userName={botUserName} userLevel={botUserLevel} />
+      <NdBot client:idle mode="study" userName={botUserName} userLevel={botUserLevel} />
     )}
   </body>
 </html>
