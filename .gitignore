@@ -15,3 +15,6 @@ Thumbs.db
 /test-results/
 public/audio/tts/
 public/audio/ 
+
+# Security Testing (Local Only, DO NOT COMMIT)
+security/

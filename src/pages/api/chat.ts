@@ -142,7 +142,14 @@ async function rewriteQuestion(question: string, apiKey: string): Promise<string
   }
 }
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, locals }) => {
+  if (!locals.user) {
+    return jsonResponse({
+      type: 'error',
+      message: 'Unauthorized. Silakan login terlebih dahulu.',
+    }, 401);
+  }
+
   let body: unknown;
   try {
     const rawBody = await request.text();
