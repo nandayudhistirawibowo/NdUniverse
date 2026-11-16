@@ -182,7 +182,7 @@ const sortedMateri = materi.toSorted((first, second) =>
 
   .materi-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr));
     gap: 1rem;
   }
 
@@ -283,14 +283,4 @@ const sortedMateri = materi.toSorted((first, second) =>
     display: none !important;
   }
 
-  @media (max-width: 700px) {
-    .materi-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 767px) {
-    .materi-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
 </style>

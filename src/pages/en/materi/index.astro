@@ -17,7 +17,7 @@ const materials = await getCollection('englishEveryday');
   .back-link{width:fit-content;color:var(--text-main);font-weight:800;text-decoration:none}
   .eyebrow{color:var(--accent-gold);font-size:.78rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase}
   .catalog-content h1{margin:.25rem 0}.catalog-content header>p:last-child{color:var(--muted)}
-  .level-section{display:grid;gap:.75rem}.material-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+  .level-section{display:grid;gap:.75rem}.material-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:1rem}
   .material-card{--level-accent:var(--accent-gold);display:grid;gap:.5rem;padding:1rem;border:1px solid var(--border);border-radius:8px;background:var(--card-bg);color:var(--text-main);text-decoration:none}
   .material-card[data-level="A1"],.material-card[data-level="A2"]{--level-accent:#10B981}
   .material-card[data-level="B1"],.material-card[data-level="B2"]{--level-accent:#3B82F6}
@@ -25,7 +25,7 @@ const materials = await getCollection('englishEveryday');
   .material-card span{color:var(--accent-gold);font-size:.75rem;font-weight:800;text-transform:uppercase}
   .material-card h3,.material-card p{margin:0}.material-card p{color:var(--muted);line-height:1.55}
   .material-card small{color:var(--level-accent);font-weight:800}
-  .empty{color:var(--muted)}@media(max-width:700px){.material-grid{grid-template-columns:1fr}}
+  .empty{color:var(--muted)}
 @media (max-width: 767px) {
   .material-grid {
     grid-template-columns: minmax(0, 1fr)

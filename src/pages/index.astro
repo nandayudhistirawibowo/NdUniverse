@@ -148,7 +148,7 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
   .about-copy { max-width:820px; }
   .about-copy h2,.section-title { margin:0; color:var(--nd-text); font-size:clamp(2rem,4.7vw,4.4rem); font-weight:600; letter-spacing:-.02em; line-height:1.05; }
   .about-copy p { max-width:680px; margin:1.5rem 0 0; color:var(--nd-muted); font-size:clamp(1rem,1.7vw,1.2rem); line-height:1.8; }
-  .feature-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; margin-top:2rem; }
+  .feature-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:1rem; margin-top:2rem; }
   .feature-card { min-height:220px; padding:1.35rem; border:1px solid var(--nd-line); border-radius:.8rem; background:rgba(255,255,255,.035); transition:transform .2s ease,background-color .2s ease,border-color .2s ease; }
   @media (hover: hover) {
     .feature-card:hover {
@@ -167,11 +167,11 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
   .feature-icon { display:block; margin-bottom:2.5rem; color:var(--nd-gold); font-size:2rem; line-height:1; }
   .feature-card h3 { margin:0; color:var(--nd-text); font-size:1.05rem; }
   .feature-card p { margin:.65rem 0 0; color:var(--nd-muted); font-size:.85rem; line-height:1.65; }
-  .account-steps { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1rem; margin:2rem 0 0; padding:0; list-style:none; }
+  .account-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:1rem; margin:2rem 0 0; padding:0; list-style:none; }
   .account-step { display:grid; min-height:170px; align-content:start; gap:1.25rem; padding:1.25rem; border:1px solid var(--nd-line); border-radius:.8rem; background:rgba(255,255,255,.035); color:var(--nd-muted); line-height:1.65; }
   .step-number { color:var(--nd-gold); font-size:1.5rem; font-weight:800; letter-spacing:.06em; }
   .account-step strong { color:var(--nd-text); }
-  .language-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; margin-top:2rem; }
+  .language-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:1rem; margin-top:2rem; }
   .language-card { display:grid; grid-template-columns:auto minmax(0,1fr) auto; align-items:center; gap:1rem; min-height:125px; padding:1.25rem; border:1px solid var(--nd-line); border-radius:.8rem; background:rgba(255,255,255,.045); color:var(--nd-text); text-decoration:none; transition:transform .2s ease,background-color .2s ease,border-color .2s ease; }
   .language-card:focus-visible { border-color:var(--nd-gold); background:rgba(229,169,59,.1); transform:translateY(-4px); }
   @media (hover: hover) {
@@ -195,6 +195,6 @@ const imageUrl = new URL('/android-chrome-512x512.png', siteUrl).toString();
   .arrow { color:var(--nd-gold); font-size:1.35rem; }
   .landing-footer { display:flex; max-width:1200px; align-items:center; justify-content:space-between; gap:1rem; margin:0 auto; padding:1.5rem 0 .5rem; border-top:1px solid var(--nd-line); color:rgba(248,250,252,.46); font-size:.72rem; }
   .landing-footer span:first-child { color:var(--nd-gold-soft); font-weight:800; letter-spacing:.08em; }
-  @media (max-width:768px) { .landing-shell { padding-inline:1rem; } .hero-section { min-height:70vh; padding-bottom:4rem; } .brand-logo { width:min(180px,70vw); max-height:180px; } .content-section { grid-template-columns:1fr; gap:1.5rem; padding:4rem 0; } .feature-grid,.language-grid,.account-steps { grid-template-columns:1fr; } .feature-card,.account-step { min-height:0; } .feature-icon { margin-bottom:1.5rem; } .language-card { min-width:0; } .landing-footer { align-items:flex-start; flex-direction:column; } }
+  @media (max-width:768px) { .landing-shell { padding-inline:1rem; } .hero-section { min-height:70vh; padding-bottom:4rem; } .brand-logo { width:min(180px,70vw); max-height:180px; } .content-section { grid-template-columns:1fr; gap:1.5rem; padding:4rem 0; } .feature-card,.account-step { min-height:0; } .feature-icon { margin-bottom:1.5rem; } .language-card { min-width:0; } .landing-footer { align-items:flex-start; flex-direction:column; } }
   @media (prefers-reduced-motion:reduce) { .feature-card,.language-card { transition:none; } }
 </style>

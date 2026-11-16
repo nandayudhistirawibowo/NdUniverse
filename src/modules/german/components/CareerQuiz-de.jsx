@@ -98,9 +98,9 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
         </div>
       )}
       <style>{`
-        .career-quiz { display:grid; gap:.9rem; padding:1.25rem; border:1px solid var(--border); border-radius:14px; background:var(--card-bg); }
+        .career-quiz { display:grid; gap:.9rem; padding:1.25rem; border:1px solid var(--border); border-radius:14px; background:var(--card-bg); color:var(--text-main); }
         .career-section-label { margin:0; color:var(--accent-gold); font-size:.72rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
-        .career-word-list { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
+        .career-word-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:.65rem; }
         .career-word-list article { display:grid; min-width:0; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:10px; }
         .career-word { display:flex; min-width:0; align-items:flex-start; justify-content:space-between; gap:.5rem; }
         .career-word-list strong,.career-word-list span { overflow-wrap:anywhere; word-break:break-word; }
@@ -111,16 +111,14 @@ export default function CareerQuiz({ words, profession = 'Profesi' }) {
         .career-options { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.65rem; margin:.8rem 0; }
         .career-options button,.career-primary-button,.career-secondary-button { min-height:44px; border-radius:.65rem; padding:.65rem .85rem; font-weight:800; cursor:pointer; }
         .career-options button { border:1px solid var(--border); background:var(--bg-main); color:var(--text-main); }
-        .career-options button.correct { border-color:#9bd0a5; background:#edf8ef; color:#218838; }
-        .career-options button.wrong { border-color:#e6a3a3; background:#fff2f2; color:#b42318; }
-        .career-primary-button { width:fit-content; border:0; background:var(--accent-red); color:#fff; }
+        .career-options button.correct { border-color:var(--nd-status-safe); background:color-mix(in srgb,var(--nd-status-safe) 15%,var(--card-bg)); color:var(--text-main); }
+        .career-options button.wrong { border-color:var(--accent-red); background:color-mix(in srgb,var(--accent-red) 12%,var(--card-bg)); color:var(--text-main); }
+        .career-primary-button { width:fit-content; border:0; background:var(--accent-gold); color:var(--bg-dark); }
         .career-secondary-button { width:fit-content; border:1px solid var(--border); background:var(--card-bg); color:var(--text-main); }
         .career-quiz-result h3,.career-quiz h3 { margin:.2rem 0; color:var(--text-main); }
         .career-quiz-result p:last-of-type { color:var(--muted); }
-        @media(max-width:768px){ .career-quiz{padding:1rem;border-radius:12px;} .career-word-list{grid-template-columns:repeat(2,minmax(0,1fr));}.career-options{grid-template-columns:1fr;} .career-primary-button,.career-secondary-button{width:100%;} }
-        @media(max-width:420px){ .career-word-list{grid-template-columns:1fr;} }
+        @media(max-width:768px){ .career-quiz{padding:1rem;border-radius:12px;} .career-options{grid-template-columns:1fr;} .career-primary-button,.career-secondary-button{width:100%;} }
         @media (max-width: 767px) {
-          .career-word-list,
           .career-options {
             grid-template-columns: minmax(0, 1fr);
           }

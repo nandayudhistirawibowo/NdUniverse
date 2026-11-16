@@ -293,7 +293,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
   .level-progress-heading { display: flex; justify-content: space-between; gap: .75rem; }
   .level-progress-track { height: 10px; margin-top: .75rem; overflow: hidden; border-radius: 999px; background: #e8e5de; }
   .level-progress-track span { display: block; height: 100%; border-radius: inherit; background: var(--accent-gold); }
-  .shortcut-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .8rem; }
+  .shortcut-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: .8rem; }
   .shortcut-grid a { display: grid; gap: .45rem; min-height: 95px; align-content: center; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
   @media (hover: hover) {
     .shortcut-grid a:hover {
@@ -314,12 +314,10 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
   .completed-list a { display: flex; justify-content: space-between; gap: .75rem; padding: .8rem 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
   @media (max-width: 700px) {
     .level-card { grid-template-columns: 1fr; }
-    .shortcut-grid { grid-template-columns: 1fr; }
     .welcome-mark { display: none; }
   }
   @media (max-width: 767px) {
-    .level-card,
-    .shortcut-grid {
+    .level-card {
       grid-template-columns: minmax(0, 1fr);
     }
   }

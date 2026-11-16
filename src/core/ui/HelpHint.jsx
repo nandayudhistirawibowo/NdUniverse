@@ -19,7 +19,7 @@ export default function HelpHint({ title = 'Panduan', text = '' }) {
         <span>{text}</span>
       </span>
       <style>{`
-        .help-hint { --help-ink:var(--text-main,#17202a); --help-muted:var(--muted,#65717d); --help-accent:var(--accent-gold,#e5a93b); position:relative; display:inline-flex; vertical-align:middle; }
+        .help-hint { --help-ink:var(--text-main); --help-muted:var(--muted); --help-accent:var(--accent-gold); position:relative; display:inline-flex; vertical-align:middle; }
         .help-hint-trigger { display:grid; width:2rem; height:2rem; min-width:24px; min-height:24px; place-items:center; border:1px solid var(--help-accent); border-radius:50%; padding:0; background:rgba(229,169,59,.12); color:var(--help-ink); font-size:1rem; line-height:1; cursor:pointer; touch-action:manipulation; transition:transform .18s ease,background-color .18s ease,box-shadow .18s ease; }
         .help-hint-trigger:focus-visible { background:rgba(229,169,59,.28); box-shadow:0 0 0 4px rgba(229,169,59,.16); transform:translateY(-1px); }
         @media (hover: hover) {

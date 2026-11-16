@@ -131,7 +131,7 @@ const available = vocabPool.length > 0
   .exam-timer strong { font-size:1.35rem; color:var(--accent-gold); font-variant-numeric:tabular-nums; }
   .goethe-heading h1 { margin:.15rem 0 .35rem; }
   .goethe-heading p { margin:.25rem 0; color:var(--muted); }
-  .module-progress { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
+  .module-progress { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:.65rem; }
   .module-progress button { display:grid; gap:.35rem; padding:.75rem; border:1px solid var(--border); border-radius:.75rem; background:var(--card-bg); color:var(--text-main); text-align:left; cursor:pointer; }
   .module-progress button.active { border-color:var(--accent-gold); box-shadow:0 0 0 3px rgba(229,169,59,.12); }
   .module-progress strong { font-size:.78rem; color:var(--muted); }
@@ -141,35 +141,34 @@ const available = vocabPool.length > 0
   .module-panel > header { padding:.75rem 0; }
   .module-panel > header p { margin:0; color:var(--accent-gold); font-weight:800; text-transform:uppercase; }
   .module-panel > header h2 { margin:.25rem 0 0; }
-  .goethe-task { display:grid; gap:.8rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); }
+  .goethe-task { display:grid; gap:.8rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); color:var(--text-main); }
   .task-meta { color:var(--muted); font-size:.82rem; font-weight:800; text-transform:uppercase; }
-  .goethe-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); background:var(--card-bg); line-height:1.65; overflow-wrap:anywhere; }
-  .prompt { margin:0; font-weight:700; overflow-wrap:anywhere; }
-  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
+  .goethe-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); background:var(--card-bg); color:var(--text-main); line-height:1.65; overflow-wrap:anywhere; }
+  .prompt { margin:0; color:var(--text-main); font-weight:700; overflow-wrap:anywhere; }
+  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-gold); color:var(--bg-dark); font-weight:800; cursor:pointer; }
   .audio-button:disabled { opacity:.65; cursor:not-allowed; }
   .audio-controls { display:flex; }
   .text-answer small { color:var(--muted); line-height:1.5; }
   .options { display:flex; flex-direction:column; gap:12px; }
-  .option { width:100%; box-sizing:border-box; margin:0; display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; cursor:pointer; }
-  .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); }
+  .option { width:100%; box-sizing:border-box; margin:0; display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; background:var(--card-bg); color:var(--text-main); cursor:pointer; }
+  .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); color:var(--text-main); }
   .text-answer { display:grid; gap:.75rem; }
   .text-answer textarea { width:100%; box-sizing:border-box; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; resize:vertical; font:inherit; }
-  .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
+  .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-gold); color:var(--bg-dark); font-weight:800; cursor:pointer; }
   .goethe-result { display:grid; gap:1rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; text-align:center; }
-  .goethe-result.passed { background:#edf8ef; border-color:#9bd0a5; color:#17202a; }
-  .goethe-result.failed { background:#fff2f2; border-color:#e6a3a3; color:#17202a; }
+  .goethe-result.passed { background:color-mix(in srgb,var(--nd-status-safe) 15%,var(--card-bg)); border-color:var(--nd-status-safe); color:var(--text-main); }
+  .goethe-result.failed { background:color-mix(in srgb,var(--accent-red) 15%,var(--card-bg)); border-color:var(--accent-red); color:var(--text-main); }
   .result-label { margin:0; font-size:.78rem; font-weight:900; letter-spacing:.08em; }
-  .module-results { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.65rem; }
+  .module-results { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:.65rem; }
   .module-results article { padding:.75rem; border-radius:.65rem; border:1px solid var(--border); background:var(--card-bg); }
   .module-results article p { margin:.25rem 0 0; color:var(--muted); }
-  .module-results article.failed strong { color:var(--nd-status-critical); }
-  .module-results article.passed strong { color:var(--nd-status-safe); }
+  .module-results article.failed strong,
+  .module-results article.passed strong { color:var(--text-main); }
   .retry-message { margin:0; font-weight:700; }
   .result-navigation { display:flex; justify-content:center; flex-wrap:wrap; gap:.75rem; }
   .certificate-link { justify-self:center; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
   .failure-link { background:#966313; }
   @media(max-width:768px) {
-    .module-progress,.module-results { grid-template-columns:repeat(2,minmax(0,1fr)); }
     .options { gap:12px; }
     .option { width:100%; min-height:56px; margin:0; padding:16px; font-size:16px; }
     .goethe-task blockquote,
@@ -182,7 +181,6 @@ const available = vocabPool.length > 0
     .submit-button { width:100%; }
   }
   @media(max-width:420px) {
-    .module-progress,.module-results { grid-template-columns:minmax(0,1fr); }
     .module-progress button { min-height:58px; }
   }
   @media (max-width: 767px) {

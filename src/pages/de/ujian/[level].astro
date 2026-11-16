@@ -135,23 +135,23 @@ const hasCompleteMockExam = tasks.length === 22
   .exam-heading p { margin:.25rem 0; color:var(--muted); }
   .exam-status { padding:.55rem .75rem; border-radius:999px; background:rgba(229,169,59,.12); color:var(--accent-gold); font-weight:800; white-space:nowrap; }
   .exam-list { display:grid; gap:1rem; margin:0; padding:0; list-style:none; counter-reset:none; }
-  .exam-task { display:grid; gap:.85rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); box-shadow:var(--shadow); }
+  .exam-task { display:grid; gap:.85rem; padding:1.25rem; border:1px solid var(--border); border-radius:1rem; background:var(--card-bg); color:var(--text-main); box-shadow:var(--shadow); }
   .task-meta { display:flex; justify-content:space-between; align-items:center; color:var(--muted); font-size:.82rem; text-transform:uppercase; letter-spacing:.06em; }
   .task-meta span { padding:.32rem .55rem; border-radius:999px; background:var(--accent-red); color:#fff; font-weight:800; }
   .task-meta strong { color:var(--text-main); }
   .exam-task blockquote { margin:0; padding:.85rem 1rem; border-left:4px solid var(--accent-gold); border-radius:.4rem; background:var(--card-bg); color:var(--text-main); line-height:1.65; overflow-wrap:anywhere; }
   .prompt { margin:0; font-weight:700; line-height:1.55; overflow-wrap:anywhere; }
-  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.7rem; padding:.75rem 1rem; background:var(--accent-gold); color:#fff; font-weight:800; cursor:pointer; }
+  .audio-button,.mic-button { width:fit-content; min-height:44px; border:0; border-radius:.7rem; padding:.75rem 1rem; background:var(--accent-gold); color:var(--bg-dark); font-weight:800; cursor:pointer; }
   .options { display:flex; flex-direction:column; gap:12px; }
-  .option { width:100%; box-sizing:border-box; margin:0; display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; cursor:pointer; }
-  .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); }
+  .option { width:100%; box-sizing:border-box; margin:0; display:flex; align-items:center; gap:.65rem; min-height:44px; padding:.65rem .75rem; border:1px solid var(--border); border-radius:.65rem; background:var(--card-bg); color:var(--text-main); cursor:pointer; }
+  .option.selected { border-color:var(--accent-gold); background:rgba(229,169,59,.09); color:var(--text-main); }
   .option input { accent-color:var(--accent-gold); }
   .text-answer { display:grid; gap:.75rem; }
   .text-answer textarea { width:100%; box-sizing:border-box; resize:vertical; padding:.8rem; border:1px solid var(--border); border-radius:.65rem; font:inherit; }
-  .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-red); color:#fff; font-weight:800; cursor:pointer; }
+  .submit-button { justify-self:center; min-height:44px; border:0; border-radius:.75rem; padding:.85rem 1.2rem; background:var(--accent-gold); color:var(--bg-dark); font-weight:800; cursor:pointer; }
   .exam-result { padding:1.25rem; border-radius:1rem; text-align:center; border:1px solid var(--border); }
-  .exam-result.passed { background:#edf8ef; border-color:#9bd0a5; color:#17202a; }
-  .exam-result.failed { background:#fff2f2; border-color:#e6a3a3; color:#17202a; }
+  .exam-result.passed { background:color-mix(in srgb,var(--nd-status-safe) 15%,var(--card-bg)); border-color:var(--nd-status-safe); color:var(--text-main); }
+  .exam-result.failed { background:color-mix(in srgb,var(--accent-red) 15%,var(--card-bg)); border-color:var(--accent-red); color:var(--text-main); }
   .exam-result h2 { margin:.2rem 0; font-size:2rem; }
   .exam-result a { display:inline-flex; margin-top:.5rem; padding:.75rem 1rem; border-radius:.65rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; }
   @media (max-width:768px) {

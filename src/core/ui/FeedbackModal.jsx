@@ -171,14 +171,14 @@ export default function FeedbackModal({ variant = 'default' }) {
         .feedback-trigger-sidebar:focus-visible {
           border: 0;
           background: var(--accent-gold, #e5a93b);
-          color: var(--bg-dark, #1a1a1e);
+          color: var(--bg-dark);
           box-shadow: none;
         }
         @media (hover: hover) {
           .feedback-trigger-sidebar:hover {
             border: 0;
             background: var(--accent-gold, #e5a93b);
-            color: var(--bg-dark, #1a1a1e);
+            color: var(--bg-dark);
             box-shadow: none;
           }
         }
@@ -186,7 +186,7 @@ export default function FeedbackModal({ variant = 'default' }) {
           .feedback-trigger-sidebar:active {
             border: 0;
             background: var(--accent-gold, #e5a93b);
-            color: var(--bg-dark, #1a1a1e);
+            color: var(--bg-dark);
             box-shadow: none;
           }
         }
@@ -309,7 +309,7 @@ export default function FeedbackModal({ variant = 'default' }) {
         .feedback-submit {
           border: 1px solid var(--accent-gold, #e5a93b);
           background: var(--accent-gold, #e5a93b);
-          color: var(--bg-dark, #1a1a1e);
+          color: var(--bg-dark);
         }
 
         .feedback-submit:disabled {

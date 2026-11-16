@@ -54,12 +54,11 @@ const materials = (await getCollection('englishEveryday'))
   .eyebrow { margin: 0 0 .5rem; color: var(--accent-gold); font-size: .78rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
   h1 { margin: 0; font-size: clamp(2rem, 5vw, 3rem); }
   header p:last-child, .empty-state, .material-card p { color: var(--muted); line-height: 1.6; }
-  .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem; }
   .material-card { display: grid; align-content: start; gap: .65rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
   .material-card h2, .material-card p { margin: 0; }
   .material-card a, .exam-links a { color: var(--accent-gold); font-weight: 800; text-decoration: none; }
   .exam-links { display: flex; flex-wrap: wrap; gap: 1rem; }
-  @media (max-width: 700px) { .material-grid { grid-template-columns: 1fr; } }
   @media (max-width: 767px) {
     .material-grid {
       grid-template-columns: minmax(0, 1fr);

@@ -322,7 +322,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
             Ujian berjalan dalam mode layar penuh. Jangan berpindah tab atau keluar dari layar penuh.
             Pelanggaran sebanyak 3 kali akan mengirimkan ujian secara otomatis.
           </p>
-          <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto;">
+          <button class="submit-button" type="button" onClick={handleStartExam} style="margin: 0 auto; background: var(--accent-gold); color: var(--bg-dark);">
             <span>Mulai Ujian</span>
           </button>
         </div>
@@ -427,9 +427,9 @@ export default function GoetheExam({ level, tasks, available = true }) {
               ))}
 
               {activeModule === 'sprechen' ? (
-                <button class="submit-button" type="button" onClick={submitExam}>Selesaikan Semua Modul</button>
+                <button class="submit-button" type="button" onClick={submitExam} style="background: var(--accent-gold); color: var(--bg-dark);">Selesaikan Semua Modul</button>
               ) : (
-                <button class="submit-button" type="button" onClick={finishCurrentModule}>Selesaikan Modul &amp; Lanjutkan</button>
+                <button class="submit-button" type="button" onClick={finishCurrentModule} style="background: var(--accent-gold); color: var(--bg-dark);">Selesaikan Modul &amp; Lanjutkan</button>
               )}
             </section>
           )}
@@ -495,6 +495,14 @@ export default function GoetheExam({ level, tasks, available = true }) {
         </>
       )}
 
+      <style>{`
+        .goethe-exam { color:var(--text-main); }
+        .goethe-task,.goethe-result,.module-results article { background:var(--card-bg); color:var(--text-main); }
+        .goethe-task blockquote,.prompt,.option,.text-answer { color:var(--text-main); }
+        .option { background:var(--card-bg); }
+        .option.selected { border-color:var(--accent-gold); background:color-mix(in srgb,var(--accent-gold) 12%,var(--card-bg)); }
+        .submit-button,.audio-button,.mic-button { background:var(--accent-gold); color:var(--bg-dark); }
+      `}</style>
       <NdBot mode="exam" strikeLevel={strikeLevel} />
     </section>
   );

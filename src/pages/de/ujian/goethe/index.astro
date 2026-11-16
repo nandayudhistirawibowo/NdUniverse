@@ -41,15 +41,9 @@ const examLevels = [
   header h1 { margin:.35rem 0; }
   header p:last-child { margin:.35rem 0 0; color:var(--muted); }
   .eyebrow { margin:0; color:var(--accent-gold); font-weight:800; text-transform:uppercase; }
-  .level-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:1rem; }
+  .level-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr)); gap:1rem; }
   .level-card { display:block; padding:1.25rem; border:2px solid var(--accent-gold); border-radius:1rem; background:var(--card-bg); color:var(--text-main); text-decoration:none; box-shadow:var(--shadow); }
   .level-card > span { display:inline-flex; padding:.35rem .6rem; border-radius:999px; background:var(--accent-red); color:#fff; font-weight:800; }
   .level-card h2 { margin:.75rem 0 .35rem; }
   .level-card p { margin:0; color:var(--muted); }
-  @media(max-width:700px) { .level-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } }
-  @media (max-width: 767px) {
-    .level-grid {
-      grid-template-columns: minmax(0, 1fr);
-    }
-  }
 </style>

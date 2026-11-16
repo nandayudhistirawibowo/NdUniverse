@@ -57,7 +57,7 @@ const materials = (await getCollection('materi'))
   h1 { margin: 0; }
   header p:last-child, .empty-state { color: var(--muted); }
   .exam-link { width: fit-content; padding: .7rem 1rem; border-radius: .65rem; background: var(--accent-gold); color: var(--bg-dark); font-weight: 800; text-decoration: none; }
-  .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1rem; }
+  .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem; }
   .material-card { display: grid; align-content: start; gap: .65rem; padding: 1rem; border: 1px solid var(--border); border-radius: .8rem; background: var(--card-bg); }
   .material-card h2, .material-card p { margin: 0; }
   .material-card p { color: var(--muted); line-height: 1.55; }
