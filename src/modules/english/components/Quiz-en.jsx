@@ -898,14 +898,14 @@ export default function Quiz(props) {
             aria-pressed={audioAccent === 'us'}
             onClick={() => changeAudioAccent('us')}
           >
-            🇺🇸 US
+            <img src="/flags/us.svg" alt="US" className="flag-icon" />
           </button>
           <button
             type="button"
             aria-pressed={audioAccent === 'uk'}
             onClick={() => changeAudioAccent('uk')}
           >
-            🇬🇧 UK
+            <img src="/flags/gb.svg" alt="UK" className="flag-icon" />
           </button>
         </div>
         <div className="game-controls">
@@ -1420,8 +1420,8 @@ export default function Quiz(props) {
           }
 
           .audio-accent-toggle button {
-            min-height: 32px;
-            padding: 0.35rem 0.55rem;
+            min-height: 36px;
+            padding: 6px 10px;
             border: 1px solid transparent;
             border-radius: 0.4rem;
             background: transparent;
@@ -1445,6 +1445,27 @@ export default function Quiz(props) {
           .audio-accent-toggle button:focus-visible {
             outline: 2px solid var(--accent-gold);
             outline-offset: 2px;
+          }
+
+          .flag-icon {
+            width: 1.2rem;
+            height: auto;
+            display: inline-block;
+            vertical-align: middle;
+            border-radius: 2px;
+            object-fit: cover;
+          }
+
+          @media (hover: none) {
+            .audio-accent-toggle button:active:not(:disabled) {
+              transform: scale(0.95);
+            }
+          }
+
+          @media (max-width: 480px) {
+            .audio-accent-toggle button {
+              padding: 6px 8px;
+            }
           }
 
           .game-controls {
