@@ -1,44 +1,11 @@
+import BOSS_AUDIO_MANIFEST from '../../../manifest-boss.json' with { type: 'json' };
+
 const AUDIO_CDN_BASE =
   'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio';
-const MANIFEST_URL = '/manifest-boss.json';
 
-let manifestPromise;
-let playbackQueue = Promise.resolve();
 let activeAudio = null;
 let activeAudioStop = null;
-const audioCompletions = new WeakMap();
 const warnedMissingTexts = new Set();
-
-function getManifest() {
-  if (!manifestPromise) {
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 8000);
-    manifestPromise = fetch(MANIFEST_URL, { signal: controller.signal })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Boss audio manifest request failed: ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then((manifest) => {
-        if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
-          throw new Error('Boss audio manifest must be a text-to-audio mapping.');
-        }
-
-        return manifest;
-      })
-      .catch((error) => {
-        console.warn('Boss audio manifest is unavailable; using the default typewriter speed.', error);
-        return null;
-      })
-      .finally(() => {
-        window.clearTimeout(timeout);
-      });
-  }
-
-  return manifestPromise;
-}
 
 function playAudioWhenReady(audioUrl, signal) {
   return new Promise((resolve, reject) => {
@@ -49,16 +16,11 @@ function playAudioWhenReady(audioUrl, signal) {
 
     let settled = false;
     let startupTimeout;
-    let resolveCompletion;
-    let playRequested = false;
-    let playbackReady = false;
-    const completion = new Promise((done) => {
-      resolveCompletion = done;
-    });
+    let playbackStarted = false;
+    let metadataReady = false;
     const audio = new Audio();
-    audio.crossOrigin = 'anonymous';
     audio.preload = 'auto';
-    audioCompletions.set(audio, completion);
+    audio.crossOrigin = 'anonymous';
     activeAudio = audio;
 
     const cleanup = () => {
@@ -68,7 +30,6 @@ function playAudioWhenReady(audioUrl, signal) {
       audio.removeEventListener('ended', handleEnded);
       audio.removeEventListener('error', handleError);
       signal?.removeEventListener('abort', stopAudio);
-      resolveCompletion();
       if (activeAudio === audio) {
         activeAudio = null;
         activeAudioStop = null;
@@ -102,30 +63,8 @@ function playAudioWhenReady(audioUrl, signal) {
     };
     const handleReady = () => {
       if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
-      if (playbackReady) {
-        settle(audio);
-        return;
-      }
-      if (!playRequested) {
-        playRequested = true;
-        try {
-          const playPromise = audio.play();
-          if (playPromise && typeof playPromise.then === 'function') {
-            playPromise.then(() => {
-              playbackReady = true;
-              if (Number.isFinite(audio.duration) && audio.duration > 0) {
-                settle(audio);
-              }
-            }, failAudio);
-          } else {
-            playbackReady = true;
-            settle(audio);
-          }
-        } catch (error) {
-          failAudio(error);
-          return;
-        }
-      }
+      metadataReady = true;
+      if (playbackStarted) settle(audio);
     };
     const handleEnded = () => {
       if (!settled) {
@@ -157,44 +96,40 @@ function playAudioWhenReady(audioUrl, signal) {
 
     try {
       audio.src = audioUrl;
-      audio.load();
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(() => {
+          playbackStarted = true;
+          if (metadataReady) settle(audio);
+        }, failAudio);
+      } else {
+        playbackStarted = true;
+        if (metadataReady) settle(audio);
+      }
     } catch (error) {
       failAudio(error);
     }
   });
 }
 
-export async function playBossAudio(text, language, signal) {
+export function playBossAudio(text, language, signal) {
   const spokenText = String(text ?? '').trim();
   if (!spokenText || (language !== 'en' && language !== 'de') || typeof window === 'undefined') {
-    return null;
+    return Promise.resolve(null);
   }
 
-  const manifest = await getManifest();
-  if (signal?.aborted) return null;
-  if (!manifest) return null;
+  if (signal?.aborted) return Promise.resolve(null);
 
-  const audioUrl = manifest?.[spokenText];
+  const audioUrl = BOSS_AUDIO_MANIFEST?.[spokenText];
   const languagePath = `${AUDIO_CDN_BASE}/boss/${language}/`;
   if (typeof audioUrl !== 'string' || !audioUrl.startsWith(languagePath)) {
     if (!warnedMissingTexts.has(spokenText)) {
       warnedMissingTexts.add(spokenText);
       console.warn(`No generated ${language.toUpperCase()} boss audio for this line; using the default typewriter speed.`);
     }
-    return null;
+    return Promise.resolve(null);
   }
 
-  const queuedPlayback = playbackQueue
-    .catch(() => undefined)
-    .then(() => {
-      if (signal?.aborted) return null;
-      activeAudioStop?.();
-      return playAudioWhenReady(audioUrl, signal);
-    });
-
-  playbackQueue = queuedPlayback.then((audio) => (
-    audio ? audioCompletions.get(audio) : undefined
-  ));
-
-  return queuedPlayback;
+  activeAudioStop?.();
+  return playAudioWhenReady(audioUrl, signal);
 }

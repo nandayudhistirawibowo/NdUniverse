@@ -1447,6 +1447,12 @@ export default function Quiz(props) {
             outline-offset: 2px;
           }
 
+          @media (hover: none) {
+            .vocab-speech-button:active:not(:disabled) {
+              transform: scale(0.95);
+            }
+          }
+
           .flag-icon {
             width: 1.2rem;
             height: auto;

@@ -1,37 +1,14 @@
-import { preloadCdnAudioManifest, resolveCdnAudioUrl } from '../../../core/audio/cdn-audio.js';
+import {
+  getSyncGermanTtsAudioUrl,
+  preloadCdnAudioManifest,
+  resolveCdnAudioUrlSync,
+} from '../../../core/audio/cdn-audio.js';
 
-let manifestPromise;
 let currentAudio = null;
-
-function getManifest() {
-  if (!manifestPromise) {
-    manifestPromise = fetch('https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/tts/manifest.json')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`TTS manifest request failed: ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then((manifest) => {
-        if (!manifest || typeof manifest !== 'object' || Array.isArray(manifest)) {
-          throw new Error('TTS manifest must be a text-to-audio mapping.');
-        }
-
-        return manifest;
-      })
-      .catch((error) => {
-        console.error('Unable to load the TTS audio manifest.', error);
-        manifestPromise = undefined;
-        return null;
-      });
-  }
-
-  return manifestPromise;
-}
+let currentAudioButton = null;
+let activePlaybackId = 0;
 
 if (typeof window !== 'undefined') {
-  getManifest();
   preloadCdnAudioManifest();
 }
 
@@ -60,88 +37,134 @@ export function normalizeText(text) {
   return String(text ?? '').replace(/\s+/g, ' ').trim();
 }
 
-export async function playAudioTTS(text, button, fallbackText = text) {
-  const spokenText = normalizeText(text);
-  const spokenFallback = normalizeText(fallbackText) || spokenText;
+function stopCurrentAudio() {
+  if (!currentAudio) return;
 
-  if (!spokenText) {
+  const audio = currentAudio;
+  currentAudio = null;
+  currentAudioButton?.classList.remove('is-playing');
+  currentAudioButton = null;
+  audio.onended = null;
+  audio.onerror = null;
+  audio.pause();
+  audio.currentTime = 0;
+  audio.removeAttribute('src');
+  audio.load();
+}
+
+async function getAudioHttpStatus(audioUrl) {
+  try {
+    const response = await fetch(audioUrl, { method: 'HEAD', cache: 'no-store' });
+    return response.status;
+  } catch (error) {
+    console.error(`Unable to verify German audio URL: ${audioUrl}`, error);
+    return null;
+  }
+}
+
+function fallbackToBrowserVoice(text, button, error) {
+  const spokenFallback = normalizeText(text);
+  if (!spokenFallback || /^(\/|https?:\/\/)/i.test(spokenFallback)) {
     button?.classList.remove('is-playing');
+    console.error('CDN audio failed and no text is available for browser speech synthesis.', error);
     return;
   }
 
-  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-  }
-  if (currentAudio) {
-    currentAudio.pause();
-    currentAudio.removeAttribute('src');
-    currentAudio.load();
-    currentAudio = null;
+  console.warn('[Audio Fallback] Using Web Speech API because CDN failed:', error);
+  speakGerman(spokenFallback, button);
+}
+
+function playAudioFile(audioUrl, fallbackText, button, playbackId) {
+  if (typeof Audio === 'undefined') {
+    button?.classList.remove('is-playing');
+    console.error('Unable to play German audio because the Audio API is not supported.');
+    return;
   }
 
-  if (/^(\/|https?:\/\/)/i.test(spokenText)) {
-    if (typeof Audio === 'undefined') {
-      speakGerman(spokenFallback, button);
+  const audio = new Audio();
+  audio.preload = 'auto';
+  audio.crossOrigin = 'anonymous';
+  audio.src = audioUrl;
+  currentAudio = audio;
+  currentAudioButton = button;
+  let failureCheckStarted = false;
+
+  const handleAudioFailure = (initialError) => {
+    if (playbackId !== activePlaybackId || currentAudio !== audio) return;
+
+    if (initialError?.name === 'NotAllowedError') {
+      button?.classList.remove('is-playing');
+      currentAudio = null;
+      currentAudioButton = null;
+      fallbackToBrowserVoice(fallbackText, button, initialError);
       return;
     }
-    const directAudioPath = await resolveCdnAudioUrl(spokenText) || spokenText;
-    const directAudio = new Audio(directAudioPath);
-    currentAudio = directAudio;
-    button?.classList.add('is-playing');
-    directAudio.onended = () => {
-      button?.classList.remove('is-playing');
-      if (currentAudio === directAudio) currentAudio = null;
-    };
-    directAudio.onerror = () => {
-      button?.classList.remove('is-playing');
-      if (currentAudio === directAudio) currentAudio = null;
-      speakGerman(spokenFallback, button);
-    };
-    try {
-      await directAudio.play();
-    } catch (error) {
-      console.error(`Unable to play direct TTS audio: ${directAudioPath}`, error);
-      button?.classList.remove('is-playing');
-      if (currentAudio === directAudio) currentAudio = null;
-      speakGerman(spokenFallback, button);
-    }
-    return;
-  }
 
-  const manifest = await getManifest();
-  const audioPath = manifest?.[spokenText];
-  const cdnAudioPath = await resolveCdnAudioUrl(audioPath);
-
-  if (typeof cdnAudioPath !== 'string') {
-    speakGerman(spokenText, button);
-    return;
-  }
-
-  const audio = new Audio(cdnAudioPath);
-  currentAudio = audio;
-  let fellBackToSpeech = false;
-  const fallBack = () => {
-    if (fellBackToSpeech) return;
-    fellBackToSpeech = true;
-    if (currentAudio === audio) currentAudio = null;
+    if (failureCheckStarted) return;
+    failureCheckStarted = true;
     button?.classList.remove('is-playing');
-    speakGerman(spokenText, button);
+    getAudioHttpStatus(audioUrl).then((status) => {
+      if (playbackId !== activePlaybackId || currentAudio !== audio) return;
+      currentAudio = null;
+      currentAudioButton = null;
+
+      if (status === 404) {
+        fallbackToBrowserVoice(fallbackText, button, initialError);
+      } else {
+        console.error(`Unable to play German audio (HTTP status ${status ?? 'unknown'}).`, initialError);
+      }
+    });
   };
 
   button?.classList.add('is-playing');
   audio.onended = () => {
     button?.classList.remove('is-playing');
     if (currentAudio === audio) currentAudio = null;
+    if (currentAudioButton === button) currentAudioButton = null;
   };
-  audio.onerror = () => {
-    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, audio.error);
-    fallBack();
-  };
+  audio.onerror = () => handleAudioFailure(audio.error);
 
   try {
-    await audio.play();
+    audio.play()?.catch(handleAudioFailure);
   } catch (error) {
-    console.error(`Unable to play generated TTS audio: ${cdnAudioPath}`, error);
-    fallBack();
+    handleAudioFailure(error);
   }
+}
+
+export function playAudioTTS(text, button, fallbackText = text) {
+  const spokenText = normalizeText(text);
+  const spokenFallback = normalizeText(fallbackText) || spokenText;
+
+  if (typeof window === 'undefined') return;
+
+  const playbackId = ++activePlaybackId;
+  stopCurrentAudio();
+  window.speechSynthesis?.cancel();
+
+  if (!spokenText) {
+    button?.classList.remove('is-playing');
+    return;
+  }
+
+  let audioUrl;
+  let speechText = spokenFallback;
+  if (/^(\/|https?:\/\/)/i.test(spokenText)) {
+    audioUrl = resolveCdnAudioUrlSync(spokenText);
+    if (!audioUrl) {
+      button?.classList.remove('is-playing');
+      console.error(`German audio source is not a supported CDN URL: ${spokenText}`);
+      return;
+    }
+    speechText = spokenFallback;
+  } else {
+    audioUrl = getSyncGermanTtsAudioUrl(spokenText);
+  }
+
+  if (typeof audioUrl !== 'string') {
+    button?.classList.remove('is-playing');
+    console.error('Unable to resolve German text to a CDN audio URL.');
+    return;
+  }
+
+  playAudioFile(audioUrl, speechText, button, playbackId);
 }

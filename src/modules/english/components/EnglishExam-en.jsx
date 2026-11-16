@@ -368,7 +368,8 @@ export default function EnglishExam({ exam, type, level }) {
                     <audio
                       className="exam-listening-audio"
                       controls
-                      preload="none"
+                      preload="auto"
+                      crossOrigin="anonymous"
                       src={`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`}
                     >
                       Browser kamu tidak mendukung pemutaran audio.

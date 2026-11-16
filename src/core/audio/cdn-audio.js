@@ -6,6 +6,7 @@ const CDN_MANIFEST_URL =
   'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/NdUniverse@main/manifest-cdn.json';
 
 let cdnManifestPromise;
+let cdnManifest;
 
 function getCdnManifest() {
   if (!cdnManifestPromise) {
@@ -22,6 +23,7 @@ function getCdnManifest() {
           throw new Error('CDN audio manifest must be a path-to-URL mapping.');
         }
 
+        cdnManifest = manifest;
         return manifest;
       })
       .catch((error) => {
@@ -65,10 +67,22 @@ export function resolveCdnAudioUrlSync(audioPath) {
   const audioKey = getAudioKey(audioPath);
   if (!audioKey) return null;
 
+  const indexedUrl = cdnManifest?.[audioKey];
+  if (typeof indexedUrl === 'string' && indexedUrl.startsWith(`${AUDIO_REPO_BASE}/`)) {
+    return indexedUrl;
+  }
+
   return `${AUDIO_REPO_BASE}/${audioKey
     .split('/')
     .map((segment) => encodeURIComponent(segment))
     .join('/')}`;
+}
+
+export function getSyncGermanTtsAudioUrl(text) {
+  const spokenText = String(text ?? '').replace(/\s+/g, ' ').trim();
+  if (!spokenText) return null;
+
+  return resolveCdnAudioUrlSync(`/audio/tts/${sha256(spokenText)}.mp3`);
 }
 
 export async function resolveCdnAudioUrl(audioPath) {
@@ -92,10 +106,7 @@ export function getSyncAudioUrl(text, accent = 'us') {
   const textHash = sha256(spokenText);
   const audioKey = `tts-en-${locale}/${textHash}-${locale}.mp3`;
 
-  return `${AUDIO_REPO_BASE}/${audioKey
-    .split('/')
-    .map((segment) => encodeURIComponent(segment))
-    .join('/')}`;
+  return resolveCdnAudioUrlSync(`/audio/${audioKey}`);
 }
 
 export function resolveEnglishTtsAudioUrlSync(text, accent = 'us') {

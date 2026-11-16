@@ -792,20 +792,7 @@ export default function Quiz(props) {
     listeningPlayedRef.current = true;
     setHasPlayedListening(true);
 
-    if (/^(\/|https?:\/\/)/i.test(audioSource)) {
-      const button = event.currentTarget;
-      button.classList.add('is-playing');
-      if (typeof Audio === 'undefined') return;
-      const audio = new Audio(audioSource);
-      audio.onended = () => button.classList.remove('is-playing');
-      audio.onerror = () => {
-        button.classList.remove('is-playing');
-      };
-      audio.play().catch(() => button.classList.remove('is-playing'));
-      return;
-    }
-
-    playAudioTTS(audioSource, event.currentTarget);
+    playAudioTTS(audioSource, event.currentTarget, getListeningPrompt(currentQuestion));
   }
 
   function addArrangeToken(index) {
@@ -1269,6 +1256,13 @@ export default function Quiz(props) {
             color: var(--text-main);
             font: inherit;
             cursor: pointer;
+            transition: transform 0.16s ease;
+          }
+
+          @media (hover: none) {
+            .vocab-speech-button:active:not(:disabled) {
+              transform: scale(0.95);
+            }
           }
 
           .audio-text-box {

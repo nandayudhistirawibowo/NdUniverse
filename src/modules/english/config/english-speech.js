@@ -74,6 +74,18 @@ function speakWithBrowserVoice(text, language, button) {
   }
 }
 
+function fallbackToBrowserVoice(text, language, button, error) {
+  const spokenFallback = normalizeText(text);
+  if (!spokenFallback || /^(\/|https?:\/\/)/i.test(spokenFallback)) {
+    button?.classList.remove('is-playing');
+    console.error('CDN audio failed and no text is available for browser speech synthesis.', error);
+    return;
+  }
+
+  console.warn('[Audio Fallback] Using Web Speech API because CDN failed:', error);
+  speakWithBrowserVoice(spokenFallback, language, button);
+}
+
 export function normalizeText(text) {
   return String(text ?? '').replace(/\s+/g, ' ').trim();
 }
@@ -92,11 +104,15 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
   if (playbackId !== activePlaybackId) return;
 
   if (typeof Audio === 'undefined') {
-    speakWithBrowserVoice(fallbackText, language, button);
+    button?.classList.remove('is-playing');
+    console.error('Unable to play English audio because the Audio API is not supported.');
     return;
   }
 
-  const audio = new Audio(audioUrl);
+  const audio = new Audio();
+  audio.preload = 'auto';
+  audio.crossOrigin = 'anonymous';
+  audio.src = audioUrl;
   activeAudio = audio;
   activeAudioButton = button;
   let failureCheckStarted = false;
@@ -107,7 +123,7 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
       button?.classList.remove('is-playing');
       activeAudio = null;
       activeAudioButton = null;
-      console.warn('Browser blocked English audio playback; tap the audio button again.', initialError);
+      fallbackToBrowserVoice(fallbackText, language, button, initialError);
       return;
     }
 
@@ -120,7 +136,7 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
       activeAudioButton = null;
 
       if (status === 404) {
-        speakWithBrowserVoice(fallbackText, language, button);
+        fallbackToBrowserVoice(fallbackText, language, button, initialError);
       } else {
         console.error(`Unable to play English audio (HTTP status ${status ?? 'unknown'}).`, initialError);
       }
@@ -140,7 +156,6 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
   };
 
   try {
-    audio.load();
     const playPromise = audio.play();
     playPromise?.catch(handleAudioFailure);
   } catch (error) {
@@ -171,7 +186,12 @@ export function playAudioTTS(text, accent = 'us', button = null, fallbackText = 
   }
 
   if (/^(\/|https?:\/\/)/i.test(spokenText)) {
-    const directAudioPath = resolveCdnAudioUrlSync(spokenText) || spokenText;
+    const directAudioPath = resolveCdnAudioUrlSync(spokenText);
+    if (!directAudioPath) {
+      button?.classList.remove('is-playing');
+      console.error(`English audio source is not a supported CDN URL: ${spokenText}`);
+      return;
+    }
     playAudioFile(directAudioPath, spokenFallback, language, button, playbackId);
     return;
   }
@@ -179,7 +199,8 @@ export function playAudioTTS(text, accent = 'us', button = null, fallbackText = 
   const cdnAudioPath = getSyncAudioUrl(spokenText, accent);
 
   if (!cdnAudioPath) {
-    speakWithBrowserVoice(spokenText, language, button);
+    button?.classList.remove('is-playing');
+    console.error('Unable to resolve English text to a CDN audio URL.');
     return;
   }
 
