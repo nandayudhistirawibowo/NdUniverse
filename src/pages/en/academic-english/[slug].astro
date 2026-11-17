@@ -75,14 +75,14 @@ const pillars = [
                 <th scope="row" lang="en">
                   <span class="audio-example">
                     {word.word}
-                    <button class="speaker-button" type="button" data-speak={word.word} aria-label={`Dengarkan ${word.word}`} title={`Dengarkan ${word.word}`}>🔊</button>
+                    <button class="speaker-button audio-btn" type="button" data-speak={word.word} aria-label={`Dengarkan ${word.word}`} title={`Dengarkan ${word.word}`}>🔊</button>
                   </span>
                 </th>
                 <td>{word.translation}</td>
                 <td lang="en">
                   <span class="audio-example">
                     {word.context}
-                    <button class="speaker-button" type="button" data-speak={word.context} aria-label={`Dengarkan contoh: ${word.context}`} title="Dengarkan contoh">🔊</button>
+                    <button class="speaker-button audio-btn" type="button" data-speak={word.context} aria-label={`Dengarkan contoh: ${word.context}`} title="Dengarkan contoh">🔊</button>
                   </span>
                 </td>
               </tr>

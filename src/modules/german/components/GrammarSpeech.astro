@@ -55,11 +55,12 @@ const { text } = Astro.props;
 
   .grammar-speech-button {
     display: inline-grid;
-    width: 36px;
-    height: 36px;
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
     flex: 0 0 auto;
     place-items: center;
-    padding: 0;
+    padding: 8px;
     border: 1px solid rgba(229, 169, 59, 0.55);
     border-radius: 6px;
     background: rgba(229, 169, 59, 0.12);
@@ -79,16 +80,14 @@ const { text } = Astro.props;
 
   @media (hover: hover) and (pointer: fine) {
     .grammar-speech-button:hover:not(:disabled) {
-      transform: scale(1.08);
-      background: var(--accent-gold);
-      color: var(--text-main);
+      border-color: var(--accent-gold);
+      background: var(--card-bg);
     }
   }
   @media (hover: none) and (pointer: coarse) {
     .grammar-speech-button:active:not(:disabled) {
-      transform: scale(0.94);
-      background: var(--accent-gold);
-      color: var(--text-main);
+      transform: scale(0.92);
+      background: rgba(212, 164, 55, 0.2);
       transition: transform 80ms ease;
     }
   }

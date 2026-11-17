@@ -62,14 +62,14 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
                   <td lang="en">{word.context}</td>
                   <td>
                     <div class="vocab-audio-controls">
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.german} aria-label={`Putar kata dalam bahasa Inggris AS: ${word.german}`} title="Bahasa Inggris AS"><img src="/flags/us.svg" alt="US" class="flag-icon" /></button>
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.german} aria-label={`Putar kata dalam bahasa Inggris UK: ${word.german}`} title="Bahasa Inggris UK"><img src="/flags/gb.svg" alt="UK" class="flag-icon" /></button>
+                      <button class="vocab-speech-button audio-btn" type="button" data-vocab-speech="us" data-vocab-text={word.german} aria-label={`Putar kata dalam bahasa Inggris AS: ${word.german}`} title="Bahasa Inggris AS"><img src="/flags/us.svg" alt="US" class="flag-icon" /></button>
+                      <button class="vocab-speech-button audio-btn" type="button" data-vocab-speech="uk" data-vocab-text={word.german} aria-label={`Putar kata dalam bahasa Inggris UK: ${word.german}`} title="Bahasa Inggris UK"><img src="/flags/gb.svg" alt="UK" class="flag-icon" /></button>
                     </div>
                   </td>
                   <td>
                     <div class="vocab-audio-controls">
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="us" data-vocab-text={word.context} aria-label={`Putar kalimat dalam bahasa Inggris AS: ${word.context}`} title="Bahasa Inggris AS"><img src="/flags/us.svg" alt="US" class="flag-icon" /></button>
-                      <button class="vocab-speech-button" type="button" data-vocab-speech="uk" data-vocab-text={word.context} aria-label={`Putar kalimat dalam bahasa Inggris UK: ${word.context}`} title="Bahasa Inggris UK"><img src="/flags/gb.svg" alt="UK" class="flag-icon" /></button>
+                      <button class="vocab-speech-button audio-btn" type="button" data-vocab-speech="us" data-vocab-text={word.context} aria-label={`Putar kalimat dalam bahasa Inggris AS: ${word.context}`} title="Bahasa Inggris AS"><img src="/flags/us.svg" alt="US" class="flag-icon" /></button>
+                      <button class="vocab-speech-button audio-btn" type="button" data-vocab-speech="uk" data-vocab-text={word.context} aria-label={`Putar kalimat dalam bahasa Inggris UK: ${word.context}`} title="Bahasa Inggris UK"><img src="/flags/gb.svg" alt="UK" class="flag-icon" /></button>
                     </div>
                   </td>
                 </tr>
@@ -162,12 +162,9 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   .audio-legend { margin: 0 0 .4rem; color: var(--muted); font-size: .75rem; }
   table { width: 100%; border-collapse: collapse; }
   th, td { padding: .65rem; border-bottom: 1px solid var(--border); text-align: left; }
-  .vocab-audio-controls { display: flex; align-items: center; gap: .25rem; }
-  .flag-icon { width: 1.2rem; height: auto; display: inline-block; vertical-align: middle; border-radius: 2px; object-fit: cover; }
-  .vocab-speech-button { display: inline-grid; width: auto; min-width: 36px; min-height: 36px; place-items: center; padding: 6px 8px; border: 1px solid var(--border); border-radius: 5px; background: var(--card-bg); line-height: 1; cursor: pointer; transition: transform .16s ease, border-color .16s ease, background-color .16s ease; }
-  @media (hover: hover) and (pointer: fine) { .vocab-speech-button:hover:not(:disabled) { transform: scale(1.05); border-color: var(--accent-gold); background: color-mix(in srgb, var(--accent-gold) 12%, var(--card-bg)); } }
-  @media (hover: none) { .vocab-speech-button:active:not(:disabled) { transform: scale(.94); transition: transform 80ms ease; } }
-  @media (max-width: 480px) { .vocab-audio-controls { gap: .15rem; } .vocab-speech-button { min-width: 36px; min-height: 36px; padding: 6px; } }
+  .vocab-audio-controls { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem; }
+  .vocab-speech-button { display: inline-grid; width: auto; min-width: 44px; min-height: 44px; place-items: center; padding: 8px; border: 1px solid var(--border); border-radius: 8px; background: transparent; line-height: 1; cursor: pointer; transition: transform .16s ease, border-color .16s ease, background-color .16s ease; }
+  @media (max-width: 480px) { .vocab-audio-controls { gap: .15rem; } }
   .vocab-speech-button.is-playing { border-color: var(--accent-gold); background: color-mix(in srgb, var(--accent-gold) 18%, var(--card-bg)); }
   .pillar-links { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
   .pillar-links a { min-height: 42px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }

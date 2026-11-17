@@ -93,7 +93,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
                       <td>{entry.indonesian}</td>
                       <td>
                         <button
-                          class="vocab-speech-button"
+                          class="vocab-speech-button audio-btn"
                           type="button"
                           data-speech={entry.german}
                           aria-label={`Dengarkan ${entry.german}`}
@@ -444,11 +444,12 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 
   .vocab-speech-button {
     display: inline-grid;
-    width: 36px;
-    height: 36px;
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
     flex: 0 0 auto;
     place-items: center;
-    padding: 0;
+    padding: 8px;
     border: 1px solid rgba(229, 169, 59, 0.55);
     border-radius: 6px;
     background: rgba(229, 169, 59, 0.12);
@@ -468,16 +469,14 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
 
   @media (hover: hover) and (pointer: fine) {
     .vocab-speech-button:hover:not(:disabled) {
-      transform: scale(1.08);
-      background: var(--accent-gold);
-      color: var(--text-main);
+      border-color: var(--accent-gold);
+      background: var(--card-bg);
     }
   }
   @media (hover: none) {
     .vocab-speech-button:active:not(:disabled) {
-      transform: scale(0.94);
-      background: var(--accent-gold);
-      color: var(--text-main);
+      transform: scale(0.92);
+      background: rgba(212, 164, 55, 0.2);
       transition: transform 80ms ease;
     }
   }
@@ -530,7 +529,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   .sesi-heading span { color: var(--muted); font-size: 0.82rem; font-weight: 700; }
   .sesi-card table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
   .sesi-card th, .sesi-card td { padding: 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
-  .sesi-card .vocab-speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
+  .sesi-card .vocab-speech-button { cursor: pointer; font-size: 1.15rem; }
   .pillar-buttons { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.65rem; margin-top: 1rem; }
   .pillar-buttons a { display: inline-flex; min-height: 44px; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); text-decoration: none; font-weight: 800; }
   .pillar-buttons a.is-complete { border-color: #3a8b55; background: #eaf6ed; color: #236b38; }
@@ -550,7 +549,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   .vocabulary-table-panel header p { color: var(--muted); }
   .vocabulary-table-panel table { width: 100%; border-collapse: collapse; }
   .vocabulary-table-panel th, .vocabulary-table-panel td { padding: 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
-  .vocabulary-table-panel .vocab-speech-button { border: 0; background: transparent; cursor: pointer; font-size: 1.15rem; }
+  .vocabulary-table-panel .vocab-speech-button { cursor: pointer; font-size: 1.15rem; }
 
   .notes-panel {
     display: grid;

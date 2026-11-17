@@ -1268,7 +1268,8 @@ export default function Quiz(props) {
 
           @media (hover: none) {
             .vocab-speech-button:active:not(:disabled) {
-              transform: scale(0.94);
+              transform: scale(0.92);
+              background: rgba(212, 164, 55, 0.2);
               transition: transform 80ms ease;
             }
           }

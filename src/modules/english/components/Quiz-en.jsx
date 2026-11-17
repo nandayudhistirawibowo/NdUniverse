@@ -1431,8 +1431,9 @@ export default function Quiz(props) {
           }
 
           .audio-accent-toggle button {
-            min-height: 36px;
-            padding: 6px 10px;
+            min-width: 44px;
+            min-height: 44px;
+            padding: 8px;
             border: 1px solid transparent;
             border-radius: 0.4rem;
             background: transparent;
@@ -1449,7 +1450,8 @@ export default function Quiz(props) {
 
           @media (hover: hover) and (pointer: fine) {
             .audio-accent-toggle button:hover:not(:disabled) {
-              background: var(--bg-soft);
+              border-color: var(--accent-gold);
+              background: var(--card-bg);
             }
           }
 
@@ -1458,23 +1460,25 @@ export default function Quiz(props) {
             outline-offset: 2px;
           }
 
-          @media (hover: none) {
+          @media (hover: none), (pointer: coarse) {
             .vocab-speech-button:active:not(:disabled) {
-              transform: scale(0.94);
+              transform: scale(0.92);
+              background: rgba(212, 164, 55, 0.2);
               transition: transform 80ms ease;
             }
           }
 
-          @media (hover: none) {
+          @media (hover: none), (pointer: coarse) {
             .audio-accent-toggle button:active:not(:disabled) {
-              transform: scale(0.94);
+              transform: scale(0.92);
+              background: rgba(212, 164, 55, 0.2);
               transition: transform 80ms ease;
             }
           }
 
           @media (max-width: 480px) {
             .audio-accent-toggle button {
-              padding: 6px 8px;
+              padding: 8px;
             }
           }
 

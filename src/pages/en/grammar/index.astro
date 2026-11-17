@@ -229,7 +229,7 @@ const quantityExamples = [
             <p class="card-description">{description}</p>
             <div class="example-with-speech">
               <span lang="en">{example}</span>
-              <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+              <button class="speaker-button audio-btn" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
             </div>
@@ -263,7 +263,7 @@ const quantityExamples = [
                     {examples.map((example) => (
                       <span class="example-with-speech phrase-example">
                         <span lang="en">{example}</span>
-                        <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                        <button class="speaker-button audio-btn" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
                           <span aria-hidden="true">🔊</span>
                         </button>
                       </span>
@@ -301,7 +301,7 @@ const quantityExamples = [
                     {examples.map(({ singular, plural }) => (
                       <span class="plural-example">
                         <span lang="en">{singular} → <strong>{plural}</strong></span>
-                        <button class="speaker-button" type="button" data-speak={plural} aria-label={`Dengarkan ${plural}`} title={`Dengarkan ${plural}`}>
+                        <button class="speaker-button audio-btn" type="button" data-speak={plural} aria-label={`Dengarkan ${plural}`} title={`Dengarkan ${plural}`}>
                           <span aria-hidden="true">🔊</span>
                         </button>
                       </span>
@@ -349,7 +349,7 @@ const quantityExamples = [
           <article class="article-card">
             <div class="example-with-speech">
               <span lang="en">{sentence}</span>
-              <button class="speaker-button" type="button" data-speak={sentence}
+              <button class="speaker-button audio-btn" type="button" data-speak={sentence}
                 aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
@@ -399,7 +399,7 @@ const quantityExamples = [
           <article class="article-card">
             <div class="example-with-speech">
               <span lang="en">{sentence}</span>
-              <button class="speaker-button" type="button" data-speak={sentence}
+              <button class="speaker-button audio-btn" type="button" data-speak={sentence}
                 aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
@@ -451,7 +451,7 @@ const quantityExamples = [
           <article class="article-card">
             <div class="example-with-speech">
               <span lang="en">{sentence}</span>
-              <button class="speaker-button" type="button" data-speak={sentence}
+              <button class="speaker-button audio-btn" type="button" data-speak={sentence}
                 aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
@@ -496,14 +496,14 @@ const quantityExamples = [
           <article class="article-card">
             <div class="example-with-speech">
               <span lang="en">{statement}</span>
-              <button class="speaker-button" type="button" data-speak={statement}
+              <button class="speaker-button audio-btn" type="button" data-speak={statement}
                 aria-label={`Dengarkan ${statement}`} title={`Dengarkan ${statement}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
             </div>
             <div class="example-with-speech">
               <span lang="en">{question}</span>
-              <button class="speaker-button" type="button" data-speak={question}
+              <button class="speaker-button audio-btn" type="button" data-speak={question}
                 aria-label={`Dengarkan ${question}`} title={`Dengarkan ${question}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
@@ -554,7 +554,7 @@ const quantityExamples = [
           <article class="article-card">
             <div class="example-with-speech">
               <span lang="en">{sentence}</span>
-              <button class="speaker-button" type="button" data-speak={sentence}
+              <button class="speaker-button audio-btn" type="button" data-speak={sentence}
                 aria-label={`Dengarkan ${sentence}`} title={`Dengarkan ${sentence}`}>
                 <span aria-hidden="true">🔊</span>
               </button>
@@ -778,33 +778,18 @@ const quantityExamples = [
 
   .speaker-button {
     display: inline-grid;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
     flex: 0 0 auto;
     place-items: center;
-    padding: 0;
+    padding: 8px;
     border: 1px solid var(--grammar-border);
     border-radius: 0.6rem;
     background: var(--grammar-soft);
     color: var(--grammar-ink);
     cursor: pointer;
     transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .speaker-button:hover {
-      transform: scale(1.06);
-      border-color: var(--grammar-accent);
-      background: var(--grammar-card);
-    }
-  }
-  @media (hover: none) {
-    .speaker-button:active {
-      transform: scale(0.94);
-      border-color: var(--grammar-accent);
-      background: var(--grammar-card);
-      transition: transform 80ms ease;
-    }
   }
 
   .speaker-button.is-playing {

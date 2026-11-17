@@ -5,10 +5,31 @@
 .grammar-speech-button,
 .career-word-audio,
 .audio-accent-toggle button {
-  min-width: 36px;
-  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .audio-btn:hover,
+  .speaker-button:hover,
+  .speech-button:hover,
+  .vocab-speech-button:hover,
+  .grammar-speech-button:hover,
+  .career-word-audio:hover,
+  .audio-accent-toggle button:hover {
+    border-color: var(--accent-gold);
+    background: var(--card-bg);
+  }
 }
 
 .audio-btn:active,
@@ -18,14 +39,15 @@
 .grammar-speech-button:active,
 .career-word-audio:active,
 .audio-accent-toggle button:active {
-  transform: scale(0.94);
+  transform: scale(0.92);
+  background: rgba(212, 164, 55, 0.2);
   transition: transform 80ms ease;
 }
 
 .flag-icon {
-  width: 1.2rem;
+  width: 20px;
   height: auto;
+  display: inline-block;
   vertical-align: middle;
   object-fit: cover;
-  border-radius: 2px;
 }

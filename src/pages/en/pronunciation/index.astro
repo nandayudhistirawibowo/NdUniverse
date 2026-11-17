@@ -116,7 +116,7 @@ const trickySounds = [
                 <td>
                   <div class="example-with-speech">
                     <span lang="en">{example}</span>
-                    <button class="speaker-button" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
+                    <button class="speaker-button audio-btn" type="button" data-speak={example} aria-label={`Dengarkan ${example}`} title={`Dengarkan ${example}`}>
                       <span aria-hidden="true">🔊</span>
                     </button>
                   </div>
@@ -147,7 +147,7 @@ const trickySounds = [
               {words.map(({ word, label }) => (
                 <span class="word-example">
                   <span><span lang="en">{word}</span><small>{label}</small></span>
-                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                  <button class="speaker-button audio-btn" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
                     <span aria-hidden="true">🔊</span>
                   </button>
                 </span>
@@ -173,7 +173,7 @@ const trickySounds = [
                     {examples.map(({ word, sound }) => (
                       <span class="word-example">
                         <span><span lang="en">{word}</span><small>{sound}</small></span>
-                        <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                        <button class="speaker-button audio-btn" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
                           <span aria-hidden="true">🔊</span>
                         </button>
                       </span>
@@ -205,7 +205,7 @@ const trickySounds = [
               {words.map((word) => (
                 <span class="word-example">
                   <span lang="en">{word}</span>
-                  <button class="speaker-button" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
+                  <button class="speaker-button audio-btn" type="button" data-speak={word} aria-label={`Dengarkan ${word}`} title={`Dengarkan ${word}`}>
                     <span aria-hidden="true">🔊</span>
                   </button>
                 </span>
@@ -411,33 +411,18 @@ const trickySounds = [
 
   .speaker-button {
     display: inline-grid;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: auto;
+    min-width: 44px;
+    min-height: 44px;
     flex: 0 0 auto;
     place-items: center;
-    padding: 0;
+    padding: 8px;
     border: 1px solid var(--guide-border);
     border-radius: 0.6rem;
     background: var(--guide-soft);
     color: var(--guide-ink);
     cursor: pointer;
     transition: transform 0.16s ease, border-color 0.16s ease, background-color 0.16s ease;
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .speaker-button:hover {
-      transform: scale(1.06);
-      border-color: var(--guide-accent);
-      background: var(--guide-card);
-    }
-  }
-  @media (hover: none) {
-    .speaker-button:active {
-      transform: scale(0.94);
-      border-color: var(--guide-accent);
-      background: var(--guide-card);
-      transition: transform 80ms ease;
-    }
   }
 
   .speaker-button.is-playing {
