@@ -338,11 +338,38 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
 <style>
   :root {
     --bg-dark: #1A1A1E;
+    --bg-base: var(--bg-dark);
+    --card-bg: #17171A;
+    --bg-input: #222226;
     --gold: #E5A93B;
     --accent-gold: var(--gold);
     --red: #D93838;
     --paper: #F9F9FB;
+    --text-main: var(--paper);
     --muted: #A7A7B0;
+    --text-muted: var(--muted);
+    --border: #44444C;
+    --story-bg: #202024;
+    --panel-border: rgba(255, 255, 255, 0.1);
+  }
+
+  .auth-screen.admin-portal {
+    --bg-base: #0b1520;
+    --bg-dark: #071019;
+    --card-bg: #071019;
+    --bg-input: var(--bg-base);
+    --text-main: #f8fafc;
+    --text-muted: rgba(248, 250, 252, 0.66);
+    --border: rgba(229, 169, 59, 0.28);
+    --gold: #e5a93b;
+    --accent-gold: var(--gold);
+    --paper: var(--text-main);
+    --muted: var(--text-muted);
+    --red: #d93838;
+    --story-bg: var(--bg-base);
+    --panel-border: var(--border);
+    background: var(--bg-base);
+    color: var(--text-main);
   }
 
   * {
@@ -386,7 +413,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
     background:
       linear-gradient(135deg, rgba(229, 169, 59, 0.07), transparent 38%),
       repeating-linear-gradient(135deg, transparent 0 42px, rgba(255, 255, 255, 0.018) 43px 44px),
-      #202024;
+      var(--story-bg);
   }
 
   .brand {
@@ -437,14 +464,14 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
   .story-detail {
     max-width: 410px;
     margin: 1.3rem 0 0;
-    color: #B5B5BD;
+    color: var(--text-muted);
     font-size: 0.98rem;
     line-height: 1.75;
   }
 
   .story-footer {
     margin: 0;
-    color: #85858F;
+    color: var(--text-muted);
     font-size: 0.75rem;
   }
 
@@ -453,15 +480,15 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
     min-height: 100vh;
     place-items: center;
     padding: clamp(1.25rem, 4vw, 4rem);
-    background: #17171A;
+    background: var(--card-bg);
   }
 
   .auth-panel {
     width: min(100%, 440px);
     padding: clamp(1.5rem, 3vw, 2.5rem);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--panel-border);
     border-radius: 10px;
-    background: var(--bg-dark);
+    background: var(--card-bg);
     box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
   }
 
@@ -527,7 +554,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
 
   .panel-description {
     margin: 0.5rem 0 1.6rem;
-    color: var(--muted);
+    color: var(--text-muted);
     font-size: 0.88rem;
     line-height: 1.6;
   }
@@ -539,7 +566,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
 
   .auth-form label {
     margin-top: 0.25rem;
-    color: #E2E2E6;
+    color: var(--text-main);
     font-size: 0.8rem;
     font-weight: 700;
   }
@@ -548,11 +575,11 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
     width: 100%;
     min-height: 48px;
     padding: 0.72rem 0.85rem;
-    border: 1px solid #44444C;
+    border: 1px solid var(--border);
     border-radius: 7px;
     outline: none;
-    background: #222226;
-    color: var(--paper);
+    background: var(--bg-input);
+    color: var(--text-main);
     font: inherit;
   }
 
@@ -577,7 +604,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
     border: 0;
     border-radius: 6px;
     background: transparent;
-    color: #A7A7B0;
+    color: var(--text-muted);
     cursor: pointer;
   }
 
@@ -609,7 +636,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
   }
 
   .auth-form input::placeholder {
-    color: #777780;
+    color: var(--text-muted);
   }
 
   .auth-form input:focus-visible {
@@ -619,7 +646,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
 
   .first-login-note {
     margin: 0.05rem 0 0.35rem;
-    color: #92929B;
+    color: var(--text-muted);
     font-size: 0.73rem;
   }
 
@@ -633,7 +660,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
     border: 0;
     border-radius: 7px;
     background: var(--gold);
-    color: #1A1A1E;
+    color: var(--bg-dark);
     font: inherit;
     font-size: 0.86rem;
     font-weight: 800;
@@ -659,7 +686,7 @@ const defaultDashboard = dashboardPath ?? (isEnglish ? '/en/dashboard' : '/dashb
     padding: 0;
     transform: translateY(-50%);
     background: transparent;
-    color: #A7A7B0;
+    color: var(--text-muted);
     box-shadow: none;
   }
 

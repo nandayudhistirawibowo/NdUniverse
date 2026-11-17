@@ -308,7 +308,7 @@ if (!isAdminNim(nim)) {
     gap: 1rem;
     padding: 1.35rem 1.5rem;
     border-radius: 12px;
-    background: var(--bg-dark);
+    background: var(--card-bg);
     color: var(--text-main);
   }
 
@@ -329,7 +329,7 @@ if (!isAdminNim(nim)) {
 
   .admin-header > div > p:last-child {
     margin: 0.45rem 0 0;
-    color: var(--muted);
+    color: var(--text-muted);
     font-size: 0.88rem;
   }
 
@@ -417,7 +417,7 @@ if (!isAdminNim(nim)) {
   }
 
   .table-heading span {
-    color: var(--muted);
+    color: var(--text-muted);
     font-size: 0.8rem;
     font-weight: 700;
   }
@@ -460,7 +460,7 @@ if (!isAdminNim(nim)) {
 
   th {
     background: var(--card-bg);
-    color: var(--muted);
+    color: var(--text-main);
     font-size: 0.73rem;
     font-weight: 800;
     letter-spacing: 0.05em;
@@ -477,7 +477,7 @@ if (!isAdminNim(nim)) {
 
   .empty-cell {
     height: 100px;
-    color: var(--muted);
+    color: var(--text-muted);
     text-align: center;
   }
 
@@ -502,11 +502,13 @@ if (!isAdminNim(nim)) {
   @media (hover: hover) {
     .row-button:hover {
       background: var(--accent-gold);
+      color: var(--bg-dark);
     }
   }
   @media (hover: none) {
     .row-button:active {
       background: var(--accent-gold);
+      color: var(--bg-dark);
     }
   }
 
@@ -587,7 +589,7 @@ if (!isAdminNim(nim)) {
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--border);
     border-radius: 7px;
-    background: var(--card-bg);
+    background: var(--bg-base);
     color: var(--text-main);
     font: inherit;
   }
@@ -599,7 +601,7 @@ if (!isAdminNim(nim)) {
 
   .user-form input:disabled {
     background: rgba(255, 255, 255, 0.04);
-    color: var(--muted);
+    color: var(--text-muted);
   }
 
   .user-form > div:not(.dialog-header) {
@@ -635,7 +637,7 @@ if (!isAdminNim(nim)) {
     padding: 0.6rem 0.75rem;
     border: 1px solid var(--border);
     border-radius: 7px;
-    background: var(--card-bg);
+    background: var(--bg-base);
     color: var(--text-main);
     font: inherit;
   }
@@ -643,12 +645,12 @@ if (!isAdminNim(nim)) {
   .user-form input::placeholder,
   .user-form select::placeholder,
   .user-form textarea::placeholder {
-    color: var(--muted);
+    color: var(--text-muted);
   }
 
   .user-form input:disabled {
     background: rgba(255, 255, 255, 0.04);
-    color: var(--muted);
+    color: var(--text-muted);
   }
 
   .icon-button {

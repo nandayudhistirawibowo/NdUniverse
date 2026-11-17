@@ -271,12 +271,14 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
 <style is:global>
   :root {
     --bg-main: #0b1520;
+    --bg-base: var(--bg-main);
     --bg-dark: #071019;
     --accent-gold: #e5a93b;
     --accent-red: #d93838;
     --text-main: #f8fafc;
     --card-bg: #071019;
     --muted: rgba(248, 250, 252, 0.66);
+    --text-muted: var(--muted);
     --border: rgba(229, 169, 59, 0.28);
     --shadow: 0 18px 40px rgba(0, 0, 0, 0.24);
     --primary-hover: #c98d23;
@@ -305,7 +307,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     overflow-x: hidden;
     min-height: 100vh;
     margin: 0;
-    background: var(--bg-main);
+    background: var(--bg-base);
     color: var(--text-main);
     font-family: 'Plus Jakarta Sans', sans-serif;
     line-height: 1.6;
@@ -357,21 +359,23 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
   }
 
   .admin-shell {
-    --bg-main: #0e0e12;
-    --bg-dark: #0e0e12;
-    --bg-card: #17171d;
-    --card-bg: #17171d;
-    --text-main: #f5f5f7;
-    --muted: #9a9aa3;
-    --accent-gold: #d4a437;
-    --border: #26262e;
-    background: var(--bg-dark);
+    --bg-main: #0b1520;
+    --bg-base: var(--bg-main);
+    --bg-dark: #071019;
+    --bg-card: var(--card-bg);
+    --card-bg: #071019;
+    --text-main: #f8fafc;
+    --text-muted: rgba(248, 250, 252, 0.66);
+    --muted: var(--text-muted);
+    --accent-gold: #e5a93b;
+    --border: rgba(229, 169, 59, 0.28);
+    background: var(--bg-base);
     color: var(--text-main);
   }
 
   .admin-shell .private-sidebar {
     border-right: 1px solid var(--border);
-    background: var(--bg-card);
+    background: var(--card-bg);
   }
 
   .private-sidebar {
@@ -588,6 +592,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
     border-bottom: 1px solid var(--border);
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: blur(14px);
+  }
+
+  .admin-shell .dashboard-header,
+  .admin-shell .account-menu {
+    background: var(--card-bg);
   }
 
   .header-actions {
