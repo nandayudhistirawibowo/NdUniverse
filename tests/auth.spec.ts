@@ -9,6 +9,6 @@ test('logs in with the dummy student account and opens the German dashboard', as
 test('logs out back to the German login page', async ({ page }) => {
   await login(page);
   await page.locator('summary.account-trigger').click();
-  await page.getByRole('button', { name: 'Logout', exact: true }).click();
+  await page.getByRole('button', { name: 'Keluar', exact: true }).click();
   await expect(page).toHaveURL(/\/login-de(?:$|[?#])/);
 });

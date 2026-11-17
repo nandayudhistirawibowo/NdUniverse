@@ -10,18 +10,19 @@ test('shows the Goethe timer and makes the certificate available for a passed re
   const timer = page.locator('.exam-timer strong');
   await expect(timer).toHaveText(/^\d{1,2}:\d{2}$/);
 
+  await page.getByRole('button', { name: 'Mulai Ujian' }).click();
+
   const readSeconds = async () => {
     const [minutes, seconds] = (await timer.innerText()).split(':').map(Number);
     return minutes * 60 + seconds;
   };
   const initialSeconds = await readSeconds();
-  await page.waitForTimeout(1200);
-  expect(await readSeconds()).toBeLessThan(initialSeconds);
+  await expect.poll(readSeconds, { timeout: 5000 }).toBeLessThan(initialSeconds);
 
   await page.evaluate(() => {
     localStorage.setItem('nduniverse-goethe-a1', JSON.stringify({ passed: true }));
   });
-  await page.goto('/sertifikat/goethe/a1');
+  await page.goto('/de/sertifikat/goethe/a1');
 
   await expect(page.getByRole('button', { name: 'Download PDF' })).toBeEnabled();
 });

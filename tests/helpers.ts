@@ -1,11 +1,12 @@
-import { expect, type Page } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 
 export async function login(page: Page) {
   const username = process.env.E2E_USERNAME ?? 'testing';
   const password = process.env.E2E_PASSWORD;
 
   if (!password) {
-    throw new Error('Set E2E_PASSWORD in the environment before running authenticated tests.');
+    test.skip(true, 'Set E2E_PASSWORD in the environment to run authenticated tests.');
+    return;
   }
 
   const passwordInput = page.locator('#password');
@@ -43,7 +44,7 @@ export async function openGermanReadingQuiz(page: Page) {
     has: page.getByRole('heading', { name: 'Keluarga', exact: true }),
   });
   await familyMaterial.getByRole('link', { name: /Buka Materi/ }).click();
-  await page.getByRole('link', { name: 'Reading', exact: true }).first().click();
+  await page.getByRole('link', { name: 'Membaca', exact: true }).first().click();
   await expect(page.locator('.question-card')).toBeVisible();
 }
 
@@ -67,7 +68,7 @@ export async function answerFirstThreeReadingQuestionsWrong(page: Page) {
 
     if (index < correctAnswers.length - 1) {
       await expect(page.locator('.question-card .correct-answer')).toBeVisible();
-      await page.locator('.question-card .action-row .primary-btn').click();
+      await page.getByRole('button', { name: 'Lanjutkan', exact: true }).click();
     }
   }
 

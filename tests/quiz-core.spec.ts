@@ -18,8 +18,8 @@ test('opens an English A1 Reading practice quiz from the catalog', async ({ page
   await page.locator('[data-level-filter]').selectOption('A1');
 
   const firstMaterial = page.locator('.material-card[data-level="A1"]').first();
-  await firstMaterial.getByRole('link', { name: /Open Material/ }).click();
-  await page.getByRole('link', { name: 'Reading', exact: true }).first().click();
+  await firstMaterial.getByRole('link', { name: /Buka materi/ }).click();
+  await page.getByRole('link', { name: 'Membaca', exact: true }).first().click();
 
   await expect(page.locator('.practice-page')).toBeVisible();
   await expect(page.locator('.practice-panel')).toBeVisible();

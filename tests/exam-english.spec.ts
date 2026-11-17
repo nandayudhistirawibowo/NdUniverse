@@ -11,7 +11,7 @@ test('opens IELTS and TOEFL exams and their passed-result certificate reports', 
     ['toefl', 'Score Report'],
   ]) {
     await page.goto(`/en/exam/${type}/a1`);
-    await expect(page.getByRole('heading', { name: `${type.toUpperCase()} Exam` })).toBeVisible();
+    await expect(page.getByRole('heading', { name: `Ujian ${type.toUpperCase()}`, exact: true })).toBeVisible();
 
     await page.evaluate(({ examType }) => {
       localStorage.setItem(

@@ -1,4 +1,9 @@
 import { expect, test, type Locator, type Page } from '@playwright/test';
+import { login } from './helpers';
+
+test.beforeEach(async ({ page }) => {
+  await login(page);
+});
 
 async function hoverClick(page: Page, locator: Locator) {
   const box = await locator.boundingBox();
@@ -24,7 +29,7 @@ test('records the 30-second NdUniverse promo journey', async ({ page }) => {
   await page.goto('/en/dashboard');
   await waitUntil(10_000);
 
-  await page.goto('/en/materi/latihan?slug=english-a1-animals&type=reading&session=1');
+  await page.goto('/en/materi/latihan?slug=a1%2Fenglish-a1-animals&type=reading&session=1');
   const questionCard = page.locator('.question-card');
   await expect(questionCard).toBeVisible();
   await hoverClick(page, questionCard.locator('.match-choice').first());

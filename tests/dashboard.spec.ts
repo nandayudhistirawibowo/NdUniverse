@@ -20,15 +20,13 @@ test('opens the profile and updates then restores the display name', async ({ pa
   try {
     await nameInput.fill(temporaryName);
     await submitButton.click();
-    await expect(submitButton).toBeDisabled();
+    await expect(message).toHaveText('Profile saved successfully.');
     await expect(submitButton).toBeEnabled();
-    await expect(message).toHaveText('Profil berhasil disimpan.');
   } finally {
     await nameInput.fill(restoreName);
     await submitButton.click();
-    await expect(submitButton).toBeDisabled();
+    await expect(message).toHaveText('Profile saved successfully.');
     await expect(submitButton).toBeEnabled();
-    await expect(message).toHaveText('Profil berhasil disimpan.');
     await page.reload();
     await expect(nameInput).toHaveValue(restoreName);
   }

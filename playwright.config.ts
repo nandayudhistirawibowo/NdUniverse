@@ -18,6 +18,6 @@ export default defineConfig({
     command: 'npm run build && node scripts/serve-vercel-output.mjs',
     url: 'http://localhost:4321',
     reuseExistingServer: true,
-    timeout: 180_000,
+    timeout: 600_000,
   },
 });

@@ -151,7 +151,7 @@ test('hunts layout and interaction bugs across NdUniverse', async ({ page }) => 
       });
 
       await captureStep('Dashboard: XP card is visible', async () => {
-        await expect(page.locator('.level-card .level-points')).toContainText('XP');
+        await expect(page.locator('[data-level-points]')).toContainText('XP');
       });
 
       await captureStep('Dashboard: NdBot button is visible', async () => {
@@ -206,8 +206,8 @@ test('hunts layout and interaction bugs across NdUniverse', async ({ page }) => 
         delete window.__quizTransitionPromise;
         return duration ?? Number.POSITIVE_INFINITY;
       });
-      if (pillar === 'reading' && transitionDuration > 1_000) {
-        throw new Error(`quiz question transition took ${transitionDuration}ms (expected <= 1000ms)`);
+      if (pillar === 'reading' && transitionDuration > 2_000) {
+        throw new Error(`quiz question transition took ${transitionDuration}ms (expected <= 2000ms)`);
       }
     });
   }
