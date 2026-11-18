@@ -1,0 +1,351 @@
+---
+import type { LeaderboardEntry } from '@core/db/leaderboard';
+
+interface Props {
+  entries: LeaderboardEntry[];
+  language: 'en' | 'de';
+  unavailable?: boolean;
+}
+
+const { entries, language, unavailable = false } = Astro.props;
+const isGerman = language === 'de';
+const podium = entries.slice(0, 3);
+const rankedUsers = entries.slice(3, 100);
+const formatXp = (value: number) => new Intl.NumberFormat(isGerman ? 'de-DE' : 'en-US').format(value);
+const podiumNames = ['first', 'second', 'third'];
+---
+
+<section class="leaderboard-page" aria-labelledby="leaderboard-title">
+  <header class="leaderboard-heading">
+    <p class="leaderboard-eyebrow">{isGerman ? 'COMMUNITY RANGLISTE' : 'COMMUNITY LEADERBOARD'}</p>
+    <h1 id="leaderboard-title">{isGerman ? 'Die Besten im Lern-Universum' : 'Top learners in the universe'}</h1>
+    <p>
+      {isGerman
+        ? 'Lerne weiter, sammle XP und steige in der Rangliste auf.'
+        : 'Keep learning, collect XP, and climb the leaderboard.'}
+    </p>
+  </header>
+
+  {unavailable ? (
+    <div class="leaderboard-notice" role="alert">
+      {isGerman
+        ? 'Die Rangliste ist gerade nicht verfügbar. Bitte später erneut versuchen.'
+        : 'The leaderboard is temporarily unavailable. Please try again later.'}
+    </div>
+  ) : entries.length === 0 ? (
+    <div class="leaderboard-notice">
+      {isGerman ? 'Noch keine Ranglistendaten vorhanden.' : 'No leaderboard entries yet.'}
+    </div>
+  ) : (
+    <>
+      <section class="podium-section" aria-label={isGerman ? 'Die drei Besten' : 'Top three learners'}>
+        {podium.map((entry, index) => (
+          <article class:list={['podium-card', `podium-${podiumNames[index]}`]}>
+            <span class="podium-rank">{isGerman ? 'PLATZ' : 'RANK'} {entry.rank}</span>
+            <span class="podium-medal" aria-hidden="true">{index === 0 ? '✦' : index === 1 ? '◆' : '✧'}</span>
+            <h2>{entry.name}</h2>
+            <span class="podium-level">{isGerman ? 'LEVEL' : 'LEVEL'} {entry.level}</span>
+            <strong class="podium-xp">{formatXp(entry.xp)} <span>XP</span></strong>
+          </article>
+        ))}
+      </section>
+
+      {rankedUsers.length > 0 && (
+        <section class="ranked-section" aria-labelledby="ranked-title">
+          <div class="ranked-heading">
+            <h2 id="ranked-title">{isGerman ? 'Weitere Lernende' : 'More learners'}</h2>
+            <span>{isGerman ? 'PLÄTZE 4–100' : 'RANKS 4–100'}</span>
+          </div>
+          <div class="ranked-list">
+            {rankedUsers.map((entry) => (
+              <article class="ranked-row">
+                <span class="ranked-number">{String(entry.rank).padStart(2, '0')}</span>
+                <div class="ranked-name">
+                  <strong>{entry.name}</strong>
+                </div>
+                <div class="ranked-metrics">
+                  <span class="ranked-stat">
+                    <small>{isGerman ? 'Level' : 'Level'}</small>
+                    <strong>{entry.level}</strong>
+                  </span>
+                  <span class="ranked-stat ranked-xp">
+                    <small>XP</small>
+                    <strong>{formatXp(entry.xp)}</strong>
+                  </span>
+                </div>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
+    </>
+  )}
+</section>
+
+<style>
+  .leaderboard-page {
+    display: grid;
+    gap: clamp(1.5rem, 4vw, 2.5rem);
+    width: min(100%, 1120px);
+    margin-inline: auto;
+    padding: clamp(.25rem, 1.5vw, 1rem);
+    color: var(--text-main, #f8fafc);
+  }
+
+  .leaderboard-heading {
+    display: grid;
+    gap: .55rem;
+    text-align: center;
+  }
+
+  .leaderboard-eyebrow {
+    margin: 0;
+    color: var(--accent-gold, #e5a93b);
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .18em;
+  }
+
+  .leaderboard-heading h1 {
+    margin: 0;
+    color: var(--text-main, #f8fafc);
+    font-size: clamp(1.7rem, 4.5vw, 3rem);
+    line-height: 1.12;
+  }
+
+  .leaderboard-heading > p:last-child {
+    margin: 0;
+    color: color-mix(in srgb, var(--text-main, #f8fafc) 78%, transparent);
+  }
+
+  .leaderboard-notice {
+    padding: 1.2rem;
+    border: 1px solid var(--border, rgba(229, 169, 59, .28));
+    border-radius: 1rem;
+    background: var(--card-bg, #071019);
+    color: var(--text-main, #f8fafc);
+    text-align: center;
+  }
+
+  .podium-section {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    gap: clamp(.65rem, 2vw, 1.25rem);
+  }
+
+  .podium-card {
+    display: grid;
+    justify-items: center;
+    align-content: center;
+    gap: .8rem;
+    min-width: 0;
+    min-height: 220px;
+    padding: clamp(1rem, 2.5vw, 1.75rem);
+    border: 1px solid var(--podium-color);
+    border-radius: 1.25rem;
+    background:
+      radial-gradient(ellipse at 50% 0, color-mix(in srgb, var(--podium-color) 20%, transparent), transparent 70%),
+      color-mix(in srgb, var(--card-bg, #071019) 92%, transparent);
+    box-shadow: 0 0 24px color-mix(in srgb, var(--podium-color) 18%, transparent);
+    color: var(--text-main, #f8fafc);
+    text-align: center;
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+
+  .podium-first {
+    --podium-color: var(--accent-gold, #e5a93b);
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 270px;
+    box-shadow: 0 0 34px color-mix(in srgb, var(--podium-color) 26%, transparent);
+  }
+
+  .podium-second {
+    --podium-color: #cbd5e1;
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .podium-third {
+    --podium-color: #d99a70;
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .podium-rank {
+    color: var(--podium-color);
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .15em;
+  }
+
+  .podium-medal {
+    display: grid;
+    width: 3rem;
+    aspect-ratio: 1;
+    place-items: center;
+    border: 1px solid color-mix(in srgb, var(--podium-color) 65%, transparent);
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--podium-color) 12%, transparent);
+    color: var(--podium-color);
+    font-size: 1.5rem;
+  }
+
+  .podium-card h2 {
+    max-width: 100%;
+    margin: 0;
+    color: var(--text-main, #f8fafc);
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    overflow-wrap: anywhere;
+  }
+
+  .podium-level {
+    color: color-mix(in srgb, var(--text-main, #f8fafc) 78%, transparent);
+    font-size: .76rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+  }
+
+  .podium-xp {
+    color: var(--podium-color);
+    font-size: clamp(1.15rem, 2.2vw, 1.55rem);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .podium-xp span {
+    font-size: .65em;
+  }
+
+  .ranked-section {
+    display: grid;
+    gap: .9rem;
+  }
+
+  .ranked-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .ranked-heading h2 {
+    margin: 0;
+    color: var(--text-main, #f8fafc);
+    font-size: clamp(1.2rem, 2.4vw, 1.6rem);
+  }
+
+  .ranked-heading > span {
+    color: color-mix(in srgb, var(--text-main, #f8fafc) 70%, transparent);
+    font-size: .68rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+
+  .ranked-list {
+    display: grid;
+    gap: .55rem;
+  }
+
+  .ranked-row {
+    display: flex;
+    align-items: center;
+    gap: clamp(.65rem, 2vw, 1rem);
+    min-width: 0;
+    padding: .8rem clamp(.8rem, 2.4vw, 1.15rem);
+    border: 1px solid var(--border, rgba(229, 169, 59, .28));
+    border-radius: .85rem;
+    background: color-mix(in srgb, var(--card-bg, #071019) 90%, transparent);
+    color: var(--text-main, #f8fafc);
+  }
+
+  .ranked-number {
+    flex: 0 0 2.5rem;
+    color: var(--accent-gold, #e5a93b);
+    font-size: .9rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ranked-name {
+    flex: 1 1 10rem;
+    min-width: 0;
+  }
+
+  .ranked-name strong {
+    display: block;
+    color: var(--text-main, #f8fafc);
+    overflow-wrap: anywhere;
+  }
+
+  .ranked-metrics {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: clamp(.8rem, 3vw, 2rem);
+  }
+
+  .ranked-stat {
+    display: grid;
+    gap: .1rem;
+    min-width: 3.6rem;
+    text-align: right;
+  }
+
+  .ranked-stat small {
+    color: color-mix(in srgb, var(--text-main, #f8fafc) 68%, transparent);
+    font-size: .68rem;
+  }
+
+  .ranked-stat strong {
+    color: var(--text-main, #f8fafc);
+    font-size: .95rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ranked-xp {
+    min-width: 5.5rem;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .podium-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 38px color-mix(in srgb, var(--podium-color) 30%, transparent);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .podium-section {
+      grid-template-columns: minmax(0, 1fr);
+      align-items: stretch;
+    }
+
+    .podium-card,
+    .podium-first,
+    .podium-second,
+    .podium-third {
+      grid-column: auto;
+      grid-row: auto;
+      min-height: 0;
+      padding: 1rem;
+    }
+
+    .podium-first {
+      order: -1;
+    }
+
+    .ranked-row {
+      flex-wrap: wrap;
+    }
+
+    .ranked-name {
+      flex-basis: calc(100% - 3.2rem);
+    }
+
+    .ranked-metrics {
+      flex: 1 1 auto;
+      margin-left: 3.2rem;
+      justify-content: space-between;
+    }
+  }
+</style>

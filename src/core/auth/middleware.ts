@@ -9,6 +9,7 @@ const ENGLISH_PROTECTED_ROUTES = [
   '/en/exam',
   '/en/grammar',
   '/en/pronunciation',
+  '/en/leaderboard',
 ];
 
 const GERMAN_PROTECTED_ROUTES = [
@@ -24,6 +25,7 @@ const GERMAN_PROTECTED_ROUTES = [
   '/de/ujian',
   '/de/grammar',
   '/de/pengucapan',
+  '/de/leaderboard',
 ];
 
 function isRouteOrSubroute(pathname: string, route: string) {

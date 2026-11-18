@@ -1,0 +1,19 @@
+---
+import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import Leaderboard from '@core/ui/Leaderboard.astro';
+import { fetchLeaderboard } from '@core/db/leaderboard';
+
+export const prerender = false;
+
+const { entries, unavailable } = await fetchLeaderboard();
+---
+
+<DashboardLayout
+  title="Leaderboard | NdUniverse"
+  description="See the top learners and their progress in NdUniverse."
+  active="leaderboard"
+  user={Astro.locals.user}
+  profile={Astro.locals.profile}
+>
+  <Leaderboard entries={entries} language="en" unavailable={unavailable} />
+</DashboardLayout>
