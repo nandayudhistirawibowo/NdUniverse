@@ -2,6 +2,10 @@ export interface GradeOptions {
   singleWord?: boolean;
 }
 
+export interface GradeWithAlternativesOptions extends GradeOptions {
+  keywords?: string[];
+}
+
 export interface GradeResult {
   score: number;
   pass: boolean;
@@ -15,6 +19,18 @@ export interface KeywordGradeResult {
   pass: boolean;
   matched: string[];
   missing: string[];
+}
+
+export interface GradedAlternative {
+  transcript: string;
+  confidence: number;
+  index: number;
+}
+
+export interface GradeWithAlternativesResult extends KeywordGradeResult {
+  bestTranscript: string;
+  bestAlternative: GradedAlternative;
+  method: 'exact' | 'phonetic' | 'fuzzy';
 }
 
 export function normalizeText(value: string): string {
@@ -57,6 +73,58 @@ function pronunciationKey(word: string): string {
     .replace(/^or/, 'o')
     .replace(/oa/g, 'o')
     .replace(/ore/g, 'or');
+}
+
+export function phoneticKey(word: string): string {
+  return normalizeText(word)
+    .replace(/\s+/g, '')
+    .replace(/ph/g, 'f')
+    .replace(/th/g, 't')
+    .replace(/ck/g, 'k')
+    .replace(/v/g, 'f')
+    .replace(/ore/g, 'or')
+    .replace(/oa/g, 'o')
+    .replace(/sch/g, 'sh')
+    .replace(/ch/g, 'k')
+    .replace(/(.)\1+/g, '$1')
+    .replace(/ed$/g, '')
+    .replace(/e$/g, '')
+    .replace(/[aeiouy]/g, '0')
+    .replace(/0+/g, '0');
+}
+
+function phoneticWordSimilarity(left: string, right: string): number {
+  const leftKey = phoneticKey(left);
+  const rightKey = phoneticKey(right);
+  if (leftKey === rightKey) return 1;
+  const length = Math.max(leftKey.length, rightKey.length);
+  return length === 0 ? 1 : 1 - wordLevenshtein(leftKey, rightKey) / length;
+}
+
+export function phoneticSimilarity(transcript: string, target: string): number {
+  const transcriptWords = normalizeText(transcript).split(' ').filter(Boolean);
+  const targetWords = normalizeText(target).split(' ').filter(Boolean);
+  if (targetWords.length === 0) return 0;
+
+  const usedTranscriptWords = new Set<number>();
+  const score = targetWords.reduce((total, targetWord) => {
+    let bestIndex = -1;
+    let bestScore = 0;
+
+    transcriptWords.forEach((transcriptWord, index) => {
+      if (usedTranscriptWords.has(index)) return;
+      const candidateScore = phoneticWordSimilarity(transcriptWord, targetWord);
+      if (candidateScore > bestScore) {
+        bestScore = candidateScore;
+        bestIndex = index;
+      }
+    });
+
+    if (bestIndex !== -1) usedTranscriptWords.add(bestIndex);
+    return total + bestScore;
+  }, 0);
+
+  return score / targetWords.length;
 }
 
 function wordsMatch(transcriptWord: string, targetWord: string): boolean {
@@ -139,4 +207,88 @@ export function gradeKeywords(transcript: string, keywords: string[]): KeywordGr
   const score = targetWords.length === 0 ? 0 : matched.length / targetWords.length;
 
   return { score, pass: score >= 0.6, matched, missing };
+}
+
+function exactWordScore(transcript: string, targetWords: string[]): number {
+  if (targetWords.length === 0) return 0;
+  const transcriptWords = normalizeText(transcript).split(' ').filter(Boolean);
+  const usedTranscriptWords = new Set<number>();
+  const matched = targetWords.filter((targetWord) => {
+    const index = transcriptWords.findIndex(
+      (transcriptWord, transcriptIndex) =>
+        !usedTranscriptWords.has(transcriptIndex) && transcriptWord === normalizeText(targetWord),
+    );
+    if (index === -1) return false;
+    usedTranscriptWords.add(index);
+    return true;
+  });
+  return matched.length / targetWords.length;
+}
+
+export function gradeWithAlternatives(
+  alternatives: Array<{ transcript: string; confidence: number }>,
+  target: string,
+  { singleWord = false, keywords }: GradeWithAlternativesOptions = {},
+): GradeWithAlternativesResult {
+  const targetWords = (keywords?.length ? keywords.join(' ') : target)
+    .split(/\s+/)
+    .filter(Boolean);
+  const threshold = keywords?.length ? 0.6 : singleWord ? 0.85 : 0.75;
+  const candidates = alternatives.length > 0
+    ? alternatives
+    : [{ transcript: '', confidence: 0 }];
+
+  let bestResult: GradeWithAlternativesResult | null = null;
+  candidates.forEach((alternative, index) => {
+    const fuzzyGrade = keywords?.length
+      ? gradeKeywords(alternative.transcript, keywords)
+      : grade(alternative.transcript, target, { singleWord });
+    const exactScore = exactWordScore(alternative.transcript, targetWords);
+    const phoneticScore = phoneticSimilarity(alternative.transcript, targetWords.join(' '));
+    const scoringMethods = [
+      { score: exactScore, method: 'exact' as const, priority: 2 },
+      { score: phoneticScore, method: 'phonetic' as const, priority: 1 },
+      { score: fuzzyGrade.score, method: 'fuzzy' as const, priority: 0 },
+    ].sort((left, right) => right.score - left.score || right.priority - left.priority);
+    const selected = scoringMethods[0];
+    const bestTranscript = alternative.transcript.trim();
+    const result: GradeWithAlternativesResult = {
+      score: selected.score,
+      pass: selected.method === 'phonetic'
+        ? selected.score >= 0.85
+        : selected.score >= threshold,
+      matched: fuzzyGrade.matched,
+      missing: fuzzyGrade.missing,
+      bestTranscript,
+      bestAlternative: { ...alternative, transcript: bestTranscript, index },
+      method: selected.method,
+    };
+    const methodPriority = { exact: 2, phonetic: 1, fuzzy: 0 };
+
+    if (
+      !bestResult
+      || result.score > bestResult.score
+      || (
+        result.score === bestResult.score
+        && methodPriority[result.method] > methodPriority[bestResult.method]
+      )
+      || (
+        result.score === bestResult.score
+        && result.method === bestResult.method
+        && alternative.confidence > bestResult.bestAlternative.confidence
+      )
+    ) {
+      bestResult = result;
+    }
+  });
+
+  return bestResult ?? {
+    score: 0,
+    pass: false,
+    matched: [],
+    missing: targetWords,
+    bestTranscript: '',
+    bestAlternative: { transcript: '', confidence: 0, index: -1 },
+    method: 'fuzzy',
+  };
 }

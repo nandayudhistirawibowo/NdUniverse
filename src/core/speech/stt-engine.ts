@@ -11,6 +11,11 @@ interface SpeechRecognitionAlternativeLike {
   confidence: number;
 }
 
+export interface SpeechAlternative {
+  transcript: string;
+  confidence: number;
+}
+
 interface SpeechRecognitionResultLike {
   readonly isFinal: boolean;
   readonly length: number;
@@ -29,6 +34,7 @@ interface SpeechRecognitionErrorEventLike {
 interface SpeechRecognitionLike {
   continuous: boolean;
   interimResults: boolean;
+  maxAlternatives: number;
   lang: string;
   onresult: ((event: SpeechRecognitionEventLike) => void) | null;
   onerror: ((event: SpeechRecognitionErrorEventLike) => void) | null;
@@ -56,8 +62,8 @@ export interface CreateRecognizerOptions {
 }
 
 export interface RecognitionResult {
-  transcript: string;
-  confidence: number;
+  alternatives: SpeechAlternative[];
+  best: string;
   error?: string;
 }
 
@@ -111,12 +117,12 @@ export function createRecognizer({
         const recognition = new Recognition();
         recognition.continuous = !singleWord;
         recognition.interimResults = true;
-        recognition.lang = lang;
+        recognition.maxAlternatives = 5;
+        recognition.lang = lang.toLowerCase().startsWith('de') ? 'de-DE' : 'en-US';
 
         let settled = false;
-        let finalTranscript = '';
-        let confidenceTotal = 0;
-        let confidenceCount = 0;
+        const alternatives: SpeechAlternative[] = [];
+        const confidenceCounts: number[] = [];
         let graceTimer = 0;
 
         const timer = window.setTimeout(() => {
@@ -125,7 +131,7 @@ export function createRecognizer({
           activeStop = null;
           window.clearTimeout(graceTimer);
           recognition.stop();
-          resolve({ transcript: '', confidence: 0, error: 'timeout' });
+          resolve({ alternatives: [], best: '', error: 'timeout' });
         }, timeoutMs);
 
         const finish = (result: RecognitionResult) => {
@@ -148,27 +154,38 @@ export function createRecognizer({
             const result = event.results[index];
             if (!result.isFinal) continue;
 
-            const alternative = result[0];
-            if (!alternative) continue;
-            finalTranscript += `${finalTranscript ? ' ' : ''}${alternative.transcript}`;
-            confidenceTotal += alternative.confidence;
-            confidenceCount += 1;
+            for (let alternativeIndex = 0; alternativeIndex < result.length; alternativeIndex += 1) {
+              const alternative = result[alternativeIndex];
+              if (!alternative) continue;
+
+              const previous = alternatives[alternativeIndex];
+              const count = confidenceCounts[alternativeIndex] ?? 0;
+              alternatives[alternativeIndex] = {
+                transcript: `${previous?.transcript ? `${previous.transcript} ` : ''}${alternative.transcript}`.trim(),
+                confidence: ((previous?.confidence ?? 0) * count + alternative.confidence) / (count + 1),
+              };
+              confidenceCounts[alternativeIndex] = count + 1;
+            }
           }
 
-          if (finalTranscript && singleWord) stop();
+          if (alternatives[0]?.transcript && singleWord) stop();
         };
         recognition.onerror = (event) => finish({
-          transcript: '',
-          confidence: 0,
+          alternatives: [],
+          best: '',
           error: RECOGNITION_ERRORS[event.error] ?? event.error,
         });
         recognition.onend = () => {
           if (settled) return;
           onEnd?.();
           graceTimer = window.setTimeout(() => {
+            const best = alternatives.reduce(
+              (current, alternative) => alternative.confidence > current.confidence ? alternative : current,
+              { transcript: '', confidence: Number.NEGATIVE_INFINITY },
+            );
             finish({
-              transcript: finalTranscript.trim(),
-              confidence: confidenceCount ? confidenceTotal / confidenceCount : 0,
+              alternatives: alternatives.filter((alternative) => alternative.transcript),
+              best: best.transcript,
             });
           }, gracePeriodMs);
         };

@@ -1086,7 +1086,7 @@ export default function Quiz(props) {
                         fontSize: '16px',
                       }}
                     />
-                    <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />
+                    <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} onStop={speechCapture.stop} />
                     {checkedResult === false && <p className="correct-answer">Kata kunci: {currentQuestion.german}</p>}
                   </>
                 ) : (

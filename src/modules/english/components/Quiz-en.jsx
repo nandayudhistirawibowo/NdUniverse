@@ -1162,7 +1162,7 @@ export default function Quiz(props) {
                         font: 'inherit',
                       }}
                     />
-                    <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />
+                    <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} onStop={speechCapture.stop} />
                     {checkedResult === false && <p className="correct-answer"><span>Kata kunci:</span> {currentQuestion.english}</p>}
                   </>
                 ) : (
