@@ -5,7 +5,7 @@ import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 import NdBot from '@core/ui/NdBot.jsx';
 
 const {
-  title = 'Dashboard | NdUniverse',
+  title = 'Dasbor | NdUniverse',
   description = 'Portal pembelajaran bahasa NdUniverse.',
   variant = 'student',
   active = '',
@@ -18,7 +18,7 @@ import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
 const accountDashboardHref = isAdmin ? '/admin' : '/dashboard-de';
-const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
+const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Pengguna';
 const botUserName = profile?.nama_lengkap
   || user?.user_metadata?.nama_lengkap
   || user?.email?.split('@')[0]
@@ -118,11 +118,11 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
               </a>
               <a class={`nav-item ${active === 'career' ? 'active' : ''}`} href="/de/career" aria-current={active === 'career' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="18" height="14" rx="2" /><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M3 12h18M10 12v2h4v-2" /></svg>
-                <span>Karier</span>
+                <span>Persiapan Karier</span>
               </a>
               <a class={`nav-item ${active === 'leaderboard' ? 'active' : ''}`} href="/de/leaderboard" aria-current={active === 'leaderboard' ? 'page' : undefined}>
                 <svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4h8l-1 8-3 3-3-3-1-8Z" /><path d="M8 6H4v2a4 4 0 0 0 4 4M16 6h4v2a4 4 0 0 1-4 4M12 15v5M8 21h8" /></svg>
-                <span>Rangliste</span>
+                <span>Papan Peringkat</span>
               </a>
               <FeedbackModal client:load variant="sidebar" />
             </>
@@ -179,7 +179,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </header>
         <main class="private-content"><slot /></main>
         <footer class="private-footer">
-          <span>© 2026 NdUniverse. Connecting Languages & Cultures.</span>
+          <span>© 2026 NdUniverse. Menghubungkan Bahasa &amp; Budaya.</span>
           <span class="footer-separator" aria-hidden="true">·</span>
           <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Hubungi Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>

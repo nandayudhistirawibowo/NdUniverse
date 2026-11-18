@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 
-const WELCOME_MESSAGE = 'Halo! Saya NdUniverse Assistant. Ada yang ingin kamu tanyakan tentang materi atau latihan?';
+const WELCOME_MESSAGE = 'Halo! Saya Asisten NdUniverse. Ada yang ingin kamu tanyakan tentang materi atau latihan?';
 
 function renderInlineMarkdown(text) {
   const parts = [];
@@ -141,17 +141,17 @@ export default function ChatbotWidget() {
   return (
     <div class="nd-chatbot">
       {isOpen && (
-        <section class="nd-chatbot-window" aria-label="NdUniverse Assistant chat">
+        <section class="nd-chatbot-window" aria-label="Percakapan Asisten NdUniverse">
           <header class="nd-chatbot-header">
             <div>
-              <strong>NdUniverse Assistant</strong>
-              <span>Learning support</span>
+              <strong>Asisten NdUniverse</strong>
+              <span>Pendamping belajar</span>
             </div>
             <button
               class="nd-chatbot-close"
               type="button"
               onClick={() => setIsOpen(false)}
-              aria-label="Close chat"
+              aria-label="Tutup percakapan"
             >
               ×
             </button>
@@ -187,7 +187,7 @@ export default function ChatbotWidget() {
               value={input}
               onInput={(event) => setInput(event.currentTarget.value)}
               placeholder="Tulis pesan..."
-              aria-label="Message"
+              aria-label="Pesan"
               maxLength={2000}
               disabled={isSending}
             />
@@ -202,7 +202,7 @@ export default function ChatbotWidget() {
         class="nd-chatbot-fab"
         type="button"
         onClick={() => setIsOpen((open) => !open)}
-        aria-label={isOpen ? 'Close NdUniverse Assistant' : 'Open NdUniverse Assistant'}
+        aria-label={isOpen ? 'Tutup Asisten NdUniverse' : 'Buka Asisten NdUniverse'}
         aria-expanded={isOpen}
       >
         {isOpen ? '×' : '💬'}

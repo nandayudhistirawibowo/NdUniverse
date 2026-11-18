@@ -256,11 +256,11 @@ export default function NdBot({
 
       {/* Chat window — hanya di mode study */}
       {!isLocked && isOpen && (
-        <section class="ndbot-window" aria-label="NdUniverse Assistant chat">
+        <section class="ndbot-window" aria-label="Percakapan Asisten NdUniverse">
           <header class="ndbot-header">
             <div>
-              <strong>NdUniverse Assistant</strong>
-              <span>Learning support</span>
+              <strong>Asisten NdUniverse</strong>
+              <span>Pendamping belajar</span>
             </div>
             <button
               class="ndbot-close"
@@ -327,8 +327,8 @@ export default function NdBot({
             : isQuizMode
               ? 'NdBot — Mode Kuis'
               : isOpen
-                ? 'Tutup NdUniverse Assistant'
-                : 'Buka NdUniverse Assistant'
+                ? 'Tutup Asisten NdUniverse'
+                : 'Buka Asisten NdUniverse'
         }
         aria-expanded={!isLocked ? isOpen : undefined}
       >

@@ -12,7 +12,7 @@ set search_path = public, pg_temp
 as $$
   select
     profile.id,
-    coalesce(nullif(btrim(profile.nama_lengkap), ''), 'Member') as name,
+    coalesce(nullif(btrim(profile.nama_lengkap), ''), 'Pengguna') as name,
     coalesce(nullif(btrim(profile.current_level), ''), 'A1') as level,
     coalesce(sum(progress.xp), 0)::bigint as xp
   from public.profiles as profile

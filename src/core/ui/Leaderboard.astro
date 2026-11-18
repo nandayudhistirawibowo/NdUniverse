@@ -9,6 +9,10 @@ interface Props {
 
 const { entries, language, unavailable = false } = Astro.props;
 const isGerman = language === 'de';
+const title = isGerman ? 'Papan Peringkat Bahasa Jerman' : 'Papan Peringkat Bahasa Inggris';
+const subtitle = isGerman
+  ? 'Peringkat siswa berdasarkan progres belajar Bahasa Jerman.'
+  : 'Peringkat siswa berdasarkan progres belajar Bahasa Inggris.';
 const podium = entries.slice(0, 3);
 const rankedUsers = entries.slice(3, 100);
 const formatXp = (value: number) => new Intl.NumberFormat(isGerman ? 'de-DE' : 'en-US').format(value);
@@ -17,34 +21,28 @@ const podiumNames = ['first', 'second', 'third'];
 
 <section class="leaderboard-page" aria-labelledby="leaderboard-title">
   <header class="leaderboard-heading">
-    <p class="leaderboard-eyebrow">{isGerman ? 'COMMUNITY RANGLISTE' : 'COMMUNITY LEADERBOARD'}</p>
-    <h1 id="leaderboard-title">{isGerman ? 'Die Besten im Lern-Universum' : 'Top learners in the universe'}</h1>
-    <p>
-      {isGerman
-        ? 'Lerne weiter, sammle XP und steige in der Rangliste auf.'
-        : 'Keep learning, collect XP, and climb the leaderboard.'}
-    </p>
+    <p class="leaderboard-eyebrow">PERINGKAT KOMUNITAS</p>
+    <h1 id="leaderboard-title">{title}</h1>
+    <p>{subtitle}</p>
   </header>
 
   {unavailable ? (
     <div class="leaderboard-notice" role="alert">
-      {isGerman
-        ? 'Die Rangliste ist gerade nicht verfügbar. Bitte später erneut versuchen.'
-        : 'The leaderboard is temporarily unavailable. Please try again later.'}
+      Papan peringkat belum tersedia. Silakan coba lagi nanti.
     </div>
   ) : entries.length === 0 ? (
     <div class="leaderboard-notice">
-      {isGerman ? 'Noch keine Ranglistendaten vorhanden.' : 'No leaderboard entries yet.'}
+      Belum ada data papan peringkat.
     </div>
   ) : (
     <>
-      <section class="podium-section" aria-label={isGerman ? 'Die drei Besten' : 'Top three learners'}>
+      <section class="podium-section" aria-label="Tiga peringkat teratas">
         {podium.map((entry, index) => (
           <article class:list={['podium-card', `podium-${podiumNames[index]}`]}>
-            <span class="podium-rank">{isGerman ? 'PLATZ' : 'RANK'} {entry.rank}</span>
+            <span class="podium-rank">PERINGKAT {entry.rank}</span>
             <span class="podium-medal" aria-hidden="true">{index === 0 ? '✦' : index === 1 ? '◆' : '✧'}</span>
             <h2>{entry.name}</h2>
-            <span class="podium-level">{isGerman ? 'LEVEL' : 'LEVEL'} {entry.level}</span>
+            <span class="podium-level">LEVEL {entry.level}</span>
             <strong class="podium-xp">{formatXp(entry.xp)} <span>XP</span></strong>
           </article>
         ))}
@@ -53,8 +51,8 @@ const podiumNames = ['first', 'second', 'third'];
       {rankedUsers.length > 0 && (
         <section class="ranked-section" aria-labelledby="ranked-title">
           <div class="ranked-heading">
-            <h2 id="ranked-title">{isGerman ? 'Weitere Lernende' : 'More learners'}</h2>
-            <span>{isGerman ? 'PLÄTZE 4–100' : 'RANKS 4–100'}</span>
+            <h2 id="ranked-title">Peringkat selanjutnya</h2>
+            <span>PERINGKAT 4–100</span>
           </div>
           <div class="ranked-list">
             {rankedUsers.map((entry) => (
@@ -65,7 +63,7 @@ const podiumNames = ['first', 'second', 'third'];
                 </div>
                 <div class="ranked-metrics">
                   <span class="ranked-stat">
-                    <small>{isGerman ? 'Level' : 'Level'}</small>
+                    <small>Level</small>
                     <strong>{entry.level}</strong>
                   </span>
                   <span class="ranked-stat ranked-xp">

@@ -43,7 +43,7 @@ export async function fetchLeaderboard(): Promise<{
     return {
       entries: data.slice(0, 100).map((row, index) => ({
         id: row.id,
-        name: row.name.trim() || 'Member',
+        name: row.name.trim() || 'Pengguna',
         level: row.level.trim() || 'A1',
         xp: Number(row.xp),
         rank: index + 1,

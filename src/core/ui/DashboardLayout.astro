@@ -4,7 +4,7 @@ import './audio-controls.css';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 
 const {
-  title = 'Dashboard | NdUniverse',
+  title = 'Dasbor | NdUniverse',
   description = 'Portal mahasiswa NdUniverse.',
   variant = 'student',
   active = '',
@@ -14,7 +14,7 @@ const {
 import { ClientRouter } from 'astro:transitions';
 
 const isAdmin = variant === 'admin';
-const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Member';
+const displayName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Pengguna';
 const nimValue = profile?.nim || user?.user_metadata?.nim || '';
 const nim = typeof nimValue === 'string' ? nimValue.trim() : '';
 const hasNim = Boolean(nim && (/^\d+$/.test(nim) || nim !== displayName));
@@ -160,7 +160,7 @@ const avatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.av
         </header>
         <main class="private-content"><slot /></main>
         <footer class="private-footer">
-          <span>© 2026 NdUniverse. Connecting Languages & Cultures.</span>
+          <span>© 2026 NdUniverse. Menghubungkan Bahasa &amp; Budaya.</span>
           <span class="footer-separator" aria-hidden="true">·</span>
           <a href="https://wa.me/6281288951254" target="_blank" rel="noopener noreferrer">Hubungi Admin (WhatsApp)</a>
           <span class="footer-separator" aria-hidden="true">·</span>

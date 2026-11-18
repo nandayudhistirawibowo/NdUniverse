@@ -88,7 +88,7 @@ export default function FeedbackModal({ variant = 'default' }) {
                 value={category}
                 onChange={(event) => setCategory(event.currentTarget.value)}
               >
-                <option value="bug">Bug</option>
+                <option value="bug">Gangguan</option>
                 <option value="feature">Saran Fitur</option>
                 <option value="other">Lainnya</option>
               </select>
