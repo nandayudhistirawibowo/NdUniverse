@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { playBossAudio, preloadBossAudio } from '@core/audio/boss-audio.js';
-import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
 
 const EMPTY_BOSS_INTRO = [];
 const DEFAULT_BOSS_INTRO = [
@@ -252,7 +252,7 @@ export default function BossFight({
     if (!answer.trim()) return;
     playSound('click');
     const matchedAdvancedKeywords = (currentQuestion.advancedKeywords ?? []).filter((keyword) =>
-      isFuzzyMatch(answer, keyword)
+      isAnswerCorrect(answer, keyword)
     );
     const userMessage = { speaker: 'user', text: answer };
     const feedback = 'Terima kasih atas jawaban Anda. Silakan lanjut ke pertanyaan berikutnya.';

@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { calculateModuleScore, isPassed, saveExamResult } from '@core/game/exam-grading.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 
@@ -41,7 +41,7 @@ function partialTextScore(answer, task) {
       if (keywordTokens.length === 0) return false;
       return keywordTokens.every((keywordToken) =>
         answerTokens.some((answerToken) =>
-          isFuzzyMatch(answerToken, keywordToken)
+          isAnswerCorrect(answerToken, keywordToken)
         )
       );
     });

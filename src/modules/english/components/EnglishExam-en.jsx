@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
 import {
   calculateModuleScore,
   getBandScore,
@@ -43,7 +43,7 @@ function scoreText(answer, targetWords, type) {
 }
 
 function scoreKeywords(answer, keywords, type) {
-  const matched = keywords.filter((keyword) => isFuzzyMatch(answer, keyword)).length;
+  const matched = keywords.filter((keyword) => isAnswerCorrect(answer, keyword)).length;
   return calculateModuleScore(matched, keywords.length, type);
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import {
   fetchAllUserProgress,
@@ -733,7 +733,7 @@ export default function Quiz(props) {
     if (arrangeSelected.length === 0 || !currentQuestion) return;
 
     const answer = arrangeSelected.map((index) => arrangeOptions[index]).join(' ');
-    const isCorrect = answer === currentQuestion.german;
+    const isCorrect = isAnswerCorrect(answer, currentQuestion.german);
     showResult(isCorrect);
   }
 
@@ -750,7 +750,7 @@ export default function Quiz(props) {
   function handleTextSubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
     const acceptedAnswers = getAcceptedAnswers(currentQuestion.german);
-    showResult(acceptedAnswers.some((answer) => isFuzzyMatch(userAnswer, answer)));
+    showResult(isAnswerCorrect(userAnswer, acceptedAnswers));
   }
 
   function handleMultipleChoiceSubmit() {
@@ -761,7 +761,7 @@ export default function Quiz(props) {
   function handleFuzzySubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
     const acceptedAnswers = [currentQuestion.german];
-    const isCorrect = acceptedAnswers.some((answer) => isFuzzyMatch(userAnswer, answer));
+    const isCorrect = isAnswerCorrect(userAnswer, acceptedAnswers);
     showResult(isCorrect);
   }
 
