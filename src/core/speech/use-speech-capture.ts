@@ -18,7 +18,7 @@ export interface SpeechFeedbackData {
   pass: boolean;
   matched: string[];
   missing: string[];
-  source: 'whisper' | 'webspeech';
+  source: 'groq' | 'speechmatics' | 'browser';
 }
 
 interface CaptureOptions {
@@ -149,7 +149,7 @@ export function useSpeechCapture() {
         });
         alternatives = [{ transcript: transcription.transcript, confidence: 1 }];
         source = transcription.source;
-        if (import.meta.env.DEV) console.info('[STT] source=whisper');
+        if (import.meta.env.DEV) console.info(`[STT] source=${source}`);
       } catch (whisperError) {
         if (requestId !== requestIdRef.current) return;
         if (import.meta.env.DEV) {
@@ -172,8 +172,8 @@ export function useSpeechCapture() {
           throw new Error(recognition.error ?? 'No speech alternatives were returned.');
         }
         alternatives = recognition.alternatives;
-        source = 'webspeech';
-        if (import.meta.env.DEV) console.info('[STT] source=webspeech');
+        source = 'browser';
+        if (import.meta.env.DEV) console.info(`[STT] source=${source}`);
       }
 
       if (requestId !== requestIdRef.current) return;

@@ -7,7 +7,7 @@ export interface RecordAndTranscribeOptions {
 
 export interface TranscriptionResult {
   transcript: string;
-  source: 'whisper';
+  source: 'groq' | 'speechmatics';
 }
 
 interface ActiveRecording {
@@ -162,7 +162,7 @@ export async function recordAndTranscribe({
       throw new Error(isErrorResponse(result) ? result.error : 'Transcription failed.');
     }
 
-    return { transcript: result.transcript, source: 'whisper' };
+    return { transcript: result.transcript, source: result.source };
   } finally {
     window.clearTimeout(maxTimer);
     window.cancelAnimationFrame(animationFrame);
@@ -176,11 +176,15 @@ export async function recordAndTranscribe({
   }
 }
 
-function isTranscriptionResponse(value: unknown): value is { transcript: string } {
+function isTranscriptionResponse(
+  value: unknown,
+): value is { transcript: string; source: 'groq' | 'speechmatics' } {
   return typeof value === 'object'
     && value !== null
     && 'transcript' in value
-    && typeof value.transcript === 'string';
+    && typeof value.transcript === 'string'
+    && 'source' in value
+    && (value.source === 'groq' || value.source === 'speechmatics');
 }
 
 function isErrorResponse(value: unknown): value is { error: string } {

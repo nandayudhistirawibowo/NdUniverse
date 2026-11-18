@@ -28,7 +28,13 @@ export default function SpeechFeedback({
         <>
           <p>
             Kamu mengucapkan: "{feedback.transcript}"
-            {feedback.source === 'whisper' && <span class="speech-source-badge">🎙️ Whisper</span>}
+            {feedback.source === 'groq' && <span class="speech-source-badge">🎙️ Groq</span>}
+            {feedback.source === 'speechmatics' && (
+              <span class="speech-source-badge" title="Fallback: Speechmatics Global English">
+                🎙️ Speechmatics
+              </span>
+            )}
+            {feedback.source === 'browser' && <span class="speech-source-badge">🎙️ Browser</span>}
           </p>
           <p>Keyword kena: [{feedback.matched.join(', ')}]</p>
           <p>Skor: {Math.round(feedback.score * 100)}%</p>

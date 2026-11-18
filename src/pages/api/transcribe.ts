@@ -1,4 +1,5 @@
 import type { APIRoute } from 'astro';
+import { BatchClient } from '@speechmatics/batch-client';
 
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const RATE_LIMIT = 30;
@@ -7,6 +8,7 @@ const ACCENT_PROMPT = {
   en: 'Transcribe English spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
   de: 'Transcribe German spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
 };
+const SPEECHMATICS_TIMEOUT_MS = 15_000;
 const rateLimits = new Map<string, { startedAt: number; count: number }>();
 
 function jsonResponse(body: Record<string, unknown>, status = 200, headers: HeadersInit = {}) {
@@ -97,44 +99,75 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: 'Bahasa harus en atau de.' }, 400);
   }
 
-  const apiKey = import.meta.env.GROQ_API_KEY;
-  if (!apiKey) {
-    console.error('GROQ_API_KEY is not configured for speech transcription.');
-    return jsonResponse({ error: 'Layanan transkripsi belum dikonfigurasi.' }, 502);
+  const groqApiKey = import.meta.env.GROQ_API_KEY;
+  if (groqApiKey) {
+    try {
+      const groqForm = new FormData();
+      groqForm.append('file', audio, `speech.${extension}`);
+      groqForm.append('model', 'whisper-large-v3-turbo');
+      groqForm.append('language', language);
+      groqForm.append('response_format', 'json');
+      groqForm.append('temperature', '0');
+      groqForm.append('prompt', ACCENT_PROMPT[language]);
+
+      const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${groqApiKey}` },
+        body: groqForm,
+        signal: AbortSignal.timeout(SPEECHMATICS_TIMEOUT_MS),
+      });
+      if (response.ok) {
+        const result: unknown = await response.json();
+        if (isRecord(result) && typeof result.text === 'string' && result.text.trim()) {
+          return jsonResponse({
+            transcript: result.text,
+            ...(typeof result.confidence === 'number' ? { confidence: result.confidence } : {}),
+            source: 'groq',
+          });
+        }
+        console.warn('Groq returned an invalid or empty transcription response.');
+      } else {
+        console.warn(`Groq transcription returned HTTP ${response.status}; trying Speechmatics.`);
+      }
+    } catch (error) {
+      console.warn('Groq transcription failed; trying Speechmatics.', error);
+    }
+  } else {
+    console.warn('GROQ_API_KEY is not configured; trying Speechmatics.');
   }
 
-  try {
-    const groqForm = new FormData();
-    groqForm.append('file', audio, `speech.${extension}`);
-    groqForm.append('model', 'whisper-large-v3-turbo');
-    groqForm.append('language', language === 'de' ? 'de' : 'en');
-    groqForm.append('response_format', 'json');
-    groqForm.append('temperature', '0');
-    groqForm.append('prompt', ACCENT_PROMPT[language]);
+  const speechmaticsApiKey = import.meta.env.SPEECHMATICS_API_KEY;
+  if (speechmaticsApiKey) {
+    try {
+      const client = new BatchClient({ apiKey: speechmaticsApiKey, appId: 'nduniverse' });
+      const result = await client.transcribe(
+        audio,
+        {
+          transcription_config: {
+            language,
+            model: 'enhanced',
+            operating_point: 'enhanced',
+          },
+        },
+        {
+          format: 'json-v2',
+          signal: AbortSignal.timeout(SPEECHMATICS_TIMEOUT_MS),
+        },
+      );
+      const transcript = result.results
+        .map((item) => item.alternatives?.[0]?.content)
+        .filter((content): content is string => Boolean(content))
+        .join(' ')
+        .trim();
 
-    const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${apiKey}` },
-      body: groqForm,
-    });
-    if (!response.ok) {
-      console.warn(`Groq transcription returned HTTP ${response.status}.`);
-      return jsonResponse({ error: 'Transkripsi audio gagal.' }, 502);
+      if (transcript) return jsonResponse({ transcript, source: 'speechmatics' });
+      console.warn('Speechmatics returned an empty transcript.');
+    } catch (error) {
+      console.warn('Speechmatics batch transcription failed.', error);
     }
-
-    const result: unknown = await response.json();
-    if (!isRecord(result) || typeof result.text !== 'string') {
-      console.error('Groq returned an invalid transcription response.');
-      return jsonResponse({ error: 'Respons transkripsi tidak valid.' }, 502);
-    }
-
-    return jsonResponse({
-      transcript: result.text,
-      ...(typeof result.confidence === 'number' ? { confidence: result.confidence } : {}),
-      source: 'whisper',
-    });
-  } catch (error) {
-    console.error('Groq transcription request failed.', error);
-    return jsonResponse({ error: 'Layanan transkripsi sedang tidak tersedia.' }, 502);
+  } else {
+    console.warn('SPEECHMATICS_API_KEY is not configured.');
   }
+
+  return jsonResponse({ error: 'ALL_STT_FAILED' }, 502);
 };
