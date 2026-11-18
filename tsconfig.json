@@ -12,8 +12,8 @@
     "jsxImportSource": "preact",
     "ignoreDeprecations": "6.0",
     "paths": {
-      "@core/*": ["src/core/*"],
-      "@german/*": ["src/modules/german/*"]
+      "@core/*": ["./src/core/*"],
+      "@german/*": ["./src/modules/german/*"]
     }
   }
 }

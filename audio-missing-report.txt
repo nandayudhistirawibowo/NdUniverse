@@ -1,0 +1,12 @@
+Audio audit report
+Checked HTTP URLs: 47
+Existing local audio files: 3
+Unresolved dynamic references: 3
+
+URLs with status other than 200:
+- None
+
+Dynamic audio references not checked (runtime values needed):
+- src/core/audio/cdn-audio.js:107: tts-en-${locale}/${textHash}-${locale}.mp3
+- src/core/audio/cdn-audio.js:85: /audio/tts/${sha256(spokenText)}.mp3
+- src/modules/english/components/EnglishExam-en.jsx:373: https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3
