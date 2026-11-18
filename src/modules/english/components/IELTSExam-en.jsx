@@ -3,7 +3,8 @@ import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import { playAudioTTS, preloadEnglishTtsAudio } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { gradeKeywords } from '@core/speech/match.ts';
+import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 
 function normalizeAnswer(answer) {
   return String(answer ?? '')
@@ -40,7 +41,7 @@ function partialTextScore(answer, task) {
       if (keywordTokens.length === 0) return false;
       return keywordTokens.every((keywordToken) =>
         answerTokens.some((answerToken) =>
-          isFuzzyMatch(answerToken, keywordToken)
+          gradeKeywords(answerTokens.join(' '), [keywordToken]).pass
         )
       );
     });
@@ -89,10 +90,8 @@ export default function GoetheExam({ level, tasks, available = true }) {
   const [activeModule, setActiveModule] = useState('lesen');
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
-  const [isListening, setIsListening] = useState(false);
-  const [speechMessage, setSpeechMessage] = useState(null);
+  const speechCapture = useSpeechCapture();
   const [playedAudio, setPlayedAudio] = useState({});
-  const recognitionRef = useRef(null);
   const answersRef = useRef({});
   const secondsByModule = TIMER_MINUTES[level] ?? TIMER_MINUTES.A1;
   const [remainingSeconds, setRemainingSeconds] = useState(secondsByModule.lesen * 60);
@@ -124,7 +123,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     setResult(null);
     setActiveModule('lesen');
     setPlayedAudio({});
-    setSpeechMessage(null);
+    speechCapture.reset();
   }, [level]);
 
   const chooseAnswer = (moduleId, index, value) => {
@@ -137,55 +136,14 @@ export default function GoetheExam({ level, tasks, available = true }) {
     });
   };
 
-  const startSpeaking = (moduleId, index) => {
+  const startSpeaking = (moduleId, index, task) => {
     playSound('click');
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!Recognition) {
-      setSpeechMessage({
-        key: 'exam.speechUnsupported',
-        fallback: 'Speech recognition is not supported by this browser. Please type your answer.',
-      });
-      return;
-    }
-    recognitionRef.current?.abort?.();
-    const recognition = new Recognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-    recognitionRef.current = recognition;
-    recognition.onresult = (event) => {
-      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
-      chooseAnswer(moduleId, index, transcript);
-      setSpeechMessage(transcript
-        ? { key: 'exam.speechCaptured', fallback: 'Speech captured successfully.' }
-        : { key: 'exam.noSpeech', fallback: 'No speech was captured. Please try again.' });
-    };
-    recognition.onerror = (event) => {
-      setIsListening(false);
-      setSpeechMessage({
-        key: 'exam.speechError',
-        params: { error: event.error },
-        fallback: `Speech was not recognized (${event.error}). Please try again or type your answer.`,
-      });
-    };
-    recognition.onend = () => {
-      setIsListening(false);
-      setSpeechMessage((message) => message?.key === 'exam.recording'
-        ? { key: 'exam.noSpeech', fallback: 'No speech was captured. Please try again.' }
-        : message);
-    };
-    try {
-      recognition.start();
-      setIsListening(true);
-      setSpeechMessage({ key: 'exam.recording', fallback: 'Recording...' });
-    } catch (error) {
-      setIsListening(false);
-      setSpeechMessage({
-        key: 'exam.recordingFailed',
-        fallback: 'Recording could not be started. Please try again or type your answer.',
-      });
-      console.error('Unable to start IELTS exam speech recognition.', error);
-    }
+    const keywords = task?.keywords ?? [];
+    void speechCapture.start({
+      target: keywords.join(' ') || task?.prompt || '',
+      keywords: keywords.length ? keywords : undefined,
+      onResult: (transcript) => chooseAnswer(moduleId, index, transcript),
+    });
   };
 
   const playListeningAudio = (event, task, index) => {
@@ -400,16 +358,15 @@ export default function GoetheExam({ level, tasks, available = true }) {
 
                   {(activeModule === 'schreiben' || activeModule === 'sprechen') && (
                     <div class="text-answer">
-                      {activeModule === 'sprechen' && (
+                      {activeModule === 'sprechen' && !speechCapture.unsupported && (
                         <button
                           class="mic-button"
                           type="button"
-                          disabled={isListening}
-                          onClick={() => startSpeaking(activeModule, index)}
+                          disabled={speechCapture.state === 'listening' || speechCapture.state === 'processing'}
+                          onClick={() => startSpeaking(activeModule, index, task)}
+                          className={speechCapture.state === 'listening' ? 'speech-mic-listening' : ''}
                         >
-                          <span>
-                            {isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}
-                          </span>
+                          <span>{speechCapture.state === 'listening' ? '🎤 Mendengarkan...' : '🎤 Rekam Jawaban'}</span>
                         </button>
                       )}
                       <textarea
@@ -418,11 +375,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                         onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
                         placeholder={activeModule === 'schreiben' ? 'Tulis jawaban dalam Bahasa Inggris...' : 'Hasil rekaman atau jawaban tertulis...'}
                       />
-                      {activeModule === 'sprechen' && speechMessage && (
-                        <p
-                          role="status"
-                        >{speechMessage.fallback}</p>
-                      )}
+                      {activeModule === 'sprechen' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />}
                       {task.keywords && (
                         <small><span>Kata kunci yang dinilai:</span> {task.keywords.join(', ')}</small>
                       )}

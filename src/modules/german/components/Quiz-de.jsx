@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
+import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import NdBot from '@core/ui/NdBot.jsx';
 import {
   fetchAllUserProgress,
@@ -264,7 +265,7 @@ export default function Quiz(props) {
   const [matcherMatches, setMatcherMatches] = useState({});
   const [userAnswer, setUserAnswer] = useState('');
   const [choiceAnswer, setChoiceAnswer] = useState('');
-  const [isListening, setIsListening] = useState(false);
+  const speechCapture = useSpeechCapture();
   const [hasPlayedListening, setHasPlayedListening] = useState(false);
   const listeningPlayedRef = useRef(false);
   const [matcherWrongPair, setMatcherWrongPair] = useState(null);
@@ -500,6 +501,7 @@ export default function Quiz(props) {
     }
     setUserAnswer('');
     setChoiceAnswer('');
+    speechCapture.reset();
     setHasPlayedListening(false);
     listeningPlayedRef.current = false;
   }, [currentQuestion]);
@@ -689,7 +691,7 @@ export default function Quiz(props) {
     window.history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
   }
 
-  function showResult(isCorrect) {
+  function showResult(isCorrect, autoAdvance = false) {
     if (checkedResult !== null || !currentQuestion) return;
 
     hasAnsweredRef.current = true;
@@ -711,6 +713,12 @@ export default function Quiz(props) {
       }
       setToast({ type: 'error', key: 'quiz.incorrectToast', message: 'Kurang tepat, coba lagi!' });
       playSound('error');
+      if (autoAdvance) {
+        setQueue((prev) => prev.slice(1));
+        setCheckedResult(null);
+        setUserAnswer('');
+        setToast(null);
+      }
     }
   }
 
@@ -766,28 +774,13 @@ export default function Quiz(props) {
   }
 
   function startSpeechRecognition() {
-    if (checkedResult !== null || isListening) return;
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setToast({ type: 'error', message: 'Speech recognition tidak didukung browser ini.' });
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'de-DE';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    recognition.onstart = () => setIsListening(true);
-    recognition.onresult = (event) => {
-      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
-      setUserAnswer(transcript);
-    };
-    recognition.onend = () => setIsListening(false);
-    recognition.onerror = () => {
-      setIsListening(false);
-      setToast({ type: 'error', message: 'Suara tidak berhasil dikenali. Coba lagi.' });
-    };
-    recognition.start();
+    if (checkedResult !== null || speechCapture.state === 'listening') return;
+    void speechCapture.start({
+      target: currentQuestion.german,
+      singleWord: currentQuestion.german.trim().split(/\s+/).length === 1,
+      onResult: (transcript) => setUserAnswer(transcript),
+      onAdvance: (_transcript, result) => showResult(result.pass, true),
+    });
   }
 
   function playListeningAudio(event) {
@@ -1051,26 +1044,27 @@ export default function Quiz(props) {
                   <>
                     <p className="question-label">Tipe G · Berbicara</p>
                     <h3>{getSpeakingPrompt(currentQuestion)}</h3>
-                    <button
+                    {!speechCapture.unsupported && <button
                       type="button"
                       onClick={startSpeechRecognition}
-                      disabled={checkedResult !== null || isListening}
+                      disabled={checkedResult !== null || speechCapture.state === 'listening' || speechCapture.state === 'processing'}
                       aria-label="Mulai rekaman suara"
                       title="Ucapkan jawaban"
+                      className={speechCapture.state === 'listening' ? 'speech-mic-listening' : ''}
                       style={{
                         width: '64px',
                         height: '64px',
                         borderRadius: '50%',
                         border: '1px solid var(--border)',
-                        background: isListening ? 'var(--accent-red)' : 'var(--card-bg)',
+                        background: speechCapture.state === 'listening' ? 'var(--accent-red)' : 'var(--card-bg)',
                         color: 'var(--text-main)',
                         fontSize: '1.5rem',
                         cursor: 'pointer',
                         marginBottom: '0.75rem',
                       }}
                     >
-                      🎤
-                    </button>
+                      {speechCapture.state === 'listening' ? '🎙' : '🎤'}
+                    </button>}
                     <textarea
                       value={userAnswer}
                       onInput={(event) => { playSound('click'); setUserAnswer(event.currentTarget.value); }}
@@ -1092,6 +1086,7 @@ export default function Quiz(props) {
                         fontSize: '16px',
                       }}
                     />
+                    <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />
                     {checkedResult === false && <p className="correct-answer">Kata kunci: {currentQuestion.german}</p>}
                   </>
                 ) : (

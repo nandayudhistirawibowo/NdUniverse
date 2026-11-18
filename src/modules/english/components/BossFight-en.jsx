@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { playBossAudio, preloadBossAudio } from '@core/audio/boss-audio.js';
-import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
+import { gradeKeywords, SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 
 const EMPTY_BOSS_INTRO = [];
 const DEFAULT_BOSS_INTRO = [
@@ -129,8 +129,7 @@ export default function BossFight({
   const [messages, setMessages] = useState([]);
   const [answeredQuestions, setAnsweredQuestions] = useState(0);
   const [hasAdvancedVocabulary, setHasAdvancedVocabulary] = useState(false);
-  const [listening, setListening] = useState(false);
-  const recognitionRef = useRef(null);
+  const speechCapture = useSpeechCapture();
   const messagesEndRef = useRef(null);
   const introSpeechDoneRef = useRef(false);
   const currentQuestion = interviewQuestions[questionIndex];
@@ -151,7 +150,6 @@ export default function BossFight({
 
     return () => {
       document.body.style.overflow = previousOverflow;
-      recognitionRef.current?.abort?.();
     };
   }, []);
 
@@ -207,52 +205,24 @@ export default function BossFight({
 
   const startListening = () => {
     playSound('click');
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!Recognition) {
-      setMessages((current) => [
-        ...current,
-        { speaker: 'system', text: 'Pengenalan suara tidak didukung di browser ini. Kamu bisa mengetik jawaban.' },
-      ]);
-      return;
-    }
-
-    const recognition = new Recognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-    recognitionRef.current?.abort?.();
-    recognitionRef.current = recognition;
-    setListening(true);
-    recognition.onresult = (event) => setAnswer(event.results[0]?.[0]?.transcript ?? '');
-    recognition.onerror = (event) => {
-      setListening(false);
-      setMessages((current) => [
-        ...current,
-        { speaker: 'system', text: `Pengenalan suara gagal (${event.error}). Silakan ketik jawaban.` },
-      ]);
-    };
-    recognition.onend = () => setListening(false);
-
-    try {
-      recognition.start();
-    } catch (error) {
-      setListening(false);
-      setMessages((current) => [
-        ...current,
-        { speaker: 'system', text: 'Pengenalan suara tidak dapat dimulai. Silakan ketik jawaban.' },
-      ]);
-      console.error('Unable to start English career speech recognition.', error);
-    }
+    const keywords = currentQuestion.keywords ?? [];
+    void speechCapture.start({
+      target: keywords.join(' ') || currentQuestion.question,
+      keywords,
+      onResult: (transcript) => setAnswer(transcript),
+      onAdvance: (transcript) => submitAnswer(transcript),
+    });
   };
 
-  const submitAnswer = () => {
-    if (!answer.trim() || gameState !== 'interview') return;
+  const submitAnswer = (spokenAnswer = answer) => {
+    if (!spokenAnswer.trim() || gameState !== 'interview') return;
     playSound('click');
 
-    const matchedAdvancedKeywords = (currentQuestion.advancedKeywords ?? []).filter((keyword) =>
-      isAnswerCorrect(answer, keyword)
-    );
-    const userMessage = { speaker: 'user', text: answer };
+    const matchedAdvancedKeywords = gradeKeywords(
+      spokenAnswer,
+      currentQuestion.advancedKeywords ?? [],
+    ).matched;
+    const userMessage = { speaker: 'user', text: spokenAnswer };
 
     playSound('success');
     const qualifiesForCompletion = hasAdvancedVocabulary || matchedAdvancedKeywords.length > 0;
@@ -361,19 +331,19 @@ export default function BossFight({
                 <div class="boss-interview">
                   <label class="sr-only" for="boss-answer">Jawaban Anda</label>
                   <div class="boss-composer">
-                    <button
-                      class="boss-mic-button"
+                    {!speechCapture.unsupported && <button
+                      className={speechCapture.state === 'listening' ? 'boss-mic-button speech-mic-listening' : 'boss-mic-button'}
                       type="button"
                       onClick={startListening}
-                      disabled={listening}
-                      aria-label={listening ? 'Sedang mendengarkan' : 'Gunakan mikrofon'}
-                      title={listening ? 'Sedang mendengarkan' : 'Gunakan mikrofon'}
+                      disabled={speechCapture.state === 'listening' || speechCapture.state === 'processing'}
+                      aria-label={speechCapture.state === 'listening' ? 'Sedang mendengarkan' : 'Gunakan mikrofon'}
+                      title={speechCapture.state === 'listening' ? 'Sedang mendengarkan' : 'Gunakan mikrofon'}
                     >
                       <svg viewBox="0 0 24 24" aria-hidden="true">
                         <rect x="9" y="2.5" width="6" height="12" rx="3" />
                         <path d="M5.5 11.5a6.5 6.5 0 0 0 13 0M12 18v3.5M8.5 21.5h7" />
                       </svg>
-                    </button>
+                    </button>}
                     <textarea
                       id="boss-answer"
                       rows="2"
@@ -387,8 +357,8 @@ export default function BossFight({
                     <button
                       class="boss-finish-button"
                       type="button"
-                      onClick={submitAnswer}
-                      disabled={!answer.trim()}
+                      onClick={() => submitAnswer()}
+                      disabled={!answer.trim() || speechCapture.state === 'listening' || speechCapture.state === 'processing' || speechCapture.state === 'feedback'}
                       aria-label="Kirim jawaban"
                       title="Kirim jawaban"
                     >
@@ -398,6 +368,7 @@ export default function BossFight({
                       </svg>
                     </button>
                   </div>
+                  <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />
                 </div>
               </div>
             </div>

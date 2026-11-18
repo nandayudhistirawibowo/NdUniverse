@@ -1,7 +1,9 @@
-import { useEffect, useRef, useState } from 'preact/hooks';
+import { useEffect, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { grade, gradeKeywords } from '@core/speech/match.ts';
+import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 
@@ -26,9 +28,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
   const [isStarted, setIsStarted] = useState(false);
   const [finished, setFinished] = useState(false);
   const [score, setScore] = useState(null);
-  const recognitionRef = useRef(null);
-  const [isListening, setIsListening] = useState(false);
-  const [speechMessage, setSpeechMessage] = useState(null);
+  const speechCapture = useSpeechCapture();
 
   const { strikeLevel, requestFullscreen, deactivate } = useExamAntiCheat({
     onForceSubmit: () => {
@@ -48,7 +48,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     setIsStarted(false);
     setFinished(false);
     setScore(null);
-    setSpeechMessage(null);
+    speechCapture.reset();
     deactivate();
   }, [level]);
 
@@ -59,47 +59,13 @@ export default function MockExam({ level, tasks, unavailable = false }) {
 
   const startSpeaking = (index) => {
     playSound('click');
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!Recognition) {
-      setSpeechMessage({ key: 'exam.speechUnsupported', fallback: 'Speech recognition is not supported by this browser. Please type your answer.' });
-      return;
-    }
-    recognitionRef.current?.abort?.();
-    const recognition = new Recognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-    recognitionRef.current = recognition;
-    recognition.onresult = (event) => {
-      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
-      chooseAnswer(index, transcript);
-      setSpeechMessage(transcript
-        ? { key: 'exam.speechCaptured', fallback: 'Speech captured successfully.' }
-        : { key: 'exam.noSpeech', fallback: 'No speech was captured. Please try again.' });
-    };
-    recognition.onerror = (event) => {
-      setIsListening(false);
-      setSpeechMessage({
-        key: 'exam.speechError',
-        params: { error: event.error },
-        fallback: `Speech was not recognized (${event.error}). Please try again or type your answer.`,
-      });
-    };
-    recognition.onend = () => {
-      setIsListening(false);
-      setSpeechMessage((message) => message?.key === 'exam.recording'
-        ? { key: 'exam.noSpeech', fallback: 'No speech was captured. Please try again.' }
-        : message);
-    };
-    try {
-      recognition.start();
-      setIsListening(true);
-      setSpeechMessage({ key: 'exam.recording', fallback: 'Recording...' });
-    } catch (error) {
-      setIsListening(false);
-      setSpeechMessage({ key: 'exam.recordingFailed', fallback: 'Recording could not be started. Please try again or type your answer.' });
-      console.error('Unable to start English mock exam speech recognition.', error);
-    }
+    const task = examTasks[index];
+    const keywords = task?.keywords ?? [];
+    void speechCapture.start({
+      target: keywords.join(' ') || task?.answer || task?.prompt || '',
+      keywords: keywords.length ? keywords : undefined,
+      onResult: (transcript) => chooseAnswer(index, transcript),
+    });
   };
 
   const playListeningAudio = (event, task) => {
@@ -117,6 +83,11 @@ export default function MockExam({ level, tasks, unavailable = false }) {
       const answer = answers[index];
       if (task.kind === 'reading' || task.kind === 'listening') {
         if (normalizeAnswer(answer) === normalizeAnswer(task.answer)) correct += 1;
+      } else if (task.kind === 'speaking' && typeof answer === 'string') {
+        const assessment = task.keywords?.length
+          ? gradeKeywords(answer, task.keywords)
+          : grade(answer, task.answer);
+        if (assessment.pass) correct += 1;
       } else if (typeof answer === 'string' && isFuzzyMatch(answer, task.answer)) {
         correct += 1;
       }
@@ -212,14 +183,15 @@ export default function MockExam({ level, tasks, unavailable = false }) {
 
             {(task.kind === 'writing' || task.kind === 'speaking') && (
               <div class="text-answer">
-                {task.kind === 'speaking' && (
+                {task.kind === 'speaking' && !speechCapture.unsupported && (
                   <button
                     class="mic-button"
                     type="button"
                     onClick={() => startSpeaking(index)}
-                    disabled={finished || isListening}
+                    disabled={finished || speechCapture.state === 'listening' || speechCapture.state === 'processing'}
+                    className={speechCapture.state === 'listening' ? 'speech-mic-listening' : ''}
                   >
-                    <span>{isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}</span>
+                  <span>{speechCapture.state === 'listening' ? '🎤 Mendengarkan...' : '🎤 Rekam Jawaban'}</span>
                   </button>
                 )}
                 <textarea
@@ -232,11 +204,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                   disabled={finished}
                   placeholder={task.kind === 'writing' ? 'Tulis jawaban dalam Bahasa Inggris...' : 'Hasil rekaman atau jawaban tertulis...'}
                 />
-                {task.kind === 'speaking' && speechMessage && (
-                  <p
-                    role="status"
-                  >{speechMessage.fallback}</p>
-                )}
+                {task.kind === 'speaking' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />}
               </div>
             )}
           </li>

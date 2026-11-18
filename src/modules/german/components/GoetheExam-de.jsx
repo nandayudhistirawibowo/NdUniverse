@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { calculateModuleScore, isPassed, saveExamResult } from '@core/game/exam-grading.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
+import { gradeKeywords } from '@core/speech/match.ts';
+import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 
@@ -41,7 +42,7 @@ function partialTextScore(answer, task) {
       if (keywordTokens.length === 0) return false;
       return keywordTokens.every((keywordToken) =>
         answerTokens.some((answerToken) =>
-          isAnswerCorrect(answerToken, keywordToken)
+          gradeKeywords(answerTokens.join(' '), [keywordToken]).pass
         )
       );
     });
@@ -99,11 +100,9 @@ export default function GoetheExam({ level, tasks, available = true }) {
   const [completedModules, setCompletedModules] = useState([]);
   const [answers, setAnswers] = useState({});
   const [result, setResult] = useState(null);
-  const [isListening, setIsListening] = useState(false);
-  const [speechMessage, setSpeechMessage] = useState(null);
+  const speechCapture = useSpeechCapture();
   const [moduleWarning, setModuleWarning] = useState(null);
   const [playedAudio, setPlayedAudio] = useState({});
-  const recognitionRef = useRef(null);
   const answersRef = useRef({});
   const secondsByModule = TIMER_MINUTES[level] ?? TIMER_MINUTES.A1;
   const [remainingSeconds, setRemainingSeconds] = useState(secondsByModule.lesen * 60);
@@ -134,7 +133,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     setActiveModule('lesen');
     setCompletedModules([]);
     setPlayedAudio({});
-    setSpeechMessage(null);
+    speechCapture.reset();
     setModuleWarning(null);
     deactivate();
   }, [level]);
@@ -149,49 +148,14 @@ export default function GoetheExam({ level, tasks, available = true }) {
     });
   };
 
-  const startSpeaking = (moduleId, index) => {
+  const startSpeaking = (moduleId, index, task) => {
     playSound('click');
-    const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!Recognition) {
-      setSpeechMessage({ key: 'exam.speechUnsupported', fallback: 'Browser ini tidak mendukung pengenalan suara. Silakan ketik jawaban.' });
-      return;
-    }
-    recognitionRef.current?.abort?.();
-    const recognition = new Recognition();
-    recognition.lang = 'de-DE';
-    recognition.interimResults = false;
-    recognition.continuous = false;
-    recognitionRef.current = recognition;
-    recognition.onresult = (event) => {
-      const transcript = event.results?.[0]?.[0]?.transcript ?? '';
-      chooseAnswer(moduleId, index, transcript);
-      setSpeechMessage(transcript
-        ? { key: 'exam.speechCaptured', fallback: 'Jawaban suara berhasil ditangkap.' }
-        : { key: 'exam.noSpeech', fallback: 'Tidak ada ucapan yang tertangkap. Coba lagi.' });
-    };
-    recognition.onerror = (event) => {
-      setIsListening(false);
-      setSpeechMessage({
-        key: 'exam.speechError',
-        params: { error: event.error },
-        fallback: `Suara tidak berhasil dikenali (${event.error}). Coba lagi atau ketik jawaban.`,
-      });
-    };
-    recognition.onend = () => {
-      setIsListening(false);
-      setSpeechMessage((message) => message?.key === 'exam.recording'
-        ? { key: 'exam.noSpeech', fallback: 'Tidak ada ucapan yang tertangkap. Coba lagi.' }
-        : message);
-    };
-    try {
-      recognition.start();
-      setIsListening(true);
-      setSpeechMessage({ key: 'exam.recording', fallback: 'Merekam...' });
-    } catch (error) {
-      setIsListening(false);
-      setSpeechMessage({ key: 'exam.recordingFailed', fallback: 'Perekaman tidak dapat dimulai. Coba lagi atau ketik jawaban.' });
-      console.error('Unable to start Goethe exam speech recognition.', error);
-    }
+    const keywords = task?.keywords ?? [];
+    void speechCapture.start({
+      target: keywords.join(' ') || task?.prompt || '',
+      keywords: keywords.length ? keywords : undefined,
+      onResult: (transcript) => chooseAnswer(moduleId, index, transcript),
+    });
   };
 
   const playListeningAudio = (event, task, index) => {
@@ -432,14 +396,15 @@ export default function GoetheExam({ level, tasks, available = true }) {
 
               {(activeModule === 'schreiben' || activeModule === 'sprechen') && (
                 <div class="text-answer">
-                  {activeModule === 'sprechen' && (
+                  {activeModule === 'sprechen' && !speechCapture.unsupported && (
                     <button
                       class="mic-button"
                       type="button"
-                      disabled={isListening}
-                      onClick={() => startSpeaking(activeModule, index)}
+                      disabled={speechCapture.state === 'listening' || speechCapture.state === 'processing'}
+                      onClick={() => startSpeaking(activeModule, index, task)}
+                      className={speechCapture.state === 'listening' ? 'speech-mic-listening' : ''}
                     >
-                      <span>{isListening ? '🎤 Merekam...' : '🎤 Rekam Jawaban'}</span>
+                      <span>{speechCapture.state === 'listening' ? '🎤 Mendengarkan...' : '🎤 Rekam Jawaban'}</span>
                     </button>
                   )}
                   <textarea
@@ -448,11 +413,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                     onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
                     placeholder={activeModule === 'schreiben' ? 'Tulis jawaban dalam bahasa Jerman...' : 'Hasil rekaman atau jawaban tertulis...'}
                   />
-                  {activeModule === 'sprechen' && speechMessage && (
-                    <p
-                      role="status"
-                    >{speechMessage.fallback}</p>
-                  )}
+                  {activeModule === 'sprechen' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />}
                   {task.keywords && (
                     <small><span>Kata kunci yang dinilai:</span> {task.keywords.join(', ')}</small>
                   )}

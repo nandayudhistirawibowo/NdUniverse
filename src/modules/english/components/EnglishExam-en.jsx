@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
+import { gradeKeywords } from '@core/speech/match.ts';
+import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import {
   calculateModuleScore,
   getBandScore,
@@ -43,7 +44,7 @@ function scoreText(answer, targetWords, type) {
 }
 
 function scoreKeywords(answer, keywords, type) {
-  const matched = keywords.filter((keyword) => isAnswerCorrect(answer, keyword)).length;
+  const matched = keywords.filter((keyword) => gradeKeywords(answer, [keyword]).pass).length;
   return calculateModuleScore(matched, keywords.length, type);
 }
 
@@ -100,8 +101,8 @@ export default function EnglishExam({ exam, type, level }) {
   const [answers, setAnswers] = useState({ reading: [], listening: [] });
   const [writingAnswers, setWritingAnswers] = useState({});
   const [speakingAnswers, setSpeakingAnswers] = useState({});
-  const [isRecording, setIsRecording] = useState(false);
-  const [speechMessage, setSpeechMessage] = useState('');
+  const speechCapture = useSpeechCapture();
+  const [speechAnswerId, setSpeechAnswerId] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
   const [examResult, setExamResult] = useState(null);
   const [isStarted, setIsStarted] = useState(false);
@@ -206,39 +207,19 @@ export default function EnglishExam({ exam, type, level }) {
   }
 
   function startSpeakingCapture(answerId) {
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SpeechRecognition) {
-      setSpeechMessage('Pengenalan suara tidak tersedia di browser ini. Kamu bisa mengetik jawaban.');
-      return;
-    }
-
-    const recognition = new SpeechRecognition();
-    recognition.lang = 'en-US';
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    recognition.onstart = () => {
-      setIsRecording(true);
-      setSpeechMessage('Mendengarkan...');
-    };
-    recognition.onresult = (event) => {
-      const transcript = event.results?.[0]?.[0]?.transcript?.trim() ?? '';
-      if (transcript) {
+    const part = speakingParts.find((item) => item.id === answerId);
+    const keywords = part?.keywords ?? [];
+    setSpeechAnswerId(answerId);
+    void speechCapture.start({
+      target: keywords.join(' ') || part?.question || '',
+      keywords: keywords.length ? keywords : undefined,
+      onResult: (transcript) => {
         setSpeakingAnswers((current) => ({
           ...current,
           [answerId]: [current[answerId], transcript].filter(Boolean).join(' '),
         }));
-      }
-      setSpeechMessage('Suara berhasil direkam. Kamu dapat mengedit transkrip di bawah.');
-    };
-    recognition.onerror = () => setSpeechMessage('Suara tidak berhasil direkam. Coba lagi atau ketik jawabanmu.');
-    recognition.onend = () => setIsRecording(false);
-    try {
-      recognition.start();
-    } catch (error) {
-      setIsRecording(false);
-      setSpeechMessage('Pengenalan suara tidak dapat dimulai. Coba lagi atau ketik jawabanmu.');
-      console.error('Unable to start English exam speech recognition.', error);
-    }
+      },
+    });
   }
 
   if (!exam) {
@@ -408,14 +389,14 @@ export default function EnglishExam({ exam, type, level }) {
                     <article className="speaking-part" key={part.id}>
                       <h3>{part.part}</h3>
                       <p className="response-prompt">{part.question}</p>
-                      <button
-                        className="audio-action mic-action"
+                      {!speechCapture.unsupported && <button
                         type="button"
                         onClick={() => startSpeakingCapture(part.id)}
-                        disabled={isRecording}
+                        disabled={speechCapture.state === 'listening' || speechCapture.state === 'processing'}
+                        className={speechCapture.state === 'listening' ? 'audio-action mic-action speech-mic-listening' : 'audio-action mic-action'}
                       >
-                        {isRecording ? 'Mendengarkan...' : '🎙 Rekam jawaban'}
-                      </button>
+                        {speechCapture.state === 'listening' ? 'Mendengarkan...' : '🎙 Rekam jawaban'}
+                      </button>}
                       <label htmlFor={part.id}>Transkrip atau jawaban yang kamu ketik</label>
                       <textarea
                         id={part.id}
@@ -427,9 +408,9 @@ export default function EnglishExam({ exam, type, level }) {
                         placeholder="Hasil pengenalan suara akan muncul di sini. Kamu juga dapat mengetik."
                         rows={4}
                       />
+                      {speechAnswerId === part.id && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} />}
                     </article>
                   ))}
-                  <p className="speech-message" role="status">{speechMessage}</p>
                   <div className="word-count"><span>{speakingWordCount} kata</span><span>Minimal yang disarankan: 10 kata</span></div>
                 </div>
               )}
