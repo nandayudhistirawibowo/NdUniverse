@@ -30,6 +30,16 @@ Jalankan semua tes:
 npx playwright test
 ```
 
+File yang tersedia:
+
+- `auth.spec.ts` dan `dashboard.spec.ts` — autentikasi dan dashboard.
+- `quiz-core.spec.ts` — alur kuis.
+- `exam-english.spec.ts` dan `exam-goethe.spec.ts` — ujian.
+- `career-bossfight.spec.ts` — Career Boss Fight.
+- `e2e-promo.spec.ts` dan `e2e-comprehensive.spec.ts` — perjalanan promo dan pemeriksaan lintas halaman.
+
+Saat audit dokumentasi ini, belum ada tes otomatis khusus untuk izin mikrofon, transkripsi Groq/Speechmatics/Web Speech, pemutaran audio, atau leaderboard; tes Career Boss Fight yang ada tidak membuktikan alur audio/STT.
+
 Jalankan satu file atau tes bernama tertentu:
 
 ```bash
@@ -44,6 +54,27 @@ npx playwright show-report
 ```
 
 Artefak tes disimpan di `test-results/`; laporan HTML disimpan di `playwright-report/`. Keduanya adalah keluaran run, bukan dokumentasi status terkini.
+
+### Memeriksa izin mikrofon dan header di Playwright
+
+Header `Permissions-Policy` dikonfigurasi untuk mengizinkan mikrofon pada origin sendiri. Karena aturan `vercel.json` diterapkan oleh deployment, jalankan pemeriksaan header pada URL HTTPS Vercel Preview, bukan hanya Astro dev server lokal. Contoh tes sementara:
+
+```ts
+import { test, expect } from '@playwright/test';
+
+const previewUrl = process.env.PREVIEW_URL;
+
+test('Vercel Preview mengizinkan microphone pada origin sendiri', async ({ browser }) => {
+  test.skip(!previewUrl, 'Set PREVIEW_URL ke URL HTTPS Vercel Preview.');
+  const context = await browser.newContext({ permissions: ['microphone'] });
+  const page = await context.newPage();
+  const response = await page.goto(previewUrl!);
+  expect(response?.headers()['permissions-policy']).toContain('microphone=(self)');
+  await context.close();
+});
+```
+
+Simpan contoh itu sementara sebagai `tests/permissions-policy.spec.ts`, lalu jalankan `npx playwright test tests/permissions-policy.spec.ts` dengan `PREVIEW_URL` menunjuk ke deployment Preview. Pemeriksaan ini memverifikasi header dan izin browser, bukan kualitas pengenalan ucapan. Untuk mencoba perekaman nyata, gunakan akun tes yang sudah login, izinkan mikrofon, lalu uji pada halaman Speaking/Boss Fight melalui HTTPS; pastikan key provider tersedia di environment Preview. Respons API dapat di-mock untuk menguji tampilan feedback tanpa mengirim audio ke penyedia eksternal.
 
 ## Tes keamanan lokal
 

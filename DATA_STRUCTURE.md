@@ -18,8 +18,14 @@ src/
 │   │   ├── boss-audio.js
 │   │   └── cdn-audio.js
 │   ├── db/
+│   │   ├── leaderboard.ts
 │   │   ├── progress-client.js
 │   │   └── progress-client-en.js
+│   ├── speech/
+│   │   ├── recorder.ts
+│   │   ├── stt-engine.ts
+│   │   ├── match.ts
+│   │   └── use-speech-capture.ts
 │   ├── game/
 │   │   ├── exam-grading.js
 │   │   ├── fuzzy-match.js
@@ -29,6 +35,7 @@ src/
 │       ├── DashboardLayout.astro
 │       ├── DashboardLayout-de.astro
 │       ├── DashboardLayout-en.astro
+│       ├── Leaderboard.astro
 │       ├── DashboardMaterialCatalog.astro
 │       ├── DashboardMaterialGrid.astro
 │       ├── FeedbackModal.jsx
@@ -79,8 +86,12 @@ src/
 │               └── ...
 ├── layouts/
 ├── pages/
+│   ├── api/
+│   │   └── transcribe.ts
 │   ├── de/
+│   │   └── leaderboard.astro
 │   ├── en/
+│   │   └── leaderboard.astro
 │   ├── dashboard-de/
 │   ├── login-de.astro
 │   ├── login-en.astro
@@ -100,6 +111,8 @@ Kode platform bersama yang dapat digunakan lintas bahasa.
 
 - **`auth/`** — autentikasi dan akses akun, portal auth, avatar, middleware auth, serta fungsi admin. File penting: `AuthPortal.astro`, `middleware.ts`, `avatar.ts`, dan `admin.ts`.
 - **`db/`** — akses dan sinkronisasi progress pengguna. `progress-client.js` menangani progress modul Jerman/default, sedangkan `progress-client-en.js` menangani progress English.
+- **`db/leaderboard.ts`** — mengambil dan memvalidasi data Top 100 dari RPC Supabase `get_leaderboard`.
+- **`speech/`** — rekaman dan transkripsi Groq/Speechmatics dengan fallback Web Speech API, feedback, dan matching kata yang toleran terhadap aksen.
 - **`audio/`** — pembentukan URL dan pemutaran audio CDN, termasuk voice acting Boss Fight.
 - **`ui/`** — layout dan komponen antarmuka yang dipakai oleh beberapa route atau bahasa. Layout dashboard terpisah tersedia untuk umum, German, dan English.
 - **`game/`** — helper bersama untuk suara kuis, fuzzy matching, grading ujian, dan anti-cheat fullscreen.
@@ -126,12 +139,12 @@ Modul English mengikuti struktur modular yang simetris dengan German.
 
 Route Astro berbasis nama file dan struktur folder. Komponen halaman biasanya menyusun layout, mengambil konten, lalu menampilkan komponen interaktif dari `core/` atau modul bahasa.
 
-- **`de/`** — route publik dan fitur modul German, misalnya landing `/de`, materi, ujian, Career, grammar, dan pengucapan.
-- **`en/`** — route modul English, termasuk dashboard, materi, Everyday English, Academic English, Career, Grammar, Pronunciation, dan Exam Prep di `/en/exam/[type]/[level]`.
+- **`de/`** — route publik dan fitur modul German, misalnya landing `/de`, materi, ujian, Career, grammar, pengucapan, dan leaderboard `/de/leaderboard`.
+- **`en/`** — route modul English, termasuk dashboard, materi, Everyday English, Academic English, Career, Grammar, Pronunciation, Exam Prep di `/en/exam/[type]/[level]`, dan leaderboard `/en/leaderboard`.
 - **`login-de.astro` dan `login-en.astro`** — halaman login untuk pilihan bahasa masing-masing.
 - **`dashboard-de/`** — route dashboard German aktif dengan halaman utama, profil, dan bookmark, pada URL `/dashboard-de`. Katalog, detail materi, dan latihan German berada di bawah `/de/...`. Dashboard English berada di `pages/en/dashboard/` pada URL `/en/dashboard`.
 - Root `pages/` berisi landing, login, dan dashboard umum. Halaman bantuan dan pengucapan berada di bawah route modul (`/de/...` atau `/en/...`), bukan sebagai halaman root.
-- Folder route lain termasuk `api/`, `admin/`, `career/`, `materi/`, `ujian/`, dan `sertifikat/`. Periksa implementasi route terkait sebelum menambah atau memindahkan URL.
+- Folder route lain termasuk `api/`, `admin/`, `career/`, `materi/`, `ujian/`, dan `sertifikat/`. Endpoint `api/transcribe.ts` menerima rekaman browser dan meneruskan transkripsi ke penyedia server-side.
 
 Komponen universal ditempatkan di `src/core/ui/`. Folder root `src/components/` dan `src/content/` sudah tidak digunakan; komponen serta konten English berada di `src/modules/english/`.
 
@@ -140,6 +153,8 @@ Komponen universal ditempatkan di `src/core/ui/`. Folder root `src/components/` 
 - **`content.config.ts`** — konfigurasi dan schema Astro Content Collections.
 - **`middleware.ts`** — middleware Astro tingkat aplikasi.
 - **`env.d.ts`** — deklarasi tipe environment.
+
+RPC leaderboard didefinisikan di `supabase/leaderboard.sql`; file tersebut harus dijalankan pada project Supabase yang digunakan aplikasi.
 
 ## Panduan Perubahan
 

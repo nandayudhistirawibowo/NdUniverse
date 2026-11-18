@@ -9,7 +9,7 @@ Secara umum, alurnya seperti ini:
 1. `src/pages/` menentukan URL dan mengambil data halaman.
 2. Halaman membaca materi dari koleksi di `src/modules/` atau berinteraksi dengan layanan yang diperlukan.
 3. Halaman merender layout dan komponen bersama dari `src/core/`.
-4. Komponen browser menangani interaksi; layanan seperti Supabase, Groq, Cloudflare AI, dan CDN audio diakses melalui klien atau endpoint server.
+4. Komponen browser menangani interaksi; layanan seperti Supabase, Groq, Speechmatics, Cloudflare AI, dan CDN audio diakses melalui klien atau endpoint server.
 
 Astro menggunakan routing berbasis berkas. Contohnya, `src/pages/en/materi/[slug].astro` adalah halaman materi English untuk nilai `slug` tertentu.
 
@@ -20,7 +20,8 @@ Astro menggunakan routing berbasis berkas. Contohnya, `src/pages/en/materi/[slug
 Bagian yang digunakan bersama oleh modul English dan German:
 
 - `src/core/auth/`: portal login, middleware autentikasi/otorisasi, pemeriksaan admin, dan avatar.
-- `src/core/db/`: klien browser dan fungsi untuk membaca serta menyimpan progres Supabase. File English dan German dipisah agar progres memiliki `language_code` yang sesuai.
+- `src/core/db/`: klien browser dan fungsi untuk membaca serta menyimpan progres Supabase, termasuk loader leaderboard berbasis RPC.
+- `src/core/speech/`: perekaman, transkripsi, pengenalan Web Speech API, feedback, dan matching kata fonetik.
 - `src/core/game/`: utilitas game/ujian, seperti penilaian, pencocokan jawaban yang toleran terhadap typo, suara kuis, dan anti-cheat ujian.
 - `src/core/audio/`: pemetaan URL audio CDN dan pemutar voice acting Boss Fight.
 - `src/core/ui/`: layout dan komponen bersama, termasuk dashboard, NdBot, hint, dan modal.
@@ -46,7 +47,8 @@ Astro membuat rute dari struktur berkas:
 
 - `src/pages/index.astro`, `src/pages/login-en.astro`, `src/pages/login-de.astro`, dan `src/pages/dashboard.astro`: halaman root dan autentikasi/dashboard tingkat atas.
 - `src/pages/en/` dan `src/pages/de/`: katalog materi, halaman belajar, latihan, ujian, karier, dan dashboard menurut modul.
-- `src/pages/api/`: endpoint server. `src/pages/api/chat.ts` adalah endpoint NdBot.
+- `src/pages/api/`: endpoint server. `src/pages/api/chat.ts` adalah endpoint NdBot; `src/pages/api/transcribe.ts` menyediakan transkripsi audio.
+- `src/pages/en/leaderboard.astro` dan `src/pages/de/leaderboard.astro`: halaman leaderboard Top 100.
 - `src/pages/logout.ts`: endpoint untuk mengakhiri sesi.
 - `src/pages/admin/`: halaman administrasi.
 - Nama dengan `[slug]`, `[level]`, atau `[profesi]` adalah rute dinamis; nilai kurung siku berasal dari URL.
@@ -104,6 +106,14 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 3. `src/modules/english/config/english-speech.js` adalah API pemutaran yang dipakai kuis, halaman materi, grammar, dan pronunciation. `playAudioTTS()` memilih aksen, mencoba MP3 dari CDN, dan mengelola pemutaran aktif. Jika audio tidak tersedia (misalnya respons 404), atau browser tidak mendukung pemutar audio, fungsi beralih ke `SpeechSynthesisUtterance`. Kegagalan jaringan/status lain dicatat sebagai error; pemutaran yang diblokir browser meminta pengguna mencoba lagi.
 4. Audio statis/URL langsung juga dapat diteruskan ke pemutar. Jadi untuk mengubah perilaku fallback atau playback, mulai dari `english-speech.js`; untuk mengubah pembuatan URL dan resolver bersama, lihat `cdn-audio.js`; untuk menghasilkan ulang audio, lihat script generator dan petunjuk di `README.md`.
 
+### Speech-to-Text (STT)
+
+1. `src/core/speech/use-speech-capture.ts` mengoordinasikan input ucapan untuk kuis, Speaking, dan Boss Fight. Locale browser mengikuti route (`en-US` atau `de-DE`).
+2. `recorder.ts` meminta izin mikrofon, merekam melalui `MediaRecorder`, dan mengakhiri rekaman saat tombol Stop ditekan, terdeteksi senyap setelah suara, atau batas waktu tercapai. Audio dikirim ke `POST /api/transcribe`.
+3. Endpoint memvalidasi format/ukuran, membatasi permintaan per IP, lalu mencoba Groq Whisper (`whisper-large-v3-turbo`) dan Speechmatics Batch API. Jika keduanya tidak tersedia/gagal, hook memakai Web Speech API.
+4. `match.ts` menilai kata kunci dan alternatif transkrip menggunakan exact, phonetic, dan fuzzy matching. `SpeechFeedback.jsx` menampilkan hasil, skor, dan sumber transkrip.
+5. Credential Groq dan Speechmatics hanya dibaca server dari environment. Lihat `.env.example`, `src/pages/api/transcribe.ts`, dan `TESTING.md` untuk setup serta pengujian.
+
 ### Boss Fight — cinematic, voice acting, dan typewriter
 
 1. Rute `src/pages/en/career/[profesi]/boss.astro` dan `src/pages/de/career/[profesi]/boss.astro` mengambil data karier lalu meneruskannya ke `BossFight-en.jsx` atau `BossFight-de.jsx`.
@@ -111,7 +121,13 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 3. Komponen Boss Fight mengatur state cinematic, urutan dialog, pertanyaan wawancara, jawaban, dan hasil. Chat bubble memanggil `playBossAudio()` dari `src/core/audio/boss-audio.js`.
 4. `boss-audio.js` membaca `manifest-boss.json` dari root repository, mencari audio berdasarkan teks dialog dan bahasa, lalu memutar URL CDN. Audio dialog diserialkan agar satu voice line berjalan pada satu waktu.
 5. Typewriter menampilkan teks bertahap. Jika audio tersedia, interval per karakter disesuaikan dengan durasi audio dan penyelesaian teks menunggu audio; jika audio tak tersedia/gagal, typewriter memakai kecepatan default.
-6. Pertanyaan dan kata kunci menentukan evaluasi jawaban serta syarat penyelesaian. Untuk mengubah narasi/soal suatu karier, ubah Markdown profesinya; untuk mengubah tampilan dan state cinematic, ubah komponen Boss Fight; untuk mapping audio, generator, atau pemutar voice acting, lihat manifest, script TTS, dan `boss-audio.js`.
+6. Pertanyaan dan kata kunci menentukan evaluasi jawaban serta syarat penyelesaian. Mic mengirim jawaban peserta melalui hook STT; audio voice acting Boss tetap berada di `boss-audio.js` dan tidak dipakai sebagai input transkripsi. Untuk mengubah narasi/soal suatu karier, ubah Markdown profesinya; untuk mengubah tampilan dan state cinematic, ubah komponen Boss Fight; untuk mapping audio, generator, atau pemutar voice acting, lihat manifest, script TTS, dan `boss-audio.js`.
+
+### Leaderboard
+
+1. Route `/en/leaderboard` dan `/de/leaderboard` dilindungi middleware autentikasi dan dirender server-side.
+2. `src/core/db/leaderboard.ts` memanggil RPC Supabase `get_leaderboard` dengan service-role client. RPC dalam `supabase/leaderboard.sql` menggabungkan profil dengan progress, menjumlahkan XP, mengurutkan level lalu XP menurun, dan membatasi hasil ke 100 pengguna.
+3. `src/core/ui/Leaderboard.astro` menampilkan Top 3 sebagai podium dan peringkat 4–100 sebagai daftar responsif. SQL harus diterapkan pada project Supabase tujuan sebelum RPC tersedia.
 
 ## Panduan Navigasi Developer
 
@@ -125,6 +141,8 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 - **Mau mengubah tampilan/login?** Rute di `src/pages/login-en.astro` / `login-de.astro`; UI dan alur sign-in/sign-up bersama di `src/core/auth/AuthPortal.astro`.
 - **Mau mengubah proteksi dashboard/admin?** Lihat `src/core/auth/middleware.ts` (dipasang oleh `src/middleware.ts`) dan `src/core/auth/admin.ts`.
 - **Mau mengubah penyimpanan progres?** Gunakan `src/core/db/progress-client-en.js` atau `progress-client.js`; perubahan skema tabel terkait juga perlu ditinjau di `supabase/`.
+- **Mau mengubah leaderboard?** Periksa `src/core/db/leaderboard.ts`, `src/core/ui/Leaderboard.astro`, route EN/DE, dan `supabase/leaderboard.sql`.
+- **Mau mengubah transkripsi atau pencocokan ucapan?** Mulai dari `src/core/speech/use-speech-capture.ts`; endpoint/provider ada di `src/pages/api/transcribe.ts`, engine browser di `stt-engine.ts`, dan phonetic matching di `match.ts`.
 - **Mau mengubah prompt atau perilaku NdBot?** Buka `src/pages/api/chat.ts`. Untuk tampilan chat, buka `src/core/ui/NdBot.jsx`.
 - **Mau mengubah retrieval RAG atau cara materi diindeks?** Endpoint/RPC ada di `src/pages/api/chat.ts` dan `supabase/setup_rag.sql`; proses memasukkan materi ada di `scripts/ingest-rag.py`.
 - **Mau mengubah aksen, playback, atau fallback TTS English?** Buka `src/modules/english/config/english-speech.js`; URL/hash dan resolver CDN ada di `src/core/audio/cdn-audio.js`.
@@ -264,5 +282,5 @@ Tempat perubahan: handler playback dan fallback di `src/modules/english/config/e
 
 - Data Markdown harus sesuai schema koleksinya di `src/content.config.ts`; perubahan format data biasanya perlu perubahan schema dan pemakai data.
 - Perubahan Supabase dapat melibatkan schema, policy/RLS, dan file SQL di `supabase/`, bukan hanya klien browser.
-- Endpoint chat dan autentikasi membutuhkan variabel environment. Jangan menaruh service-role key, Groq key, atau Cloudflare token di komponen client atau repository.
+- Endpoint chat, autentikasi, dan transkripsi membutuhkan variabel environment. Jangan menaruh service-role key, Groq key, Speechmatics key, atau Cloudflare token di komponen client atau repository.
 - Aset audio dikirim lewat CDN terpisah. Pastikan audio dan manifest yang diterbitkan cocok dengan path/teks yang diharapkan aplikasi.

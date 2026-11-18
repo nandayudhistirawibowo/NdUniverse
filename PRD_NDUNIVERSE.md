@@ -59,6 +59,7 @@ Landing NdUniverse (/)
       -> English (/en)
           -> Login / Masuk
           -> Dashboard English
+              -> Leaderboard
       -> German (/de)
           -> Login / Masuk
           -> Dashboard German
@@ -66,6 +67,7 @@ Landing NdUniverse (/)
               -> Fachdeutsch
               -> Ujian dan Sertifikasi
               -> Career
+              -> Leaderboard
 ```
 
 Landing page mengenalkan produk dan menyediakan kartu modul yang menautkan langsung ke `/login-en` dan `/login-de`. Route `/en` dan `/de` menjadi halaman modul; tautan antar-route tersebut hanya navigasi modul, bukan pengubah bahasa UI.
@@ -86,6 +88,8 @@ Landing page mengenalkan produk dan menyediakan kartu modul yang menautkan langs
 - Layout publik memakai branding NdUniverse.
 - Platform menggunakan Supabase untuk auth, database, storage, dan progress; audio yang dikonfigurasi CDN disajikan melalui jsDelivr.
 - Chatbot memakai Supabase `pgvector` untuk retrieval, Cloudflare Workers AI untuk embedding, dan Groq untuk query rewrite serta jawaban berbasis materi.
+- Input speaking memakai Groq Whisper, fallback Speechmatics Batch API, lalu Web Speech API; phonetic matching memberi toleransi pada variasi pengucapan.
+- Leaderboard EN/DE menampilkan Top 100 berdasarkan level dan XP melalui Supabase RPC server-side; `supabase/leaderboard.sql` harus diterapkan pada project tujuan.
 - XP kuis sementara dibatalkan saat Game Over dan dilindungi dari finalisasi ganda pada run yang sama.
 - UI Indonesian-first: Bahasa Indonesia hardcoded tanpa sistem i18n. Dashboard dan NdBot menggunakan Bahasa Indonesia penuh; landing/portal/login masih memiliki sisa English copy yang masuk backlog audit. Materi belajar tetap memakai bahasa target.
 - Kuis mengizinkan pemilihan sesi dan pilar tanpa prasyarat atau urutan wajib; `sessions_passed` hanya menandai progres.

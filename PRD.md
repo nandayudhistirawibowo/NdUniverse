@@ -45,7 +45,7 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - **Reading / Lesen:** menampilkan teks atau konteks, kemudian meminta jawaban pilihan ganda atau fallback Word Matcher bila data Reading tidak tersedia.
 - **Listening / Hören:** memutar audio kata atau konteks, kemudian menggunakan pilihan ganda. Fallback memakai Word Matcher.
 - **Writing / Schreiben:** menampilkan instruksi atau kata Indonesia dan meminta jawaban bahasa Jerman melalui text box. Validasi memakai fuzzy matching tanpa hint artikel.
-- **Speaking / Sprechen:** menampilkan pertanyaan Jerman, menyediakan text box, dan mic-to-text menggunakan Web Speech API.
+- **Speaking / Sprechen:** menampilkan pertanyaan Jerman, menyediakan text box, dan mic-to-text melalui Groq Whisper, Speechmatics sebagai fallback server-side, lalu Web Speech API.
 - Pada setiap pilar, maksimal lima kosakata dari sesi aktif diproses sebagai lima soal.
 - Tipe soal lama bukan lagi generator acak global; tipe soal disesuaikan dengan pilar aktif.
 - Pengguna bebas memilih sesi yang tersedia dan pilar apa pun tanpa menyelesaikan sesi/pilar sebelumnya. URL latihan membawa `session` dan `type`; keduanya tidak dikunci berdasarkan progres sebelumnya.
@@ -81,7 +81,7 @@ Katalog `/de/career` menyediakan empat profesi:
 
 Setiap profesi memiliki **50 kosakata** pada Astro Content Collections Markdown di `src/modules/german/content/career/`. Halaman materi menampilkan Latihan Kosakata lima kata dasar per batch, kuis pilihan ganda sederhana, dan card Boss Fight.
 
-Boss Fight dipisahkan ke route `/de/career/[profesi]/boss` dan memakai overlay cinematic yang memenuhi viewport. Pengalaman dimulai dengan adegan ruangan kantor: pintu terbuka dengan animasi, Boss HRD masuk, dan dialog pengantar dibacakan melalui audio TTS. Typewriter menampilkan teks dengan kecepatan yang diselaraskan ke durasi audio, dengan fallback jika audio tidak tersedia. User kemudian menjawab **10 pertanyaan wawancara bertahap** melalui text box atau Speech Recognition/microphone. Jawaban dinilai secara fuzzy sederhana terhadap keywords yang berasal dari frontmatter Markdown `boss_questions`. Pertanyaan berikutnya baru muncul setelah jawaban dikirim.
+Boss Fight dipisahkan ke route `/de/career/[profesi]/boss` dan memakai overlay cinematic yang memenuhi viewport. Pengalaman dimulai dengan adegan ruangan kantor: pintu terbuka dengan animasi, Boss HRD masuk, dan dialog pengantar dibacakan melalui audio TTS. Typewriter menampilkan teks dengan kecepatan yang diselaraskan ke durasi audio, dengan fallback jika audio tidak tersedia. User kemudian menjawab **10 pertanyaan wawancara bertahap** melalui text box atau mic-to-text memakai hook STT bersama. Jawaban dinilai terhadap keywords dari frontmatter Markdown `boss_questions`; feedback menampilkan transcript, keyword kena, dan skor, lalu pertanyaan berikutnya otomatis muncul. Alur transkripsi input tidak mengubah pemutaran atau sinkronisasi audio Boss.
 
 Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wawancara Selesai!** beserta status kelulusan, badge profesi, dan tombol kembali ke materi profesi. Konten Career disimpan di `src/modules/german/content/career/*.md`, bukan database Supabase.
 
@@ -109,6 +109,13 @@ Bobot poin materi Alltagsdeutsch yang lulus keempat pilarnya:
 | C2 | 60 |
 
 Total level dihitung berdasarkan materi yang sudah lulus seluruh pilar. Materi Fachdeutsch dan Career tidak menambah poin Level CEFR.
+
+### Leaderboard
+
+- Halaman leaderboard terproteksi tersedia untuk modul English (`/en/leaderboard`) dan German (`/de/leaderboard`).
+- Top 3 ditampilkan sebagai podium; daftar dilanjutkan hingga maksimal 100 pengguna.
+- Supabase RPC `get_leaderboard` menjumlahkan XP dari `user_progress` per pengguna, lalu mengurutkan `profiles.current_level` menurun dan total XP menurun.
+- RPC hanya dipanggil server-side dengan service-role client dan hanya mengembalikan ID, nama, level, serta XP. Terapkan `supabase/leaderboard.sql` pada database tujuan; file migration di repository bukan bukti bahwa database live sudah diperbarui.
 
 ### Mock Exam 22 Soal
 
@@ -156,12 +163,20 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 - NdBot tetap tersedia dalam mode ujian untuk menampilkan tingkat strike; chat tutor dinonaktifkan dalam mode tersebut. Mode kuis juga mengunci chat. Kunci chat ini tidak membatasi pemilihan materi, sesi, atau pilar berdasarkan progres; pengguna tetap dapat memilih sesi/pilar yang tersedia.
 - Jika browser menolak permintaan fullscreen, aplikasi mencatat peringatan; dukungan fullscreen tetap bergantung pada kebijakan browser.
 
-### Audio TTS dan Microphone
+### Audio TTS dan Speech-to-Text
 
 - Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`), dengan URL berbasis hash dan resolver di `src/core/audio/cdn-audio.js`; TTS German juga menggunakan URL berbasis hash, sedangkan audio statis dapat di-resolve dari manifest CDN.
 - Boss Fight menggunakan voice acting audio TTS untuk dialog HRD; generatornya tersedia melalui `npm run generate:tts:boss`.
 - Aset dibuat dengan Edge TTS dan disajikan melalui jsDelivr. Fallback Web Speech menggunakan locale sesuai aksen/bahasa audio.
-- Speaking memakai browser Speech Recognition untuk mengubah rekaman suara menjadi teks sebelum fuzzy matching.
+- Rekaman microphone menggunakan `MediaRecorder` dan dikirim ke endpoint server `POST /api/transcribe` (maksimal 10 MB; 30 permintaan/IP/menit). Endpoint mencoba Groq Whisper (`whisper-large-v3-turbo`), lalu Speechmatics Batch API; bila keduanya gagal, capture hook menggunakan browser Web Speech API.
+- `src/core/speech/match.ts` mendukung exact, phonetic, dan fuzzy matching, termasuk variasi bunyi yang umum pada aksen Indonesia. Locale pengenalan mengikuti route: `en-US` dan `de-DE`.
+- API keys `GROQ_API_KEY` dan `SPEECHMATICS_API_KEY` harus disimpan di environment server, tidak di client bundle. Header `Permissions-Policy` pada `vercel.json` mengizinkan microphone pada origin sendiri.
+
+### Leaderboard
+
+- Halaman terproteksi tersedia di `/en/leaderboard` dan `/de/leaderboard`, dengan podium Top 3 dan daftar maksimal 100 pengguna.
+- Supabase RPC `get_leaderboard` menjumlahkan XP dari `user_progress` per pengguna, lalu mengurutkan `profiles.current_level DESC` dan total XP `DESC`.
+- RPC hanya dapat dipanggil melalui server service-role client dan mengembalikan kolom terbatas; jalankan `supabase/leaderboard.sql` pada Supabase project target. File SQL di repository tidak membuktikan schema live sudah diterapkan.
 
 ### Landing dan SVG Flags
 
@@ -206,6 +221,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 | Database dan auth | Supabase PostgreSQL/Auth/Storage |
 | Retrieval chatbot | Supabase `pgvector`, tabel `documents`, dan RPC `match_documents` |
 | AI chatbot | Cloudflare Workers AI untuk embedding; Groq untuk query rewriting dan jawaban |
+| Speech-to-text | Groq Whisper, Speechmatics Batch API (`@speechmatics/batch-client`), Web Speech API |
 | CDN audio | jsDelivr untuk aset dan manifest audio yang dikonfigurasi ke CDN |
 | Content | Astro Content Collections, Markdown, Zod |
 | Styling | CSS murni dan CSS variables |

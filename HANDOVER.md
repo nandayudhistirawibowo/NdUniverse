@@ -2,7 +2,7 @@
 
 ## Status
 
-Dokumen ini menggambarkan fitur yang tersedia pada source V4: platform Astro SSR, modul German dan English, latihan bebas pilih sesi/pilar, progress Supabase, chatbot RAG, ujian dengan anti-cheat fullscreen, audio CDN, dan Cinematic Boss Fight dengan voice acting TTS serta typewriter sync. Status deployment serta migrasi layanan eksternal harus diverifikasi pada environment tujuan.
+Dokumen ini menggambarkan fitur yang tersedia pada source V4: platform Astro SSR, modul German dan English, latihan bebas pilih sesi/pilar, progress Supabase, chatbot RAG, ujian dengan anti-cheat fullscreen, transkripsi ucapan Groq/Speechmatics dengan fallback Web Speech, leaderboard Top 100, audio CDN, dan Cinematic Boss Fight dengan voice acting TTS serta typewriter sync. Status deployment serta migrasi layanan eksternal harus diverifikasi pada environment tujuan.
 
 Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengubah credential di repository atau memasukkan secret ke browser.
 
@@ -13,6 +13,8 @@ Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengu
 - **Chatbot RAG:** materi Markdown dipecah menjadi chunk dan disimpan pada `public.documents`; Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` (384 dimensi), Supabase `pgvector` melakukan retrieval, dan Groq menulis ulang query/menyusun jawaban.
 - **Kuis:** pengguna bebas memilih sesi dan pilar. `sessions_passed` menyimpan key seperti `s1-reading` dan `s2-writing` untuk indikator selesai; key tersebut tidak mengunci akses.
 - **Ujian besar:** fullscreen anti-cheat memantau perubahan fullscreen, tab tersembunyi, dan window blur. Strike ketiga memaksa submit; NdBot menampilkan status strike.
+- **Speech-to-text:** `src/core/speech/` merekam ucapan dan mengirimnya ke `POST /api/transcribe`. Endpoint mencoba Groq Whisper, lalu Speechmatics; jika transkripsi cloud gagal, hook memakai Web Speech API. Phonetic matching membantu toleransi pengucapan. API keys tetap server-side.
+- **Leaderboard:** `/en/leaderboard` dan `/de/leaderboard` memakai Supabase RPC `get_leaderboard` untuk menjumlahkan XP dan memilih Top 100. Terapkan `supabase/leaderboard.sql` di Supabase SQL Editor sebelum mengaktifkan halaman.
 - **Cinematic Boss Fight:** overlay memenuhi viewport, dengan audio TTS untuk dialog HRD dan typewriter yang diselaraskan dengan audio. Audio Boss Fight dibuat dengan `npm run generate:tts:boss`.
 - **Landing:** tombol modul memakai SVG `public/flags/gb.svg` dan `public/flags/de.svg`, bukan emoji, agar konsisten lintas perangkat.
 - **UI:** Indonesian-first dengan string hardcoded dan tanpa sistem i18n terpusat. Tautan `/en` ↔ `/de` memilih modul pembelajaran, bukan bahasa global UI. Dashboard German berada di `/dashboard-de` dan English di `/en/dashboard`; materi/soal tetap dalam bahasa target. Landing masih memiliki beberapa label pemasaran Inggris yang dapat diaudit jika dibutuhkan.
@@ -24,7 +26,6 @@ Dokumen ini berisi panduan operasional untuk developer selanjutnya. Jangan mengu
 Persyaratan Node.js `>=22.23.4`.
 
 ```bash
-npm install
 npm install
 astro dev --background
 astro dev status
@@ -49,11 +50,16 @@ PUBLIC_SUPABASE_URL=
 PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
 GROQ_API_KEY=
+SPEECHMATICS_API_KEY=
 CLOUDFLARE_ACCOUNT_ID=
 CLOUDFLARE_API_TOKEN=
 ```
 
-`SUPABASE_SERVICE_ROLE_KEY`, `GROQ_API_KEY`, dan `CLOUDFLARE_API_TOKEN` adalah secret server-side; jangan pernah memberi prefix `PUBLIC_` atau mengirimkannya ke browser. Script RAG menerima `SUPABASE_URL` atau `PUBLIC_SUPABASE_URL`.
+`GROQ_API_KEY` didapat dari [Groq Console](https://console.groq.com/keys); `SPEECHMATICS_API_KEY` didapat dari [Speechmatics API Keys](https://portal.speechmatics.com/settings/api-keys). Keduanya dipakai oleh endpoint transkripsi server-side. `SUPABASE_SERVICE_ROLE_KEY`, `GROQ_API_KEY`, `SPEECHMATICS_API_KEY`, dan `CLOUDFLARE_API_TOKEN` adalah secret; jangan pernah memberi prefix `PUBLIC_` atau mengirimkannya ke browser. Contoh variabel STT juga tersedia di [.env.example](.env.example). Script RAG menerima `SUPABASE_URL` atau `PUBLIC_SUPABASE_URL`.
+
+### Akses mikrofon
+
+`vercel.json` mengirim header `Permissions-Policy: microphone=(self), camera=(self), geolocation=()`. Uji header dan pemberian izin mikrofon pada URL HTTPS Vercel Preview; server Astro lokal tidak selalu menerapkan header deployment. Langkah uji Playwright ada di [TESTING.md](TESTING.md). Web Speech API memerlukan HTTPS atau `localhost`.
 
 ## Push dan Deploy
 
@@ -153,6 +159,7 @@ Jalankan ingest setelah materi Markdown German/English yang dipakai chatbot beru
 ## Catatan Data dan Pemeliharaan
 
 - `user_progress` menggunakan kunci unik `(user_id, material_slug, language_code)` untuk memisahkan German (`de`) dan English (`en`).
+- Leaderboard membaca agregat nama, `profiles.current_level`, dan total XP lewat `public.get_leaderboard()`. Terapkan `supabase/leaderboard.sql` pada project Supabase tujuan; fungsi hanya dapat dieksekusi oleh `service_role`, sedangkan halaman tetap dilindungi middleware autentikasi.
 - `sessions_passed` terbaru berupa array key sesi-pilar, misalnya `["s1-reading", "s2-writing"]`. Data lama dinormalisasi saat dibaca.
 - Bookmark, status ujian tertentu, dan hasil sertifikat client-side disimpan di browser.
 - File `supabase/user_progress.sql` dapat tertinggal dari schema live; sebelum migrasi, verifikasi schema dan constraint aktual, backup data, lalu uji bertahap.

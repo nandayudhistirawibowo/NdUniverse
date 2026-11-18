@@ -14,7 +14,7 @@ jalankan load test tanpa otorisasi dan koordinasi.
 **Status:** 26 PASS, 2 SKIP, 1 FAIL
 
 - **PASS:** Middleware aman; celah *Auth Bypass* telah tertambal. API Chat mengembalikan `401` untuk permintaan tanpa autentikasi, dan proses logout membersihkan sesi dengan benar.
-- **SKIP:** Pengujian Leaderboard dan RLS memerlukan setup tambahan.
+- **SKIP:** Pengujian Leaderboard dan RLS memerlukan setup tambahan pada saat run historis tersebut. Fitur leaderboard kini tersedia di `/en/leaderboard` dan `/de/leaderboard`; hasil SKIP lama tetap bukan bukti bahwa RPC atau policy sudah diuji pada database saat ini.
 - **FAIL:** `04-env.spec.ts` gagal saat mencoba mengambil script internal Astro (`@id/...`). Karena pemeriksaan bundle tidak selesai, hasil ini tidak membuktikan ada ataupun tidak adanya kebocoran; evaluasi pemilihan script sebelum mengulang tes.
 
 ## B. Hasil Load Testing (Grafana k6)
@@ -42,5 +42,5 @@ Status di bawah tidak diperiksa ulang dalam run historis ini; cocokkan dengan so
 
 - [ ] Memperbaiki test Env (`04-env.spec.ts`) dengan memfilter URL `@id`.
 - [ ] Melakukan *lazy-load* `html2pdf.js` (913 KB).
-- [ ] Membuat Leaderboard per Level.
+- [ ] Membuat Leaderboard per Level (status saat run historis; fitur kini tersedia, tetapi SQL Supabase dan tes RLS tetap perlu diverifikasi).
 - [ ] Menyiapkan 2 user dummy untuk pengujian RLS.

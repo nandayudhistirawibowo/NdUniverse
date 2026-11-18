@@ -181,7 +181,7 @@ flowchart TD
     J --> K[User klik Mulai Wawancara]
     K --> L[Game state berubah ke interview]
     L --> M[Tampilkan pertanyaan 1 dari 10 sebagai chat HRD]
-    M --> N[User menjawab melalui text box atau mic Speech API]
+    M --> N[User menjawab melalui text box atau hook STT]
     N --> O{Jawaban cocok keyword pertanyaan?}
     O -->|Ya| P[Tambah jumlah jawaban cocok]
     O -->|Tidak| Q[Simpan sebagai jawaban belum cocok]
@@ -199,6 +199,47 @@ flowchart TD
 ```
 
 Data Career German diambil dari Markdown pada `src/modules/german/content/career/*.md` melalui Astro Content Collection `career`. Pertanyaan disimpan pada `boss_questions` dan jawaban dinilai berdasarkan `keywords` dari pertanyaan aktif. Boss Fight juga tersedia di `/en/career/[profesi]/boss` dengan data English pada `src/modules/english/content/career/`. Hasil wawancara ditampilkan di browser; progress Boss Fight tidak disimpan ke Supabase.
+
+Mic Boss Fight hanya menangkap jawaban peserta melalui hook STT. Audio dialog HRD tetap diputar terpisah oleh `boss-audio.js` dan sinkronisasi typewriter tidak memakai alur transkripsi.
+
+## Alur Speech-to-Text
+
+```mermaid
+flowchart TD
+    A[Pengguna menekan mic] --> B{Mikrofon diizinkan dan browser mendukung rekaman?}
+    B -->|Tidak| C[Coba Web Speech API atau tampilkan pesan bantuan]
+    B -->|Ya| D[MediaRecorder merekam audio]
+    D --> E{Stop manual, senyap, atau batas waktu?}
+    E -->|Belum| D
+    E -->|Ya| F[POST audio dan bahasa ke /api/transcribe]
+    F --> G[Validasi format, ukuran, dan rate limit]
+    G --> H{Groq Whisper berhasil?}
+    H -->|Ya| I[Gunakan transkrip Groq]
+    H -->|Tidak| J{Speechmatics berhasil?}
+    J -->|Ya| K[Gunakan transkrip Speechmatics]
+    J -->|Tidak| L[Fallback Web Speech API]
+    I --> M[Grade keyword dengan exact, phonetic, dan fuzzy matching]
+    K --> M
+    L --> M
+    M --> N[Tampilkan transkrip, keyword, skor, dan sumber]
+```
+
+Engine memakai locale `en-US` atau `de-DE` sesuai route. Endpoint membatasi ukuran audio hingga 10 MB dan permintaan hingga 30 per IP per menit. Setelah feedback, kuis melanjutkan pertanyaan berikutnya sesuai alur komponennya.
+
+## Alur Leaderboard
+
+```mermaid
+flowchart TD
+    A[Pengguna login] --> B[Buka /en/leaderboard atau /de/leaderboard]
+    B --> C[Middleware memeriksa autentikasi]
+    C --> D[Halaman SSR memanggil fetchLeaderboard]
+    D --> E[Service-role client memanggil RPC get_leaderboard]
+    E --> F[Agregasi profil dan total XP di Supabase]
+    F --> G[Urut level DESC lalu XP DESC; batasi 100]
+    G --> H[Tampilkan podium Top 3 dan list peringkat 4–100]
+```
+
+RPC didefinisikan di `supabase/leaderboard.sql`, mengembalikan hanya ID/nama/level/XP, dan hak eksekusinya hanya diberikan kepada `service_role`. Jalankan SQL tersebut pada Supabase sebelum memakai halaman leaderboard.
 
 ## Alur Mock Exam 22 Soal
 

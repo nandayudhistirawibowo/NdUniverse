@@ -4,7 +4,7 @@ NdUniverse adalah platform belajar bahasa Jerman dan Inggris berbasis Astro. UI 
 
 ## Status V4
 
-Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latihan empat pilar tanpa urutan wajib, ujian dengan anti-cheat fullscreen, progress Supabase, chatbot RAG, serta Cinematic Boss Fight dengan voice acting TTS dan typewriter sync. Status deployment dan konfigurasi layanan eksternal bergantung pada environment masing-masing.
+Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latihan empat pilar tanpa urutan wajib, ujian dengan anti-cheat fullscreen, progress Supabase, chatbot RAG, transkripsi ucapan dengan fallback, leaderboard Top 100, serta Cinematic Boss Fight dengan voice acting TTS dan typewriter sync. Status deployment dan konfigurasi layanan eksternal bergantung pada environment masing-masing.
 
 ## Fitur
 
@@ -14,6 +14,8 @@ Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latiha
 - **NdBot v2 (RAG)**: Supabase `pgvector` mengambil materi relevan; Cloudflare Workers AI membuat embedding dan Groq membantu penulisan ulang query serta jawaban.
 - **Anti-cheat ujian**: mode fullscreen mencatat pelanggaran; NdBot menampilkan status dan ujian dikirim otomatis pada strike ketiga. NdBot juga mengunci chat pada mode kuis, tanpa mengunci pilihan materi/sesi/pilar berdasarkan progres.
 - **Cinematic Boss Fight**: wawancara karier memakai adegan overlay memenuhi viewport, audio TTS untuk dialog HRD, dan typewriter yang diselaraskan dengan durasi audio.
+- **Advanced Speech-to-Text**: rekaman dikirim ke Groq Whisper (`whisper-large-v3-turbo`), dengan fallback Speechmatics Batch API lalu Web Speech API. Phonetic matching membantu mengenali variasi pengucapan, termasuk aksen Indonesia.
+- **Futuristic Leaderboard**: podium Top 3 dan daftar hingga 100 pengguna, diurutkan berdasarkan level lalu XP. Data dihitung melalui Supabase RPC server-side yang dibatasi untuk service role agar sesuai dengan kebijakan RLS.
 - **Bendera modul**: landing memakai SVG `public/flags/gb.svg` dan `public/flags/de.svg`, menjaga tampilan konsisten lintas perangkat tanpa dependency emoji flag.
 - **Audio dua aksen**: Generator English menghasilkan audio `en-US` dan `en-GB`; manifest dan MP3 di repo CDN `nduniverse-audio` disajikan melalui jsDelivr. Web Speech API menjadi fallback.
 - **Progress dan autentikasi**: Supabase Auth/PostgreSQL/Storage dengan pemisahan progress German dan English.
@@ -27,6 +29,7 @@ Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latiha
 | Database dan autentikasi | Supabase PostgreSQL, Auth, Storage, RLS |
 | Retrieval | Supabase `pgvector`, tabel `public.documents`, RPC `match_documents` |
 | AI | Cloudflare Workers AI (`@cf/baai/bge-small-en-v1.5`, 384 dimensi) dan Groq |
+| Speech-to-text | Groq Whisper API, Speechmatics Batch API (`@speechmatics/batch-client`), Web Speech API fallback |
 | Konten | Astro Content Collections, Markdown, Zod |
 | Audio/CDN | Edge TTS dan jsDelivr |
 | Styling | CSS |
@@ -46,6 +49,8 @@ Server background dapat dikelola dengan `astro dev status`, `astro dev logs`, da
 ```bash
 npm run build
 ```
+
+Untuk transkripsi cloud, tambahkan `GROQ_API_KEY` dan `SPEECHMATICS_API_KEY` dari [.env.example](.env.example) ke `.env` lokal. Buat key di [Groq Console](https://console.groq.com/keys) dan [Speechmatics API Keys](https://portal.speechmatics.com/settings/api-keys). Groq dicoba lebih dulu; Speechmatics menjadi fallback server-side, lalu browser memakai Web Speech API jika kedua layanan gagal. Simpan key hanya di environment server dan jangan commit `.env`.
 
 Project menggunakan Vercel adapter, sehingga `astro preview` bukan cara yang didukung untuk menguji hasil deploy adapter ini. Setelah build, jalankan server lokal yang menyajikan output Vercel:
 
@@ -77,6 +82,10 @@ Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di 
 ## Memperbarui Indeks RAG
 
 Perubahan Markdown tidak otomatis memperbarui indeks. Sumber ingest mencakup materi German/English dan subset dokumentasi proyek yang ditentukan di `scripts/ingest-rag.py`. Lihat [HANDOVER.md](HANDOVER.md) untuk persiapan, variabel environment, dan langkah ingest. Ingest penuh menggunakan `--replace-all` dan menghapus seluruh baris `public.documents` sebelum mengisi ulang.
+
+## Menyiapkan Leaderboard Supabase
+
+Setelah skema `user_progress` dan kolom `profiles.current_level` tersedia, jalankan [supabase/leaderboard.sql](supabase/leaderboard.sql) melalui Supabase SQL Editor pada project yang dipakai aplikasi. Script membuat RPC `get_leaderboard`, yang menjumlahkan XP per pengguna dan mengembalikan maksimal 100 baris terurut berdasarkan level menurun lalu XP menurun. Halaman leaderboard memanggil RPC tersebut dari server menggunakan service-role client; jangan memberikan hak eksekusi RPC ini ke browser atau pengguna `anon`/`authenticated`.
 
 ## Sitemap dan Crawler
 

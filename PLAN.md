@@ -35,11 +35,18 @@ Status: **IMPLEMENTASI TERSEDIA; ekspansi konten dan aset audio berlanjut**
 
 ## Backlog Pasca-V4 — Perbaikan Kualitas Speaking & STT
 
-Status: **SEBAGIAN SUDAH DIIMPLEMENTASIKAN; sisanya usulan**
+Status: **PIPELINE STT SUDAH DIIMPLEMENTASIKAN; penyempurnaan produk tetap backlog**
 
-- Speaking saat ini mendukung input teks dan Speech Recognition; menjadikan suara satu-satunya cara menjawab masih merupakan keputusan produk yang belum diterapkan.
-- Locale Speech Recognition sudah mengikuti bahasa: German `de-DE`, English `en-US`.
+- Capture memakai Groq Whisper, fallback Speechmatics Batch API dan Web Speech API; matching alternatif mendukung exact, phonetic, dan fuzzy.
+- Locale Speech Recognition mengikuti bahasa: German `de-DE`, English `en-US`. Speaking tetap mendukung input teks; menjadikan suara satu-satunya cara menjawab masih merupakan keputusan produk yang belum diterapkan.
 - Fuzzy matching sudah tersedia di `src/core/game/fuzzy-match.js` dan digunakan pada latihan serta beberapa ujian. Tinjau hasil grading untuk memastikan ambang cocok dengan tiap jenis jawaban sebelum mengubahnya.
+
+## Fitur Leaderboard
+
+Status: **UI DAN RPC SUDAH DIIMPLEMENTASIKAN; penerapan database perlu diverifikasi per project**
+
+- Halaman EN/DE menyajikan podium Top 3 dan peringkat hingga Top 100, urut level menurun lalu XP menurun.
+- Terapkan `supabase/leaderboard.sql` setelah schema progress dan `profiles.current_level` tersedia. Keberadaan migration di repository bukan bukti bahwa database deployment telah diperbarui.
 
 ## Fase 2.6 — Standarisasi Grading Ujian
 

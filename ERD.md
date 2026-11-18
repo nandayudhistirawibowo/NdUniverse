@@ -22,7 +22,7 @@ erDiagram
         text nama_lengkap
         text nomor_wa
         text avatar_url "path objek Private Storage"
-        text current_level "ditambahkan oleh migration opsional"
+        text current_level "dipakai leaderboard; migration opsional"
     }
 
     USER_PROGRESS {
@@ -49,7 +49,7 @@ erDiagram
 | Tabel | Kolom yang digunakan aplikasi | Constraint / catatan |
 | --- | --- | --- |
 | `auth.users` | `id`, `email`, `raw_user_meta_data`, `created_at` | Dikelola Supabase Auth. Login menerima email atau NIM lama yang dinormalisasi ke email akun. |
-| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url` | `id` sama dengan `auth.users.id`. `nim` bersifat **nullable** karena pengguna email umum tidak selalu memiliki NIM. `avatar_url` menyimpan path objek, bukan URL publik. `supabase/profile_current_level.sql` menambahkan `current_level`, tetapi source dashboard menghitung level dari progress dan tidak membacanya. |
+| `public.profiles` | `id`, `nim`, `nama_lengkap`, `nomor_wa`, `avatar_url`, `current_level` | `id` sama dengan `auth.users.id`. `nim` bersifat **nullable** karena pengguna email umum tidak selalu memiliki NIM. `avatar_url` menyimpan path objek, bukan URL publik. `supabase/profile_current_level.sql` menambahkan `current_level`; dashboard menghitung levelnya sendiri dari progress, sedangkan leaderboard memakai kolom ini dan menampilkan `A1` jika nilainya kosong. |
 | `public.user_progress` | `id`, `user_id`, `material_slug`, `language_code`, `xp`, `sessions_passed`, `notes`, `updated_at` | Kombinasi `(user_id, material_slug, language_code)` unik untuk memisahkan progress `de` dan `en`; `sessions_passed` harus JSON array melalui check JSONB; `xp` tidak boleh negatif; RLS membatasi akses ke pemilik baris. |
 | `public.documents` | `id`, `content`, `metadata`, `embedding` | Satu baris per potongan materi RAG. `embedding` bertipe pgvector `vector(384)` dari Cloudflare Workers AI; index HNSW memakai cosine distance. `metadata` menyimpan `source_file`, `language`, `content_hash`, `chunk_index`, dan `chunk_count`. |
 
@@ -64,6 +64,8 @@ erDiagram
 - `notes` menyimpan catatan belajar pengguna untuk materi tertentu.
 - `updated_at` diperbarui setiap upsert progress.
 - Level dashboard tidak berasal dari satu kolom database; dihitung dari material CEFR yang telah menyelesaikan keempat pilar.
+- Leaderboard berbeda dari level dashboard: RPC `public.get_leaderboard()` menjumlahkan seluruh `user_progress.xp` per pengguna, lalu mengurutkan `profiles.current_level DESC, total XP DESC` dan membatasi hasil ke 100 pengguna.
+- Jalankan `supabase/leaderboard.sql` pada project Supabase setelah tabel `user_progress` dan kolom `profiles.current_level` tersedia. RPC memakai `SECURITY DEFINER` dengan `search_path` terbatas, hanya mengembalikan ID/nama/level/XP, dan hak eksekusinya dicabut dari `public`, `anon`, serta `authenticated`; hanya `service_role` yang dapat memanggilnya.
 - `documents` berdiri sendiri dan tidak memiliki foreign key ke `auth.users`, `profiles`, atau `user_progress`. Setiap baris mewakili satu chunk konten, dan `metadata.source_file` merujuk secara logis ke file Markdown sumber (bukan relasi SQL).
 - RPC `public.match_documents` membandingkan embedding query dengan `documents.embedding` dan mengembalikan chunk serta skor kemiripan. Endpoint chatbot saat ini memakai ambang 0.35 dan maksimal tiga hasil.
 - Embedding `documents.embedding` harus berukuran 384 dimensi agar sesuai dengan model Cloudflare Workers AI `@cf/baai/bge-small-en-v1.5`.
@@ -94,4 +96,4 @@ Upsert menggabungkan kunci progres yang sudah tersimpan dengan kunci baru tanpa 
 
 ## RLS dan Keamanan
 
-`user_progress` mengaktifkan Row Level Security. Pengguna hanya dapat membaca dan mengubah baris milik `auth.uid()` melalui kebijakan select, insert, dan update. Bucket avatar bersifat Private; akses file memerlukan pemeriksaan kepemilikan/admin dan Signed URL. `documents` mengaktifkan RLS; operasi ingest menggunakan service role server-side, bukan kunci service role pada browser.
+`user_progress` mengaktifkan Row Level Security. Pengguna hanya dapat membaca dan mengubah baris milik `auth.uid()` melalui kebijakan select, insert, dan update. Leaderboard tidak membuka akses baca langsung ke seluruh baris progress: agregasi dilakukan oleh RPC yang hanya dapat dipanggil server memakai service role, dan route leaderboard tetap memerlukan autentikasi. Bucket avatar bersifat Private; akses file memerlukan pemeriksaan kepemilikan/admin dan Signed URL. `documents` mengaktifkan RLS; operasi ingest menggunakan service role server-side, bukan kunci service role pada browser.
