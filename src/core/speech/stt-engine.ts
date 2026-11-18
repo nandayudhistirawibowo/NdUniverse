@@ -67,7 +67,8 @@ export interface Recognizer {
 }
 
 const RECOGNITION_ERRORS: Record<string, string> = {
-  'not-allowed': 'Izin mic ditolak',
+  'not-allowed': 'Izin mic diblokir. Klik ikon 🔒 di address bar → Site settings → Microphone → Allow → Reload halaman.',
+  'service-not-allowed': 'STT tidak tersedia di browser ini (coba Chrome/Edge terbaru)',
   'no-speech': 'Mic tidak mendengar suara',
   network: 'Cek koneksi',
   'audio-capture': 'Mic tidak terdeteksi',
@@ -101,16 +102,17 @@ export function createRecognizer({
   if (!Recognition) throw new Error('STT_NOT_SUPPORTED');
   if (!window.isSecureContext) throw new Error('STT_INSECURE_CONTEXT');
 
-  const recognition = new Recognition();
-  recognition.continuous = !singleWord;
-  recognition.interimResults = true;
-  recognition.lang = lang;
-
   let activeStop: (() => void) | null = null;
 
   return {
     recognizeOnce() {
       return new Promise<RecognitionResult>((resolve) => {
+        activeStop?.();
+        const recognition = new Recognition();
+        recognition.continuous = !singleWord;
+        recognition.interimResults = true;
+        recognition.lang = lang;
+
         let settled = false;
         let finalTranscript = '';
         let confidenceTotal = 0;
@@ -155,11 +157,11 @@ export function createRecognizer({
 
           if (finalTranscript && singleWord) stop();
         };
-        recognition.onerror = (event) => {
-          if (event.error === 'aborted') return;
-          const error = RECOGNITION_ERRORS[event.error];
-          if (error) finish({ transcript: '', confidence: 0, error });
-        };
+        recognition.onerror = (event) => finish({
+          transcript: '',
+          confidence: 0,
+          error: RECOGNITION_ERRORS[event.error] ?? event.error,
+        });
         recognition.onend = () => {
           if (settled) return;
           onEnd?.();

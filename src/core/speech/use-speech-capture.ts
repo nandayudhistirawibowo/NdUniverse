@@ -23,10 +23,11 @@ interface CaptureOptions {
 }
 
 const ERROR_MESSAGES: Record<string, string> = {
-  'Izin mic ditolak': 'Izin mic ditolak',
+  'Izin mic ditolak': 'Izin mic diblokir. Klik ikon 🔒 di address bar → Site settings → Microphone → Allow → Reload halaman.',
   'Mic tidak mendengar suara': 'Mic tidak mendengar suara',
   'Cek koneksi': 'Cek koneksi',
   'Mic tidak terdeteksi': 'Mic tidak terdeteksi',
+  'service-not-allowed': 'STT tidak tersedia di browser ini (coba Chrome/Edge terbaru)',
   timeout: 'Waktu rekaman habis. Coba lagi.',
 };
 
@@ -38,9 +39,37 @@ export function useSpeechCapture() {
   const recognizerRef = useRef<ReturnType<typeof createRecognizer> | null>(null);
   const advanceTimerRef = useRef(0);
   const requestIdRef = useRef(0);
+  const captureActiveRef = useRef(false);
+  const microphonePermissionRef = useRef<PermissionState | null>(null);
+
+  useEffect(() => {
+    let active = true;
+    let permissionStatus: PermissionStatus | null = null;
+    if (!navigator.permissions?.query) return undefined;
+    const permissions = navigator.permissions as Permissions & {
+      query: (descriptor: { name: 'microphone' }) => Promise<PermissionStatus>;
+    };
+
+    void permissions.query({ name: 'microphone' }).then((status) => {
+      if (!active) return;
+      permissionStatus = status;
+      microphonePermissionRef.current = status.state;
+      status.onchange = () => {
+        microphonePermissionRef.current = status.state;
+      };
+    }).catch(() => {
+      // Some browsers do not expose microphone permission state.
+    });
+
+    return () => {
+      active = false;
+      if (permissionStatus) permissionStatus.onchange = null;
+    };
+  }, []);
 
   function reset() {
     requestIdRef.current += 1;
+    captureActiveRef.current = false;
     window.clearTimeout(advanceTimerRef.current);
     recognizerRef.current?.stop();
     recognizerRef.current = null;
@@ -52,6 +81,7 @@ export function useSpeechCapture() {
 
   useEffect(() => () => {
     requestIdRef.current += 1;
+    captureActiveRef.current = false;
     window.clearTimeout(advanceTimerRef.current);
     recognizerRef.current?.stop();
   }, []);
@@ -63,10 +93,16 @@ export function useSpeechCapture() {
     onResult,
     onAdvance,
   }: CaptureOptions) {
-    if (state === 'listening' || state === 'processing') return;
+    if (captureActiveRef.current) return;
+    if (microphonePermissionRef.current === 'denied') {
+      setMessage(ERROR_MESSAGES['Izin mic ditolak']);
+      setState('idle');
+      return;
+    }
 
     const requestId = requestIdRef.current + 1;
     requestIdRef.current = requestId;
+    captureActiveRef.current = true;
     window.clearTimeout(advanceTimerRef.current);
     setFeedback(null);
     setMessage('');
@@ -82,9 +118,11 @@ export function useSpeechCapture() {
           if (requestId === requestIdRef.current) setState('processing');
         },
       });
+      recognizerRef.current?.stop();
       recognizerRef.current = recognizer;
       const recognition = await recognizer.recognizeOnce();
       if (requestId !== requestIdRef.current) return;
+      captureActiveRef.current = false;
       recognizerRef.current = null;
 
       if (recognition.error) {
@@ -115,13 +153,14 @@ export function useSpeechCapture() {
       }, 800);
     } catch (error) {
       if (requestId !== requestIdRef.current) return;
+      captureActiveRef.current = false;
       recognizerRef.current = null;
       setState('idle');
       const code = error instanceof Error ? error.message : String(error);
       if (code === 'STT_NOT_SUPPORTED' || code === 'STT_INSECURE_CONTEXT') {
         setUnsupported(true);
         setMessage(code === 'STT_INSECURE_CONTEXT'
-          ? 'Pengenalan suara memerlukan koneksi aman (HTTPS).'
+          ? 'STT butuh HTTPS atau localhost'
           : 'Pengenalan suara tidak tersedia di browser ini.');
         return;
       }
