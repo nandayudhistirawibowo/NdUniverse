@@ -24,12 +24,14 @@ function isLeaderboardRow(value: unknown): value is LeaderboardRow {
   return Number.isFinite(Number(value.xp)) && Number(value.xp) >= 0;
 }
 
-export async function fetchLeaderboard(): Promise<{
+export async function fetchLeaderboard(language: 'en' | 'de'): Promise<{
   entries: LeaderboardEntry[];
   unavailable: boolean;
 }> {
   try {
-    const { data, error } = await createServiceRoleClient().rpc('get_leaderboard');
+    const { data, error } = await createServiceRoleClient().rpc('get_leaderboard', {
+      p_lang: language,
+    });
     if (error) {
       console.error('Unable to fetch leaderboard data.', error);
       return { entries: [], unavailable: true };

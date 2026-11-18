@@ -5,7 +5,7 @@ import { fetchLeaderboard } from '@core/db/leaderboard';
 
 export const prerender = false;
 
-const { entries, unavailable } = await fetchLeaderboard();
+const { entries, unavailable } = await fetchLeaderboard('en');
 ---
 
 <DashboardLayout
