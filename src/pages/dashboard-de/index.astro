@@ -1,9 +1,11 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
-import { hasCompletedPillarSession } from '@core/db/progress-client.js';
+import { hasCompletedPillarSession, normalizePassedPillars } from '@core/db/progress-client.js';
 import { getGermanCareers, getGermanMaterials } from '@core/i18n/german-content.js';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
+const XP_PER_CORRECT_ANSWER = 10;
+const PILLAR_COUNT = 4;
 const LEVEL_STEPS = [
   { threshold: 0, label: 'A1 Pemula', nextThreshold: 200, nextLabel: 'A1 Lanjutan' },
   { threshold: 200, label: 'A1 Lanjutan', nextThreshold: 400, nextLabel: 'A2 Pemula' },
@@ -36,6 +38,11 @@ const materials = (await getGermanMaterials())
   .filter((material) => material.data.track === 'Alltagsdeutsch');
 const materialBySlug = new Map(materials.map((material) => [material.id, material]));
 const progressRows = progressData ?? [];
+const progressMaterials = materials.map((material) => ({
+  slug: material.id,
+  title: material.data.title ?? material.id,
+  maxXp: material.data.vocab.length * PILLAR_COUNT * XP_PER_CORRECT_ANSWER,
+}));
 const completedMaterials = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material || !hasCompletedPillarSession(row.sessions_passed)) return [];
@@ -43,6 +50,25 @@ const completedMaterials = progressRows.flatMap((row) => {
     slug: material.id.split('/').at(-1) ?? material.id,
     title: material.data.title ?? material.id,
     level: material.data.level ?? '',
+  }];
+});
+const materialProgress = progressRows.flatMap((row) => {
+  const material = materialBySlug.get(row.material_slug);
+  if (!material) return [];
+  const passedPillars = new Set(
+    normalizePassedPillars(row.sessions_passed).map((pillar) => pillar.replace(/^s\d+-/, '')),
+  );
+  const completed = hasCompletedPillarSession(row.sessions_passed);
+  const maxXp = material.data.vocab.length * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
+  const xp = Math.max(0, Number(row.xp) || 0);
+  const percentage = completed ? 100 : Math.round((Math.min(passedPillars.size, PILLAR_COUNT) / PILLAR_COUNT) * 100);
+  if (percentage === 0 && xp === 0) return [];
+  return [{
+    slug: material.id.split('/').at(-1) ?? material.id,
+    title: material.data.title ?? material.id,
+    percentage,
+    remainingXp: completed ? 0 : Math.max(0, maxXp - xp),
+    completed,
   }];
 });
 const totalXp = progressRows.reduce(
@@ -99,6 +125,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
       data-progress-rows={JSON.stringify(progressRows)}
       data-level-materials={JSON.stringify(levelMaterials)}
       data-level-steps={JSON.stringify(LEVEL_STEPS)}
+      data-progress-materials={JSON.stringify(progressMaterials)}
     >
       <div class="level-summary">
         <p class="level-eyebrow">Level Bahasa Jerman Sehari-hari</p>
@@ -149,25 +176,49 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
 
     <section class="completed-section" aria-labelledby="completed-title">
       <div class="completed-heading">
-        <div><p class="eyebrow">Pencapaian</p><h2 id="completed-title">Materi selesai</h2></div>
-        <span data-completed-count>{completedMaterials.length} materi</span>
+        <div><p class="eyebrow">Pencapaian</p><h2 id="completed-title">Progres materi</h2></div>
+        <span data-completed-count>{materialProgress.length} materi</span>
       </div>
       <ul class="completed-list" data-completed-list>
-        {completedMaterials.map((material) => (
-          <li><a href={`/de/materi/${material.slug}`}>{material.title}<span aria-hidden="true">→</span></a></li>
+        {materialProgress.map((material) => (
+          <li>
+            <a href={`/de/materi/${material.slug}`} class="completed-item-link">
+              <span class="completed-item-heading">
+                <span>{material.title}</span>
+                <span aria-hidden="true">→</span>
+              </span>
+              <span class="completed-item-progress-row">
+                <span
+                  class="completed-item-progress"
+                  role="progressbar"
+                  aria-label={`Progress ${material.title}`}
+                  aria-valuemin="0"
+                  aria-valuemax="100"
+                  aria-valuenow={material.percentage}
+                >
+                  <span style={`width: ${material.percentage}%`} />
+                </span>
+                <span class="completed-item-percent">{material.percentage}%</span>
+              </span>
+              <span class:list={['completed-item-status', { 'is-completed': material.completed }]}>
+                {material.completed ? 'Selesai (100%)' : `${material.percentage}% · Kurang ${material.remainingXp} XP lagi`}
+              </span>
+            </a>
+          </li>
         ))}
       </ul>
-      <p class="completed-empty" data-completed-empty hidden={completedMaterials.length > 0}>
-        <span>Belum ada materi yang lulus di keempat keterampilan.</span>
+      <p class="completed-empty" data-completed-empty hidden={materialProgress.length > 0}>
+        <span>Belum ada progres materi yang tercatat.</span>
       </p>
     </section>
   </section>
 </DashboardLayout>
 
 <script>
-  import { hasCompletedPillarSession } from '@core/db/progress-client.js';
+  import { hasCompletedPillarSession, normalizePassedPillars } from '@core/db/progress-client.js';
 
   const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
+  const PILLAR_COUNT = 4;
 
   window.addEventListener('nd:progress-updated', (event) => {
     const { slug, languageCode, pillars, xp } = (event as CustomEvent<{
@@ -213,6 +264,30 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     const completed = materials.filter((material) => (
       hasCompletedPillarSession(rows.get(material.slug)?.sessions_passed)
     ));
+    const progressMaterials = JSON.parse(dashboard.dataset.progressMaterials ?? '[]') as Array<{
+      slug: string;
+      title: string;
+      maxXp: number;
+    }>;
+    const materialProgress = progressMaterials.flatMap((material) => {
+      const row = rows.get(material.slug);
+      if (!row) return [];
+      const passedPillars = new Set(
+        normalizePassedPillars(row.sessions_passed).map((pillar) => pillar.replace(/^s\d+-/, '')),
+      );
+      const isComplete = hasCompletedPillarSession(row.sessions_passed);
+      const percentage = isComplete
+        ? 100
+        : Math.round((Math.min(passedPillars.size, PILLAR_COUNT) / PILLAR_COUNT) * 100);
+      const xp = Math.max(0, Number(row.xp) || 0);
+      if (percentage === 0 && xp === 0) return [];
+      return [{
+        ...material,
+        percentage,
+        remainingXp: isComplete ? 0 : Math.max(0, material.maxXp - xp),
+        completed: isComplete,
+      }];
+    });
     const totalPoints = completed.reduce(
       (total, material) => total + (POINTS_PER_LEVEL[material.level] ?? 0),
       0,
@@ -257,21 +332,47 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     const count = document.querySelector<HTMLElement>('[data-completed-count]');
     const empty = document.querySelector<HTMLElement>('[data-completed-empty]');
     if (list) {
-      list.replaceChildren(...completed.map((material) => {
+      list.replaceChildren(...materialProgress.map((material) => {
         const item = document.createElement('li');
         const link = document.createElement('a');
         link.href = `/de/materi/${encodeURIComponent(material.slug.split('/').at(-1) ?? material.slug)}`;
-        link.textContent = material.title;
+        link.className = 'completed-item-link';
+        const heading = document.createElement('span');
+        heading.className = 'completed-item-heading';
+        const title = document.createElement('span');
+        title.textContent = material.title;
         const arrow = document.createElement('span');
         arrow.setAttribute('aria-hidden', 'true');
         arrow.textContent = '→';
-        link.append(arrow);
+        heading.append(title, arrow);
+        const progressRow = document.createElement('span');
+        progressRow.className = 'completed-item-progress-row';
+        const progressBar = document.createElement('span');
+        progressBar.className = 'completed-item-progress';
+        progressBar.setAttribute('role', 'progressbar');
+        progressBar.setAttribute('aria-label', `Progress ${material.title}`);
+        progressBar.setAttribute('aria-valuemin', '0');
+        progressBar.setAttribute('aria-valuemax', '100');
+        progressBar.setAttribute('aria-valuenow', String(material.percentage));
+        const fill = document.createElement('span');
+        fill.style.width = `${material.percentage}%`;
+        progressBar.append(fill);
+        const percent = document.createElement('span');
+        percent.className = 'completed-item-percent';
+        percent.textContent = `${material.percentage}%`;
+        progressRow.append(progressBar, percent);
+        const status = document.createElement('span');
+        status.className = `completed-item-status${material.completed ? ' is-completed' : ''}`;
+        status.textContent = material.completed
+          ? 'Selesai (100%)'
+          : `Kurang ${material.remainingXp} XP lagi`;
+        link.append(heading, progressRow, status);
         item.append(link);
         return item;
       }));
     }
-    if (count) count.textContent = `${completed.length} materi`;
-    if (empty) empty.hidden = completed.length > 0;
+    if (count) count.textContent = `${materialProgress.length} materi`;
+    if (empty) empty.hidden = materialProgress.length > 0;
   });
 </script>
 
@@ -311,7 +412,16 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
   .completed-heading h2 { margin: .3rem 0 0; }
   .completed-heading > span { color: var(--muted); font-weight: 700; }
   .completed-list { display: grid; gap: .5rem; margin: 0; padding: 0; list-style: none; }
-  .completed-list a { display: flex; justify-content: space-between; gap: .75rem; padding: .8rem 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
+  .completed-item-link { display: grid; gap: .45rem; min-width: 0; padding: .8rem 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); color: var(--text-main); text-decoration: none; }
+  .completed-item-heading { display: flex; align-items: center; justify-content: space-between; gap: .75rem; min-width: 0; font-weight: 700; }
+  .completed-item-heading span:first-child { overflow-wrap: anywhere; }
+  .completed-item-heading span:last-child { flex: 0 0 auto; color: #966313; }
+  .completed-item-progress-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .6rem; }
+  .completed-item-progress { display: block; height: 6px; overflow: hidden; border-radius: 999px; background: color-mix(in srgb, var(--text-main) 12%, var(--bg-dark)); }
+  .completed-item-progress span { display: block; height: 100%; border-radius: inherit; background: var(--accent-gold); transition: width .2s ease; }
+  .completed-item-percent { color: var(--muted); font-size: .75rem; font-weight: 700; }
+  .completed-item-status { color: var(--muted); font-size: .78rem; }
+  .completed-item-status.is-completed { color: #047857; font-weight: 700; }
   @media (max-width: 700px) {
     .level-card { grid-template-columns: 1fr; }
     .welcome-mark { display: none; }
