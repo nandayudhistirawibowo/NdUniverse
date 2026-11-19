@@ -23,6 +23,7 @@ export interface SpeechFeedbackData {
 
 interface CaptureOptions {
   target: string;
+  targetText?: string;
   keywords?: string[];
   singleWord?: boolean;
   onResult?: (transcript: string, result: SpeechGrade) => void;
@@ -108,6 +109,7 @@ export function useSpeechCapture() {
 
   async function start({
     target,
+    targetText = target,
     keywords,
     singleWord = false,
     onResult,
@@ -140,6 +142,7 @@ export function useSpeechCapture() {
       try {
         const transcription = await recordAndTranscribe({
           lang: language,
+          targetText,
           onVolume: (level) => {
             if (requestId === requestIdRef.current) setVolumeLevel(level);
           },

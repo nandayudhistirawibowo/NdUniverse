@@ -63,6 +63,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     const keywords = task?.keywords ?? [];
     void speechCapture.start({
       target: keywords.join(' ') || task?.answer || task?.prompt || '',
+      targetText: keywords.join(' ') || task?.answer || task?.prompt || '',
       keywords: keywords.length ? keywords : undefined,
       onResult: (transcript) => chooseAnswer(index, transcript),
     });

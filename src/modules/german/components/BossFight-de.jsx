@@ -222,6 +222,7 @@ export default function BossFight({
     const keywords = currentQuestion.keywords ?? [];
     void speechCapture.start({
       target: keywords.join(' ') || currentQuestion.question,
+      targetText: keywords.join(' ') || currentQuestion.question,
       keywords,
       onResult: (transcript) => setAnswer(transcript),
       onAdvance: (transcript) => submitAnswer(transcript),

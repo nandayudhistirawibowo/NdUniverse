@@ -4,10 +4,6 @@ import { BatchClient } from '@speechmatics/batch-client';
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const RATE_LIMIT = 30;
 const RATE_WINDOW_MS = 60_000;
-const ACCENT_PROMPT = {
-  en: 'Transcribe the main speaker. Ignore background noise, crosstalk, and static. Transcribe English spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
-  de: 'Transcribe the main speaker. Ignore background noise, crosstalk, and static. Transcribe German spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
-};
 const SPEECHMATICS_TIMEOUT_MS = 15_000;
 const rateLimits = new Map<string, { startedAt: number; count: number }>();
 
@@ -99,6 +95,18 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: 'Bahasa harus en atau de.' }, 400);
   }
 
+  const rawTargetText = formData.get('target_text');
+  const targetText = typeof rawTargetText === 'string'
+    ? rawTargetText.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200)
+    : '';
+  const targetTextHint = targetText
+    ? `The user is trying to say: "${targetText.replace(/"/g, '\\"')}". `
+    : '';
+  const languageName = language === 'de' ? 'German' : 'English';
+  const groqPrompt = language === 'en'
+    ? `${targetTextHint}Transcribe exactly what the user says, even if it sounds like broken English, mispronounced, or heavily accented (Indonesian accent). DO NOT autocorrect to unrelated English words.`
+    : `${targetTextHint}Transcribe exactly what the user says in ${languageName}, even if it is mispronounced or heavily accented (Indonesian accent). DO NOT autocorrect to unrelated German words.`;
+
   const groqApiKey = import.meta.env.GROQ_API_KEY;
   if (groqApiKey) {
     try {
@@ -108,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
       groqForm.append('language', language);
       groqForm.append('response_format', 'json');
       groqForm.append('temperature', '0');
-      groqForm.append('prompt', ACCENT_PROMPT[language]);
+      groqForm.append('prompt', groqPrompt);
 
       const response = await fetch('https://api.groq.com/openai/v1/audio/transcriptions', {
         method: 'POST',
