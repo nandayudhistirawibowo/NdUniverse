@@ -122,7 +122,6 @@ function playAudioFile(audioUrl, fallbackText, button, playbackId) {
     if (currentAudio === audio) currentAudio = null;
     if (currentAudioButton === button) currentAudioButton = null;
   };
-  audio.addEventListener('error', () => handleAudioFailure(audio.error), { once: true });
   playAudio(audioUrl)?.catch(handleAudioFailure);
 }
 

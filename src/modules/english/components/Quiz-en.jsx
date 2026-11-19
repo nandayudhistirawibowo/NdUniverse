@@ -54,7 +54,7 @@ function readBookmarks() {
   if (!Array.isArray(bookmarks) || bookmarks.some((word) =>
     !word || typeof word.german !== 'string' || typeof word.indonesian !== 'string' || typeof word.context !== 'string'
   )) {
-    throw new Error('Invalid bookmark data.');
+    throw new Error('Data penanda buku tidak valid.');
   }
   return bookmarks;
 }
@@ -1423,6 +1423,11 @@ export default function Quiz(props) {
             border: 1px solid var(--border);
             border-radius: 0.6rem;
             background: var(--card-bg);
+          }
+
+          .vocab-speech-button {
+            position: relative;
+            z-index: 1;
           }
 
           .audio-accent-toggle button {

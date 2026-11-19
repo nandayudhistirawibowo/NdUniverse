@@ -28,7 +28,7 @@ function stopActiveAudio() {
 function showUkSpeechError(button, error) {
   button?.classList.remove('is-playing');
   console.error('Unable to speak English text with UK browser speech synthesis.', error);
-  window.alert('This browser does not support a UK voice.');
+  window.alert('Browser ini tidak mendukung suara beraksen Inggris.');
 }
 
 function speakWithBrowserVoice(text, language, button) {
@@ -151,10 +151,6 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
       activeAudioButton = null;
     }
   };
-  audio.addEventListener('error', () => {
-    void handleAudioFailure(audio.error);
-  }, { once: true });
-
   playAudio(audioUrl)?.catch(handleAudioFailure);
 }
 

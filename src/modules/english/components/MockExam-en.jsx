@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isFuzzyMatch } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
 import { grade, gradeKeywords } from '@core/speech/match.ts';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
@@ -88,7 +88,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
           ? gradeKeywords(answer, task.keywords)
           : grade(answer, task.answer);
         if (assessment.pass) correct += 1;
-      } else if (typeof answer === 'string' && isFuzzyMatch(answer, task.answer)) {
+      } else if (typeof answer === 'string' && isAnswerCorrect(answer, task.answer)) {
         correct += 1;
       }
     });

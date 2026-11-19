@@ -33,7 +33,6 @@ function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, o
         return;
       }
       audio.addEventListener('ended', complete, { once: true });
-      audio.addEventListener('error', complete, { once: true });
       audio.addEventListener('playbackerror', complete, { once: true });
     };
     const typeText = (intervalMs, audio) => {

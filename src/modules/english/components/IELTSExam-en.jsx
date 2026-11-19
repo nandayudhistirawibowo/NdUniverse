@@ -3,7 +3,7 @@ import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import { playAudioTTS, preloadEnglishTtsAudio } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { gradeKeywords } from '@core/speech/match.ts';
+import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 
 function normalizeAnswer(answer) {
@@ -15,7 +15,7 @@ function normalizeAnswer(answer) {
 }
 
 function tokenizeAnswer(answer) {
-  const articles = new Set(['der', 'die', 'das', 'den', 'dem']);
+  const articles = new Set(['a', 'an', 'the', 'der', 'die', 'das', 'den', 'dem']);
   return normalizeAnswer(answer)
     .split(/\s+/)
     .filter((token) => token && !articles.has(token));
@@ -40,9 +40,7 @@ function partialTextScore(answer, task) {
       const keywordTokens = tokenizeAnswer(keyword);
       if (keywordTokens.length === 0) return false;
       return keywordTokens.every((keywordToken) =>
-        answerTokens.some((answerToken) =>
-          gradeKeywords(answerTokens.join(' '), [keywordToken]).pass
-        )
+        answerTokens.some((answerToken) => isAnswerCorrect(answerToken, keywordToken))
       );
     });
     if (matched) matchedGroups += 1;

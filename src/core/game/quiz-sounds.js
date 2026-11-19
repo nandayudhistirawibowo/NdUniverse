@@ -14,5 +14,5 @@ if (typeof window !== 'undefined') {
 
 export function playSound(name) {
   const src = SOUND_FILES[name];
-  if (src) playAudio(src, { volume: 0.45 });
+  if (src) void playAudio(src, { volume: 0.45 })?.catch(() => {});
 }

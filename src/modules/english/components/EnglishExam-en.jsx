@@ -350,7 +350,10 @@ export default function EnglishExam({ exam, type, level }) {
                     <button
                       className="exam-listening-audio"
                       type="button"
-                      onClick={() => playAudio(`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`)}
+                      onClick={() => {
+                        const audioUrl = `https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`;
+                        void playAudio(audioUrl)?.catch(() => {});
+                      }}
                     >
                       Putar audio menyimak
                     </button>
@@ -447,6 +450,7 @@ export default function EnglishExam({ exam, type, level }) {
         .module-step.complete { border-color:#72a982; color:var(--text-main); }
         .step-number { display:grid; width:27px; height:27px; flex:0 0 27px; place-items:center; border-radius:50%; background:var(--bg-main); font-size:.72rem; }
         .module-panel,.exam-results { display:grid; gap:1rem; padding:clamp(1rem, 3vw, 1.5rem); border:1px solid var(--border); border-radius:8px; background:var(--card-bg); }
+        .exam-listening-audio { position:relative; z-index:1; min-height:44px; }
         .module-heading { display:flex; align-items:center; justify-content:space-between; gap:.75rem; padding-bottom:.75rem; border-bottom:1px solid var(--border); }
         .module-heading p,.module-heading h2 { margin:0; }
         .module-heading p,.module-heading > span { color:var(--muted); font-size:.78rem; font-weight:800; }

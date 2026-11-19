@@ -58,7 +58,7 @@ export function playBossAudio(text, language, signal) {
   activeAudio = audio;
   activeAudioStop = stopAudio;
   audio.addEventListener('ended', cleanup, { once: true });
-  audio.addEventListener('error', cleanup, { once: true });
+  audio.addEventListener('playbackerror', cleanup, { once: true });
   signal?.addEventListener('abort', stopAudio, { once: true });
 
   playAudio(audioUrl)?.catch(() => {

@@ -1249,6 +1249,8 @@ export default function Quiz(props) {
           }
 
           .vocab-speech-button {
+            position: relative;
+            z-index: 1;
             width: min(100%, 240px);
             min-height: 44px;
             padding: 12px 16px;
