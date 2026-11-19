@@ -3,7 +3,7 @@ import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import { playAudioTTS, preloadEnglishTtsAudio } from '../config/english-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect, isArticleQuestion } from '@core/game/fuzzy-match.js';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 
 function normalizeAnswer(answer) {
@@ -14,15 +14,16 @@ function normalizeAnswer(answer) {
     .replace(/\s+/g, ' ');
 }
 
-function tokenizeAnswer(answer) {
+function tokenizeAnswer(answer, preserveArticles = false) {
   const articles = new Set(['a', 'an', 'the', 'der', 'die', 'das', 'den', 'dem']);
   return normalizeAnswer(answer)
     .split(/\s+/)
-    .filter((token) => token && !articles.has(token));
+    .filter((token) => token && (preserveArticles || !articles.has(token)));
 }
 
 function partialTextScore(answer, task) {
-  const answerTokens = tokenizeAnswer(answer);
+  const preserveArticles = isArticleQuestion(task?.prompt);
+  const answerTokens = tokenizeAnswer(answer, preserveArticles);
   if (answerTokens.length === 0) return 0;
 
   const rawGroups = Array.isArray(task?.keywordGroups) ? task.keywordGroups : [];
@@ -37,10 +38,15 @@ function partialTextScore(answer, task) {
   let matchedGroups = 0;
   usableGroups.forEach((group) => {
     const matched = group.some((keyword) => {
-      const keywordTokens = tokenizeAnswer(keyword);
+      const keywordTokens = tokenizeAnswer(keyword, preserveArticles);
       if (keywordTokens.length === 0) return false;
       return keywordTokens.every((keywordToken) =>
-        answerTokens.some((answerToken) => isAnswerCorrect(answerToken, keywordToken))
+        answerTokens.some((answerToken) => isAnswerCorrect(
+          answerToken,
+          keywordToken,
+          0.8,
+          { preserveArticles },
+        ))
       );
     });
     if (matched) matchedGroups += 1;
@@ -139,7 +145,8 @@ export default function GoetheExam({ level, tasks, available = true }) {
     const keywords = task?.keywords ?? [];
     void speechCapture.start({
       target: keywords.join(' ') || task?.prompt || '',
-      targetText: keywords.join(' ') || task?.prompt || '',
+      targetText: keywords.join(' ') || '',
+      preserveArticles: isArticleQuestion(task?.prompt),
       keywords: keywords.length ? keywords : undefined,
       onResult: (transcript) => chooseAnswer(moduleId, index, transcript),
     });

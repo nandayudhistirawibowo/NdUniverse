@@ -80,7 +80,7 @@ vocab:
     indonesian: "dua puluh"
     context: "Das macht zwanzig Euro."
     contextIndonesian: "Totalnya dua puluh euro."
-  - german: "der Euro"
+  - german: "Euro"
     indonesian: "euro"
     context: "Ein Kaffee kostet zwei Euro."
     contextIndonesian: "Satu kopi harganya dua euro."

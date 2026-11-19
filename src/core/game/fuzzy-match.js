@@ -43,9 +43,29 @@ function calculateNormalizedSimilarity(left, right) {
   return longest === 0 ? 1 : 1 - levenshteinDistance(left, right) / longest;
 }
 
-export function isFuzzyMatch(userAnswer, targetAnswer, threshold = 0.8) {
-  const answer = normalizeText(userAnswer);
-  const target = normalizeText(targetAnswer);
+function normalizeTextPreservingArticles(value) {
+  return String(value ?? '')
+    .replace(/[\p{P}\p{S}]/gu, '')
+    .trim()
+    .replace(/\s{2,}/g, ' ')
+    .toLowerCase()
+    .split(' ')
+    .filter(Boolean)
+    .join(' ');
+}
+
+export function isArticleQuestion(prompt) {
+  return /\b(?:article|artikel)\b|_{2,}|\.{3,}|\b(?:fill|complete|insert).{0,40}\bblank\b|\b(?:ergänz|füll).{0,40}\blücke\b/i
+    .test(String(prompt ?? ''));
+}
+
+export function isFuzzyMatch(userAnswer, targetAnswer, threshold = 0.8, options = {}) {
+  const answer = options.preserveArticles
+    ? normalizeTextPreservingArticles(userAnswer)
+    : normalizeText(userAnswer);
+  const target = options.preserveArticles
+    ? normalizeTextPreservingArticles(targetAnswer)
+    : normalizeText(targetAnswer);
   if (!answer || !target || !Number.isFinite(threshold)) return false;
 
   const minimumSimilarity = Math.max(0, Math.min(1, threshold));
@@ -68,16 +88,26 @@ export function isFuzzyMatch(userAnswer, targetAnswer, threshold = 0.8) {
   return false;
 }
 
-export function isAnswerCorrect(userAnswer, correctAnswer, threshold = 0.8) {
+export function isAnswerCorrect(userAnswer, correctAnswer, threshold = 0.8, options = {}) {
   if (Array.isArray(correctAnswer)) {
-    return correctAnswer.some((answer) => isAnswerCorrect(userAnswer, answer, threshold));
+    return correctAnswer.some((answer) => isAnswerCorrect(userAnswer, answer, threshold, options));
   }
 
-  const answer = normalizeText(userAnswer);
-  const target = normalizeText(correctAnswer);
-  if (!answer || !target || !Number.isFinite(threshold)) return false;
+  const answer = options.preserveArticles
+    ? normalizeTextPreservingArticles(userAnswer)
+    : normalizeText(userAnswer);
+  const target = options.preserveArticles
+    ? normalizeTextPreservingArticles(correctAnswer)
+    : normalizeText(correctAnswer);
+  if (!Number.isFinite(threshold)) return false;
+  if (!answer || !target) {
+    if (options.preserveArticles) return false;
+    const literalAnswer = normalizeTextPreservingArticles(userAnswer);
+    const literalTarget = normalizeTextPreservingArticles(correctAnswer);
+    return Boolean(literalAnswer && literalTarget && literalAnswer === literalTarget);
+  }
 
   const minimumSimilarity = Math.max(0, Math.min(1, threshold));
   return calculateNormalizedSimilarity(answer, target) >= minimumSimilarity
-    || isFuzzyMatch(answer, target, minimumSimilarity);
+    || isFuzzyMatch(answer, target, minimumSimilarity, options);
 }

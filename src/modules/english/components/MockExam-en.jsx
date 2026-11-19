@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect, isArticleQuestion } from '@core/game/fuzzy-match.js';
 import { grade, gradeKeywords } from '@core/speech/match.ts';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
@@ -63,7 +63,8 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     const keywords = task?.keywords ?? [];
     void speechCapture.start({
       target: keywords.join(' ') || task?.answer || task?.prompt || '',
-      targetText: keywords.join(' ') || task?.answer || task?.prompt || '',
+      targetText: keywords.join(' ') || task?.answer || '',
+      preserveArticles: isArticleQuestion(task?.prompt),
       keywords: keywords.length ? keywords : undefined,
       onResult: (transcript) => chooseAnswer(index, transcript),
     });
@@ -86,10 +87,16 @@ export default function MockExam({ level, tasks, unavailable = false }) {
         if (normalizeAnswer(answer) === normalizeAnswer(task.answer)) correct += 1;
       } else if (task.kind === 'speaking' && typeof answer === 'string') {
         const assessment = task.keywords?.length
-          ? gradeKeywords(answer, task.keywords)
-          : grade(answer, task.answer);
+          ? gradeKeywords(answer, task.keywords, {
+            preserveArticles: isArticleQuestion(task.prompt),
+          })
+          : grade(answer, task.answer, {
+            preserveArticles: isArticleQuestion(task.prompt),
+          });
         if (assessment.pass) correct += 1;
-      } else if (typeof answer === 'string' && isAnswerCorrect(answer, task.answer)) {
+      } else if (typeof answer === 'string' && isAnswerCorrect(answer, task.answer, 0.8, {
+        preserveArticles: isArticleQuestion(task.prompt),
+      })) {
         correct += 1;
       }
     });

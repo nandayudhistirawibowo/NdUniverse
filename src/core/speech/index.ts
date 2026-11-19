@@ -11,6 +11,7 @@ export {
   gradeKeywords,
   gradeWithAlternatives,
   normalizeText,
+  normalizeTargetText,
   phoneticKey,
   phoneticSimilarity,
   similarity,

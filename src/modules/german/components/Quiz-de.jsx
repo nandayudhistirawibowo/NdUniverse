@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playAudioTTS, preloadGermanTtsAudio } from '@german/config/german-speech.js';
 import { playSound } from '@core/game/quiz-sounds.js';
-import { isAnswerCorrect } from '@core/game/fuzzy-match.js';
+import { isAnswerCorrect, isArticleQuestion } from '@core/game/fuzzy-match.js';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import NdBot from '@core/ui/NdBot.jsx';
 import {
@@ -67,6 +67,10 @@ function getAcceptedAnswers(answer) {
   return withoutLeadingMarkers === normalized
     ? [normalized]
     : [normalized, withoutLeadingMarkers];
+}
+
+function shouldPreserveArticles(question) {
+  return isArticleQuestion(question?.schreiben_instruksi ?? question?.sprechen_pertanyaan ?? '');
 }
 
 function readBookmarks() {
@@ -741,7 +745,9 @@ export default function Quiz(props) {
     if (arrangeSelected.length === 0 || !currentQuestion) return;
 
     const answer = arrangeSelected.map((index) => arrangeOptions[index]).join(' ');
-    const isCorrect = isAnswerCorrect(answer, currentQuestion.german);
+    const isCorrect = isAnswerCorrect(answer, currentQuestion.german, 0.8, {
+      preserveArticles: shouldPreserveArticles(currentQuestion),
+    });
     showResult(isCorrect);
   }
 
@@ -757,8 +763,11 @@ export default function Quiz(props) {
 
   function handleTextSubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
-    const acceptedAnswers = getAcceptedAnswers(currentQuestion.german);
-    showResult(isAnswerCorrect(userAnswer, acceptedAnswers));
+    const preserveArticles = shouldPreserveArticles(currentQuestion);
+    const acceptedAnswers = preserveArticles
+      ? [currentQuestion.german]
+      : getAcceptedAnswers(currentQuestion.german);
+    showResult(isAnswerCorrect(userAnswer, acceptedAnswers, 0.8, { preserveArticles }));
   }
 
   function handleMultipleChoiceSubmit() {
@@ -769,7 +778,9 @@ export default function Quiz(props) {
   function handleFuzzySubmit() {
     if (!currentQuestion || !userAnswer.trim()) return;
     const acceptedAnswers = [currentQuestion.german];
-    const isCorrect = isAnswerCorrect(userAnswer, acceptedAnswers);
+    const isCorrect = isAnswerCorrect(userAnswer, acceptedAnswers, 0.8, {
+      preserveArticles: shouldPreserveArticles(currentQuestion),
+    });
     showResult(isCorrect);
   }
 
@@ -778,6 +789,7 @@ export default function Quiz(props) {
     void speechCapture.start({
       target: currentQuestion.german,
       targetText: currentQuestion.german,
+      preserveArticles: shouldPreserveArticles(currentQuestion),
       singleWord: currentQuestion.german.trim().split(/\s+/).length === 1,
       onResult: (transcript) => setUserAnswer(transcript),
       onAdvance: (_transcript, result) => showResult(result.pass, true),

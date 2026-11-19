@@ -4,13 +4,13 @@ description: "Learn everyday English about more complicated feelings."
 track: "Everyday English"
 level: "A2"
 vocab:
-  - { word: "the disappointment", translation: "kekecewaan", context: "The cancellation was a big disappointment.", contextIndonesian: "Penolakannya sangat mengecewakan." }
+  - { word: "disappointment", translation: "kekecewaan", context: "The cancellation was a big disappointment.", contextIndonesian: "Penolakannya sangat mengecewakan." }
   - { word: "fear", translation: "rasa takut", context: "I was very scared before the exam.", contextIndonesian: "Aku sangat takut sebelum ujian." }
-  - { word: "the anger", translation: "kemarahan", context: "His anger was quickly over.", contextIndonesian: "Kemarahan dia cepat reda." }
-  - { word: "the worry", translation: "kekhawatiran", context: "Luckily my worries were unnecessary.", contextIndonesian: "Untungnya kekhawatiranku tidak perlu." }
-  - { word: "the relief", translation: "kelegaan", context: "After the conversation I felt relief.", contextIndonesian: "Aku merasa lega setelah obrolan itu." }
-  - { word: "the nervousness", translation: "rasa gugup", context: "Before the performance I became more nervous.", contextIndonesian: "Rasa gugupku makin besar sebelum tampil." }
-  - { word: "the mood", translation: "suasana hati", context: "My mood is much better today.", contextIndonesian: "Suasana hatiku jauh lebih baik hari ini." }
+  - { word: "anger", translation: "kemarahan", context: "His anger was quickly over.", contextIndonesian: "Kemarahan dia cepat reda." }
+  - { word: "worry", translation: "kekhawatiran", context: "Luckily my worries were unnecessary.", contextIndonesian: "Untungnya kekhawatiranku tidak perlu." }
+  - { word: "relief", translation: "kelegaan", context: "After the conversation I felt relief.", contextIndonesian: "Aku merasa lega setelah obrolan itu." }
+  - { word: "nervousness", translation: "rasa gugup", context: "Before the performance I became more nervous.", contextIndonesian: "Rasa gugupku makin besar sebelum tampil." }
+  - { word: "mood", translation: "suasana hati", context: "My mood is much better today.", contextIndonesian: "Suasana hatiku jauh lebih baik hari ini." }
   - { word: "hope", translation: "harapan", context: "We haven't lost hope.", contextIndonesian: "Kami tidak kehilangan harapan." }
   - { word: "disappointed", translation: "kecewa", context: "I was disappointed with the answer.", contextIndonesian: "Aku kecewa dengan jawabannya." }
   - { word: "angry", translation: "marah", context: "She was angry with her brother.", contextIndonesian: "Dia marah kepada kakaknya." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "be ashamed", translation: "merasa malu", context: "He was ashamed of his behavior.", contextIndonesian: "Dia malu dengan perilakunya." }
   - { word: "nervous", translation: "gugup", context: "She was very nervous before the interview.", contextIndonesian: "Dia sangat gugup sebelum obrolan itu." }
   - { word: "jealous", translation: "cemburu", context: "He was a little jealous.", contextIndonesian: "Dia agak cemburu." }
-  - { word: "the mood", translation: "suasana", context: "The atmosphere at the party was great.", contextIndonesian: "Suasana pestanya seru banget." }
+  - { word: "mood", translation: "suasana", context: "The atmosphere at the party was great.", contextIndonesian: "Suasana pestanya seru banget." }
 ---
 
 # More Complicated Feelings

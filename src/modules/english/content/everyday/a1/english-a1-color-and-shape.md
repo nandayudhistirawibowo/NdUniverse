@@ -16,13 +16,13 @@ vocab:
   - { word: "gray", translation: "abu-abu", context: "Today the sky is gray.", contextIndonesian: "Langit hari ini abu-abu." }
   - { word: "purple", translation: "ungu", context: "The flower is purple.", contextIndonesian: "Bunganya berwarna ungu." }
   - { word: "colorful", translation: "berwarna-warni", context: "The ball is beautifully colorful.", contextIndonesian: "Bolanya berwarna-warni." }
-  - { word: "the color", translation: "warna", context: "What color do you like?", contextIndonesian: "Kamu suka warna apa?" }
+  - { word: "color", translation: "warna", context: "What color do you like?", contextIndonesian: "Kamu suka warna apa?" }
   - { word: "bright", translation: "terang", context: "The room is bright.", contextIndonesian: "Kamarnya terang." }
   - { word: "dark", translation: "gelap", context: "The hallway is dark.", contextIndonesian: "Lorongnya gelap." }
-  - { word: "the circle", translation: "lingkaran", context: "The plate is a circle.", contextIndonesian: "Piringnya berbentuk lingkaran." }
-  - { word: "the square", translation: "persegi", context: "The window looks like a square.", contextIndonesian: "Jendelanya terlihat seperti persegi." }
-  - { word: "the triangle", translation: "segitiga", context: "The sign is a triangle.", contextIndonesian: "Rambu itu berbentuk segitiga." }
-  - { word: "the rectangle", translation: "persegi panjang", context: "My table is a rectangle.", contextIndonesian: "Mejaku berbentuk persegi panjang." }
+  - { word: "circle", translation: "lingkaran", context: "The plate is a circle.", contextIndonesian: "Piringnya berbentuk lingkaran." }
+  - { word: "square", translation: "persegi", context: "The window looks like a square.", contextIndonesian: "Jendelanya terlihat seperti persegi." }
+  - { word: "triangle", translation: "segitiga", context: "The sign is a triangle.", contextIndonesian: "Rambu itu berbentuk segitiga." }
+  - { word: "rectangle", translation: "persegi panjang", context: "My table is a rectangle.", contextIndonesian: "Mejaku berbentuk persegi panjang." }
   - { word: "round", translation: "bulat", context: "The ball is round.", contextIndonesian: "Bolanya bulat." }
 ---
 

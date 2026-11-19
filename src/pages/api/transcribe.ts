@@ -1,5 +1,6 @@
 import type { APIRoute } from 'astro';
 import { BatchClient } from '@speechmatics/batch-client';
+import { normalizeTargetText } from '@core/speech/match.ts';
 
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const RATE_LIMIT = 30;
@@ -96,8 +97,12 @@ export const POST: APIRoute = async ({ request }) => {
   }
 
   const rawTargetText = formData.get('target_text');
+  const preserveArticles = formData.get('preserve_articles') === 'true';
   const targetText = typeof rawTargetText === 'string'
-    ? rawTargetText.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200)
+    ? normalizeTargetText(
+      rawTargetText.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200),
+      { preserveArticles },
+    ).slice(0, 200)
     : '';
   const escapedTargetText = targetText.replace(/"/g, '\\"');
   const targetHint = targetText

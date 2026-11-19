@@ -10,9 +10,9 @@ vocab:
   - { word: "wash yourself", translation: "mencuci diri", context: "I wash myself before breakfast.", contextIndonesian: "Aku mencuci diri sebelum sarapan." }
   - { word: "get dressed", translation: "berpakaian", context: "She dresses warmly.", contextIndonesian: "Dia berpakaian hangat." }
   - { word: "have breakfast", translation: "sarapan", context: "We have breakfast together.", contextIndonesian: "Kami sarapan bersama." }
-  - { word: "the coffee", translation: "kopi", context: "I drink coffee in the morning.", contextIndonesian: "Aku minum kopi pagi-pagi." }
+  - { word: "coffee", translation: "kopi", context: "I drink coffee in the morning.", contextIndonesian: "Aku minum kopi pagi-pagi." }
   - { word: "work", translation: "bekerja", context: "My father is working at home today.", contextIndonesian: "Ayahku bekerja dari rumah hari ini." }
-  - { word: "the workplace", translation: "tempat kerja", context: "My workplace is very close.", contextIndonesian: "Tempat kerjaku dekat sekali." }
+  - { word: "workplace", translation: "tempat kerja", context: "My workplace is very close.", contextIndonesian: "Tempat kerjaku dekat sekali." }
   - { word: "learn", translation: "belajar", context: "I'm still learning German in the evening.", contextIndonesian: "Malamnya aku masih belajar bahasa Jerman." }
   - { word: "cook", translation: "memasak", context: "My brother is cooking today.", contextIndonesian: "Hari ini kakakku yang memasak." }
   - { word: "eat", translation: "makan", context: "We eat at twelve o'clock.", contextIndonesian: "Kami makan pukul dua belas." }

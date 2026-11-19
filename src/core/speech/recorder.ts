@@ -1,6 +1,7 @@
 export interface RecordAndTranscribeOptions {
   lang: 'en' | 'de';
   targetText?: string;
+  preserveArticles?: boolean;
   maxMs?: number;
   onVolume?: (level: number) => void;
   onNoiseFloor?: (level: number) => void;
@@ -34,6 +35,7 @@ export function cancelRecording(): void {
 export async function recordAndTranscribe({
   lang,
   targetText,
+  preserveArticles = false,
   maxMs = 15_000,
   onVolume,
   onNoiseFloor,
@@ -205,6 +207,7 @@ export async function recordAndTranscribe({
     formData.append('audio', blob, 'speech.webm');
     formData.append('lang', lang);
     if (targetText?.trim()) formData.append('target_text', targetText.trim());
+    if (preserveArticles) formData.append('preserve_articles', 'true');
     const response = await fetch('/api/transcribe', {
       method: 'POST',
       body: formData,

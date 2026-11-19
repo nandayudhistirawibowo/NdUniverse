@@ -3,6 +3,7 @@ import { createRecognizer, getRecognitionLang } from './stt-engine';
 import { cancelRecording, recordAndTranscribe, stopRecording } from './recorder';
 import {
   gradeWithAlternatives,
+  normalizeTargetText,
   type GradeResult,
   type GradeWithAlternativesResult,
   type KeywordGradeResult,
@@ -24,6 +25,7 @@ export interface SpeechFeedbackData {
 interface CaptureOptions {
   target: string;
   targetText?: string;
+  preserveArticles?: boolean;
   keywords?: string[];
   singleWord?: boolean;
   onResult?: (transcript: string, result: SpeechGrade) => void;
@@ -112,6 +114,7 @@ export function useSpeechCapture() {
   async function start({
     target,
     targetText = target,
+    preserveArticles = false,
     keywords,
     singleWord = false,
     onResult,
@@ -145,7 +148,8 @@ export function useSpeechCapture() {
       try {
         const transcription = await recordAndTranscribe({
           lang: language,
-          targetText,
+          targetText: normalizeTargetText(targetText, { preserveArticles }),
+          preserveArticles,
           onVolume: (level) => {
             if (requestId === requestIdRef.current) setVolumeLevel(level);
           },
@@ -193,6 +197,7 @@ export function useSpeechCapture() {
       const result = gradeWithAlternatives(alternatives, target, {
         singleWord,
         keywords,
+        preserveArticles,
       });
       const transcript = result.bestAlternative.transcript;
       const firstTranscript = alternatives[0]?.transcript ?? '';

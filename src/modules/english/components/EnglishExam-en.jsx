@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { isArticleQuestion } from '@core/game/fuzzy-match.js';
 import { playAudio } from '@core/audio/play-audio.js';
 import { gradeKeywords } from '@core/speech/match.ts';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
@@ -44,8 +45,10 @@ function scoreText(answer, targetWords, type) {
   return calculateModuleScore(Math.min(countWords(answer), targetWords), targetWords, type);
 }
 
-function scoreKeywords(answer, keywords, type) {
-  const matched = keywords.filter((keyword) => gradeKeywords(answer, [keyword]).pass).length;
+function scoreKeywords(answer, keywords, type, preserveArticles = false) {
+  const matched = keywords.filter((keyword) => gradeKeywords(answer, [keyword], {
+    preserveArticles,
+  }).pass).length;
   return calculateModuleScore(matched, keywords.length, type);
 }
 
@@ -116,7 +119,12 @@ export default function EnglishExam({ exam, type, level }) {
     reading: scoreChoices(readingQuestions, answers.reading, examType),
     listening: scoreChoices(listeningQuestions, answers.listening, examType),
     writing: scoreText(writingAnswer, 20, examType),
-    speaking: scoreKeywords(speakingAnswer, speakingKeywords, examType),
+    speaking: scoreKeywords(
+      speakingAnswer,
+      speakingKeywords,
+      examType,
+      speakingParts.some((part) => isArticleQuestion(part.question)),
+    ),
   }), [readingQuestions, listeningQuestions, answers, writingAnswer, speakingAnswer, speakingKeywords, examType]);
   const totalPercentage = calculateModuleScore(
     MODULES.reduce((total, module) => total + scores[module], 0),
@@ -213,7 +221,8 @@ export default function EnglishExam({ exam, type, level }) {
     setSpeechAnswerId(answerId);
     void speechCapture.start({
       target: keywords.join(' ') || part?.question || '',
-      targetText: keywords.join(' ') || part?.question || '',
+      targetText: keywords.join(' ') || '',
+      preserveArticles: isArticleQuestion(part?.question),
       keywords: keywords.length ? keywords : undefined,
       onResult: (transcript) => {
         setSpeakingAnswers((current) => ({

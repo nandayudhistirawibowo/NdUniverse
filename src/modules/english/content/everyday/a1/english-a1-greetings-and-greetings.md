@@ -4,10 +4,10 @@ description: "Learn everyday English about greetings and greetings."
 track: "Everyday English"
 level: "A1"
 vocab:
-  - { word: "the morning", translation: "pagi", context: "I drink tea in the morning.", contextIndonesian: "Pagi-pagi aku minum teh." }
+  - { word: "morning", translation: "pagi", context: "I drink tea in the morning.", contextIndonesian: "Pagi-pagi aku minum teh." }
   - { word: "midday", translation: "siang", context: "We eat together at lunchtime.", contextIndonesian: "Kami makan siang bersama." }
-  - { word: "the evening", translation: "malam", context: "I'll call you in the evening.", contextIndonesian: "Malamnya aku meneleponmu." }
-  - { word: "the night", translation: "malam", context: "Good night, sleep well!", contextIndonesian: "Selamat malam, tidur yang nyenyak!" }
+  - { word: "evening", translation: "malam", context: "I'll call you in the evening.", contextIndonesian: "Malamnya aku meneleponmu." }
+  - { word: "night", translation: "malam", context: "Good night, sleep well!", contextIndonesian: "Selamat malam, tidur yang nyenyak!" }
   - { word: "Good morning", translation: "selamat pagi", context: "Good morning, how are you?", contextIndonesian: "Selamat pagi, apa kabar?" }
   - { word: "Hello", translation: "selamat siang", context: "Hello, can I help?", contextIndonesian: "Selamat siang, ada yang bisa dibantu?" }
   - { word: "Good evening", translation: "selamat malam", context: "Good evening, nice to see you.", contextIndonesian: "Selamat malam, senang bertemu denganmu." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "How are you?", translation: "apa kabar?", context: "How are you today?", contextIndonesian: "Apa kabar hari ini?" }
   - { word: "good", translation: "baik", context: "Thanks, I'm fine.", contextIndonesian: "Makasih, kabarku baik." }
   - { word: "See you soon", translation: "sampai jumpa lagi", context: "See you soon, see you!", contextIndonesian: "Sampai jumpa lagi, ya!" }
-  - { word: "the greeting", translation: "salam", context: "Many greetings to your family!", contextIndonesian: "Salam untuk keluargamu!" }
+  - { word: "greeting", translation: "salam", context: "Many greetings to your family!", contextIndonesian: "Salam untuk keluargamu!" }
 ---
 
 # Greetings and Greetings

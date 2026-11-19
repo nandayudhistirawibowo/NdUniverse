@@ -47,54 +47,54 @@ boss_questions:
     keywords: ["Fragen", "Aufgaben", "Unternehmen"]
     advancedKeywords: ["Aufgaben"]
 vocab:
-  - { german: "die Ernährung", indonesian: "gizi atau pola makan", context: "Die Ernährung beeinflusst die Gesundheit." }
-  - { german: "die Schwangere", indonesian: "ibu hamil", context: "Die Schwangere erhält eine Beratung." }
-  - { german: "die Hebamme", indonesian: "bidan", context: "Die Hebamme begleitet die Geburt." }
-  - { german: "die Beratung", indonesian: "konseling", context: "Die Beratung findet in der Klinik statt." }
-  - { german: "das Neugeborene", indonesian: "bayi baru lahir", context: "Das Neugeborene wird untersucht." }
-  - { german: "die Geburt", indonesian: "persalinan", context: "Die Geburt wird sorgfältig überwacht." }
-  - { german: "die Schwangerschaft", indonesian: "kehamilan", context: "Die Schwangerschaft dauert ungefähr neun Monate." }
-  - { german: "die Vorsorge", indonesian: "pemeriksaan preventif", context: "Die Vorsorge beginnt früh in der Schwangerschaft." }
-  - { german: "die Mutter", indonesian: "ibu", context: "Die Mutter erhält Unterstützung." }
-  - { german: "das Kind", indonesian: "anak", context: "Das Kind wächst gesund." }
-  - { german: "der Säugling", indonesian: "bayi", context: "Der Säugling wird regelmäßig gewogen." }
-  - { german: "das Stillen", indonesian: "menyusui", context: "Das Stillen fördert die Bindung." }
-  - { german: "die Muttermilch", indonesian: "ASI", context: "Muttermilch enthält wichtige Nährstoffe." }
-  - { german: "die Flaschenernährung", indonesian: "pemberian susu botol", context: "Die Flaschenernährung wird hygienisch vorbereitet." }
-  - { german: "der Ernährungsplan", indonesian: "rencana makan", context: "Der Ernährungsplan wird individuell erstellt." }
-  - { german: "das Nahrungsmittel", indonesian: "bahan makanan", context: "Das Nahrungsmittel enthält viele Vitamine." }
-  - { german: "das Vitamin", indonesian: "vitamin", context: "Vitamin C stärkt das Immunsystem." }
-  - { german: "das Mineral", indonesian: "mineral", context: "Mineralstoffe sind für den Körper wichtig." }
-  - { german: "das Protein", indonesian: "protein", context: "Protein unterstützt das Wachstum." }
-  - { german: "die Kohlenhydrate", indonesian: "karbohidrat", context: "Kohlenhydrate liefern Energie." }
-  - { german: "das Fett", indonesian: "lemak", context: "Gesunde Fette sind Teil ausgewogener Ernährung." }
-  - { german: "die ausgewogene Ernährung", indonesian: "gizi seimbang", context: "Eine ausgewogene Ernährung ist wichtig." }
-  - { german: "die Allergie", indonesian: "alergi", context: "Die Allergie wird sorgfältig dokumentiert." }
-  - { german: "die Unverträglichkeit", indonesian: "intoleransi", context: "Die Unverträglichkeit kann Bauchschmerzen verursachen." }
-  - { german: "die Gewichtszunahme", indonesian: "kenaikan berat badan", context: "Die Gewichtszunahme wird kontrolliert." }
-  - { german: "die Wachstumskurve", indonesian: "kurva pertumbuhan", context: "Die Wachstumskurve zeigt die Entwicklung." }
-  - { german: "die Untersuchung", indonesian: "pemeriksaan", context: "Die Untersuchung erfolgt regelmäßig." }
-  - { german: "der Ultraschall", indonesian: "ultrasound", context: "Der Ultraschall zeigt die Entwicklung des Kindes." }
-  - { german: "die Wehen", indonesian: "kontraksi", context: "Die Hebamme beobachtet die Wehen." }
-  - { german: "die Eröffnungsphase", indonesian: "fase pembukaan", context: "Die Eröffnungsphase kann lange dauern." }
-  - { german: "der Muttermund", indonesian: "serviks", context: "Der Muttermund öffnet sich langsam." }
-  - { german: "die Nachgeburt", indonesian: "plasenta", context: "Die Nachgeburt wird kontrolliert." }
-  - { german: "der Wochenbett", indonesian: "masa nifas", context: "Im Wochenbett braucht die Mutter Ruhe." }
-  - { german: "die Wochenfluss", indonesian: "lokia", context: "Der Wochenfluss wird beobachtet." }
-  - { german: "die Schlafberatung", indonesian: "konseling tidur", context: "Die Schlafberatung unterstützt die Familie." }
-  - { german: "die Familienplanung", indonesian: "keluarga berencana", context: "Die Familienplanung wird ausführlich besprochen." }
-  - { german: "das Familienzentrum", indonesian: "pusat keluarga", context: "Das Familienzentrum bietet Kurse an." }
-  - { german: "die Impfberatung", indonesian: "konseling imunisasi", context: "Die Impfberatung erklärt mögliche Impfungen." }
-  - { german: "die Impfung", indonesian: "imunisasi", context: "Die Impfung schützt vor Erkrankungen." }
-  - { german: "die Ernährungsempfehlung", indonesian: "rekomendasi gizi", context: "Die Ernährungsempfehlung ist altersgerecht." }
-  - { german: "die Beikost", indonesian: "makanan pendamping", context: "Die Beikost beginnt nach ärztlichem Rat." }
-  - { german: "die Mahlzeit", indonesian: "waktu makan", context: "Die Mahlzeit sollte regelmäßig sein." }
-  - { german: "das Hygiene", indonesian: "higiene", context: "Hygiene ist bei der Zubereitung wichtig." }
-  - { german: "die Zubereitung", indonesian: "penyiapan makanan", context: "Die Zubereitung muss sorgfältig erfolgen." }
-  - { german: "die Lagerung", indonesian: "penyimpanan", context: "Die Lagerung von Lebensmitteln erfolgt kühl." }
-  - { german: "die Lebensmittelsicherheit", indonesian: "keamanan pangan", context: "Die Lebensmittelsicherheit verhindert Infektionen." }
-  - { german: "die Entwicklung", indonesian: "perkembangan", context: "Die Entwicklung wird regelmäßig dokumentiert." }
-  - { german: "die Bindung", indonesian: "ikatan", context: "Die Bindung zwischen Mutter und Kind ist wichtig." }
-  - { german: "die Betreuung", indonesian: "pendampingan", context: "Die Betreuung erfolgt individuell." }
-  - { german: "die Weiterentwicklung", indonesian: "pengembangan lanjutan", context: "Die Weiterentwicklung gehört zum Beruf dazu." }
+  - { german: "Ernährung", indonesian: "gizi atau pola makan", context: "Die Ernährung beeinflusst die Gesundheit." }
+  - { german: "Schwangere", indonesian: "ibu hamil", context: "Die Schwangere erhält eine Beratung." }
+  - { german: "Hebamme", indonesian: "bidan", context: "Die Hebamme begleitet die Geburt." }
+  - { german: "Beratung", indonesian: "konseling", context: "Die Beratung findet in der Klinik statt." }
+  - { german: "Neugeborene", indonesian: "bayi baru lahir", context: "Das Neugeborene wird untersucht." }
+  - { german: "Geburt", indonesian: "persalinan", context: "Die Geburt wird sorgfältig überwacht." }
+  - { german: "Schwangerschaft", indonesian: "kehamilan", context: "Die Schwangerschaft dauert ungefähr neun Monate." }
+  - { german: "Vorsorge", indonesian: "pemeriksaan preventif", context: "Die Vorsorge beginnt früh in der Schwangerschaft." }
+  - { german: "Mutter", indonesian: "ibu", context: "Die Mutter erhält Unterstützung." }
+  - { german: "Kind", indonesian: "anak", context: "Das Kind wächst gesund." }
+  - { german: "Säugling", indonesian: "bayi", context: "Der Säugling wird regelmäßig gewogen." }
+  - { german: "Stillen", indonesian: "menyusui", context: "Das Stillen fördert die Bindung." }
+  - { german: "Muttermilch", indonesian: "ASI", context: "Muttermilch enthält wichtige Nährstoffe." }
+  - { german: "Flaschenernährung", indonesian: "pemberian susu botol", context: "Die Flaschenernährung wird hygienisch vorbereitet." }
+  - { german: "Ernährungsplan", indonesian: "rencana makan", context: "Der Ernährungsplan wird individuell erstellt." }
+  - { german: "Nahrungsmittel", indonesian: "bahan makanan", context: "Das Nahrungsmittel enthält viele Vitamine." }
+  - { german: "Vitamin", indonesian: "vitamin", context: "Vitamin C stärkt das Immunsystem." }
+  - { german: "Mineral", indonesian: "mineral", context: "Mineralstoffe sind für den Körper wichtig." }
+  - { german: "Protein", indonesian: "protein", context: "Protein unterstützt das Wachstum." }
+  - { german: "Kohlenhydrate", indonesian: "karbohidrat", context: "Kohlenhydrate liefern Energie." }
+  - { german: "Fett", indonesian: "lemak", context: "Gesunde Fette sind Teil ausgewogener Ernährung." }
+  - { german: "ausgewogene Ernährung", indonesian: "gizi seimbang", context: "Eine ausgewogene Ernährung ist wichtig." }
+  - { german: "Allergie", indonesian: "alergi", context: "Die Allergie wird sorgfältig dokumentiert." }
+  - { german: "Unverträglichkeit", indonesian: "intoleransi", context: "Die Unverträglichkeit kann Bauchschmerzen verursachen." }
+  - { german: "Gewichtszunahme", indonesian: "kenaikan berat badan", context: "Die Gewichtszunahme wird kontrolliert." }
+  - { german: "Wachstumskurve", indonesian: "kurva pertumbuhan", context: "Die Wachstumskurve zeigt die Entwicklung." }
+  - { german: "Untersuchung", indonesian: "pemeriksaan", context: "Die Untersuchung erfolgt regelmäßig." }
+  - { german: "Ultraschall", indonesian: "ultrasound", context: "Der Ultraschall zeigt die Entwicklung des Kindes." }
+  - { german: "Wehen", indonesian: "kontraksi", context: "Die Hebamme beobachtet die Wehen." }
+  - { german: "Eröffnungsphase", indonesian: "fase pembukaan", context: "Die Eröffnungsphase kann lange dauern." }
+  - { german: "Muttermund", indonesian: "serviks", context: "Der Muttermund öffnet sich langsam." }
+  - { german: "Nachgeburt", indonesian: "plasenta", context: "Die Nachgeburt wird kontrolliert." }
+  - { german: "Wochenbett", indonesian: "masa nifas", context: "Im Wochenbett braucht die Mutter Ruhe." }
+  - { german: "Wochenfluss", indonesian: "lokia", context: "Der Wochenfluss wird beobachtet." }
+  - { german: "Schlafberatung", indonesian: "konseling tidur", context: "Die Schlafberatung unterstützt die Familie." }
+  - { german: "Familienplanung", indonesian: "keluarga berencana", context: "Die Familienplanung wird ausführlich besprochen." }
+  - { german: "Familienzentrum", indonesian: "pusat keluarga", context: "Das Familienzentrum bietet Kurse an." }
+  - { german: "Impfberatung", indonesian: "konseling imunisasi", context: "Die Impfberatung erklärt mögliche Impfungen." }
+  - { german: "Impfung", indonesian: "imunisasi", context: "Die Impfung schützt vor Erkrankungen." }
+  - { german: "Ernährungsempfehlung", indonesian: "rekomendasi gizi", context: "Die Ernährungsempfehlung ist altersgerecht." }
+  - { german: "Beikost", indonesian: "makanan pendamping", context: "Die Beikost beginnt nach ärztlichem Rat." }
+  - { german: "Mahlzeit", indonesian: "waktu makan", context: "Die Mahlzeit sollte regelmäßig sein." }
+  - { german: "Hygiene", indonesian: "higiene", context: "Hygiene ist bei der Zubereitung wichtig." }
+  - { german: "Zubereitung", indonesian: "penyiapan makanan", context: "Die Zubereitung muss sorgfältig erfolgen." }
+  - { german: "Lagerung", indonesian: "penyimpanan", context: "Die Lagerung von Lebensmitteln erfolgt kühl." }
+  - { german: "Lebensmittelsicherheit", indonesian: "keamanan pangan", context: "Die Lebensmittelsicherheit verhindert Infektionen." }
+  - { german: "Entwicklung", indonesian: "perkembangan", context: "Die Entwicklung wird regelmäßig dokumentiert." }
+  - { german: "Bindung", indonesian: "ikatan", context: "Die Bindung zwischen Mutter und Kind ist wichtig." }
+  - { german: "Betreuung", indonesian: "pendampingan", context: "Die Betreuung erfolgt individuell." }
+  - { german: "Weiterentwicklung", indonesian: "pengembangan lanjutan", context: "Die Weiterentwicklung gehört zum Beruf dazu." }
 ---

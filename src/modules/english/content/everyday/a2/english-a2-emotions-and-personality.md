@@ -4,7 +4,7 @@ description: "Learn everyday English about emotions and personality."
 track: "Everyday English"
 level: "A2"
 vocab:
-  - { word: "the feeling", translation: "perasaan", context: "She talks openly about her feelings.", contextIndonesian: "Dia berbicara terbuka tentang perasaannya." }
+  - { word: "feeling", translation: "perasaan", context: "She talks openly about her feelings.", contextIndonesian: "Dia berbicara terbuka tentang perasaannya." }
   - { word: "looking forward to", translation: "menantikan dengan gembira", context: "I'm looking forward to seeing my friends.", contextIndonesian: "Saya sudah tidak sabar bertemu teman-teman saya." }
   - { word: "look forward to", translation: "bergembira atas", context: "He is happy about the gift.", contextIndonesian: "Dia senang atas hadiah itu." }
   - { word: "disappointed", translation: "kecewa", context: "After the rejection she was really disappointed.", contextIndonesian: "Dia kecewa setelah penolakan itu." }
@@ -20,7 +20,7 @@ vocab:
   - { word: "shy", translation: "pemalu", context: "At first he is shy in large groups.", contextIndonesian: "Pada awalnya dia pemalu di dalam kelompok besar." }
   - { word: "confident", translation: "percaya diri", context: "She presents her ideas confidently.", contextIndonesian: "Dia menyampaikan ide-idenya dengan percaya diri." }
   - { word: "helpful", translation: "suka menolong", context: "My colleague is always helpful.", contextIndonesian: "Rekan kerja perempuan saya selalu suka menolong." }
-  - { word: "the mood", translation: "suasana hati", context: "After the good news, the mood in the office is much better.", contextIndonesian: "Suasana di kantor jauh lebih baik setelah kabar baik itu." }
+  - { word: "mood", translation: "suasana hati", context: "After the good news, the mood in the office is much better.", contextIndonesian: "Suasana di kantor jauh lebih baik setelah kabar baik itu." }
   - { word: "get annoyed about", translation: "kesal terhadap", context: "I'm annoyed about the long traffic jam.", contextIndonesian: "Saya kesal karena kemacetan yang panjang." }
   - { word: "happy", translation: "bahagia", context: "The children are happy about the trip.", contextIndonesian: "Anak-anak senang dengan acara jalan-jalan itu." }
   - { word: "curious", translation: "penasaran", context: "The curious child constantly asks questions.", contextIndonesian: "Anak yang penasaran itu terus bertanya." }

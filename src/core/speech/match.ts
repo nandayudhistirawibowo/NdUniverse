@@ -1,5 +1,6 @@
 export interface GradeOptions {
   singleWord?: boolean;
+  preserveArticles?: boolean;
 }
 
 export interface GradeWithAlternativesOptions extends GradeOptions {
@@ -33,6 +34,8 @@ export interface GradeWithAlternativesResult extends KeywordGradeResult {
   method: 'exact' | 'phonetic' | 'fuzzy';
 }
 
+const ARTICLES = new Set(['a', 'an', 'the', 'der', 'die', 'das']);
+
 export function normalizeText(value: string): string {
   return String(value ?? '')
     .toLowerCase()
@@ -44,6 +47,26 @@ export function normalizeText(value: string): string {
     .replace(/[^\p{L}\p{N}]+/gu, ' ')
     .trim()
     .replace(/\s+/g, ' ');
+}
+
+function getTargetWords(value: string, preserveArticles = false): {
+  words: string[];
+  preserveArticles: boolean;
+} {
+  const words = normalizeText(value).split(' ').filter(Boolean);
+  const contentWords = words.filter((word) => !ARTICLES.has(word));
+  const keepArticles = preserveArticles || contentWords.length === 0;
+  return {
+    words: keepArticles ? words : contentWords,
+    preserveArticles: keepArticles,
+  };
+}
+
+export function normalizeTargetText(
+  value: string,
+  { preserveArticles = false }: GradeOptions = {},
+): string {
+  return getTargetWords(value, preserveArticles).words.join(' ');
 }
 
 export function wordLevenshtein(left: string, right: string): number {
@@ -101,9 +124,16 @@ function phoneticWordSimilarity(left: string, right: string): number {
   return length === 0 ? 1 : 1 - wordLevenshtein(leftKey, rightKey) / length;
 }
 
-export function phoneticSimilarity(transcript: string, target: string): number {
-  const transcriptWords = normalizeText(transcript).split(' ').filter(Boolean);
-  const targetWords = normalizeText(target).split(' ').filter(Boolean);
+export function phoneticSimilarity(
+  transcript: string,
+  target: string,
+  { preserveArticles = false }: GradeOptions = {},
+): number {
+  const preparedTarget = getTargetWords(target, preserveArticles);
+  const transcriptWords = normalizeText(transcript)
+    .split(' ')
+    .filter((word) => word && (preparedTarget.preserveArticles || !ARTICLES.has(word)));
+  const targetWords = preparedTarget.words;
   if (targetWords.length === 0) return 0;
 
   const usedTranscriptWords = new Set<number>();
@@ -136,8 +166,11 @@ function wordsMatch(transcriptWord: string, targetWord: string): boolean {
 function matchTargetWords(
   transcript: string,
   targetWords: string[],
+  preserveArticles = false,
 ): { matched: string[]; missing: string[] } {
-  const transcriptWords = normalizeText(transcript).split(' ').filter(Boolean);
+  const transcriptWords = normalizeText(transcript)
+    .split(' ')
+    .filter((word) => word && (preserveArticles || !ARTICLES.has(word)));
   const normalizedTargets = targetWords.map((word) => normalizeText(word));
   const usedTranscriptWords = new Set<number>();
   const matchedIndices = new Set<number>();
@@ -180,30 +213,49 @@ function matchTargetWords(
   };
 }
 
-export function similarity(transcript: string, target: string): number {
-  const targetWords = normalizeText(target).split(' ').filter(Boolean);
+export function similarity(
+  transcript: string,
+  target: string,
+  { preserveArticles = false }: GradeOptions = {},
+): number {
+  const preparedTarget = getTargetWords(target, preserveArticles);
+  const targetWords = preparedTarget.words;
   if (targetWords.length === 0) return 0;
 
-  const { matched } = matchTargetWords(transcript, targetWords);
+  const { matched } = matchTargetWords(transcript, targetWords, preparedTarget.preserveArticles);
   return matched.length / targetWords.length;
 }
 
 export function grade(
   transcript: string,
   target: string,
-  { singleWord = false }: GradeOptions = {},
+  { singleWord = false, preserveArticles = false }: GradeOptions = {},
 ): GradeResult {
-  const targetWords = normalizeText(target).split(' ').filter(Boolean);
-  const { matched, missing } = matchTargetWords(transcript, targetWords);
+  const preparedTarget = getTargetWords(target, preserveArticles);
+  const targetWords = preparedTarget.words;
+  const { matched, missing } = matchTargetWords(
+    transcript,
+    targetWords,
+    preparedTarget.preserveArticles,
+  );
   const threshold = singleWord ? 0.85 : 0.75;
   const score = targetWords.length === 0 ? 0 : matched.length / targetWords.length;
 
   return { score, pass: score >= threshold, threshold, matched, missing };
 }
 
-export function gradeKeywords(transcript: string, keywords: string[]): KeywordGradeResult {
-  const targetWords = keywords.flatMap((keyword) => normalizeText(keyword).split(' ').filter(Boolean));
-  const { matched, missing } = matchTargetWords(transcript, targetWords);
+export function gradeKeywords(
+  transcript: string,
+  keywords: string[],
+  { preserveArticles = false }: GradeOptions = {},
+): KeywordGradeResult {
+  const preparedTarget = getTargetWords(keywords.join(' '), preserveArticles);
+  const targetWords = preparedTarget.words;
+  const { matched, missing } = matchTargetWords(
+    transcript,
+    targetWords,
+    preparedTarget.preserveArticles,
+  );
   const score = targetWords.length === 0 ? 0 : matched.length / targetWords.length;
 
   return { score, pass: score >= 0.6, matched, missing };
@@ -228,11 +280,15 @@ function exactWordScore(transcript: string, targetWords: string[]): number {
 export function gradeWithAlternatives(
   alternatives: Array<{ transcript: string; confidence: number }>,
   target: string,
-  { singleWord = false, keywords }: GradeWithAlternativesOptions = {},
+  {
+    singleWord = false,
+    keywords,
+    preserveArticles = false,
+  }: GradeWithAlternativesOptions = {},
 ): GradeWithAlternativesResult {
-  const targetWords = (keywords?.length ? keywords.join(' ') : target)
-    .split(/\s+/)
-    .filter(Boolean);
+  const targetValue = keywords?.length ? keywords.join(' ') : target;
+  const preparedTarget = getTargetWords(targetValue, preserveArticles);
+  const targetWords = preparedTarget.words;
   const threshold = keywords?.length ? 0.6 : singleWord ? 0.85 : 0.75;
   const candidates = alternatives.length > 0
     ? alternatives
@@ -241,10 +297,19 @@ export function gradeWithAlternatives(
   let bestResult: GradeWithAlternativesResult | null = null;
   candidates.forEach((alternative, index) => {
     const fuzzyGrade = keywords?.length
-      ? gradeKeywords(alternative.transcript, keywords)
-      : grade(alternative.transcript, target, { singleWord });
+      ? gradeKeywords(alternative.transcript, keywords, {
+        preserveArticles: preparedTarget.preserveArticles,
+      })
+      : grade(alternative.transcript, target, {
+        singleWord,
+        preserveArticles: preparedTarget.preserveArticles,
+      });
     const exactScore = exactWordScore(alternative.transcript, targetWords);
-    const phoneticScore = phoneticSimilarity(alternative.transcript, targetWords.join(' '));
+    const phoneticScore = phoneticSimilarity(
+      alternative.transcript,
+      targetWords.join(' '),
+      { preserveArticles: preparedTarget.preserveArticles },
+    );
     const scoringMethods = [
       { score: exactScore, method: 'exact' as const, priority: 2 },
       { score: phoneticScore, method: 'phonetic' as const, priority: 1 },

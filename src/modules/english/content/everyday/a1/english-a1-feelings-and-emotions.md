@@ -21,8 +21,8 @@ vocab:
   - { word: "laugh", translation: "tertawa", context: "We laugh at the joke.", contextIndonesian: "Kami tertawa karena lelucon itu." }
   - { word: "cry", translation: "menangis", context: "The baby is crying right now.", contextIndonesian: "Bayinya sedang menangis." }
   - { word: "smile", translation: "tersenyum", context: "She smiles at me kindly.", contextIndonesian: "Dia tersenyum ramah kepadaku." }
-  - { word: "the feeling", translation: "perasaan", context: "I know this feeling well.", contextIndonesian: "Aku kenal betul perasaan ini." }
-  - { word: "the joy", translation: "kegembiraan", context: "There is great joy today.", contextIndonesian: "Hari ini rasanya senang sekali." }
+  - { word: "feeling", translation: "perasaan", context: "I know this feeling well.", contextIndonesian: "Aku kenal betul perasaan ini." }
+  - { word: "joy", translation: "kegembiraan", context: "There is great joy today.", contextIndonesian: "Hari ini rasanya senang sekali." }
   - { word: "happiness", translation: "kebahagiaan", context: "Good luck with your exam!", contextIndonesian: "Semoga sukses ujiannya!" }
 ---
 

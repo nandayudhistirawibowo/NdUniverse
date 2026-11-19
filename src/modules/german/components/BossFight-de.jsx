@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { playSound } from '@core/game/quiz-sounds.js';
 import { playBossAudio, preloadBossAudio } from '@core/audio/boss-audio.js';
+import { isArticleQuestion } from '@core/game/fuzzy-match.js';
 import { gradeKeywords } from '@core/speech/match.ts';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 
@@ -222,7 +223,8 @@ export default function BossFight({
     const keywords = currentQuestion.keywords ?? [];
     void speechCapture.start({
       target: keywords.join(' ') || currentQuestion.question,
-      targetText: keywords.join(' ') || currentQuestion.question,
+      targetText: keywords.join(' ') || '',
+      preserveArticles: isArticleQuestion(currentQuestion.question),
       keywords,
       onResult: (transcript) => setAnswer(transcript),
       onAdvance: (transcript) => submitAnswer(transcript),
@@ -235,6 +237,7 @@ export default function BossFight({
     const matchedAdvancedKeywords = gradeKeywords(
       spokenAnswer,
       currentQuestion.advancedKeywords ?? [],
+      { preserveArticles: isArticleQuestion(currentQuestion.question) },
     ).matched;
     const userMessage = { speaker: 'user', text: spokenAnswer };
     const feedback = 'Terima kasih atas jawaban Anda. Silakan lanjut ke pertanyaan berikutnya.';
