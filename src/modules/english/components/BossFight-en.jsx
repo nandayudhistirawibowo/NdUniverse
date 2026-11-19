@@ -19,6 +19,7 @@ function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, o
     const prefersReducedMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
     let cancelled = false;
     let completed = false;
+    let playbackFailed = false;
     let timer;
     const controller = new AbortController();
     const complete = () => {
@@ -27,12 +28,13 @@ function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, o
       onComplete?.();
     };
     const finishAfterAudio = (audio) => {
-      if (!audio || audio.ended) {
+      if (!audio || audio.ended || audio.error || playbackFailed) {
         complete();
         return;
       }
       audio.addEventListener('ended', complete, { once: true });
       audio.addEventListener('error', complete, { once: true });
+      audio.addEventListener('playbackerror', complete, { once: true });
     };
     const typeText = (intervalMs, audio) => {
       if (prefersReducedMotion) {
@@ -63,30 +65,21 @@ function ChatBubble({ text, isUser, isSystem, isIntro, speakerLabel, language, o
     }
 
     const hasBossVoice = !isUser && !isSystem;
-    const audioPromise = hasBossVoice
-      ? playBossAudio(text, language, controller.signal)
-      : Promise.resolve(null);
-    audioPromise
-      .then((audio) => {
-        if (cancelled) return;
-        const duration = audio?.duration ?? null;
-        const intervalMs = Number.isFinite(duration) && duration > 0
-          ? (duration * 1000) / characters.length
-          : 60;
-        console.log('[Desktop Debug] Duration:', duration, 'Interval:', intervalMs);
-        typeText(intervalMs, audio);
-      })
-      .catch((error) => {
-        console.warn('Unable to prepare Boss Fight voice; using the default typewriter speed.', error);
-        if (!cancelled) {
-          console.log('[Desktop Debug] Duration:', null, 'Interval:', 60);
-          typeText(60, null);
-        }
-      });
+    const audio = hasBossVoice ? playBossAudio(text, language, controller.signal) : null;
+    const handlePlaybackError = () => {
+      playbackFailed = true;
+    };
+    audio?.addEventListener('playbackerror', handlePlaybackError, { once: true });
+    const duration = audio?.duration ?? null;
+    const intervalMs = Number.isFinite(duration) && duration > 0
+      ? (duration * 1000) / characters.length
+      : 60;
+    typeText(intervalMs, audio);
 
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
+      audio?.removeEventListener('playbackerror', handlePlaybackError);
       controller.abort();
     };
   }, [isSystem, isUser, language, onComplete, text]);

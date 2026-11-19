@@ -1,29 +1,18 @@
-import { preloadAudioUrl } from '../audio/audio-cache.js';
+import { playAudio, preloadAudio } from '../audio/play-audio.js';
 
+const AUDIO_CDN_BASE =
+  'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/NdUniverse@main/public/sounds';
 const SOUND_FILES = {
-  click: '/sounds/quiz-click.mp3',
-  success: '/sounds/quiz-success.mp3',
-  error: '/sounds/quiz-error.mp3',
+  click: `${AUDIO_CDN_BASE}/quiz-click.mp3`,
+  success: `${AUDIO_CDN_BASE}/quiz-success.mp3`,
+  error: `${AUDIO_CDN_BASE}/quiz-error.mp3`,
 };
 
-const sounds = new Map();
-
 if (typeof window !== 'undefined') {
-  Object.entries(SOUND_FILES).forEach(([name, path]) => {
-    const sound = preloadAudioUrl(path);
-    if (sound) {
-      sound.volume = 0.45;
-      sounds.set(name, sound);
-    }
-  });
+  Object.values(SOUND_FILES).forEach(preloadAudio);
 }
 
 export function playSound(name) {
-  const sound = sounds.get(name);
-  if (!sound) return;
-
-  sound.currentTime = 0;
-  sound.play()?.catch((error) => {
-    console.error(`Unable to play the ${name} quiz sound.`, error);
-  });
+  const src = SOUND_FILES[name];
+  if (src) playAudio(src, { volume: 0.45 });
 }

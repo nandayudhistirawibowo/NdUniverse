@@ -1,5 +1,5 @@
 import BOSS_AUDIO_MANIFEST from '../../../manifest-boss.json' with { type: 'json' };
-import { preloadAudioUrl } from './audio-cache.js';
+import { playAudio, preloadAudio } from './play-audio.js';
 
 const AUDIO_CDN_BASE =
   'https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio';
@@ -7,112 +7,6 @@ const AUDIO_CDN_BASE =
 let activeAudio = null;
 let activeAudioStop = null;
 const warnedMissingTexts = new Set();
-
-function playAudioWhenReady(audioUrl, signal) {
-  return new Promise((resolve, reject) => {
-    if (signal?.aborted || typeof Audio === 'undefined') {
-      resolve(null);
-      return;
-    }
-
-    let settled = false;
-    let startupTimeout;
-    let playbackStarted = false;
-    let metadataReady = false;
-    const audio = preloadAudioUrl(audioUrl);
-    if (!audio) {
-      resolve(null);
-      return;
-    }
-    activeAudio = audio;
-    metadataReady = Number.isFinite(audio.duration) && audio.duration > 0;
-
-    const cleanup = () => {
-      window.clearTimeout(startupTimeout);
-      audio.removeEventListener('loadedmetadata', handleReady);
-      audio.removeEventListener('canplay', handleReady);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('error', handleError);
-      signal?.removeEventListener('abort', stopAudio);
-      if (activeAudio === audio) {
-        activeAudio = null;
-        activeAudioStop = null;
-      }
-    };
-
-    const settle = (result) => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(startupTimeout);
-      resolve(result);
-    };
-
-    const stopAudio = () => {
-      audio.pause();
-      cleanup();
-      audio.currentTime = 0;
-      settle(null);
-    };
-
-    activeAudioStop = stopAudio;
-    const failAudio = (error) => {
-      if (settled) return;
-      settled = true;
-      cleanup();
-      audio.pause();
-      audio.currentTime = 0;
-      reject(error);
-    };
-    const handleReady = () => {
-      if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
-      metadataReady = true;
-      if (playbackStarted) settle(audio);
-    };
-    const handleEnded = () => {
-      if (!settled) {
-        failAudio(new Error('Boss audio ended before metadata was ready.'));
-        return;
-      }
-      cleanup();
-    };
-    const handleError = () => {
-      const error = new Error('Boss audio could not be loaded.');
-      if (!settled) {
-        failAudio(error);
-        return;
-      }
-
-      console.warn('Boss audio failed during playback.', audio.error);
-      cleanup();
-    };
-
-    audio.addEventListener('loadedmetadata', handleReady);
-    audio.addEventListener('canplay', handleReady);
-    audio.addEventListener('ended', handleEnded, { once: true });
-    audio.addEventListener('error', handleError, { once: true });
-    signal?.addEventListener('abort', stopAudio, { once: true });
-    startupTimeout = window.setTimeout(
-      () => failAudio(new Error('Boss audio did not load valid metadata within 5 seconds.')),
-      5000,
-    );
-
-    try {
-      audio.currentTime = 0;
-      const playPromise = audio.play();
-      if (playPromise && typeof playPromise.then === 'function') {
-        playPromise.then(() => {
-          playbackStarted = true;
-          if (metadataReady) settle(audio);
-        }, failAudio);
-      } else {
-        playbackStarted = true;
-        if (metadataReady) settle(audio);
-      }
-    } catch (error) {
-      failAudio(error);
-    }
-  });
-}
 
 export function preloadBossAudio(text, language) {
   const spokenText = String(text ?? '').trim();
@@ -122,16 +16,15 @@ export function preloadBossAudio(text, language) {
   const languagePath = `${AUDIO_CDN_BASE}/boss/${language}/`;
   if (typeof audioUrl !== 'string' || !audioUrl.startsWith(languagePath)) return null;
 
-  return preloadAudioUrl(audioUrl);
+  return preloadAudio(audioUrl);
 }
 
 export function playBossAudio(text, language, signal) {
   const spokenText = String(text ?? '').trim();
   if (!spokenText || (language !== 'en' && language !== 'de') || typeof window === 'undefined') {
-    return Promise.resolve(null);
+    return null;
   }
-
-  if (signal?.aborted) return Promise.resolve(null);
+  if (signal?.aborted) return null;
 
   const audioUrl = BOSS_AUDIO_MANIFEST?.[spokenText];
   const languagePath = `${AUDIO_CDN_BASE}/boss/${language}/`;
@@ -140,9 +33,38 @@ export function playBossAudio(text, language, signal) {
       warnedMissingTexts.add(spokenText);
       console.warn(`No generated ${language.toUpperCase()} boss audio for this line; using the default typewriter speed.`);
     }
-    return Promise.resolve(null);
+    return null;
   }
 
   activeAudioStop?.();
-  return playAudioWhenReady(audioUrl, signal);
+  const audio = preloadAudio(audioUrl);
+  if (!audio) return null;
+
+  const cleanup = () => {
+    audio.removeEventListener('ended', cleanup);
+    audio.removeEventListener('error', cleanup);
+    signal?.removeEventListener('abort', stopAudio);
+    if (activeAudio === audio) {
+      activeAudio = null;
+      activeAudioStop = null;
+    }
+  };
+  const stopAudio = () => {
+    audio.pause();
+    audio.currentTime = 0;
+    cleanup();
+  };
+
+  activeAudio = audio;
+  activeAudioStop = stopAudio;
+  audio.addEventListener('ended', cleanup, { once: true });
+  audio.addEventListener('error', cleanup, { once: true });
+  signal?.addEventListener('abort', stopAudio, { once: true });
+
+  playAudio(audioUrl)?.catch(() => {
+    audio.dispatchEvent(new Event('playbackerror'));
+    cleanup();
+  });
+
+  return audio;
 }

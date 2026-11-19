@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'preact/hooks';
 import { useExamAntiCheat } from '@core/game/useExamAntiCheat.js';
 import NdBot from '@core/ui/NdBot.jsx';
 import { playSound } from '@core/game/quiz-sounds.js';
+import { playAudio } from '@core/audio/play-audio.js';
 import { gradeKeywords } from '@core/speech/match.ts';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import {
@@ -346,15 +347,13 @@ export default function EnglishExam({ exam, type, level }) {
                     </article>
                   ))}
                   {listeningQuestions.length > 0 && (
-                    <audio
+                    <button
                       className="exam-listening-audio"
-                      controls
-                      preload="auto"
-                      crossOrigin="anonymous"
-                      src={`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`}
+                      type="button"
+                      onClick={() => playAudio(`https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`)}
                     >
-                      Browser kamu tidak mendukung pemutaran audio.
-                    </audio>
+                      Putar audio menyimak
+                    </button>
                   )}
                   {listeningQuestions.length === 0 && <p className="empty-module">Soal Menyimak untuk ujian ini belum tersedia.</p>}
                 </div>

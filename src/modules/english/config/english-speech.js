@@ -3,7 +3,7 @@ import {
   preloadCdnAudioManifest,
   resolveCdnAudioUrlSync,
 } from '../../../core/audio/cdn-audio.js';
-import { preloadAudioUrl } from '../../../core/audio/audio-cache.js';
+import { playAudio, preloadAudio } from '../../../core/audio/play-audio.js';
 
 let activeAudio = null;
 let activeAudioButton = null;
@@ -21,7 +21,6 @@ function stopActiveAudio() {
   activeAudioButton?.classList.remove('is-playing');
   activeAudioButton = null;
   audio.onended = null;
-  audio.onerror = null;
   audio.pause();
   audio.currentTime = 0;
 }
@@ -108,7 +107,7 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
     return;
   }
 
-  const audio = preloadAudioUrl(audioUrl);
+  const audio = preloadAudio(audioUrl);
   if (!audio) {
     button?.classList.remove('is-playing');
     console.error('Unable to prepare English audio because the Audio API is not supported.');
@@ -152,17 +151,11 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
       activeAudioButton = null;
     }
   };
-  audio.onerror = () => {
+  audio.addEventListener('error', () => {
     void handleAudioFailure(audio.error);
-  };
+  }, { once: true });
 
-  try {
-    audio.currentTime = 0;
-    const playPromise = audio.play();
-    playPromise?.catch(handleAudioFailure);
-  } catch (error) {
-    handleAudioFailure(error);
-  }
+  playAudio(audioUrl)?.catch(handleAudioFailure);
 }
 
 export function preloadEnglishTtsAudio(text, accent = 'us') {
@@ -172,7 +165,7 @@ export function preloadEnglishTtsAudio(text, accent = 'us') {
   const audioUrl = /^(\/|https?:\/\/)/i.test(spokenText)
     ? resolveCdnAudioUrlSync(spokenText)
     : getSyncAudioUrl(spokenText, accent);
-  return audioUrl ? preloadAudioUrl(audioUrl) : null;
+  return audioUrl ? preloadAudio(audioUrl) : null;
 }
 
 /**

@@ -3,7 +3,7 @@ import {
   preloadCdnAudioManifest,
   resolveCdnAudioUrlSync,
 } from '../../../core/audio/cdn-audio.js';
-import { preloadAudioUrl } from '../../../core/audio/audio-cache.js';
+import { playAudio, preloadAudio } from '../../../core/audio/play-audio.js';
 
 let currentAudio = null;
 let currentAudioButton = null;
@@ -46,7 +46,6 @@ function stopCurrentAudio() {
   currentAudioButton?.classList.remove('is-playing');
   currentAudioButton = null;
   audio.onended = null;
-  audio.onerror = null;
   audio.pause();
   audio.currentTime = 0;
 }
@@ -80,7 +79,7 @@ function playAudioFile(audioUrl, fallbackText, button, playbackId) {
     return;
   }
 
-  const audio = preloadAudioUrl(audioUrl);
+  const audio = preloadAudio(audioUrl);
   if (!audio) {
     button?.classList.remove('is-playing');
     console.error('Unable to prepare German audio because the Audio API is not supported.');
@@ -123,14 +122,8 @@ function playAudioFile(audioUrl, fallbackText, button, playbackId) {
     if (currentAudio === audio) currentAudio = null;
     if (currentAudioButton === button) currentAudioButton = null;
   };
-  audio.onerror = () => handleAudioFailure(audio.error);
-
-  try {
-    audio.currentTime = 0;
-    audio.play()?.catch(handleAudioFailure);
-  } catch (error) {
-    handleAudioFailure(error);
-  }
+  audio.addEventListener('error', () => handleAudioFailure(audio.error), { once: true });
+  playAudio(audioUrl)?.catch(handleAudioFailure);
 }
 
 export function preloadGermanTtsAudio(text) {
@@ -140,7 +133,7 @@ export function preloadGermanTtsAudio(text) {
   const audioUrl = /^(\/|https?:\/\/)/i.test(spokenText)
     ? resolveCdnAudioUrlSync(spokenText)
     : getSyncGermanTtsAudioUrl(spokenText);
-  return audioUrl ? preloadAudioUrl(audioUrl) : null;
+  return audioUrl ? preloadAudio(audioUrl) : null;
 }
 
 export function playAudioTTS(text, button, fallbackText = text) {
