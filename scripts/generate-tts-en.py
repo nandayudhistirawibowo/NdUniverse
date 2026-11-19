@@ -1,5 +1,6 @@
 import argparse
 import asyncio
+import ast
 import hashlib
 import json
 import os
@@ -75,6 +76,17 @@ GERMAN_SPOKEN_FIELDS = {
 MAX_ATTEMPTS = 3
 INITIAL_RETRY_DELAY = 5
 MAX_CONCURRENT_DOWNLOADS = 10
+PAGE_AUDIO_SOURCES = {
+    "english": (
+        "src/pages/en/grammar/index.astro",
+        "src/pages/en/pronunciation/index.astro",
+    ),
+    "german": (
+        "src/pages/de/grammar/index.astro",
+        "src/pages/de/pengucapan/index.astro",
+    ),
+}
+SPEECH_ATTRIBUTES = ("data-speak", "data-speech", "data-grammar-speech", "data-audio-text", "text")
 
 
 def get_frontmatter(path):
@@ -97,6 +109,101 @@ def collect_spoken_texts(value, texts, spoken_fields):
     elif isinstance(value, list):
         for child in value:
             collect_spoken_texts(child, texts, spoken_fields)
+
+
+def read_js_string(source, start):
+    quote = source[start]
+    index = start + 1
+    while index < len(source):
+        if source[index] == "\\":
+            index += 2
+            continue
+        if source[index] == quote:
+            literal = source[start:index + 1]
+            try:
+                return ast.literal_eval(literal), index + 1
+            except (SyntaxError, ValueError) as error:
+                raise ValueError(f"Unable to parse JavaScript string literal: {literal}") from error
+        index += 1
+    raise ValueError("Unterminated JavaScript string literal in TTS page source")
+
+
+def read_js_array(source, start):
+    depth = 0
+    index = start
+    while index < len(source):
+        character = source[index]
+        if character in ("'", '"', "`"):
+            if character == "`":
+                raise ValueError("Template literals are not supported in static TTS arrays")
+            _, index = read_js_string(source, index)
+            continue
+        if character == "[":
+            depth += 1
+        elif character == "]":
+            depth -= 1
+            if depth == 0:
+                return source[start:index + 1]
+        index += 1
+    raise ValueError("Unterminated JavaScript array in TTS page source")
+
+
+def extract_page_audio_texts(path):
+    source = path.read_text(encoding="utf-8")
+    frontmatter_match = re.match(r"\A---\r?\n(.*?)\r?\n---", source, re.DOTALL)
+    if not frontmatter_match:
+        raise ValueError(f"Missing Astro frontmatter: {path}")
+    frontmatter = frontmatter_match.group(1)
+
+    spoken_fields = set()
+    for attribute in SPEECH_ATTRIBUTES:
+        spoken_fields.update(re.findall(
+            rf"\b{re.escape(attribute)}\s*=\s*\{{\s*([A-Za-z_$][\w$]*)\s*\}}",
+            source,
+        ))
+
+    texts = set()
+    for attribute in SPEECH_ATTRIBUTES:
+        for match in re.finditer(
+            rf"\b{re.escape(attribute)}\s*=\s*([\"'])(.*?)\1",
+            source,
+            re.DOTALL,
+        ):
+            text = match.group(2).strip()
+            if text:
+                texts.add(text)
+
+    for field in sorted(spoken_fields):
+        for match in re.finditer(rf"\b{re.escape(field)}\s*:\s*", frontmatter):
+            value_start = match.end()
+            while value_start < len(frontmatter) and frontmatter[value_start].isspace():
+                value_start += 1
+            if value_start >= len(frontmatter):
+                continue
+            if frontmatter[value_start] in ("'", '"'):
+                text, _ = read_js_string(frontmatter, value_start)
+                if text.strip():
+                    texts.add(text.strip())
+            elif frontmatter[value_start] == "[":
+                array_source = read_js_array(frontmatter, value_start)
+                index = 0
+                while index < len(array_source):
+                    if array_source[index] in ("'", '"'):
+                        text, index = read_js_string(array_source, index)
+                        if text.strip():
+                            texts.add(text.strip())
+                    else:
+                        index += 1
+
+    return texts
+
+
+def collect_page_audio_texts(language, texts):
+    for relative_path in PAGE_AUDIO_SOURCES[language]:
+        path = ROOT / relative_path
+        page_texts = extract_page_audio_texts(path)
+        texts.update(page_texts)
+        print(f"Extracted {len(page_texts)} unique audio text(s) from {relative_path}.")
 
 
 def split_exam_transcript_sentences(transcript):
@@ -142,6 +249,7 @@ def content_groups(language):
         collect_spoken_texts(content, texts, spoken_fields)
         if language == "english" and "exam" in path.relative_to(content_root).parts:
             collect_exam_transcript_sentences(content, texts)
+    collect_page_audio_texts(language, texts)
     if language == "english":
         return {accent: set(texts) for accent in ("us", "gb")}
     return {"de": texts}
