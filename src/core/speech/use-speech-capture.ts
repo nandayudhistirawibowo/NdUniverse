@@ -45,6 +45,7 @@ export function useSpeechCapture() {
   const [message, setMessage] = useState('');
   const [unsupported, setUnsupported] = useState(false);
   const [volumeLevel, setVolumeLevel] = useState(0);
+  const [noiseFloor, setNoiseFloor] = useState<number | null>(null);
   const recognizerRef = useRef<ReturnType<typeof createRecognizer> | null>(null);
   const advanceTimerRef = useRef(0);
   const requestIdRef = useRef(0);
@@ -88,6 +89,7 @@ export function useSpeechCapture() {
     setMessage('');
     setUnsupported(false);
     setVolumeLevel(0);
+    setNoiseFloor(null);
   }
 
   useEffect(() => () => {
@@ -130,6 +132,7 @@ export function useSpeechCapture() {
     setMessage('');
     setUnsupported(false);
     setVolumeLevel(0);
+    setNoiseFloor(null);
     setState('listening');
 
     try {
@@ -145,6 +148,9 @@ export function useSpeechCapture() {
           targetText,
           onVolume: (level) => {
             if (requestId === requestIdRef.current) setVolumeLevel(level);
+          },
+          onNoiseFloor: (level) => {
+            if (requestId === requestIdRef.current) setNoiseFloor(level);
           },
           onUpload: () => {
             if (requestId === requestIdRef.current) setState('processing');
@@ -224,5 +230,5 @@ export function useSpeechCapture() {
     }
   }
 
-  return { start, stop, state, feedback, message, unsupported, volumeLevel, reset };
+  return { start, stop, state, feedback, message, unsupported, volumeLevel, noiseFloor, reset };
 }

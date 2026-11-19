@@ -3,6 +3,7 @@ export default function SpeechFeedback({
   state,
   message,
   volumeLevel = 0,
+  noiseFloor = null,
   onStop,
 }) {
   if (!feedback && !message && state === 'idle') return null;
@@ -14,6 +15,9 @@ export default function SpeechFeedback({
         <>
           <progress class="speech-volume-meter" max="1" value={volumeLevel} aria-label="Volume mikrofon" />
           {onStop && <button class="speech-stop-button" type="button" onClick={onStop}>Stop rekaman</button>}
+          {noiseFloor !== null && noiseFloor > 0.1 && (
+            <p class="speech-noise-warning">Lingkungan terlalu berisik. Suara musik/orang lain mungkin mengganggu.</p>
+          )}
         </>
       )}
       {state === 'processing' && (
@@ -46,6 +50,7 @@ export default function SpeechFeedback({
         .speech-state { font-weight:700; }
         .speech-listening { color:var(--accent-red,#d64545); }
         .speech-error { color:#d32f2f; }
+        .speech-noise-warning { color:#b77900; font-size:.85rem; font-weight:700; }
         .speech-volume-meter { display:block; width:min(240px,100%); height:.55rem; margin:.4rem 0; accent-color:var(--accent-red,#d64545); }
         .speech-stop-button { padding:.35rem .7rem; border:1px solid currentColor; border-radius:.4rem; background:transparent; color:inherit; cursor:pointer; }
         .speech-source-badge { display:inline-block; margin-left:.5rem; padding:.12rem .4rem; border-radius:999px; background:rgba(38,128,88,.13); color:#18704b; font-size:.75em; font-weight:700; }

@@ -205,7 +205,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                   disabled={finished}
                   placeholder={task.kind === 'writing' ? 'Tulis jawaban dalam Bahasa Inggris...' : 'Hasil rekaman atau jawaban tertulis...'}
                 />
-                {task.kind === 'speaking' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} onStop={speechCapture.stop} />}
+                {task.kind === 'speaking' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} noiseFloor={speechCapture.noiseFloor} onStop={speechCapture.stop} />}
               </div>
             )}
           </li>

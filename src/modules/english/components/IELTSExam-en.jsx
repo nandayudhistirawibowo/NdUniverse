@@ -374,7 +374,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
                         onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
                         placeholder={activeModule === 'schreiben' ? 'Tulis jawaban dalam Bahasa Inggris...' : 'Hasil rekaman atau jawaban tertulis...'}
                       />
-                      {activeModule === 'sprechen' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} onStop={speechCapture.stop} />}
+                      {activeModule === 'sprechen' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} noiseFloor={speechCapture.noiseFloor} onStop={speechCapture.stop} />}
                       {task.keywords && (
                         <small><span>Kata kunci yang dinilai:</span> {task.keywords.join(', ')}</small>
                       )}

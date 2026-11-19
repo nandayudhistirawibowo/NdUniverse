@@ -3,6 +3,7 @@ export interface RecordAndTranscribeOptions {
   targetText?: string;
   maxMs?: number;
   onVolume?: (level: number) => void;
+  onNoiseFloor?: (level: number) => void;
   onUpload?: () => void;
 }
 
@@ -17,8 +18,10 @@ interface ActiveRecording {
 }
 
 let activeRecording: ActiveRecording | null = null;
-const VOICE_ACTIVITY_THRESHOLD = 0.05;
-const SILENCE_GRACE_PERIOD_MS = 2_000;
+const NOISE_CALIBRATION_MS = 500;
+const VOICE_ACTIVITY_MIN_THRESHOLD = 0.02;
+const VOICE_ACTIVITY_NOISE_MARGIN = 0.03;
+const SILENCE_GRACE_PERIOD_MS = 1_500;
 
 export function stopRecording(): void {
   activeRecording?.stop();
@@ -33,6 +36,7 @@ export async function recordAndTranscribe({
   targetText,
   maxMs = 15_000,
   onVolume,
+  onNoiseFloor,
   onUpload,
 }: RecordAndTranscribeOptions): Promise<TranscriptionResult> {
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
@@ -42,6 +46,7 @@ export async function recordAndTranscribe({
 
   let recorder: MediaRecorder | null = null;
   let stream: MediaStream | null = null;
+  let filteredStream: MediaStream | null = null;
   let audioContext: AudioContext | null = null;
   let animationFrame = 0;
   let maxTimer = 0;
@@ -81,11 +86,44 @@ export async function recordAndTranscribe({
     const highPassFilter = audioContext.createBiquadFilter();
     highPassFilter.type = 'highpass';
     highPassFilter.frequency.value = 300;
+    const lowPassFilter = audioContext.createBiquadFilter();
+    lowPassFilter.type = 'lowpass';
+    lowPassFilter.frequency.value = 4_000;
     const analyser = audioContext.createAnalyser();
     analyser.fftSize = 512;
     source.connect(highPassFilter);
-    highPassFilter.connect(analyser);
+    highPassFilter.connect(lowPassFilter);
+    lowPassFilter.connect(analyser);
+    const recordingDestination = audioContext.createMediaStreamDestination();
+    analyser.connect(recordingDestination);
+    filteredStream = recordingDestination.stream;
     const samples = new Uint8Array(analyser.fftSize);
+
+    const readRms = () => {
+      analyser.getByteTimeDomainData(samples);
+      let sumSquares = 0;
+      for (const sample of samples) {
+        const amplitude = (sample - 128) / 128;
+        sumSquares += amplitude * amplitude;
+      }
+      return Math.sqrt(sumSquares / samples.length);
+    };
+    const calibrationSamples: number[] = [];
+    const calibrationEnd = performance.now() + NOISE_CALIBRATION_MS;
+    while (performance.now() < calibrationEnd) {
+      if (cancelled) throw new Error('STT_CANCELLED');
+      calibrationSamples.push(readRms());
+      await new Promise<void>((resolve) => window.setTimeout(resolve, 25));
+    }
+    if (cancelled) throw new Error('STT_CANCELLED');
+    const noiseFloor = calibrationSamples.length > 0
+      ? calibrationSamples.reduce((sum, level) => sum + level, 0) / calibrationSamples.length
+      : 0;
+    const voiceActivityThreshold = Math.max(
+      VOICE_ACTIVITY_MIN_THRESHOLD,
+      noiseFloor + VOICE_ACTIVITY_NOISE_MARGIN,
+    );
+    onNoiseFloor?.(noiseFloor);
 
     const preferredMimeType = 'audio/webm;codecs=opus';
     const mimeType = MediaRecorder.isTypeSupported(preferredMimeType)
@@ -95,7 +133,9 @@ export async function recordAndTranscribe({
         : MediaRecorder.isTypeSupported('audio/mp4')
           ? 'audio/mp4'
           : '';
-    recorder = mimeType ? new MediaRecorder(stream, { mimeType }) : new MediaRecorder(stream);
+    recorder = mimeType
+      ? new MediaRecorder(filteredStream, { mimeType })
+      : new MediaRecorder(filteredStream);
     const chunks: BlobPart[] = [];
 
     const recording = new Promise<Blob>((resolve, reject) => {
@@ -118,14 +158,8 @@ export async function recordAndTranscribe({
     let lastVolumeUpdate = 0;
     const monitorAudio = (now: number) => {
       if (recorder?.state !== 'recording') return;
-      analyser.getByteTimeDomainData(samples);
-      let sumSquares = 0;
-      for (const sample of samples) {
-        const amplitude = (sample - 128) / 128;
-        sumSquares += amplitude * amplitude;
-      }
-      const rms = Math.sqrt(sumSquares / samples.length);
-      if (rms >= VOICE_ACTIVITY_THRESHOLD) {
+      const rms = readRms();
+      if (rms > voiceActivityThreshold) {
         heardSound = true;
         lastSoundAt = now;
       }
@@ -154,6 +188,8 @@ export async function recordAndTranscribe({
     animationFrame = 0;
     stream?.getTracks().forEach((track) => track.stop());
     stream = null;
+    filteredStream?.getTracks().forEach((track) => track.stop());
+    filteredStream = null;
     if (audioContext && audioContext.state !== 'closed') {
       try {
         await audioContext.close();
@@ -184,6 +220,7 @@ export async function recordAndTranscribe({
     window.clearTimeout(maxTimer);
     window.cancelAnimationFrame(animationFrame);
     stream?.getTracks().forEach((track) => track.stop());
+    filteredStream?.getTracks().forEach((track) => track.stop());
     if (audioContext && audioContext.state !== 'closed') {
       await audioContext.close();
     }

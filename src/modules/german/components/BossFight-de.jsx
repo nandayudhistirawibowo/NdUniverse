@@ -421,7 +421,7 @@ export default function BossFight({
                         </svg>
                       </button>
                     </div>
-                    <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} onStop={speechCapture.stop} />
+                    <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} noiseFloor={speechCapture.noiseFloor} onStop={speechCapture.stop} />
                   </div>
                 </div>
               </div>

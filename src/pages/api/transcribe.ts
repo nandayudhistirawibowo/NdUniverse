@@ -102,10 +102,7 @@ export const POST: APIRoute = async ({ request }) => {
   const targetTextHint = targetText
     ? `The user is trying to say: "${targetText.replace(/"/g, '\\"')}". `
     : '';
-  const languageName = language === 'de' ? 'German' : 'English';
-  const groqPrompt = language === 'en'
-    ? `${targetTextHint}Transcribe exactly what the user says, even if it sounds like broken English, mispronounced, or heavily accented (Indonesian accent). DO NOT autocorrect to unrelated English words.`
-    : `${targetTextHint}Transcribe exactly what the user says in ${languageName}, even if it is mispronounced or heavily accented (Indonesian accent). DO NOT autocorrect to unrelated German words.`;
+  const groqPrompt = `${targetTextHint}Transcribe the main speaker's voice only. Ignore all background music, singing, crosstalk, and other people talking. Ignore background noise.`;
 
   const groqApiKey = import.meta.env.GROQ_API_KEY;
   if (groqApiKey) {

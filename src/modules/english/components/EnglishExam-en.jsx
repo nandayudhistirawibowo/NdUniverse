@@ -411,7 +411,7 @@ export default function EnglishExam({ exam, type, level }) {
                         placeholder="Hasil pengenalan suara akan muncul di sini. Kamu juga dapat mengetik."
                         rows={4}
                       />
-                      {speechAnswerId === part.id && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} onStop={speechCapture.stop} />}
+                      {speechAnswerId === part.id && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} noiseFloor={speechCapture.noiseFloor} onStop={speechCapture.stop} />}
                     </article>
                   ))}
                   <div className="word-count"><span>{speakingWordCount} kata</span><span>Minimal yang disarankan: 10 kata</span></div>
