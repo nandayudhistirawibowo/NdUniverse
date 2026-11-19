@@ -5,8 +5,8 @@ const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const RATE_LIMIT = 30;
 const RATE_WINDOW_MS = 60_000;
 const ACCENT_PROMPT = {
-  en: 'Transcribe English spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
-  de: 'Transcribe German spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
+  en: 'Transcribe the main speaker. Ignore background noise, crosstalk, and static. Transcribe English spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
+  de: 'Transcribe the main speaker. Ignore background noise, crosstalk, and static. Transcribe German spoken by an Indonesian speaker. Ignore accent. Preserve actual words.',
 };
 const SPEECHMATICS_TIMEOUT_MS = 15_000;
 const rateLimits = new Map<string, { startedAt: number; count: number }>();

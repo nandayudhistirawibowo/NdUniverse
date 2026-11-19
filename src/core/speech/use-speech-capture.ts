@@ -160,7 +160,7 @@ export function useSpeechCapture() {
         const recognizer = createRecognizer({
           lang: getRecognitionLang({ pathname: window.location.pathname }),
           singleWord,
-          gracePeriodMs: 1500,
+          gracePeriodMs: 2000,
           onEnd: () => {
             if (requestId === requestIdRef.current) setState('processing');
           },

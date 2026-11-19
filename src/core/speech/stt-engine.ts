@@ -94,7 +94,7 @@ export function createRecognizer({
   lang,
   singleWord = false,
   timeoutMs = 8000,
-  gracePeriodMs = 1500,
+  gracePeriodMs = 2000,
   onStart,
   onEnd,
 }: CreateRecognizerOptions): Recognizer {

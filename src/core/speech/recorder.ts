@@ -16,6 +16,8 @@ interface ActiveRecording {
 }
 
 let activeRecording: ActiveRecording | null = null;
+const VOICE_ACTIVITY_THRESHOLD = 0.05;
+const SILENCE_GRACE_PERIOD_MS = 2_000;
 
 export function stopRecording(): void {
   activeRecording?.stop();
@@ -61,14 +63,26 @@ export async function recordAndTranscribe({
   activeRecording = session;
 
   try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        autoGainControl: true,
+        channelCount: 1,
+      },
+    });
     if (cancelled) throw new Error('STT_CANCELLED');
 
     audioContext = new AudioContext();
     await audioContext.resume();
+    const source = audioContext.createMediaStreamSource(stream);
+    const highPassFilter = audioContext.createBiquadFilter();
+    highPassFilter.type = 'highpass';
+    highPassFilter.frequency.value = 300;
     const analyser = audioContext.createAnalyser();
     analyser.fftSize = 512;
-    audioContext.createMediaStreamSource(stream).connect(analyser);
+    source.connect(highPassFilter);
+    highPassFilter.connect(analyser);
     const samples = new Uint8Array(analyser.fftSize);
 
     const preferredMimeType = 'audio/webm;codecs=opus';
@@ -109,7 +123,7 @@ export async function recordAndTranscribe({
         sumSquares += amplitude * amplitude;
       }
       const rms = Math.sqrt(sumSquares / samples.length);
-      if (rms >= 0.025) {
+      if (rms >= VOICE_ACTIVITY_THRESHOLD) {
         heardSound = true;
         lastSoundAt = now;
       }
@@ -117,7 +131,7 @@ export async function recordAndTranscribe({
         onVolume(Math.min(1, rms * 6));
         lastVolumeUpdate = now;
       }
-      if (heardSound && now - lastSoundAt >= 1_500) {
+      if (heardSound && now - lastSoundAt >= SILENCE_GRACE_PERIOD_MS) {
         session.stop();
         return;
       }
