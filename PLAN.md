@@ -27,6 +27,10 @@ Status: **SELESAI**
 
 Status: **IMPLEMENTASI TERSEDIA; ekspansi konten dan aset audio berlanjut**
 
+- Generator TTS umum mencakup materi, kuis, ujian, karier, Grammar, dan Pronunciation EN/DE. Audit dry-run memeriksa file lokal, tidak meminta status CDN lewat HTTP/HEAD.
+- Dashboard English dan German sudah menampilkan progress bar pilar, persentase, sisa XP, dan status selesai pada daftar pencapaian.
+- Entri artikel telah dihapus dari daftar kosakata materi; `isArticleQuestion` mempertahankan artikel hanya pada prompt yang memang mengujinya.
+
 #### Backlog ekspansi pasca-V4
 
 - Lanjutkan penambahan materi Everyday English A1-C2 dan bank soal IELTS/TOEFL sesuai kebutuhan produk.
@@ -38,6 +42,7 @@ Status: **IMPLEMENTASI TERSEDIA; ekspansi konten dan aset audio berlanjut**
 Status: **PIPELINE STT SUDAH DIIMPLEMENTASIKAN; penyempurnaan produk tetap backlog**
 
 - Capture memakai Groq Whisper, fallback Speechmatics Batch API dan Web Speech API; matching alternatif mendukung exact, phonetic, dan fuzzy.
+- Rekaman menerapkan noise suppression browser, band-pass high-pass 300 Hz/low-pass 4 kHz, dan dynamic VAD berdasarkan noise floor.
 - Locale Speech Recognition mengikuti bahasa: German `de-DE`, English `en-US`. Speaking tetap mendukung input teks; menjadikan suara satu-satunya cara menjawab masih merupakan keputusan produk yang belum diterapkan.
 - Fuzzy matching sudah tersedia di `src/core/game/fuzzy-match.js` dan digunakan pada latihan serta beberapa ujian. Tinjau hasil grading untuk memastikan ambang cocok dengan tiap jenis jawaban sebelum mengubahnya.
 

@@ -33,12 +33,21 @@ npx playwright test
 File yang tersedia:
 
 - `auth.spec.ts` dan `dashboard.spec.ts` — autentikasi dan dashboard.
+- `fuzzy-match.spec.ts` — toleransi penilaian jawaban teks.
 - `quiz-core.spec.ts` — alur kuis.
 - `exam-english.spec.ts` dan `exam-goethe.spec.ts` — ujian.
 - `career-bossfight.spec.ts` — Career Boss Fight.
 - `e2e-promo.spec.ts` dan `e2e-comprehensive.spec.ts` — perjalanan promo dan pemeriksaan lintas halaman.
 
 Saat audit dokumentasi ini, belum ada tes otomatis khusus untuk izin mikrofon, transkripsi Groq/Speechmatics/Web Speech, pemutaran audio, atau leaderboard; tes Career Boss Fight yang ada tidak membuktikan alur audio/STT.
+
+### Regresi TTS, grading, dan dashboard
+
+- Jalankan `python scripts/generate-tts-en.py --dry-run` untuk mengaudit output TTS lokal. Log ekstraksi Grammar/Pronunciation harus mencantumkan halaman EN dan DE. Dry-run memeriksa file lokal dan tidak melakukan HTTP/HEAD ke jsDelivr; ia bukan pemeriksaan status CDN.
+- Jalankan `python scripts/generate-boss-tts.py --dry-run` untuk mengaudit dialog serta pertanyaan Boss Fight. Dry-run tidak menghasilkan file audio.
+- `fuzzy-match.spec.ts` menguji aturan pencocokan; saat memeriksa soal grammar, pastikan prompt yang spesifik mempertahankan artikel, sementara soal biasa tetap menoleransi artikel.
+- `dashboard.spec.ts` mencakup alur dashboard. Untuk memverifikasi perubahan progres secara visual/interaktif, gunakan akun tes atau fixture progress: bar dan persen mengikuti pilar lulus, sisa XP turun sesuai XP, status selesai menjadi 100%, dan event progress memperbarui daftar.
+- Fallback Web Speech perlu diuji di browser dengan dukungan `window.speechSynthesis`; kegagalan CDN tidak dapat dibuktikan hanya dengan build. Jangan memublikasikan MP3 atau memanggil layanan TTS saat hanya ingin menjalankan dry-run.
 
 Jalankan satu file atau tes bernama tertentu:
 

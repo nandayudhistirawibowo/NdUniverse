@@ -48,6 +48,10 @@ Rute dashboard setelah login:
 
 Dashboard German dan English memiliki visual gelap yang selaras: sidebar gelap, header navigasi, card materi, teks terang, dan aksen emas. Di layar kecil, navigasi dashboard berubah menjadi sidebar yang dapat dibuka dan ditutup; area konten tetap dapat digunakan.
 
+Sidebar, header, navigasi, label aksi, dan tombol dashboard ditulis dalam Bahasa Indonesia. String UI saat ini hardcoded, bukan diatur oleh i18n; route `/en` dan `/de` mengganti modul belajar, sementara materi dan soal tetap memakai bahasa target.
+
+Bagian Pencapaian menampilkan materi yang sudah memiliki progress. Setiap baris menyusun judul, progress bar emas dengan persentase di sisi kanan, lalu info sisa XP. Materi yang tuntas menampilkan status “Selesai (100%)” berwarna hijau; layout memakai grid min-width-safe agar tidak meluber di layar ponsel.
+
 Card katalog menampilkan nama, ringkasan, progres, dan badge CEFR:
 
 | Level | Latar badge | Teks |
@@ -71,6 +75,10 @@ Setelah adegan pengantar, pengguna menjawab pertanyaan wawancara bertahap melalu
 Kuis dan latihan memakai latar gelap, card soal gelap, teks terang, pilihan jawaban dengan state terpilih yang jelas, serta progress bar. Feedback benar menggunakan warna status aman/hijau dengan latar gelap; feedback salah menggunakan merah dengan latar gelap.
 
 Kuis latihan empat pilar menampilkan progres pengerjaan dan sesi. Countdown timer digunakan pada simulasi ujian yang menetapkan durasi; jangan mengasumsikan kuis latihan biasa memiliki timer.
+
+Jawaban teks memakai fuzzy matching untuk toleransi typo. Artikel `the/a/an` dan `der/die/das` tidak ditampilkan sebagai entri kosakata materi; normalisasi kuis biasa mengabaikan artikel, sedangkan soal grammar yang dikenali `isArticleQuestion()` meminta artikel tetap sesuai target.
+
+Audio MP3 menggunakan Microsoft Edge TTS dan CDN jsDelivr. Bila MP3 gagal atau 404, Web Speech API menjadi fallback dengan locale `en-US` untuk English, `de-DE` untuk German (serta `en-GB` pada playback aksen UK). STT menerapkan browser noise suppression, band-pass (high-pass 300 Hz dan low-pass 4 kHz), serta dynamic VAD berdasarkan noise floor.
 
 ## NdBot (AI Assistant)
 

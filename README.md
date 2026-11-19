@@ -15,9 +15,12 @@ Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latiha
 - **Anti-cheat ujian**: mode fullscreen mencatat pelanggaran; NdBot menampilkan status dan ujian dikirim otomatis pada strike ketiga. NdBot juga mengunci chat pada mode kuis, tanpa mengunci pilihan materi/sesi/pilar berdasarkan progres.
 - **Cinematic Boss Fight**: wawancara karier memakai adegan overlay memenuhi viewport, audio TTS untuk dialog HRD, dan typewriter yang diselaraskan dengan durasi audio.
 - **Advanced Speech-to-Text**: rekaman dikirim ke Groq Whisper (`whisper-large-v3-turbo`), dengan fallback Speechmatics Batch API lalu Web Speech API. Phonetic matching membantu mengenali variasi pengucapan, termasuk aksen Indonesia.
+- **Noise suppression STT**: browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`; rekaman melewati high-pass 300 Hz dan low-pass 4 kHz. Dynamic VAD mengukur noise floor untuk menentukan ambang suara dan jeda hening.
+- **Grading fleksibel**: kuis dan ujian memakai fuzzy matching untuk toleransi typo; STT juga membandingkan fonetik untuk variasi aksen. Entri artikel `the/a/an` dan `der/die/das` telah dihapus dari daftar kosakata materi. Artikel diabaikan pada soal biasa, tetapi dipertahankan pada soal grammar yang secara spesifik mengujinya.
 - **Futuristic Leaderboard**: podium Top 3 dan daftar hingga 100 pengguna, diurutkan berdasarkan level lalu XP. Data dihitung melalui Supabase RPC server-side yang dibatasi untuk service role agar sesuai dengan kebijakan RLS.
+- **Progress pencapaian**: dashboard EN dan DE menampilkan progress bar pilar, persentase, serta sisa XP per materi yang sudah mulai dipelajari. Status 100% ditampilkan sebagai selesai.
 - **Bendera modul**: landing memakai SVG `public/flags/gb.svg` dan `public/flags/de.svg`, menjaga tampilan konsisten lintas perangkat tanpa dependency emoji flag.
-- **Audio dua aksen**: Generator English menghasilkan audio `en-US` dan `en-GB`; manifest dan MP3 di repo CDN `nduniverse-audio` disajikan melalui jsDelivr. Web Speech API menjadi fallback.
+- **Audio dua aksen**: Microsoft Edge TTS menghasilkan audio `en-US`, `en-GB`, dan German. MP3 serta manifest yang dipublikasikan di repository `nandayudhistirawibowo/nduniverse-audio` disajikan melalui jsDelivr. Web Speech API menjadi fallback saat audio gagal.
 - **Progress dan autentikasi**: Supabase Auth/PostgreSQL/Storage dengan pemisahan progress German dan English.
 
 ## Tech Stack
@@ -66,13 +69,14 @@ Jangan commit `.env`, service-role key, Groq API key, atau Cloudflare API token.
 
 Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di bawah `audio/`. Runtime membentuk URL TTS German dan English dari hash teks; `manifest-cdn.json` memetakan audio statis yang membutuhkan lookup path-ke-URL. Boss Fight memakai `manifest-boss.json` untuk memetakan dialog ke URL CDN. Generator lintas konten juga membuat manifest per bahasa/aksen.
 
-1. `python scripts/generate-tts-en.py --dry-run` mengaudit teks materi, konteks, soal, ujian, dan konten karier English/German; pengecekan hanya membaca file lokal dan mencetak path MP3 yang belum tersedia. Jalankan `npm run generate:tts:en` untuk membuat file lokal yang belum ada tanpa menghubungi jsDelivr.
+1. `python scripts/generate-tts-en.py --dry-run` mengaudit materi, kuis, ujian, karier, serta teks tombol audio pada halaman Grammar dan Pronunciation EN/DE. Pengecekan ketersediaan memakai file lokal, bukan HTTP/HEAD ke jsDelivr; dry-run mencetak file output yang belum ada. Dengan demikian audit tidak terkena `403 Rate Limit` jsDelivr. Saat generator benar-benar membuat audio, Edge TTS tetap diakses untuk membuat MP3. Jalankan `npm run generate:tts:en` untuk membuat file lokal yang belum ada.
 2. Generator memperbarui manifest per bahasa/aksen (`manifest-en-us.json`, `manifest-en-gb.json`, `manifest-de.json`) dan `manifest-cdn.json`. Setelah selesai, generator mencetak daftar file MP3 yang dibuat lokal untuk disinkronkan ke `nduniverse-audio` bila diperlukan.
-3. Untuk audio Boss Fight, gunakan `npm run generate:tts:boss -- --dry-run` untuk melihat file yang perlu dibuat/push atau `npm run generate:tts:boss` untuk membuat audio TTS German dan English. Nama file Boss Fight memakai MD5; TTS umum memakai hash yang sama dengan resolver runtime.
+3. Untuk audio Boss Fight, gunakan `npm run generate:tts:boss -- --dry-run` untuk memeriksa file lokal atau `npm run generate:tts:boss` untuk membuat audio Edge TTS German dan English. Nama file Boss Fight memakai MD5; TTS umum memakai SHA-256 yang sama dengan resolver runtime.
 4. Dependensi generator tersedia melalui `python -m pip install -r requirements-tts.txt`. Generator legacy `npm run generate:tts` masih menunjuk ke sumber `src/content/materi` yang tidak tersedia pada struktur aktif; gunakan generator lintas konten di atas.
-5. Salin aset dan manifest yang akan diterbitkan ke direktori sepadan di `nduniverse-audio/audio/`. Pertahankan nama file dan format mapping teks-ke-path pada manifest.
-6. Commit dan push repository audio ke branch `main`, lalu tunggu jsDelivr menyajikan versi terbaru.
-7. Untuk memperbarui peta MP3 umum, siapkan checkout repo audio pada `D:\audio-cdn` (sehingga foldernya `D:\audio-cdn\audio`), lalu jalankan dari root NdUniverse:
+5. Generator umum mencakup lebih dari 22.000 output teks/voice lintas aksen dan bahasa, termasuk Grammar serta Pronunciation; Boss Fight juga memiliki generator dan folder audio terpisah. Angka aktual berubah bersama konten. Dry-run hanya memastikan keberadaan output di lokal, bukan memverifikasi file pada CDN atau membuktikan semuanya telah dipublikasikan.
+6. Salin aset dan manifest yang akan diterbitkan ke direktori sepadan di `nduniverse-audio/audio/`. Pertahankan nama file dan format mapping teks-ke-path pada manifest.
+7. Commit dan push repository audio ke branch `main`, lalu tunggu jsDelivr menyajikan versi terbaru.
+8. Untuk memperbarui peta MP3 umum, siapkan checkout repo audio pada `D:\audio-cdn` (sehingga foldernya `D:\audio-cdn\audio`), lalu jalankan dari root NdUniverse:
 
    ```bash
    python scripts/migrate-audio-cdn.py

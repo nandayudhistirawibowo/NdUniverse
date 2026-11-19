@@ -165,6 +165,37 @@ flowchart TD
     G --> H[Jika lulus, upsert kunci sesi-pilar]
 ```
 
+## Progress Pencapaian Dashboard EN/DE
+
+```mermaid
+flowchart TD
+    A[Dashboard mengambil xp dan sessions_passed dari user_progress] --> B[Pasangkan baris progress ke materi]
+    B --> C[Hitung pilar unik yang lulus dari empat pilar]
+    C --> D{Satu sesi sudah lulus empat pilar?}
+    D -->|Ya| E[Set progress 100 persen dan sisa XP nol]
+    D -->|Belum| F[Hitung persentase pilar dan max XP dikurangi XP saat ini]
+    E --> G[Tampilkan progress bar dan status selesai]
+    F --> H[Tampilkan progress bar, persentase, dan sisa XP]
+    G --> I[nd:progress-updated memperbarui daftar setelah latihan]
+    H --> I
+```
+
+Nilai XP maksimal merupakan kalkulasi UI `jumlah vocab × 4 × 10`, bukan kolom tambahan pada database. Daftar hanya menampilkan materi yang sudah memiliki XP atau progress pilar.
+
+## Grading Artikel dan Fuzzy Matching
+
+```mermaid
+flowchart TD
+    A[Jawaban kuis atau ujian teks] --> B[Periksa prompt melalui isArticleQuestion]
+    B --> C{Soal grammar secara spesifik menguji artikel?}
+    C -->|Tidak| D[Normalisasi mengabaikan artikel EN dan DE]
+    C -->|Ya| E[Normalisasi mempertahankan artikel]
+    D --> F[Exact atau fuzzy match untuk typo]
+    E --> F
+```
+
+Entri artikel `the/a/an` dan `der/die/das` telah dihapus dari daftar kosakata materi; artikel tetap digunakan pada prompt grammar yang memang mengujinya.
+
 ## Alur Career dan Boss Fight Visual Novel
 
 ```mermaid
@@ -224,7 +255,7 @@ flowchart TD
     M --> N[Tampilkan transkrip, keyword, skor, dan sumber]
 ```
 
-Engine memakai locale `en-US` atau `de-DE` sesuai route. Endpoint membatasi ukuran audio hingga 10 MB dan permintaan hingga 30 per IP per menit. Setelah feedback, kuis melanjutkan pertanyaan berikutnya sesuai alur komponennya.
+Sebelum merekam, browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`. Rekaman melalui high-pass 300 Hz dan low-pass 4 kHz; dynamic VAD mengukur noise floor untuk menentukan ambang suara dan mendeteksi hening. Engine memakai locale `en-US` atau `de-DE` sesuai route. Endpoint membatasi ukuran audio hingga 10 MB dan permintaan hingga 30 per IP per menit. Setelah feedback, kuis melanjutkan pertanyaan berikutnya sesuai alur komponennya.
 
 ## Alur Leaderboard
 
@@ -293,21 +324,18 @@ Timer dibatasi sesuai konfigurasi level. Hasil menunjukkan skor, rating, feedbac
 
 ```mermaid
 flowchart TD
-    A[Pengguna menekan tombol Speaker] --> B[Normalisasi teks Jerman]
-    B --> C[Cari teks tepat pada manifest.json]
-    C --> D{Audio Path ditemukan?}
-    D -->|Tidak| E[Fallback Web Speech API]
-    D -->|Ya| F[Hentikan audio lama]
-    F --> G[Putar MP3 statis]
-    G --> H{MP3 berhasil diputar?}
-    H -->|Ya| I[Selesai]
-    H -->|Tidak| E
-    E --> J{Web Speech API tersedia?}
-    J -->|Ya| K[Bacakan lang de-DE]
-    J -->|Tidak| L[Tampilkan indikator berhenti dan log error]
+    A[Pengguna menekan tombol Speaker] --> B[Normalisasi teks dan bahasa]
+    B --> C[Resolve MP3 berbasis hash atau path dari manifest statis]
+    C --> D[Putar MP3 CDN]
+    D --> E{Audio berhasil diputar?}
+    E -->|Ya| F[Selesai]
+    E -->|Tidak atau HTTP 404| G[Fallback window.speechSynthesis]
+    G --> H{Web Speech API tersedia?}
+    H -->|Ya| I[Bacakan dengan locale bahasa: en-US atau de-DE]
+    H -->|Tidak| J[Tampilkan indikator berhenti dan log error]
 ```
 
-Lookup manifest memakai teks yang dikirim, bukan nama atau pencocokan substring. Manifest dan aset audio yang dikonfigurasi untuk CDN diambil dari jsDelivr; jika manifest atau audio gagal, browser memakai Web Speech API dengan `lang = 'de-DE'`.
+Audio dibuat dengan Microsoft Edge TTS dan di-host di repository `nduniverse-audio`, disajikan melalui jsDelivr. TTS English UK memakai `en-GB`. Jalur pemeriksaan generator menggunakan file lokal, bukan request HTTP/HEAD ke CDN. Fallback Web Speech berlaku pada pemutar TTS shared; Boss Fight memakai player voice-line tersendiri.
 
 ## Alur Bookmark
 

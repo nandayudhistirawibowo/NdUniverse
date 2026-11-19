@@ -113,9 +113,9 @@ Kode platform bersama yang dapat digunakan lintas bahasa.
 - **`db/`** — akses dan sinkronisasi progress pengguna. `progress-client.js` menangani progress modul Jerman/default, sedangkan `progress-client-en.js` menangani progress English.
 - **`db/leaderboard.ts`** — mengambil dan memvalidasi data Top 100 dari RPC Supabase `get_leaderboard`.
 - **`speech/`** — rekaman dan transkripsi Groq/Speechmatics dengan fallback Web Speech API, feedback, dan matching kata yang toleran terhadap aksen.
-- **`audio/`** — pembentukan URL dan pemutaran audio CDN, termasuk voice acting Boss Fight.
+- **`audio/`** — pembentukan URL, pemutaran audio CDN, fallback Web Speech API (`en-US`/`de-DE` sesuai bahasa), dan voice acting Boss Fight.
 - **`ui/`** — layout dan komponen antarmuka yang dipakai oleh beberapa route atau bahasa. Layout dashboard terpisah tersedia untuk umum, German, dan English.
-- **`game/`** — helper bersama untuk suara kuis, fuzzy matching, grading ujian, dan anti-cheat fullscreen.
+- **`game/`** — helper bersama untuk suara kuis, fuzzy matching dan deteksi prompt grammar (`isArticleQuestion`), grading ujian, dan anti-cheat fullscreen.
 
 ### `src/modules/german/`
 
@@ -155,6 +155,14 @@ Komponen universal ditempatkan di `src/core/ui/`. Folder root `src/components/` 
 - **`env.d.ts`** — deklarasi tipe environment.
 
 RPC leaderboard didefinisikan di `supabase/leaderboard.sql`; file tersebut harus dijalankan pada project Supabase yang digunakan aplikasi.
+
+## Fitur Turunan UI dan Audio
+
+- Generator `scripts/generate-tts-en.py` memeriksa keberadaan MP3 secara lokal (tanpa HTTP/HEAD ke jsDelivr saat audit) dan mencakup halaman Grammar/Pronunciation English serta German selain konten Markdown. `scripts/generate-boss-tts.py` menangani voice line Boss Fight. Audio diproduksi dengan Microsoft Edge TTS dan disajikan dari repository `nduniverse-audio` melalui jsDelivr.
+- Dry-run terkini menunjukkan lebih dari 22.000 variasi output teks/voice umum; jumlah mengikuti konten. Pemeriksaan lokal tidak membuktikan bahwa aset sudah dipublikasikan di CDN.
+- Semua artikel (EN `the/a/an`, DE `der/die/das`) telah dihapus dari entri kosakata materi. Normalisasi fuzzy mengabaikan artikel untuk kuis biasa; prompt grammar tertentu dapat mewajibkannya melalui `isArticleQuestion`.
+- Dashboard EN dan DE menampilkan progress bar dan sisa XP. Persentase dihitung dari pilar unik lulus per empat pilar, sedangkan batas XP adalah turunan `jumlah kosakata × 4 × 10`; database tetap menyimpan XP dan `sessions_passed`, bukan nilai presentasi tersebut.
+- STT menggunakan `noiseSuppression`, high-pass 300 Hz, low-pass 4 kHz, dan dynamic VAD berdasarkan noise floor sebelum mencoba Groq Whisper, Speechmatics, lalu Web Speech API.
 
 ## Panduan Perubahan
 

@@ -63,6 +63,7 @@ erDiagram
 - `xp` menyimpan progres XP kumulatif yang sudah dikomit.
 - `notes` menyimpan catatan belajar pengguna untuk materi tertentu.
 - `updated_at` diperbarui setiap upsert progress.
+- Dashboard pencapaian EN/DE membaca `xp` dan `sessions_passed` untuk membentuk progress bar serta sisa XP. Persentase diturunkan dari jumlah pilar unik yang lulus dibagi empat; batas XP UI dihitung dari jumlah vocab × 4 pilar × 10 XP per jawaban benar. Nilai persentase dan batas XP ini bukan kolom database baru.
 - Level dashboard tidak berasal dari satu kolom database; dihitung dari material CEFR yang telah menyelesaikan keempat pilar.
 - Leaderboard berbeda dari level dashboard: RPC `public.get_leaderboard()` menjumlahkan seluruh `user_progress.xp` per pengguna, lalu mengurutkan `profiles.current_level DESC, total XP DESC` dan membatasi hasil ke 100 pengguna.
 - Jalankan `supabase/leaderboard.sql` pada project Supabase setelah tabel `user_progress` dan kolom `profiles.current_level` tersedia. RPC memakai `SECURITY DEFINER` dengan `search_path` terbatas, hanya mengembalikan ID/nama/level/XP, dan hak eksekusinya dicabut dari `public`, `anon`, serta `authenticated`; hanya `service_role` yang dapat memanggilnya.
@@ -93,6 +94,7 @@ Upsert menggabungkan kunci progres yang sudah tersimpan dengan kunci baru tanpa 
 - **Sertifikat PDF adalah artefak client-side** yang dibuat melalui `html2pdf.js`; sertifikat tidak disimpan sebagai entitas atau blob database.
 - Avatar disimpan di bucket Private `avatars` pada Supabase Storage. Aplikasi membuat Signed URL untuk ditampilkan. Bookmark dan sertifikat tidak memiliki tabel SQL.
 - MP3 TTS berbasis hash dan audio statis yang dipetakan melalui manifest disajikan dari jsDelivr. `manifest-cdn.json` memetakan path audio statis; voice line Boss Fight memakai `manifest-boss.json`.
+- Generator Microsoft Edge TTS membaca sumber lokal dan memeriksa file output lokal saat dry-run; ia tidak melakukan HTTP/HEAD ke jsDelivr untuk audit ketersediaan. Aset MP3 yang dipublikasikan di-host pada repository `nandayudhistirawibowo/nduniverse-audio`.
 
 ## RLS dan Keamanan
 

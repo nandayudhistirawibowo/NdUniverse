@@ -80,6 +80,7 @@ Landing page mengenalkan produk dan menyediakan kartu modul yang menautkan langs
 - **Cross-device:** pengalaman harus nyaman di desktop, tablet, dan mobile.
 - **Konsisten:** NdUniverse menjadi identitas induk, sementara modul bahasa memiliki konten dan alur khusus.
 - **Bertahap:** landing mengarahkan user ke login modul, lalu dashboard mengatur perjalanan belajar.
+- **Tampilan pencapaian:** dashboard EN/DE memperlihatkan progress pilar dan sisa XP per materi yang sudah dimulai, termasuk status selesai pada 100%.
 
 ## Fondasi Teknis
 
@@ -89,6 +90,9 @@ Landing page mengenalkan produk dan menyediakan kartu modul yang menautkan langs
 - Platform menggunakan Supabase untuk auth, database, storage, dan progress; audio yang dikonfigurasi CDN disajikan melalui jsDelivr.
 - Chatbot memakai Supabase `pgvector` untuk retrieval, Cloudflare Workers AI untuk embedding, dan Groq untuk query rewrite serta jawaban berbasis materi.
 - Input speaking memakai Groq Whisper, fallback Speechmatics Batch API, lalu Web Speech API; phonetic matching memberi toleransi pada variasi pengucapan.
+- STT memakai browser noise suppression, filter high-pass 300 Hz + low-pass 4 kHz, dan dynamic VAD berdasarkan kalibrasi noise floor.
+- Penilaian teks memakai fuzzy matching untuk typo. Artikel `the/a/an` dan `der/die/das` tidak lagi menjadi entri kosakata; prompt grammar yang dikenali `isArticleQuestion` tetap mensyaratkan artikel.
+- Microsoft Edge TTS menghasilkan audio English US/UK, German, dan voice line Boss Fight. Generator umum memeriksa ketersediaan file secara lokal dan mencakup halaman Grammar/Pronunciation; MP3 yang dipublikasikan di-host pada `nduniverse-audio` melalui jsDelivr. Dry-run tidak melakukan HTTP/HEAD ke jsDelivr.
 - Leaderboard EN/DE menampilkan Top 100 berdasarkan level dan XP melalui Supabase RPC server-side; `supabase/leaderboard.sql` harus diterapkan pada project tujuan.
 - XP kuis sementara dibatalkan saat Game Over dan dilindungi dari finalisasi ganda pada run yang sama.
 - UI Indonesian-first: Bahasa Indonesia hardcoded tanpa sistem i18n. Dashboard dan NdBot menggunakan Bahasa Indonesia penuh; landing/portal/login masih memiliki sisa English copy yang masuk backlog audit. Materi belajar tetap memakai bahasa target.

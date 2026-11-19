@@ -15,7 +15,7 @@ UI Indonesian-first menggunakan string hardcoded tanpa sistem i18n terpusat. Tau
 
 Modul Jerman NdUniverse adalah platform pembelajaran bahasa Jerman dengan materi sehari-hari, materi bidang profesional, latihan 4 pilar CEFR, kuis, ujian simulasi, progress pengguna, dan audio pengucapan. Seluruh fitur pembelajaran memerlukan login dan progress disinkronkan ke Supabase.
 
-**Catatan:** Modul English menyediakan Everyday dan Academic English, persiapan IELTS/TOEFL, serta latihan empat pilar. Aset audio yang dikonfigurasi sebagai CDN diambil dari jsDelivr.
+**Catatan:** Modul English menyediakan Everyday dan Academic English, persiapan IELTS/TOEFL, serta latihan empat pilar. Aset audio yang dikonfigurasi sebagai CDN diambil dari jsDelivr. Sidebar, header, navigasi, dan tombol dashboard menggunakan Bahasa Indonesia secara hardcoded; `/en` dan `/de` mengganti modul, bukan bahasa UI.
 
 Jumlah file materi dan kosakata berubah seiring penambahan konten; dokumen ini tidak menetapkan angka inventaris tetap. Konten mencakup Alltagsdeutsch A1–C2, Fachdeutsch, Career, serta koleksi English.
 
@@ -34,6 +34,7 @@ Jumlah file materi dan kosakata berubah seiring penambahan konten; dokumen ini t
 - Fachdeutsch: materi kosakata untuk bidang akademik dan profesional.
 - Career: katalog persiapan dunia kerja dengan empat rumpun profesi.
 - Setiap materi memiliki kosakata Jerman, terjemahan Indonesia, konteks Jerman, dan terjemahan konteks.
+- Artikel tata bahasa tidak menjadi entri kosakata tersendiri: daftar materi tidak memuat `the/a/an` atau `der/die/das` sebagai kata target. Artikel tetap dapat muncul dan dinilai pada soal grammar yang memang mengujinya.
 - Kosakata dibagi menjadi **4 sesi**, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20.
 - Detail materi menampilkan tabel kosakata per sesi beserta tombol speaker dan tombol latihan keempat pilar.
 - Halaman materi dan latihan tersedia pada route modul German dan English; fitur belajar yang memerlukan akun menggunakan autentikasi Supabase.
@@ -44,8 +45,9 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 
 - **Reading / Lesen:** menampilkan teks atau konteks, kemudian meminta jawaban pilihan ganda atau fallback Word Matcher bila data Reading tidak tersedia.
 - **Listening / Hören:** memutar audio kata atau konteks, kemudian menggunakan pilihan ganda. Fallback memakai Word Matcher.
-- **Writing / Schreiben:** menampilkan instruksi atau kata Indonesia dan meminta jawaban bahasa Jerman melalui text box. Validasi memakai fuzzy matching tanpa hint artikel.
+- **Writing / Schreiben:** menampilkan instruksi atau kata Indonesia dan meminta jawaban bahasa target melalui text box. Validasi memakai fuzzy matching; kuis umum mengabaikan artikel, sedangkan soal grammar spesifik tetap mewajibkannya.
 - **Speaking / Sprechen:** menampilkan pertanyaan Jerman, menyediakan text box, dan mic-to-text melalui Groq Whisper, Speechmatics sebagai fallback server-side, lalu Web Speech API.
+- Grading jawaban teks memakai fuzzy matching untuk variasi typo. `isArticleQuestion` mengenali prompt grammar (misalnya penyebutan article/artikel atau isian rumpang): kuis biasa mengabaikan artikel saat normalisasi, sedangkan jawaban grammar mempertahankan dan mewajibkan artikel.
 - Pada setiap pilar, maksimal lima kosakata dari sesi aktif diproses sebagai lima soal.
 - Tipe soal lama bukan lagi generator acak global; tipe soal disesuaikan dengan pilar aktif.
 - Pengguna bebas memilih sesi yang tersedia dan pilar apa pun tanpa menyelesaikan sesi/pilar sebelumnya. URL latihan membawa `session` dan `type`; keduanya tidak dikunci berdasarkan progres sebelumnya.
@@ -94,6 +96,8 @@ Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wa
 - Pemilihan sesi/pilar tidak bergantung pada array progres tersebut.
 - Materi baru dianggap selesai hanya jika keempat pilar tercatat sebagai selesai sesuai aturan progress dashboard.
 - Peserta menerima XP kuis per jawaban benar, tetapi kartu materi menampilkan kemajuan 0/4 hingga 4/4 pilar.
+- Daftar pencapaian dashboard English (`/en/dashboard`) dan German (`/dashboard-de`) menampilkan materi yang sudah memiliki progress. Persentase berasal dari jumlah pilar unik yang lulus dibagi empat; ketika satu sesi lengkap keempat pilarnya, progress menjadi 100%.
+- Sisa XP ditampilkan sebagai `max XP materi - XP saat ini`, dibatasi minimum nol, dan dipaksa nol saat materi selesai. Batas XP yang dipakai UI dihitung dari jumlah kosakata × 4 pilar × 10 XP per jawaban benar; nilai ini turunan UI, bukan kolom baru di database.
 
 ### Level CEFR
 
@@ -165,11 +169,13 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### Audio TTS dan Speech-to-Text
 
-- Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`), dengan URL berbasis hash dan resolver di `src/core/audio/cdn-audio.js`; TTS German juga menggunakan URL berbasis hash, sedangkan audio statis dapat di-resolve dari manifest CDN.
+- Audio dibuat dengan Microsoft Edge TTS. Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`); German menggunakan `de-DE`. MP3 dan manifest yang dipublikasikan di repository terpisah `nandayudhistirawibowo/nduniverse-audio` diakses melalui jsDelivr.
+- `scripts/generate-tts-en.py` mengumpulkan teks dari konten materi/ujian/karier dan halaman Grammar/Pronunciation EN/DE; `scripts/generate-boss-tts.py` menangani voice line Boss Fight. Dry-run memeriksa file lokal, bukan mengirim request HTTP/HEAD ke jsDelivr. Inventaris generator umum saat ini melampaui 22.000 output teks/voice dan berubah saat konten diperbarui; dry-run bukan verifikasi publikasi CDN.
+- URL TTS umum berbasis hash dan resolver berada di `src/core/audio/cdn-audio.js`; audio statis dapat di-resolve dari manifest CDN.
 - Boss Fight menggunakan voice acting audio TTS untuk dialog HRD; generatornya tersedia melalui `npm run generate:tts:boss`.
-- Aset dibuat dengan Edge TTS dan disajikan melalui jsDelivr. Fallback Web Speech menggunakan locale sesuai aksen/bahasa audio.
-- Rekaman microphone menggunakan `MediaRecorder` dan dikirim ke endpoint server `POST /api/transcribe` (maksimal 10 MB; 30 permintaan/IP/menit). Endpoint mencoba Groq Whisper (`whisper-large-v3-turbo`), lalu Speechmatics Batch API; bila keduanya gagal, capture hook menggunakan browser Web Speech API.
-- `src/core/speech/match.ts` mendukung exact, phonetic, dan fuzzy matching, termasuk variasi bunyi yang umum pada aksen Indonesia. Locale pengenalan mengikuti route: `en-US` dan `de-DE`.
+- Jika MP3 gagal dimuat atau menghasilkan 404, pemutar menggunakan Web Speech API (`window.speechSynthesis`) dengan `en-US` untuk English US dan `de-DE` untuk German; rute aksen UK memakai `en-GB`. Jika browser tidak mendukung fallback, error dicatat.
+- Rekaman microphone memakai `MediaRecorder` dan dikirim ke endpoint server `POST /api/transcribe` (maksimal 10 MB; 30 permintaan/IP/menit). Browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`; rekaman melewati high-pass 300 Hz dan low-pass 4 kHz. Dynamic VAD mengukur noise floor untuk menentukan ambang suara dan menghentikan rekaman setelah hening.
+- Endpoint mencoba Groq Whisper (`whisper-large-v3-turbo`), lalu Speechmatics Batch API; bila keduanya gagal, capture hook menggunakan browser Web Speech API. `src/core/speech/match.ts` mendukung exact, phonetic, dan fuzzy matching, termasuk variasi bunyi umum pada aksen Indonesia. Locale pengenalan mengikuti route: `en-US` dan `de-DE`.
 - API keys `GROQ_API_KEY` dan `SPEECHMATICS_API_KEY` harus disimpan di environment server, tidak di client bundle. Header `Permissions-Policy` pada `vercel.json` mengizinkan microphone pada origin sendiri.
 
 ### Leaderboard
@@ -200,7 +206,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### Dashboard, Bantuan, dan Admin
 
-- Dashboard menampilkan XP, kemajuan level CEFR, progress materi, dan pencapaian pilar.
+- Dashboard EN dan DE menampilkan XP, kemajuan level CEFR, serta daftar progres materi dengan progress bar, persentase pilar, sisa XP, dan status selesai.
 - Materi Fachdeutsch dan Career tidak menambah poin Level CEFR.
 - Halaman Bantuan, profil, bookmark, dan dashboard dilindungi middleware sesuai akses.
 - Admin mengelola akun melalui portal admin terproteksi.

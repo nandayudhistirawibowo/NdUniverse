@@ -84,7 +84,7 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 ### Kuis, latihan, state, timer, dan penilaian
 
 1. Halaman latihan Astro, misalnya `src/pages/en/materi/latihan.astro` atau `src/pages/de/materi/[slug]/latihan.astro`, mengambil materi dan meneruskannya sebagai props ke komponen Preact.
-2. `src/modules/english/components/Quiz-en.jsx` dan `src/modules/german/components/Quiz-de.jsx` menangani state latihan: antrean soal, indeks, jawaban, benar/salah, nyawa, XP, bookmark, dan progres sesi/pilar. Keduanya memeriksa jawaban pilihan/pasangan dan memakai `src/core/game/fuzzy-match.js` untuk jawaban teks yang boleh memiliki perbedaan kecil.
+2. `src/modules/english/components/Quiz-en.jsx` dan `src/modules/german/components/Quiz-de.jsx` menangani state latihan: antrean soal, indeks, jawaban, benar/salah, nyawa, XP, bookmark, dan progres sesi/pilar. Keduanya memeriksa jawaban pilihan/pasangan dan memakai `src/core/game/fuzzy-match.js` untuk jawaban teks yang boleh memiliki perbedaan kecil. Artikel `the/a/an` dan `der/die/das` tidak lagi menjadi entri daftar kosakata; normalisasi kuis biasa mengabaikan artikel, sedangkan prompt grammar yang dikenali `isArticleQuestion()` meminta artikel tetap dipertahankan.
 3. Kuis kosakata biasa **tidak memakai countdown ujian**. Timer countdown berada pada komponen ujian: misalnya `EnglishExam-en.jsx`, `IELTSExam-en.jsx`, `GoetheExam-de.jsx`, dan komponen mock exam sesuai rute. State dan interval timer ada di komponen-komponen JSX tersebut.
 4. Ujian English mengimpor fungsi di `src/core/game/exam-grading.js` untuk menghitung skor modul, status lulus, dan menyimpan hasil. Goethe juga memakai utilitas itu; beberapa ujian lain memiliki logika grading di komponen ujiannya.
 5. Progres latihan dikirim melalui `src/core/db/progress-client-en.js` atau `src/core/db/progress-client.js` ke tabel `user_progress` di Supabase. Prefix/properti bahasa memisahkan progres English (`en`) dan German (`de`).
@@ -101,18 +101,20 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 
 ### Audio TTS English dan German
 
-1. `scripts/generate-tts-en.py` mengaudit teks English/German pada materi, soal, ujian, dan konten karier, menghasilkan audio untuk aksen US/UK dan German, menulis manifest, serta mencetak file yang perlu dipush ke CDN. Hash TTS umum mengikuti resolver runtime; Boss Fight mempertahankan nama MD5-nya.
-2. `src/core/audio/cdn-audio.js` menyediakan utilitas shared untuk memuat peta path-ke-URL dari `manifest-cdn.json`, menyelesaikan path audio, dan membuat URL TTS German/English dari hash teks yang dinormalisasi. TTS English memilih direktori hash sesuai aksen.
-3. Modul speech English/German mengelola pemutaran TTS yang dipakai kuis, halaman materi, ujian, grammar, dan pronunciation. Pemutar audio global juga menerima teks/language untuk fallback `SpeechSynthesisUtterance` saat file CDN gagal, termasuk URL 404 atau audio tidak didukung; error dicatat bila fallback tidak tersedia.
-4. Audio statis/URL langsung juga dapat diteruskan ke pemutar. Jadi untuk mengubah perilaku fallback atau playback, mulai dari `english-speech.js`; untuk mengubah pembuatan URL dan resolver bersama, lihat `cdn-audio.js`; untuk menghasilkan ulang audio, lihat script generator dan petunjuk di `README.md`.
+1. `scripts/generate-tts-en.py` memakai Microsoft Edge TTS untuk mengaudit konten materi, kuis, ujian, karier, serta teks tombol audio pada halaman Grammar/Pronunciation EN/DE. `scripts/generate-boss-tts.py` menghasilkan voice line Boss Fight. TTS umum menghasilkan English US/UK dan German; hash-nya mengikuti resolver runtime, sementara Boss Fight memakai MD5.
+2. Mode dry-run memeriksa keberadaan output dengan file lokal dan tidak melakukan HTTP/HEAD ke jsDelivr. Pemeriksaan CDN melalui HTTP dihindari agar audit tidak terkena `403 Rate Limit`; generation tetap mengakses Edge TTS untuk membuat file baru. Inventaris output umum saat ini melampaui 22.000 variasi teks/voice dan terus berubah bersama konten.
+3. `src/core/audio/cdn-audio.js` menyediakan utilitas shared untuk memuat peta path-ke-URL dari `manifest-cdn.json`, menyelesaikan path audio, dan membuat URL TTS German/English dari hash teks yang dinormalisasi. TTS English memilih direktori hash sesuai aksen.
+4. Modul speech English/German menangani pemutaran di kuis, halaman materi, ujian, grammar, dan pronunciation. Jika audio MP3 gagal atau 404, Web Speech API (`window.speechSynthesis`) menjadi fallback dengan locale `en-US` untuk English US, `en-GB` untuk aksen UK, atau `de-DE` untuk German. Error dicatat jika fallback tidak tersedia.
+5. Untuk mengubah perilaku playback/fallback, mulai dari `english-speech.js` atau `german-speech.js`; untuk resolver, lihat `cdn-audio.js`; untuk produksi aset dan publikasi CDN, ikuti generator serta petunjuk `README.md`.
 
 ### Speech-to-Text (STT)
 
 1. `src/core/speech/use-speech-capture.ts` mengoordinasikan input ucapan untuk kuis, Speaking, dan Boss Fight. Locale browser mengikuti route (`en-US` atau `de-DE`).
 2. `recorder.ts` meminta izin mikrofon, merekam melalui `MediaRecorder`, dan mengakhiri rekaman saat tombol Stop ditekan, terdeteksi senyap setelah suara, atau batas waktu tercapai. Audio dikirim ke `POST /api/transcribe`.
-3. Endpoint memvalidasi format/ukuran, membatasi permintaan per IP, lalu mencoba Groq Whisper (`whisper-large-v3-turbo`) dan Speechmatics Batch API. Jika keduanya tidak tersedia/gagal, hook memakai Web Speech API.
-4. `match.ts` menilai kata kunci dan alternatif transkrip menggunakan exact, phonetic, dan fuzzy matching. `SpeechFeedback.jsx` menampilkan hasil, skor, dan sumber transkrip.
-5. Credential Groq dan Speechmatics hanya dibaca server dari environment. Lihat `.env.example`, `src/pages/api/transcribe.ts`, dan `TESTING.md` untuk setup serta pengujian.
+3. `recorder.ts` meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`, memfilter audio dengan high-pass 300 Hz dan low-pass 4 kHz, lalu memakai dynamic VAD berdasarkan kalibrasi noise floor dan jeda hening.
+4. Endpoint memvalidasi format/ukuran, membatasi permintaan per IP, lalu mencoba Groq Whisper (`whisper-large-v3-turbo`) dan Speechmatics Batch API. Jika keduanya tidak tersedia/gagal, hook memakai Web Speech API.
+5. `match.ts` menilai kata kunci dan alternatif transkrip menggunakan exact, phonetic, dan fuzzy matching. `SpeechFeedback.jsx` menampilkan hasil, skor, dan sumber transkrip.
+6. Credential Groq dan Speechmatics hanya dibaca server dari environment. Lihat `.env.example`, `src/pages/api/transcribe.ts`, dan `TESTING.md` untuk setup serta pengujian.
 
 ### Boss Fight — cinematic, voice acting, dan typewriter
 
@@ -129,6 +131,10 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 2. `src/core/db/leaderboard.ts` memanggil RPC Supabase `get_leaderboard` dengan service-role client. RPC dalam `supabase/leaderboard.sql` menggabungkan profil dengan progress, menjumlahkan XP, mengurutkan level lalu XP menurun, dan membatasi hasil ke 100 pengguna.
 3. `src/core/ui/Leaderboard.astro` menampilkan Top 3 sebagai podium dan peringkat 4–100 sebagai daftar responsif. SQL harus diterapkan pada project Supabase tujuan sebelum RPC tersedia.
 
+### Progress pencapaian dashboard
+
+Dashboard EN (`src/pages/en/dashboard/index.astro`) dan DE (`src/pages/dashboard-de/index.astro`) mengambil `xp` serta `sessions_passed` dari `user_progress`. Daftar progres menghitung persentase pilar unik dari empat pilar, menampilkan XP yang kurang berdasarkan batas turunan `vocab.length × 4 × 10`, dan menetapkan sisa XP nol saat satu sesi lengkap. Perubahan progress dari kuis juga memperbarui daftar tanpa reload.
+
 ## Panduan Navigasi Developer
 
 - **Mau mengubah desain UI dashboard?** Mulai dari `src/core/ui/DashboardLayout-en.astro` atau `DashboardLayout-de.astro` untuk layout modul; halaman data dashboard ada di `src/pages/en/dashboard/` dan `src/pages/dashboard-de/`. Jika yang dimaksud dashboard root, lihat `src/pages/dashboard.astro`.
@@ -141,6 +147,7 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 - **Mau mengubah tampilan/login?** Rute di `src/pages/login-en.astro` / `login-de.astro`; UI dan alur sign-in/sign-up bersama di `src/core/auth/AuthPortal.astro`.
 - **Mau mengubah proteksi dashboard/admin?** Lihat `src/core/auth/middleware.ts` (dipasang oleh `src/middleware.ts`) dan `src/core/auth/admin.ts`.
 - **Mau mengubah penyimpanan progres?** Gunakan `src/core/db/progress-client-en.js` atau `progress-client.js`; perubahan skema tabel terkait juga perlu ditinjau di `supabase/`.
+- **Mau mengubah daftar progress pencapaian dashboard?** Lihat `src/pages/en/dashboard/index.astro` dan `src/pages/dashboard-de/index.astro`; persen diturunkan dari pilar lulus dan XP maksimal dihitung dari jumlah kosakata.
 - **Mau mengubah leaderboard?** Periksa `src/core/db/leaderboard.ts`, `src/core/ui/Leaderboard.astro`, route EN/DE, dan `supabase/leaderboard.sql`.
 - **Mau mengubah transkripsi atau pencocokan ucapan?** Mulai dari `src/core/speech/use-speech-capture.ts`; endpoint/provider ada di `src/pages/api/transcribe.ts`, engine browser di `stt-engine.ts`, dan phonetic matching di `match.ts`.
 - **Mau mengubah prompt atau perilaku NdBot?** Buka `src/pages/api/chat.ts`. Untuk tampilan chat, buka `src/core/ui/NdBot.jsx`.
