@@ -360,9 +360,16 @@ export default function EnglishExam({ exam, type, level }) {
                     <button
                       className="exam-listening-audio"
                       type="button"
-                      onClick={() => {
+                      onClick={(event) => {
                         const audioUrl = `https://cdn.jsdelivr.net/gh/nandayudhistirawibowo/nduniverse-audio@main/audio/exam-listening/${examType}-${examLevel.toLowerCase()}.mp3`;
-                        void playAudio(audioUrl)?.catch(() => {});
+                        const transcript = [...new Set(
+                          listeningQuestions.map((question) => question.transcript?.trim()).filter(Boolean),
+                        )].join(' ');
+                        void playAudio(audioUrl, {
+                          text: transcript,
+                          lang: 'en',
+                          button: event.currentTarget,
+                        })?.catch(() => {});
                       }}
                     >
                       Putar audio menyimak

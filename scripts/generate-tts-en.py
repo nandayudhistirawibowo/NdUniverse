@@ -5,6 +5,8 @@ import json
 import os
 import re
 from pathlib import Path
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 import edge_tts
 import yaml
@@ -16,7 +18,7 @@ except ImportError:
 
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTENT_ROOT = ROOT / "src" / "modules" / "english" / "content"
+MODULES_ROOT = ROOT / "src" / "modules"
 CDN_MANIFEST_PATH = ROOT / "manifest-cdn.json"
 CDN_AUDIO_BASE = (
     "https://cdn.jsdelivr.net/gh/"
@@ -33,14 +35,44 @@ OUTPUTS = {
         "directory": ROOT / "public" / "audio" / "tts-en-gb",
         "manifest": "manifest-en-gb.json",
     },
+    "de": {
+        "voice": os.environ.get("EDGE_TTS_DE_VOICE", "de-DE-ConradNeural"),
+        "directory": ROOT / "public" / "audio" / "tts",
+        "manifest": "manifest-de.json",
+    },
 }
-SPOKEN_FIELDS = {
+ENGLISH_SPOKEN_FIELDS = {
     "word",
     "context",
     "reading_text",
+    "reading_question",
     "listening_audio",
     "audio_text",
     "speaking_question",
+    "question",
+    "dialog",
+    "transcript",
+    "passage",
+    "writing_instruction",
+    "writing",
+    "task1",
+    "task2",
+    "integrated",
+    "academic_discussion",
+}
+GERMAN_SPOKEN_FIELDS = {
+    "german",
+    "context",
+    "lesen_teks",
+    "lesen_pertanyaan",
+    "hoeren_audio",
+    "schreiben_instruksi",
+    "sprechen_pertanyaan",
+    "word",
+    "question",
+    "dialog",
+    "prompt",
+    "transcript",
 }
 MAX_ATTEMPTS = 3
 INITIAL_RETRY_DELAY = 5
@@ -57,16 +89,16 @@ def get_frontmatter(path):
     return yaml.safe_load(parts[1]) or {}
 
 
-def collect_spoken_texts(value, texts):
+def collect_spoken_texts(value, texts, spoken_fields):
     if isinstance(value, dict):
         for key, child in value.items():
-            if key in SPOKEN_FIELDS and isinstance(child, str) and child.strip():
+            if key in spoken_fields and isinstance(child, str) and child.strip():
                 texts.add(child.strip())
             else:
-                collect_spoken_texts(child, texts)
+                collect_spoken_texts(child, texts, spoken_fields)
     elif isinstance(value, list):
         for child in value:
-            collect_spoken_texts(child, texts)
+            collect_spoken_texts(child, texts, spoken_fields)
 
 
 def split_exam_transcript_sentences(transcript):
@@ -101,20 +133,43 @@ def collect_exam_transcript_sentences(exam, texts):
             texts.update(split_exam_transcript_sentences(normalized))
 
 
-def content_groups():
+def content_groups(language):
     texts = set()
-    for path in sorted(CONTENT_ROOT.rglob("*.md")):
+    content_root = MODULES_ROOT / language / "content"
+    if not content_root.is_dir():
+        raise FileNotFoundError(f"Content directory does not exist: {content_root}")
+    spoken_fields = ENGLISH_SPOKEN_FIELDS if language == "english" else GERMAN_SPOKEN_FIELDS
+    for path in sorted(content_root.rglob("*.md")):
         content = get_frontmatter(path)
-        collect_spoken_texts(content, texts)
-        if path.relative_to(CONTENT_ROOT).parts[0] == "exam":
+        collect_spoken_texts(content, texts, spoken_fields)
+        if language == "english" and "exam" in path.relative_to(content_root).parts:
             collect_exam_transcript_sentences(content, texts)
-    return {accent: set(texts) for accent in OUTPUTS}
+    if language == "english":
+        return {accent: set(texts) for accent in ("us", "gb")}
+    return {"de": texts}
 
 
 def audio_filename(text, accent):
     normalized_text = re.sub(r"\s+", " ", text).strip()
     text_hash = hashlib.sha256(normalized_text.encode("utf-8")).hexdigest()
-    return f"{text_hash}-{accent}.mp3"
+    return f"{text_hash}.mp3" if accent == "de" else f"{text_hash}-{accent}.mp3"
+
+
+def audio_cdn_path(directory, filename):
+    return f"{directory.name}/{filename}"
+
+
+def is_available_on_cdn(url):
+    try:
+        request = Request(url, method="HEAD")
+        with urlopen(request, timeout=12) as response:
+            return response.status == 200
+    except HTTPError as error:
+        if error.code == 404:
+            return False
+        raise RuntimeError(f"CDN check failed with HTTP {error.code}: {url}") from error
+    except URLError as error:
+        raise RuntimeError(f"CDN check failed for {url}: {error}") from error
 
 
 async def generate_audio(text, output_path, voice):
@@ -166,9 +221,13 @@ def log_failure(accent, text, error):
         error_log.write(f"[{accent.upper()}] {text}\n  {error!r}\n")
 
 
-async def main(dry_run, limit):
-    groups = content_groups()
+async def main(dry_run, limit, skip_cdn_check):
+    groups = {
+        **content_groups("english"),
+        **content_groups("german"),
+    }
     attempts = 0
+    files_to_push = set()
     if dry_run:
         missing_count = 0
         for accent, settings in OUTPUTS.items():
@@ -185,9 +244,14 @@ async def main(dry_run, limit):
         return
 
     cdn_manifest = read_cdn_manifest()
+    loop = asyncio.get_running_loop()
+    cdn_semaphore = asyncio.Semaphore(MAX_CONCURRENT_DOWNLOADS)
     for accent, settings in OUTPUTS.items():
         texts = sorted(groups[accent])
-        print(f"{accent.upper()}: {len(texts)} unique text(s), voice {settings['voice']}.")
+        print(
+            f"{accent.upper()}: {len(texts)} unique text(s), "
+            f"voice {settings['voice']}."
+        )
 
         directory = settings["directory"]
         directory.mkdir(parents=True, exist_ok=True)
@@ -200,14 +264,43 @@ async def main(dry_run, limit):
             manifest = {}
 
         pending_texts = []
-        for text in texts:
-            filename = audio_filename(text, accent)
-            output_path = directory / filename
-            audio_path = f"/audio/{directory.name}/{filename}"
+        candidates = [
+            (
+                text,
+                audio_filename(text, accent),
+                directory / audio_filename(text, accent),
+            )
+            for text in texts
+        ]
+        if skip_cdn_check:
+            cdn_statuses = [False] * len(candidates)
+        else:
+            async def check_cdn(url):
+                async with cdn_semaphore:
+                    return await loop.run_in_executor(None, is_available_on_cdn, url)
+
+            cdn_statuses = []
+            urls = [
+                f"{CDN_AUDIO_BASE}/{audio_cdn_path(directory, filename)}"
+                for _, filename, _ in candidates
+            ]
+            for start in range(0, len(urls), MAX_CONCURRENT_DOWNLOADS):
+                batch = urls[start:start + MAX_CONCURRENT_DOWNLOADS]
+                cdn_statuses.extend(await asyncio.gather(*(check_cdn(url) for url in batch)))
+
+        for (text, filename, output_path), available_on_cdn in zip(candidates, cdn_statuses):
+            relative_audio_path = audio_cdn_path(directory, filename)
+            cdn_url = f"{CDN_AUDIO_BASE}/{relative_audio_path}"
+            if available_on_cdn:
+                cdn_manifest[relative_audio_path] = cdn_url
+                if output_path.is_file() and output_path.stat().st_size > 0:
+                    manifest[text] = f"/audio/{relative_audio_path}"
+                continue
+
+            files_to_push.add(relative_audio_path)
+            cdn_manifest[relative_audio_path] = cdn_url
             if output_path.is_file() and output_path.stat().st_size > 0:
-                manifest[text] = audio_path
-                relative_audio_path = f"{directory.name}/{filename}"
-                cdn_manifest[relative_audio_path] = f"{CDN_AUDIO_BASE}/{relative_audio_path}"
+                manifest[text] = f"/audio/{relative_audio_path}"
             else:
                 pending_texts.append(text)
 
@@ -238,17 +331,18 @@ async def main(dry_run, limit):
                 attempts += len(batch)
 
                 for text, filename, error in results:
-                    audio_path = f"/audio/{directory.name}/{filename}"
                     if error is not None:
                         log_failure(accent, text, error)
+                        relative_audio_path = audio_cdn_path(
+                            directory,
+                            audio_filename(text, accent),
+                        )
+                        cdn_manifest.pop(relative_audio_path, None)
                         manifest.pop(text, None)
                         print(f"Skipping failed {accent.upper()} text; logged to error_log.txt.")
                     else:
-                        manifest[text] = audio_path
-                        relative_audio_path = f"{directory.name}/{filename}"
-                        cdn_manifest[relative_audio_path] = (
-                            f"{CDN_AUDIO_BASE}/{relative_audio_path}"
-                        )
+                        manifest[text] = f"/audio/{audio_cdn_path(directory, filename)}"
+                        print(f"Generated {directory.name}/{filename}")
 
                 if progress:
                     progress.update(len(batch))
@@ -264,11 +358,26 @@ async def main(dry_run, limit):
 
     write_manifest(CDN_MANIFEST_PATH, cdn_manifest)
     print(f"Run complete: {attempts} missing MP3 file(s) attempted.")
+    print("MP3 files to push to nduniverse-audio:")
+    if files_to_push:
+        for relative_path in sorted(files_to_push):
+            output_path = ROOT / "public" / "audio" / relative_path
+            if output_path.is_file() and output_path.stat().st_size > 0:
+                print(f"- {relative_path}")
+    else:
+        print("- None")
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Generate static English TTS audio.")
+    parser = argparse.ArgumentParser(
+        description="Audit content and generate static English and German TTS audio."
+    )
     parser.add_argument("--dry-run", action="store_true", help="List voice/text totals without generating audio.")
+    parser.add_argument(
+        "--skip-cdn-check",
+        action="store_true",
+        help="Treat every text as missing from the CDN without sending HTTP requests.",
+    )
     parser.add_argument(
         "--limit",
         type=int,
@@ -278,4 +387,4 @@ if __name__ == "__main__":
     if arguments.limit is not None and arguments.limit < 0:
         parser.error("--limit must be zero or greater")
     # TODO: Proxy/User-Agent rotation
-    asyncio.run(main(arguments.dry_run, arguments.limit))
+    asyncio.run(main(arguments.dry_run, arguments.limit, arguments.skip_cdn_check))

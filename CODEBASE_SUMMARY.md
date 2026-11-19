@@ -99,11 +99,11 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 5. Potongan materi yang ditemukan ditambahkan sebagai konteks system prompt. Endpoint mengirim riwayat dan konteks ke Groq Chat Completions, mencoba beberapa model cadangan, lalu mengirim jawaban ke UI.
 6. Prompt persona, aturan jawaban, filter soal, dan prompt perapihan query berada di bagian atas `src/pages/api/chat.ts`. Ubah bagian tersebut bila ingin menyesuaikan perilaku/prompt AI.
 
-### Audio TTS English
+### Audio TTS English dan German
 
-1. Saat generator dijalankan, `scripts/generate-tts-en.py` menghasilkan audio English untuk aksen US dan UK, manifest aksen (`manifest-en-us.json` / `manifest-en-gb.json`), dan memperbarui `manifest-cdn.json`.
+1. `scripts/generate-tts-en.py` mengaudit teks English/German pada materi, soal, ujian, dan konten karier, menghasilkan audio untuk aksen US/UK dan German, menulis manifest, serta mencetak file yang perlu dipush ke CDN. Hash TTS umum mengikuti resolver runtime; Boss Fight mempertahankan nama MD5-nya.
 2. `src/core/audio/cdn-audio.js` menyediakan utilitas shared untuk memuat peta path-ke-URL dari `manifest-cdn.json`, menyelesaikan path audio, dan membuat URL TTS German/English dari hash teks yang dinormalisasi. TTS English memilih direktori hash sesuai aksen.
-3. `src/modules/english/config/english-speech.js` adalah API pemutaran yang dipakai kuis, halaman materi, grammar, dan pronunciation. `playAudioTTS()` memilih aksen, mencoba MP3 dari CDN, dan mengelola pemutaran aktif. Jika audio tidak tersedia (misalnya respons 404), atau browser tidak mendukung pemutar audio, fungsi beralih ke `SpeechSynthesisUtterance`. Kegagalan jaringan/status lain dicatat sebagai error; pemutaran yang diblokir browser meminta pengguna mencoba lagi.
+3. Modul speech English/German mengelola pemutaran TTS yang dipakai kuis, halaman materi, ujian, grammar, dan pronunciation. Pemutar audio global juga menerima teks/language untuk fallback `SpeechSynthesisUtterance` saat file CDN gagal, termasuk URL 404 atau audio tidak didukung; error dicatat bila fallback tidak tersedia.
 4. Audio statis/URL langsung juga dapat diteruskan ke pemutar. Jadi untuk mengubah perilaku fallback atau playback, mulai dari `english-speech.js`; untuk mengubah pembuatan URL dan resolver bersama, lihat `cdn-audio.js`; untuk menghasilkan ulang audio, lihat script generator dan petunjuk di `README.md`.
 
 ### Speech-to-Text (STT)

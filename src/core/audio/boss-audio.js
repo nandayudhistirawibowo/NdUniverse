@@ -26,13 +26,27 @@ export function playBossAudio(text, language, signal) {
   }
   if (signal?.aborted) return null;
 
+  window.speechSynthesis?.cancel();
   const audioUrl = BOSS_AUDIO_MANIFEST?.[spokenText];
   const languagePath = `${AUDIO_CDN_BASE}/boss/${language}/`;
   if (typeof audioUrl !== 'string' || !audioUrl.startsWith(languagePath)) {
     if (!warnedMissingTexts.has(spokenText)) {
       warnedMissingTexts.add(spokenText);
-      console.warn(`No generated ${language.toUpperCase()} boss audio for this line; using the default typewriter speed.`);
+      console.warn(`No generated ${language.toUpperCase()} boss audio for this line; using browser speech synthesis.`);
     }
+    playAudio('', {
+      text: spokenText,
+      lang: language,
+      onFallback: () => {
+        signal?.addEventListener(
+          'abort',
+          () => window.speechSynthesis?.cancel(),
+          { once: true },
+        );
+      },
+    })?.catch((error) => {
+      console.error(`Unable to speak missing ${language.toUpperCase()} boss audio.`, error);
+    });
     return null;
   }
 
@@ -61,7 +75,11 @@ export function playBossAudio(text, language, signal) {
   audio.addEventListener('playbackerror', cleanup, { once: true });
   signal?.addEventListener('abort', stopAudio, { once: true });
 
-  playAudio(audioUrl)?.catch(() => {
+  playAudio(audioUrl, {
+    text: spokenText,
+    lang: language,
+    onFallback: () => audio.dispatchEvent(new Event('playbackerror')),
+  })?.catch(() => {
     audio.dispatchEvent(new Event('playbackerror'));
     cleanup();
   });

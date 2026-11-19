@@ -64,14 +64,15 @@ Jangan commit `.env`, service-role key, Groq API key, atau Cloudflare API token.
 
 ## Memperbarui Audio dan Manifest CDN
 
-Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di bawah `audio/`. Runtime membentuk URL TTS German dan English dari hash teks; `manifest-cdn.json` memetakan audio statis yang membutuhkan lookup path-ke-URL. Boss Fight memakai `manifest-boss.json` untuk memetakan dialog ke URL CDN. Generator English juga membuat manifest per aksen sebagai artefak generator.
+Audio terbit di repository terpisah `nandayudhistirawibowo/nduniverse-audio` di bawah `audio/`. Runtime membentuk URL TTS German dan English dari hash teks; `manifest-cdn.json` memetakan audio statis yang membutuhkan lookup path-ke-URL. Boss Fight memakai `manifest-boss.json` untuk memetakan dialog ke URL CDN. Generator lintas konten juga membuat manifest per bahasa/aksen.
 
-1. Preview audio English yang belum ada dengan `npm run generate:tts:en -- --dry-run`; jalankan `npm run generate:tts:en` untuk membuat kedua aksen, manifest `manifest-en-us.json`/`manifest-en-gb.json`, dan memperbarui `manifest-cdn.json`.
-2. Untuk voice acting Boss Fight, gunakan `npm run generate:tts:boss -- --dry-run` untuk memeriksa file yang dibutuhkan atau `npm run generate:tts:boss` untuk membuat audio TTS German dan English.
-3. Dependensi generator tersedia melalui `python -m pip install -r requirements-tts.txt`. Generator German umum `npm run generate:tts` masih menunjuk ke sumber legacy `src/content/materi` dan halaman root lama yang tidak tersedia di struktur aktif. Jangan gunakan generator tersebut pada checkout ini; gunakan generator English atau Boss Fight sesuai kebutuhan.
-4. Salin aset dan manifest yang akan diterbitkan ke direktori sepadan di `nduniverse-audio/audio/`. Pertahankan nama file dan format mapping teks-ke-path pada manifest.
-5. Commit dan push repository audio ke branch `main`, lalu tunggu jsDelivr menyajikan versi terbaru.
-6. Untuk memperbarui peta MP3 umum, siapkan checkout repo audio pada `D:\audio-cdn` (sehingga foldernya `D:\audio-cdn\audio`), lalu jalankan dari root NdUniverse:
+1. `npm run generate:tts:en -- --dry-run` mengaudit teks materi, konteks, soal, ujian, dan konten karier English/German serta menghitung MP3 lokal yang belum tersedia. Jalankan `npm run generate:tts:en` untuk memeriksa keberadaan hash di CDN dan membuat audio yang belum ada. `--skip-cdn-check` dapat digunakan untuk melewati pemeriksaan jaringan.
+2. Generator memperbarui manifest per bahasa/aksen (`manifest-en-us.json`, `manifest-en-gb.json`, `manifest-de.json`) dan `manifest-cdn.json`. Setelah selesai, generator mencetak daftar file MP3 yang perlu dipush ke `nduniverse-audio`.
+3. Untuk audio Boss Fight, gunakan `npm run generate:tts:boss -- --dry-run` untuk melihat file yang perlu dibuat/push atau `npm run generate:tts:boss` untuk membuat audio TTS German dan English. Nama file Boss Fight memakai MD5; TTS umum memakai hash yang sama dengan resolver runtime.
+4. Dependensi generator tersedia melalui `python -m pip install -r requirements-tts.txt`. Generator legacy `npm run generate:tts` masih menunjuk ke sumber `src/content/materi` yang tidak tersedia pada struktur aktif; gunakan generator lintas konten di atas.
+5. Salin aset dan manifest yang akan diterbitkan ke direktori sepadan di `nduniverse-audio/audio/`. Pertahankan nama file dan format mapping teks-ke-path pada manifest.
+6. Commit dan push repository audio ke branch `main`, lalu tunggu jsDelivr menyajikan versi terbaru.
+7. Untuk memperbarui peta MP3 umum, siapkan checkout repo audio pada `D:\audio-cdn` (sehingga foldernya `D:\audio-cdn\audio`), lalu jalankan dari root NdUniverse:
 
    ```bash
    python scripts/migrate-audio-cdn.py

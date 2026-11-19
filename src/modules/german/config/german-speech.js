@@ -122,7 +122,16 @@ function playAudioFile(audioUrl, fallbackText, button, playbackId) {
     if (currentAudio === audio) currentAudio = null;
     if (currentAudioButton === button) currentAudioButton = null;
   };
-  playAudio(audioUrl)?.catch(handleAudioFailure);
+  void playAudio(audioUrl, {
+    text: fallbackText,
+    lang: 'de',
+    button,
+  })?.then((played) => {
+    if (played === false && playbackId === activePlaybackId && currentAudio === audio) {
+      currentAudio = null;
+      currentAudioButton = null;
+    }
+  }).catch(handleAudioFailure);
 }
 
 export function preloadGermanTtsAudio(text) {

@@ -151,7 +151,16 @@ function playAudioFile(audioUrl, fallbackText, language, button, playbackId) {
       activeAudioButton = null;
     }
   };
-  playAudio(audioUrl)?.catch(handleAudioFailure);
+  void playAudio(audioUrl, {
+    text: fallbackText,
+    lang: 'en',
+    button,
+  })?.then((played) => {
+    if (played === false && playbackId === activePlaybackId && activeAudio === audio) {
+      activeAudio = null;
+      activeAudioButton = null;
+    }
+  }).catch(handleAudioFailure);
 }
 
 export function preloadEnglishTtsAudio(text, accent = 'us') {

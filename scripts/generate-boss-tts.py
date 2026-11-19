@@ -118,6 +118,8 @@ async def generate_language(language, settings, dry_run, limit):
         f"{language.upper()}: {len(texts)} unique line(s), "
         f"voice {settings['voice']}, {len(pending)} MP3 file(s) to generate."
     )
+    for text in pending:
+        print(f"MP3 to push: boss/{language}/{audio_filename(text)}")
     if dry_run:
         return {}
 
