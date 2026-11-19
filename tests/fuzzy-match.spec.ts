@@ -4,6 +4,8 @@ import { isAnswerCorrect, isFuzzyMatch, normalizeText } from '../src/core/game/f
 test('normalizes punctuation and removes English and German articles', () => {
   expect(normalizeText('The answer!')).toBe('answer');
   expect(normalizeText('der, die und das Haus')).toBe('und haus');
+  expect(normalizeText('The Head.')).toBe(normalizeText('the head'));
+  expect(normalizeText('head-word')).toBe('headword');
 });
 
 test('accepts equivalent text with omitted articles and small typos', () => {

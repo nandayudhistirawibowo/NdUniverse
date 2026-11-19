@@ -2,10 +2,10 @@ const ARTICLES = new Set(['a', 'an', 'the', 'der', 'die', 'das']);
 
 export function normalizeText(value) {
   return String(value ?? '')
-    .toLowerCase()
-    .replace(/[^\p{L}\p{N}]+/gu, ' ')
+    .replace(/[\p{P}\p{S}]/gu, '')
     .trim()
-    .replace(/\s+/g, ' ')
+    .replace(/\s{2,}/g, ' ')
+    .toLowerCase()
     .split(' ')
     .filter((word) => word && !ARTICLES.has(word))
     .join(' ');

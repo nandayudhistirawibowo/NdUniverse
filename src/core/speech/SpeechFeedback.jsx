@@ -1,3 +1,7 @@
+function cleanTranscript(text) {
+  return text.replace(/[\p{P}\p{S}]/gu, '').replace(/\s{2,}/g, ' ').trim();
+}
+
 export default function SpeechFeedback({
   feedback,
   state,
@@ -31,7 +35,7 @@ export default function SpeechFeedback({
       {feedback && (
         <>
           <p>
-            Kamu mengucapkan: "{feedback.transcript}"
+            Kamu mengucapkan: "{cleanTranscript(feedback.transcript)}"
             {feedback.source === 'groq' && <span class="speech-source-badge">🎙️ Groq</span>}
             {feedback.source === 'speechmatics' && (
               <span class="speech-source-badge" title="Fallback: Speechmatics Global English">

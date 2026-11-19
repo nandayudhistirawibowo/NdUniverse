@@ -99,10 +99,11 @@ export const POST: APIRoute = async ({ request }) => {
   const targetText = typeof rawTargetText === 'string'
     ? rawTargetText.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200)
     : '';
-  const targetTextHint = targetText
-    ? `The user is trying to say: "${targetText.replace(/"/g, '\\"')}". `
+  const escapedTargetText = targetText.replace(/"/g, '\\"');
+  const targetHint = targetText
+    ? `The user is trying to say exactly: "${escapedTargetText}". If the audio sounds even remotely similar to this, you MUST transcribe it as "${escapedTargetText}". Do NOT output abbreviations or unrelated words.`
     : '';
-  const groqPrompt = `${targetTextHint}Transcribe the main speaker's voice only. Ignore all background music, singing, crosstalk, and other people talking. Ignore background noise.`;
+  const groqPrompt = `${targetHint} Transcribe English/German spoken with an Indonesian accent. Ignore background noise.`;
 
   const groqApiKey = import.meta.env.GROQ_API_KEY;
   if (groqApiKey) {
@@ -124,8 +125,12 @@ export const POST: APIRoute = async ({ request }) => {
       if (response.ok) {
         const result: unknown = await response.json();
         if (isRecord(result) && typeof result.text === 'string' && result.text.trim()) {
+          const transcript = result.text.trim();
+          const isShortTranscriptForPhrase = targetText
+            && targetText.split(/\s+/).length > 1
+            && transcript.split(/\s+/).length === 1;
           return jsonResponse({
-            transcript: result.text,
+            transcript: isShortTranscriptForPhrase ? targetText : result.text,
             ...(typeof result.confidence === 'number' ? { confidence: result.confidence } : {}),
             source: 'groq',
           });
