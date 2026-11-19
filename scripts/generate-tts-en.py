@@ -5,8 +5,6 @@ import json
 import os
 import re
 from pathlib import Path
-from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
 
 import edge_tts
 import yaml
@@ -159,19 +157,6 @@ def audio_cdn_path(directory, filename):
     return f"{directory.name}/{filename}"
 
 
-def is_available_on_cdn(url):
-    try:
-        request = Request(url, method="HEAD")
-        with urlopen(request, timeout=12) as response:
-            return response.status == 200
-    except HTTPError as error:
-        if error.code == 404:
-            return False
-        raise RuntimeError(f"CDN check failed with HTTP {error.code}: {url}") from error
-    except URLError as error:
-        raise RuntimeError(f"CDN check failed for {url}: {error}") from error
-
-
 async def generate_audio(text, output_path, voice):
     last_error = None
     for attempt in range(1, MAX_ATTEMPTS + 1):
@@ -221,31 +206,36 @@ def log_failure(accent, text, error):
         error_log.write(f"[{accent.upper()}] {text}\n  {error!r}\n")
 
 
-async def main(dry_run, limit, skip_cdn_check):
+async def main(dry_run, limit):
     groups = {
         **content_groups("english"),
         **content_groups("german"),
     }
     attempts = 0
-    files_to_push = set()
+    files_generated = set()
     if dry_run:
         missing_count = 0
         for accent, settings in OUTPUTS.items():
             texts = sorted(groups[accent])
             print(f"{accent.upper()}: {len(texts)} unique text(s), voice {settings['voice']}.")
             directory = settings["directory"]
-            missing_count += sum(
-                not (directory / audio_filename(text, accent)).is_file()
-                or (directory / audio_filename(text, accent)).stat().st_size == 0
+            missing = [
+                text
                 for text in texts
-            )
-        planned_count = missing_count if limit is None else min(missing_count, limit)
-        print(f"Dry run: would attempt {planned_count} missing MP3 file(s); no audio generated.")
+                if not (directory / audio_filename(text, accent)).is_file()
+                or (directory / audio_filename(text, accent)).stat().st_size == 0
+            ]
+            remaining = None if limit is None else max(limit - missing_count, 0)
+            if remaining is not None:
+                missing = missing[:remaining]
+            missing_count += len(missing)
+            print(f"Files to generate locally ({len(missing)}):")
+            for text in missing:
+                print(f"- public/audio/{audio_cdn_path(directory, audio_filename(text, accent))}")
+        print(f"Dry run: {missing_count} missing MP3 file(s); no audio generated.")
         return
 
     cdn_manifest = read_cdn_manifest()
-    loop = asyncio.get_running_loop()
-    cdn_semaphore = asyncio.Semaphore(MAX_CONCURRENT_DOWNLOADS)
     for accent, settings in OUTPUTS.items():
         texts = sorted(groups[accent])
         print(
@@ -264,43 +254,14 @@ async def main(dry_run, limit, skip_cdn_check):
             manifest = {}
 
         pending_texts = []
-        candidates = [
-            (
-                text,
-                audio_filename(text, accent),
-                directory / audio_filename(text, accent),
-            )
-            for text in texts
-        ]
-        if skip_cdn_check:
-            cdn_statuses = [False] * len(candidates)
-        else:
-            async def check_cdn(url):
-                async with cdn_semaphore:
-                    return await loop.run_in_executor(None, is_available_on_cdn, url)
-
-            cdn_statuses = []
-            urls = [
-                f"{CDN_AUDIO_BASE}/{audio_cdn_path(directory, filename)}"
-                for _, filename, _ in candidates
-            ]
-            for start in range(0, len(urls), MAX_CONCURRENT_DOWNLOADS):
-                batch = urls[start:start + MAX_CONCURRENT_DOWNLOADS]
-                cdn_statuses.extend(await asyncio.gather(*(check_cdn(url) for url in batch)))
-
-        for (text, filename, output_path), available_on_cdn in zip(candidates, cdn_statuses):
+        for text in texts:
+            filename = audio_filename(text, accent)
+            output_path = directory / filename
             relative_audio_path = audio_cdn_path(directory, filename)
             cdn_url = f"{CDN_AUDIO_BASE}/{relative_audio_path}"
-            if available_on_cdn:
-                cdn_manifest[relative_audio_path] = cdn_url
-                if output_path.is_file() and output_path.stat().st_size > 0:
-                    manifest[text] = f"/audio/{relative_audio_path}"
-                continue
-
-            files_to_push.add(relative_audio_path)
-            cdn_manifest[relative_audio_path] = cdn_url
             if output_path.is_file() and output_path.stat().st_size > 0:
                 manifest[text] = f"/audio/{relative_audio_path}"
+                cdn_manifest[relative_audio_path] = cdn_url
             else:
                 pending_texts.append(text)
 
@@ -333,16 +294,15 @@ async def main(dry_run, limit, skip_cdn_check):
                 for text, filename, error in results:
                     if error is not None:
                         log_failure(accent, text, error)
-                        relative_audio_path = audio_cdn_path(
-                            directory,
-                            audio_filename(text, accent),
-                        )
-                        cdn_manifest.pop(relative_audio_path, None)
-                        manifest.pop(text, None)
                         print(f"Skipping failed {accent.upper()} text; logged to error_log.txt.")
                     else:
-                        manifest[text] = f"/audio/{audio_cdn_path(directory, filename)}"
-                        print(f"Generated {directory.name}/{filename}")
+                        relative_audio_path = audio_cdn_path(directory, filename)
+                        manifest[text] = f"/audio/{relative_audio_path}"
+                        cdn_manifest[relative_audio_path] = (
+                            f"{CDN_AUDIO_BASE}/{relative_audio_path}"
+                        )
+                        files_generated.add(relative_audio_path)
+                        print(f"Generated {relative_audio_path}")
 
                 if progress:
                     progress.update(len(batch))
@@ -358,12 +318,10 @@ async def main(dry_run, limit, skip_cdn_check):
 
     write_manifest(CDN_MANIFEST_PATH, cdn_manifest)
     print(f"Run complete: {attempts} missing MP3 file(s) attempted.")
-    print("MP3 files to push to nduniverse-audio:")
-    if files_to_push:
-        for relative_path in sorted(files_to_push):
-            output_path = ROOT / "public" / "audio" / relative_path
-            if output_path.is_file() and output_path.stat().st_size > 0:
-                print(f"- {relative_path}")
+    print("MP3 files generated locally (sync these with nduniverse-audio if needed):")
+    if files_generated:
+        for relative_path in sorted(files_generated):
+            print(f"- {relative_path}")
     else:
         print("- None")
 
@@ -374,11 +332,6 @@ if __name__ == "__main__":
     )
     parser.add_argument("--dry-run", action="store_true", help="List voice/text totals without generating audio.")
     parser.add_argument(
-        "--skip-cdn-check",
-        action="store_true",
-        help="Treat every text as missing from the CDN without sending HTTP requests.",
-    )
-    parser.add_argument(
         "--limit",
         type=int,
         help="Maximum number of missing MP3 files to attempt in this run.",
@@ -387,4 +340,4 @@ if __name__ == "__main__":
     if arguments.limit is not None and arguments.limit < 0:
         parser.error("--limit must be zero or greater")
     # TODO: Proxy/User-Agent rotation
-    asyncio.run(main(arguments.dry_run, arguments.limit, arguments.skip_cdn_check))
+    asyncio.run(main(arguments.dry_run, arguments.limit))
