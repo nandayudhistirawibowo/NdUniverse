@@ -221,8 +221,6 @@ export default function EnglishExam({ exam, type, level }) {
     setSpeechAnswerId(answerId);
     void speechCapture.start({
       target: keywords.join(' ') || part?.question || '',
-      targetText: keywords.join(' ') || '',
-      allowTargetOverride: true,
       preserveArticles: isArticleQuestion(part?.question),
       keywords: keywords.length ? keywords : undefined,
       onResult: (transcript) => {

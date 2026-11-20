@@ -1,7 +1,3 @@
-function cleanTranscript(text) {
-  return text.replace(/[\p{P}\p{S}]/gu, '').replace(/\s{2,}/g, ' ').trim();
-}
-
 export default function SpeechFeedback({
   feedback,
   state,
@@ -34,18 +30,26 @@ export default function SpeechFeedback({
       {message && <p class="speech-error">{message}</p>}
       {feedback && (
         <>
-          <p>
-            Kamu mengucapkan: "{cleanTranscript(feedback.transcript)}"
-            {feedback.source === 'groq' && <span class="speech-source-badge">🎙️ Groq</span>}
-            {feedback.source === 'speechmatics' && (
-              <span class="speech-source-badge" title="Fallback: Speechmatics Global English">
-                🎙️ Speechmatics
-              </span>
-            )}
-            {feedback.source === 'browser' && <span class="speech-source-badge">🎙️ Browser</span>}
-          </p>
-          <p>Keyword kena: [{feedback.matched.join(', ')}]</p>
-          <p>Skor: {Math.round(feedback.score * 100)}%</p>
+          {feedback.transcript.trim() && (
+            <p>
+              Kamu mengucapkan: '{feedback.transcript}'
+              {feedback.source === 'groq' && <span class="speech-source-badge">🎙️ Groq</span>}
+              {feedback.source === 'speechmatics' && (
+                <span class="speech-source-badge" title="Fallback: Speechmatics Global English">
+                  🎙️ Speechmatics
+                </span>
+              )}
+              {feedback.source === 'browser' && <span class="speech-source-badge">🎙️ Browser</span>}
+            </p>
+          )}
+          {feedback.score === 0 ? (
+            <p class="speech-error">Tidak terdeteksi / Suara kurang jelas. Coba lagi dan pastikan suara kamu lebih keras dari musik.</p>
+          ) : (
+            <>
+              <p>Keyword kena: [{feedback.matched.join(', ')}]</p>
+              <p>Skor: {Math.round(feedback.score * 100)}%</p>
+            </>
+          )}
         </>
       )}
       <style>{`

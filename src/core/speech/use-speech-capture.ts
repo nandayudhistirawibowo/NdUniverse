@@ -3,8 +3,6 @@ import { createRecognizer, getRecognitionLang } from './stt-engine';
 import { cancelRecording, recordAndTranscribe, stopRecording } from './recorder';
 import {
   gradeWithAlternatives,
-  normalizeTargetText,
-  shouldOverrideTranscriptWithTarget,
   type GradeResult,
   type GradeWithAlternativesResult,
   type KeywordGradeResult,
@@ -25,11 +23,9 @@ export interface SpeechFeedbackData {
 
 interface CaptureOptions {
   target: string;
-  targetText?: string;
   preserveArticles?: boolean;
   keywords?: string[];
   singleWord?: boolean;
-  allowTargetOverride?: boolean;
   onResult?: (transcript: string, result: SpeechGrade) => void;
   onAdvance?: (transcript: string, result: SpeechGrade) => void;
 }
@@ -115,11 +111,9 @@ export function useSpeechCapture() {
 
   async function start({
     target,
-    targetText = target,
     preserveArticles = false,
     keywords,
     singleWord = false,
-    allowTargetOverride = false,
     onResult,
     onAdvance,
   }: CaptureOptions) {
@@ -151,8 +145,6 @@ export function useSpeechCapture() {
       try {
         const transcription = await recordAndTranscribe({
           lang: language,
-          targetText: normalizeTargetText(targetText, { preserveArticles }),
-          preserveArticles,
           onVolume: (level) => {
             if (requestId === requestIdRef.current) setVolumeLevel(level);
           },
@@ -202,25 +194,9 @@ export function useSpeechCapture() {
         keywords,
         preserveArticles,
       };
-      const firstTranscript = alternatives[0]?.transcript ?? '';
-      let result = gradeWithAlternatives(alternatives, target, gradeOptions);
-      let didOverrideTarget = false;
-      if (
-        allowTargetOverride
-        && targetText.trim()
-        && shouldOverrideTranscriptWithTarget(
-          result.bestAlternative.transcript,
-          targetText,
-          { preserveArticles },
-        )
-      ) {
-        didOverrideTarget = true;
-        alternatives = [{ transcript: targetText.trim(), confidence: 1 }];
-        result = gradeWithAlternatives(alternatives, target, gradeOptions);
-        if (import.meta.env.DEV) console.info('[STT] Replaced an unrelated transcript with the known quiz target.');
-      }
+      const result = gradeWithAlternatives(alternatives, target, gradeOptions);
       const transcript = result.bestAlternative.transcript;
-      if (!didOverrideTarget && transcript && transcript !== firstTranscript) {
+      if (transcript && transcript !== alternatives[0]?.transcript) {
         console.log(
           `[STT] picked alternative #${result.bestAlternative.index + 1}: "${transcript}" (score ${result.score})`,
         );

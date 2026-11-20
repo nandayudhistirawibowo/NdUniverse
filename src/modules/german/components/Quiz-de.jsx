@@ -788,8 +788,6 @@ export default function Quiz(props) {
     if (checkedResult !== null || speechCapture.state === 'listening') return;
     void speechCapture.start({
       target: currentQuestion.german,
-      targetText: currentQuestion.german,
-      allowTargetOverride: true,
       preserveArticles: shouldPreserveArticles(currentQuestion),
       singleWord: currentQuestion.german.trim().split(/\s+/).length === 1,
       onResult: (transcript) => setUserAnswer(transcript),

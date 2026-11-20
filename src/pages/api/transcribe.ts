@@ -1,6 +1,5 @@
 import type { APIRoute } from 'astro';
 import { BatchClient } from '@speechmatics/batch-client';
-import { normalizeTargetText } from '@core/speech/match.ts';
 
 const MAX_AUDIO_BYTES = 10 * 1024 * 1024;
 const RATE_LIMIT = 30;
@@ -96,19 +95,7 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: 'Bahasa harus en atau de.' }, 400);
   }
 
-  const rawTargetText = formData.get('target_text');
-  const preserveArticles = formData.get('preserve_articles') === 'true';
-  const targetText = typeof rawTargetText === 'string'
-    ? normalizeTargetText(
-      rawTargetText.replace(/[\u0000-\u001f\u007f]/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 200),
-      { preserveArticles },
-    ).slice(0, 200)
-    : '';
-  const escapedTargetText = targetText.replace(/"/g, '\\"');
-  const targetHint = targetText
-    ? `The user is trying to say exactly: "${escapedTargetText}". You MUST transcribe the audio as "${escapedTargetText}" if the audio sounds even remotely similar. DO NOT hallucinate background lyrics or unrelated phrases.`
-    : '';
-  const groqPrompt = `${targetHint} Transcribe the main speaker in ${language === 'de' ? 'German' : 'English'}. Ignore all background music, singing, crosstalk, and noise. If the audio is too noisy, return nothing rather than hallucinating.`;
+  const groqPrompt = 'Transcribe exactly what the user says. Ignore background music, singing, or crosstalk. If the audio is too noisy to understand, return an empty string.';
 
   const groqApiKey = import.meta.env.GROQ_API_KEY;
   if (groqApiKey) {
@@ -129,13 +116,10 @@ export const POST: APIRoute = async ({ request }) => {
       });
       if (response.ok) {
         const result: unknown = await response.json();
-        if (isRecord(result) && typeof result.text === 'string' && result.text.trim()) {
+        if (isRecord(result) && typeof result.text === 'string') {
           const transcript = result.text.trim();
-          const isShortTranscriptForPhrase = targetText
-            && targetText.split(/\s+/).length > 1
-            && transcript.split(/\s+/).length === 1;
           return jsonResponse({
-            transcript: isShortTranscriptForPhrase ? targetText : result.text,
+            transcript,
             ...(typeof result.confidence === 'number' ? { confidence: result.confidence } : {}),
             source: 'groq',
           });
@@ -175,8 +159,7 @@ export const POST: APIRoute = async ({ request }) => {
         .join(' ')
         .trim();
 
-      if (transcript) return jsonResponse({ transcript, source: 'speechmatics' });
-      console.warn('Speechmatics returned an empty transcript.');
+      return jsonResponse({ transcript, source: 'speechmatics' });
     } catch (error) {
       console.warn('Speechmatics batch transcription failed.', error);
     }

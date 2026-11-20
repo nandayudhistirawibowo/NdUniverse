@@ -6,10 +6,10 @@ import {
   normalizeText,
 } from '../src/core/game/fuzzy-match.js';
 import {
+  grade,
   gradeKeywords,
   gradeWithAlternatives,
   normalizeTargetText,
-  shouldOverrideTranscriptWithTarget,
 } from '../src/core/speech/match.ts';
 
 test('normalizes punctuation and removes English and German articles', () => {
@@ -47,9 +47,13 @@ test('article-focused answers can retain articles when the prompt requires them'
   expect(isArticleQuestion('Please describe the book.')).toBe(false);
 });
 
-test('only clearly unrelated speech is eligible for a known-target override', () => {
-  expect(shouldOverrideTranscriptWithTarget('what it is', 'grandfather')).toBe(true);
-  expect(shouldOverrideTranscriptWithTarget('grandfater', 'grandfather')).toBe(false);
-  expect(shouldOverrideTranscriptWithTarget('cat please keep speaking', 'cat')).toBe(true);
-  expect(shouldOverrideTranscriptWithTarget('', 'grandfather')).toBe(false);
+test('unrelated speech is graded against the target without substituting the target text', () => {
+  expect(isAnswerCorrect('what it is', 'grandfather')).toBe(false);
+  expect(grade('what it is', 'grandfather').score).toBe(0);
+  const result = gradeWithAlternatives(
+    [{ transcript: 'what it is', confidence: 1 }],
+    'grandfather',
+  );
+  expect(result.bestTranscript).toBe('what it is');
+  expect(result.pass).toBe(false);
 });

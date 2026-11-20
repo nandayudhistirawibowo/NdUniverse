@@ -226,20 +226,6 @@ export function similarity(
   return matched.length / targetWords.length;
 }
 
-export function shouldOverrideTranscriptWithTarget(
-  transcript: string,
-  target: string,
-  { preserveArticles = false }: GradeOptions = {},
-): boolean {
-  const transcriptWords = normalizeTargetText(transcript, { preserveArticles }).split(' ').filter(Boolean);
-  const targetWords = normalizeTargetText(target, { preserveArticles }).split(' ').filter(Boolean);
-  if (transcriptWords.length === 0 || targetWords.length === 0) return false;
-
-  const lengthRatio = Math.max(transcriptWords.length, targetWords.length)
-    / Math.min(transcriptWords.length, targetWords.length);
-  return similarity(transcript, target, { preserveArticles }) < 0.3 || lengthRatio >= 2.5;
-}
-
 export function grade(
   transcript: string,
   target: string,
