@@ -64,6 +64,7 @@ export default function MockExam({ level, tasks, unavailable = false }) {
     void speechCapture.start({
       target: keywords.join(' ') || task?.answer || task?.prompt || '',
       targetText: keywords.join(' ') || task?.answer || '',
+      allowTargetOverride: true,
       preserveArticles: isArticleQuestion(task?.prompt),
       keywords: keywords.length ? keywords : undefined,
       onResult: (transcript) => chooseAnswer(index, transcript),

@@ -9,6 +9,7 @@ import {
   gradeKeywords,
   gradeWithAlternatives,
   normalizeTargetText,
+  shouldOverrideTranscriptWithTarget,
 } from '../src/core/speech/match.ts';
 
 test('normalizes punctuation and removes English and German articles', () => {
@@ -44,4 +45,11 @@ test('article-focused answers can retain articles when the prompt requires them'
   expect(isAnswerCorrect('book', 'the book', 0.8, { preserveArticles: true })).toBe(false);
   expect(isArticleQuestion('Fill in the blank: ___ book is on the table.')).toBe(true);
   expect(isArticleQuestion('Please describe the book.')).toBe(false);
+});
+
+test('only clearly unrelated speech is eligible for a known-target override', () => {
+  expect(shouldOverrideTranscriptWithTarget('what it is', 'grandfather')).toBe(true);
+  expect(shouldOverrideTranscriptWithTarget('grandfater', 'grandfather')).toBe(false);
+  expect(shouldOverrideTranscriptWithTarget('cat please keep speaking', 'cat')).toBe(true);
+  expect(shouldOverrideTranscriptWithTarget('', 'grandfather')).toBe(false);
 });

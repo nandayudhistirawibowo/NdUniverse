@@ -106,9 +106,9 @@ export const POST: APIRoute = async ({ request }) => {
     : '';
   const escapedTargetText = targetText.replace(/"/g, '\\"');
   const targetHint = targetText
-    ? `The user is trying to say exactly: "${escapedTargetText}". If the audio sounds even remotely similar to this, you MUST transcribe it as "${escapedTargetText}". Do NOT output abbreviations or unrelated words.`
+    ? `The user is trying to say exactly: "${escapedTargetText}". You MUST transcribe the audio as "${escapedTargetText}" if the audio sounds even remotely similar. DO NOT hallucinate background lyrics or unrelated phrases.`
     : '';
-  const groqPrompt = `${targetHint} Transcribe English/German spoken with an Indonesian accent. Ignore background noise.`;
+  const groqPrompt = `${targetHint} Transcribe the main speaker in ${language === 'de' ? 'German' : 'English'}. Ignore all background music, singing, crosstalk, and noise. If the audio is too noisy, return nothing rather than hallucinating.`;
 
   const groqApiKey = import.meta.env.GROQ_API_KEY;
   if (groqApiKey) {

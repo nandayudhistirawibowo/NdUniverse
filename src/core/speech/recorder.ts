@@ -22,6 +22,8 @@ let activeRecording: ActiveRecording | null = null;
 const NOISE_CALIBRATION_MS = 500;
 const VOICE_ACTIVITY_MIN_THRESHOLD = 0.02;
 const VOICE_ACTIVITY_NOISE_MARGIN = 0.03;
+const NOISY_ROOM_THRESHOLD = 0.05;
+const NOISY_ROOM_VOICE_MARGIN = 0.1;
 const SILENCE_GRACE_PERIOD_MS = 1_500;
 
 export function stopRecording(): void {
@@ -121,10 +123,10 @@ export async function recordAndTranscribe({
     const noiseFloor = calibrationSamples.length > 0
       ? calibrationSamples.reduce((sum, level) => sum + level, 0) / calibrationSamples.length
       : 0;
-    const voiceActivityThreshold = Math.max(
-      VOICE_ACTIVITY_MIN_THRESHOLD,
-      noiseFloor + VOICE_ACTIVITY_NOISE_MARGIN,
-    );
+    const noiseMargin = noiseFloor > NOISY_ROOM_THRESHOLD
+      ? NOISY_ROOM_VOICE_MARGIN
+      : VOICE_ACTIVITY_NOISE_MARGIN;
+    const voiceActivityThreshold = Math.max(VOICE_ACTIVITY_MIN_THRESHOLD, noiseFloor + noiseMargin);
     onNoiseFloor?.(noiseFloor);
 
     const preferredMimeType = 'audio/webm;codecs=opus';

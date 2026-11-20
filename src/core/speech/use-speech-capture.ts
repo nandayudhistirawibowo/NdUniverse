@@ -4,6 +4,7 @@ import { cancelRecording, recordAndTranscribe, stopRecording } from './recorder'
 import {
   gradeWithAlternatives,
   normalizeTargetText,
+  shouldOverrideTranscriptWithTarget,
   type GradeResult,
   type GradeWithAlternativesResult,
   type KeywordGradeResult,
@@ -28,6 +29,7 @@ interface CaptureOptions {
   preserveArticles?: boolean;
   keywords?: string[];
   singleWord?: boolean;
+  allowTargetOverride?: boolean;
   onResult?: (transcript: string, result: SpeechGrade) => void;
   onAdvance?: (transcript: string, result: SpeechGrade) => void;
 }
@@ -117,6 +119,7 @@ export function useSpeechCapture() {
     preserveArticles = false,
     keywords,
     singleWord = false,
+    allowTargetOverride = false,
     onResult,
     onAdvance,
   }: CaptureOptions) {
@@ -194,14 +197,30 @@ export function useSpeechCapture() {
       recognizerRef.current = null;
       setVolumeLevel(0);
 
-      const result = gradeWithAlternatives(alternatives, target, {
+      const gradeOptions = {
         singleWord,
         keywords,
         preserveArticles,
-      });
-      const transcript = result.bestAlternative.transcript;
+      };
       const firstTranscript = alternatives[0]?.transcript ?? '';
-      if (transcript && transcript !== firstTranscript) {
+      let result = gradeWithAlternatives(alternatives, target, gradeOptions);
+      let didOverrideTarget = false;
+      if (
+        allowTargetOverride
+        && targetText.trim()
+        && shouldOverrideTranscriptWithTarget(
+          result.bestAlternative.transcript,
+          targetText,
+          { preserveArticles },
+        )
+      ) {
+        didOverrideTarget = true;
+        alternatives = [{ transcript: targetText.trim(), confidence: 1 }];
+        result = gradeWithAlternatives(alternatives, target, gradeOptions);
+        if (import.meta.env.DEV) console.info('[STT] Replaced an unrelated transcript with the known quiz target.');
+      }
+      const transcript = result.bestAlternative.transcript;
+      if (!didOverrideTarget && transcript && transcript !== firstTranscript) {
         console.log(
           `[STT] picked alternative #${result.bestAlternative.index + 1}: "${transcript}" (score ${result.score})`,
         );

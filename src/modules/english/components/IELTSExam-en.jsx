@@ -146,6 +146,7 @@ export default function GoetheExam({ level, tasks, available = true }) {
     void speechCapture.start({
       target: keywords.join(' ') || task?.prompt || '',
       targetText: keywords.join(' ') || '',
+      allowTargetOverride: true,
       preserveArticles: isArticleQuestion(task?.prompt),
       keywords: keywords.length ? keywords : undefined,
       onResult: (transcript) => chooseAnswer(moduleId, index, transcript),
