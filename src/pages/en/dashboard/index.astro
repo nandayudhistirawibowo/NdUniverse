@@ -45,7 +45,11 @@ const progressMaterials = materials.map((material) => ({
 }));
 const completedMaterials = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
-  if (!material || !hasCompletedPillarSession(row.sessions_passed)) return [];
+  if (!material) return [];
+  const maxXp = material.data.vocab.length * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
+  const xp = Math.max(0, Number(row.xp) || 0);
+  const completed = maxXp > 0 && xp >= maxXp;
+  if (!completed) return [];
   return [{
     slug: material.id.split('/').at(-1) ?? material.id,
     title: material.data.title ?? material.id,
@@ -55,13 +59,12 @@ const completedMaterials = progressRows.flatMap((row) => {
 const materialProgress = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material) return [];
-  const passedPillars = new Set(
-    normalizePassedPillars(row.sessions_passed).map((pillar) => pillar.replace(/^s\d+-/, '')),
-  );
-  const completed = hasCompletedPillarSession(row.sessions_passed);
   const maxXp = material.data.vocab.length * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
   const xp = Math.max(0, Number(row.xp) || 0);
-  const percentage = completed ? 100 : Math.round((Math.min(passedPillars.size, PILLAR_COUNT) / PILLAR_COUNT) * 100);
+  const completed = maxXp > 0 && xp >= maxXp;
+  const percentage = completed
+    ? 100
+    : (maxXp > 0 ? Math.min(99, Math.round((xp / maxXp) * 100)) : 0);
   if (percentage === 0 && xp === 0) return [];
   return [{
     slug: material.id.split('/').at(-1) ?? material.id,
@@ -201,7 +204,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
                 <span class="completed-item-percent">{material.percentage}%</span>
               </span>
               <span class:list={['completed-item-status', { 'is-completed': material.completed }]}>
-                {material.completed ? 'Selesai (100%)' : `${material.percentage}% · Kurang ${material.remainingXp} XP lagi`}
+                {material.completed ? 'Selesai (100%)' : `Kurang ${material.remainingXp} XP lagi`}
               </span>
             </a>
           </li>
@@ -261,25 +264,27 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
       nextThreshold: number | null;
       nextLabel: string | null;
     }>;
-    const completed = materials.filter((material) => (
-      hasCompletedPillarSession(rows.get(material.slug)?.sessions_passed)
-    ));
     const progressMaterials = JSON.parse(dashboard.dataset.progressMaterials ?? '[]') as Array<{
       slug: string;
       title: string;
       maxXp: number;
     }>;
+    const progressMaterialBySlug = new Map(progressMaterials.map((m) => [m.slug, m]));
+    const completed = materials.filter((material) => {
+      const row = rows.get(material.slug);
+      if (!row) return false;
+      const maxXp = progressMaterialBySlug.get(material.slug)?.maxXp ?? 0;
+      const xp = Math.max(0, Number(row.xp) || 0);
+      return maxXp > 0 && xp >= maxXp;
+    });
     const materialProgress = progressMaterials.flatMap((material) => {
       const row = rows.get(material.slug);
       if (!row) return [];
-      const passedPillars = new Set(
-        normalizePassedPillars(row.sessions_passed).map((pillar) => pillar.replace(/^s\d+-/, '')),
-      );
-      const isComplete = hasCompletedPillarSession(row.sessions_passed);
+      const xp = Math.max(0, Number(row.xp) || 0);
+      const isComplete = material.maxXp > 0 && xp >= material.maxXp;
       const percentage = isComplete
         ? 100
-        : Math.round((Math.min(passedPillars.size, PILLAR_COUNT) / PILLAR_COUNT) * 100);
-      const xp = Math.max(0, Number(row.xp) || 0);
+        : (material.maxXp > 0 ? Math.min(99, Math.round((xp / material.maxXp) * 100)) : 0);
       if (percentage === 0 && xp === 0) return [];
       return [{
         ...material,

@@ -4,7 +4,8 @@ import { normalizePassedPillars } from '@core/db/progress-client.js';
 
 type ProgressRow = {
   material_slug: string;
-  sessions_passed: unknown;
+  sessions_passed?: unknown;
+  xp?: number;
 };
 
 interface Props {
@@ -17,23 +18,29 @@ const { materials = [], progressRows = [], materialHrefPrefix = '/materi' } = As
 const progressBySlug = new Map<string, ProgressRow>(
   progressRows.map((row) => [row.material_slug, row])
 );
+const PILLAR_COUNT = 4;
+const XP_PER_CORRECT_ANSWER = 10;
 const cards = materials.map((material) => {
-  const savedSessions = progressBySlug.get(material.id)?.sessions_passed;
-  const passedCount = normalizePassedPillars(savedSessions).length;
-  const totalSessions = 4;
+  const row = progressBySlug.get(material.id);
+  const vocabCount = material.data.vocab?.length ?? 0;
+  const maxXp = vocabCount * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
+  const xp = Math.max(0, Number(row?.xp) || 0);
+  const percentage = maxXp > 0
+    ? (xp >= maxXp ? 100 : Math.min(99, Math.round((xp / maxXp) * 100)))
+    : 0;
 
   return {
     material,
-    totalSessions,
-    passedCount,
-    percentage: totalSessions > 0 ? Math.round((passedCount / totalSessions) * 100) : 0,
+    maxXp,
+    xp,
+    percentage,
   };
 });
 ---
 
 <div class="material-grid">
-  {cards.map(({ material, totalSessions, passedCount, percentage }) => (
-    <a class="material-card" href={`${materialHrefPrefix}/${material.id}`} data-material-level={material.data.level ?? ''} data-progress-slug={material.id} data-progress-language="de">
+  {cards.map(({ material, maxXp, xp, percentage }) => (
+    <a class="material-card" href={`${materialHrefPrefix}/${material.id}`} data-material-level={material.data.level ?? ''} data-progress-slug={material.id} data-progress-language="de" data-max-xp={maxXp}>
       <div class="material-topline">
         <span class="material-track">{material.data.track}</span>
         <span class="material-percent" data-progress-percent>{percentage}%</span>
@@ -47,7 +54,7 @@ const cards = materials.map((material) => {
       <div class="progress-copy">
         <span
           data-progress-copy
-        >{passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 Pilar`}</span>
+        >{xp >= maxXp && maxXp > 0 ? 'Selesai (100%)' : (xp === 0 ? 'Belum dimulai' : `${xp} / ${maxXp} XP`)}</span>
         <span>{material.data.vocab.length} kosakata</span>
       </div>
       <div
@@ -229,8 +236,8 @@ const cards = materials.map((material) => {
     overflow: hidden;
     height: 6px;
     margin-top: 0.4rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--text-main) 12%, var(--bg-dark));
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
   }
 
   .progress-track span {

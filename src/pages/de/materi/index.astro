@@ -2,10 +2,32 @@
 import DashboardLayout from '@core/ui/DashboardLayout-de.astro';
 import { getCollection } from 'astro:content';
 
+export const prerender = false;
+
 const materi = await getCollection('materi');
 const sortedMateri = materi.toSorted((first, second) =>
   first.data.judulMateri.localeCompare(second.data.judulMateri, 'id')
 );
+
+const user = Astro.locals.user;
+const { data: progressData } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('material_slug, xp')
+    .eq('user_id', user.id)
+    .eq('language_code', 'de')
+  : { data: [] };
+
+const xpBySlug = new Map<string, number>();
+for (const row of (progressData ?? [])) {
+  const xp = Math.max(0, Number(row.xp) || 0);
+  xpBySlug.set(row.material_slug, xp);
+  const short = row.material_slug.split('/').at(-1);
+  if (short && !xpBySlug.has(short)) xpBySlug.set(short, xp);
+}
+
+const PILLAR_COUNT = 4;
+const XP_PER_CORRECT_ANSWER = 10;
 ---
 
 <DashboardLayout
@@ -35,23 +57,41 @@ const sortedMateri = materi.toSorted((first, second) =>
     </p>
 
     <div class="materi-grid" id="material-grid">
-      {sortedMateri.map((item) => (
-        <a
-          class="materi-card"
-          href={`/de/materi/${item.id}`}
-          data-material-card
-          data-level={item.data.level ?? ''}
-          data-title={item.data.judulMateri.toLocaleLowerCase('id')}
-        >
-          <span class="track-label">{item.data.track}</span>
-          <h2>{item.data.judulMateri}</h2>
-          <p class="description">{item.data.deskripsi}</p>
-          <div class="card-meta">
-            {item.data.level && <span class="level-badge" data-level={item.data.level}>{item.data.level}</span>}
-            {item.data.jurusan && <span class="meta-badge">{item.data.jurusan}</span>}
-          </div>
-        </a>
-      ))}
+      {sortedMateri.map((item) => {
+        const vocabCount = item.data.vocab?.length ?? 0;
+        const maxXp = vocabCount * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
+        const shortSlug = item.id.split('/').at(-1) ?? item.id;
+        const currentXp = xpBySlug.get(item.id) ?? xpBySlug.get(shortSlug) ?? 0;
+        const percentage = maxXp > 0
+          ? (currentXp >= maxXp ? 100 : Math.min(99, Math.round((currentXp / maxXp) * 100)))
+          : 0;
+        return (
+          <a
+            class="materi-card"
+            href={`/de/materi/${item.id}`}
+            data-material-card
+            data-level={item.data.level ?? ''}
+            data-title={item.data.judulMateri.toLocaleLowerCase('id')}
+          >
+            <span class="track-label">{item.data.track}</span>
+            <h2>{item.data.judulMateri}</h2>
+            <p class="description">{item.data.deskripsi}</p>
+            <div class="card-progress-wrap">
+              <div class="card-progress-info">
+                <span>Progres</span>
+                <span class="card-progress-percent">{percentage}%</span>
+              </div>
+              <div class="card-progress-track" role="progressbar" aria-valuenow={percentage} aria-valuemin="0" aria-valuemax="100" aria-label={`Progres ${item.data.judulMateri}`}>
+                <div class="card-progress-fill" style={`width: ${percentage}%`} />
+              </div>
+            </div>
+            <div class="card-meta">
+              {item.data.level && <span class="level-badge" data-level={item.data.level}>{item.data.level}</span>}
+              {item.data.jurusan && <span class="meta-badge">{item.data.jurusan}</span>}
+            </div>
+          </a>
+        );
+      })}
     </div>
 
     <p id="no-results" class="no-results" hidden>Tidak ada materi dengan judul tersebut.</p>
@@ -226,6 +266,43 @@ const sortedMateri = materi.toSorted((first, second) =>
     margin: 0;
     color: var(--muted);
     line-height: 1.55;
+  }
+
+  .card-progress-wrap {
+    display: grid;
+    gap: .35rem;
+    margin-top: auto;
+    padding-top: .4rem;
+  }
+
+  .card-progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: .75rem;
+    color: var(--muted);
+    font-weight: 700;
+  }
+
+  .card-progress-percent {
+    color: var(--accent-gold);
+    font-weight: 800;
+    font-size: .8rem;
+  }
+
+  .card-progress-track {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .card-progress-fill {
+    height: 100%;
+    background: var(--accent-gold);
+    border-radius: 4px;
+    transition: width .3s ease;
   }
 
   .card-meta {

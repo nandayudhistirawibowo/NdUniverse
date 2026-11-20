@@ -12,6 +12,26 @@ if (!level) return new Response('Level tidak ditemukan.', { status: 404 });
 const materials = (await getCollection('englishEveryday'))
   .filter((item) => item.data.track === 'Everyday English' && item.data.level === level)
   .sort((left, right) => (left.data.title ?? left.id).localeCompare(right.data.title ?? right.id));
+
+const user = Astro.locals.user;
+const { data: progressData } = user
+  ? await Astro.locals.supabase
+    .from('user_progress')
+    .select('material_slug, xp')
+    .eq('user_id', user.id)
+    .eq('language_code', 'en')
+  : { data: [] };
+
+const xpBySlug = new Map<string, number>();
+for (const row of (progressData ?? [])) {
+  const xp = Math.max(0, Number(row.xp) || 0);
+  xpBySlug.set(row.material_slug, xp);
+  const short = row.material_slug.split('/').at(-1);
+  if (short && !xpBySlug.has(short)) xpBySlug.set(short, xp);
+}
+
+const PILLAR_COUNT = 4;
+const XP_PER_CORRECT_ANSWER = 10;
 ---
 
 <DashboardLayout
@@ -30,13 +50,31 @@ const materials = (await getCollection('englishEveryday'))
     </header>
     {materials.length ? (
       <div class="material-grid">
-        {materials.map((item) => (
-          <article class="material-card">
-            <h2>{item.data.title ?? item.id}</h2>
-            <p>{item.data.description ?? ''}</p>
-            <a href={`/en/materi/${item.id.split('/').at(-1)}`}>Buka Materi →</a>
-          </article>
-        ))}
+        {materials.map((item) => {
+          const vocabCount = item.data.vocab?.length ?? 0;
+          const maxXp = vocabCount * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
+          const shortSlug = item.id.split('/').at(-1) ?? item.id;
+          const currentXp = xpBySlug.get(item.id) ?? xpBySlug.get(shortSlug) ?? 0;
+          const percentage = maxXp > 0
+            ? (currentXp >= maxXp ? 100 : Math.min(99, Math.round((currentXp / maxXp) * 100)))
+            : 0;
+          return (
+            <article class="material-card">
+              <h2>{item.data.title ?? item.id}</h2>
+              <p>{item.data.description ?? ''}</p>
+              <div class="card-progress-wrap">
+                <div class="card-progress-info">
+                  <span>Progres</span>
+                  <span class="card-progress-percent">{percentage}%</span>
+                </div>
+                <div class="card-progress-track" role="progressbar" aria-valuenow={percentage} aria-valuemin="0" aria-valuemax="100" aria-label={`Progres ${item.data.title ?? item.id}`}>
+                  <div class="card-progress-fill" style={`width: ${percentage}%`} />
+                </div>
+              </div>
+              <a href={`/en/materi/${item.id.split('/').at(-1)}`}>Buka Materi →</a>
+            </article>
+          );
+        })}
       </div>
     ) : (
       <p class="empty-state">Materi Bahasa Inggris Sehari-hari untuk level ini belum tersedia.</p>
@@ -57,6 +95,11 @@ const materials = (await getCollection('englishEveryday'))
   .material-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem; }
   .material-card { display: grid; align-content: start; gap: .65rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--card-bg); }
   .material-card h2, .material-card p { margin: 0; }
+  .card-progress-wrap { display: grid; gap: .35rem; margin-top: auto; padding-top: .4rem; }
+  .card-progress-info { display: flex; justify-content: space-between; align-items: center; font-size: .75rem; color: var(--muted); font-weight: 700; }
+  .card-progress-percent { color: var(--accent-gold); font-weight: 800; font-size: .8rem; }
+  .card-progress-track { width: 100%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 4px; overflow: hidden; }
+  .card-progress-fill { height: 100%; background: var(--accent-gold); border-radius: 4px; transition: width .3s ease; }
   .material-card a, .exam-links a { color: var(--accent-gold); font-weight: 800; text-decoration: none; }
   .exam-links { display: flex; flex-wrap: wrap; gap: 1rem; }
   @media (max-width: 767px) {
