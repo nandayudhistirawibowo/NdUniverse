@@ -5,7 +5,7 @@ track: "Everyday English"
 level: "B1"
 vocab:
   - { word: "local transport", translation: "transportasi lokal", context: "Local transport was increased at the weekend.", contextIndonesian: "Layanan transportasi lokal ditambah saat akhir pekan." }
-  - { word: "connection", translation: "rute / sambungan", context: "The connection to Bonn was interrupted.", contextIndonesian: "Rute ke Bonn sempat terputus." }
+  - { word: "connection", translation: "koneksi transportasi", context: "The connection to Bonn was interrupted.", contextIndonesian: "Rute ke Bonn sempat terputus." }
   - { word: "ticket", translation: "tiket perjalanan", context: "The ticket was purchased at the machine.", contextIndonesian: "Tiketnya dibeli di mesin." }
   - { word: "delay", translation: "keterlambatan", context: "I was late because of a delay.", contextIndonesian: "Aku terlambat karena keretanya telat." }
   - { word: "passenger", translation: "penumpang", context: "Passengers have been informed of changes.", contextIndonesian: "Para penumpang diberi tahu soal perubahan." }
@@ -17,7 +17,7 @@ vocab:
   - { word: "change", translation: "berganti kendaraan", context: "In Cologne we changed to the tram.", contextIndonesian: "Di Köln kami berganti ke trem." }
   - { word: "fail", translation: "dibatalkan", context: "The train was canceled due to a strike.", contextIndonesian: "Keretanya batal berangkat karena mogok kerja." }
   - { word: "be late", translation: "terlambat", context: "The bus was twenty minutes late.", contextIndonesian: "Busnya terlambat dua puluh menit." }
-  - { word: "reach", translation: "mencapai / tiba", context: "We reached the train station just in time.", contextIndonesian: "Kami masih sempat tiba di stasiun tepat waktu." }
+  - { word: "reach", translation: "mencapai", context: "We reached the train station just in time.", contextIndonesian: "Kami masih sempat tiba di stasiun tepat waktu." }
   - { word: "route", translation: "rute", context: "The route was closed due to construction work.", contextIndonesian: "Rutenya ditutup karena pekerjaan konstruksi." }
   - { word: "carpool", translation: "berbagi tumpangan", context: "Carpooling would save time and money.", contextIndonesian: "Berbagi tumpangan bisa menghemat waktu dan uang." }
   - { word: "environmentally friendly", translation: "ramah lingkungan", context: "The tram is considered environmentally friendly.", contextIndonesian: "Trem dianggap ramah lingkungan." }

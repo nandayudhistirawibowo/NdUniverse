@@ -17,8 +17,8 @@ vocab:
   - { word: "change", translation: "berganti kendaraan", context: "In Frankfurt we take another train.", contextIndonesian: "Di Frankfurt kami berganti ke kereta lain." }
   - { word: "delay", translation: "keterlambatan", context: "The train is late because of the rain.", contextIndonesian: "Kereta terlambat karena hujan." }
   - { word: "accommodation", translation: "akomodasi", context: "Our accommodation is very close to the beach.", contextIndonesian: "Penginapan kami dekat sekali dengan pantai." }
-  - { word: "reserve", translation: "memesan / mereservasi", context: "I would like to reserve a double room for three nights.", contextIndonesian: "Saya ingin memesan kamar untuk dua orang selama tiga malam." }
-  - { word: "book", translation: "memesan", context: "She books her train journey via app.", contextIndonesian: "Dia memesan perjalanan keretanya lewat aplikasi." }
+  - { word: "reserve", translation: "memesan kamar", context: "I would like to reserve a double room for three nights.", contextIndonesian: "Saya ingin memesan kamar untuk dua orang selama tiga malam." }
+  - { word: "book", translation: "memesan perjalanan", context: "She books her train journey via app.", contextIndonesian: "Dia memesan perjalanan keretanya lewat aplikasi." }
   - { word: "depart", translation: "berangkat", context: "The bus leaves in ten minutes.", contextIndonesian: "Bus berangkat dalam sepuluh menit." }
   - { word: "arrive", translation: "tiba", context: "We arrive in Berlin on Saturday evening.", contextIndonesian: "Kami tiba di Berlin pada Sabtu malam." }
   - { word: "stop", translation: "halte", context: "The next stop is in front of the museum.", contextIndonesian: "Halte berikutnya berada di depan museum." }

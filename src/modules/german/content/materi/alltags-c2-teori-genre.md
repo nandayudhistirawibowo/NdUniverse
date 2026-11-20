@@ -5,7 +5,7 @@ judulMateri: "Teori Genre"
 deskripsi: "Istilah untuk memahami genre sebagai konvensi, kategori, dan praktik historis."
 vocab:
   - german: "Gattungskonvention"
-    indonesian: "konvensi genre"
+    indonesian: "konvensi sastra"
     context: "Gattungskonventionen lenkten Erwartungen und Lektüren."
     contextIndonesian: "Konvensi genre mengarahkan harapan dan pembacaan."
   - german: "Gattungshybridität"

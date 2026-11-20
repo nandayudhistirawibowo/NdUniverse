@@ -9,7 +9,7 @@ vocab:
   - { word: "itinerary", translation: "rute perjalanan", context: "The itinerary changed due to the weather.", contextIndonesian: "Rute perjalanan berubah karena cuaca." }
   - { word: "obstacle", translation: "hambatan", context: "An obstacle was quickly overcome.", contextIndonesian: "Hambatannya cepat diatasi." }
   - { word: "delay", translation: "keterlambatan", context: "I missed the connection due to a delay.", contextIndonesian: "Aku ketinggalan sambungan karena keterlambatan." }
-  - { word: "orientation", translation: "orientasi / petunjuk arah", context: "Without a map I lost my bearings for a moment.", contextIndonesian: "Tanpa peta, aku sempat kehilangan arah." }
+  - { word: "orientation", translation: "petunjuk arah", context: "Without a map I lost my bearings for a moment.", contextIndonesian: "Tanpa peta, aku sempat kehilangan arah." }
   - { word: "encounter", translation: "pertemuan", context: "A chance encounter saved my afternoon.", contextIndonesian: "Pertemuan tak terduga menyelamatkan soreku." }
   - { word: "travel destination", translation: "tujuan perjalanan", context: "I chose the travel destination quite spontaneously.", contextIndonesian: "Aku memilih tujuan perjalanan secara spontan." }
   - { word: "challenge", translation: "tantangan", context: "The biggest challenge was the foreign language.", contextIndonesian: "Tantangan terbesarnya adalah bahasa asing." }
@@ -20,7 +20,7 @@ vocab:
   - { word: "travel guide", translation: "pemandu wisata", context: "A tour guide showed us hidden places.", contextIndonesian: "Seorang pemandu menunjukkan tempat-tempat tersembunyi." }
   - { word: "local", translation: "warga lokal perempuan", context: "A local recommended a small café to me.", contextIndonesian: "Seorang warga lokal menyarankan kafe kecil." }
   - { word: "luggage", translation: "barang bawaan", context: "My luggage was stolen during the journey.", contextIndonesian: "Barang bawaanku dicuri selama perjalanan." }
-  - { word: "deviation", translation: "perubahan / penyimpangan", context: "A deviation from the plan made the trip more exciting.", contextIndonesian: "Perubahan rencana membuat perjalanan lebih seru." }
+  - { word: "deviation", translation: "penyimpangan", context: "A deviation from the plan made the trip more exciting.", contextIndonesian: "Perubahan rencana membuat perjalanan lebih seru." }
   - { word: "independent", translation: "mandiri", context: "Traveling independently gave me more freedom.", contextIndonesian: "Bepergian mandiri memberiku lebih banyak kebebasan." }
   - { word: "security", translation: "keamanan", context: "I paid particular attention to safety.", contextIndonesian: "Aku sangat memperhatikan keamanan." }
   - { word: "incident", translation: "insiden", context: "The incident was later quickly resolved.", contextIndonesian: "Insiden itu kemudian cepat diselesaikan." }

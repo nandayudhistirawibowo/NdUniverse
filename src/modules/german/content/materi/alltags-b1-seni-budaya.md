@@ -49,7 +49,7 @@ vocab:
     context: "Die Kulturstätte wurde barrierefrei zugänglich gemacht."
     contextIndonesian: "Tempat budaya itu dibuat mudah diakses."
   - german: "Eintritt"
-    indonesian: "tiket masuk"
+    indonesian: "biaya masuk"
     context: "Der Eintritt war am ersten Sonntag kostenlos."
     contextIndonesian: "Tiket masuk gratis pada hari Minggu pertama."
   - german: "Lesung"

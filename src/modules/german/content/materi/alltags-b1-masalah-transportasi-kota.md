@@ -77,7 +77,7 @@ vocab:
     context: "Auf die Beschwerde wurde nicht reagiert."
     contextIndonesian: "Keluhannya tidak ditanggapi."
   - german: "Verbindung"
-    indonesian: "jalur / koneksi"
+    indonesian: "jalur"
     context: "Die Verbindung zum Zentrum wurde verbessert."
     contextIndonesian: "Jalur menuju pusat kota diperbaiki."
   - german: "Mobilität"

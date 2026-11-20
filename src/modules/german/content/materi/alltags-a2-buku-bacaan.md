@@ -69,7 +69,7 @@ vocab:
     context: "Die Geschichte spielte in einem kleinen Dorf."
     contextIndonesian: "Ceritanya berlatar di sebuah desa kecil."
   - german: "spannend"
-    indonesian: "menegangkan / seru"
+    indonesian: "seru"
     context: "Das Buch war spannend und leicht zu lesen."
     contextIndonesian: "Bukunya seru dan mudah dibaca."
   - german: "langweilig"

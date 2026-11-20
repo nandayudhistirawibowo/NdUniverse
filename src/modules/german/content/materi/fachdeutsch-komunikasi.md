@@ -47,7 +47,7 @@ vocab:
     indonesian: "pemberitaan"
     context: "Die Berichterstattung über das Ereignis begann am frühen Morgen."
   - german: "Inhalt"
-    indonesian: "isi / konten"
+    indonesian: "isi"
     context: "Der Inhalt des Beitrags wird vor der Veröffentlichung geprüft."
   - german: "Publikum"
     indonesian: "audiens"

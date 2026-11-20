@@ -13,16 +13,16 @@ vocab:
   - { word: "sleeping bag", translation: "kantong tidur", context: "My sleeping bag keeps me nice and warm.", contextIndonesian: "Kantong tidurku membuatku tetap hangat." }
   - { word: "campfire", translation: "api unggun", context: "In the evening we sat around the campfire.", contextIndonesian: "Malamnya kami duduk di sekitar api unggun." }
   - { word: "backpack", translation: "ransel", context: "I packed the backpack myself.", contextIndonesian: "Aku mengemas ranselnya sendiri." }
-  - { word: "hike", translation: "pendakian / perjalanan kaki", context: "Everyone enjoyed the hike.", contextIndonesian: "Semua orang menikmati pendakiannya." }
+  - { word: "hike", translation: "pendakian", context: "Everyone enjoyed the hike.", contextIndonesian: "Semua orang menikmati pendakiannya." }
   - { word: "camping", translation: "berkemah", context: "We're not allowed to camp here.", contextIndonesian: "Kita tidak boleh berkemah di sini." }
-  - { word: "hiking", translation: "mendaki / berjalan kaki", context: "We hiked a lot at the weekend.", contextIndonesian: "Akhir pekan lalu kami banyak berjalan kaki." }
+  - { word: "hiking", translation: "mendaki", context: "We hiked a lot at the weekend.", contextIndonesian: "Akhir pekan lalu kami banyak berjalan kaki." }
   - { word: "rest", translation: "beristirahat", context: "After the climb we had to rest.", contextIndonesian: "Setelah mendaki, kami harus istirahat." }
   - { word: "view", translation: "pemandangan", context: "The view from the summit was beautiful.", contextIndonesian: "Pemandangan dari puncaknya indah sekali." }
   - { word: "summit", translation: "puncak", context: "We reached the summit before noon.", contextIndonesian: "Kami sampai di puncak sebelum siang." }
   - { word: "nature", translation: "alam", context: "I can switch off easily in nature.", contextIndonesian: "Aku bisa bersantai di alam." }
   - { word: "environment", translation: "lingkungan", context: "We should keep the environment clean.", contextIndonesian: "Kita harus menjaga lingkungan tetap bersih." }
   - { word: "garbage", translation: "sampah", context: "Please don't leave any trash on the beach.", contextIndonesian: "Jangan tinggalkan sampah di pantai." }
-  - { word: "shore", translation: "tepi danau / sungai", context: "We had a picnic on the shore.", contextIndonesian: "Kami piknik di tepi danau." }
+  - { word: "shore", translation: "tepi perairan", context: "We had a picnic on the shore.", contextIndonesian: "Kami piknik di tepi danau." }
   - { word: "island", translation: "pulau", context: "The island can only be reached by boat.", contextIndonesian: "Pulau itu hanya bisa dicapai dengan perahu." }
 ---
 

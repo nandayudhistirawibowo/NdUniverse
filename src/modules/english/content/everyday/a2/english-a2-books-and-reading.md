@@ -20,7 +20,7 @@ vocab:
   - { word: "page", translation: "halaman", context: "A new chapter began on this page.", contextIndonesian: "Bab baru dimulai di halaman ini." }
   - { word: "chapter", translation: "bab", context: "The last chapter surprised me.", contextIndonesian: "Bab terakhirnya mengejutkanku." }
   - { word: "story", translation: "cerita", context: "The story took place in a small village.", contextIndonesian: "Ceritanya berlatar di sebuah desa kecil." }
-  - { word: "exciting", translation: "menegangkan / seru", context: "The book was exciting and easy to read.", contextIndonesian: "Bukunya seru dan mudah dibaca." }
+  - { word: "exciting", translation: "seru", context: "The book was exciting and easy to read.", contextIndonesian: "Bukunya seru dan mudah dibaca." }
   - { word: "boring", translation: "membosankan", context: "I found the beginning a bit boring.", contextIndonesian: "Menurutku bagian awalnya agak membosankan." }
   - { word: "loan period", translation: "masa peminjaman", context: "The loan period has been extended by one week.", contextIndonesian: "Masa peminjamannya diperpanjang seminggu." }
   - { word: "reading group", translation: "kelompok membaca", context: "Our reading group meets every month.", contextIndonesian: "Kelompok baca kami bertemu setiap bulan." }

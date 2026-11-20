@@ -11,7 +11,7 @@ vocab:
   - { word: "bribe", translation: "penyuapan", context: "The bribery was investigated internally.", contextIndonesian: "Kasus penyuapan itu diselidiki secara internal." }
   - { word: "guideline", translation: "pedoman", context: "The policy was explained to all employees.", contextIndonesian: "Pedoman itu dijelaskan kepada semua pegawai." }
   - { word: "disclosure", translation: "pengungkapan", context: "Full disclosure would have avoided doubt.", contextIndonesian: "Pengungkapan penuh bisa mencegah keraguan." }
-  - { word: "clue", translation: "laporan / petunjuk", context: "The tip was sent anonymously to the location.", contextIndonesian: "Laporannya dikirim secara anonim ke pihak terkait." }
+  - { word: "tip", translation: "laporan", context: "The tip was sent anonymously to the authorities.", contextIndonesian: "Laporannya dikirim secara anonim kepada pihak berwenang." }
   - { word: "equal treatment", translation: "perlakuan setara", context: "Equal treatment was strengthened through clear rules.", contextIndonesian: "Perlakuan setara diperkuat lewat aturan yang jelas." }
   - { word: "discrimination", translation: "diskriminasi", context: "Discrimination that was reported was not without consequences.", contextIndonesian: "Diskriminasi yang dilaporkan itu tetap ditindaklanjuti." }
   - { word: "compliance", translation: "kepatuhan", context: "Compliance was regularly audited externally.", contextIndonesian: "Kepatuhannya rutin diperiksa oleh pihak luar." }

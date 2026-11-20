@@ -15,7 +15,7 @@ vocab:
   - { word: "approval", translation: "izin", context: "Approval was applied for on time.", contextIndonesian: "Izinnya diajukan tepat waktu." }
   - { word: "process", translation: "susunan acara", context: "The process was explained before it began.", contextIndonesian: "Susunan acaranya dijelaskan sebelum mulai." }
   - { word: "contribute", translation: "ikut berperan", context: "Many students took part in the celebration.", contextIndonesian: "Banyak murid ikut berperan dalam perayaan." }
-  - { word: "build", translation: "mendirikan / menyiapkan", context: "The stage was set up in the morning.", contextIndonesian: "Panggungnya didirikan pagi hari." }
+  - { word: "build", translation: "mendirikan", context: "The stage was set up in the morning.", contextIndonesian: "Panggungnya didirikan pagi hari." }
   - { word: "invitation", translation: "undangan", context: "The invitation was sent to all families.", contextIndonesian: "Undangannya dikirim kepada semua keluarga." }
   - { word: "school band", translation: "band sekolah", context: "The school band played at the end.", contextIndonesian: "Band sekolah tampil sebagai penutup." }
   - { word: "agreement", translation: "kesepakatan", context: "After a short consultation, I took over the drinks stand.", contextIndonesian: "Setelah berdiskusi singkat, aku mengurus stan minuman." }

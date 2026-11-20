@@ -45,7 +45,7 @@ vocab:
     context: "Die Delegation traf am frühen Morgen ein."
     contextIndonesian: "Delegasinya tiba pagi-pagi."
   - german: "Abkommen"
-    indonesian: "kesepakatan"
+    indonesian: "perjanjian antarnegara"
     context: "Das Abkommen wurde von beiden Ländern bestätigt."
     contextIndonesian: "Kesepakatannya dikonfirmasi kedua negara."
   - german: "Entwicklungshilfe"

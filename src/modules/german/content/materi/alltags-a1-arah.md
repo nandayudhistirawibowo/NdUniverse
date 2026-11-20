@@ -41,7 +41,7 @@ vocab:
     context: "Ich schaue auf die Karte."
     contextIndonesian: "Aku melihat peta."
   - german: "Weg"
-    indonesian: "jalan / rute"
+    indonesian: "rute"
     context: "Der Weg zum Bahnhof ist kurz."
     contextIndonesian: "Jalan ke stasiun dekat."
   - german: "Norden"
@@ -81,7 +81,7 @@ vocab:
     context: "Kannst du mir den Weg zeigen?"
     contextIndonesian: "Bisa tunjukkan jalannya?"
   - german: "Plan"
-    indonesian: "peta / denah"
+    indonesian: "denah"
     context: "Der Stadtplan liegt im Auto."
     contextIndonesian: "Peta kotanya ada di mobil."
 ---

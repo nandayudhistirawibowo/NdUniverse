@@ -26,7 +26,7 @@ vocab:
     indonesian: "terapi perilaku"
     context: "In der Verhaltenstherapie werden Gedanken und Verhaltensmuster untersucht."
   - german: "Belastung"
-    indonesian: "beban / tekanan psikologis"
+    indonesian: "beban"
     context: "Anhaltende Belastung kann das Wohlbefinden beeinträchtigen."
   - german: "Selbstwirksamkeit"
     indonesian: "efikasi diri"

@@ -8,7 +8,7 @@ vocab:
   - { word: "sexual division of labor", translation: "pembagian kerja berdasarkan gender", context: "The sexual division of labor is institutionally secured.", contextIndonesian: "Pembagian kerja berdasarkan gender dijamin secara kelembagaan." }
   - { word: "gender order", translation: "tatanan gender", context: "Gender order structures resources and recognition.", contextIndonesian: "Tatanan gender menata sumber daya dan pengakuan." }
   - { word: "gender norm", translation: "norma gender", context: "Gender norms would be confirmed in interactions.", contextIndonesian: "Norma gender diteguhkan melalui interaksi." }
-  - { word: "sexual segregation", translation: "segregasi gender", context: "Gender segregation shapes numerous professional fields.", contextIndonesian: "Segregasi gender membentuk banyak bidang pekerjaan." }
+  - { word: "sexual segregation", translation: "segregasi seksual", context: "Gender segregation shapes numerous professional fields.", contextIndonesian: "Segregasi gender membentuk banyak bidang pekerjaan." }
   - { word: "gender performance", translation: "performatifitas gender", context: "Gender performance becomes plausible through repetition.", contextIndonesian: "Performatifitas gender menjadi meyakinkan melalui pengulangan." }
   - { word: "gender hierarchy", translation: "hierarki gender", context: "Sexual hierarchy works even without explicit rules.", contextIndonesian: "Hierarki gender tetap bekerja tanpa aturan yang dinyatakan." }
   - { word: "care economy", translation: "ekonomi pengasuhan", context: "Care economy distributes unpaid work unequally.", contextIndonesian: "Ekonomi pengasuhan membagi kerja tak berbayar secara timpang." }

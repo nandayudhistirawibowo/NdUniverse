@@ -17,7 +17,7 @@ vocab:
   - { word: "try on", translation: "mencoba pakaian", context: "Can I try on the shoes for a moment?", contextIndonesian: "Boleh aku mencoba sepatunya sebentar?" }
   - { word: "return", translation: "mengembalikan", context: "I would like to return the pants.", contextIndonesian: "Aku ingin mengembalikan celananya." }
   - { word: "exchange", translation: "menukar", context: "Can I exchange the jacket for a larger one?", contextIndonesian: "Bisa tukar jaketnya dengan ukuran lebih besar?" }
-  - { word: "fit", translation: "pas / cocok", context: "Unfortunately the shoes didn't fit me.", contextIndonesian: "Sayangnya sepatu itu tidak pas untukku." }
+  - { word: "fit", translation: "pas", context: "Unfortunately the shoes didn't fit me.", contextIndonesian: "Sayangnya sepatu itu tidak pas untukku." }
   - { word: "tight", translation: "sempit", context: "These pants are too tight for me.", contextIndonesian: "Celana ini terlalu sempit buatku." }
   - { word: "far", translation: "longgar", context: "The dress is a bit loose at the top.", contextIndonesian: "Bagian atas gaun ini agak longgar." }
   - { word: "striped", translation: "bergaris", context: "I found a striped shirt.", contextIndonesian: "Aku menemukan kemeja bergaris." }

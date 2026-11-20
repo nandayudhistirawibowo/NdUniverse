@@ -33,7 +33,7 @@ vocab:
     context: "Eine vollständige Offenlegung hätte Zweifel vermieden."
     contextIndonesian: "Pengungkapan penuh bisa mencegah keraguan."
   - german: "Hinweis"
-    indonesian: "laporan / petunjuk"
+    indonesian: "laporan"
     context: "Der Hinweis wurde anonym an die Stelle geschickt."
     contextIndonesian: "Laporannya dikirim secara anonim ke pihak terkait."
   - german: "Gleichbehandlung"

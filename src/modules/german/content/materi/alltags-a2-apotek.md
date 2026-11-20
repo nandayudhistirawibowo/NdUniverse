@@ -69,7 +69,7 @@ vocab:
     context: "Die Ärztin hat mir Tabletten verschrieben."
     contextIndonesian: "Dokter meresepkan tablet untukku."
   - german: "wirken"
-    indonesian: "bereaksi / bekerja"
+    indonesian: "berkhasiat"
     context: "Das Mittel wirkt bei mir schnell."
     contextIndonesian: "Obat ini cepat bekerja untukku."
   - german: "rezeptfrei"

@@ -69,7 +69,7 @@ vocab:
     context: "Gibt es hier ein Café in der Nähe?"
     contextIndonesian: "Ada kafe dekat sini?"
   - german: "Weg"
-    indonesian: "jalan / rute"
+    indonesian: "jalan"
     context: "Der Weg zum Zentrum ist nicht weit."
     contextIndonesian: "Jalan ke pusat kota tidak jauh."
   - german: "Fahrkarte"

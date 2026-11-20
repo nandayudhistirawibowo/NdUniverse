@@ -8,7 +8,7 @@ vocab:
   - { word: "Hey", translation: "Hai", context: "Hey, how are you?", contextIndonesian: "Hai, apa kabar?" }
   - { word: "Bye", translation: "Sampai jumpa", context: "Bye, see you tomorrow!", contextIndonesian: "Sampai jumpa, sampai besok!" }
   - { word: "Thank you", translation: "Terima kasih", context: "Thanks for your help.", contextIndonesian: "Terima kasih atas bantuanmu." }
-  - { word: "Please", translation: "Silakan / tolong", context: "Please sit down.", contextIndonesian: "Silakan, duduklah." }
+  - { word: "Please", translation: "silakan", context: "Please sit down.", contextIndonesian: "Silakan, duduklah." }
   - { word: "name", translation: "nama", context: "My name is Rina.", contextIndonesian: "Nama saya Rina." }
   - { word: "called", translation: "bernama", context: "What's your name?", contextIndonesian: "Siapa namamu?" }
   - { word: "introduce yourself", translation: "memperkenalkan diri", context: "I'll briefly introduce myself.", contextIndonesian: "Saya memperkenalkan diri sebentar." }

@@ -20,7 +20,7 @@ vocab:
   - { word: "management", translation: "manajemen perusahaan", context: "The management welcomed us in the morning.", contextIndonesian: "Manajemen perusahaan menyambut kami pada pagi hari." }
   - { word: "schedule", translation: "jadwal", context: "The schedule hardly allowed for any breaks.", contextIndonesian: "Jadwalnya hampir tidak menyisakan waktu istirahat." }
   - { word: "overnight stay", translation: "menginap", context: "The overnight stay was paid for by the company.", contextIndonesian: "Biaya menginapnya dibayar perusahaan." }
-  - { word: "receipt", translation: "struk / bukti pembayaran", context: "Every receipt had to be kept.", contextIndonesian: "Setiap bukti pembayaran harus disimpan." }
+  - { word: "receipt", translation: "struk", context: "Every receipt had to be kept.", contextIndonesian: "Setiap bukti pembayaran harus disimpan." }
   - { word: "exchange", translation: "pertukaran", context: "The exchange with colleagues was particularly useful.", contextIndonesian: "Bertukar pikiran dengan rekan kerja sangat berguna." }
   - { word: "objective", translation: "penetapan tujuan", context: "The objective was discussed together at the beginning.", contextIndonesian: "Tujuannya dibahas bersama sejak awal." }
   - { word: "follow-up", translation: "tindak lanjut", context: "We did the follow-up after we returned.", contextIndonesian: "Kami mengurus tindak lanjut setelah pulang." }

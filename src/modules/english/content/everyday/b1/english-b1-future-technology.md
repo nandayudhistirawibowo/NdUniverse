@@ -6,7 +6,7 @@ level: "B1"
 vocab:
   - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence is already changing many professions.", contextIndonesian: "Kecerdasan buatan sudah mengubah banyak pekerjaan." }
   - { word: "development", translation: "perkembangan", context: "Development is progressing faster than expected.", contextIndonesian: "Perkembangannya berlangsung lebih cepat dari perkiraan." }
-  - { word: "application", translation: "aplikasi / penerapan", context: "The application was initially tested in schools.", contextIndonesian: "Penerapannya awalnya diuji di sekolah." }
+  - { word: "application", translation: "penerapan", context: "The application was initially tested in schools.", contextIndonesian: "Penerapannya awalnya diuji di sekolah." }
   - { word: "data protection", translation: "perlindungan data", context: "Data protection should not be forgotten.", contextIndonesian: "Perlindungan data jangan sampai dilupakan." }
   - { word: "automation", translation: "otomatisasi", context: "Some tasks could be eliminated through automation.", contextIndonesian: "Otomatisasi bisa menghilangkan beberapa jenis tugas." }
   - { word: "invention", translation: "penemuan", context: "The invention was laughed at years ago.", contextIndonesian: "Penemuan itu dulu sempat dianggap aneh." }

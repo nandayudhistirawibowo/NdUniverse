@@ -21,7 +21,7 @@ vocab:
     context: "Danke für deine Hilfe."
     contextIndonesian: "Terima kasih atas bantuanmu."
   - german: "Bitte"
-    indonesian: "Silakan / tolong"
+    indonesian: "silakan"
     context: "Bitte, setz dich."
     contextIndonesian: "Silakan, duduklah."
   - german: "Name"

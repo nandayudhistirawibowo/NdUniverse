@@ -57,7 +57,7 @@ vocab:
     context: "Wegen der Verspätung verpasste ich den Anschluss."
     contextIndonesian: "Aku ketinggalan sambungan karena keterlambatan."
   - german: "Verbindung"
-    indonesian: "rute / sambungan"
+    indonesian: "rute"
     context: "Diese Verbindung fährt direkt zum Flughafen."
     contextIndonesian: "Rute ini langsung menuju bandara."
   - german: "Schalter"

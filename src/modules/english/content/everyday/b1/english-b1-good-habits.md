@@ -15,7 +15,7 @@ vocab:
   - { word: "walk", translation: "jalan santai", context: "A walk helped me clear my head.", contextIndonesian: "Jalan santai membantuku menjernihkan pikiran." }
   - { word: "self-discipline", translation: "disiplin diri", context: "With self-discipline she achieved her goal.", contextIndonesian: "Dengan disiplin diri, dia mencapai tujuannya." }
   - { word: "get into the habit", translation: "membiasakan diri", context: "I got into the habit of getting up earlier.", contextIndonesian: "Aku membiasakan diri bangun lebih pagi." }
-  - { word: "waive", translation: "mengurangi / tidak memakai", context: "He avoided sweets during the week.", contextIndonesian: "Dia menghindari makanan manis selama hari kerja." }
+  - { word: "avoid", translation: "menghindari", context: "He avoided sweets during the week.", contextIndonesian: "Dia menghindari makanan manis selama hari kerja." }
   - { word: "break", translation: "istirahat", context: "After each class I took a short break.", contextIndonesian: "Aku istirahat sebentar setelah setiap jam." }
   - { word: "progress", translation: "kemajuan", context: "Small progress motivated me to keep going.", contextIndonesian: "Kemajuan kecil menyemangatiku untuk terus berusaha." }
   - { word: "change", translation: "perubahan", context: "The change was difficult for me at first.", contextIndonesian: "Awalnya perubahan itu terasa berat." }

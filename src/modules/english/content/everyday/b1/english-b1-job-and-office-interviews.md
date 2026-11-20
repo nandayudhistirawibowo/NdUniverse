@@ -4,7 +4,7 @@ description: "Learn everyday English about job and office interviews."
 track: "Everyday English"
 level: "B1"
 vocab:
-  - { word: "position", translation: "posisi / pekerjaan", context: "I am applying for this position.", contextIndonesian: "Saya melamar untuk posisi ini." }
+  - { word: "position", translation: "posisi", context: "I am applying for this position.", contextIndonesian: "Saya melamar untuk posisi ini." }
   - { word: "interview", translation: "wawancara kerja", context: "The interview was very informative.", contextIndonesian: "Wawancara kerja itu sangat informatif." }
   - { word: "working hours", translation: "jam kerja", context: "Our working hours start at nine o'clock.", contextIndonesian: "Jam kerja kami dimulai pukul sembilan." }
   - { word: "task", translation: "tugas", context: "This task is important for the team.", contextIndonesian: "Tugas ini penting bagi tim." }
@@ -14,7 +14,7 @@ vocab:
   - { word: "professional experience", translation: "pengalaman kerja", context: "Several years of professional experience is required for this position.", contextIndonesian: "Posisi ini mensyaratkan pengalaman kerja selama beberapa tahun." }
   - { word: "ability", translation: "kemampuan", context: "Teamwork is important for collaboration.", contextIndonesian: "Kemampuan bekerja dalam tim penting untuk kolaborasi." }
   - { word: "be responsible for", translation: "bertanggung jawab atas", context: "Ms. Keller is responsible for customer inquiries.", contextIndonesian: "Ibu Keller bertanggung jawab menangani pertanyaan pelanggan." }
-  - { word: "arrange", translation: "menyepakati / menjadwalkan", context: "We'll arrange an appointment for next week.", contextIndonesian: "Kami menjadwalkan janji untuk minggu depan." }
+  - { word: "arrange", translation: "menjadwalkan", context: "We'll arrange an appointment for next week.", contextIndonesian: "Kami menjadwalkan janji untuk minggu depan." }
   - { word: "notice period", translation: "masa pemberitahuan pengunduran diri", context: "The notice period in this contract is three months.", contextIndonesian: "Masa pemberitahuan dalam kontrak ini adalah tiga bulan." }
   - { word: "salary", translation: "gaji", context: "The salary is transferred at the end of the month.", contextIndonesian: "Gaji ditransfer pada akhir bulan." }
   - { word: "department", translation: "departemen", context: "The human resources department is looking for new employees.", contextIndonesian: "Departemen sumber daya manusia sedang mencari karyawan baru." }

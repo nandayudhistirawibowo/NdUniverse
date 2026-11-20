@@ -22,7 +22,7 @@ vocab:
   - { word: "building regulations", translation: "peraturan bangunan", context: "The building regulations specify requirements for safety and distances.", contextIndonesian: "Peraturan bangunan menetapkan persyaratan keselamatan dan jarak." }
   - { word: "energy requirement", translation: "kebutuhan energi", context: "The energy needs of the house are taken into account in the design.", contextIndonesian: "Kebutuhan energi rumah diperhitungkan dalam desain." }
   - { word: "materiality", translation: "karakter material", context: "The materiality of the facade shapes the effect of the building.", contextIndonesian: "Materialitas fasad membentuk efek bangunan." }
-  - { word: "site plan", translation: "peta lokasi / tapak", context: "The site plan shows the building and its surroundings.", contextIndonesian: "Denah lokasi memperlihatkan bangunan dan sekitarnya." }
+  - { word: "site plan", translation: "denah tapak", context: "The site plan shows the building and its surroundings.", contextIndonesian: "Denah lokasi memperlihatkan bangunan dan sekitarnya." }
 ---
 
 # Architectural and Design Terms

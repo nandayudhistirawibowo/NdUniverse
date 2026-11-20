@@ -29,7 +29,7 @@ vocab:
     context: "Eine Reiseversicherung wäre in diesem Fall hilfreich."
     contextIndonesian: "Asuransi perjalanan mungkin akan berguna dalam situasi ini."
   - german: "Reiseführer"
-    indonesian: "pemandu wisata / buku panduan"
+    indonesian: "buku panduan"
     context: "Der Reiseführer empfahl ein kleines Restaurant."
     contextIndonesian: "Pemandu itu merekomendasikan restoran kecil."
   - german: "Grenze"

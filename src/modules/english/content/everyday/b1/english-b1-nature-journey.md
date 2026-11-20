@@ -16,7 +16,7 @@ vocab:
   - { word: "garbage", translation: "sampah", context: "The garbage was taken back into the valley.", contextIndonesian: "Sampahnya dibawa kembali ke lembah." }
   - { word: "consideration", translation: "tenggang rasa", context: "Consideration for animals was particularly important.", contextIndonesian: "Menghormati satwa sangat penting." }
   - { word: "security", translation: "keamanan", context: "Safety became more important in bad weather.", contextIndonesian: "Keamanan menjadi lebih penting saat cuaca buruk." }
-  - { word: "rise", translation: "pendakian", context: "The climb was canceled because of the fog.", contextIndonesian: "Pendakiannya dihentikan karena kabut." }
+  - { word: "climb", translation: "pendakian menuju puncak", context: "The climb was canceled because of the fog.", contextIndonesian: "Pendakiannya dihentikan karena kabut." }
   - { word: "recovery", translation: "istirahat", context: "After the long journey we needed some rest.", contextIndonesian: "Kami butuh istirahat setelah perjalanan panjang." }
   - { word: "source", translation: "mata air", context: "The source was behind a steep curve.", contextIndonesian: "Mata airnya berada di balik tikungan curam." }
   - { word: "nature guide", translation: "pemandu alam laki-laki", context: "The nature guide explained the animals' tracks.", contextIndonesian: "Pemandu alam menjelaskan jejak-jejak satwa." }

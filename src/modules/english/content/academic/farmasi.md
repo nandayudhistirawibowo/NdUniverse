@@ -10,7 +10,7 @@ vocab:
   - { word: "dosage", translation: "dosis", context: "The dosage is precisely stated in the package insert.", contextIndonesian: "Dosis tertera tepat di sisipan kemasan." }
   - { word: "side effect", translation: "efek samping", context: "In the event of an unusual side effect, the intake should be clarified by a specialist.", contextIndonesian: "Jika terjadi efek samping yang tidak biasa, asupannya harus diklarifikasi oleh spesialis." }
   - { word: "medicine", translation: "obat", context: "The medicine must be kept out of the reach of children.", contextIndonesian: "Obat harus dijauhkan dari jangkauan anak-anak." }
-  - { word: "levy", translation: "penyerahan / pengeluaran obat", context: "The prescription preparation is dispensed after the prescription has been checked.", contextIndonesian: "Sediaan resep dikeluarkan setelah resep diperiksa." }
+  - { word: "levy", translation: "penyerahan obat", context: "The prescription preparation is dispensed after the prescription has been checked.", contextIndonesian: "Sediaan resep dikeluarkan setelah resep diperiksa." }
   - { word: "durability", translation: "masa simpan", context: "After opening, the shelf life of the product may be shortened.", contextIndonesian: "Setelah dibuka, umur simpan produk dapat diperpendek." }
   - { word: "contraindication", translation: "kontraindikasi", context: "A known contraindication must be considered before use.", contextIndonesian: "Kontraindikasi yang diketahui harus dipertimbangkan sebelum digunakan." }
   - { word: "tablet", translation: "tablet", context: "The tablet is taken whole with sufficient water.", contextIndonesian: "Tablet diminum utuh, diberi air secukupnya." }

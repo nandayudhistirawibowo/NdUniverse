@@ -9,7 +9,7 @@ vocab:
     context: "Die Gesundheitsversorgung wurde auf dem Land verbessert."
     contextIndonesian: "Layanan kesehatan di daerah pedesaan ditingkatkan."
   - german: "Vorsorge"
-    indonesian: "pencegahan"
+    indonesian: "pemeriksaan preventif"
     context: "Vorsorge kann viele Erkrankungen früh erkennen."
     contextIndonesian: "Pemeriksaan pencegahan bisa mendeteksi banyak penyakit sejak dini."
   - german: "Impfung"

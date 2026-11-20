@@ -17,7 +17,7 @@ vocab:
   - { word: "rebook", translation: "mengubah pemesanan", context: "We rebooked the tickets for Friday.", contextIndonesian: "Kami mengubah tiketnya ke hari Jumat." }
   - { word: "cancel", translation: "membatalkan", context: "She canceled the booking on time.", contextIndonesian: "Dia membatalkan pemesanannya tepat waktu." }
   - { word: "delay", translation: "keterlambatan", context: "Because of the delay I missed the connection.", contextIndonesian: "Aku ketinggalan sambungan karena keterlambatan." }
-  - { word: "connection", translation: "rute / sambungan", context: "This connection goes directly to the airport.", contextIndonesian: "Rute ini langsung menuju bandara." }
+  - { word: "connection", translation: "rute", context: "This connection goes directly to the airport.", contextIndonesian: "Rute ini langsung menuju bandara." }
   - { word: "switch", translation: "loket", context: "An employee helped me at the counter.", contextIndonesian: "Seorang petugas membantuku di loket." }
   - { word: "departure", translation: "keberangkatan", context: "The departure was moved to platform three.", contextIndonesian: "Keberangkatannya dipindah ke peron tiga." }
   - { word: "arrival", translation: "kedatangan", context: "Our arrival was delayed by minutes.", contextIndonesian: "Kedatangan kami tertunda beberapa menit." }

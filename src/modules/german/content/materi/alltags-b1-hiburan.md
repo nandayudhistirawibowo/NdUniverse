@@ -81,7 +81,7 @@ vocab:
     context: "Die Besetzung wurde von Kritikern gelobt."
     contextIndonesian: "Para pemerannya dipuji oleh kritikus."
   - german: "Eintritt"
-    indonesian: "tiket masuk"
+    indonesian: "biaya masuk"
     context: "Der Eintritt wäre für Kinder kostenlos."
     contextIndonesian: "Anak-anak bisa masuk gratis."
 ---

@@ -19,7 +19,7 @@ vocab:
   - { word: "equality", translation: "kesetaraan hak", context: "Equal rights should be a matter of course in the company.", contextIndonesian: "Kesetaraan hak seharusnya jadi hal wajar di kantor." }
   - { word: "responsibility", translation: "tanggung jawab", context: "She was officially given more responsibility.", contextIndonesian: "Tanggung jawab lebih besar resmi diberikan kepadanya." }
   - { word: "further training", translation: "pelatihan lanjutan", context: "Further training was financed by the employer.", contextIndonesian: "Pelatihan lanjutannya dibiayai perusahaan." }
-  - { word: "termination", translation: "pengunduran diri / pemutusan kerja", context: "The termination was unexpected for the team.", contextIndonesian: "Pemutusan kerjanya mengejutkan tim." }
+  - { word: "termination", translation: "pemutusan hubungan kerja", context: "The termination was unexpected for the team.", contextIndonesian: "Pemutusan kerjanya mengejutkan tim." }
   - { word: "promotion", translation: "promosi", context: "The promotion was announced after the project.", contextIndonesian: "Promosinya diumumkan setelah proyek selesai." }
   - { word: "employment contract", translation: "kontrak kerja", context: "The employment contract was signed before the start.", contextIndonesian: "Kontrak kerja ditandatangani sebelum mulai bekerja." }
   - { word: "accessibility", translation: "kemudahan untuk dihubungi", context: "Constant availability put many people under pressure.", contextIndonesian: "Kemudahan dihubungi setiap saat menekan banyak orang." }

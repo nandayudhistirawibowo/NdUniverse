@@ -23,7 +23,7 @@ vocab:
   - { word: "taste", translation: "selera", context: "It's hard to argue about taste.", contextIndonesian: "Soal selera memang sulit diperdebatkan." }
   - { word: "recommendation", translation: "rekomendasi", context: "The recommendation came from my brother.", contextIndonesian: "Rekomendasinya datang dari kakakku." }
   - { word: "cast", translation: "para pemeran", context: "The cast was praised by critics.", contextIndonesian: "Para pemerannya dipuji oleh kritikus." }
-  - { word: "entry", translation: "tiket masuk", context: "Entry would be free for children.", contextIndonesian: "Anak-anak bisa masuk gratis." }
+  - { word: "entry", translation: "biaya masuk", context: "Entry would be free for children.", contextIndonesian: "Anak-anak bisa masuk gratis." }
 ---
 
 # Entertainment and Leisure

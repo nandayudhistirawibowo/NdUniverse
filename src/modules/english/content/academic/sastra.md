@@ -3,15 +3,15 @@ title: "Literary Analysis Vocabulary"
 description: "Important terms for studying genre, structure, style and interpretation of literary works."
 jurusan: "Sastra"
 vocab:
-  - { word: "era", translation: "zaman / periode sastra", context: "The novel can be assigned to the Romantic literary era.", contextIndonesian: "Novel ini dapat dikaitkan dengan era sastra Romantis." }
+  - { word: "era", translation: "periode sastra", context: "The novel can be assigned to the Romantic literary era.", contextIndonesian: "Novel ini dapat dikaitkan dengan era sastra Romantis." }
   - { word: "motif", translation: "motif", context: "The motif of the journey connects several chapters together.", contextIndonesian: "Motif perjalanan menghubungkan beberapa bab menjadi satu." }
-  - { word: "poetry", translation: "puisi / lirik", context: "The author's poetry is characterized by precise images.", contextIndonesian: "Puisi pengarang dicirikan oleh gambaran yang tepat." }
+  - { word: "poetry", translation: "puisi", context: "The author's poetry is characterized by precise images.", contextIndonesian: "Puisi pengarang dicirikan oleh gambaran yang tepat." }
   - { word: "drama", translation: "drama", context: "The drama presents a conflict between duty and freedom.", contextIndonesian: "Drama ini menghadirkan konflik antara tugas dan kebebasan." }
   - { word: "interpretation", translation: "interpretasi", context: "The interpretation also takes into account the historical context.", contextIndonesian: "Penafsirannya juga memperhatikan konteks sejarah." }
-  - { word: "verse", translation: "larik / bait puisi", context: "The last verse changes the tone of the poem.", contextIndonesian: "Ayat terakhir mengubah nada puisi." }
-  - { word: "story", translation: "cerita / narasi", context: "The narrative switches between two time levels.", contextIndonesian: "Narasinya beralih antara dua tingkat waktu." }
-  - { word: "reception", translation: "resepsi / penerimaan karya", context: "The reception of the work was different in different countries.", contextIndonesian: "Penerimaan terhadap karya ini berbeda-beda di berbagai negara." }
-  - { word: "stylistic device", translation: "majas / perangkat gaya bahasa", context: "Repetition is a striking stylistic device in the text.", contextIndonesian: "Pengulangan adalah perangkat gaya yang mencolok dalam teks." }
+  - { word: "verse", translation: "larik", context: "The last verse changes the tone of the poem.", contextIndonesian: "Ayat terakhir mengubah nada puisi." }
+  - { word: "story", translation: "narasi", context: "The narrative switches between two time levels.", contextIndonesian: "Narasinya beralih antara dua tingkat waktu." }
+  - { word: "reception", translation: "resepsi karya", context: "The reception of the work was different in different countries.", contextIndonesian: "Penerimaan terhadap karya ini berbeda-beda di berbagai negara." }
+  - { word: "stylistic device", translation: "perangkat gaya bahasa", context: "Repetition is a striking stylistic device in the text.", contextIndonesian: "Pengulangan adalah perangkat gaya yang mencolok dalam teks." }
   - { word: "character speech", translation: "tuturan tokoh", context: "The characters' speech makes the social difference between the siblings clear.", contextIndonesian: "Pidato karakter memperjelas perbedaan sosial antara saudara kandung." }
   - { word: "rhyme", translation: "rima", context: "The regular rhyme gives the poem a calm sound.", contextIndonesian: "Sajak yang teratur membuat puisi terdengar tenang." }
   - { word: "metonymy", translation: "metonimia", context: "Metonymy replaces the actual term with a factually related expression.", contextIndonesian: "Metonymy menggantikan istilah sebenarnya dengan ekspresi yang berhubungan secara faktual." }

@@ -7,7 +7,7 @@ vocab:
   - { word: "profit", translation: "keuntungan", context: "Profit is calculated at the end of the financial year.", contextIndonesian: "Laba dihitung pada akhir tahun anggaran." }
   - { word: "loss", translation: "kerugian", context: "The company made a loss in the first year.", contextIndonesian: "Perusahaan mengalami kerugian pada tahun pertama." }
   - { word: "budget", translation: "anggaran", context: "The team must stay within budget.", contextIndonesian: "Tim harus tetap sesuai anggaran." }
-  - { word: "invoice", translation: "tagihan / faktur", context: "The supplier sends the invoice by email.", contextIndonesian: "Pemasok mengirimkan faktur melalui email." }
+  - { word: "invoice", translation: "faktur", context: "The supplier sends the invoice by email.", contextIndonesian: "Pemasok mengirimkan faktur melalui email." }
   - { word: "output", translation: "pengeluaran", context: "Monthly expenses are documented precisely.", contextIndonesian: "Pengeluaran bulanan didokumentasikan dengan tepat." }
   - { word: "intake", translation: "pemasukan", context: "The income covers the running costs.", contextIndonesian: "Pendapatan menutupi biaya operasional." }
   - { word: "price", translation: "harga", context: "The price depends on the quantity ordered.", contextIndonesian: "Harga tergantung kuantitas yang dipesan." }

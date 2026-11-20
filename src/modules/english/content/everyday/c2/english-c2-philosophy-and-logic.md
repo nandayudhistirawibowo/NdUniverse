@@ -13,13 +13,13 @@ vocab:
   - { word: "causality", translation: "kausalitas", context: "Causality describes how cause and effect are related.", contextIndonesian: "Kausalitas menjelaskan bagaimana sebab dan akibat berhubungan." }
   - { word: "premise", translation: "premis", context: "The conclusion is only convincing if the premise is correct.", contextIndonesian: "Kesimpulannya hanya meyakinkan jika premisnya benar." }
   - { word: "end", translation: "kesimpulan logis", context: "The conclusion follows from the premises.", contextIndonesian: "Kesimpulan mengikuti premis." }
-  - { word: "conclusion", translation: "deduksi / hasil penalaran", context: "This conclusion does not necessarily follow from the observations.", contextIndonesian: "Kesimpulan ini tidak serta merta mengikuti observasi." }
+  - { word: "conclusion", translation: "kesimpulan", context: "This conclusion does not necessarily follow from the observations.", contextIndonesian: "Kesimpulan ini tidak serta merta mengikuti observasi." }
   - { word: "contradiction", translation: "kontradiksi", context: "The two statements clearly contradict each other.", contextIndonesian: "Kedua pernyataan tersebut jelas bertentangan satu sama lain." }
   - { word: "coherence", translation: "koherensi", context: "The theory only appears coherent if its concepts fit together.", contextIndonesian: "Teori hanya tampak koheren jika konsep-konsepnya cocok satu sama lain." }
   - { word: "abstraction", translation: "abstraksi", context: "Through abstraction we combine individual cases under one term.", contextIndonesian: "Melalui abstraksi kami menggabungkan kasus-kasus individual dalam satu istilah." }
-  - { word: "terminology", translation: "sistem / penggunaan istilah", context: "The terms in the essay should be clear.", contextIndonesian: "Istilah-istilah dalam esai harus jelas." }
+  - { word: "terminology", translation: "penggunaan istilah", context: "The terms in the essay should be clear.", contextIndonesian: "Istilah-istilah dalam esai harus jelas." }
   - { word: "validity", translation: "keberlakuan", context: "The argument does not only apply to this individual case.", contextIndonesian: "Argumen ini tidak hanya berlaku pada kasus individual ini." }
-  - { word: "requirement", translation: "prasyarat / asumsi", context: "The theory is based on an assumption that we still have to substantiate.", contextIndonesian: "Teori ini didasarkan pada asumsi yang masih harus kita buktikan." }
+  - { word: "requirement", translation: "asumsi", context: "The theory is based on an assumption that we still have to substantiate.", contextIndonesian: "Teori ini didasarkan pada asumsi yang masih harus kita buktikan." }
   - { word: "argument", translation: "argumentasi", context: "It combines observations with normative considerations.", contextIndonesian: "Menggabungkan observasi dengan pertimbangan normatif." }
   - { word: "opposite position", translation: "posisi tandingan", context: "The opposing position questions the main assumption of the theory.", contextIndonesian: "Posisi berlawanan mempertanyakan asumsi utama teori." }
   - { word: "mindset", translation: "cara berpikir", context: "Analytical thinking helps us sort through complex problems.", contextIndonesian: "Berpikir analitis membantu kita memilah masalah yang kompleks." }

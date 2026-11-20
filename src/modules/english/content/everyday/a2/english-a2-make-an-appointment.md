@@ -4,7 +4,7 @@ description: "Learn everyday English about make an appointment."
 track: "Everyday English"
 level: "A2"
 vocab:
-  - { word: "appointment", translation: "janji / jadwal", context: "The appointment has been postponed to Friday.", contextIndonesian: "Jadwalnya diundur ke hari Jumat." }
+  - { word: "appointment", translation: "janji temu", context: "The appointment has been postponed to Friday.", contextIndonesian: "Jadwalnya diundur ke hari Jumat." }
   - { word: "consultation hours", translation: "jam konsultasi", context: "Consultation hours start at ten today.", contextIndonesian: "Jam konsultasinya mulai pukul sepuluh hari ini." }
   - { word: "calendar", translation: "kalender", context: "I entered the appointment into my calendar.", contextIndonesian: "Aku mencatat jadwal itu di kalender." }
   - { word: "memory", translation: "pengingat", context: "The memory came an hour earlier.", contextIndonesian: "Pengingatnya muncul satu jam sebelumnya." }
@@ -14,7 +14,7 @@ vocab:
   - { word: "meeting point", translation: "tempat bertemu", context: "The meeting point was directly at the train station.", contextIndonesian: "Tempat bertemunya tepat di stasiun." }
   - { word: "time", translation: "waktu", context: "The time was right for everyone.", contextIndonesian: "Waktunya cocok untuk semua orang." }
   - { word: "day of the week", translation: "hari dalam minggu", context: "Which day of the week would you prefer?", contextIndonesian: "Kamu lebih suka hari apa?" }
-  - { word: "arrange", translation: "menyepakati / menjadwalkan", context: "We made an appointment for Tuesday.", contextIndonesian: "Kami menjadwalkan pertemuan hari Selasa." }
+  - { word: "arrange", translation: "menjadwalkan", context: "We made an appointment for Tuesday.", contextIndonesian: "Kami menjadwalkan pertemuan hari Selasa." }
   - { word: "move", translation: "mengundur", context: "Can we postpone the meeting until tomorrow?", contextIndonesian: "Bisa kita undur pertemuannya ke besok?" }
   - { word: "cancel", translation: "membatalkan", context: "He canceled the appointment due to illness.", contextIndonesian: "Dia membatalkan jadwal karena sakit." }
   - { word: "confirm", translation: "mengonfirmasi", context: "Please confirm the appointment today.", contextIndonesian: "Tolong konfirmasi jadwalnya hari ini." }

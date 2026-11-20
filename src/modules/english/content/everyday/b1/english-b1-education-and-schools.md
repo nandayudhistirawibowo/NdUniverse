@@ -14,13 +14,13 @@ vocab:
   - { word: "homework", translation: "pekerjaan rumah", context: "The homework must be submitted by Friday.", contextIndonesian: "Pekerjaan rumah harus dikumpulkan paling lambat hari Jumat." }
   - { word: "research", translation: "penelitian", context: "Research examines the influence of exercise on learning.", contextIndonesian: "Penelitian itu mengkaji pengaruh aktivitas fisik terhadap proses belajar." }
   - { word: "prepare for", translation: "mempersiapkan diri untuk", context: "The students are preparing for the final exam.", contextIndonesian: "Para mahasiswa mempersiapkan diri untuk ujian akhir." }
-  - { word: "conclusion", translation: "kelulusan / gelar", context: "After graduating he would like to work abroad.", contextIndonesian: "Setelah lulus, dia ingin bekerja di luar negeri." }
+  - { word: "conclusion", translation: "kelulusan", context: "After graduating he would like to work abroad.", contextIndonesian: "Setelah lulus, dia ingin bekerja di luar negeri." }
   - { word: "university", translation: "perguruan tinggi", context: "The university offers several international degree programs.", contextIndonesian: "Perguruan tinggi itu menawarkan beberapa program studi internasional." }
   - { word: "scholarship", translation: "beasiswa", context: "She receives a scholarship for her studies.", contextIndonesian: "Dia menerima beasiswa untuk studinya." }
   - { word: "learning group", translation: "kelompok belajar", context: "Our study group meets every Wednesday.", contextIndonesian: "Kelompok belajar kami bertemu setiap hari Rabu." }
   - { word: "ability", translation: "kemampuan", context: "The ability to learn independently is very important.", contextIndonesian: "Kemampuan untuk belajar secara mandiri sangat penting." }
   - { word: "lesson", translation: "pelajaran", context: "Classes are canceled today due to further training.", contextIndonesian: "Pelajaran hari ini ditiadakan karena ada pelatihan lanjutan." }
-  - { word: "application", translation: "pendaftaran / lamaran", context: "The application for the study place must be made online.", contextIndonesian: "Pendaftaran untuk tempat studi harus dilakukan secara daring." }
+  - { word: "application", translation: "pendaftaran", context: "The application for the study place must be made online.", contextIndonesian: "Pendaftaran untuk tempat studi harus dilakukan secara daring." }
   - { word: "requirement", translation: "persyaratan", context: "Good knowledge of German is a prerequisite for the course.", contextIndonesian: "Kemampuan bahasa Jerman yang baik merupakan persyaratan untuk kursus tersebut." }
   - { word: "specialty", translation: "bidang studi", context: "She has chosen to major in biology.", contextIndonesian: "Dia memilih bidang studi biologi." }
   - { word: "further training", translation: "pendidikan lanjutan", context: "After completing his studies, he plans to continue his professional development.", contextIndonesian: "Setelah kuliah, dia merencanakan pelatihan profesional lanjutan." }

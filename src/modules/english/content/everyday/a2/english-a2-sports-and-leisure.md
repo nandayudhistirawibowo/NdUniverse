@@ -8,12 +8,12 @@ vocab:
   - { word: "hobby", translation: "hobi", context: "Cooking is my hobby.", contextIndonesian: "Memasak adalah hobi saya." }
   - { word: "be interested in", translation: "tertarik pada", context: "I am interested in photography.", contextIndonesian: "Saya tertarik pada fotografi." }
   - { word: "relax", translation: "bersantai", context: "At the weekend I relax in the garden.", contextIndonesian: "Pada akhir pekan saya bersantai di taman." }
-  - { word: "hiking", translation: "mendaki / berjalan di alam", context: "We often hike in the mountains on vacation.", contextIndonesian: "Saat liburan kami sering mendaki di pegunungan." }
+  - { word: "hiking", translation: "mendaki", context: "We often hike in the mountains on vacation.", contextIndonesian: "Saat liburan kami sering mendaki di pegunungan." }
   - { word: "Cycling", translation: "bersepeda", context: "On Sundays she rides her bike with her brother.", contextIndonesian: "Setiap hari Minggu dia bersepeda dengan saudara laki-lakinya." }
   - { word: "jogging", translation: "joging", context: "He jogs in the park three times a week.", contextIndonesian: "Dia joging di taman tiga kali seminggu." }
   - { word: "swim", translation: "berenang", context: "In summer we swim in the lake.", contextIndonesian: "Pada musim panas kami berenang di danau." }
   - { word: "training", translation: "latihan", context: "Training starts at six o'clock today.", contextIndonesian: "Latihan dimulai pukul enam hari ini." }
-  - { word: "club", translation: "klub / perkumpulan", context: "She plays in a volleyball club.", contextIndonesian: "Dia bermain di sebuah klub bola voli." }
+  - { word: "club", translation: "klub", context: "She plays in a volleyball club.", contextIndonesian: "Dia bermain di sebuah klub bola voli." }
   - { word: "concert", translation: "konser", context: "We're going to a concert on Saturday.", contextIndonesian: "Pada hari Sabtu kami pergi ke konser." }
   - { word: "museum", translation: "museum", context: "The museum is closed on Monday.", contextIndonesian: "Museum tutup pada hari Senin." }
   - { word: "board game", translation: "permainan papan", context: "After dinner we play a board game.", contextIndonesian: "Setelah makan kami bermain permainan papan." }

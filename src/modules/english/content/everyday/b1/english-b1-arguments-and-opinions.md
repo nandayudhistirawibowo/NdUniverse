@@ -11,7 +11,7 @@ vocab:
   - { word: "advantage", translation: "keuntungan", context: "A clear advantage would be the shorter working hours.", contextIndonesian: "Keuntungan yang jelas adalah jam kerja lebih singkat." }
   - { word: "disadvantage", translation: "kerugian", context: "The biggest disadvantage is the high cost.", contextIndonesian: "Kerugian terbesarnya adalah biayanya yang mahal." }
   - { word: "compromise", translation: "kompromi", context: "Finally both sides found a compromise.", contextIndonesian: "Akhirnya, kedua pihak menemukan jalan tengah." }
-  - { word: "claim", translation: "pernyataan / klaim", context: "This claim could not be substantiated.", contextIndonesian: "Klaim ini tidak bisa dibuktikan." }
+  - { word: "claim", translation: "klaim", context: "This claim could not be substantiated.", contextIndonesian: "Klaim ini tidak bisa dibuktikan." }
   - { word: "discussion", translation: "diskusi", context: "The discussion became surprisingly lively.", contextIndonesian: "Diskusinya ternyata berlangsung seru." }
   - { word: "objection", translation: "keberatan", context: "Nobody objected to this proposal.", contextIndonesian: "Tak ada yang keberatan dengan usulan ini." }
   - { word: "justify", translation: "memberi alasan", context: "She justified her decision with new data.", contextIndonesian: "Dia menjelaskan keputusannya dengan data baru." }

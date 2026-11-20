@@ -8,7 +8,7 @@ vocab:
   - { word: "nutrition", translation: "pola makan", context: "The diet should become more balanced.", contextIndonesian: "Pola makannya sebaiknya lebih seimbang." }
   - { word: "habit", translation: "kebiasaan", context: "A healthy habit was maintained.", contextIndonesian: "Kebiasaan sehat tetap dipertahankan." }
   - { word: "movement", translation: "aktivitas fisik", context: "I used to move far too little.", contextIndonesian: "Dulu aku kurang banyak bergerak." }
-  - { word: "precaution", translation: "pencegahan / pemeriksaan rutin", context: "Regular preventive care can prevent illnesses.", contextIndonesian: "Pemeriksaan rutin bisa mencegah penyakit." }
+  - { word: "precaution", translation: "pemeriksaan rutin", context: "Regular preventive care can prevent illnesses.", contextIndonesian: "Pemeriksaan rutin bisa mencegah penyakit." }
   - { word: "recovery", translation: "pemulihan", context: "I need more rest after work.", contextIndonesian: "Setelah bekerja, aku butuh lebih banyak istirahat." }
   - { word: "lack of sleep", translation: "kurang tidur", context: "I was often unable to concentrate due to lack of sleep.", contextIndonesian: "Karena kurang tidur, aku sering sulit fokus." }
   - { word: "well-being", translation: "kesejahteraan", context: "Well-being has been significantly improved.", contextIndonesian: "Kesejahteraannya meningkat dengan jelas." }

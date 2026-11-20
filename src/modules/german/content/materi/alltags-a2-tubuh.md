@@ -45,7 +45,7 @@ vocab:
     context: "Der Verband wurde heute gewechselt."
     contextIndonesian: "Perbannya diganti hari ini."
   - german: "sich verletzen"
-    indonesian: "cedera"
+    indonesian: "terluka"
     context: "Ich habe mich beim Sport verletzt."
     contextIndonesian: "Aku cedera saat berolahraga."
   - german: "sich stoßen"

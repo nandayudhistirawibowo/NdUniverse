@@ -29,7 +29,7 @@ vocab:
     context: "Die Krankenversicherung übernahm einen Teil der Kosten."
     contextIndonesian: "Asuransi kesehatannya menanggung sebagian biaya."
   - german: "Genesung"
-    indonesian: "pemulihan"
+    indonesian: "pemulihan kesehatan"
     context: "Für die Genesung brauchte sie mehrere Wochen."
     contextIndonesian: "Dia butuh beberapa minggu untuk pulih."
   - german: "Sprechstunde"

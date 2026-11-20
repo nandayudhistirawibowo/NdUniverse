@@ -19,7 +19,7 @@ vocab:
   - { word: "single", translation: "belum menikah", context: "My uncle is still single.", contextIndonesian: "Pamanku masih belum menikah." }
   - { word: "separated", translation: "berpisah", context: "The couple has been living apart for months.", contextIndonesian: "Pasangan itu sudah berpisah berbulan-bulan." }
   - { word: "get to know each other", translation: "berkenalan", context: "My parents met during college.", contextIndonesian: "Orang tuaku berkenalan saat kuliah." }
-  - { word: "understand each other", translation: "akur / saling memahami", context: "The siblings always got along well.", contextIndonesian: "Saudara-saudara itu selalu akur." }
+  - { word: "understand each other", translation: "saling memahami", context: "The siblings always got along well.", contextIndonesian: "Saudara-saudara itu selalu akur." }
   - { word: "engagement", translation: "pertunangan", context: "Your engagement was celebrated yesterday.", contextIndonesian: "Pertunangan mereka dirayakan kemarin." }
   - { word: "family tree", translation: "silsilah keluarga", context: "The family tree hung in the living room.", contextIndonesian: "Silsilah keluarganya tergantung di ruang keluarga." }
   - { word: "celebration", translation: "perayaan", context: "The celebration lasted until late.", contextIndonesian: "Perayaannya berlangsung sampai larut." }

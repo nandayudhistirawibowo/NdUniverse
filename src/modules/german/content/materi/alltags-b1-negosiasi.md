@@ -49,7 +49,7 @@ vocab:
     context: "Wir verhandelten über Lieferzeit und Preis."
     contextIndonesian: "Kami bernegosiasi soal waktu pengiriman dan harga."
   - german: "Vereinbarung"
-    indonesian: "kesepakatan"
+    indonesian: "perjanjian"
     context: "Die Vereinbarung galt ab dem nächsten Monat."
     contextIndonesian: "Kesepakatannya berlaku mulai bulan depan."
   - german: "Gegenleistung"

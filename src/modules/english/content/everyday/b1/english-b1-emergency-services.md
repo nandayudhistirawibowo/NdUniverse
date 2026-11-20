@@ -20,7 +20,7 @@ vocab:
   - { word: "get hurt", translation: "mengalami cedera", context: "He injured his arm in the fall.", contextIndonesian: "Saat jatuh, lengannya cedera." }
   - { word: "unconscious", translation: "tidak sadarkan diri", context: "The cyclist was briefly unconscious.", contextIndonesian: "Pesepeda itu sempat tidak sadarkan diri." }
   - { word: "address", translation: "alamat", context: "The exact address was given on the phone.", contextIndonesian: "Alamat lengkapnya disebutkan lewat telepon." }
-  - { word: "stakes", translation: "operasi / penanganan", context: "The operation lasted almost two hours.", contextIndonesian: "Penanganannya berlangsung hampir dua jam." }
+  - { word: "operation", translation: "operasi", context: "The operation lasted almost two hours.", contextIndonesian: "Penanganannya berlangsung hampir dua jam." }
   - { word: "intersection", translation: "persimpangan", context: "The accident happened at a large intersection.", contextIndonesian: "Kecelakaan terjadi di persimpangan besar." }
   - { word: "urgent", translation: "mendesak", context: "She needed urgent medical attention.", contextIndonesian: "Dia sangat membutuhkan bantuan medis." }
   - { word: "witness", translation: "saksi", context: "A witness described the accident in detail.", contextIndonesian: "Seorang saksi menjelaskan kecelakaan itu dengan rinci." }

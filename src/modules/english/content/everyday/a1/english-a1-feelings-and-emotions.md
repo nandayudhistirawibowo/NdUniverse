@@ -4,7 +4,7 @@ description: "Learn everyday English about feelings and emotions."
 track: "Everyday English"
 level: "A1"
 vocab:
-  - { word: "happy", translation: "senang / bahagia", context: "I'm really happy today.", contextIndonesian: "Aku bahagia sekali hari ini." }
+  - { word: "happy", translation: "senang", context: "I'm really happy today.", contextIndonesian: "Aku bahagia sekali hari ini." }
   - { word: "happy", translation: "gembira", context: "The children are happy.", contextIndonesian: "Anak-anak itu gembira." }
   - { word: "sad", translation: "sedih", context: "Why are you sad today?", contextIndonesian: "Kenapa kamu sedih hari ini?" }
   - { word: "angry", translation: "marah", context: "He's angry about the weather.", contextIndonesian: "Dia kesal karena cuacanya." }
@@ -12,7 +12,7 @@ vocab:
   - { word: "anxious", translation: "takut", context: "The child is afraid in the dark.", contextIndonesian: "Anak itu takut saat gelap." }
   - { word: "nervous", translation: "gugup", context: "I'm nervous before the interview.", contextIndonesian: "Aku gugup sebelum obrolan itu." }
   - { word: "quiet", translation: "tenang", context: "Stay calm, everything is fine.", contextIndonesian: "Tenang, semuanya baik-baik saja." }
-  - { word: "tired", translation: "lelah / mengantuk", context: "I'm tired after work.", contextIndonesian: "Aku capek setelah bekerja." }
+  - { word: "tired", translation: "lelah", context: "I'm tired after work.", contextIndonesian: "Aku capek setelah bekerja." }
   - { word: "surprised", translation: "terkejut", context: "She is surprised by the gift.", contextIndonesian: "Dia terkejut dengan hadiahnya." }
   - { word: "satisfied", translation: "puas", context: "I am satisfied with the food.", contextIndonesian: "Aku puas dengan makanannya." }
   - { word: "lonely", translation: "kesepian", context: "Sometimes he feels lonely.", contextIndonesian: "Kadang-kadang dia merasa kesepian." }

@@ -9,7 +9,7 @@ vocab:
   - { word: "CV", translation: "daftar riwayat hidup", context: "My CV includes training and professional experience.", contextIndonesian: "Daftar riwayat hidup saya mencantumkan pendidikan dan pengalaman kerja." }
   - { word: "interview", translation: "wawancara kerja", context: "My interview is on Thursday.", contextIndonesian: "Wawancara kerja saya pada hari Kamis." }
   - { word: "experience", translation: "pengalaman", context: "I have experience in customer service.", contextIndonesian: "Saya memiliki pengalaman dalam layanan pelanggan." }
-  - { word: "training", translation: "pendidikan / pelatihan kejuruan", context: "My training lasts three years.", contextIndonesian: "Pendidikan kejuruan saya berlangsung selama tiga tahun." }
+  - { word: "training", translation: "pelatihan kejuruan", context: "My training lasts three years.", contextIndonesian: "Pendidikan kejuruan saya berlangsung selama tiga tahun." }
   - { word: "position", translation: "posisi pekerjaan", context: "The position is available from June.", contextIndonesian: "Posisi itu tersedia mulai bulan Juni." }
   - { word: "task", translation: "tugas", context: "One of my tasks is to plan appointments.", contextIndonesian: "Tugas saya termasuk merencanakan jadwal." }
   - { word: "colleague", translation: "rekan kerja laki-laki", context: "My colleague explains the new program to me.", contextIndonesian: "Rekan kerja laki-laki saya menjelaskan program baru itu kepada saya." }

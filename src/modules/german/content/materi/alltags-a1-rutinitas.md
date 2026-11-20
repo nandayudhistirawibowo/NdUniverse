@@ -69,7 +69,7 @@ vocab:
     context: "Vor dem Schlafen lese ich."
     contextIndonesian: "Aku membaca sebelum tidur."
   - german: "müde"
-    indonesian: "lelah / mengantuk"
+    indonesian: "lelah"
     context: "Nach der Arbeit bin ich müde."
     contextIndonesian: "Aku capek setelah bekerja."
   - german: "schlafen"

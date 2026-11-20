@@ -73,7 +73,7 @@ vocab:
     context: "Mit dem Rad bleibe ich fit."
     contextIndonesian: "Aku tetap bugar dengan bersepeda."
   - german: "Bewegung"
-    indonesian: "gerakan / aktivitas fisik"
+    indonesian: "aktivitas fisik"
     context: "Mehr Bewegung tut meinem Rücken gut."
     contextIndonesian: "Lebih banyak bergerak baik untuk punggungku."
   - german: "Trainer"

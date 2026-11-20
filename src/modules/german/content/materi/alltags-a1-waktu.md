@@ -5,7 +5,7 @@ judulMateri: "Jam, Hari, dan Bulan"
 deskripsi: "Kuasai kosakata waktu untuk membuat janji dan membicarakan kegiatan harian dalam bahasa Jerman."
 vocab:
   - german: "Uhr"
-    indonesian: "jam / pukul"
+    indonesian: "jam"
     context: "Es ist acht Uhr."
     contextIndonesian: "Sekarang pukul delapan."
   - german: "Stunde"
@@ -81,7 +81,7 @@ vocab:
     context: "Ich trage den Termin in den Kalender ein."
     contextIndonesian: "Saya mencatat jadwal itu di kalender."
   - german: "spät"
-    indonesian: "terlambat / larut"
+    indonesian: "terlambat"
     context: "Der Zug kommt heute spät."
     contextIndonesian: "Kereta itu datang terlambat hari ini."
 ---

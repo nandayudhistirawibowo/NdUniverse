@@ -65,7 +65,7 @@ vocab:
     context: "Meine Eltern lernten sich im Studium kennen."
     contextIndonesian: "Orang tuaku berkenalan saat kuliah."
   - german: "sich verstehen"
-    indonesian: "akur / saling memahami"
+    indonesian: "saling memahami"
     context: "Die Geschwister verstanden sich immer gut."
     contextIndonesian: "Saudara-saudara itu selalu akur."
   - german: "Verlobung"

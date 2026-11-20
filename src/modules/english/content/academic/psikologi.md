@@ -10,7 +10,7 @@ vocab:
   - { word: "development", translation: "perkembangan", context: "Development is shaped by biological and social factors.", contextIndonesian: "Pembangunan dibentuk oleh faktor biologis dan sosial." }
   - { word: "personality", translation: "kepribadian", context: "Personality arises from the interaction of various influences.", contextIndonesian: "Kepribadian muncul dari interaksi berbagai pengaruh." }
   - { word: "behavioral therapy", translation: "terapi perilaku", context: "Behavioral therapy examines thoughts and behavior patterns.", contextIndonesian: "Terapi perilaku mengkaji pikiran dan pola perilaku." }
-  - { word: "burden", translation: "beban / tekanan psikologis", context: "Prolonged stress can impair well-being.", contextIndonesian: "Stres yang berkepanjangan dapat mengganggu kesejahteraan." }
+  - { word: "burden", translation: "beban", context: "Prolonged stress can impair well-being.", contextIndonesian: "Stres yang berkepanjangan dapat mengganggu kesejahteraan." }
   - { word: "self-efficacy", translation: "efikasi diri", context: "Self-efficacy describes confidence in one's own options for action.", contextIndonesian: "Efikasi diri menggambarkan keyakinan terhadap pilihan tindakan yang dimilikinya." }
   - { word: "diagnosis", translation: "diagnosis", context: "A psychological diagnosis requires careful professional assessment.", contextIndonesian: "Diagnosis psikologis memerlukan penilaian profesional yang cermat." }
   - { word: "cognition", translation: "kognisi", context: "Cognition includes, among other things, perception, thinking and remembering.", contextIndonesian: "Kognisi antara lain meliputi persepsi, berpikir dan mengingat." }

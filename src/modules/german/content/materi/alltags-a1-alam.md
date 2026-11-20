@@ -49,7 +49,7 @@ vocab:
     context: "Eine Wolke verdeckt die Sonne."
     contextIndonesian: "Awan menutupi matahari."
   - german: "Erde"
-    indonesian: "tanah / bumi"
+    indonesian: "tanah"
     context: "Die Erde ist nach dem Regen nass."
     contextIndonesian: "Tanahnya basah setelah hujan."
   - german: "Blatt"

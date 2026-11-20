@@ -81,7 +81,7 @@ vocab:
     context: "Eine Übernahme wurde später tatsächlich angeboten."
     contextIndonesian: "Belakangan, aku benar-benar ditawari posisi tetap."
   - german: "Einblick"
-    indonesian: "gambaran / wawasan"
+    indonesian: "wawasan"
     context: "Das Praktikum gab mir Einblick in den Beruf."
     contextIndonesian: "Magang memberiku gambaran tentang profesi itu."
 ---

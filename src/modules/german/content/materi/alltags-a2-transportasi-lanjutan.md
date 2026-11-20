@@ -25,7 +25,7 @@ vocab:
     context: "Wegen der Baustelle fährt ein Ersatzbus."
     contextIndonesian: "Ada bus pengganti karena pekerjaan jalan."
   - german: "Gleis"
-    indonesian: "peron / jalur kereta"
+    indonesian: "peron"
     context: "Der Zug fährt heute von Gleis sechs."
     contextIndonesian: "Kereta hari ini berangkat dari peron enam."
   - german: "Monatskarte"

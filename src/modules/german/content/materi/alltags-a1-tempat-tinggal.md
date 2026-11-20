@@ -9,7 +9,7 @@ vocab:
     context: "Das Haus hat einen kleinen Garten."
     contextIndonesian: "Rumah itu memiliki taman kecil."
   - german: "Wohnung"
-    indonesian: "apartemen / tempat tinggal"
+    indonesian: "apartemen"
     context: "Unsere Wohnung liegt im dritten Stock."
     contextIndonesian: "Apartemen kami berada di lantai tiga."
   - german: "Zimmer"

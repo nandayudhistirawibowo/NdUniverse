@@ -13,7 +13,7 @@ vocab:
   - { word: "intersection", translation: "persimpangan", context: "At the intersection you turn left.", contextIndonesian: "Di persimpangan, kamu belok kiri." }
   - { word: "traffic light", translation: "lampu lalu lintas", context: "Please wait at the traffic lights.", contextIndonesian: "Tolong tunggu di lampu merah." }
   - { word: "map", translation: "peta", context: "I look at the map.", contextIndonesian: "Aku melihat peta." }
-  - { word: "way", translation: "jalan / rute", context: "The way to the train station is short.", contextIndonesian: "Jalan ke stasiun dekat." }
+  - { word: "way", translation: "rute", context: "The way to the train station is short.", contextIndonesian: "Jalan ke stasiun dekat." }
   - { word: "north", translation: "utara", context: "The park is in the north.", contextIndonesian: "Tamannya ada di utara." }
   - { word: "south", translation: "selatan", context: "My family lives in the south.", contextIndonesian: "Keluargaku tinggal di selatan." }
   - { word: "East", translation: "timur", context: "The train station is to the east.", contextIndonesian: "Stasiunnya ada di timur." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "search", translation: "mencari", context: "I'm looking for the train station.", contextIndonesian: "Aku sedang mencari stasiun." }
   - { word: "find", translation: "menemukan", context: "Can you find the way alone?", contextIndonesian: "Kamu bisa menemukan jalannya sendiri?" }
   - { word: "show", translation: "menunjukkan", context: "Can you show me the way?", contextIndonesian: "Bisa tunjukkan jalannya?" }
-  - { word: "plan", translation: "peta / denah", context: "The city map is in the car.", contextIndonesian: "Peta kotanya ada di mobil." }
+  - { word: "plan", translation: "denah", context: "The city map is in the car.", contextIndonesian: "Peta kotanya ada di mobil." }
 ---
 
 # Directions

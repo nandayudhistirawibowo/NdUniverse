@@ -16,10 +16,10 @@ vocab:
   - { word: "negotiation", translation: "negosiasi", context: "We negotiated the salary for almost an hour.", contextIndonesian: "Kami menegosiasikan gaji selama hampir satu jam." }
   - { word: "promotion", translation: "promosi jabatan", context: "After the project he got a promotion.", contextIndonesian: "Setelah proyek dia mendapat promosi." }
   - { word: "salary", translation: "gaji", context: "Salary depends on experience and responsibility.", contextIndonesian: "Gaji tergantung pengalaman dan tanggung jawab." }
-  - { word: "termination", translation: "pemutusan hubungan kerja / pengunduran diri", context: "You must submit the termination in writing.", contextIndonesian: "Anda harus mengajukan penghentian secara tertulis." }
+  - { word: "resignation", translation: "pengunduran diri", context: "You must submit your resignation in writing.", contextIndonesian: "Kamu harus mengajukan pengunduran diri secara tertulis." }
   - { word: "notice period", translation: "masa pemberitahuan", context: "During the notice period she continues to work as normal.", contextIndonesian: "Selama masa pemberitahuan dia terus bekerja seperti biasa." }
   - { word: "further training", translation: "pendidikan lanjutan", context: "The company pays for the further training of its employees.", contextIndonesian: "Perusahaan membiayai pelatihan lebih lanjut bagi karyawannya." }
-  - { word: "compatibility", translation: "keselarasan / keseimbangan", context: "Balancing work and family is important to her.", contextIndonesian: "Menyeimbangkan pekerjaan dan keluarga adalah hal yang penting baginya." }
+  - { word: "compatibility", translation: "keseimbangan", context: "Balancing work and family is important to her.", contextIndonesian: "Menyeimbangkan pekerjaan dan keluarga adalah hal yang penting baginya." }
   - { word: "independent", translation: "mandiri", context: "He works independently and plans his own projects.", contextIndonesian: "Dia bekerja secara mandiri dan merencanakan proyeknya sendiri." }
   - { word: "team-oriented", translation: "berorientasi pada kerja tim", context: "The team-oriented colleague enjoys working with others.", contextIndonesian: "Rekan kerja yang berorientasi pada tim senang bekerja dengan orang lain." }
   - { word: "workload", translation: "beban kerja", context: "Too much workload causes stress in the long run.", contextIndonesian: "Beban kerja yang terlalu banyak menyebabkan stres dalam jangka panjang." }

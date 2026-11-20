@@ -59,7 +59,7 @@ vocab:
     indonesian: "lapar"
     context: "Die Kinder haben nach der Schule Hunger."
   - german: "durstig"
-    indonesian: "haus / kehausan"
+    indonesian: "kehausan"
     context: "Nach dem Spaziergang bin ich echt durstig."
   - german: "lecker"
     indonesian: "lezat"

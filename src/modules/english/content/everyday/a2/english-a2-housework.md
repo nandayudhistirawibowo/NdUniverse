@@ -16,7 +16,7 @@ vocab:
   - { word: "vacuum", translation: "menyedot debu", context: "I have to vacuum on Saturday.", contextIndonesian: "Hari Sabtu aku harus menyedot debu." }
   - { word: "clean up", translation: "merapikan", context: "Please clean your room.", contextIndonesian: "Tolong rapikan kamarmu." }
   - { word: "wash off", translation: "mencuci piring", context: "Who is washing the dishes today?", contextIndonesian: "Siapa yang mencuci piring hari ini?" }
-  - { word: "hang up", translation: "menjemur / menggantung", context: "I hung the laundry outside.", contextIndonesian: "Aku menjemur cucian di luar." }
+  - { word: "hang up", translation: "menjemur", context: "I hung the laundry outside.", contextIndonesian: "Aku menjemur cucian di luar." }
   - { word: "iron", translation: "menyetrika", context: "Can you iron my shirt please?", contextIndonesian: "Bisa setrika kemejaku?" }
   - { word: "cook", translation: "memasak", context: "Tonight I'm cooking for everyone.", contextIndonesian: "Malam ini aku memasak untuk semuanya." }
   - { word: "cut", translation: "memotong", context: "Can you cut the vegetables?", contextIndonesian: "Bisa potong sayurannya?" }

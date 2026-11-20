@@ -20,7 +20,7 @@ vocab:
   - { word: "association", translation: "perban", context: "The bandage is already completely wet.", contextIndonesian: "Perbannya sudah basah sekali." }
   - { word: "take", translation: "meminum obat", context: "You should take the tablet after eating.", contextIndonesian: "Sebaiknya minum tablet itu setelah makan." }
   - { word: "prescribe", translation: "meresepkan", context: "The doctor prescribed me tablets.", contextIndonesian: "Dokter meresepkan tablet untukku." }
-  - { word: "work", translation: "bereaksi / bekerja", context: "The remedy works quickly for me.", contextIndonesian: "Obat ini cepat bekerja untukku." }
+  - { word: "work", translation: "berkhasiat", context: "The remedy works quickly for me.", contextIndonesian: "Obat ini cepat bekerja untukku." }
   - { word: "without a prescription", translation: "tanpa resep", context: "Can I buy the medication without a prescription?", contextIndonesian: "Bisa beli obat ini tanpa resep?" }
   - { word: "allergic", translation: "alergi", context: "I am allergic to penicillin.", contextIndonesian: "Aku alergi terhadap penisilin." }
   - { word: "advice", translation: "konsultasi", context: "Thanks for the friendly advice.", contextIndonesian: "Terima kasih atas konsultasinya." }

@@ -37,7 +37,7 @@ vocab:
     context: "Die Stellenausschreibung fand ich auf einer Jobseite."
     contextIndonesian: "Aku menemukan iklan lowongan di situs kerja."
   - german: "Zeugnis"
-    indonesian: "surat keterangan / ijazah"
+    indonesian: "ijazah"
     context: "Das Zeugnis wurde der Bewerbung beigefügt."
     contextIndonesian: "Surat keterangannya dilampirkan pada lamaran."
   - german: "Referenz"

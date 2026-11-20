@@ -20,7 +20,7 @@ vocab:
     indonesian: "penyusutan"
     context: "Die Abschreibung verteilt die Anschaffungskosten auf mehrere Jahre."
   - german: "Verbindlichkeit"
-    indonesian: "kewajiban / utang"
+    indonesian: "utang"
     context: "Die kurzfristige Verbindlichkeit wird im nächsten Quartal fällig."
   - german: "Forderung"
     indonesian: "piutang"

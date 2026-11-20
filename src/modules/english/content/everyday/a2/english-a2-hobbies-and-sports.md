@@ -21,7 +21,7 @@ vocab:
   - { word: "endurance", translation: "daya tahan", context: "Running regularly improved my endurance.", contextIndonesian: "Daya tahanku meningkat karena rutin berlari." }
   - { word: "sore muscles", translation: "nyeri otot", context: "My muscles were sore after training.", contextIndonesian: "Ototku pegal setelah latihan." }
   - { word: "fit", translation: "bugar", context: "I stay fit by cycling.", contextIndonesian: "Aku tetap bugar dengan bersepeda." }
-  - { word: "movement", translation: "gerakan / aktivitas fisik", context: "More exercise is good for my back.", contextIndonesian: "Lebih banyak bergerak baik untuk punggungku." }
+  - { word: "movement", translation: "aktivitas fisik", context: "More exercise is good for my back.", contextIndonesian: "Lebih banyak bergerak baik untuk punggungku." }
   - { word: "trainer", translation: "pelatih laki-laki", context: "The trainer explained the new exercise.", contextIndonesian: "Pelatih menjelaskan gerakan baru." }
   - { word: "leisure time", translation: "waktu luang", context: "In my free time I play volleyball.", contextIndonesian: "Aku bermain voli saat waktu luang." }
 ---

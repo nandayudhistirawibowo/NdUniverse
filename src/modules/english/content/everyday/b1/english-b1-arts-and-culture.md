@@ -15,7 +15,7 @@ vocab:
   - { word: "tradition", translation: "tradisi", context: "The tradition was reinterpreted by young people.", contextIndonesian: "Anak muda menafsirkan ulang tradisi itu." }
   - { word: "creativity", translation: "kreativitas", context: "Creativity was evident in every room.", contextIndonesian: "Kreativitas terlihat di setiap ruangan." }
   - { word: "cultural site", translation: "tempat budaya", context: "The cultural site has been made barrier-free accessible.", contextIndonesian: "Tempat budaya itu dibuat mudah diakses." }
-  - { word: "entry", translation: "tiket masuk", context: "Entry was free on the first Sunday.", contextIndonesian: "Tiket masuk gratis pada hari Minggu pertama." }
+  - { word: "entry", translation: "biaya masuk", context: "Entry was free on the first Sunday.", contextIndonesian: "Tiket masuk gratis pada hari Minggu pertama." }
   - { word: "reading", translation: "acara pembacaan karya", context: "The reading was accompanied by a discussion.", contextIndonesian: "Acara baca karya itu diikuti diskusi." }
   - { word: "diversity", translation: "keberagaman", context: "The diversity of the works impressed the visitors.", contextIndonesian: "Keberagaman karyanya mengesankan para pengunjung." }
   - { word: "cultural association", translation: "perkumpulan budaya", context: "The cultural association organized an open festival.", contextIndonesian: "Perkumpulan budaya itu mengadakan festival terbuka." }

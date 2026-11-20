@@ -19,7 +19,7 @@ vocab:
   - { word: "game", translation: "permainan", context: "The game is really fun.", contextIndonesian: "Permainannya seru banget." }
   - { word: "photo", translation: "foto", context: "I like taking photos.", contextIndonesian: "Aku suka mengambil foto." }
   - { word: "take photos", translation: "memotret", context: "She likes to photograph flowers.", contextIndonesian: "Dia suka memotret bunga." }
-  - { word: "hiking", translation: "mendaki / berjalan-jalan", context: "We're hiking on Saturday.", contextIndonesian: "Hari Sabtu kami jalan-jalan di alam." }
+  - { word: "hiking", translation: "mendaki", context: "We're hiking on Saturday.", contextIndonesian: "Hari Sabtu kami jalan-jalan di alam." }
   - { word: "bike", translation: "sepeda", context: "I like riding my bike.", contextIndonesian: "Aku suka bersepeda." }
   - { word: "collect", translation: "mengoleksi", context: "He collects old coins.", contextIndonesian: "Dia mengoleksi koin lama." }
   - { word: "hobby", translation: "hobi", context: "What is your hobby?", contextIndonesian: "Apa hobimu?" }

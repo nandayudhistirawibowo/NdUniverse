@@ -9,7 +9,7 @@ vocab:
   - { word: "prescribe", translation: "meresepkan", context: "The doctor prescribes something for the inflammation.", contextIndonesian: "Dokter meresepkan sesuatu untuk peradangannya." }
   - { word: "side effect", translation: "efek samping", context: "If you have severe side effects, you should call the practice.", contextIndonesian: "Jika Anda mengalami efek samping yang parah, Anda harus membatalkan praktik tersebut." }
   - { word: "treatment", translation: "perawatan", context: "We adapt the treatment to the course of the disease.", contextIndonesian: "Kami menyesuaikan pengobatan dengan perjalanan penyakit." }
-  - { word: "precaution", translation: "pencegahan / pemeriksaan dini", context: "When it comes to precautionary measures, risks can often be identified early on.", contextIndonesian: "Dalam hal tindakan pencegahan, risiko sering kali dapat diidentifikasi sejak dini." }
+  - { word: "precaution", translation: "tindakan pencegahan", context: "When it comes to precautionary measures, risks can often be identified early on.", contextIndonesian: "Dalam hal tindakan pencegahan, risiko sering kali dapat diidentifikasi sejak dini." }
   - { word: "diet", translation: "pola makan", context: "A balanced diet is good for the body and well-being.", contextIndonesian: "Pola makan seimbang baik untuk tubuh dan kesejahteraan." }
   - { word: "recovery", translation: "pemulihan", context: "In order for her to get well again, she needs enough rest.", contextIndonesian: "Agar dia bisa sembuh kembali, dia perlu istirahat yang cukup." }
   - { word: "transfer", translation: "surat rujukan", context: "The family doctor gives her a referral to a specialist.", contextIndonesian: "Dokter keluarga memberinya rujukan ke dokter spesialis." }

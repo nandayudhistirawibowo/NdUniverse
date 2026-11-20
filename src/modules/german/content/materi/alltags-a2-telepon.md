@@ -57,7 +57,7 @@ vocab:
     context: "Ich konnte dich gestern nicht erreichen."
     contextIndonesian: "Kemarin aku tidak bisa menghubungimu."
   - german: "wählen"
-    indonesian: "memencet / memilih nomor"
+    indonesian: "menekan nomor"
     context: "Wählen Sie bitte die richtige Nummer."
     contextIndonesian: "Silakan tekan nomor yang benar."
   - german: "hinterlassen"

@@ -20,9 +20,9 @@ vocab:
   - { word: "genre", translation: "genre", context: "What genre do you like watching the most?", contextIndonesian: "Kamu paling suka menonton genre apa?" }
   - { word: "occur", translation: "tampil", context: "The band performed live yesterday.", contextIndonesian: "Band itu tampil langsung kemarin." }
   - { word: "spectator", translation: "penonton laki-laki", context: "The audience applauded loudly.", contextIndonesian: "Para penonton bertepuk tangan dengan meriah." }
-  - { word: "exciting", translation: "menegangkan / seru", context: "The crime thriller was exciting until the end.", contextIndonesian: "Film kriminalnya seru sampai akhir." }
+  - { word: "exciting", translation: "seru", context: "The crime thriller was exciting until the end.", contextIndonesian: "Film kriminalnya seru sampai akhir." }
   - { word: "boring", translation: "membosankan", context: "The film was a bit too boring for me.", contextIndonesian: "Film itu agak membosankan buatku." }
-  - { word: "break", translation: "jeda / istirahat", context: "We get drinks during the break.", contextIndonesian: "Saat jeda kami membeli minuman." }
+  - { word: "break", translation: "istirahat", context: "We get drinks during the break.", contextIndonesian: "Saat jeda kami membeli minuman." }
   - { word: "reserve", translation: "memesan tempat", context: "We have reserved seats in the front row.", contextIndonesian: "Kami sudah memesan tempat di baris depan." }
 ---
 

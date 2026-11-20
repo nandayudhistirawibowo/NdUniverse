@@ -5,7 +5,7 @@ judulMateri: "Kebiasaan Buruk"
 deskripsi: "Mengenali kebiasaan yang mengganggu kesehatan dan produktivitas."
 vocab:
   - german: "Angewohnheit"
-    indonesian: "kebiasaan"
+    indonesian: "kebiasaan buruk"
     context: "Diese Angewohnheit wollte ich längst ändern."
     contextIndonesian: "Aku sudah lama ingin mengubah kebiasaan ini."
   - german: "Ablenkung"

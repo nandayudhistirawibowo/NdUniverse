@@ -77,7 +77,7 @@ vocab:
     context: "Kann ich das Kleid anprobieren?"
     contextIndonesian: "Boleh aku mencoba gaun ini?"
   - german: "passen"
-    indonesian: "pas / cocok ukurannya"
+    indonesian: "pas"
     context: "Die Schuhe passen mir perfekt."
     contextIndonesian: "Sepatunya pas sekali untukku."
   - german: "bequem"

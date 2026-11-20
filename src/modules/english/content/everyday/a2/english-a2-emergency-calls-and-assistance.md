@@ -22,7 +22,7 @@ vocab:
   - { word: "fire", translation: "kebakaran", context: "The fire was discovered quickly.", contextIndonesian: "Kebakarannya cepat diketahui." }
   - { word: "danger", translation: "bahaya", context: "The danger wasn't over yet.", contextIndonesian: "Bahayanya belum berlalu." }
   - { word: "urgent", translation: "mendesak", context: "She needed urgent medical attention.", contextIndonesian: "Dia sangat membutuhkan bantuan medis." }
-  - { word: "stakes", translation: "operasi / penanganan", context: "The operation lasted almost an hour.", contextIndonesian: "Penanganannya berlangsung hampir satu jam." }
+  - { word: "operation", translation: "operasi", context: "The operation lasted almost an hour.", contextIndonesian: "Penanganannya berlangsung hampir satu jam." }
   - { word: "intersection", translation: "persimpangan", context: "The intersection was temporarily closed.", contextIndonesian: "Persimpangannya ditutup sementara." }
 ---
 

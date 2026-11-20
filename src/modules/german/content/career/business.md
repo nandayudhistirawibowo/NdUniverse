@@ -54,7 +54,7 @@ vocab:
   - { german: "Online-Shop", indonesian: "toko daring", context: "Der Online-Shop verkauft Kleidung." }
   - { german: "Umsatz", indonesian: "pendapatan penjualan", context: "Der Umsatz ist im letzten Monat gestiegen." }
   - { german: "Gewinn", indonesian: "keuntungan", context: "Der Gewinn wächst durch geringere Kosten." }
-  - { german: "Kunde", indonesian: "pelanggan", context: "Der Kunde bestellt das Produkt online." }
+  - { german: "Kunde", indonesian: "seorang pelanggan", context: "Der Kunde bestellt das Produkt online." }
   - { german: "Zielgruppe", indonesian: "kelompok sasaran", context: "Die Zielgruppe sind junge Erwachsene." }
   - { german: "Werbung", indonesian: "iklan", context: "Die Werbung läuft in sozialen Medien." }
   - { german: "Strategie", indonesian: "strategi", context: "Unsere Strategie verbindet Qualität und Preis." }
@@ -73,7 +73,7 @@ vocab:
   - { german: "Zahlung", indonesian: "pembayaran", context: "Die Zahlung ist sicher." }
   - { german: "Rechnung", indonesian: "tagihan", context: "Die Rechnung wird per E-Mail verschickt." }
   - { german: "Lager", indonesian: "gudang", context: "Das Lager verwaltet alle Artikel." }
-  - { german: "Verkauf", indonesian: "penjualan", context: "Der Verkauf steigt besonders im Dezember." }
+  - { german: "Verkauf", indonesian: "transaksi penjualan", context: "Der Verkauf steigt besonders im Dezember." }
   - { german: "Verkaufszahlen", indonesian: "angka penjualan", context: "Die Verkaufszahlen werden monatlich geprüft." }
   - { german: "Newsletter", indonesian: "buletin", context: "Der Newsletter informiert über Neuigkeiten." }
   - { german: "Social-Media", indonesian: "media sosial", context: "Social-Media-Werbung erhöht die Reichweite." }

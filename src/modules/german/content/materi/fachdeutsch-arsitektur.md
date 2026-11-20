@@ -62,6 +62,6 @@ vocab:
     indonesian: "karakter material"
     context: "Die Materialität der Fassade prägt die Wirkung des Gebäudes."
   - german: "Lageplan"
-    indonesian: "peta lokasi / tapak"
+    indonesian: "denah tapak"
     context: "Der Lageplan zeigt das Gebäude und seine Umgebung."
 ---

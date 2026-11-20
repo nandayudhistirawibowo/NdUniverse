@@ -25,7 +25,7 @@ vocab:
     context: "Ich habe Erfahrung im Kundenservice."
     contextIndonesian: "Saya memiliki pengalaman dalam layanan pelanggan."
   - german: "Ausbildung"
-    indonesian: "pendidikan / pelatihan kejuruan"
+    indonesian: "pelatihan kejuruan"
     context: "Meine Ausbildung dauert drei Jahre."
     contextIndonesian: "Pendidikan kejuruan saya berlangsung selama tiga tahun."
   - german: "Stelle"

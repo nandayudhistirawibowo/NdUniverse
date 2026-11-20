@@ -29,7 +29,7 @@ vocab:
     indonesian: "jaringan"
     context: "Das Netzwerk verbindet mehrere Computer miteinander."
   - german: "Schnittstelle"
-    indonesian: "antarmuka / interface"
+    indonesian: "antarmuka"
     context: "Die Schnittstelle ermöglicht den Austausch zwischen zwei Systemen."
   - german: "Algorithmus"
     indonesian: "algoritma"

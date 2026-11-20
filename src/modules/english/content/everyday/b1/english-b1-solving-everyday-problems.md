@@ -18,7 +18,7 @@ vocab:
   - { word: "agree", translation: "mencapai kesepakatan", context: "In the end we agreed on a date.", contextIndonesian: "Akhirnya kami sepakat soal jadwal." }
   - { word: "avoid", translation: "menghindari", context: "Mistakes can be avoided with clear agreements.", contextIndonesian: "Kesalahan bisa dihindari dengan kesepakatan yang jelas." }
   - { word: "solve", translation: "menyelesaikan", context: "We solved the task step by step.", contextIndonesian: "Kami menyelesaikan tugasnya langkah demi langkah." }
-  - { word: "clarify", translation: "menjelaskan / membereskan", context: "The open question was clarified later.", contextIndonesian: "Pertanyaan yang belum terjawab dibahas kemudian." }
+  - { word: "clarify", translation: "menjelaskan", context: "The open question was clarified later.", contextIndonesian: "Pertanyaan yang belum terjawab dibahas kemudian." }
   - { word: "compromise", translation: "kompromi", context: "A compromise would be fair for both sides.", contextIndonesian: "Kompromi akan adil bagi kedua pihak." }
   - { word: "patience", translation: "kesabaran", context: "With a little patience we found a solution.", contextIndonesian: "Dengan sedikit sabar, kami menemukan solusi." }
   - { word: "replacement", translation: "pengganti", context: "A replacement was delivered the same day.", contextIndonesian: "Barang pengganti dikirim pada hari yang sama." }

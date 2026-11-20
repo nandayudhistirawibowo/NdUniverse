@@ -14,7 +14,7 @@ vocab:
   - { word: "washing machine", translation: "mesin cuci", context: "The washing machine gave up in the middle of the wash cycle.", contextIndonesian: "Mesin cucinya rusak di tengah proses mencuci." }
   - { word: "burst pipe", translation: "pipa pecah", context: "A burst pipe flooded the basement.", contextIndonesian: "Pipa pecah membanjiri ruang bawah tanah." }
   - { word: "waste separation", translation: "pemilahan sampah", context: "Separating waste caused an argument in the house.", contextIndonesian: "Pemilahan sampah memicu pertengkaran di rumah." }
-  - { word: "billing", translation: "tagihan / perhitungan biaya", context: "The statement contained an unusual amount.", contextIndonesian: "Tagihannya mencantumkan jumlah yang tidak biasa." }
+  - { word: "billing", translation: "tagihan", context: "The statement contained an unusual amount.", contextIndonesian: "Tagihannya mencantumkan jumlah yang tidak biasa." }
   - { word: "complaint", translation: "keluhan", context: "The complaint was submitted in writing.", contextIndonesian: "Keluhannya disampaikan secara tertulis." }
   - { word: "insurance", translation: "asuransi", context: "The insurance covered part of the costs.", contextIndonesian: "Asuransi menanggung sebagian biayanya." }
   - { word: "consideration", translation: "tenggang rasa", context: "More consideration would have prevented the conflict.", contextIndonesian: "Sedikit tenggang rasa bisa mencegah konflik itu." }

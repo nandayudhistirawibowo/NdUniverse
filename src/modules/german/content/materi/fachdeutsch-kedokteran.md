@@ -32,7 +32,7 @@ vocab:
     indonesian: "prognosis"
     context: "Die Prognose hängt vom Verlauf der Erkrankung ab."
   - german: "Aufnahme"
-    indonesian: "rawat inap / penerimaan pasien"
+    indonesian: "rawat inap"
     context: "Wegen der starken Beschwerden wurde eine stationäre Aufnahme empfohlen."
   - german: "Puls"
     indonesian: "denyut nadi"

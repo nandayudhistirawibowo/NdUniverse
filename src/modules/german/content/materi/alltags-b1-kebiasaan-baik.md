@@ -49,7 +49,7 @@ vocab:
     context: "Ich gewöhnte mir an, früher aufzustehen."
     contextIndonesian: "Aku membiasakan diri bangun lebih pagi."
   - german: "verzichten"
-    indonesian: "mengurangi / tidak memakai"
+    indonesian: "menghindari"
     context: "Unter der Woche verzichtete er auf Süßigkeiten."
     contextIndonesian: "Dia menghindari makanan manis selama hari kerja."
   - german: "Pause"

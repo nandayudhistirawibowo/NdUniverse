@@ -25,7 +25,7 @@ vocab:
     context: "Datenportabilität erleichtere den Wechsel zwischen Diensten."
     contextIndonesian: "Portabilitas data memudahkan perpindahan antar layanan."
   - german: "Datenschutzverletzung"
-    indonesian: "pelanggaran perlindungan data"
+    indonesian: "pelanggaran data"
     context: "Datenschutzverletzungen müssten zeitnah gemeldet werden."
     contextIndonesian: "Pelanggaran perlindungan data harus segera dilaporkan."
   - german: "Auftragsverarbeitung"

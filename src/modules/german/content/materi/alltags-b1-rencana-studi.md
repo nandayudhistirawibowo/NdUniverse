@@ -37,7 +37,7 @@ vocab:
     context: "Für die Prüfung lernte ich mehrere Wochen."
     contextIndonesian: "Aku belajar beberapa minggu untuk ujian."
   - german: "Abschluss"
-    indonesian: "kelulusan / gelar"
+    indonesian: "kelulusan"
     context: "Nach dem Abschluss wollte sie ins Ausland."
     contextIndonesian: "Setelah lulus, dia ingin ke luar negeri."
   - german: "Auslandssemester"
@@ -81,7 +81,7 @@ vocab:
     context: "Die Berufsaussichten schienen damals sehr gut."
     contextIndonesian: "Prospek kerjanya saat itu terlihat bagus."
   - german: "abbrechen"
-    indonesian: "berhenti / mengundurkan diri"
+    indonesian: "berhenti"
     context: "Sie wollte ihr Studium nicht abbrechen."
     contextIndonesian: "Dia tidak ingin berhenti kuliah."
 ---

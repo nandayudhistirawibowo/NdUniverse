@@ -9,8 +9,8 @@ vocab:
   - { word: "algorithm", translation: "algoritma", context: "The algorithm shows some users certain content first.", contextIndonesian: "Algoritme menampilkan konten tertentu kepada beberapa pengguna terlebih dahulu." }
   - { word: "language model", translation: "model bahasa", context: "A language model writes texts using lots of sample data.", contextIndonesian: "Model bahasa menulis teks menggunakan banyak data sampel." }
   - { word: "training data", translation: "data pelatihan", context: "Bad training data often leads to bad results.", contextIndonesian: "Data pelatihan yang buruk sering kali menghasilkan hasil yang buruk." }
-  - { word: "distortion", translation: "bias / penyimpangan", context: "Distorted data can lead to unfair ratings.", contextIndonesian: "Data yang bias dapat menyebabkan penilaian yang tidak adil." }
-  - { word: "bias", translation: "keberpihakan / prasangka", context: "Developers need to check whether the model is biased.", contextIndonesian: "Pengembang perlu memeriksa apakah modelnya bias." }
+  - { word: "distortion", translation: "penyimpangan", context: "Distorted data can lead to unfair ratings.", contextIndonesian: "Data yang bias dapat menyebabkan penilaian yang tidak adil." }
+  - { word: "bias", translation: "prasangka", context: "Developers need to check whether the model is biased.", contextIndonesian: "Pengembang perlu memeriksa apakah modelnya bias." }
   - { word: "transparency", translation: "transparansi", context: "More transparency makes automated decisions verifiable.", contextIndonesian: "Transparansi yang lebih besar membuat keputusan otomatis dapat diverifikasi." }
   - { word: "explainability", translation: "keterjelasan alasan suatu keputusan", context: "In sensitive applications you have to be able to explain decisions.", contextIndonesian: "Dalam aplikasi sensitif Anda harus bisa menjelaskan keputusan." }
   - { word: "data sovereignty", translation: "kendali atas data", context: "Users should decide for themselves about their personal data.", contextIndonesian: "Pengguna harus memutuskan sendiri tentang data pribadinya." }

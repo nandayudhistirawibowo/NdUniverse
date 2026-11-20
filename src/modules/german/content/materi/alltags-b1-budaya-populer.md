@@ -33,7 +33,7 @@ vocab:
     context: "Die Kritik fiel diesmal besonders deutlich aus."
     contextIndonesian: "Kritiknya kali ini sangat tegas."
   - german: "Veröffentlichung"
-    indonesian: "rilis / penerbitan"
+    indonesian: "rilis"
     context: "Die Veröffentlichung wurde tagelang angekündigt."
     contextIndonesian: "Rilisnya diumumkan selama berhari-hari."
   - german: "Inhalt"

@@ -65,7 +65,7 @@ vocab:
     context: "Sie fotografiert gern Blumen."
     contextIndonesian: "Dia suka memotret bunga."
   - german: "wandern"
-    indonesian: "mendaki / berjalan-jalan"
+    indonesian: "mendaki"
     context: "Wir wandern am Samstag."
     contextIndonesian: "Hari Sabtu kami jalan-jalan di alam."
   - german: "Fahrrad"

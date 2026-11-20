@@ -61,7 +61,7 @@ vocab:
     context: "Wir lösten die Aufgabe Schritt für Schritt."
     contextIndonesian: "Kami menyelesaikan tugasnya langkah demi langkah."
   - german: "klären"
-    indonesian: "menjelaskan / membereskan"
+    indonesian: "menjelaskan"
     context: "Die offene Frage wurde später geklärt."
     contextIndonesian: "Pertanyaan yang belum terjawab dibahas kemudian."
   - german: "Kompromiss"

@@ -12,7 +12,7 @@ vocab:
   - { word: "symptom", translation: "gejala", context: "The symptom first appeared three days ago.", contextIndonesian: "Gejala pertama kali muncul tiga hari lalu." }
   - { word: "therapy", translation: "terapi", context: "The therapy is regularly checked for its effectiveness.", contextIndonesian: "Terapi ini diperiksa efektivitasnya secara berkala." }
   - { word: "forecast", translation: "prognosis", context: "The prognosis depends on the course of the disease.", contextIndonesian: "Prognosis tergantung pada perjalanan penyakit." }
-  - { word: "recording", translation: "rawat inap / penerimaan pasien", context: "Because of the severe symptoms, hospitalization was recommended.", contextIndonesian: "Karena gejalanya yang parah, dianjurkan rawat inap." }
+  - { word: "recording", translation: "rawat inap", context: "Because of the severe symptoms, hospitalization was recommended.", contextIndonesian: "Karena gejalanya yang parah, dianjurkan rawat inap." }
   - { word: "pulse", translation: "denyut nadi", context: "The pulse is carefully checked during the examination.", contextIndonesian: "Denyut nadi diperiksa dengan cermat selama pemeriksaan." }
   - { word: "breathing", translation: "pernapasan", context: "The patient's breathing is calm and even.", contextIndonesian: "Nafas pasien tenang dan teratur." }
   - { word: "infusion", translation: "infus", context: "The infusion supplies the patient with fluids.", contextIndonesian: "Infus memberikan cairan kepada pasien." }

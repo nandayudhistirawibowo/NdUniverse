@@ -6,7 +6,7 @@ level: "B1"
 vocab:
   - { word: "freelancer", translation: "pekerja lepas laki-laki", context: "As a freelancer, he planned his own week.", contextIndonesian: "Sebagai pekerja lepas, dia mengatur minggunya sendiri." }
   - { word: "client", translation: "klien perempuan", context: "The client changed the scope of the project.", contextIndonesian: "Kliennya mengubah cakupan proyek." }
-  - { word: "order", translation: "pekerjaan / pesanan", context: "I received the order through a recommendation.", contextIndonesian: "Aku mendapat pekerjaan itu lewat rekomendasi." }
+  - { word: "order", translation: "pesanan", context: "I received the order through a recommendation.", contextIndonesian: "Aku mendapat pekerjaan itu lewat rekomendasi." }
   - { word: "fee", translation: "honor", context: "The fee was agreed in writing in advance.", contextIndonesian: "Honornya disepakati tertulis sebelumnya." }
   - { word: "invoice", translation: "tagihan", context: "The invoice had to be paid by the end of the month.", contextIndonesian: "Tagihannya harus dibayar paling lambat akhir bulan." }
   - { word: "contract", translation: "kontrak", context: "The contract contained a fair notice period.", contextIndonesian: "Kontraknya mencantumkan masa pemberitahuan yang wajar." }

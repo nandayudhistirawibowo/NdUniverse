@@ -49,7 +49,7 @@ vocab:
     context: "Viele Schüler wirkten bei der Feier mit."
     contextIndonesian: "Banyak murid ikut berperan dalam perayaan."
   - german: "aufbauen"
-    indonesian: "mendirikan / menyiapkan"
+    indonesian: "mendirikan"
     context: "Die Bühne wurde am Morgen aufgebaut."
     contextIndonesian: "Panggungnya didirikan pagi hari."
   - german: "Einladung"

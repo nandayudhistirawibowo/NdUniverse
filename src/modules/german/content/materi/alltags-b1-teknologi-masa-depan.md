@@ -13,7 +13,7 @@ vocab:
     context: "Die Entwicklung schreitet schneller voran als erwartet."
     contextIndonesian: "Perkembangannya berlangsung lebih cepat dari perkiraan."
   - german: "Anwendung"
-    indonesian: "aplikasi / penerapan"
+    indonesian: "penerapan"
     context: "Die Anwendung wurde zunächst an Schulen getestet."
     contextIndonesian: "Penerapannya awalnya diuji di sekolah."
   - german: "Datenschutz"

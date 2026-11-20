@@ -10,7 +10,7 @@ vocab:
   - { word: "delay", translation: "keterlambatan", context: "We missed the connection due to a delay.", contextIndonesian: "Kami ketinggalan sambungan karena keterlambatan." }
   - { word: "sight", translation: "tempat wisata", context: "The attraction has just been renovated.", contextIndonesian: "Tempat wisatanya sedang direnovasi." }
   - { word: "travel insurance", translation: "asuransi perjalanan", context: "Travel insurance would be helpful in this case.", contextIndonesian: "Asuransi perjalanan mungkin akan berguna dalam situasi ini." }
-  - { word: "travel guide", translation: "pemandu wisata / buku panduan", context: "The guide recommended a small restaurant.", contextIndonesian: "Pemandu itu merekomendasikan restoran kecil." }
+  - { word: "travel guide", translation: "buku panduan", context: "The guide recommended a small restaurant.", contextIndonesian: "Pemandu itu merekomendasikan restoran kecil." }
   - { word: "border", translation: "perbatasan", context: "Our passports were checked at the border.", contextIndonesian: "Paspor kami diperiksa di perbatasan." }
   - { word: "luggage", translation: "bagasi", context: "Our luggage didn't arrive until the next day.", contextIndonesian: "Bagasi kami baru tiba keesokan harinya." }
   - { word: "experience", translation: "pengalaman", context: "I will never forget this experience.", contextIndonesian: "Pengalaman ini tidak akan pernah kulupakan." }

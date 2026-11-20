@@ -21,7 +21,7 @@ vocab:
     context: "Geschlechternormen würden in Interaktionen bestätigt."
     contextIndonesian: "Norma gender diteguhkan melalui interaksi."
   - german: "geschlechtliche Segregation"
-    indonesian: "segregasi gender"
+    indonesian: "pemisahan berdasarkan gender"
     context: "Geschlechtliche Segregation präge zahlreiche Berufsfelder."
     contextIndonesian: "Segregasi gender membentuk banyak bidang pekerjaan."
   - german: "Geschlechterperformanz"

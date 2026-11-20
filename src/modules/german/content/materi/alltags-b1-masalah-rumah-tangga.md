@@ -45,7 +45,7 @@ vocab:
     context: "Die Mülltrennung sorgte für Streit im Haus."
     contextIndonesian: "Pemilahan sampah memicu pertengkaran di rumah."
   - german: "Abrechnung"
-    indonesian: "tagihan / perhitungan biaya"
+    indonesian: "tagihan"
     context: "Die Abrechnung enthielt einen ungewöhnlichen Betrag."
     contextIndonesian: "Tagihannya mencantumkan jumlah yang tidak biasa."
   - german: "Beschwerde"

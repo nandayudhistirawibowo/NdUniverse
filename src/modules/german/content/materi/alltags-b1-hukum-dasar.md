@@ -49,7 +49,7 @@ vocab:
     context: "Eine kostenlose Beratung wurde angeboten."
     contextIndonesian: "Konsultasi gratis disediakan."
   - german: "Anspruch"
-    indonesian: "hak / klaim"
+    indonesian: "tuntutan"
     context: "Der Anspruch wurde vom Amt geprüft."
     contextIndonesian: "Klaim haknya diperiksa oleh kantor terkait."
   - german: "Frist"

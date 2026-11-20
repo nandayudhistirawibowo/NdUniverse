@@ -9,7 +9,7 @@ vocab:
   - { word: "arrival", translation: "kedatangan", context: "Our arrival will be a little late.", contextIndonesian: "Kedatangan kami akan sedikit terlambat." }
   - { word: "delay", translation: "keterlambatan", context: "The train is twenty minutes late today.", contextIndonesian: "Kereta hari ini terlambat dua puluh menit." }
   - { word: "replacement bus", translation: "bus pengganti", context: "A replacement bus is running due to the construction site.", contextIndonesian: "Ada bus pengganti karena pekerjaan jalan." }
-  - { word: "track", translation: "peron / jalur kereta", context: "The train is leaving from platform six today.", contextIndonesian: "Kereta hari ini berangkat dari peron enam." }
+  - { word: "track", translation: "peron", context: "The train is leaving from platform six today.", contextIndonesian: "Kereta hari ini berangkat dari peron enam." }
   - { word: "monthly pass", translation: "kartu langganan bulanan", context: "I save money with the monthly pass.", contextIndonesian: "Aku menghemat uang dengan kartu bulanan." }
   - { word: "ticket", translation: "tiket perjalanan", context: "I bought my ticket on the train.", contextIndonesian: "Aku membeli tiket di kereta." }
   - { word: "seat", translation: "tempat duduk", context: "Unfortunately there were no seats left.", contextIndonesian: "Sayangnya tidak ada tempat duduk kosong." }

@@ -17,7 +17,7 @@ vocab:
   - { word: "medium", translation: "media", context: "The medium is selected to suit the target group.", contextIndonesian: "Media dipilih sesuai dengan kelompok sasaran." }
   - { word: "journalism", translation: "jurnalisme", context: "Independent journalism carefully checks information.", contextIndonesian: "Jurnalisme independen memeriksa informasi dengan cermat." }
   - { word: "reporting", translation: "pemberitaan", context: "Coverage of the event began early in the morning.", contextIndonesian: "Liputan acara dimulai pagi-pagi sekali." }
-  - { word: "content", translation: "isi / konten", context: "The content of the article will be checked before publication.", contextIndonesian: "Isi artikel akan diperiksa sebelum dipublikasikan." }
+  - { word: "content", translation: "isi", context: "The content of the article will be checked before publication.", contextIndonesian: "Isi artikel akan diperiksa sebelum dipublikasikan." }
   - { word: "audience", translation: "audiens", context: "The audience reacted to the announcement with numerous questions.", contextIndonesian: "Penonton bereaksi terhadap pengumuman tersebut dengan banyak pertanyaan." }
   - { word: "publication", translation: "publikasi", context: "The report is scheduled to be published on Monday.", contextIndonesian: "Laporan tersebut dijadwalkan akan diterbitkan pada hari Senin." }
   - { word: "brand identity", translation: "identitas merek", context: "A consistent brand identity makes recognition easier.", contextIndonesian: "Identitas merek yang konsisten membuat pengenalan lebih mudah." }

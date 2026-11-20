@@ -15,7 +15,7 @@ vocab:
   - { word: "statement", translation: "kesaksian", context: "The statement was carefully recorded.", contextIndonesian: "Kesaksiannya dicatat dengan cermat." }
   - { word: "punishment", translation: "hukuman", context: "The punishment was milder than expected.", contextIndonesian: "Hukumannya lebih ringan dari perkiraan." }
   - { word: "advice", translation: "konsultasi", context: "A free consultation was offered.", contextIndonesian: "Konsultasi gratis disediakan." }
-  - { word: "claim", translation: "hak / klaim", context: "The claim was examined by the office.", contextIndonesian: "Klaim haknya diperiksa oleh kantor terkait." }
+  - { word: "claim", translation: "tuntutan", context: "The claim was examined by the office.", contextIndonesian: "Klaim haknya diperiksa oleh kantor terkait." }
   - { word: "deadline", translation: "tenggat waktu", context: "Unfortunately the deadline was not extended.", contextIndonesian: "Sayangnya tenggat waktunya tidak diperpanjang." }
   - { word: "notice", translation: "surat keputusan", context: "The decision only came after several weeks.", contextIndonesian: "Surat keputusannya baru datang beberapa minggu kemudian." }
   - { word: "authority", translation: "instansi pemerintah", context: "The authority answered my questions in writing.", contextIndonesian: "Instansi itu menjawab pertanyaanku secara tertulis." }

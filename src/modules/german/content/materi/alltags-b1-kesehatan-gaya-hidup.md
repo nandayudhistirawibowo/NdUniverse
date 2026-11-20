@@ -21,7 +21,7 @@ vocab:
     context: "Früher bewegte ich mich viel zu wenig."
     contextIndonesian: "Dulu aku kurang banyak bergerak."
   - german: "Vorsorge"
-    indonesian: "pencegahan / pemeriksaan rutin"
+    indonesian: "pemeriksaan rutin"
     context: "Regelmäßige Vorsorge kann Krankheiten verhindern."
     contextIndonesian: "Pemeriksaan rutin bisa mencegah penyakit."
   - german: "Erholung"

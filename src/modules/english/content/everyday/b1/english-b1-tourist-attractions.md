@@ -6,7 +6,7 @@ level: "B1"
 vocab:
   - { word: "travel destination", translation: "tujuan wisata", context: "The travel destination was often recommended in travel blogs.", contextIndonesian: "Tujuan wisata itu sering direkomendasikan di blog perjalanan." }
   - { word: "sight", translation: "tempat wisata", context: "The attraction has just been restored.", contextIndonesian: "Tempat wisata itu sedang dipugar." }
-  - { word: "entry", translation: "tiket masuk", context: "Admission would be cheaper for families.", contextIndonesian: "Tiket masuknya sebaiknya lebih murah untuk keluarga." }
+  - { word: "entry", translation: "biaya masuk", context: "Admission would be cheaper for families.", contextIndonesian: "Tiket masuknya sebaiknya lebih murah untuk keluarga." }
   - { word: "leadership", translation: "tur berpemandu", context: "The tour was offered in German.", contextIndonesian: "Tur berpemandunya tersedia dalam bahasa Jerman." }
   - { word: "viewpoint", translation: "titik pandang", context: "From the viewpoint you could see the entire valley.", contextIndonesian: "Dari titik pandang itu terlihat seluruh lembah." }
   - { word: "old town", translation: "kota tua", context: "The old town remained cozy despite many visitors.", contextIndonesian: "Kota tuanya tetap nyaman meski banyak pengunjung." }
@@ -14,7 +14,7 @@ vocab:
   - { word: "accommodation", translation: "akomodasi", context: "Our accommodation was outside the historic center.", contextIndonesian: "Akomodasi kami berada di luar pusat bersejarah." }
   - { word: "travel time", translation: "waktu perjalanan", context: "The travel time was extended due to the traffic jam.", contextIndonesian: "Waktu perjalanan bertambah karena macet." }
   - { word: "entry ticket", translation: "tiket masuk", context: "I bought the ticket online in advance.", contextIndonesian: "Aku membeli tiket masuknya secara daring sebelumnya." }
-  - { word: "visit", translation: "mengunjungi / melihat-lihat", context: "We visited the castle the next morning.", contextIndonesian: "Kami mengunjungi kastil keesokan paginya." }
+  - { word: "visit", translation: "mengunjungi", context: "We visited the castle the next morning.", contextIndonesian: "Kami mengunjungi kastil keesokan paginya." }
   - { word: "explore", translation: "menjelajahi", context: "We explored the area by bike.", contextIndonesian: "Kami menjelajahi daerah sekitar dengan sepeda." }
   - { word: "local", translation: "warga lokal perempuan", context: "A local recommended a quieter beach.", contextIndonesian: "Seorang warga lokal menyarankan pantai yang lebih sepi." }
   - { word: "overnight stay", translation: "menginap", context: "The overnight stay cost less than expected.", contextIndonesian: "Biaya menginapnya lebih murah dari perkiraan." }

@@ -14,7 +14,7 @@ vocab:
   - { word: "wrist", translation: "pergelangan tangan", context: "Wrist hurts when moving.", contextIndonesian: "Pergelangan tanganku sakit saat digerakkan." }
   - { word: "wound", translation: "luka", context: "The wound still needs to be bandaged.", contextIndonesian: "Lukanya masih perlu diperban." }
   - { word: "association", translation: "perban", context: "The bandage was changed today.", contextIndonesian: "Perbannya diganti hari ini." }
-  - { word: "get hurt", translation: "cedera", context: "I injured myself while playing sports.", contextIndonesian: "Aku cedera saat berolahraga." }
+  - { word: "get hurt", translation: "terluka", context: "I injured myself while playing sports.", contextIndonesian: "Aku cedera saat berolahraga." }
   - { word: "bump into each other", translation: "terbentur", context: "She hit her head.", contextIndonesian: "Dia terbentur kepalanya." }
   - { word: "catch a cold", translation: "terkena selesma", context: "He caught a cold in the rain.", contextIndonesian: "Dia masuk angin karena kehujanan." }
   - { word: "investigate", translation: "memeriksa", context: "The doctor examined my foot.", contextIndonesian: "Dokter sudah memeriksa kakiku." }

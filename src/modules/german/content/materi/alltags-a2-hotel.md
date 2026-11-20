@@ -13,7 +13,7 @@ vocab:
     context: "An der Rezeption wartet schon jemand."
     contextIndonesian: "Sudah ada orang yang menunggu di resepsionis."
   - german: "Empfang"
-    indonesian: "resepsionis / penerimaan"
+    indonesian: "meja penerimaan"
     context: "Der Empfang ist rund um die Uhr besetzt."
     contextIndonesian: "Resepsionis buka sepanjang waktu."
   - german: "Einzelzimmer"
@@ -81,7 +81,7 @@ vocab:
     context: "Ich möchte eine Beschwerde melden."
     contextIndonesian: "Saya ingin menyampaikan keluhan."
   - german: "frei"
-    indonesian: "tersedia / kosong"
+    indonesian: "tersedia"
     context: "Haben Sie noch ein Zimmer frei?"
     contextIndonesian: "Masih ada kamar kosong?"
 ---

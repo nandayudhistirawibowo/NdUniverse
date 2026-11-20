@@ -26,7 +26,7 @@ vocab:
     indonesian: "obat"
     context: "Das Arzneimittel muss außerhalb der Reichweite von Kindern aufbewahrt werden."
   - german: "Abgabe"
-    indonesian: "penyerahan / pengeluaran obat"
+    indonesian: "penyerahan obat"
     context: "Die Abgabe des verschreibungspflichtigen Präparats erfolgt nach Prüfung des Rezepts."
   - german: "Haltbarkeit"
     indonesian: "masa simpan"

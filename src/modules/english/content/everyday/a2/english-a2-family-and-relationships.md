@@ -16,12 +16,12 @@ vocab:
   - { word: "partner", translation: "pasangan laki-laki", context: "Your partner works in another city.", contextIndonesian: "Pasangannya bekerja di kota lain." }
   - { word: "partner", translation: "pasangan perempuan", context: "His partner is coming with us today.", contextIndonesian: "Pasangannya ikut hari ini." }
   - { word: "marital status", translation: "status pernikahan", context: "My marital status is on the form.", contextIndonesian: "Status pernikahanku tertulis di formulir." }
-  - { word: "married", translation: "menikah", context: "My parents have been married for twenty years.", contextIndonesian: "Orang tuaku sudah menikah selama dua puluh tahun." }
+  - { word: "married", translation: "berstatus menikah", context: "My parents have been married for twenty years.", contextIndonesian: "Orang tuaku sudah menikah selama dua puluh tahun." }
   - { word: "divorced", translation: "bercerai", context: "She has been divorced since last year.", contextIndonesian: "Dia sudah bercerai sejak tahun lalu." }
   - { word: "separated", translation: "berpisah", context: "The two have been living separately for months.", contextIndonesian: "Mereka sudah berpisah selama berbulan-bulan." }
   - { word: "get to know each other", translation: "berkenalan", context: "My parents met during college.", contextIndonesian: "Orang tuaku berkenalan saat kuliah." }
   - { word: "get married", translation: "menikah", context: "They want to get married next year.", contextIndonesian: "Mereka ingin menikah tahun depan." }
-  - { word: "understand each other", translation: "akur / saling memahami", context: "We didn't get along well before.", contextIndonesian: "Dulu kami tidak terlalu akur." }
+  - { word: "understand each other", translation: "saling memahami", context: "We didn't get along well before.", contextIndonesian: "Dulu kami tidak terlalu akur." }
   - { word: "relationship", translation: "hubungan", context: "Your relationship has been a long time.", contextIndonesian: "Hubungan mereka sudah berlangsung lama." }
   - { word: "origin", translation: "asal-usul", context: "My family has an interesting background.", contextIndonesian: "Keluargaku punya asal-usul yang menarik." }
 ---

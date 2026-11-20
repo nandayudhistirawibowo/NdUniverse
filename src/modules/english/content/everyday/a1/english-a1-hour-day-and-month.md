@@ -4,7 +4,7 @@ description: "Learn everyday English about hour, day, and month."
 track: "Everyday English"
 level: "A1"
 vocab:
-  - { word: "clock", translation: "jam / pukul", context: "It's eight o'clock.", contextIndonesian: "Sekarang pukul delapan." }
+  - { word: "clock", translation: "jam", context: "It's eight o'clock.", contextIndonesian: "Sekarang pukul delapan." }
   - { word: "hour", translation: "jam (durasi)", context: "The lesson only lasts one hour.", contextIndonesian: "Pelajarannya cuma berlangsung satu jam." }
   - { word: "minute", translation: "menit", context: "The bus is coming in five minutes.", contextIndonesian: "Bus akan tiba dalam lima menit." }
   - { word: "today", translation: "hari ini", context: "Today I'm learning German.", contextIndonesian: "Hari ini saya belajar bahasa Jerman." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "March", translation: "Maret", context: "Spring begins in March.", contextIndonesian: "Musim semi dimulai pada bulan Maret." }
   - { word: "April", translation: "April", context: "It sometimes rains in April.", contextIndonesian: "Pada bulan April terkadang turun hujan." }
   - { word: "calendar", translation: "kalender", context: "I enter the appointment in the calendar.", contextIndonesian: "Saya mencatat jadwal itu di kalender." }
-  - { word: "late", translation: "terlambat / larut", context: "The train is late today.", contextIndonesian: "Kereta itu datang terlambat hari ini." }
+  - { word: "late", translation: "terlambat", context: "The train is late today.", contextIndonesian: "Kereta itu datang terlambat hari ini." }
 ---
 
 # Hour, Day, and Month

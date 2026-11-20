@@ -17,7 +17,7 @@ vocab:
   - { word: "put through", translation: "menyambungkan telepon", context: "Could you please put me through?", contextIndonesian: "Bisa sambungkan telepon saya?" }
   - { word: "busy", translation: "sibuk", context: "The line is currently busy.", contextIndonesian: "Sambungan teleponnya sedang sibuk." }
   - { word: "reach", translation: "menghubungi", context: "I couldn't reach you yesterday.", contextIndonesian: "Kemarin aku tidak bisa menghubungimu." }
-  - { word: "dial", translation: "memencet / memilih nomor", context: "Please dial the correct number.", contextIndonesian: "Silakan tekan nomor yang benar." }
+  - { word: "dial", translation: "menekan nomor", context: "Please dial the correct number.", contextIndonesian: "Silakan tekan nomor yang benar." }
   - { word: "leave", translation: "meninggalkan", context: "He left a short message.", contextIndonesian: "Dia meninggalkan pesan singkat." }
   - { word: "conversation", translation: "percakapan", context: "The conversation was suddenly interrupted.", contextIndonesian: "Percakapannya tiba-tiba terputus." }
   - { word: "loudspeaker", translation: "pengeras suara", context: "Please put the phone on speaker.", contextIndonesian: "Tolong nyalakan pengeras suara teleponnya." }

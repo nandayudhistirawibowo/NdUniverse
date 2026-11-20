@@ -20,7 +20,7 @@ vocab:
   - { word: "shopping", translation: "berbelanja", context: "After work I go shopping.", contextIndonesian: "Sepulang kerja aku berbelanja." }
   - { word: "watch TV", translation: "menonton televisi", context: "In the evening we watch TV together.", contextIndonesian: "Malamnya kami menonton TV bersama." }
   - { word: "read", translation: "membaca", context: "I read before sleeping.", contextIndonesian: "Aku membaca sebelum tidur." }
-  - { word: "tired", translation: "lelah / mengantuk", context: "I'm tired after work.", contextIndonesian: "Aku capek setelah bekerja." }
+  - { word: "tired", translation: "lelah", context: "I'm tired after work.", contextIndonesian: "Aku capek setelah bekerja." }
   - { word: "sleep", translation: "tidur", context: "The baby is already sleeping.", contextIndonesian: "Bayinya sudah tidur." }
   - { word: "go to bed", translation: "pergi tidur", context: "I'm going to bed early this morning.", contextIndonesian: "Hari ini aku tidur lebih awal." }
   - { word: "everyday life", translation: "keseharian", context: "My everyday life is pretty quiet.", contextIndonesian: "Keseharianku lumayan santai." }

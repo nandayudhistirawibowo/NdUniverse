@@ -15,7 +15,7 @@ vocab:
   - { word: "debug", translation: "menelusuri dan memperbaiki kesalahan program", context: "The team is debugging the application before publishing.", contextIndonesian: "Tim sedang men-debug aplikasi sebelum dipublikasikan." }
   - { word: "operating system", translation: "sistem operasi", context: "The operating system manages the computer's hardware.", contextIndonesian: "Sistem operasi mengelola perangkat keras komputer." }
   - { word: "processor", translation: "prosesor", context: "The processor executes the program instructions.", contextIndonesian: "Prosesor menjalankan instruksi program." }
-  - { word: "main memory", translation: "memori utama / RAM", context: "The main memory holds the currently required data.", contextIndonesian: "Memori utama menyimpan data yang dibutuhkan saat ini." }
+  - { word: "main memory", translation: "memori utama", context: "The main memory holds the currently required data.", contextIndonesian: "Memori utama menyimpan data yang dibutuhkan saat ini." }
   - { word: "hard drive", translation: "hard disk", context: "The hard drive stores large amounts of data.", contextIndonesian: "Hard drive menyimpan data dalam jumlah besar." }
   - { word: "graphics card", translation: "kartu grafis", context: "The graphics card processes the visual data.", contextIndonesian: "Kartu grafis memproses data visual." }
   - { word: "mainboard", translation: "papan induk", context: "The motherboard connects the components of the computer.", contextIndonesian: "Motherboard menghubungkan komponen-komponen komputer." }

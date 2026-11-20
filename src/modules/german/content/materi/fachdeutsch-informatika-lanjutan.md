@@ -41,7 +41,7 @@ vocab:
     indonesian: "prosesor"
     context: "Der Prozessor führt die Programmbefehle aus."
   - german: "Arbeitsspeicher"
-    indonesian: "memori utama / RAM"
+    indonesian: "memori utama"
     context: "Der Arbeitsspeicher hält die aktuell benötigten Daten bereit."
   - german: "Festplatte"
     indonesian: "hard disk"

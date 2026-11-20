@@ -33,7 +33,7 @@ vocab:
     context: "Schließlich fanden beide Seiten einen Kompromiss."
     contextIndonesian: "Akhirnya, kedua pihak menemukan jalan tengah."
   - german: "Behauptung"
-    indonesian: "pernyataan / klaim"
+    indonesian: "klaim"
     context: "Diese Behauptung ließ sich nicht belegen."
     contextIndonesian: "Klaim ini tidak bisa dibuktikan."
   - german: "Diskussion"

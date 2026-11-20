@@ -77,7 +77,7 @@ vocab:
     context: "Sie brauchte dringend medizinische Hilfe."
     contextIndonesian: "Dia sangat membutuhkan bantuan medis."
   - german: "Einsatz"
-    indonesian: "operasi / penanganan"
+    indonesian: "operasi"
     context: "Der Einsatz dauerte fast eine Stunde."
     contextIndonesian: "Penanganannya berlangsung hampir satu jam."
   - german: "Kreuzung"

@@ -22,7 +22,7 @@ vocab:
   - { word: "get dressed", translation: "mengenakan", context: "Please put your shoes on.", contextIndonesian: "Tolong pakai sepatumu." }
   - { word: "move out", translation: "melepas pakaian", context: "At home I take off my jacket.", contextIndonesian: "Di rumah aku melepas jaket." }
   - { word: "try on", translation: "mencoba pakaian", context: "Can I try on the dress?", contextIndonesian: "Boleh aku mencoba gaun ini?" }
-  - { word: "fit", translation: "pas / cocok ukurannya", context: "The shoes fit me perfectly.", contextIndonesian: "Sepatunya pas sekali untukku." }
+  - { word: "fit", translation: "pas", context: "The shoes fit me perfectly.", contextIndonesian: "Sepatunya pas sekali untukku." }
   - { word: "comfortable", translation: "nyaman", context: "These pants are very comfortable.", contextIndonesian: "Celana ini nyaman sekali." }
 ---
 

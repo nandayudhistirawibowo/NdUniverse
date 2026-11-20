@@ -21,7 +21,7 @@ vocab:
     context: "Wir gingen in die falsche Richtung."
     contextIndonesian: "Kami berjalan ke arah yang salah."
   - german: "Weg"
-    indonesian: "jalan / rute"
+    indonesian: "jalan"
     context: "Der Weg führte am Fluss entlang."
     contextIndonesian: "Jalannya melewati tepi sungai."
   - german: "Abzweigung"

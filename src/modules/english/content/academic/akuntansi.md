@@ -8,7 +8,7 @@ vocab:
   - { word: "profit and loss statement", translation: "laporan laba rugi", context: "The profit and loss statement summarizes income and expenses.", contextIndonesian: "Laporan laba rugi merangkum pendapatan dan pengeluaran." }
   - { word: "receipt", translation: "bukti transaksi", context: "There must be appropriate receipt for each expense.", contextIndonesian: "Harus ada tanda terima yang sesuai untuk setiap pengeluaran." }
   - { word: "depreciation", translation: "penyusutan", context: "Depreciation spreads the acquisition costs over several years.", contextIndonesian: "Penyusutan menyebarkan biaya akuisisi selama beberapa tahun." }
-  - { word: "obligation", translation: "kewajiban / utang", context: "The current liability is due in the next quarter.", contextIndonesian: "Kewajiban lancar akan jatuh tempo pada triwulan berikutnya." }
+  - { word: "obligation", translation: "utang", context: "The current liability is due in the next quarter.", contextIndonesian: "Kewajiban lancar akan jatuh tempo pada triwulan berikutnya." }
   - { word: "demand", translation: "piutang", context: "The outstanding claim will be settled after payment.", contextIndonesian: "Klaim yang belum dibayar akan diselesaikan setelah pembayaran." }
   - { word: "annual financial statements", translation: "laporan keuangan tahunan", context: "The annual financial statements are prepared in accordance with the applicable regulations.", contextIndonesian: "Laporan keuangan tahunan disusun sesuai dengan ketentuan yang berlaku." }
   - { word: "chart of accounts", translation: "bagan akun", context: "The chart of accounts organizes the accounts into uniform groups.", contextIndonesian: "Bagan akun mengatur akun-akun ke dalam kelompok-kelompok yang seragam." }

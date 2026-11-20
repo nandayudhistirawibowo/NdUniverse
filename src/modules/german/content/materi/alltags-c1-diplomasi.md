@@ -29,7 +29,7 @@ vocab:
     context: "Gipfeldiplomatie beschleunige die Gespräche."
     contextIndonesian: "Diplomasi tingkat tinggi mempercepat pembicaraan."
   - german: "diplomatische Vorstoß"
-    indonesian: "inisiatif diplomatik"
+    indonesian: "langkah diplomatik"
     context: "Der diplomatische Vorstoß sei überraschend erfolgt."
     contextIndonesian: "Inisiatif diplomatiknya muncul secara tak terduga."
   - german: "Verbalnote"

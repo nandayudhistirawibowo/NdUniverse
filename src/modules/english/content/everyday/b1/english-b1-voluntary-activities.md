@@ -13,11 +13,11 @@ vocab:
   - { word: "community", translation: "komunitas", context: "The community planned a neighborhood garden together.", contextIndonesian: "Komunitas itu merencanakan kebun warga bersama." }
   - { word: "task", translation: "tugas", context: "The task was distributed according to interests.", contextIndonesian: "Tugasnya dibagi sesuai minat." }
   - { word: "support", translation: "dukungan", context: "Without support the project would have failed.", contextIndonesian: "Tanpa dukungan, proyek itu pasti gagal." }
-  - { word: "stakes", translation: "upaya / kerja", context: "Your efforts made a real difference.", contextIndonesian: "Upayanya membawa perubahan nyata." }
+  - { word: "effort", translation: "upaya", context: "Your efforts made a real difference.", contextIndonesian: "Upayanya membawa perubahan nyata." }
   - { word: "help", translation: "ikut membantu", context: "At the weekend I helped with the food distribution.", contextIndonesian: "Akhir pekan aku ikut membagikan makanan." }
   - { word: "organize", translation: "mengatur", context: "The young people organized a charity concert.", contextIndonesian: "Anak-anak muda mengatur konser amal." }
   - { word: "neediness", translation: "kondisi membutuhkan bantuan", context: "The families' need often remained invisible.", contextIndonesian: "Kondisi keluarga yang membutuhkan sering tak terlihat." }
-  - { word: "club", translation: "organisasi / klub", context: "The association advocated for older people.", contextIndonesian: "Organisasi itu memperjuangkan kepentingan lansia." }
+  - { word: "club", translation: "organisasi", context: "The association advocated for older people.", contextIndonesian: "Organisasi itu memperjuangkan kepentingan lansia." }
   - { word: "fundraiser", translation: "kegiatan penggalangan donasi", context: "The fundraiser became known via social media.", contextIndonesian: "Penggalangan donasi itu dikenal lewat media sosial." }
   - { word: "experience", translation: "pengalaman", context: "I gained valuable experience through volunteer work.", contextIndonesian: "Aku mendapat pengalaman berharga lewat kegiatan sukarela." }
   - { word: "cohesion", translation: "kekompakan", context: "Working together strengthened solidarity.", contextIndonesian: "Kerja bersama memperkuat kekompakan." }

@@ -4,7 +4,7 @@ description: "Learn everyday English about media and news."
 track: "Everyday English"
 level: "B1"
 vocab:
-  - { word: "message", translation: "berita / pesan", context: "News of the election results spread quickly.", contextIndonesian: "Berita tentang hasil pemilihan itu menyebar dengan cepat." }
+  - { word: "message", translation: "berita", context: "News of the election results spread quickly.", contextIndonesian: "Berita tentang hasil pemilihan itu menyebar dengan cepat." }
   - { word: "headline", translation: "judul utama berita", context: "The headline summarizes the most important event.", contextIndonesian: "Judul utama itu merangkum peristiwa yang paling penting." }
   - { word: "report", translation: "laporan", context: "The report describes the situation on site.", contextIndonesian: "Laporan itu menggambarkan situasi di lokasi." }
   - { word: "source", translation: "sumber", context: "Before sharing, I check the source of the information.", contextIndonesian: "Sebelum membagikannya, saya memeriksa sumber informasi tersebut." }
@@ -14,7 +14,7 @@ vocab:
   - { word: "press conference", translation: "konferensi pers", context: "After the press conference, the speaker answers further questions.", contextIndonesian: "Setelah konferensi pers, juru bicara menjawab pertanyaan tambahan." }
   - { word: "interview", translation: "wawancara", context: "The interview will be broadcast on the radio tomorrow.", contextIndonesian: "Wawancara itu akan disiarkan di radio besok." }
   - { word: "broadcast", translation: "acara siaran", context: "The show starts every evening at eight o'clock.", contextIndonesian: "Acara siaran itu dimulai pukul delapan setiap malam." }
-  - { word: "post", translation: "segmen / tulisan", context: "The article explains the background to the conflict.", contextIndonesian: "Tulisan itu menjelaskan latar belakang konflik tersebut." }
+  - { word: "post", translation: "tulisan", context: "The article explains the background to the conflict.", contextIndonesian: "Tulisan itu menjelaskan latar belakang konflik tersebut." }
   - { word: "newspaper", translation: "koran", context: "My father reads the newspaper in the morning.", contextIndonesian: "Ayah saya membaca koran pada pagi hari." }
   - { word: "news broadcast", translation: "siaran berita", context: "The news program provides information about current events.", contextIndonesian: "Siaran berita itu memberikan informasi tentang peristiwa terkini." }
   - { word: "social media", translation: "media sosial", context: "Many people are discussing the topic on social media.", contextIndonesian: "Banyak orang membahas topik itu di media sosial." }

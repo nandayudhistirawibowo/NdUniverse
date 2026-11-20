@@ -23,7 +23,7 @@ vocab:
   - { word: "application", translation: "lamaran", context: "I sent the application in the spring.", contextIndonesian: "Aku mengirim lamaran pada musim semi." }
   - { word: "experience", translation: "pengalaman", context: "I wouldn't want to miss this experience.", contextIndonesian: "Aku tak ingin melewatkan pengalaman ini." }
   - { word: "takeover", translation: "pengangkatan menjadi pegawai", context: "A takeover was actually offered later.", contextIndonesian: "Belakangan, aku benar-benar ditawari posisi tetap." }
-  - { word: "insight", translation: "gambaran / wawasan", context: "The internship gave me insight into the job.", contextIndonesian: "Magang memberiku gambaran tentang profesi itu." }
+  - { word: "insight", translation: "wawasan", context: "The internship gave me insight into the job.", contextIndonesian: "Magang memberiku gambaran tentang profesi itu." }
 ---
 
 # Intern

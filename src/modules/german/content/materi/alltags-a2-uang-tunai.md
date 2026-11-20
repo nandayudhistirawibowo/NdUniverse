@@ -41,7 +41,7 @@ vocab:
     context: "Die Quittung steckte in meiner Tasche."
     contextIndonesian: "Kuitansinya ada di dalam tasku."
   - german: "Geldbeutel"
-    indonesian: "dompet"
+    indonesian: "dompet uang"
     context: "Mein Geldbeutel lag noch im Auto."
     contextIndonesian: "Dompetku masih ada di mobil."
   - german: "abheben"

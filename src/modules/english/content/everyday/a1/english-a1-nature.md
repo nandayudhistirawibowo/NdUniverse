@@ -15,7 +15,7 @@ vocab:
   - { word: "stone", translation: "batu", context: "The stone is on the path.", contextIndonesian: "Batunya ada di jalan." }
   - { word: "sky", translation: "langit", context: "The sky is clear today.", contextIndonesian: "Langit hari ini cerah." }
   - { word: "cloud", translation: "awan", context: "A cloud is blocking the sun.", contextIndonesian: "Awan menutupi matahari." }
-  - { word: "earth", translation: "tanah / bumi", context: "The earth is wet after the rain.", contextIndonesian: "Tanahnya basah setelah hujan." }
+  - { word: "earth", translation: "tanah", context: "The earth is wet after the rain.", contextIndonesian: "Tanahnya basah setelah hujan." }
   - { word: "leaf", translation: "daun", context: "A leaf falls from the tree.", contextIndonesian: "Sehelai daun jatuh dari pohon." }
   - { word: "meadow", translation: "padang rumput", context: "The children are playing in the meadow.", contextIndonesian: "Anak-anak bermain di padang rumput." }
   - { word: "island", translation: "pulau", context: "The island is small and beautiful.", contextIndonesian: "Pulaunya kecil dan indah." }

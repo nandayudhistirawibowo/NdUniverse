@@ -19,11 +19,11 @@ vocab:
   - { word: "exchange rate", translation: "nilai tukar", context: "The exchange rate can change daily.", contextIndonesian: "Nilai tukar dapat berubah setiap hari." }
   - { word: "sight", translation: "tempat wisata", context: "The old town is the most famous attraction in the region.", contextIndonesian: "Kota tua itu adalah tempat wisata paling terkenal di wilayah tersebut." }
   - { word: "leadership", translation: "tur berpemandu", context: "The tour of the castle lasts about an hour.", contextIndonesian: "Tur berpemandu di kastel itu berlangsung sekitar satu jam." }
-  - { word: "custom", translation: "adat / kebiasaan", context: "Before visiting, you should find out about local customs.", contextIndonesian: "Sebelum berkunjung, sebaiknya kita mencari tahu tentang adat setempat." }
+  - { word: "custom", translation: "adat", context: "Before visiting, you should find out about local customs.", contextIndonesian: "Sebelum berkunjung, sebaiknya kita mencari tahu tentang adat setempat." }
   - { word: "habit", translation: "kebiasaan", context: "It is her habit to go for a walk early in the morning.", contextIndonesian: "Dia terbiasa berjalan-jalan pada pagi hari." }
-  - { word: "Be considerate", translation: "menghormati / mempertimbangkan", context: "Travelers should be considerate of local residents.", contextIndonesian: "Para pelancong sebaiknya menghormati warga setempat." }
-  - { word: "communication", translation: "komunikasi / saling memahami", context: "Communication often works well with simple sentences.", contextIndonesian: "Komunikasi sering kali berjalan baik dengan kalimat sederhana." }
-  - { word: "find your way around", translation: "menemukan arah / berorientasi", context: "With the map I can easily find my way around the foreign city.", contextIndonesian: "Dengan peta, saya dapat menemukan jalan dengan mudah di kota asing." }
+  - { word: "Be considerate", translation: "menghormati", context: "Travelers should be considerate of local residents.", contextIndonesian: "Para pelancong sebaiknya menghormati warga setempat." }
+  - { word: "communication", translation: "komunikasi", context: "Communication often works well with simple sentences.", contextIndonesian: "Komunikasi sering kali berjalan baik dengan kalimat sederhana." }
+  - { word: "find your way around", translation: "menemukan arah", context: "With the map I can easily find my way around the foreign city.", contextIndonesian: "Dengan peta, saya dapat menemukan jalan dengan mudah di kota asing." }
 ---
 
 # Long and Cultural Travels

@@ -53,7 +53,7 @@ vocab:
   - { word: "online shop", translation: "toko daring", context: "The online shop sells clothing.", contextIndonesian: "Toko online menjual pakaian." }
   - { word: "sales", translation: "pendapatan penjualan", context: "Sales increased last month.", contextIndonesian: "Penjualan meningkat bulan lalu." }
   - { word: "win", translation: "keuntungan", context: "Profit increases due to lower costs.", contextIndonesian: "Keuntungan meningkat karena biaya yang lebih rendah." }
-  - { word: "customer", translation: "pelanggan", context: "The customer orders the product online.", contextIndonesian: "Pelanggan memesan produk secara online." }
+  - { word: "customer", translation: "seorang pelanggan", context: "The customer orders the product online.", contextIndonesian: "Pelanggan memesan produk secara online." }
   - { word: "target group", translation: "kelompok sasaran", context: "The target group is young adults.", contextIndonesian: "Kelompok sasarannya adalah kaum muda." }
   - { word: "advertising", translation: "iklan", context: "The advertisement is running on social media.", contextIndonesian: "Iklan berjalan di media sosial." }
   - { word: "strategy", translation: "strategi", context: "Our strategy combines quality and price.", contextIndonesian: "Strategi kami menggabungkan kualitas dan harga." }
@@ -72,7 +72,7 @@ vocab:
   - { word: "payment", translation: "pembayaran", context: "Payment is secure.", contextIndonesian: "Pembayaran aman." }
   - { word: "invoice", translation: "tagihan", context: "The invoice will be sent by email.", contextIndonesian: "Faktur akan dikirim melalui email." }
   - { word: "warehouse", translation: "gudang", context: "The warehouse manages all items.", contextIndonesian: "Gudang mengelola semua barang." }
-  - { word: "sale", translation: "penjualan", context: "Sales increase especially in December.", contextIndonesian: "Penjualan meningkat terutama pada bulan Desember." }
+  - { word: "sale", translation: "transaksi penjualan", context: "Sales increase especially in December.", contextIndonesian: "Penjualan meningkat terutama pada bulan Desember." }
   - { word: "sales figures", translation: "angka penjualan", context: "Sales figures are checked monthly.", contextIndonesian: "Angka penjualan diperiksa setiap bulan." }
   - { word: "newsletter", translation: "buletin", context: "The newsletter provides information about news.", contextIndonesian: "Buletin memberikan informasi tentang berita." }
   - { word: "social media", translation: "media sosial", context: "Social media advertising increases reach.", contextIndonesian: "Iklan media sosial meningkatkan jangkauan." }

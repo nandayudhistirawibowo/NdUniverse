@@ -9,7 +9,7 @@ vocab:
     context: "Mein Anliegen wurde freundlich bearbeitet."
     contextIndonesian: "Keperluanku ditangani dengan ramah."
   - german: "Anfrage"
-    indonesian: "pertanyaan / permohonan informasi"
+    indonesian: "permohonan informasi"
     context: "Die Anfrage wurde innerhalb eines Tages beantwortet."
     contextIndonesian: "Pertanyaanku dijawab dalam sehari."
   - german: "Beschwerde"

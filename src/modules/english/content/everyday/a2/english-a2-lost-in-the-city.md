@@ -20,7 +20,7 @@ vocab:
   - { word: "cross", translation: "menyeberangi", context: "You have to cross the street here.", contextIndonesian: "Kamu harus menyeberangi jalan di sini." }
   - { word: "opposite", translation: "di seberang", context: "The pharmacy is opposite the train station.", contextIndonesian: "Apoteknya ada di seberang stasiun." }
   - { word: "nearby", translation: "di dekat", context: "Is there a café near here?", contextIndonesian: "Ada kafe dekat sini?" }
-  - { word: "way", translation: "jalan / rute", context: "The way to the center is not far.", contextIndonesian: "Jalan ke pusat kota tidak jauh." }
+  - { word: "way", translation: "jalan", context: "The way to the center is not far.", contextIndonesian: "Jalan ke pusat kota tidak jauh." }
   - { word: "ticket", translation: "tiket perjalanan", context: "I have already bought the ticket.", contextIndonesian: "Aku sudah membeli tiketnya." }
   - { word: "get in", translation: "naik kendaraan", context: "We get on at the next station.", contextIndonesian: "Kami naik di stasiun berikutnya." }
   - { word: "get out", translation: "turun kendaraan", context: "You have to get off at the town hall.", contextIndonesian: "Kamu harus turun di balai kota." }

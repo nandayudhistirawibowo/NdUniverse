@@ -5,7 +5,7 @@ track: "Everyday English"
 level: "B1"
 vocab:
   - { word: "request", translation: "keperluan", context: "My request was dealt with in a friendly manner.", contextIndonesian: "Keperluanku ditangani dengan ramah." }
-  - { word: "request", translation: "pertanyaan / permohonan informasi", context: "The request was answered within one day.", contextIndonesian: "Pertanyaanku dijawab dalam sehari." }
+  - { word: "request", translation: "permohonan informasi", context: "The request was answered within one day.", contextIndonesian: "Pertanyaanku dijawab dalam sehari." }
   - { word: "complaint", translation: "keluhan", context: "I would like to file a complaint.", contextIndonesian: "Aku ingin mengajukan keluhan." }
   - { word: "subject", translation: "subjek", context: "The subject should be brief.", contextIndonesian: "Subjeknya sebaiknya ditulis singkat." }
   - { word: "salutation", translation: "sapaan pembuka", context: "The salutation was chosen appropriately.", contextIndonesian: "Sapaan pembukanya dipilih dengan tepat." }

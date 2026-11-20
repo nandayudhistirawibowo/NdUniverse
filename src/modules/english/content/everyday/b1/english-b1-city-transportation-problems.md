@@ -22,7 +22,7 @@ vocab:
   - { word: "infrastructure", translation: "infrastruktur", context: "The infrastructure urgently needs to be renewed.", contextIndonesian: "Infrastrukturnya perlu segera diperbarui." }
   - { word: "air pollution", translation: "polusi udara", context: "Air pollution increased near the intersection.", contextIndonesian: "Polusi udara meningkat dekat persimpangan." }
   - { word: "complaint", translation: "keluhan", context: "The complaint was not responded to.", contextIndonesian: "Keluhannya tidak ditanggapi." }
-  - { word: "connection", translation: "jalur / koneksi", context: "The connection to the center has been improved.", contextIndonesian: "Jalur menuju pusat kota diperbaiki." }
+  - { word: "connection", translation: "jalur", context: "The connection to the center has been improved.", contextIndonesian: "Jalur menuju pusat kota diperbaiki." }
   - { word: "mobility", translation: "mobilitas", context: "Mobility should remain affordable for everyone.", contextIndonesian: "Transportasi sebaiknya tetap terjangkau untuk semua." }
 ---
 

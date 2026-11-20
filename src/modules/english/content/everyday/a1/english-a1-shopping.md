@@ -14,7 +14,7 @@ vocab:
   - { word: "size", translation: "ukuran", context: "What size are you?", contextIndonesian: "Kamu pakai ukuran berapa?" }
   - { word: "color", translation: "warna", context: "Is the jacket also available in a different color?", contextIndonesian: "Ada jaket itu dalam warna lain juga?" }
   - { word: "try on", translation: "mencoba pakaian", context: "Can I try on the shirt?", contextIndonesian: "Bolehkah saya mencoba kemeja itu?" }
-  - { word: "fit", translation: "pas / cocok ukurannya", context: "The shoes fit my daughter.", contextIndonesian: "Sepatu itu pas untuk anak perempuan saya." }
+  - { word: "fit", translation: "pas", context: "The shoes fit my daughter.", contextIndonesian: "Sepatu itu pas untuk anak perempuan saya." }
   - { word: "buy", translation: "membeli", context: "I'm looking for new pants.", contextIndonesian: "Saya sedang mencari celana panjang baru." }
   - { word: "costs", translation: "berharga", context: "How much does this jacket cost?", contextIndonesian: "Berapa harga jaket ini?" }
   - { word: "expensive", translation: "mahal", context: "The coat is too expensive for me.", contextIndonesian: "Mantel itu terlalu mahal bagi saya." }

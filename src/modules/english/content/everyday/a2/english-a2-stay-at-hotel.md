@@ -6,7 +6,7 @@ level: "A2"
 vocab:
   - { word: "reservation", translation: "reservasi", context: "I have a reservation in the name Meyer.", contextIndonesian: "Saya punya reservasi atas nama Meyer." }
   - { word: "reception", translation: "resepsionis", context: "Someone is already waiting at reception.", contextIndonesian: "Sudah ada orang yang menunggu di resepsionis." }
-  - { word: "reception", translation: "resepsionis / penerimaan", context: "Reception is open 24 hours a day.", contextIndonesian: "Resepsionis buka sepanjang waktu." }
+  - { word: "reception", translation: "resepsionis", context: "Reception is open 24 hours a day.", contextIndonesian: "Resepsionis buka sepanjang waktu." }
   - { word: "single room", translation: "kamar single", context: "We need a single room for two nights.", contextIndonesian: "Kami butuh kamar single untuk dua malam." }
   - { word: "double room", translation: "kamar double", context: "The double room has a balcony.", contextIndonesian: "Kamar double-nya punya balkon." }
   - { word: "key", translation: "kunci", context: "I forgot my key in the room.", contextIndonesian: "Aku meninggalkan kunciku di kamar." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "air conditioning", translation: "pendingin ruangan", context: "The air conditioning is quite loud.", contextIndonesian: "AC-nya berisik sekali." }
   - { word: "towel", translation: "handuk", context: "Could you bring me a towel?", contextIndonesian: "Bisa bawakan saya handuk?" }
   - { word: "complaint", translation: "keluhan", context: "I would like to report a complaint.", contextIndonesian: "Saya ingin menyampaikan keluhan." }
-  - { word: "free", translation: "tersedia / kosong", context: "Do you still have a room available?", contextIndonesian: "Masih ada kamar kosong?" }
+  - { word: "free", translation: "tersedia", context: "Do you still have a room available?", contextIndonesian: "Masih ada kamar kosong?" }
 ---
 
 # Stay at Hotel

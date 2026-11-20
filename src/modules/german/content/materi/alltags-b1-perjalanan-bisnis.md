@@ -69,7 +69,7 @@ vocab:
     context: "Die Übernachtung wurde vom Betrieb bezahlt."
     contextIndonesian: "Biaya menginapnya dibayar perusahaan."
   - german: "Beleg"
-    indonesian: "struk / bukti pembayaran"
+    indonesian: "struk"
     context: "Jeder Beleg musste aufbewahrt werden."
     contextIndonesian: "Setiap bukti pembayaran harus disimpan."
   - german: "Austausch"

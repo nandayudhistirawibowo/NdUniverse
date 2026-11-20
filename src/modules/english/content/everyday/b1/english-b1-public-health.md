@@ -5,7 +5,7 @@ track: "Everyday English"
 level: "B1"
 vocab:
   - { word: "health care", translation: "layanan kesehatan", context: "Health care has improved in rural areas.", contextIndonesian: "Layanan kesehatan di daerah pedesaan ditingkatkan." }
-  - { word: "precaution", translation: "pencegahan", context: "Prevention can detect many diseases early.", contextIndonesian: "Pemeriksaan pencegahan bisa mendeteksi banyak penyakit sejak dini." }
+  - { word: "precaution", translation: "tindakan pencegahan", context: "Prevention can detect many diseases early.", contextIndonesian: "Pemeriksaan pencegahan bisa mendeteksi banyak penyakit sejak dini." }
   - { word: "vaccination", translation: "vaksinasi", context: "The vaccination was offered free of charge.", contextIndonesian: "Vaksinasinya disediakan secara gratis." }
   - { word: "Enlightenment", translation: "edukasi", context: "The Enlightenment also reached smaller communities.", contextIndonesian: "Edukasinya menjangkau komunitas yang lebih kecil." }
   - { word: "disease", translation: "penyakit", context: "The disease was treated early.", contextIndonesian: "Penyakitnya ditangani sejak dini." }

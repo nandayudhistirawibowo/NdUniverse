@@ -5,7 +5,7 @@ judulMateri: "Cerita tentang Pengalaman"
 deskripsi: "Menceritakan pengalaman, kesan, dan pelajaran yang didapat."
 vocab:
   - german: "Erlebnis"
-    indonesian: "pengalaman"
+    indonesian: "peristiwa berkesan"
     context: "Dieses Erlebnis werde ich nie vergessen."
     contextIndonesian: "Pengalaman ini tidak akan pernah kulupakan."
   - german: "Erinnerung"

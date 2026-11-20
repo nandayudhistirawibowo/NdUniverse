@@ -11,7 +11,7 @@ vocab:
   - { word: "representation", translation: "penggambaran", context: "The depiction of the characters seemed believable.", contextIndonesian: "Penggambaran tokohnya terasa meyakinkan." }
   - { word: "role model", translation: "panutan", context: "Many young people saw her as a role model.", contextIndonesian: "Banyak remaja menganggapnya sebagai panutan." }
   - { word: "criticism", translation: "kritik", context: "The criticism was particularly clear this time.", contextIndonesian: "Kritiknya kali ini sangat tegas." }
-  - { word: "publication", translation: "rilis / penerbitan", context: "The release was announced for days.", contextIndonesian: "Rilisnya diumumkan selama berhari-hari." }
+  - { word: "publication", translation: "rilis", context: "The release was announced for days.", contextIndonesian: "Rilisnya diumumkan selama berhari-hari." }
   - { word: "content", translation: "isi", context: "The content was hotly debated online.", contextIndonesian: "Isinya ramai dibahas secara daring." }
   - { word: "target group", translation: "target audiens", context: "The target group seemed to be significantly younger.", contextIndonesian: "Target audiensnya tampak jauh lebih muda." }
   - { word: "influence", translation: "memengaruhi", context: "Advertising often influences our purchasing decisions.", contextIndonesian: "Iklan sering memengaruhi keputusan belanja kita." }

@@ -16,7 +16,7 @@ vocab:
   - { word: "tip", translation: "uang tip", context: "We tipped the waitress.", contextIndonesian: "Kami memberi tip kepada pelayannya." }
   - { word: "order", translation: "memesan", context: "I'm ordering the daily menu today.", contextIndonesian: "Hari ini aku memesan menu spesial." }
   - { word: "recommend", translation: "merekomendasikan", context: "What can you recommend to me?", contextIndonesian: "Apa yang bisa Anda rekomendasikan?" }
-  - { word: "taste", translation: "terasa / rasanya", context: "Did you like the soup?", contextIndonesian: "Kamu suka rasa supnya?" }
+  - { word: "taste", translation: "rasa", context: "Did you like the soup?", contextIndonesian: "Kamu suka rasa supnya?" }
   - { word: "reserve", translation: "memesan tempat", context: "We would like to reserve a table for four.", contextIndonesian: "Kami mau memesan meja untuk empat orang." }
   - { word: "vegetarian", translation: "vegetarian", context: "Are there also vegetarian dishes here?", contextIndonesian: "Di sini ada hidangan vegetarian juga?" }
   - { word: "sharp", translation: "pedas", context: "The curry is too spicy for me.", contextIndonesian: "Kari ini terlalu pedas buatku." }

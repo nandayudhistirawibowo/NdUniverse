@@ -8,7 +8,7 @@ vocab:
   - { word: "city map", translation: "peta kota", context: "I found the museum on the city map.", contextIndonesian: "Aku menemukan museum di peta kota." }
   - { word: "intersection", translation: "persimpangan", context: "At the intersection we turned left.", contextIndonesian: "Kami belok kiri di persimpangan." }
   - { word: "direction", translation: "arah", context: "We were going in the wrong direction.", contextIndonesian: "Kami berjalan ke arah yang salah." }
-  - { word: "way", translation: "jalan / rute", context: "The path led along the river.", contextIndonesian: "Jalannya melewati tepi sungai." }
+  - { word: "way", translation: "jalan", context: "The path led along the river.", contextIndonesian: "Jalannya melewati tepi sungai." }
   - { word: "junction", translation: "cabang jalan", context: "The turnoff came directly after the bridge.", contextIndonesian: "Cabang jalannya tepat setelah jembatan." }
   - { word: "surroundings", translation: "daerah sekitar", context: "The surroundings were completely unknown to us.", contextIndonesian: "Daerah sekitarnya benar-benar asing bagi kami." }
   - { word: "benchmark", translation: "skala peta", context: "The scale was at the bottom right.", contextIndonesian: "Skala petanya ada di kanan bawah." }

@@ -53,7 +53,7 @@ vocab:
     context: "Was können Sie mir empfehlen?"
     contextIndonesian: "Apa yang bisa Anda rekomendasikan?"
   - german: "schmecken"
-    indonesian: "terasa / rasanya"
+    indonesian: "rasa"
     context: "Hat dir die Suppe geschmeckt?"
     contextIndonesian: "Kamu suka rasa supnya?"
   - german: "reservieren"

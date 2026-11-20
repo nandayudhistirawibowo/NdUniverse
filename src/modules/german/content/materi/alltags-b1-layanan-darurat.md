@@ -69,7 +69,7 @@ vocab:
     context: "Die genaue Adresse wurde am Telefon genannt."
     contextIndonesian: "Alamat lengkapnya disebutkan lewat telepon."
   - german: "Einsatz"
-    indonesian: "operasi / penanganan"
+    indonesian: "operasi"
     context: "Der Einsatz dauerte fast zwei Stunden."
     contextIndonesian: "Penanganannya berlangsung hampir dua jam."
   - german: "Kreuzung"

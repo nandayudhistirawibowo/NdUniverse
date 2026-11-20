@@ -13,7 +13,7 @@ vocab:
     context: "Die Auftraggeberin änderte den Umfang des Projekts."
     contextIndonesian: "Kliennya mengubah cakupan proyek."
   - german: "Auftrag"
-    indonesian: "pekerjaan / pesanan"
+    indonesian: "pesanan"
     context: "Den Auftrag erhielt ich über eine Empfehlung."
     contextIndonesian: "Aku mendapat pekerjaan itu lewat rekomendasi."
   - german: "Honorar"

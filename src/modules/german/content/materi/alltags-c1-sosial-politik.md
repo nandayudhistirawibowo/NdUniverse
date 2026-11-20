@@ -44,7 +44,7 @@ vocab:
     indonesian: "konflik kepentingan"
     context: "Einen möglichen Interessenkonflikt muss man offen ansprechen."
   - german: "Maßnahme"
-    indonesian: "kebijakan / tindakan"
+    indonesian: "tindakan"
     context: "Die Maßnahme soll bezahlbaren Wohnraum leichter zugänglich machen."
   - german: "Wirksamkeit"
     indonesian: "efektivitas"

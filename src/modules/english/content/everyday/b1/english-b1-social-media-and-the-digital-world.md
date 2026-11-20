@@ -14,14 +14,14 @@ vocab:
   - { word: "profile", translation: "profil", context: "Your profile has been made public.", contextIndonesian: "Profilnya dijadikan publik." }
   - { word: "setting", translation: "pengaturan", context: "The setting is easy to change.", contextIndonesian: "Pengaturannya mudah diubah." }
   - { word: "hoax", translation: "berita palsu", context: "The hoax spread very quickly.", contextIndonesian: "Berita palsu itu menyebar sangat cepat." }
-  - { word: "publish", translation: "mengunggah / menerbitkan", context: "She published a photo from the concert.", contextIndonesian: "Dia mengunggah foto dari konser." }
+  - { word: "publish", translation: "mengunggah", context: "She published a photo from the concert.", contextIndonesian: "Dia mengunggah foto dari konser." }
   - { word: "download", translation: "mengunduh", context: "The file was downloaded yesterday.", contextIndonesian: "Berkasnya diunduh kemarin." }
   - { word: "delete", translation: "menghapus", context: "He deleted the offensive comment.", contextIndonesian: "Dia menghapus komentar yang menghina." }
   - { word: "block", translation: "memblokir", context: "The user was blocked after several complaints.", contextIndonesian: "Pengguna itu diblokir setelah beberapa keluhan." }
   - { word: "log in", translation: "masuk ke akun", context: "I logged in on someone else's device.", contextIndonesian: "Aku masuk dari perangkat orang lain." }
   - { word: "data protection", translation: "perlindungan data", context: "Data protection was often considered too late.", contextIndonesian: "Perlindungan data sering terlambat diperhatikan." }
   - { word: "consent", translation: "persetujuan", context: "The photo may not be shared without consent.", contextIndonesian: "Foto itu tidak boleh dibagikan tanpa izin." }
-  - { word: "dependent", translation: "bergantung / kecanduan", context: "Many felt dependent on cell phones.", contextIndonesian: "Banyak orang merasa kecanduan ponsel." }
+  - { word: "dependent", translation: "kecanduan", context: "Many felt dependent on cell phones.", contextIndonesian: "Banyak orang merasa kecanduan ponsel." }
   - { word: "credible", translation: "bisa dipercaya", context: "The source initially seemed credible.", contextIndonesian: "Awalnya sumbernya tampak bisa dipercaya." }
   - { word: "screen recording", translation: "rekaman layar", context: "The screen recording was shared without permission.", contextIndonesian: "Rekaman layarnya dibagikan tanpa izin." }
 ---

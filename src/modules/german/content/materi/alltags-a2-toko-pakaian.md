@@ -57,7 +57,7 @@ vocab:
     context: "Kann ich die Jacke gegen eine größere umtauschen?"
     contextIndonesian: "Bisa tukar jaketnya dengan ukuran lebih besar?"
   - german: "passen"
-    indonesian: "pas / cocok"
+    indonesian: "pas"
     context: "Die Schuhe haben mir leider nicht gepasst."
     contextIndonesian: "Sayangnya sepatu itu tidak pas untukku."
   - german: "eng"

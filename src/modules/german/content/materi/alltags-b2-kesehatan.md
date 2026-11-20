@@ -20,7 +20,7 @@ vocab:
     indonesian: "perawatan"
     context: "Wir passen die Behandlung an den Verlauf der Krankheit an."
   - german: "Vorsorge"
-    indonesian: "pencegahan / pemeriksaan dini"
+    indonesian: "tindakan pencegahan"
     context: "Bei der Vorsorge lassen sich Risiken oft früh erkennen."
   - german: "Ernährung"
     indonesian: "pola makan"

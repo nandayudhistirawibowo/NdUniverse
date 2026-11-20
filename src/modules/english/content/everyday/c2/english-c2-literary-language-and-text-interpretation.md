@@ -11,7 +11,7 @@ vocab:
   - { word: "stylistics", translation: "stilistika", context: "You can see the ironic undertone in the style.", contextIndonesian: "Anda dapat melihat nada ironis dalam gaya tersebut." }
   - { word: "rhythm of speech", translation: "ritme bahasa", context: "The rhythm of speech makes the memory seem halting.", contextIndonesian: "Irama bicara membuat ingatan terasa tersendat-sendat." }
   - { word: "figure constellation", translation: "konstelasi tokoh", context: "The constellation of figures shows the social dependencies of this time.", contextIndonesian: "Konstelasi angka menunjukkan ketergantungan sosial saat ini." }
-  - { word: "reception", translation: "resepsi / penerimaan karya", context: "The novel was reread again and again in the twentieth century.", contextIndonesian: "Novel ini dibaca berulang kali pada abad kedua puluh." }
+  - { word: "reception", translation: "resepsi karya", context: "The novel was reread again and again in the twentieth century.", contextIndonesian: "Novel ini dibaca berulang kali pada abad kedua puluh." }
   - { word: "intertextuality", translation: "intertekstualitas", context: "Through intertextuality, the novel enters into dialogue with older works.", contextIndonesian: "Melalui intertekstualitas, novel berdialog dengan karya-karya lama." }
   - { word: "suspense", translation: "alur ketegangan", context: "The calm tension makes the last scene even more effective.", contextIndonesian: "Ketegangan yang tenang membuat adegan terakhir menjadi lebih efektif." }
   - { word: "allegory", translation: "alegori", context: "The allegory tells the political conflict as a symbolic act.", contextIndonesian: "Alegori menceritakan konflik politik sebagai tindakan simbolis." }

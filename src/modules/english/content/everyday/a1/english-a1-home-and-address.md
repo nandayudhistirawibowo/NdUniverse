@@ -5,7 +5,7 @@ track: "Everyday English"
 level: "A1"
 vocab:
   - { word: "house", translation: "rumah", context: "The house has a small garden.", contextIndonesian: "Rumah itu memiliki taman kecil." }
-  - { word: "apartment", translation: "apartemen / tempat tinggal", context: "Our apartment is on the third floor.", contextIndonesian: "Apartemen kami berada di lantai tiga." }
+  - { word: "apartment", translation: "apartemen", context: "Our apartment is on the third floor.", contextIndonesian: "Apartemen kami berada di lantai tiga." }
   - { word: "room", translation: "kamar", context: "My room is bright and quiet.", contextIndonesian: "Kamar saya terang dan tenang." }
   - { word: "kitchen", translation: "dapur", context: "The kitchen is next to the living room.", contextIndonesian: "Dapur berada di sebelah ruang keluarga." }
   - { word: "bathroom", translation: "kamar mandi", context: "The bathroom has a large window.", contextIndonesian: "Kamar mandi itu memiliki jendela besar." }

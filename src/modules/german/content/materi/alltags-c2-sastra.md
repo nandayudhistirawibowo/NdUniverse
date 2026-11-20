@@ -26,7 +26,7 @@ vocab:
     indonesian: "konstelasi tokoh"
     context: "Die Figurenkonstellation zeigt die sozialen Abhängigkeiten dieser Zeit."
   - german: "Rezeption"
-    indonesian: "resepsi / penerimaan karya"
+    indonesian: "resepsi karya"
     context: "Im zwanzigsten Jahrhundert wurde der Roman immer wieder neu gelesen."
   - german: "Intertextualität"
     indonesian: "intertekstualitas"

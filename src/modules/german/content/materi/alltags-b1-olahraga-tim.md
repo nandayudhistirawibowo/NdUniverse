@@ -73,7 +73,7 @@ vocab:
     context: "Die Strategie wurde nach der Analyse angepasst."
     contextIndonesian: "Strateginya disesuaikan setelah dianalisis."
   - german: "Teamgeist"
-    indonesian: "semangat tim"
+    indonesian: "kekompakan tim"
     context: "Teamgeist war wichtiger als der einzelne Erfolg."
     contextIndonesian: "Semangat tim lebih penting daripada keberhasilan individu."
   - german: "Verantwortung"

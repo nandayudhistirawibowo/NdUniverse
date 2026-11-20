@@ -12,7 +12,7 @@ vocab:
   - { word: "timetable", translation: "jadwal kuliah", context: "My schedule changed this semester.", contextIndonesian: "Jadwal kuliahku berubah semester ini." }
   - { word: "tuition fee", translation: "biaya kuliah", context: "The tuition fee has been increased for many.", contextIndonesian: "Biaya kuliah naik bagi banyak orang." }
   - { word: "exam", translation: "ujian", context: "I studied for several weeks for the exam.", contextIndonesian: "Aku belajar beberapa minggu untuk ujian." }
-  - { word: "conclusion", translation: "kelulusan / gelar", context: "After graduating she wanted to go abroad.", contextIndonesian: "Setelah lulus, dia ingin ke luar negeri." }
+  - { word: "conclusion", translation: "kelulusan", context: "After graduating she wanted to go abroad.", contextIndonesian: "Setelah lulus, dia ingin ke luar negeri." }
   - { word: "semester abroad", translation: "semester di luar negeri", context: "A semester abroad would expand my horizons.", contextIndonesian: "Semester di luar negeri akan memperluas wawasanku." }
   - { word: "enroll", translation: "mendaftar kuliah", context: "She enrolled at university.", contextIndonesian: "Dia mendaftar di universitas." }
   - { word: "prepare", translation: "mempersiapkan diri", context: "I prepared thoroughly for the interview.", contextIndonesian: "Aku mempersiapkan diri dengan matang untuk wawancara." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "housework", translation: "makalah", context: "The homework was revised together.", contextIndonesian: "Makalahnya diperbaiki bersama." }
   - { word: "study place", translation: "tempat kuliah", context: "He only got a place to study in the fall.", contextIndonesian: "Dia baru mendapat tempat kuliah pada musim gugur." }
   - { word: "career prospects", translation: "prospek kerja", context: "The career prospects seemed very good back then.", contextIndonesian: "Prospek kerjanya saat itu terlihat bagus." }
-  - { word: "cancel", translation: "berhenti / mengundurkan diri", context: "She didn't want to stop her studies.", contextIndonesian: "Dia tidak ingin berhenti kuliah." }
+  - { word: "cancel", translation: "berhenti", context: "She didn't want to stop her studies.", contextIndonesian: "Dia tidak ingin berhenti kuliah." }
 ---
 
 # Study Plan

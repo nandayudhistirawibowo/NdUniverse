@@ -11,7 +11,7 @@ vocab:
   - { word: "database", translation: "basis data", context: "The database stores information about all projects.", contextIndonesian: "Basis data menyimpan informasi tentang semua proyek." }
   - { word: "server", translation: "server", context: "The server processes the incoming requests.", contextIndonesian: "Server memproses permintaan masuk." }
   - { word: "network", translation: "jaringan", context: "The network connects several computers together.", contextIndonesian: "Jaringan menghubungkan beberapa komputer secara bersamaan." }
-  - { word: "interface", translation: "antarmuka / interface", context: "The interface enables exchange between two systems.", contextIndonesian: "Antarmuka memungkinkan pertukaran antara dua sistem." }
+  - { word: "interface", translation: "antarmuka", context: "The interface enables exchange between two systems.", contextIndonesian: "Antarmuka memungkinkan pertukaran antara dua sistem." }
   - { word: "algorithm", translation: "algoritma", context: "The algorithm sorts the data by date.", contextIndonesian: "Algoritme mengurutkan data berdasarkan tanggal." }
   - { word: "encryption", translation: "enkripsi", context: "Encryption protects confidential information.", contextIndonesian: "Enkripsi melindungi informasi rahasia." }
   - { word: "error message", translation: "pesan kesalahan", context: "The error message indicates an invalid input value.", contextIndonesian: "Pesan kesalahan menunjukkan nilai masukan tidak valid." }

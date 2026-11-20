@@ -12,7 +12,7 @@ vocab:
   - { word: "ability", translation: "kemampuan", context: "This ability was often used in the team.", contextIndonesian: "Kemampuan ini sering dibutuhkan dalam tim." }
   - { word: "interview", translation: "wawancara kerja", context: "I stayed calm during the interview.", contextIndonesian: "Aku tetap tenang saat wawancara kerja." }
   - { word: "job advertisement", translation: "iklan lowongan kerja", context: "I found the job advertisement on a job site.", contextIndonesian: "Aku menemukan iklan lowongan di situs kerja." }
-  - { word: "certificate", translation: "surat keterangan / ijazah", context: "The certificate was attached to the application.", contextIndonesian: "Surat keterangannya dilampirkan pada lamaran." }
+  - { word: "certificate", translation: "ijazah", context: "The certificate was attached to the application.", contextIndonesian: "Surat keterangannya dilampirkan pada lamaran." }
   - { word: "reference", translation: "referensi", context: "I received a reference from my former boss.", contextIndonesian: "Aku mendapat referensi dari mantan bosku." }
   - { word: "apply", translation: "melamar pekerjaan", context: "I applied despite lacking experience.", contextIndonesian: "Aku tetap melamar meski belum berpengalaman." }
   - { word: "formulate", translation: "merumuskan", context: "She formulated her strengths very clearly.", contextIndonesian: "Dia merumuskan kelebihannya dengan sangat jelas." }

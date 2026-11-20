@@ -9,7 +9,7 @@ vocab:
     context: "Das Erdbeben wurde in der ganzen Region gespürt."
     contextIndonesian: "Gempa itu terasa di seluruh wilayah."
   - german: "Hochwasser"
-    indonesian: "banjir"
+    indonesian: "banjir sungai"
     context: "Das Hochwasser erreichte mehrere Häuser."
     contextIndonesian: "Banjir mencapai beberapa rumah."
   - german: "Sturm"

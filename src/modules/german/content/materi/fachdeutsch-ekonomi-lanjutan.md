@@ -17,7 +17,7 @@ vocab:
     indonesian: "anggaran"
     context: "Das Team muss innerhalb des Budgets bleiben."
   - german: "Rechnung"
-    indonesian: "tagihan / faktur"
+    indonesian: "faktur"
     context: "Der Lieferant schickt die Rechnung per E-Mail."
   - german: "Ausgabe"
     indonesian: "pengeluaran"

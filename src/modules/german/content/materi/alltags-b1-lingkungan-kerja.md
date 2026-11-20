@@ -65,7 +65,7 @@ vocab:
     context: "Eine Weiterbildung wurde vom Arbeitgeber finanziert."
     contextIndonesian: "Pelatihan lanjutannya dibiayai perusahaan."
   - german: "Kündigung"
-    indonesian: "pengunduran diri / pemutusan kerja"
+    indonesian: "pemutusan hubungan kerja"
     context: "Die Kündigung kam für das Team unerwartet."
     contextIndonesian: "Pemutusan kerjanya mengejutkan tim."
   - german: "Beförderung"
