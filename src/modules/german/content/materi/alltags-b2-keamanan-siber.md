@@ -60,10 +60,6 @@ vocab:
     indonesian: "kebijakan keamanan"
     context: "Die Sicherheitsrichtlinie wurde allen Beschäftigten erklärt."
     contextIndonesian: "Kebijakan keamanannya dijelaskan kepada semua pegawai."
-  - german: "Datenschutz"
-    indonesian: "perlindungan data"
-    context: "Der Datenschutz muss bei jeder Verarbeitung gewährleistet sein."
-    contextIndonesian: "Perlindungan data harus terjamin dalam setiap pemrosesan."
   - german: "Bedrohung"
     indonesian: "ancaman"
     context: "Die Bedrohung wurde von Fachleuten neu bewertet."
@@ -80,8 +76,5 @@ vocab:
     indonesian: "verifikasi identitas"
     context: "Die Identitätsprüfung erfolgte vor der Kontoänderung."
     contextIndonesian: "Identitas diverifikasi sebelum akun diubah."
-  - german: "Vertraulichkeit"
-    indonesian: "kerahasiaan"
-    context: "Die Vertraulichkeit wurde vertraglich zugesichert."
-    contextIndonesian: "Kerahasiaannya dijamin dalam kontrak."
+
 ---

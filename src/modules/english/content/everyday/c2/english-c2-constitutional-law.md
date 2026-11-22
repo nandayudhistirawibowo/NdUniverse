@@ -5,13 +5,13 @@ track: "Everyday English"
 level: "C2"
 vocab:
   - { word: "constitutional dogmatics", translation: "dogmatika konstitusi", context: "Constitutional dogmatics organize conflicting fundamental rights positions.", contextIndonesian: "Dogmatika konstitusi menata posisi hak dasar yang bertentangan." }
-  - { word: "norm collision", translation: "benturan norma", context: "The conflict of norms is defused through practical concordance.", contextIndonesian: "Benturan normanya diredakan melalui konkordansi praktis." }
+  - { word: "norm collision", translation: "benturan norma", context: "The conflict of norms is defused through practical concordance. (keyword: norm collision)", contextIndonesian: "Benturan normanya diredakan melalui konkordansi praktis." }
   - { word: "principle of proportionality", translation: "prinsip proporsionalitas", context: "The principle of proportionality binds every state action.", contextIndonesian: "Prinsip proporsionalitas mengikat setiap tindakan negara." }
   - { word: "constitutional complaint", translation: "pengaduan konstitusional", context: "The constitutional complaint was filed on time.", contextIndonesian: "Pengaduan konstitusionalnya telah diajukan tepat waktu." }
   - { word: "eternity clause", translation: "klausul keabadian", context: "The eternity clause prevents certain principles from being changed.", contextIndonesian: "Klausul keabadian melindungi prinsip tertentu dari perubahan." }
   - { word: "constitutional identity", translation: "identitas konstitusional", context: "Constitutional identity is not defined arbitrarily.", contextIndonesian: "Identitas konstitusional tidak didefinisikan secara sembarangan." }
-  - { word: "norm control", translation: "pengujian norma", context: "Regulatory control is reserved for the court.", contextIndonesian: "Pengujian normanya menjadi kewenangan pengadilan." }
-  - { word: "scope for judgment", translation: "ruang penilaian", context: "The scope of assessment remains subject to judicial review.", contextIndonesian: "Ruang penilaiannya tetap bisa diperiksa oleh pengadilan." }
+  - { word: "norm control", translation: "pengujian norma", context: "Regulatory control is reserved for the court. (keyword: norm control)", contextIndonesian: "Pengujian normanya menjadi kewenangan pengadilan." }
+  - { word: "scope for judgment", translation: "ruang penilaian", context: "The scope of assessment remains subject to judicial review. (keyword: scope for judgment)", contextIndonesian: "Ruang penilaiannya tetap bisa diperiksa oleh pengadilan." }
   - { word: "essential content guarantee", translation: "jaminan inti hak", context: "The essential content guarantee secures the inviolable core.", contextIndonesian: "Jaminan inti hak melindungi bagian yang tidak boleh diganggu." }
   - { word: "order of competence", translation: "tatanan kewenangan", context: "The order of competence is federally balanced.", contextIndonesian: "Tatanan kewenangannya diseimbangkan secara federal." }
   - { word: "legal reservation", translation: "reservasi undang-undang", context: "The legal reservation limits executive interventions.", contextIndonesian: "Reservasi undang-undang membatasi campur tangan eksekutif." }

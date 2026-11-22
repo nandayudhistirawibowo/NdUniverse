@@ -47,7 +47,6 @@ boss_questions:
     keywords: ["Fragen", "Aufgaben", "Unternehmen"]
     advancedKeywords: ["Aufgaben"]
 vocab:
-  - { german: "Ernährung", indonesian: "gizi atau pola makan", context: "Die Ernährung beeinflusst die Gesundheit." }
   - { german: "Schwangere", indonesian: "ibu hamil", context: "Die Schwangere erhält eine Beratung." }
   - { german: "Hebamme", indonesian: "bidan", context: "Die Hebamme begleitet die Geburt." }
   - { german: "Beratung", indonesian: "konseling", context: "Die Beratung findet in der Klinik statt." }
@@ -73,7 +72,6 @@ vocab:
   - { german: "Unverträglichkeit", indonesian: "intoleransi", context: "Die Unverträglichkeit kann Bauchschmerzen verursachen." }
   - { german: "Gewichtszunahme", indonesian: "kenaikan berat badan", context: "Die Gewichtszunahme wird kontrolliert." }
   - { german: "Wachstumskurve", indonesian: "kurva pertumbuhan", context: "Die Wachstumskurve zeigt die Entwicklung." }
-  - { german: "Untersuchung", indonesian: "pemeriksaan", context: "Die Untersuchung erfolgt regelmäßig." }
   - { german: "Ultraschall", indonesian: "ultrasound", context: "Der Ultraschall zeigt die Entwicklung des Kindes." }
   - { german: "Wehen", indonesian: "kontraksi", context: "Die Hebamme beobachtet die Wehen." }
   - { german: "Eröffnungsphase", indonesian: "fase pembukaan", context: "Die Eröffnungsphase kann lange dauern." }
@@ -89,12 +87,9 @@ vocab:
   - { german: "Ernährungsempfehlung", indonesian: "rekomendasi gizi", context: "Die Ernährungsempfehlung ist altersgerecht." }
   - { german: "Beikost", indonesian: "makanan pendamping", context: "Die Beikost beginnt nach ärztlichem Rat." }
   - { german: "Mahlzeit", indonesian: "waktu makan", context: "Die Mahlzeit sollte regelmäßig sein." }
-  - { german: "Hygiene", indonesian: "higiene", context: "Hygiene ist bei der Zubereitung wichtig." }
   - { german: "Zubereitung", indonesian: "penyiapan makanan", context: "Die Zubereitung muss sorgfältig erfolgen." }
-  - { german: "Lagerung", indonesian: "penyimpanan", context: "Die Lagerung von Lebensmitteln erfolgt kühl." }
   - { german: "Lebensmittelsicherheit", indonesian: "keamanan pangan", context: "Die Lebensmittelsicherheit verhindert Infektionen." }
   - { german: "Entwicklung", indonesian: "perkembangan", context: "Die Entwicklung wird regelmäßig dokumentiert." }
   - { german: "Bindung", indonesian: "ikatan", context: "Die Bindung zwischen Mutter und Kind ist wichtig." }
-  - { german: "Betreuung", indonesian: "pendampingan", context: "Die Betreuung erfolgt individuell." }
   - { german: "Weiterentwicklung", indonesian: "pengembangan lanjutan", context: "Die Weiterentwicklung gehört zum Beruf dazu." }
 ---

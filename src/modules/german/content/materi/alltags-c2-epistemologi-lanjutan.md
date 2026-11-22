@@ -70,7 +70,7 @@ vocab:
     contextIndonesian: "Syarat verifikasinya masih diperdebatkan secara teoretis."
   - german: "theoretische Realismus"
     indonesian: "realisme teoretis"
-    context: "Theoretischer Realismus nehme unbeobachtbare Entitäten ernst."
+    context: "Theoretischer Realismus nehme unbeobachtbare Entitäten ernst. (Schlüsselwort: theoretische Realismus)"
     contextIndonesian: "Realisme teoretis menganggap entitas yang tak teramati sebagai nyata."
   - german: "Erkenntnislücke"
     indonesian: "kesenjangan pengetahuan"

@@ -16,9 +16,6 @@ vocab:
   - german: "Wechselwirkung"
     indonesian: "interaksi obat"
     context: "Eine Wechselwirkung kann die Wirkung eines Arzneimittels verändern."
-  - german: "Dosierung"
-    indonesian: "dosis"
-    context: "Die Dosierung ist in der Packungsbeilage genau angegeben."
   - german: "Nebenwirkung"
     indonesian: "efek samping"
     context: "Bei einer ungewöhnlichen Nebenwirkung sollte die Einnahme fachlich abgeklärt werden."
@@ -49,9 +46,6 @@ vocab:
   - german: "Beipackzettel"
     indonesian: "leaflet obat"
     context: "Der Beipackzettel enthält Hinweise zur sicheren Anwendung."
-  - german: "Einnahme"
-    indonesian: "konsumsi obat"
-    context: "Die Einnahme erfolgt morgens vor dem Frühstück."
   - german: "Charge"
     indonesian: "nomor bets produksi"
     context: "Die Charge ist auf der Verpackung des Arzneimittels angegeben."
@@ -61,7 +55,5 @@ vocab:
   - german: "Herstellung"
     indonesian: "pembuatan"
     context: "Die Herstellung des Arzneimittels unterliegt strengen Qualitätskontrollen."
-  - german: "Lagerung"
-    indonesian: "penyimpanan"
-    context: "Die Lagerung muss gemäß den Angaben auf der Verpackung erfolgen."
+
 ---

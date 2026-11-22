@@ -6,7 +6,7 @@ level: "A1"
 vocab:
   - { word: "left", translation: "kiri", context: "The bakery is on the left.", contextIndonesian: "Toko rotinya ada di kiri." }
   - { word: "right", translation: "kanan", context: "Turn right here.", contextIndonesian: "Belok kanan di sini." }
-  - { word: "straight ahead", translation: "lurus", context: "Just go straight.", contextIndonesian: "Jalan lurus saja." }
+  - { word: "straight ahead", translation: "lurus", context: "Just go straight. (keyword: straight ahead)", contextIndonesian: "Jalan lurus saja." }
   - { word: "turn", translation: "belok", context: "You have to turn at the corner.", contextIndonesian: "Kamu harus belok di pojokan." }
   - { word: "street", translation: "jalan", context: "The street is full today.", contextIndonesian: "Jalannya ramai hari ini." }
   - { word: "corner", translation: "pojok", context: "Meet me at the corner.", contextIndonesian: "Kita bertemu di pojokan." }
@@ -18,12 +18,12 @@ vocab:
   - { word: "south", translation: "selatan", context: "My family lives in the south.", contextIndonesian: "Keluargaku tinggal di selatan." }
   - { word: "East", translation: "timur", context: "The train station is to the east.", contextIndonesian: "Stasiunnya ada di timur." }
   - { word: "West", translation: "barat", context: "The sun sets in the west.", contextIndonesian: "Matahari terbenam di barat." }
-  - { word: "proximity", translation: "dekat", context: "Is there a supermarket nearby?", contextIndonesian: "Ada supermarket dekat sini?" }
+  - { word: "proximity", translation: "dekat", context: "Is there a supermarket nearby? (keyword: proximity)", contextIndonesian: "Ada supermarket dekat sini?" }
   - { word: "far", translation: "jauh", context: "The airport is quite far.", contextIndonesian: "Bandaranya lumayan jauh." }
-  - { word: "search", translation: "mencari", context: "I'm looking for the train station.", contextIndonesian: "Aku sedang mencari stasiun." }
+  - { word: "search", translation: "mencari", context: "I'm looking for the train station. (keyword: search)", contextIndonesian: "Aku sedang mencari stasiun." }
   - { word: "find", translation: "menemukan", context: "Can you find the way alone?", contextIndonesian: "Kamu bisa menemukan jalannya sendiri?" }
   - { word: "show", translation: "menunjukkan", context: "Can you show me the way?", contextIndonesian: "Bisa tunjukkan jalannya?" }
-  - { word: "plan", translation: "denah", context: "The city map is in the car.", contextIndonesian: "Peta kotanya ada di mobil." }
+  - { word: "plan", translation: "denah", context: "The city map is in the car. (keyword: plan)", contextIndonesian: "Peta kotanya ada di mobil." }
 ---
 
 # Directions

@@ -65,7 +65,7 @@ vocab:
     contextIndonesian: "Tantangan baru memotivasiku."
   - german: "sich vorstellen"
     indonesian: "memperkenalkan diri"
-    context: "Ich stelle mich kurz vor."
+    context: "Ich stelle mich kurz vor. (Schlüsselwort: sich vorstellen)"
     contextIndonesian: "Aku memperkenalkan diriku secara singkat."
   - german: "Bewerbung"
     indonesian: "lamaran kerja"

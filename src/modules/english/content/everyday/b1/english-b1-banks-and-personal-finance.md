@@ -15,14 +15,13 @@ vocab:
   - { word: "rate", translation: "cicilan", context: "The monthly rate would still be affordable.", contextIndonesian: "Cicilan bulanannya masih terjangkau." }
   - { word: "repayment", translation: "pelunasan", context: "Repayment began in January.", contextIndonesian: "Pelunasannya dimulai bulan Januari." }
   - { word: "save", translation: "menabung", context: "I saved every month for the move.", contextIndonesian: "Aku menabung setiap bulan untuk pindah rumah." }
-  - { word: "take off", translation: "menarik uang", context: "I withdrew two hundred euros from the ATM.", contextIndonesian: "Aku menarik dua ratus euro di ATM." }
+  - { word: "take off", translation: "menarik uang", context: "I withdrew two hundred euros from the ATM. (keyword: take off)", contextIndonesian: "Aku menarik dua ratus euro di ATM." }
   - { word: "deposit", translation: "menyetor", context: "The money was deposited at the counter.", contextIndonesian: "Uangnya disetorkan di loket." }
-  - { word: "transfer", translation: "mentransfer", context: "Could you transfer the amount today?", contextIndonesian: "Bisakah Anda mentransfer jumlahnya hari ini?" }
-  - { word: "intake", translation: "pemasukan", context: "My income fluctuated last year.", contextIndonesian: "Pemasukanku naik turun tahun lalu." }
-  - { word: "output", translation: "pengeluaran", context: "The expenses were carefully noted.", contextIndonesian: "Pengeluarannya dicatat dengan teliti." }
+  - { word: "intake", translation: "pemasukan", context: "My income fluctuated last year. (keyword: intake)", contextIndonesian: "Pemasukanku naik turun tahun lalu." }
+  - { word: "output", translation: "pengeluaran", context: "The expenses were carefully noted. (keyword: output)", contextIndonesian: "Pengeluarannya dicatat dengan teliti." }
   - { word: "budget", translation: "anggaran", context: "The budget needs to be planned better.", contextIndonesian: "Anggarannya sebaiknya direncanakan dengan lebih baik." }
   - { word: "debt", translation: "utang", context: "He wanted to pay off his debts quickly.", contextIndonesian: "Dia ingin segera melunasi utangnya." }
-  - { word: "advice", translation: "konsultasi", context: "The consultation was offered free of charge.", contextIndonesian: "Konsultasinya diberikan secara gratis." }
+  - { word: "advice", translation: "konsultasi", context: "The consultation was offered free of charge. (keyword: advice)", contextIndonesian: "Konsultasinya diberikan secara gratis." }
   - { word: "security", translation: "keamanan", context: "Security should be a priority when it comes to online banking.", contextIndonesian: "Keamanan harus diutamakan saat memakai bank online." }
 ---
 

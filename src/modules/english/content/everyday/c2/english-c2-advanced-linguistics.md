@@ -10,7 +10,7 @@ vocab:
   - { word: "indexicality", translation: "indeksikalitas", context: "Indexicality refers to social positioning.", contextIndonesian: "Indeksikalitas merujuk pada posisi sosial." }
   - { word: "grammaticalization chain", translation: "rantai gramatikalisasi", context: "The grammaticalization chain shows intermediate stages.", contextIndonesian: "Rantai gramatikalisasi memperlihatkan tahapan peralihan." }
   - { word: "language contact", translation: "kontak bahasa", context: "Language contact does not necessarily lead to structural balance.", contextIndonesian: "Kontak bahasa tidak selalu menghasilkan penyelarasan struktural." }
-  - { word: "morphosyntactic marker", translation: "penandaan morfosintaktis", context: "Morphosyntactic marking is distributed differently across dialects.", contextIndonesian: "Penandaan morfosintaktis tersebar secara berbeda menurut dialek." }
+  - { word: "morphosyntactic marker", translation: "penandaan morfosintaktis", context: "Morphosyntactic marking is distributed differently across dialects. (keyword: morphosyntactic marker)", contextIndonesian: "Penandaan morfosintaktis tersebar secara berbeda menurut dialek." }
   - { word: "language ecology", translation: "ekologi bahasa", context: "Language ecology captures power relations between varieties.", contextIndonesian: "Ekologi bahasa mencatat relasi kuasa antarragam bahasa." }
   - { word: "semantic prosody", translation: "prosodi semantis", context: "Semantic prosody colors seemingly neutral words.", contextIndonesian: "Prosodi semantis mewarnai kata-kata yang tampak netral." }
   - { word: "construction", translation: "konstruksi", context: "The construction combines form and use.", contextIndonesian: "Konstruksi menghubungkan bentuk dan penggunaan." }

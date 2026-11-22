@@ -14,15 +14,14 @@ vocab:
   - { word: "common good balance sheet", translation: "neraca manfaat publik", context: "The common good balance sheet takes social consequences into account.", contextIndonesian: "Neraca manfaat publiknya mempertimbangkan dampak sosial." }
   - { word: "start-up advice", translation: "konsultasi pendirian usaha", context: "Start-up advice is offered free of charge.", contextIndonesian: "Konsultasi pendirian usaha tersedia secara gratis." }
   - { word: "earmarking", translation: "pengikatan tujuan", context: "The earmarking prevents short-term withdrawals of profits.", contextIndonesian: "Pengikatan tujuan mencegah penarikan laba jangka pendek." }
-  - { word: "social return", translation: "hasil sosial", context: "The social return benefits the neighborhood.", contextIndonesian: "Hasil sosialnya dirasakan oleh warga sekitar." }
-  - { word: "effect logic", translation: "logika dampak", context: "The impact logic will be developed together.", contextIndonesian: "Logika dampaknya dikembangkan bersama." }
+  - { word: "effect logic", translation: "logika dampak", context: "The impact logic will be developed together. (keyword: effect logic)", contextIndonesian: "Logika dampaknya dikembangkan bersama." }
   - { word: "social innovation", translation: "inovasi sosial", context: "Social innovation often arises locally.", contextIndonesian: "Inovasi sosial sering muncul di tingkat lokal." }
   - { word: "business model oriented towards the common good", translation: "model bisnis berorientasi kepentingan umum", context: "The business model oriented towards the common good is slowly scaling.", contextIndonesian: "Model bisnis yang berorientasi kepentingan umum itu berkembang perlahan." }
   - { word: "chain of effects", translation: "rantai dampak", context: "The chain of effects must be empirically proven.", contextIndonesian: "Rantai dampaknya perlu dibuktikan secara empiris." }
   - { word: "social financing", translation: "pembiayaan sosial", context: "Social financing requires long-term partnerships.", contextIndonesian: "Pembiayaan sosial membutuhkan kemitraan jangka panjang." }
   - { word: "founding idea", translation: "gagasan pendirian usaha", context: "The founding idea arose from a local initiative.", contextIndonesian: "Gagasan usahanya muncul dari inisiatif setempat." }
   - { word: "impact transparency", translation: "transparansi dampak", context: "Impact transparency strengthens the trust of funders.", contextIndonesian: "Transparansi dampak memperkuat kepercayaan para pendukung." }
-  - { word: "shareholding structure", translation: "struktur kepemilikan", context: "The participation structure ensures co-determination.", contextIndonesian: "Struktur kepemilikannya menjamin hak untuk ikut menentukan." }
+  - { word: "shareholding structure", translation: "struktur kepemilikan", context: "The participation structure ensures co-determination. (keyword: shareholding structure)", contextIndonesian: "Struktur kepemilikannya menjamin hak untuk ikut menentukan." }
   - { word: "scalability", translation: "kemampuan untuk diperluas", context: "Scalability should not displace the target group.", contextIndonesian: "Perluasan usaha tidak boleh mengesampingkan kelompok sasarannya." }
 ---
 

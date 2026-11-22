@@ -15,14 +15,13 @@ vocab:
   - { word: "competitive disadvantage", translation: "kerugian kompetitif", context: "A competitive disadvantage could hardly be compensated for.", contextIndonesian: "Kerugian kompetitif itu hampir tak bisa diimbangi." }
   - { word: "national debt", translation: "utang negara", context: "The national debt is sustainable in the long term.", contextIndonesian: "Utang negaranya dinilai berkelanjutan dalam jangka panjang." }
   - { word: "economy", translation: "konjungtur", context: "The economy is likely to recover slowly.", contextIndonesian: "Perekonomian diperkirakan pulih perlahan." }
-  - { word: "concentration of assets", translation: "konsentrasi kekayaan", context: "Concentration of wealth exacerbates social tensions.", contextIndonesian: "Konsentrasi kekayaan memperparah ketegangan sosial." }
+  - { word: "concentration of assets", translation: "konsentrasi kekayaan", context: "Concentration of wealth exacerbates social tensions. (keyword: concentration of assets)", contextIndonesian: "Konsentrasi kekayaan memperparah ketegangan sosial." }
   - { word: "debt relief", translation: "penghapusan utang", context: "Debt relief was discussed again.", contextIndonesian: "Penghapusan utang kembali dibahas." }
   - { word: "dependence on raw materials", translation: "ketergantungan pada bahan mentah", context: "Dependence on raw materials must be reduced.", contextIndonesian: "Ketergantungan pada bahan mentah perlu dikurangi." }
-  - { word: "subsidy", translation: "pemberian subsidi", context: "The subsidy can no longer be financed.", contextIndonesian: "Pemberian subsidinya sudah tak bisa dibiayai lagi." }
   - { word: "structural change", translation: "perubahan struktural", context: "Structural change is occurring faster than expected.", contextIndonesian: "Perubahan struktural berlangsung lebih cepat dari perkiraan." }
   - { word: "tax evasion", translation: "penghindaran pajak lintas negara", context: "Tax evasion is being pursued across borders.", contextIndonesian: "Penghindaran pajak lintas negara ditindak secara internasional." }
   - { word: "price spiral", translation: "spiral kenaikan harga", context: "The price spiral has put a heavy burden on households.", contextIndonesian: "Kenaikan harga beruntun sangat membebani rumah tangga." }
-  - { word: "increase in prosperity", translation: "peningkatan kesejahteraan", context: "The wealth gain is distributed unevenly.", contextIndonesian: "Peningkatan kesejahteraannya terbagi tidak merata." }
+  - { word: "increase in prosperity", translation: "peningkatan kesejahteraan", context: "The wealth gain is distributed unevenly. (keyword: increase in prosperity)", contextIndonesian: "Peningkatan kesejahteraannya terbagi tidak merata." }
   - { word: "market integration", translation: "keterkaitan pasar", context: "Market integration makes crises more contagious.", contextIndonesian: "Keterkaitan pasar membuat krisis lebih mudah menyebar." }
 ---
 

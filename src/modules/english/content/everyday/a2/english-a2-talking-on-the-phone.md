@@ -6,24 +6,19 @@ level: "A2"
 vocab:
   - { word: "call", translation: "panggilan telepon", context: "I missed your call yesterday.", contextIndonesian: "Kemarin aku melewatkan teleponmu." }
   - { word: "answering machine", translation: "mesin penjawab telepon", context: "Please speak to the answering machine.", contextIndonesian: "Tolong tinggalkan pesan di mesin penjawab." }
-  - { word: "message", translation: "pesan", context: "She left me a message.", contextIndonesian: "Dia meninggalkan pesan untukku." }
   - { word: "phone call", translation: "percakapan telepon", context: "Our phone call lasted an hour.", contextIndonesian: "Obrolan telepon kami berlangsung satu jam." }
-  - { word: "connection", translation: "sambungan", context: "The connection is very bad right now.", contextIndonesian: "Sambungannya sedang buruk sekali." }
-  - { word: "reception", translation: "sinyal", context: "I have no reception in the basement.", contextIndonesian: "Di ruang bawah tanah aku tidak mendapat sinyal." }
   - { word: "number", translation: "nomor", context: "Can you send me your number?", contextIndonesian: "Bisa kirim nomormu?" }
   - { word: "cell phone", translation: "ponsel", context: "My cell phone suddenly went off.", contextIndonesian: "Ponselku tiba-tiba mati." }
-  - { word: "take off", translation: "mengangkat telepon", context: "Why didn't you pick up?", contextIndonesian: "Kenapa kamu tidak mengangkat telepon?" }
-  - { word: "call back", translation: "menelepon kembali", context: "I'll call you back after work.", contextIndonesian: "Aku telepon kamu lagi setelah kerja." }
-  - { word: "put through", translation: "menyambungkan telepon", context: "Could you please put me through?", contextIndonesian: "Bisa sambungkan telepon saya?" }
+  - { word: "call back", translation: "menelepon kembali", context: "I'll call you back after work. (keyword: call back)", contextIndonesian: "Aku telepon kamu lagi setelah kerja." }
+  - { word: "put through", translation: "menyambungkan telepon", context: "Could you please put me through? (keyword: put through)", contextIndonesian: "Bisa sambungkan telepon saya?" }
   - { word: "busy", translation: "sibuk", context: "The line is currently busy.", contextIndonesian: "Sambungan teleponnya sedang sibuk." }
   - { word: "reach", translation: "menghubungi", context: "I couldn't reach you yesterday.", contextIndonesian: "Kemarin aku tidak bisa menghubungimu." }
   - { word: "dial", translation: "menekan nomor", context: "Please dial the correct number.", contextIndonesian: "Silakan tekan nomor yang benar." }
-  - { word: "leave", translation: "meninggalkan", context: "He left a short message.", contextIndonesian: "Dia meninggalkan pesan singkat." }
+  - { word: "leave", translation: "meninggalkan", context: "He left a short message. (keyword: leave)", contextIndonesian: "Dia meninggalkan pesan singkat." }
   - { word: "conversation", translation: "percakapan", context: "The conversation was suddenly interrupted.", contextIndonesian: "Percakapannya tiba-tiba terputus." }
-  - { word: "loudspeaker", translation: "pengeras suara", context: "Please put the phone on speaker.", contextIndonesian: "Tolong nyalakan pengeras suara teleponnya." }
-  - { word: "mailbox", translation: "kotak pesan suara", context: "I spoke to your voicemail.", contextIndonesian: "Aku meninggalkan pesan suara untukmu." }
-  - { word: "urgent", translation: "mendesak", context: "Please call me back urgently.", contextIndonesian: "Tolong segera telepon aku kembali." }
-  - { word: "callback", translation: "telepon balik", context: "I'm still waiting for your call back.", contextIndonesian: "Aku masih menunggu telepon balik darimu." }
+  - { word: "loudspeaker", translation: "pengeras suara", context: "Please put the phone on speaker. (keyword: loudspeaker)", contextIndonesian: "Tolong nyalakan pengeras suara teleponnya." }
+  - { word: "mailbox", translation: "kotak pesan suara", context: "I spoke to your voicemail. (keyword: mailbox)", contextIndonesian: "Aku meninggalkan pesan suara untukmu." }
+  - { word: "callback", translation: "telepon balik", context: "I'm still waiting for your call back. (keyword: callback)", contextIndonesian: "Aku masih menunggu telepon balik darimu." }
 ---
 
 # Talking on the Phone

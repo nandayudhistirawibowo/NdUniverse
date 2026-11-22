@@ -18,11 +18,11 @@ vocab:
   - { word: "sanctions architecture", translation: "arsitektur sanksi", context: "The sanctions architecture is constantly being expanded.", contextIndonesian: "Arsitektur sanksinya terus diperluas." }
   - { word: "non-aligned movement", translation: "gerakan non-blok", context: "The non-aligned movement claims political independence.", contextIndonesian: "Gerakan non-blok menuntut kemandirian politik." }
   - { word: "maritime bottleneck", translation: "jalur sempit maritim", context: "The maritime bottleneck is strategically difficult to circumvent.", contextIndonesian: "Jalur sempit maritim itu sulit dihindari secara strategis." }
-  - { word: "force of order", translation: "kekuatan penata tatanan", context: "The power of order is increasingly being questioned.", contextIndonesian: "Kekuatan penata tatanan itu semakin dipertanyakan." }
+  - { word: "force of order", translation: "kekuatan penata tatanan", context: "The power of order is increasingly being questioned. (keyword: force of order)", contextIndonesian: "Kekuatan penata tatanan itu semakin dipertanyakan." }
   - { word: "security dilemma", translation: "dilema keamanan", context: "The security dilemma cannot be resolved unilaterally.", contextIndonesian: "Dilema keamanan tidak bisa diselesaikan sepihak." }
   - { word: "convergence of interests", translation: "konvergensi kepentingan", context: "Convergence of interests remains selective.", contextIndonesian: "Konvergensi kepentingannya hanya terjadi pada isu tertentu." }
   - { word: "strategic reservation", translation: "reservasi strategis", context: "The strategic reservation is expressly formulated.", contextIndonesian: "Reservasi strategisnya disampaikan secara tegas." }
-  - { word: "order competition", translation: "persaingan tatanan", context: "Competition for order shapes international institutions.", contextIndonesian: "Persaingan tatanan membentuk lembaga internasional." }
+  - { word: "order competition", translation: "persaingan tatanan", context: "Competition for order shapes international institutions. (keyword: order competition)", contextIndonesian: "Persaingan tatanan membentuk lembaga internasional." }
   - { word: "balance of power", translation: "keseimbangan kekuatan", context: "The balance of power is shifting in favor of regional actors.", contextIndonesian: "Keseimbangan kekuatan bergeser menguntungkan para aktor regional." }
 ---
 

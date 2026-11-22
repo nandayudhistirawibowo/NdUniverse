@@ -34,7 +34,7 @@ vocab:
     contextIndonesian: "Bisakah saya membayar tanpa kontak?"
   - german: "kosten"
     indonesian: "berharga"
-    context: "Wie viel kostet ein Kilo Äpfel?"
+    context: "Wie viel kostet ein Kilo Äpfel? (Schlüsselwort: kosten)"
     contextIndonesian: "Berapa harga satu kilogram apel?"
   - german: "brauchen"
     indonesian: "membutuhkan"

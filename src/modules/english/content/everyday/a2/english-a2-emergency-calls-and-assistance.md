@@ -16,14 +16,13 @@ vocab:
   - { word: "witness", translation: "saksi", context: "A witness explained everything to the police.", contextIndonesian: "Seorang saksi menjelaskan semuanya kepada polisi." }
   - { word: "alert", translation: "menghubungi layanan darurat", context: "The neighbor quickly alerted the fire department.", contextIndonesian: "Tetangga itu segera menghubungi pemadam kebakaran." }
   - { word: "report", translation: "melaporkan", context: "The incident was reported to the police.", contextIndonesian: "Kejadiannya dilaporkan kepada polisi." }
-  - { word: "save", translation: "menyelamatkan", context: "The paramedics saved the injured man.", contextIndonesian: "Paramedis menyelamatkan pria yang terluka." }
   - { word: "rescue service", translation: "layanan medis darurat", context: "The rescue service treated the injured.", contextIndonesian: "Petugas medis menangani para korban." }
   - { word: "unconscious", translation: "tidak sadarkan diri", context: "The cyclist was briefly unconscious.", contextIndonesian: "Pesepeda itu sempat tidak sadarkan diri." }
   - { word: "fire", translation: "kebakaran", context: "The fire was discovered quickly.", contextIndonesian: "Kebakarannya cepat diketahui." }
   - { word: "danger", translation: "bahaya", context: "The danger wasn't over yet.", contextIndonesian: "Bahayanya belum berlalu." }
   - { word: "urgent", translation: "mendesak", context: "She needed urgent medical attention.", contextIndonesian: "Dia sangat membutuhkan bantuan medis." }
   - { word: "operation", translation: "operasi", context: "The operation lasted almost an hour.", contextIndonesian: "Penanganannya berlangsung hampir satu jam." }
-  - { word: "intersection", translation: "persimpangan", context: "The intersection was temporarily closed.", contextIndonesian: "Persimpangannya ditutup sementara." }
+
 ---
 
 # Emergency Calls and Assistance

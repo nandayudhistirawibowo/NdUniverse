@@ -4,11 +4,11 @@ description: "Learn everyday English about advanced ethics."
 track: "Everyday English"
 level: "C2"
 vocab:
-  - { word: "ethics of conviction", translation: "etika keyakinan", context: "Attitude ethics evaluate the attitude regardless of success.", contextIndonesian: "Etika keyakinan menilai sikap terlepas dari keberhasilannya." }
-  - { word: "ethic of responsibility", translation: "etika tanggung jawab", context: "Ethics of responsibility takes foreseeable consequences into account.", contextIndonesian: "Etika tanggung jawab mempertimbangkan akibat yang dapat diperkirakan." }
+  - { word: "ethics of conviction", translation: "etika keyakinan", context: "Attitude ethics evaluate the attitude regardless of success. (keyword: ethics of conviction)", contextIndonesian: "Etika keyakinan menilai sikap terlepas dari keberhasilannya." }
+  - { word: "ethic of responsibility", translation: "etika tanggung jawab", context: "Ethics of responsibility takes foreseeable consequences into account. (keyword: ethic of responsibility)", contextIndonesian: "Etika tanggung jawab mempertimbangkan akibat yang dapat diperkirakan." }
   - { word: "balancing of interests", translation: "penimbangan nilai yang bertentangan", context: "The balancing of interests must be justified transparently.", contextIndonesian: "Penimbangan nilai-nilainya perlu dijelaskan secara transparan." }
   - { word: "moral dilemma", translation: "dilema moral", context: "The moral dilemma does not allow a decision without consequences.", contextIndonesian: "Dilema moral itu tidak memungkinkan keputusan tanpa konsekuensi." }
-  - { word: "collision of duties", translation: "benturan kewajiban", context: "A conflict of obligations cannot always be resolved.", contextIndonesian: "Benturan kewajiban tidak selalu dapat diselesaikan." }
+  - { word: "collision of duties", translation: "benturan kewajiban", context: "A conflict of obligations cannot always be resolved. (keyword: collision of duties)", contextIndonesian: "Benturan kewajiban tidak selalu dapat diselesaikan." }
   - { word: "moral intuition", translation: "intuisi moral", context: "Moral intuition can prove to be deceptive.", contextIndonesian: "Intuisi moral bisa saja menyesatkan." }
   - { word: "normative validity", translation: "keberlakuan normatif", context: "Normative validity requires public justification.", contextIndonesian: "Keberlakuan normatif membutuhkan pembenaran publik." }
   - { word: "principle of responsibility", translation: "prinsip tanggung jawab", context: "The principle of responsibility extends beyond the present.", contextIndonesian: "Prinsip tanggung jawab melampaui kepentingan masa kini." }

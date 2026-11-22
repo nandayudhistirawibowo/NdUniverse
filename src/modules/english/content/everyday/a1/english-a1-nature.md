@@ -22,7 +22,6 @@ vocab:
   - { word: "nature", translation: "alam", context: "We spend a lot of time in nature.", contextIndonesian: "Kami banyak menghabiskan waktu di alam." }
   - { word: "grow", translation: "tumbuh", context: "The flowers grow in the garden.", contextIndonesian: "Bunga-bunga tumbuh di taman." }
   - { word: "bloom", translation: "berbunga", context: "The trees bloom in spring.", contextIndonesian: "Pepohonan berbunga saat musim semi." }
-  - { word: "clean", translation: "bersih", context: "The water here is clean.", contextIndonesian: "Air di sini bersih." }
   - { word: "outside", translation: "di luar", context: "The children are outside.", contextIndonesian: "Anak-anak sedang di luar." }
 ---
 

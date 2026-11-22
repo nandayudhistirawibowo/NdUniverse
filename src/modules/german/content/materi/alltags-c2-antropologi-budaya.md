@@ -50,7 +50,7 @@ vocab:
     contextIndonesian: "Otoritas penafsiran dinegosiasikan di antara para pelaku."
   - german: "kulturelle Gedächtnis"
     indonesian: "ingatan budaya"
-    context: "Kulturelles Gedächtnis strukturiere kollektive Zugehörigkeit."
+    context: "Kulturelles Gedächtnis strukturiere kollektive Zugehörigkeit. (Schlüsselwort: kulturelle Gedächtnis)"
     contextIndonesian: "Ingatan budaya membentuk rasa keanggotaan kolektif."
   - german: "Grenzziehung"
     indonesian: "penarikan batas"

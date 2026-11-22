@@ -17,12 +17,12 @@ vocab:
   - { word: "model monitoring", translation: "pemantauan model", context: "Model monitoring detects performance drops early.", contextIndonesian: "Pemantauan model mendeteksi penurunan kinerja sejak awal." }
   - { word: "autonomous system", translation: "sistem otonom", context: "The autonomous system must remain switched off at any time.", contextIndonesian: "Sistem otonom harus tetap bisa dimatikan kapan saja." }
   - { word: "algorithmic accountability", translation: "akuntabilitas algoritmik", context: "Algorithmic accountability should be anchored in law.", contextIndonesian: "Akuntabilitas algoritmik perlu dijamin lewat hukum." }
-  - { word: "fine tuning", translation: "penyempurnaan model", context: "The fine-tuning is done with curated examples.", contextIndonesian: "Penyempurnaan model dilakukan dengan contoh yang dikurasi." }
+  - { word: "fine tuning", translation: "penyempurnaan model", context: "The fine-tuning is done with curated examples. (keyword: fine tuning)", contextIndonesian: "Penyempurnaan model dilakukan dengan contoh yang dikurasi." }
   - { word: "decision automation", translation: "otomatisasi pengambilan keputusan", context: "Decision automation should not be carried out uncontrolled.", contextIndonesian: "Otomatisasi keputusan tidak boleh berjalan tanpa pengawasan." }
   - { word: "inference effort", translation: "beban komputasi inferensi", context: "The inference effort has decreased significantly.", contextIndonesian: "Beban komputasi inferensinya turun cukup besar." }
   - { word: "data contamination", translation: "kontaminasi data", context: "Data contamination distorts the evaluation.", contextIndonesian: "Kontaminasi data membuat evaluasinya tidak akurat." }
   - { word: "model card", translation: "dokumentasi model", context: "The model card exposes restrictions.", contextIndonesian: "Dokumentasi modelnya menjelaskan berbagai keterbatasan." }
-  - { word: "multi-purpose ability", translation: "kemampuan serbaguna", context: "Multi-purpose capability also increases the risk of misuse.", contextIndonesian: "Kemampuan serbaguna sekaligus meningkatkan risiko penyalahgunaan." }
+  - { word: "multi-purpose ability", translation: "kemampuan serbaguna", context: "Multi-purpose capability also increases the risk of misuse. (keyword: multi-purpose ability)", contextIndonesian: "Kemampuan serbaguna sekaligus meningkatkan risiko penyalahgunaan." }
   - { word: "alignment", translation: "penyelarasan", context: "The alignment remains incomplete despite tests.", contextIndonesian: "Penyelarasan modelnya tetap belum sempurna meski sudah diuji." }
 ---
 

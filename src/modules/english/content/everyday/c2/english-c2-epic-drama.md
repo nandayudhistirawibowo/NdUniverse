@@ -15,15 +15,15 @@ vocab:
   - { word: "historicization", translation: "historisasi", context: "Historicization pushes current conditions into the distance.", contextIndonesian: "Historisasi menjauhkan keadaan masa kini agar dapat ditinjau." }
   - { word: "audience activation", translation: "pengaktifan penonton", context: "Audience activation demands well-founded judgments.", contextIndonesian: "Pengaktifan penonton menuntut penilaian yang beralasan." }
   - { word: "scene montage", translation: "montase adegan", context: "Scene montage suddenly juxtaposes social contradictions.", contextIndonesian: "Montase adegan memperhadapkan kontradiksi sosial secara langsung." }
-  - { word: "breaking of illusion", translation: "pematahan ilusi", context: "Breaking illusions draws attention to the production.", contextIndonesian: "Pematahan ilusi mengarahkan perhatian pada pementasan." }
+  - { word: "breaking of illusion", translation: "pematahan ilusi", context: "Breaking illusions draws attention to the production. (keyword: breaking of illusion)", contextIndonesian: "Pematahan ilusi mengarahkan perhatian pada pementasan." }
   - { word: "singer", translation: "penyanyi", context: "The singer comments on what is happening from his own perspective.", contextIndonesian: "Penyanyi mengomentari peristiwa dari sudut pandangnya sendiri." }
   - { word: "empathy", translation: "empati mendalam", context: "Empathy is limited in favor of critical distance.", contextIndonesian: "Empati mendalam dibatasi demi menjaga jarak kritis." }
   - { word: "social gesture", translation: "gestur sosial", context: "Social gestures reveal power relations in everyday life.", contextIndonesian: "Gestur sosial mengungkap relasi kuasa dalam keseharian." }
   - { word: "stage arrangement", translation: "tata panggung", context: "The stage arrangement becomes visible as a changeable construction.", contextIndonesian: "Tata panggung ditampilkan sebagai konstruksi yang bisa diubah." }
   - { word: "parable", translation: "parabel", context: "The parable transfers historical conflicts to the present.", contextIndonesian: "Parabel memindahkan konflik sejarah ke masa kini." }
   - { word: "social function", translation: "fungsi sosial", context: "The social function of the theater is explicitly negotiated.", contextIndonesian: "Fungsi sosial teater dibahas secara terbuka." }
-  - { word: "taking on the role", translation: "pengambilan peran", context: "Taking on the role remains recognizable as a conscious decision.", contextIndonesian: "Pengambilan peran tetap terlihat sebagai pilihan yang disadari." }
-  - { word: "behavior change", translation: "perubahan perilaku", context: "Behavioral change appears to be a historically possible alternative.", contextIndonesian: "Perubahan perilaku tampak sebagai alternatif yang mungkin secara historis." }
+  - { word: "taking on the role", translation: "mengambil alih suatu peran", context: "Taking on the role remains recognizable as a conscious decision.", contextIndonesian: "Pengambilan peran tetap terlihat sebagai pilihan yang disadari." }
+  - { word: "behavior change", translation: "perubahan perilaku", context: "Behavioral change appears to be a historically possible alternative. (keyword: behavior change)", contextIndonesian: "Perubahan perilaku tampak sebagai alternatif yang mungkin secara historis." }
 ---
 
 # Epic Drama

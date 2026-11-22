@@ -82,6 +82,6 @@ vocab:
     contextIndonesian: "Boleh aku memberi makan anjingnya?"
   - german: "bellen"
     indonesian: "menggonggong"
-    context: "Der kleine Hund bellt laut."
+    context: "Der kleine Hund bellt laut. (Schlüsselwort: bellen)"
     contextIndonesian: "Anjing kecil itu menggonggong keras."
 ---

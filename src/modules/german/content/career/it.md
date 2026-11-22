@@ -48,7 +48,7 @@ boss_questions:
     advancedKeywords: ["Aufgaben"]
 vocab:
   - { german: "Software", indonesian: "perangkat lunak", context: "Die Software läuft stabil." }
-  - { german: "programmieren", indonesian: "memprogram", context: "Ich programmiere eine neue Anwendung." }
+  - { german: "programmieren", indonesian: "memprogram", context: "Ich programmiere eine neue Anwendung. (Schlüsselwort: programmieren)" }
   - { german: "Server", indonesian: "peladen", context: "Der Server ist nicht erreichbar." }
   - { german: "Datenbank", indonesian: "basis data", context: "Die Datenbank speichert alle Kundeninformationen." }
   - { german: "Anwendung", indonesian: "aplikasi", context: "Die Anwendung ist benutzerfreundlich." }
@@ -61,7 +61,7 @@ vocab:
   - { german: "Cloud", indonesian: "awan", context: "Die Daten werden in der Cloud gespeichert." }
   - { german: "Frontend", indonesian: "frontend", context: "Das Frontend zeigt die Benutzeroberfläche." }
   - { german: "Backend", indonesian: "backend", context: "Das Backend verarbeitet die Anfragen." }
-  - { german: "Programmiersprache", indonesian: "bahasa pemrograman", context: "JavaScript ist meine Hauptsprache." }
+  - { german: "Programmiersprache", indonesian: "bahasa pemrograman", context: "JavaScript ist meine Hauptsprache. (Schlüsselwort: Programmiersprache)" }
   - { german: "Framework", indonesian: "kerangka kerja", context: "Wir verwenden ein modernes Framework." }
   - { german: "Bibliothek", indonesian: "pustaka", context: "Die Bibliothek vereinfacht die Entwicklung." }
   - { german: "Funktion", indonesian: "fungsi", context: "Diese Funktion prüft die Eingabe." }
@@ -90,10 +90,9 @@ vocab:
   - { german: "Verschlüsselung", indonesian: "enkripsi", context: "Die Verschlüsselung schützt persönliche Daten." }
   - { german: "Backup", indonesian: "cadangan", context: "Das Backup wird täglich erstellt." }
   - { german: "Support", indonesian: "dukungan", context: "Der Support hilft bei technischen Fragen." }
-  - { german: "Dokumentation", indonesian: "dokumentasi", context: "Die Dokumentation erklärt die API." }
   - { german: "Anforderung", indonesian: "persyaratan", context: "Die Anforderung kommt vom Kunden." }
   - { german: "Projekt", indonesian: "proyek", context: "Das Projekt endet im Juni." }
-  - { german: "Scrum-Methode", indonesian: "metode Scrum", context: "Unser Team arbeitet mit Scrum." }
+  - { german: "Scrum-Methode", indonesian: "metode Scrum", context: "Unser Team arbeitet mit Scrum. (Schlüsselwort: Scrum-Methode)" }
   - { german: "tägliche Meeting", indonesian: "rapat harian", context: "Das tägliche Meeting dauert fünfzehn Minuten." }
   - { german: "Installation", indonesian: "instalasi", context: "Die Installation dauert wenige Minuten." }
   - { german: "Leistungsfähigkeit", indonesian: "kinerja", context: "Die Leistungsfähigkeit wurde verbessert." }

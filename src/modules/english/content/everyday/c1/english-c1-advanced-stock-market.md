@@ -7,14 +7,14 @@ vocab:
   - { word: "volatility", translation: "volatilitas", context: "Volatility has increased significantly recently.", contextIndonesian: "Volatilitasnya meningkat tajam belakangan ini." }
   - { word: "price discount", translation: "diskon harga saham", context: "The price discount was exaggerated.", contextIndonesian: "Penurunan harga sahamnya dinilai terlalu besar." }
   - { word: "market capitalization", translation: "kapitalisasi pasar", context: "The market capitalization will be recalculated.", contextIndonesian: "Kapitalisasi pasarnya dihitung ulang." }
-  - { word: "evaluation standard", translation: "tolok ukur valuasi", context: "The assessment standard needs to be adjusted.", contextIndonesian: "Tolok ukur valuasinya perlu disesuaikan." }
+  - { word: "evaluation standard", translation: "tolok ukur valuasi", context: "The assessment standard needs to be adjusted. (keyword: evaluation standard)", contextIndonesian: "Tolok ukur valuasinya perlu disesuaikan." }
   - { word: "dividend yield", translation: "imbal hasil dividen", context: "The dividend yield is above the industry average.", contextIndonesian: "Imbal hasil dividennya berada di atas rata-rata sektor." }
-  - { word: "short sale", translation: "penjualan pendek", context: "Short selling is strictly monitored.", contextIndonesian: "Penjualan pendeknya diawasi dengan ketat." }
+  - { word: "short sale", translation: "penjualan pendek", context: "Short selling is strictly monitored. (keyword: short sale)", contextIndonesian: "Penjualan pendeknya diawasi dengan ketat." }
   - { word: "price-earnings ratio", translation: "rasio harga terhadap laba", context: "The price-earnings ratio signals a high valuation.", contextIndonesian: "Rasio harga terhadap labanya menunjukkan valuasi yang tinggi." }
   - { word: "liquidity premium", translation: "premi likuiditas", context: "The liquidity premium has now increased.", contextIndonesian: "Premi likuiditasnya kini meningkat." }
   - { word: "risk premium", translation: "premi risiko", context: "The risk premium will be repriced.", contextIndonesian: "Premi risikonya sedang diperhitungkan ulang." }
-  - { word: "share return", translation: "pengembalian saham", context: "The return of shares is legally excluded.", contextIndonesian: "Pengembalian sahamnya dilarang secara hukum." }
-  - { word: "stock exchange turnover", translation: "nilai transaksi bursa", context: "Stock market turnover remains unusually low.", contextIndonesian: "Nilai transaksi bursanya masih sangat rendah." }
+  - { word: "share return", translation: "pengembalian saham", context: "The return of shares is legally excluded. (keyword: share return)", contextIndonesian: "Pengembalian sahamnya dilarang secara hukum." }
+  - { word: "stock exchange turnover", translation: "nilai transaksi bursa", context: "Stock market turnover remains unusually low. (keyword: stock exchange turnover)", contextIndonesian: "Nilai transaksi bursanya masih sangat rendah." }
   - { word: "course correction", translation: "koreksi harga", context: "The course correction was long overdue.", contextIndonesian: "Koreksi harganya memang sudah lama diperlukan." }
   - { word: "investment profile", translation: "profil investasi", context: "The investment profile is reviewed annually.", contextIndonesian: "Profil investasinya diperiksa setiap tahun." }
   - { word: "profit warning", translation: "peringatan penurunan laba", context: "The profit warning unsettled investors.", contextIndonesian: "Peringatan penurunan laba membuat investor khawatir." }

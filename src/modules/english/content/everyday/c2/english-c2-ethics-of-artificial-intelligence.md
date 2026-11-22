@@ -13,7 +13,6 @@ vocab:
   - { word: "autonomous system", translation: "sistem otonom", context: "The autonomous system must remain controllable.", contextIndonesian: "Sistem otonomnya harus tetap dapat dikendalikan." }
   - { word: "accountability", translation: "kewajiban pertanggungjawaban", context: "Accountability also includes downstream damage.", contextIndonesian: "Kewajiban pertanggungjawaban juga mencakup kerugian yang muncul kemudian." }
   - { word: "model transparency", translation: "transparansi model", context: "Model transparency does not replace independent testing.", contextIndonesian: "Transparansi model tidak menggantikan pemeriksaan independen." }
-  - { word: "earmarking", translation: "pembatasan tujuan penggunaan", context: "Earmarking protects against subsequent conversion.", contextIndonesian: "Pembatasan tujuan melindungi dari perubahan penggunaan setelahnya." }
   - { word: "fairness metric", translation: "metrik keadilan", context: "The fairness metric reflects normative decisions.", contextIndonesian: "Metrik keadilannya mencerminkan keputusan normatif." }
   - { word: "vulnerability", translation: "kerentanan", context: "Vulnerability must be taken into account before system implementation.", contextIndonesian: "Kerentanan perlu dipertimbangkan sebelum sistem diterapkan." }
   - { word: "training data set", translation: "kumpulan data pelatihan", context: "The training data set helps determine which voices are missing.", contextIndonesian: "Kumpulan data pelatihan turut menentukan suara siapa yang tak terwakili." }
@@ -22,7 +21,7 @@ vocab:
   - { word: "surveillance effect", translation: "efek pengawasan", context: "Surveillance effect changes behavior before sanctions are imposed.", contextIndonesian: "Efek pengawasan mengubah perilaku bahkan sebelum sanksi dijatuhkan." }
   - { word: "data sovereignty", translation: "kedaulatan data", context: "Data sovereignty includes insight and effective control.", contextIndonesian: "Kedaulatan data mencakup hak melihat dan mengendalikan data." }
   - { word: "automation bias", translation: "bias otomatisasi", context: "Automation bias weakens critical human review.", contextIndonesian: "Bias otomatisasi melemahkan pemeriksaan kritis manusia." }
-  - { word: "attribution of damages", translation: "atribusi kerugian", context: "Damage attribution remains difficult in distributed systems.", contextIndonesian: "Atribusi kerugian tetap sulit pada sistem yang tersebar." }
+  - { word: "attribution of damages", translation: "atribusi kerugian", context: "Damage attribution remains difficult in distributed systems. (keyword: attribution of damages)", contextIndonesian: "Atribusi kerugian tetap sulit pada sistem yang tersebar." }
   - { word: "algorithmic sovereignty", translation: "kedaulatan algoritmik", context: "Algorithmic sovereignty requires public design spaces.", contextIndonesian: "Kedaulatan algoritmik membutuhkan ruang perancangan publik." }
 ---
 

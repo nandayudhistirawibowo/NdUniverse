@@ -13,12 +13,12 @@ vocab:
   - { word: "rocket engine", translation: "mesin roket", context: "The rocket engine was checked before launch.", contextIndonesian: "Mesin roketnya diperiksa sebelum peluncuran." }
   - { word: "landing", translation: "pendaratan", context: "The landing was achieved despite technical problems.", contextIndonesian: "Pendaratannya berhasil meski ada masalah teknis." }
   - { word: "mission", translation: "misi", context: "The mission, which lasted months, provided important data.", contextIndonesian: "Misi yang berlangsung berbulan-bulan itu menghasilkan data penting." }
-  - { word: "space junk", translation: "sampah antariksa", context: "Space debris could endanger other satellites.", contextIndonesian: "Sampah antariksa bisa membahayakan satelit lain." }
+  - { word: "space junk", translation: "sampah antariksa", context: "Space debris could endanger other satellites. (keyword: space junk)", contextIndonesian: "Sampah antariksa bisa membahayakan satelit lain." }
   - { word: "space capsule", translation: "kapsul antariksa", context: "The space capsule returned safely to Earth.", contextIndonesian: "Kapsulnya kembali ke Bumi dengan selamat." }
   - { word: "crew", translation: "awak", context: "The crew was medically examined before the flight.", contextIndonesian: "Awaknya menjalani pemeriksaan medis sebelum terbang." }
   - { word: "launch vehicle", translation: "roket peluncur", context: "The launch vehicle launched several devices into space.", contextIndonesian: "Roket peluncur membawa beberapa perangkat ke angkasa." }
-  - { word: "space probe", translation: "wahana antariksa", context: "The spacecraft sent images from a long distance.", contextIndonesian: "Wahana antariksa itu mengirim foto dari jarak jauh." }
-  - { word: "settlement", translation: "kolonisasi", context: "Colonizing other planets would be technically demanding.", contextIndonesian: "Kolonisasi planet lain akan menantang secara teknis." }
+  - { word: "space probe", translation: "wahana antariksa", context: "The spacecraft sent images from a long distance. (keyword: space probe)", contextIndonesian: "Wahana antariksa itu mengirim foto dari jarak jauh." }
+  - { word: "settlement", translation: "kolonisasi", context: "Colonizing other planets would be technically demanding. (keyword: settlement)", contextIndonesian: "Kolonisasi planet lain akan menantang secara teknis." }
   - { word: "planet", translation: "planet", context: "The planet was examined with new instruments.", contextIndonesian: "Planet itu diteliti dengan instrumen baru." }
   - { word: "discovery", translation: "penemuan", context: "The discovery changed our understanding of the solar system.", contextIndonesian: "Penemuan itu mengubah pemahaman kita tentang tata surya." }
   - { word: "space agency", translation: "badan antariksa", context: "The space agency released a new mission plan.", contextIndonesian: "Badan antariksa menerbitkan rencana misi baru." }

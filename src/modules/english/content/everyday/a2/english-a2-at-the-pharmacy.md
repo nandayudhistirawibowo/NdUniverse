@@ -5,19 +5,19 @@ track: "Everyday English"
 level: "A2"
 vocab:
   - { word: "pharmacy", translation: "apotek", context: "The pharmacy is open until eight o'clock.", contextIndonesian: "Apoteknya buka sampai pukul delapan." }
-  - { word: "drug", translation: "obat", context: "This medication helped me yesterday.", contextIndonesian: "Obat ini membantuku kemarin." }
+  - { word: "drug", translation: "obat", context: "This medication helped me yesterday. (keyword: drug)", contextIndonesian: "Obat ini membantuku kemarin." }
   - { word: "painkiller", translation: "obat pereda nyeri", context: "Do you have any painkillers for headaches?", contextIndonesian: "Ada obat pereda sakit kepala?" }
   - { word: "tablet", translation: "tablet", context: "Take one tablet daily.", contextIndonesian: "Minum satu tablet setiap hari." }
   - { word: "cough syrup", translation: "obat batuk cair", context: "The cough syrup tasted good.", contextIndonesian: "Obat batuk cairnya rasanya enak." }
   - { word: "ointment", translation: "salep", context: "The ointment should be applied three times a day.", contextIndonesian: "Salepnya perlu dioleskan tiga kali sehari." }
   - { word: "dose", translation: "dosis", context: "The dose is on the package.", contextIndonesian: "Dosisnya tertera di kemasan." }
-  - { word: "package insert", translation: "brosur petunjuk obat", context: "Please read the package leaflet carefully.", contextIndonesian: "Tolong baca petunjuk obatnya dengan teliti." }
-  - { word: "recipe", translation: "resep", context: "I need a prescription for this medication.", contextIndonesian: "Aku perlu resep untuk obat ini." }
+  - { word: "package insert", translation: "brosur petunjuk obat", context: "Please read the package leaflet carefully. (keyword: package insert)", contextIndonesian: "Tolong baca petunjuk obatnya dengan teliti." }
+  - { word: "recipe", translation: "resep", context: "I need a prescription for this medication. (keyword: recipe)", contextIndonesian: "Aku perlu resep untuk obat ini." }
   - { word: "side effect", translation: "efek samping", context: "Does the medication cause severe side effects?", contextIndonesian: "Obat ini punya efek samping yang kuat?" }
-  - { word: "common cold", translation: "selesma", context: "I need something for my cold.", contextIndonesian: "Aku butuh sesuatu untuk selesmaku." }
+  - { word: "common cold", translation: "selesma", context: "I need something for my cold. (keyword: common cold)", contextIndonesian: "Aku butuh sesuatu untuk selesmaku." }
   - { word: "fever", translation: "demam", context: "My fever has gone down since yesterday.", contextIndonesian: "Demamku turun sejak kemarin." }
   - { word: "wound", translation: "luka", context: "The wound must remain clean.", contextIndonesian: "Lukanya harus tetap bersih." }
-  - { word: "association", translation: "perban", context: "The bandage is already completely wet.", contextIndonesian: "Perbannya sudah basah sekali." }
+  - { word: "association", translation: "perban", context: "The bandage is already completely wet. (keyword: association)", contextIndonesian: "Perbannya sudah basah sekali." }
   - { word: "take", translation: "meminum obat", context: "You should take the tablet after eating.", contextIndonesian: "Sebaiknya minum tablet itu setelah makan." }
   - { word: "prescribe", translation: "meresepkan", context: "The doctor prescribed me tablets.", contextIndonesian: "Dokter meresepkan tablet untukku." }
   - { word: "work", translation: "berkhasiat", context: "The remedy works quickly for me.", contextIndonesian: "Obat ini cepat bekerja untukku." }

@@ -14,7 +14,7 @@ vocab:
   - { word: "resource activation", translation: "aktivasi sumber daya diri", context: "Resource activation strengthens self-efficacy.", contextIndonesian: "Aktivasi sumber daya diri memperkuat keyakinan atas kemampuan diri." }
   - { word: "symptoms", translation: "simtomatika", context: "The symptoms appear depending on the situation.", contextIndonesian: "Gejalanya muncul bergantung pada situasi." }
   - { word: "trauma-related disorder", translation: "gangguan akibat trauma", context: "The trauma-related disorder is often recognized late.", contextIndonesian: "Gangguan akibat traumanya sering terlambat dikenali." }
-  - { word: "behavior analysis", translation: "analisis perilaku", context: "Behavioral analysis considers triggering and maintaining conditions.", contextIndonesian: "Analisis perilaku mempertimbangkan pemicu dan faktor yang mempertahankan gejala." }
+  - { word: "behavior analysis", translation: "analisis perilaku", context: "Behavioral analysis considers triggering and maintaining conditions. (keyword: behavior analysis)", contextIndonesian: "Analisis perilaku mempertimbangkan pemicu dan faktor yang mempertahankan gejala." }
   - { word: "treatment indication", translation: "indikasi penanganan", context: "The treatment indication will be reviewed together.", contextIndonesian: "Indikasi penanganannya ditinjau bersama." }
   - { word: "psychological resilience", translation: "ketahanan psikologis", context: "Psychological resilience fluctuates over the course of recovery.", contextIndonesian: "Ketahanan psikologis berubah-ubah selama pemulihan." }
   - { word: "therapeutic alliance", translation: "aliansi terapeutik", context: "The therapeutic alliance is considered an effective factor.", contextIndonesian: "Aliansi terapeutik dianggap sebagai faktor yang mendukung keberhasilan." }
@@ -22,7 +22,7 @@ vocab:
   - { word: "self-stigmatization", translation: "stigma terhadap diri sendiri", context: "Self-stigmatization affects the ability to seek help.", contextIndonesian: "Stigma terhadap diri sendiri menghambat seseorang mencari bantuan." }
   - { word: "psychological vulnerability", translation: "kerentanan psikologis", context: "Psychological vulnerability should not be equated with weakness.", contextIndonesian: "Kerentanan psikologis tidak sama dengan kelemahan." }
   - { word: "relapse prevention", translation: "pencegahan kekambuhan", context: "Relapse prevention is individually tailored.", contextIndonesian: "Pencegahan kekambuhannya disesuaikan dengan kebutuhan individu." }
-  - { word: "pressure of suffering", translation: "beban penderitaan", context: "The level of suffering is crucial for the treatment.", contextIndonesian: "Beban penderitaan menjadi faktor penting dalam penanganan." }
+  - { word: "pressure of suffering", translation: "beban penderitaan", context: "The level of suffering is crucial for the treatment. (keyword: pressure of suffering)", contextIndonesian: "Beban penderitaan menjadi faktor penting dalam penanganan." }
   - { word: "crisis intervention", translation: "intervensi krisis", context: "Crisis intervention requires a careful risk assessment.", contextIndonesian: "Intervensi krisis membutuhkan penilaian risiko yang cermat." }
 ---
 

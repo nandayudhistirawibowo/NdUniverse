@@ -9,15 +9,15 @@ vocab:
   - { word: "life expectancy", translation: "harapan hidup", context: "Life expectancy increases regionally.", contextIndonesian: "Harapan hidup meningkat dengan laju yang berbeda-beda." }
   - { word: "age structure", translation: "struktur usia", context: "The age structure is shifting significantly.", contextIndonesian: "Struktur usianya berubah cukup tajam." }
   - { word: "internal migration", translation: "migrasi internal", context: "Internal migration concentrates on metropolitan regions.", contextIndonesian: "Migrasi internal terkonsentrasi di kawasan metropolitan." }
-  - { word: "household size", translation: "ukuran rumah tangga", context: "The size of the household is continuously decreasing.", contextIndonesian: "Ukuran rumah tangganya terus mengecil." }
+  - { word: "household size", translation: "ukuran rumah tangga", context: "The size of the household is continuously decreasing. (keyword: household size)", contextIndonesian: "Ukuran rumah tangganya terus mengecil." }
   - { word: "aging", translation: "penuaan populasi", context: "Aging is putting a strain on supply systems.", contextIndonesian: "Penuaan populasi membebani sistem layanan." }
   - { word: "working population", translation: "populasi usia kerja", context: "The working population is getting smaller.", contextIndonesian: "Populasi usia kerjanya semakin kecil." }
   - { word: "migration balance", translation: "saldo migrasi", context: "The migration balance remains positive.", contextIndonesian: "Saldo migrasinya tetap positif." }
   - { word: "population density", translation: "kepadatan penduduk", context: "Population density is increasing in cities.", contextIndonesian: "Kepadatan penduduk meningkat di kota-kota." }
   - { word: "age cohort", translation: "kelompok usia", context: "The age cohort that will soon be retiring is particularly large.", contextIndonesian: "Kelompok usia yang sebentar lagi pensiun ini jumlahnya sangat besar." }
-  - { word: "immigration quota", translation: "tingkat imigrasi", context: "The immigration rate has changed.", contextIndonesian: "Tingkat imigrasinya berubah." }
+  - { word: "immigration quota", translation: "tingkat imigrasi", context: "The immigration rate has changed. (keyword: immigration quota)", contextIndonesian: "Tingkat imigrasinya berubah." }
   - { word: "nursing rate", translation: "tingkat kebutuhan perawatan", context: "The nursing rate is expected to increase.", contextIndonesian: "Tingkat kebutuhan perawatan diperkirakan meningkat." }
-  - { word: "generation contract", translation: "kontrak antargenerasi", context: "The generational contract must be reevaluated.", contextIndonesian: "Kontrak antargenerasinya perlu ditinjau ulang." }
+  - { word: "generation contract", translation: "kontrak antargenerasi", context: "The generational contract must be reevaluated. (keyword: generation contract)", contextIndonesian: "Kontrak antargenerasinya perlu ditinjau ulang." }
   - { word: "emigration", translation: "arus perpindahan keluar", context: "Emigration is exacerbating the shortage of skilled workers.", contextIndonesian: "Arus perpindahan keluar memperparah kekurangan tenaga ahli." }
   - { word: "population forecast", translation: "proyeksi penduduk", context: "The population forecast is adjusted regularly.", contextIndonesian: "Proyeksi penduduknya disesuaikan secara berkala." }
   - { word: "need for skilled workers", translation: "kebutuhan tenaga ahli", context: "The need for skilled workers is growing disproportionately.", contextIndonesian: "Kebutuhan tenaga ahlinya meningkat lebih cepat." }

@@ -16,12 +16,9 @@ vocab:
   - { word: "gaming community", translation: "komunitas pemain", context: "The gaming community organized a local tournament.", contextIndonesian: "Komunitas pemain mengadakan turnamen lokal." }
   - { word: "microtransaction", translation: "transaksi mikro", context: "The microtransaction was criticized by parents.", contextIndonesian: "Transaksi mikronya dikritik para orang tua." }
   - { word: "slot machine", translation: "mesin permainan", context: "The slot machine was presented at a trade fair.", contextIndonesian: "Mesin permainannya diperkenalkan di sebuah pameran." }
-  - { word: "data processing", translation: "pemrosesan data", context: "Data processing must be regulated transparently.", contextIndonesian: "Pemrosesan datanya harus diatur secara transparan." }
   - { word: "gambling addiction", translation: "kecanduan bermain", context: "Gambling addiction should be recognized early.", contextIndonesian: "Kecanduan bermain sebaiknya dideteksi sejak dini." }
-  - { word: "response time", translation: "waktu reaksi", context: "Reaction time improved through regular training.", contextIndonesian: "Waktu reaksinya meningkat berkat latihan rutin." }
-  - { word: "accessibility", translation: "aksesibilitas", context: "Accessibility improved with subtitles.", contextIndonesian: "Aksesibilitasnya ditingkatkan dengan teks terjemahan." }
+  - { word: "response time", translation: "waktu reaksi", context: "Reaction time improved through regular training. (keyword: response time)", contextIndonesian: "Waktu reaksinya meningkat berkat latihan rutin." }
   - { word: "community", translation: "komunitas", context: "The community that met online grew quickly.", contextIndonesian: "Komunitas yang bertemu secara daring itu berkembang pesat." }
-  - { word: "data protection", translation: "perlindungan data", context: "Data protection was highlighted during registration.", contextIndonesian: "Perlindungan data ditekankan saat pendaftaran." }
   - { word: "game console", translation: "konsol permainan", context: "A function has been added to the game console.", contextIndonesian: "Konsol permainannya dilengkapi fitur tambahan." }
   - { word: "impact", translation: "dampak", context: "The impact on social contacts remained controversial.", contextIndonesian: "Dampaknya pada hubungan sosial masih diperdebatkan." }
 ---

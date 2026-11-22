@@ -15,14 +15,14 @@ vocab:
   - { word: "social norm", translation: "norma sosial", context: "The social norm remains unspoken.", contextIndonesian: "Norma sosialnya tetap tidak diucapkan." }
   - { word: "ethnographic description", translation: "deskripsi etnografis", context: "The ethnographic description takes into account the perspective of those involved.", contextIndonesian: "Deskripsi etnografisnya mempertimbangkan sudut pandang para pelaku." }
   - { word: "cultural translation", translation: "penerjemahan budaya", context: "Cultural translation is accompanied by a loss of meaning.", contextIndonesian: "Penerjemahan budaya bisa menghilangkan sebagian makna." }
-  - { word: "construction of identity", translation: "pembentukan identitas", context: "Identity construction takes place in relationships.", contextIndonesian: "Pembentukan identitas berlangsung melalui hubungan." }
+  - { word: "construction of identity", translation: "pembentukan identitas", context: "Identity construction takes place in relationships. (keyword: construction of identity)", contextIndonesian: "Pembentukan identitas berlangsung melalui hubungan." }
   - { word: "exchange of gifts", translation: "pertukaran hadiah", context: "The exchange of gifts creates long-term obligations.", contextIndonesian: "Pertukaran hadiah membangun kewajiban jangka panjang." }
   - { word: "living world", translation: "dunia kehidupan", context: "The living world is structured by everyday practices.", contextIndonesian: "Dunia kehidupan dibentuk oleh praktik sehari-hari." }
   - { word: "minority language", translation: "bahasa minoritas", context: "The minority language is taught in schools.", contextIndonesian: "Bahasa minoritas itu diajarkan di sekolah." }
   - { word: "social stratification", translation: "stratifikasi sosial", context: "Social stratification shapes access to resources.", contextIndonesian: "Stratifikasi sosial memengaruhi akses terhadap sumber daya." }
   - { word: "westernization", translation: "westernisasi", context: "Westernization is by no means uniform.", contextIndonesian: "Westernisasi tidak berlangsung dengan cara yang seragam." }
   - { word: "cultural border", translation: "batas budaya", context: "The cultural border is historically permeable.", contextIndonesian: "Batas budayanya bisa ditembus sepanjang sejarah." }
-  - { word: "local form of knowledge", translation: "bentuk pengetahuan lokal", context: "Local forms of knowledge are often overlooked.", contextIndonesian: "Bentuk-bentuk pengetahuan lokal sering terabaikan." }
+  - { word: "local form of knowledge", translation: "bentuk pengetahuan lokal", context: "Local forms of knowledge are often overlooked. (keyword: local form of knowledge)", contextIndonesian: "Bentuk-bentuk pengetahuan lokal sering terabaikan." }
   - { word: "social belonging", translation: "keanggotaan sosial", context: "Social belonging is marked through language.", contextIndonesian: "Keanggotaan sosial ditandai melalui bahasa." }
 ---
 

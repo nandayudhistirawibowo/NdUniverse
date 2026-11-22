@@ -80,8 +80,5 @@ vocab:
     indonesian: "format edukasi"
     context: "Das Vermittlungsformat werde an unterschiedliche Gruppen angepasst."
     contextIndonesian: "Format edukasinya disesuaikan untuk kelompok yang berbeda."
-  - german: "ästhetische Erfahrung"
-    indonesian: "pengalaman estetis"
-    context: "Die ästhetische Erfahrung entstehe im Austausch."
-    contextIndonesian: "Pengalaman estetis muncul melalui interaksi."
+
 ---

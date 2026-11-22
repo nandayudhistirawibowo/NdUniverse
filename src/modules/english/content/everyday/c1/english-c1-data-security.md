@@ -6,11 +6,11 @@ level: "C1"
 vocab:
   - { word: "data encryption", translation: "enkripsi data", context: "Data encryption must be activated by default.", contextIndonesian: "Enkripsi data harus aktif secara bawaan." }
   - { word: "access protection", translation: "perlindungan akses", context: "Access protection is checked regularly.", contextIndonesian: "Perlindungan aksesnya diperiksa secara berkala." }
-  - { word: "vulnerability", translation: "celah keamanan", context: "The security gap was closed immediately.", contextIndonesian: "Celah keamanannya sudah segera ditutup." }
+  - { word: "vulnerability", translation: "celah keamanan", context: "The security gap was closed immediately. (keyword: vulnerability)", contextIndonesian: "Celah keamanannya sudah segera ditutup." }
   - { word: "data minimization", translation: "minimalisasi data", context: "Data minimization reduces unnecessary risks.", contextIndonesian: "Minimalisasi data mengurangi risiko yang tidak perlu." }
   - { word: "authentication factor", translation: "faktor autentikasi", context: "An additional authentication factor makes misuse more difficult.", contextIndonesian: "Faktor autentikasi tambahan mempersulit penyalahgunaan." }
   - { word: "access control", translation: "kontrol akses", context: "Access control is implemented based on roles.", contextIndonesian: "Kontrol akses diterapkan berdasarkan peran." }
-  - { word: "data outflow", translation: "kebocoran data", context: "The data leak was recognized early.", contextIndonesian: "Kebocoran datanya terdeteksi sejak awal." }
+  - { word: "data outflow", translation: "kebocoran data", context: "The data leak was recognized early. (keyword: data outflow)", contextIndonesian: "Kebocoran datanya terdeteksi sejak awal." }
   - { word: "data backup", translation: "pencadangan data", context: "Data backup is encrypted and decentralized.", contextIndonesian: "Pencadangan data dilakukan secara terenkripsi dan tersebar." }
   - { word: "anomaly detection", translation: "deteksi anomali", context: "Anomaly detection occurs in case of unusual access.", contextIndonesian: "Deteksi anomali memberi peringatan saat ada akses yang tidak wajar." }
   - { word: "retention period", translation: "masa penyimpanan", context: "The retention period is consistently adhered to.", contextIndonesian: "Masa penyimpanannya dipatuhi secara konsisten." }
@@ -21,7 +21,6 @@ vocab:
   - { word: "data breach", translation: "pelanggaran perlindungan data", context: "The data breach must be reported.", contextIndonesian: "Pelanggaran perlindungan datanya harus dilaporkan." }
   - { word: "key management", translation: "pengelolaan kunci enkripsi", context: "Key management occurs separately from data storage.", contextIndonesian: "Kunci enkripsi dikelola terpisah dari penyimpanan data." }
   - { word: "security incident", translation: "insiden keamanan", context: "Every security incident is logged in a comprehensible manner.", contextIndonesian: "Setiap insiden keamanan dicatat agar bisa ditelusuri." }
-  - { word: "data sovereignty", translation: "kedaulatan data", context: "Data sovereignty must remain with those affected.", contextIndonesian: "Kendali atas data harus tetap berada pada pemiliknya." }
   - { word: "attack surface", translation: "permukaan serangan", context: "This reduces the attack surface.", contextIndonesian: "Dengan begitu, permukaan serangannya bisa diperkecil." }
   - { word: "emergency access", translation: "akses darurat", context: "Emergency access is monitored separately.", contextIndonesian: "Akses daruratnya dipantau secara khusus." }
 ---

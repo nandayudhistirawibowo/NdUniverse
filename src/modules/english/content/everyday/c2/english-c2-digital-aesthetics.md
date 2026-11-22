@@ -20,7 +20,7 @@ vocab:
   - { word: "virtual presence", translation: "kehadiran virtual", context: "Virtual presence is not the same as physical presence.", contextIndonesian: "Kehadiran virtual tidak identik dengan kehadiran fisik." }
   - { word: "digital reproducibility", translation: "reprodusibilitas digital", context: "Digital reproducibility changes the work status.", contextIndonesian: "Reprodusibilitas digital mengubah status karya." }
   - { word: "perception control", translation: "pengarahan persepsi", context: "Perception control is achieved through an interface and recommendation system.", contextIndonesian: "Persepsi diarahkan melalui antarmuka dan sistem rekomendasi." }
-  - { word: "net aesthetic", translation: "estetika jaringan", context: "Network aesthetics are formed from relationships and circulation.", contextIndonesian: "Estetika jaringan terbentuk dari relasi dan peredaran." }
+  - { word: "net aesthetic", translation: "estetika jaringan", context: "Network aesthetics are formed from relationships and circulation. (keyword: net aesthetic)", contextIndonesian: "Estetika jaringan terbentuk dari relasi dan peredaran." }
   - { word: "algorithmic curation", translation: "kurasi algoritmik", context: "Algorithmic curation regulates visibility.", contextIndonesian: "Kurasi algoritmik mengatur visibilitas." }
   - { word: "digital twin", translation: "kembaran digital", context: "The digital twin intertwines model and aesthetic experience.", contextIndonesian: "Kembaran digital memadukan model dan pengalaman estetis." }
   - { word: "virtual reality", translation: "realitas virtual", context: "Virtual reality remains technically and socially framed.", contextIndonesian: "Realitas virtual tetap dibingkai secara teknis dan sosial." }

@@ -4,13 +4,12 @@ description: "Learn everyday English about entrepreneurship."
 track: "Everyday English"
 level: "B2"
 vocab:
-  - { word: "founding of the company", translation: "pendirian perusahaan", context: "The founding of the company was carefully prepared.", contextIndonesian: "Pendirian perusahaannya dipersiapkan dengan matang." }
+  - { word: "founding of the company", translation: "pendirian sebuah perusahaan", context: "The founding of the company was carefully prepared.", contextIndonesian: "Pendirian perusahaannya dipersiapkan dengan matang." }
   - { word: "business model", translation: "model bisnis", context: "The business model she developed convinced investors.", contextIndonesian: "Model bisnis yang dia kembangkan meyakinkan para investor." }
   - { word: "financing", translation: "pendanaan", context: "Financing could be secured by several partners.", contextIndonesian: "Pendanaannya bisa dijamin oleh beberapa mitra." }
   - { word: "starting capital", translation: "modal awal", context: "The starting capital was enough for the first few months.", contextIndonesian: "Modal awalnya cukup untuk beberapa bulan pertama." }
   - { word: "business plan", translation: "rencana bisnis", context: "The business plan was revised before the presentation.", contextIndonesian: "Rencana bisnisnya direvisi sebelum presentasi." }
-  - { word: "target group", translation: "target pasar", context: "The target group, which had previously hardly been reached, grew.", contextIndonesian: "Target pasar yang sebelumnya sulit dijangkau itu bertambah." }
-  - { word: "market launch", translation: "peluncuran ke pasar", context: "The launch was postponed due to delivery problems.", contextIndonesian: "Peluncurannya diundur karena masalah pengiriman." }
+  - { word: "market launch", translation: "peluncuran ke pasar", context: "The launch was postponed due to delivery problems. (keyword: market launch)", contextIndonesian: "Peluncurannya diundur karena masalah pengiriman." }
   - { word: "scalability", translation: "skalabilitas", context: "Scalability was already taken into account in the design.", contextIndonesian: "Skalabilitasnya sudah diperhitungkan sejak tahap rancangan." }
   - { word: "competitive advantage", translation: "keunggulan bersaing", context: "The competitive advantage lay in fast delivery.", contextIndonesian: "Keunggulan bersaingnya terletak pada pengiriman cepat." }
   - { word: "business idea", translation: "ide bisnis", context: "The business idea emerged from a specific need.", contextIndonesian: "Ide bisnisnya muncul dari kebutuhan nyata." }
@@ -19,7 +18,6 @@ vocab:
   - { word: "source of income", translation: "sumber pendapatan", context: "An additional source of income could reduce the risk.", contextIndonesian: "Sumber pendapatan tambahan bisa mengurangi risiko." }
   - { word: "market analysis", translation: "analisis pasar", context: "The market analysis was prepared by external experts.", contextIndonesian: "Analisis pasarnya dibuat oleh pakar eksternal." }
   - { word: "sales", translation: "omzet", context: "Sales increased even though costs also increased.", contextIndonesian: "Omzetnya naik meski biaya juga bertambah." }
-  - { word: "participation", translation: "kepemilikan saham", context: "The participation was contractually regulated in detail.", contextIndonesian: "Kepemilikan sahamnya diatur secara rinci dalam kontrak." }
   - { word: "innovation", translation: "inovasi", context: "The innovation that saves customers time was awarded.", contextIndonesian: "Inovasi yang menghemat waktu pelanggan itu mendapat penghargaan." }
   - { word: "corporate strategy", translation: "strategi perusahaan", context: "The corporate strategy would have to be adapted to new markets.", contextIndonesian: "Strategi perusahaannya perlu disesuaikan dengan pasar baru." }
   - { word: "liquidity", translation: "likuiditas", context: "Liquidity remained sufficient despite late payments.", contextIndonesian: "Likuiditasnya tetap cukup meski pembayaran terlambat." }

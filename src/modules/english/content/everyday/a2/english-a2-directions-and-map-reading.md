@@ -8,21 +8,19 @@ vocab:
   - { word: "city map", translation: "peta kota", context: "I found the museum on the city map.", contextIndonesian: "Aku menemukan museum di peta kota." }
   - { word: "intersection", translation: "persimpangan", context: "At the intersection we turned left.", contextIndonesian: "Kami belok kiri di persimpangan." }
   - { word: "direction", translation: "arah", context: "We were going in the wrong direction.", contextIndonesian: "Kami berjalan ke arah yang salah." }
-  - { word: "way", translation: "jalan", context: "The path led along the river.", contextIndonesian: "Jalannya melewati tepi sungai." }
-  - { word: "junction", translation: "cabang jalan", context: "The turnoff came directly after the bridge.", contextIndonesian: "Cabang jalannya tepat setelah jembatan." }
-  - { word: "surroundings", translation: "daerah sekitar", context: "The surroundings were completely unknown to us.", contextIndonesian: "Daerah sekitarnya benar-benar asing bagi kami." }
-  - { word: "benchmark", translation: "skala peta", context: "The scale was at the bottom right.", contextIndonesian: "Skala petanya ada di kanan bawah." }
+  - { word: "way", translation: "jalan", context: "The path led along the river. (keyword: way)", contextIndonesian: "Jalannya melewati tepi sungai." }
+  - { word: "junction", translation: "cabang jalan", context: "The turnoff came directly after the bridge. (keyword: junction)", contextIndonesian: "Cabang jalannya tepat setelah jembatan." }
+  - { word: "benchmark", translation: "skala peta", context: "The scale was at the bottom right. (keyword: benchmark)", contextIndonesian: "Skala petanya ada di kanan bawah." }
   - { word: "landmark", translation: "titik penanda", context: "The tower served as a landmark for us.", contextIndonesian: "Menara itu menjadi penanda bagi kami." }
   - { word: "roundabout", translation: "bundaran", context: "At the roundabout we took the second exit.", contextIndonesian: "Di bundaran, kami mengambil jalan keluar kedua." }
   - { word: "turn", translation: "berbelok", context: "Turn right at the traffic lights.", contextIndonesian: "Belok kanan di lampu lalu lintas." }
   - { word: "cross", translation: "menyeberangi", context: "We crossed the street carefully.", contextIndonesian: "Kami menyeberangi jalan dengan hati-hati." }
-  - { word: "get lost", translation: "tersesat", context: "I got lost in the old town.", contextIndonesian: "Aku tersesat di kota tua." }
-  - { word: "get your bearings", translation: "mencari arah", context: "We quickly orientated ourselves using our cell phones.", contextIndonesian: "Kami cepat menemukan arah dengan ponsel." }
-  - { word: "straight ahead", translation: "lurus", context: "Please go straight here.", contextIndonesian: "Silakan jalan lurus di sini." }
+  - { word: "get lost", translation: "tersesat", context: "I got lost in the old town. (keyword: get lost)", contextIndonesian: "Aku tersesat di kota tua." }
+  - { word: "get your bearings", translation: "mencari arah", context: "We quickly orientated ourselves using our cell phones. (keyword: get your bearings)", contextIndonesian: "Kami cepat menemukan arah dengan ponsel." }
+  - { word: "straight ahead", translation: "lurus", context: "Please go straight here. (keyword: straight ahead)", contextIndonesian: "Silakan jalan lurus di sini." }
   - { word: "opposite", translation: "di seberang", context: "The pharmacy was opposite the train station.", contextIndonesian: "Apoteknya berada di seberang stasiun." }
   - { word: "distance", translation: "jarak", context: "The distance was approximately two kilometers.", contextIndonesian: "Jaraknya sekitar dua kilometer." }
-  - { word: "district", translation: "kawasan kota", context: "The district was marked on the map.", contextIndonesian: "Kawasan kotanya ditandai di peta." }
-  - { word: "footpath", translation: "jalur pejalan kaki", context: "The walk took about ten minutes.", contextIndonesian: "Jalan kaki ke sana sekitar sepuluh menit." }
+  - { word: "footpath", translation: "jalur pejalan kaki", context: "The walk took about ten minutes. (keyword: footpath)", contextIndonesian: "Jalan kaki ke sana sekitar sepuluh menit." }
   - { word: "signage", translation: "rambu petunjuk", context: "The signage helped us along the way.", contextIndonesian: "Rambu petunjuknya membantu kami di jalan." }
 ---
 

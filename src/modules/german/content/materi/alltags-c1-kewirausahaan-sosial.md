@@ -26,7 +26,7 @@ vocab:
     contextIndonesian: "Pendanaan awalnya kini sudah terjamin."
   - german: "gesellschaftliche Mehrwert"
     indonesian: "nilai tambah sosial"
-    context: "Gesellschaftlicher Mehrwert werde transparent ausgewiesen."
+    context: "Gesellschaftlicher Mehrwert werde transparent ausgewiesen. (Schlüsselwort: gesellschaftliche Mehrwert)"
     contextIndonesian: "Nilai tambah sosialnya ditampilkan secara transparan."
   - german: "Wirkungsmessung"
     indonesian: "pengukuran dampak"

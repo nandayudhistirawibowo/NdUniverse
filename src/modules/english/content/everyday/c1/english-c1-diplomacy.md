@@ -5,12 +5,11 @@ track: "Everyday English"
 level: "C1"
 vocab:
   - { word: "diplomatic mission", translation: "misi diplomatik", context: "The diplomatic mission was ended prematurely.", contextIndonesian: "Misi diplomatiknya diakhiri lebih awal." }
-  - { word: "negotiating delegation", translation: "delegasi perundingan", context: "The negotiating delegation will meet tomorrow.", contextIndonesian: "Delegasi perundingannya berkumpul besok." }
   - { word: "mediation effort", translation: "upaya mediasi", context: "Mediation efforts have so far been unsuccessful.", contextIndonesian: "Upaya mediasinya sejauh ini belum berhasil." }
   - { word: "diplomatic channel", translation: "jalur diplomatik", context: "The diplomatic channel remains open.", contextIndonesian: "Jalur diplomatiknya tetap terbuka." }
   - { word: "building trust", translation: "pembangunan kepercayaan", context: "Building trust requires binding steps.", contextIndonesian: "Pembangunan kepercayaan membutuhkan langkah yang nyata." }
   - { word: "summit diplomacy", translation: "diplomasi tingkat tinggi", context: "Summit diplomacy accelerates the talks.", contextIndonesian: "Diplomasi tingkat tinggi mempercepat pembicaraan." }
-  - { word: "diplomatic push", translation: "langkah diplomatik", context: "The diplomatic advance came as a surprise.", contextIndonesian: "Inisiatif diplomatiknya muncul secara tak terduga." }
+  - { word: "diplomatic push", translation: "langkah diplomatik", context: "The diplomatic advance came as a surprise. (keyword: diplomatic push)", contextIndonesian: "Inisiatif diplomatiknya muncul secara tak terduga." }
   - { word: "verbal note", translation: "nota diplomatik", context: "The verbal note was sent yesterday.", contextIndonesian: "Nota diplomatiknya disampaikan kemarin." }
   - { word: "peace initiative", translation: "inisiatif perdamaian", context: "The peace initiative is supported by several states.", contextIndonesian: "Inisiatif perdamaian itu didukung beberapa negara." }
   - { word: "special envoy", translation: "utusan khusus", context: "The special envoy will be sent to the region.", contextIndonesian: "Utusan khususnya akan dikirim ke wilayah tersebut." }

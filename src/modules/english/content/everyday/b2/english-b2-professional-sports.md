@@ -9,20 +9,15 @@ vocab:
   - { word: "pressure to perform", translation: "tekanan performa", context: "The pressure to perform could overwhelm young athletes.", contextIndonesian: "Tekanan performa bisa membebani atlet muda." }
   - { word: "broadcast rights", translation: "hak siar", context: "The broadcast rights were sold for billions.", contextIndonesian: "Hak siarnya dijual seharga miliaran." }
   - { word: "sporting event", translation: "acara olahraga", context: "The sporting event was broadcast worldwide.", contextIndonesian: "Acara olahraganya disiarkan ke seluruh dunia." }
-  - { word: "competition ban", translation: "larangan bertanding", context: "The suspension from competition was shortened after the objection.", contextIndonesian: "Larangan bertandingnya dipersingkat setelah banding." }
+  - { word: "competition ban", translation: "larangan bertanding", context: "The suspension from competition was shortened after the objection. (keyword: competition ban)", contextIndonesian: "Larangan bertandingnya dipersingkat setelah banding." }
   - { word: "club management", translation: "manajemen klub", context: "The club management had to disclose its expenses.", contextIndonesian: "Manajemen klub harus mengungkapkan pengeluarannya." }
-  - { word: "marketing", translation: "komersialisasi", context: "Marketing was aimed more at young fans.", contextIndonesian: "Komersialisasinya lebih diarahkan kepada penggemar muda." }
   - { word: "athlete", translation: "atlet perempuan", context: "The athlete who broke the record received a contract.", contextIndonesian: "Atlet yang memecahkan rekor itu mendapat kontrak." }
   - { word: "bonus", translation: "bonus", context: "The bonus was paid out after the final.", contextIndonesian: "Bonusnya dibayarkan setelah final." }
-  - { word: "equal opportunities", translation: "kesetaraan kesempatan", context: "Equal opportunities should apply in all competitions.", contextIndonesian: "Kesetaraan kesempatan harus berlaku di semua kompetisi." }
   - { word: "sports medicine", translation: "kedokteran olahraga", context: "Sports medicine developed new rehabilitation methods.", contextIndonesian: "Kedokteran olahraga mengembangkan metode rehabilitasi baru." }
   - { word: "players' union", translation: "serikat pemain", context: "The players' union demanded better protective measures.", contextIndonesian: "Serikat pemain menuntut perlindungan yang lebih baik." }
-  - { word: "risk of injury", translation: "risiko cedera", context: "The risk of injury was increased by the game plan.", contextIndonesian: "Jadwal pertandingan meningkatkan risiko cedera." }
-  - { word: "competition", translation: "kompetisi", context: "The competition was interrupted due to extreme heat.", contextIndonesian: "Kompetisinya dihentikan karena panas ekstrem." }
   - { word: "fairness", translation: "sportivitas", context: "Fairness should be more important than commercial success.", contextIndonesian: "Sportivitas seharusnya lebih penting daripada keuntungan bisnis." }
-  - { word: "promoting young talent", translation: "pembinaan atlet muda", context: "The promotion of young talent was financed on a long-term basis.", contextIndonesian: "Pembinaan atlet mudanya didanai untuk jangka panjang." }
+  - { word: "promoting young talent", translation: "pembinaan atlet muda", context: "The promotion of young talent was financed on a long-term basis. (keyword: promoting young talent)", contextIndonesian: "Pembinaan atlet mudanya didanai untuk jangka panjang." }
   - { word: "sports agency", translation: "agensi olahraga", context: "The sports agency negotiated on behalf of the athlete.", contextIndonesian: "Agensi olahraga itu bernegosiasi atas nama atlet tersebut." }
-  - { word: "source of income", translation: "sumber pendapatan", context: "The source of income, which had long been underestimated, grew.", contextIndonesian: "Sumber pendapatan yang lama diremehkan itu meningkat." }
   - { word: "integrity", translation: "integritas", context: "The integrity of the competition has been questioned.", contextIndonesian: "Integritas kompetisinya dipertanyakan." }
 ---
 

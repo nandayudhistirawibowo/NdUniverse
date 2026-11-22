@@ -52,10 +52,6 @@ vocab:
     indonesian: "sanggahan"
     context: "Die Gegenrede müsse den impliziten Rahmen offenlegen."
     contextIndonesian: "Sanggahan perlu mengungkap kerangka yang tersirat."
-  - german: "Euphemismus"
-    indonesian: "eufemisme"
-    context: "Der Euphemismus beschönige den institutionellen Zwang."
-    contextIndonesian: "Eufemisme itu memperhalus pemaksaan institusional."
   - german: "Skandalisierung"
     indonesian: "sensasi skandal"
     context: "Skandalisierung verdränge die sachliche Auseinandersetzung."
@@ -80,8 +76,5 @@ vocab:
     indonesian: "seruan emosional"
     context: "Der Affektappell überlagere die empirische Prüfung."
     contextIndonesian: "Seruan emosional mengaburkan pemeriksaan empiris."
-  - german: "Sprachhandlung"
-    indonesian: "tindak tutur"
-    context: "Die Sprachhandlung vollziehe politische Zugehörigkeit."
-    contextIndonesian: "Tindak tutur itu mewujudkan keanggotaan politik."
+
 ---

@@ -10,18 +10,18 @@ vocab:
   - { word: "text montage", translation: "montase teks", context: "The text montage puts contradicting voices next to each other.", contextIndonesian: "Montase teksnya menyandingkan suara-suara yang bertentangan." }
   - { word: "unreliability", translation: "ketidakandalan", context: "The narrator's unreliability remains hidden for a long time.", contextIndonesian: "Ketidakandalan naratornya lama tidak terlihat." }
   - { word: "break in perspective", translation: "pergeseran perspektif", context: "A break in perspective irritates readers.", contextIndonesian: "Pergeseran perspektifnya membuat pembaca merasa terusik." }
-  - { word: "poetics of blank spaces", translation: "poetika ruang kosong", context: "Void poetics demands active participation.", contextIndonesian: "Poetika ruang kosong menuntut keterlibatan aktif pembaca." }
+  - { word: "poetics of blank spaces", translation: "poetika ruang kosong", context: "Void poetics demands active participation. (keyword: poetics of blank spaces)", contextIndonesian: "Poetika ruang kosong menuntut keterlibatan aktif pembaca." }
   - { word: "self-reflexivity", translation: "refleksivitas diri", context: "Self-reflexivity becomes a narrative principle.", contextIndonesian: "Refleksivitas diri menjadi prinsip penceritaan." }
   - { word: "polyphony", translation: "keberagaman suara", context: "The polyphony does not allow for a clear interpretation.", contextIndonesian: "Keberagaman suaranya tidak memungkinkan satu tafsir pasti." }
   - { word: "alienation", translation: "keterasingan", context: "Alienation is made tangible through language.", contextIndonesian: "Keterasingan itu dibuat terasa lewat bahasa." }
   - { word: "language game", translation: "permainan bahasa", context: "The language game undermines familiar meanings.", contextIndonesian: "Permainan bahasanya menggoyahkan makna yang sudah akrab." }
   - { word: "first-person narrative", translation: "narasi orang pertama", context: "The first-person narrative obscures the view of others.", contextIndonesian: "Narasi orang pertama itu mengaburkan pandangan terhadap tokoh lain." }
-  - { word: "work of memory", translation: "proses mengolah ingatan", context: "Memory work becomes the central motif.", contextIndonesian: "Proses mengolah ingatan menjadi motif utama." }
-  - { word: "narrative break", translation: "patahan naratif", context: "The break in the narrative, which comes as a surprise, changes the reading.", contextIndonesian: "Patahan naratif yang muncul tiba-tiba itu mengubah cara membaca." }
+  - { word: "work of memory", translation: "proses mengolah ingatan", context: "Memory work becomes the central motif. (keyword: work of memory)", contextIndonesian: "Proses mengolah ingatan menjadi motif utama." }
+  - { word: "narrative break", translation: "patahan naratif", context: "The break in the narrative, which comes as a surprise, changes the reading. (keyword: narrative break)", contextIndonesian: "Patahan naratif yang muncul tiba-tiba itu mengubah cara membaca." }
   - { word: "search for identity", translation: "pencarian identitas", context: "The search for identity takes place between several languages.", contextIndonesian: "Pencarian identitas berlangsung di antara beberapa bahasa." }
   - { word: "milieu study", translation: "studi tentang lingkungan sosial", context: "The milieu study reveals structural conflicts.", contextIndonesian: "Studi lingkungannya mengungkap konflik struktural." }
   - { word: "language skepticism", translation: "skeptisisme terhadap bahasa", context: "Language skepticism characterizes numerous texts.", contextIndonesian: "Sikap skeptis terhadap bahasa mewarnai banyak karya." }
-  - { word: "spelling", translation: "gaya penulisan", context: "The writing is intentionally fragmentary.", contextIndonesian: "Gaya penulisannya sengaja dibuat terfragmentasi." }
+  - { word: "spelling", translation: "gaya penulisan", context: "The writing is intentionally fragmentary. (keyword: spelling)", contextIndonesian: "Gaya penulisannya sengaja dibuat terfragmentasi." }
   - { word: "narrative mode", translation: "modus penceritaan", context: "The narrative mode switches between closeness and distance.", contextIndonesian: "Modus penceritaannya berganti antara kedekatan dan jarak." }
   - { word: "counter-reading", translation: "pembacaan tandingan", context: "A counter-reading questions established patterns of interpretation.", contextIndonesian: "Pembacaan tandingan mempertanyakan pola tafsir yang sudah mapan." }
 ---

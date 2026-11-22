@@ -5,8 +5,7 @@ track: "Everyday English"
 level: "C2"
 vocab:
   - { word: "unconscious", translation: "alam bawah sadar", context: "The unconscious often manifests itself in mistakes.", contextIndonesian: "Alam bawah sadar sering terungkap lewat kekeliruan." }
-  - { word: "transmission", translation: "transferensi", context: "Transference repeat previous relationship patterns in the analytical space.", contextIndonesian: "Transferensi mengulang pola hubungan awal dalam ruang analisis." }
-  - { word: "countertransference", translation: "kontratransferensi", context: "Countertransference is treated as an indication, not as a finding.", contextIndonesian: "Kontratransferensi diperlakukan sebagai petunjuk, bukan temuan pasti." }
+  - { word: "transmission", translation: "transferensi", context: "Transference repeat previous relationship patterns in the analytical space. (keyword: transmission)", contextIndonesian: "Transferensi mengulang pola hubungan awal dalam ruang analisis." }
   - { word: "repression", translation: "represi", context: "Repression keeps the conflict outside of consciousness.", contextIndonesian: "Represi menahan konflik agar tetap di luar kesadaran." }
   - { word: "compulsion to repeat", translation: "dorongan pengulangan", context: "The compulsion to repeat re-enacts unresolved conflicts.", contextIndonesian: "Dorongan pengulangan mementaskan kembali konflik yang belum selesai." }
   - { word: "free association", translation: "asosiasi bebas", context: "Free association interrupts the control of the narrative.", contextIndonesian: "Asosiasi bebas memutus kendali atas penceritaan." }
@@ -16,14 +15,13 @@ vocab:
   - { word: "defense", translation: "mekanisme pertahanan", context: "Defense protects against unbearable inner tension.", contextIndonesian: "Mekanisme pertahanan melindungi dari tekanan batin yang tak tertahankan." }
   - { word: "signifier", translation: "penanda", context: "The signifier shifts the meaning of desire.", contextIndonesian: "Penanda menggeser makna hasrat." }
   - { word: "desire", translation: "hasrat", context: "Desire is rarely directed towards an attainable object.", contextIndonesian: "Hasrat jarang tertuju pada objek yang dapat diraih." }
-  - { word: "splitting of the ego", translation: "pembelahan ego", context: "Ego splitting allows contradictory beliefs to coexist.", contextIndonesian: "Pembelahan ego membuat keyakinan yang bertentangan tetap berdampingan." }
-  - { word: "interpretation of dreams", translation: "penafsiran mimpi", context: "Dream interpretation reveals manifest and latent content.", contextIndonesian: "Penafsiran mimpi mengungkap isi yang tampak dan laten." }
+  - { word: "splitting of the ego", translation: "pembelahan diri atau ego", context: "Ego splitting allows contradictory beliefs to coexist. (keyword: splitting of the ego)", contextIndonesian: "Pembelahan ego membuat keyakinan yang bertentangan tetap berdampingan." }
+  - { word: "interpretation of dreams", translation: "penafsiran mimpi", context: "Dream interpretation reveals manifest and latent content. (keyword: interpretation of dreams)", contextIndonesian: "Penafsiran mimpi mengungkap isi yang tampak dan laten." }
   - { word: "castration complex", translation: "kompleks kastrasi", context: "The castration complex marks a symbolic boundary.", contextIndonesian: "Kompleks kastrasi menandai batas simbolis." }
   - { word: "denial", translation: "penyangkalan", context: "Denial confirms and denies the same facts at the same time.", contextIndonesian: "Penyangkalan sekaligus mengakui dan membantah hal yang sama." }
   - { word: "cast", translation: "investasi libidinal", context: "The cast wanders between ideas and objects.", contextIndonesian: "Investasi libidinal berpindah antara gagasan dan objek." }
   - { word: "death instinct", translation: "naluri kematian", context: "The death instinct remains theoretically controversial.", contextIndonesian: "Naluri kematian tetap diperdebatkan secara teoretis." }
-  - { word: "interpretation", translation: "interpretasi", context: "Interpretation must be measured by the analysand's resistance.", contextIndonesian: "Interpretasi perlu mempertimbangkan perlawanan dari orang yang dianalisis." }
-  - { word: "retrospect", translation: "ketertundaan makna", context: "Retrospectiveness gives early experiences later meaning.", contextIndonesian: "Ketertundaan makna memberi pengalaman awal arti di kemudian hari." }
+
 ---
 
 # Psychoanalysis

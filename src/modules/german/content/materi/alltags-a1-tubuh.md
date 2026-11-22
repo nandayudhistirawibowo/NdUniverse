@@ -82,6 +82,6 @@ vocab:
     contextIndonesian: "Bergerak itu baik untuk tubuh."
   - german: "wehtun"
     indonesian: "terasa sakit"
-    context: "Tut dein Kopf noch weh?"
+    context: "Tut dein Kopf noch weh? (Schlüsselwort: wehtun)"
     contextIndonesian: "Kepalamu masih sakit?"
 ---

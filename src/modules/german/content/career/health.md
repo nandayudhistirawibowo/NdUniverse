@@ -95,6 +95,6 @@ vocab:
   - { german: "Betreuung", indonesian: "pendampingan", context: "Die Betreuung erfolgt im Team." }
   - { german: "Teamgespräch", indonesian: "rapat tim", context: "Das Teamgespräch findet morgens statt." }
   - { german: "Weiterbildung", indonesian: "pelatihan lanjutan", context: "Die Weiterbildung erweitert fachliche Kenntnisse." }
-  - { german: "Berücksichtigung", indonesian: "pertimbangan", context: "Die individuelle Situation wird berücksichtigt." }
+  - { german: "Berücksichtigung", indonesian: "pertimbangan", context: "Die individuelle Situation wird berücksichtigt. (Schlüsselwort: Berücksichtigung)" }
   - { german: "Empathie", indonesian: "empati", context: "Empathie ist in der Pflege wichtig." }
 ---

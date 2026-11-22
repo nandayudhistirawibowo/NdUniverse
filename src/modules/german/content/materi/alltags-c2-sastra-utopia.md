@@ -82,6 +82,6 @@ vocab:
     contextIndonesian: "Tatanan kelembagaan harus menghadapi kritik publik."
   - german: "utopische Überschuss"
     indonesian: "kelebihan utopis"
-    context: "Utopischer Überschuss gehe über praktikable Reformen hinaus."
+    context: "Utopischer Überschuss gehe über praktikable Reformen hinaus. (Schlüsselwort: utopische Überschuss)"
     contextIndonesian: "Kelebihan utopis melampaui reformasi yang praktis."
 ---

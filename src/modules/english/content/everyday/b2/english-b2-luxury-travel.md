@@ -16,14 +16,13 @@ vocab:
   - { word: "travel cancellation insurance", translation: "asuransi pembatalan perjalanan", context: "Travel cancellation insurance would have avoided additional costs.", contextIndonesian: "Asuransi pembatalan perjalanan bisa menghindari biaya tambahan." }
   - { word: "private transfer", translation: "antar-jemput pribadi", context: "The private transfer was organized directly to the hotel.", contextIndonesian: "Antar-jemput pribadi diatur langsung menuju hotel." }
   - { word: "travel companion", translation: "pendamping perjalanan", context: "The travel companion spoke several languages.", contextIndonesian: "Pendamping perjalanannya bisa berbicara beberapa bahasa." }
-  - { word: "visit", translation: "kunjungan", context: "The viewing took place outside opening hours.", contextIndonesian: "Kunjungannya berlangsung di luar jam buka." }
+  - { word: "visit", translation: "kunjungan", context: "The viewing took place outside opening hours. (keyword: visit)", contextIndonesian: "Kunjungannya berlangsung di luar jam buka." }
   - { word: "booking fee", translation: "biaya pemesanan", context: "The booking fee was taken into account in the total price.", contextIndonesian: "Biaya pemesanannya sudah diperhitungkan dalam harga total." }
-  - { word: "sustainability", translation: "keberlanjutan", context: "Sustainability was taken into account despite the high level of comfort.", contextIndonesian: "Keberlanjutan tetap diperhatikan meski kenyamanannya tinggi." }
   - { word: "travel experience", translation: "pengalaman perjalanan", context: "We remembered the travel experience for a long time.", contextIndonesian: "Pengalaman perjalanan itu lama membekas di ingatan kami." }
   - { word: "high season", translation: "musim ramai", context: "The high season caused prices to rise significantly.", contextIndonesian: "Musim ramai membuat harga naik cukup tinggi." }
   - { word: "reservation", translation: "reservasi", context: "The reservation was confirmed months in advance.", contextIndonesian: "Reservasinya dikonfirmasi beberapa bulan sebelumnya." }
   - { word: "tour operator", translation: "operator perjalanan", context: "The tour operator adjusted the offer.", contextIndonesian: "Operator perjalanan menyesuaikan penawarannya." }
-  - { word: "recovery", translation: "istirahat", context: "Recreation was the focus of the planning.", contextIndonesian: "Istirahat menjadi fokus utama dalam perencanaannya." }
+
 ---
 
 # Luxury Travel

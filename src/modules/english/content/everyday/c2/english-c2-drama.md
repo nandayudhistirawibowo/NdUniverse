@@ -14,15 +14,14 @@ vocab:
   - { word: "stage directions", translation: "petunjuk panggung", context: "The stage directions allow for several interpretations.", contextIndonesian: "Petunjuk panggungnya memungkinkan beberapa penafsiran." }
   - { word: "monologue", translation: "monolog", context: "The monologue breaks down the apparent certainty.", contextIndonesian: "Monolog itu mengurai kepastian yang tampak." }
   - { word: "closed form", translation: "bentuk tertutup", context: "The closed form is intentionally broken.", contextIndonesian: "Bentuk tertutupnya sengaja digugat." }
-  - { word: "character speech", translation: "ujaran tokoh", context: "The character's speech reveals social affiliation.", contextIndonesian: "Ujaran tokohnya menunjukkan latar sosial." }
+  - { word: "character speech", translation: "ujaran tokoh", context: "The character's speech reveals social affiliation. (keyword: character speech)", contextIndonesian: "Ujaran tokohnya menunjukkan latar sosial." }
   - { word: "appearance", translation: "kemunculan tokoh", context: "The appearance marks a sudden shift in power.", contextIndonesian: "Kemunculan itu menandai pergeseran kekuasaan yang mendadak." }
-  - { word: "fall height", translation: "ketinggian tragis tokoh", context: "The height of the hero's fall determines the tragedy.", contextIndonesian: "Ketinggian tragis sang tokoh menentukan tragedinya." }
-  - { word: "stage action", translation: "peristiwa di panggung", context: "The action on stage is rhythmized by pauses.", contextIndonesian: "Peristiwa panggungnya diatur ritmenya melalui jeda." }
+  - { word: "fall height", translation: "ketinggian tragis tokoh", context: "The height of the hero's fall determines the tragedy. (keyword: fall height)", contextIndonesian: "Ketinggian tragis sang tokoh menentukan tragedinya." }
+  - { word: "stage action", translation: "peristiwa di panggung", context: "The action on stage is rhythmized by pauses. (keyword: stage action)", contextIndonesian: "Peristiwa panggungnya diatur ritmenya melalui jeda." }
   - { word: "catharsis", translation: "katarsis", context: "Catharsis should by no means be understood as mere purification.", contextIndonesian: "Katarsis sama sekali tak bisa dipahami sekadar sebagai pemurnian." }
-  - { word: "core of the conflict", translation: "inti konflik", context: "The core of the conflict remains unresolved until the end.", contextIndonesian: "Inti konfliknya tetap tidak terselesaikan hingga akhir." }
+  - { word: "core of the conflict", translation: "inti dari sebuah konflik", context: "The core of the conflict remains unresolved until the end.", contextIndonesian: "Inti konfliknya tetap tidak terselesaikan hingga akhir." }
   - { word: "dramatic escalation", translation: "penajaman dramatik", context: "The dramatic escalation shifts the moral focus.", contextIndonesian: "Penajaman dramatiknya menggeser fokus moral." }
   - { word: "station drama", translation: "drama stasiun", context: "The station drama refuses continuous development.", contextIndonesian: "Drama stasiun menolak perkembangan yang berkesinambungan." }
-  - { word: "stage directions", translation: "instruksi penyutradaraan", context: "The stage directions deliberately leave the space undefined.", contextIndonesian: "Instruksi penyutradaraannya sengaja membiarkan ruang tak terdefinisi." }
   - { word: "aftermath", translation: "epilog", context: "The aftermath puts the previous reconciliation into perspective.", contextIndonesian: "Epilognya merelatifkan rekonsiliasi yang terjadi sebelumnya." }
 ---
 

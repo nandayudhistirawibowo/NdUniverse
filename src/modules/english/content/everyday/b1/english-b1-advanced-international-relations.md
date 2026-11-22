@@ -21,9 +21,8 @@ vocab:
   - { word: "human rights", translation: "hak asasi manusia", context: "Human rights were explicitly mentioned in the report.", contextIndonesian: "Hak asasi manusia disebutkan secara khusus dalam laporan." }
   - { word: "trade", translation: "perdagangan", context: "Trade between countries increased.", contextIndonesian: "Perdagangan antarkedua negara meningkat." }
   - { word: "crisis", translation: "krisis", context: "The crisis was discussed at a special summit.", contextIndonesian: "Krisis itu dibahas dalam pertemuan puncak khusus." }
-  - { word: "agreement", translation: "kesepakatan", context: "An agreement was reached after long discussions.", contextIndonesian: "Kesepakatan tercapai setelah diskusi panjang." }
   - { word: "collaboration", translation: "kerja sama", context: "The collaboration was recorded in the contract.", contextIndonesian: "Kerja samanya dicatat dalam perjanjian." }
-  - { word: "responsibility", translation: "tanggung jawab", context: "Several countries were responsible for the reconstruction.", contextIndonesian: "Beberapa negara bertanggung jawab atas pembangunan kembali." }
+  - { word: "responsibility", translation: "tanggung jawab", context: "Several countries were responsible for the reconstruction. (keyword: responsibility)", contextIndonesian: "Beberapa negara bertanggung jawab atas pembangunan kembali." }
 ---
 
 # Advanced International Relations

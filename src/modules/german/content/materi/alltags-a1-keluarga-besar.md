@@ -82,6 +82,6 @@ vocab:
     contextIndonesian: "Pernikahannya bulan Juni."
   - german: "Verwandten"
     indonesian: "kerabat"
-    context: "Viele Verwandte kommen zum Essen."
+    context: "Viele Verwandte kommen zum Essen. (Schlüsselwort: Verwandten)"
     contextIndonesian: "Banyak kerabat datang untuk makan."
 ---

@@ -10,19 +10,19 @@ vocab:
   - { word: "source hierarchy", translation: "hierarki sumber", context: "The source hierarchy remains editorially contested.", contextIndonesian: "Hierarki sumber tetap menjadi perdebatan di ruang redaksi." }
   - { word: "disinformation ecology", translation: "ekologi disinformasi", context: "Disinformation ecology thrives in fragmented publics.", contextIndonesian: "Ekologi disinformasi berkembang di ruang publik yang terfragmentasi." }
   - { word: "editorial selection", translation: "seleksi editorial", context: "Editorial selection structures public relevance.", contextIndonesian: "Seleksi editorial membentuk apa yang dianggap penting oleh publik." }
-  - { word: "news compression", translation: "pemadatan berita", context: "News condensation makes ambivalences disappear.", contextIndonesian: "Pemadatan berita membuat ambiguitas menghilang." }
+  - { word: "news compression", translation: "pemadatan berita", context: "News condensation makes ambivalences disappear. (keyword: news compression)", contextIndonesian: "Pemadatan berita membuat ambiguitas menghilang." }
   - { word: "platform logic", translation: "logika platform", context: "Platform logic changes journalistic work rhythms.", contextIndonesian: "Logika platform mengubah ritme kerja jurnalistik." }
   - { word: "interpretative framework", translation: "kerangka penafsiran", context: "The interpretative framework guides the reception.", contextIndonesian: "Kerangka penafsiran mengarahkan penerimaan sejak awal." }
   - { word: "media public", translation: "ruang publik media", context: "The media public is by no means free from domination.", contextIndonesian: "Ruang publik media sama sekali tidak bebas dari dominasi." }
   - { word: "source verification", translation: "verifikasi sumber", context: "Source verification is neglected under time pressure.", contextIndonesian: "Verifikasi sumber sering diabaikan karena tekanan waktu." }
-  - { word: "image politics", translation: "politik citra", context: "Image policy helps decide visibility.", contextIndonesian: "Politik citra turut menentukan siapa yang terlihat." }
+  - { word: "image politics", translation: "politik citra", context: "Image policy helps decide visibility. (keyword: image politics)", contextIndonesian: "Politik citra turut menentukan siapa yang terlihat." }
   - { word: "media criticism", translation: "kritik media", context: "Media criticism must also reveal one's own position.", contextIndonesian: "Kritik media juga harus mengungkap posisi pengkritiknya sendiri." }
   - { word: "echo chamber", translation: "ruang gema", context: "The echo chamber stabilizes affective certainties.", contextIndonesian: "Ruang gema meneguhkan keyakinan emosional." }
-  - { word: "news production", translation: "pementasan berita", context: "News staging obscures the production conditions.", contextIndonesian: "Pementasan berita menutupi kondisi produksinya." }
+  - { word: "news production", translation: "pementasan berita", context: "News staging obscures the production conditions. (keyword: news production)", contextIndonesian: "Pementasan berita menutupi kondisi produksinya." }
   - { word: "agenda setting effect", translation: "efek penetapan agenda", context: "The agenda setting effect shifts the public issue focus.", contextIndonesian: "Efek penetapan agenda menggeser fokus isu publik." }
   - { word: "media appropriation", translation: "apropriasi media", context: "Media appropriation creates unexpected counterpublics.", contextIndonesian: "Apropriasi media menciptakan ruang publik tandingan yang tak terduga." }
-  - { word: "attention control", translation: "pengarahan perhatian", context: "Attention is often directed algorithmically.", contextIndonesian: "Pengarahan perhatian sering berlangsung lewat algoritma." }
-  - { word: "power of discourse", translation: "kuasa diskursif", context: "Discourse power determines whose experience is considered relevant.", contextIndonesian: "Kuasa diskursif menentukan pengalaman siapa yang dianggap penting." }
+  - { word: "attention control", translation: "pengarahan perhatian", context: "Attention is often directed algorithmically. (keyword: attention control)", contextIndonesian: "Pengarahan perhatian sering berlangsung lewat algoritma." }
+  - { word: "power of discourse", translation: "kuasa diskursif", context: "Discourse power determines whose experience is considered relevant. (keyword: power of discourse)", contextIndonesian: "Kuasa diskursif menentukan pengalaman siapa yang dianggap penting." }
   - { word: "media framing", translation: "pembingkaian media", context: "The media framing makes structural causes fade away.", contextIndonesian: "Pembingkaian media mengaburkan penyebab struktural." }
 ---
 

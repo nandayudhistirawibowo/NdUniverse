@@ -12,18 +12,15 @@ vocab:
   - { word: "waiter", translation: "pelayan laki-laki", context: "The waiter greeted us friendly.", contextIndonesian: "Pelayan itu menyapa kami dengan ramah." }
   - { word: "waitress", translation: "pelayan perempuan", context: "The waitress recommends the fish today.", contextIndonesian: "Pelayan itu merekomendasikan ikan hari ini." }
   - { word: "table", translation: "meja", context: "We reserved a table by the window.", contextIndonesian: "Kami sudah memesan meja dekat jendela." }
-  - { word: "invoice", translation: "tagihan", context: "Could we get the bill please?", contextIndonesian: "Bisa minta tagihannya?" }
+  - { word: "invoice", translation: "tagihan", context: "Could we get the bill please? (keyword: invoice)", contextIndonesian: "Bisa minta tagihannya?" }
   - { word: "tip", translation: "uang tip", context: "We tipped the waitress.", contextIndonesian: "Kami memberi tip kepada pelayannya." }
-  - { word: "order", translation: "memesan", context: "I'm ordering the daily menu today.", contextIndonesian: "Hari ini aku memesan menu spesial." }
-  - { word: "recommend", translation: "merekomendasikan", context: "What can you recommend to me?", contextIndonesian: "Apa yang bisa Anda rekomendasikan?" }
-  - { word: "taste", translation: "rasa", context: "Did you like the soup?", contextIndonesian: "Kamu suka rasa supnya?" }
+  - { word: "taste", translation: "rasa", context: "Did you like the soup? (keyword: taste)", contextIndonesian: "Kamu suka rasa supnya?" }
   - { word: "reserve", translation: "memesan tempat", context: "We would like to reserve a table for four.", contextIndonesian: "Kami mau memesan meja untuk empat orang." }
   - { word: "vegetarian", translation: "vegetarian", context: "Are there also vegetarian dishes here?", contextIndonesian: "Di sini ada hidangan vegetarian juga?" }
-  - { word: "sharp", translation: "pedas", context: "The curry is too spicy for me.", contextIndonesian: "Kari ini terlalu pedas buatku." }
+  - { word: "sharp", translation: "pedas", context: "The curry is too spicy for me. (keyword: sharp)", contextIndonesian: "Kari ini terlalu pedas buatku." }
   - { word: "ingredient", translation: "bahan", context: "What ingredients are in this salad?", contextIndonesian: "Apa saja bahan di salad ini?" }
   - { word: "drink", translation: "minuman", context: "I have a drink with my meal.", contextIndonesian: "Aku pesan minuman untuk makananku." }
-  - { word: "bring it with you", translation: "membawakan", context: "Can you bring us some more water?", contextIndonesian: "Bisa bawakan kami air lagi?" }
-  - { word: "pay", translation: "membayar", context: "We paid together by card.", contextIndonesian: "Kami membayar bersama dengan kartu." }
+
 ---
 
 # Eating at a Restaurant

@@ -6,7 +6,6 @@ level: "A1"
 vocab:
   - { word: "apple", translation: "apel", context: "The apple is nice and crunchy.", contextIndonesian: "Apelnya renyah sekali." }
   - { word: "banana", translation: "pisang", context: "I eat a banana in the morning.", contextIndonesian: "Pagi-pagi aku makan pisang." }
-  - { word: "orange", translation: "jeruk", context: "The orange is very sweet.", contextIndonesian: "Jeruknya manis sekali." }
   - { word: "vegetables", translation: "sayuran", context: "We buy fresh vegetables.", contextIndonesian: "Kami membeli sayuran segar." }
   - { word: "tomato", translation: "tomat", context: "The tomato goes into the salad.", contextIndonesian: "Tomatnya dimasukkan ke salad." }
   - { word: "potato", translation: "kentang", context: "Today we have potatoes for dinner.", contextIndonesian: "Hari ini kita makan kentang." }
@@ -18,7 +17,6 @@ vocab:
   - { word: "water", translation: "air", context: "A glass of water, please.", contextIndonesian: "Segelas air, ya." }
   - { word: "juice", translation: "jus", context: "The juice is in the fridge.", contextIndonesian: "Jusnya ada di kulkas." }
   - { word: "milk", translation: "susu", context: "I drink milk for breakfast.", contextIndonesian: "Aku minum susu saat sarapan." }
-  - { word: "coffee", translation: "kopi", context: "After dinner we drink coffee.", contextIndonesian: "Setelah makan kami minum kopi." }
   - { word: "restaurant", translation: "restoran", context: "The restaurant is right here.", contextIndonesian: "Restorannya ada di dekat sini." }
   - { word: "menu", translation: "menu", context: "Can I have the menu please?", contextIndonesian: "Boleh minta menunya?" }
   - { word: "order", translation: "memesan", context: "We order soup.", contextIndonesian: "Kami memesan sup." }

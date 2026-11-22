@@ -46,19 +46,18 @@ boss_questions:
     keywords: ["Questions", "Tasks", "Company"]
     advancedKeywords: ["Tasks"]
 vocab:
-  - { word: "diet", translation: "gizi atau pola makan", context: "Diet influences health.", contextIndonesian: "Pola makan mempengaruhi kesehatan." }
   - { word: "pregnant woman", translation: "ibu hamil", context: "The pregnant woman receives advice.", contextIndonesian: "Wanita hamil menerima nasehat." }
   - { word: "midwife", translation: "bidan", context: "The midwife attends the birth.", contextIndonesian: "Bidan membantu persalinan." }
-  - { word: "advice", translation: "konseling", context: "The consultation takes place in the clinic.", contextIndonesian: "Konsultasi dilakukan di klinik." }
+  - { word: "advice", translation: "konseling", context: "The consultation takes place in the clinic. (keyword: advice)", contextIndonesian: "Konsultasi dilakukan di klinik." }
   - { word: "newborn", translation: "bayi baru lahir", context: "The newborn is examined.", contextIndonesian: "Bayi baru lahir diperiksa." }
   - { word: "birth", translation: "persalinan", context: "The birth is carefully monitored.", contextIndonesian: "Kelahiran diawasi dengan cermat." }
   - { word: "pregnancy", translation: "kehamilan", context: "The pregnancy lasts approximately nine months.", contextIndonesian: "Kehamilan berlangsung kurang lebih sembilan bulan." }
-  - { word: "precaution", translation: "pemeriksaan preventif", context: "Preventive care begins early in pregnancy.", contextIndonesian: "Perawatan pencegahan dimulai pada awal kehamilan." }
+  - { word: "precaution", translation: "pemeriksaan preventif", context: "Preventive care begins early in pregnancy. (keyword: precaution)", contextIndonesian: "Perawatan pencegahan dimulai pada awal kehamilan." }
   - { word: "mother", translation: "ibu", context: "The mother receives support.", contextIndonesian: "Sang ibu menerima dukungan." }
   - { word: "child", translation: "anak", context: "The child is growing healthily.", contextIndonesian: "Anak tumbuh dengan sehat." }
   - { word: "infant", translation: "bayi", context: "The infant is weighed regularly.", contextIndonesian: "Bayi ditimbang secara teratur." }
   - { word: "breastfeeding", translation: "menyusui", context: "Breastfeeding promotes bonding.", contextIndonesian: "Menyusui meningkatkan ikatan." }
-  - { word: "mother's milk", translation: "ASI", context: "Breast milk contains important nutrients.", contextIndonesian: "ASI mengandung nutrisi penting." }
+  - { word: "mother's milk", translation: "ASI", context: "Breast milk contains important nutrients. (keyword: mother's milk)", contextIndonesian: "ASI mengandung nutrisi penting." }
   - { word: "bottle feeding", translation: "pemberian susu botol", context: "Bottle feeding is prepared hygienically.", contextIndonesian: "Pemberian susu botol disiapkan secara higienis." }
   - { word: "nutrition plan", translation: "rencana makan", context: "The nutrition plan is created individually.", contextIndonesian: "Rencana nutrisi dibuat secara individual." }
   - { word: "food", translation: "bahan makanan", context: "The food contains many vitamins.", contextIndonesian: "Makanannya banyak mengandung vitamin." }
@@ -72,30 +71,31 @@ vocab:
   - { word: "intolerance", translation: "intoleransi", context: "The intolerance can cause stomach pain.", contextIndonesian: "Intoleransi dapat menyebabkan sakit perut." }
   - { word: "weight gain", translation: "kenaikan berat badan", context: "Weight gain is controlled.", contextIndonesian: "Pertambahan berat badan terkendali." }
   - { word: "growth curve", translation: "kurva pertumbuhan", context: "The growth curve shows the development.", contextIndonesian: "Kurva pertumbuhan menunjukkan perkembangan." }
-  - { word: "investigation", translation: "pemeriksaan", context: "The examination takes place regularly.", contextIndonesian: "Ujian dilaksanakan secara berkala." }
   - { word: "ultrasound", translation: "ultrasound", context: "The ultrasound shows the child's development.", contextIndonesian: "USG menunjukkan perkembangan anak." }
   - { word: "contractions", translation: "kontraksi", context: "The midwife observes the contractions.", contextIndonesian: "Bidan mengamati kontraksi." }
   - { word: "opening phase", translation: "fase pembukaan", context: "The opening phase can take a long time.", contextIndonesian: "Fase pembukaan bisa memakan waktu lama." }
   - { word: "cervix", translation: "serviks", context: "The cervix opens slowly.", contextIndonesian: "Leher rahim terbuka perlahan." }
   - { word: "afterbirth", translation: "plasenta", context: "The afterbirth is checked.", contextIndonesian: "Kelahiran setelahnya diperiksa." }
-  - { word: "postpartum bed", translation: "masa nifas", context: "The mother needs rest during the postpartum period.", contextIndonesian: "Ibu memerlukan istirahat pada masa nifas." }
-  - { word: "weekly river", translation: "lokia", context: "The weekly flow is observed.", contextIndonesian: "Aliran mingguan diamati." }
-  - { word: "sleep advice", translation: "konseling tidur", context: "Sleep counseling supports the family.", contextIndonesian: "Konseling tidur mendukung keluarga." }
+  - { word: "postpartum bed", translation: "masa nifas", context: "The mother needs rest during the postpartum period. (keyword: postpartum bed)", contextIndonesian: "Ibu memerlukan istirahat pada masa nifas." }
+  - { word: "weekly river", translation: "lokia", context: "The weekly flow is observed. (keyword: weekly river)", contextIndonesian: "Aliran mingguan diamati." }
+  - { word: "sleep advice", translation: "konseling tidur", context: "Sleep counseling supports the family. (keyword: sleep advice)", contextIndonesian: "Konseling tidur mendukung keluarga." }
   - { word: "family planning", translation: "keluarga berencana", context: "Family planning is discussed in detail.", contextIndonesian: "Keluarga berencana dibahas secara rinci." }
   - { word: "family center", translation: "pusat keluarga", context: "The family center offers courses.", contextIndonesian: "Pusat keluarga menawarkan kursus." }
   - { word: "vaccination advice", translation: "konseling imunisasi", context: "The vaccination advice explains possible vaccinations.", contextIndonesian: "Saran vaksinasi menjelaskan kemungkinan vaksinasi." }
   - { word: "vaccination", translation: "imunisasi", context: "The vaccination protects against diseases.", contextIndonesian: "Vaksinasi melindungi terhadap penyakit." }
   - { word: "nutritional recommendation", translation: "rekomendasi gizi", context: "The nutritional recommendation is age-appropriate.", contextIndonesian: "Rekomendasi nutrisi sesuai usia." }
-  - { word: "complementary foods", translation: "makanan pendamping", context: "Supplementary feeding begins after medical advice.", contextIndonesian: "Pemberian makanan tambahan dimulai setelah mendapat nasihat medis." }
+  - { word: "complementary foods", translation: "makanan pendamping", context: "Supplementary feeding begins after medical advice. (keyword: complementary foods)", contextIndonesian: "Pemberian makanan tambahan dimulai setelah mendapat nasihat medis." }
   - { word: "meal", translation: "waktu makan", context: "Meals should be regular.", contextIndonesian: "Makan harus teratur." }
-  - { word: "hygiene", translation: "higiene", context: "Hygiene is important during preparation.", contextIndonesian: "Kebersihan penting selama persiapan." }
   - { word: "preparation", translation: "penyiapan makanan", context: "The preparation must be done carefully.", contextIndonesian: "Persiapannya harus dilakukan dengan matang." }
-  - { word: "storage", translation: "penyimpanan", context: "Food is stored cool.", contextIndonesian: "Makanan disimpan dalam keadaan dingin." }
   - { word: "food safety", translation: "keamanan pangan", context: "Food safety prevents infections.", contextIndonesian: "Keamanan pangan mencegah infeksi." }
-  - { word: "development", translation: "perkembangan", context: "Development is regularly documented.", contextIndonesian: "Pembangunan didokumentasikan secara berkala." }
-  - { word: "bond", translation: "ikatan", context: "The bond between mother and child is important.", contextIndonesian: "Ikatan antara ibu dan anak itu penting." }
-  - { word: "support", translation: "pendampingan", context: "Support is provided individually.", contextIndonesian: "Dukungan diberikan secara individual." }
   - { word: "further development", translation: "pengembangan lanjutan", context: "Further development is part of the job.", contextIndonesian: "Pengembangan lebih lanjut adalah bagian dari pekerjaan." }
+  - { word: "balanced diet", translation: "pola makan seimbang", context: "A balanced diet includes vegetables, protein, and whole grains.", contextIndonesian: "Pola makan seimbang mencakup sayuran, protein, dan biji-bijian utuh." }
+  - { word: "dietary fiber", translation: "serat pangan", context: "Dietary fiber supports healthy digestion.", contextIndonesian: "Serat pangan mendukung pencernaan yang sehat." }
+  - { word: "hydration", translation: "hidrasi", context: "Proper hydration is important during exercise.", contextIndonesian: "Hidrasi yang baik penting selama berolahraga." }
+  - { word: "portion size", translation: "ukuran porsi", context: "Controlling portion size helps manage calorie intake.", contextIndonesian: "Mengontrol ukuran porsi membantu mengelola asupan kalori." }
+  - { word: "food label", translation: "label makanan", context: "Read the food label to check sugar and salt content.", contextIndonesian: "Baca label makanan untuk memeriksa kandungan gula dan garam." }
+  - { word: "meal planning", translation: "perencanaan makan", context: "Meal planning makes it easier to eat nutritious foods.", contextIndonesian: "Perencanaan makan memudahkan untuk mengonsumsi makanan bergizi." }
+  - { word: "nutrient intake", translation: "asupan nutrisi", context: "Tracking nutrient intake can improve overall health.", contextIndonesian: "Melacak asupan nutrisi dapat meningkatkan kesehatan secara keseluruhan." }
 ---
 
 # Nutrition & Midwifery

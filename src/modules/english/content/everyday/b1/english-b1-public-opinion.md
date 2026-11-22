@@ -5,25 +5,10 @@ track: "Everyday English"
 level: "B1"
 vocab:
   - { word: "public opinion", translation: "opini publik", context: "Public opinion changed after the debate.", contextIndonesian: "Opini publik berubah setelah perdebatan itu." }
-  - { word: "survey", translation: "survei", context: "The survey was conducted nationwide.", contextIndonesian: "Surveinya dilakukan di seluruh negeri." }
-  - { word: "majority", translation: "mayoritas", context: "The majority supported the new proposal.", contextIndonesian: "Mayoritas mendukung usulan baru itu." }
   - { word: "minority", translation: "minoritas", context: "The minority should also be heard.", contextIndonesian: "Minoritas juga sebaiknya didengarkan." }
-  - { word: "consent", translation: "persetujuan", context: "Approval was higher than expected.", contextIndonesian: "Persetujuannya lebih tinggi dari perkiraan." }
-  - { word: "criticism", translation: "kritik", context: "The criticism was shared on social media.", contextIndonesian: "Kritiknya dibagikan di media sosial." }
-  - { word: "debate", translation: "perdebatan", context: "The debate lasted until late in the evening.", contextIndonesian: "Perdebatannya berlangsung sampai larut malam." }
-  - { word: "point of view", translation: "sudut pandang", context: "He explained his point of view calmly.", contextIndonesian: "Dia menjelaskan sudut pandangnya dengan tenang." }
-  - { word: "demand", translation: "tuntutan", context: "The demand was supported by many groups.", contextIndonesian: "Tuntutan itu didukung banyak kelompok." }
-  - { word: "prejudice", translation: "prasangka", context: "A prejudice influenced the discussion.", contextIndonesian: "Prasangka memengaruhi diskusi itu." }
-  - { word: "comment", translation: "komentar", context: "A comment sparked a long discussion.", contextIndonesian: "Sebuah komentar memicu diskusi panjang." }
-  - { word: "participation", translation: "partisipasi", context: "Participation in the vote remained low.", contextIndonesian: "Partisipasi dalam pemungutan suara tetap rendah." }
-  - { word: "public", translation: "masyarakat luas", context: "The public only found out about it later.", contextIndonesian: "Masyarakat baru mengetahuinya belakangan." }
-  - { word: "representation", translation: "penggambaran", context: "The presentation of the topic was balanced.", contextIndonesian: "Penggambaran topiknya seimbang." }
-  - { word: "trust", translation: "kepercayaan", context: "Trust in the institution fell.", contextIndonesian: "Kepercayaan terhadap lembaga itu menurun." }
-  - { word: "headline", translation: "judul berita", context: "The headline caused a lot of reactions.", contextIndonesian: "Judul berita itu memancing banyak reaksi." }
   - { word: "controversy", translation: "kontroversi", context: "The controversy was discussed on television.", contextIndonesian: "Kontroversinya dibahas di televisi." }
-  - { word: "those involved", translation: "pihak yang terlibat perempuan", context: "One participant described her personal experience.", contextIndonesian: "Seorang perempuan yang terlibat menceritakan pengalamannya." }
-  - { word: "influence", translation: "pengaruh", context: "The influence of the media was viewed critically.", contextIndonesian: "Pengaruh media ditinjau secara kritis." }
-  - { word: "decision", translation: "keputusan", context: "The decision was announced publicly.", contextIndonesian: "Keputusannya diumumkan kepada publik." }
+  - { word: "those involved", translation: "pihak yang terlibat perempuan", context: "One participant described her personal experience. (keyword: those involved)", contextIndonesian: "Seorang perempuan yang terlibat menceritakan pengalamannya." }
+
 ---
 
 # Public Opinion

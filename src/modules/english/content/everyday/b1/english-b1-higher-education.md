@@ -4,26 +4,13 @@ description: "Learn everyday English about higher education."
 track: "Everyday English"
 level: "B1"
 vocab:
-  - { word: "university", translation: "perguruan tinggi", context: "The university offered additional language courses.", contextIndonesian: "Perguruan tinggi itu menyediakan kursus bahasa tambahan." }
-  - { word: "course of study", translation: "program studi", context: "The course has been fundamentally revised.", contextIndonesian: "Program studinya dirombak secara menyeluruh." }
-  - { word: "lecture", translation: "kuliah", context: "The lecture was held online due to illness.", contextIndonesian: "Kuliahnya diadakan daring karena ada yang sakit." }
+  - { word: "course of study", translation: "program studi", context: "The course has been fundamentally revised. (keyword: course of study)", contextIndonesian: "Program studinya dirombak secara menyeluruh." }
   - { word: "seminar", translation: "seminar", context: "In the seminar we discussed current research.", contextIndonesian: "Kami mendiskusikan penelitian terkini di seminar." }
-  - { word: "tuition fee", translation: "biaya kuliah", context: "The tuition fee could be paid in installments.", contextIndonesian: "Biaya kuliahnya bisa dibayar dengan mencicil." }
-  - { word: "scholarship", translation: "beasiswa", context: "A scholarship would have made her move easier.", contextIndonesian: "Beasiswa akan memudahkan dia pindah." }
-  - { word: "research", translation: "penelitian", context: "The research was supported with public funds.", contextIndonesian: "Penelitiannya didukung dana publik." }
-  - { word: "thesis", translation: "skripsi", context: "The thesis had to be submitted by July.", contextIndonesian: "Karya akhirnya harus dikumpulkan paling lambat Juli." }
-  - { word: "exam", translation: "ujian", context: "The exam was more difficult than expected.", contextIndonesian: "Ujiannya ternyata lebih sulit dari perkiraan." }
   - { word: "department", translation: "bidang akademik", context: "The department moved to a new building.", contextIndonesian: "Fakultasnya pindah ke gedung baru." }
-  - { word: "enroll", translation: "mendaftar kuliah", context: "She enrolled at university in the fall.", contextIndonesian: "Dia mendaftar kuliah di universitas pada musim gugur." }
-  - { word: "requirement", translation: "persyaratan", context: "A language certificate was an important requirement.", contextIndonesian: "Sertifikat bahasa merupakan syarat penting." }
-  - { word: "conclusion", translation: "kelulusan", context: "Graduation opened up a new opportunity.", contextIndonesian: "Gelar itu membuka peluang baru." }
-  - { word: "learning group", translation: "kelompok belajar", context: "Our study group met before every exam.", contextIndonesian: "Kelompok belajar kami berkumpul sebelum setiap ujian." }
-  - { word: "study place", translation: "tempat kuliah", context: "He only got a place at university on the second attempt.", contextIndonesian: "Dia baru mendapat tempat kuliah pada percobaan kedua." }
-  - { word: "presence", translation: "kehadiran", context: "Attendance was checked for this course.", contextIndonesian: "Kehadiran diperiksa di mata kuliah ini." }
+  - { word: "presence", translation: "kehadiran", context: "Attendance was checked for this course. (keyword: presence)", contextIndonesian: "Kehadiran diperiksa di mata kuliah ini." }
   - { word: "cafeteria", translation: "kantin kampus", context: "There were cheap vegetarian dishes in the cafeteria.", contextIndonesian: "Kantin kampus menyediakan makanan vegetarian yang murah." }
   - { word: "campus", translation: "kampus", context: "The campus became more accessible for bicycles.", contextIndonesian: "Kampusnya lebih mudah dijangkau dengan sepeda." }
-  - { word: "consultation hours", translation: "jam konsultasi", context: "During the consultation I clarified any open questions.", contextIndonesian: "Aku membahas pertanyaan yang belum terjawab saat jam konsultasi." }
-  - { word: "career prospects", translation: "prospek kerja", context: "Career prospects depended heavily on the degree.", contextIndonesian: "Prospek kerjanya sangat bergantung pada gelar." }
+
 ---
 
 # Higher Education

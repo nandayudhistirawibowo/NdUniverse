@@ -14,7 +14,6 @@ vocab:
   - { word: "genetic scissors", translation: "alat penyunting gen", context: "The genetic scissors were used for targeted interventions.", contextIndonesian: "Alat penyunting gen digunakan untuk perubahan yang terarah." }
   - { word: "tissue engineering", translation: "rekayasa jaringan", context: "Tissue engineering could make transplants easier.", contextIndonesian: "Rekayasa jaringan bisa mempermudah transplantasi." }
   - { word: "approval", translation: "persetujuan", context: "Approval came after a comprehensive examination.", contextIndonesian: "Persetujuannya diberikan setelah pemeriksaan menyeluruh." }
-  - { word: "side effect", translation: "efek samping", context: "A possible side effect would need to be investigated more closely.", contextIndonesian: "Kemungkinan efek sampingnya perlu diteliti lebih lanjut." }
   - { word: "bioreactor", translation: "bioreaktor", context: "The bioreactor was optimized for cell culture.", contextIndonesian: "Bioreaktornya dioptimalkan untuk kultur sel." }
   - { word: "bioethics", translation: "bioetika", context: "Bioethics, which takes social values ​​into account, was included.", contextIndonesian: "Bioetika yang mempertimbangkan nilai masyarakat turut dilibatkan." }
   - { word: "hereditary disease", translation: "penyakit keturunan", context: "The hereditary disease was detected early through a test.", contextIndonesian: "Penyakit keturunannya terdeteksi dini lewat tes." }

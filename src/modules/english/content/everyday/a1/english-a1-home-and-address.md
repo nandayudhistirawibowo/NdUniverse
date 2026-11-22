@@ -12,16 +12,13 @@ vocab:
   - { word: "living room", translation: "ruang keluarga", context: "There is a sofa in the living room.", contextIndonesian: "Sebuah sofa berada di ruang keluarga." }
   - { word: "bedroom", translation: "kamar tidur", context: "The bedroom is on the first floor.", contextIndonesian: "Kamar tidur berada di lantai satu." }
   - { word: "address", translation: "alamat", context: "Send me your new address.", contextIndonesian: "Kirim alamat barumu kepadaku." }
-  - { word: "street", translation: "jalan", context: "We live on Gartenstrasse.", contextIndonesian: "Kami tinggal di Jalan Gartenstraße." }
   - { word: "house number", translation: "nomor rumah", context: "Our house number is twelve.", contextIndonesian: "Nomor rumah kami dua belas." }
-  - { word: "postal code", translation: "kode pos", context: "What is your zip code?", contextIndonesian: "Berapa kode posmu?" }
-  - { word: "stick", translation: "lantai", context: "The office is on the second floor.", contextIndonesian: "Kantor itu berada di lantai dua." }
+  - { word: "postal code", translation: "kode pos", context: "What is your zip code? (keyword: postal code)", contextIndonesian: "Berapa kode posmu?" }
+  - { word: "stick", translation: "lantai", context: "The office is on the second floor. (keyword: stick)", contextIndonesian: "Kantor itu berada di lantai dua." }
   - { word: "key", translation: "kunci", context: "The key is on the table.", contextIndonesian: "Kunci itu terletak di atas meja." }
   - { word: "door", translation: "pintu", context: "Please close the door.", contextIndonesian: "Tolong tutup pintunya." }
   - { word: "window", translation: "jendela", context: "The window is open.", contextIndonesian: "Jendelanya terbuka." }
-  - { word: "live", translation: "tinggal", context: "My family lives in Surabaya.", contextIndonesian: "Keluarga saya tinggal di Surabaya." }
   - { word: "rent", translation: "menyewa", context: "We would like to rent an apartment.", contextIndonesian: "Kami ingin menyewa sebuah apartemen." }
-  - { word: "rent", translation: "uang sewa", context: "I pay rent every month.", contextIndonesian: "Saya membayar uang sewa setiap bulan." }
   - { word: "next to", translation: "di sebelah", context: "The pharmacy is next to the supermarket.", contextIndonesian: "Apotek itu berada di sebelah supermarket." }
   - { word: "neighborhood", translation: "lingkungan tempat tinggal", context: "It's quiet in our neighborhood.", contextIndonesian: "Lingkungan tempat tinggal kami tenang." }
 ---

@@ -8,7 +8,7 @@ vocab:
   - { word: "contingency", translation: "kontingensi", context: "Contingency describes what could also be different.", contextIndonesian: "Kontingensi merujuk pada sesuatu yang bisa saja berbeda." }
   - { word: "necessity", translation: "keniscayaan", context: "Necessity cannot be derived from mere habit.", contextIndonesian: "Keniscayaan tidak dapat disimpulkan hanya dari kebiasaan." }
   - { word: "substance", translation: "substansi", context: "The substance exists independently of changing properties.", contextIndonesian: "Substansi tetap ada secara mandiri dari sifat yang berubah." }
-  - { word: "commercial", translation: "aksiden", context: "The accident is only incidental to the substance.", contextIndonesian: "Aksiden hanya melekat pada substansi secara kebetulan." }
+  - { word: "commercial", translation: "aksiden", context: "The accident is only incidental to the substance. (keyword: commercial)", contextIndonesian: "Aksiden hanya melekat pada substansi secara kebetulan." }
   - { word: "causality", translation: "kausalitas", context: "Causality does not order events without background assumptions.", contextIndonesian: "Kausalitas menyusun peristiwa dengan asumsi-asumsi tertentu." }
   - { word: "possibility", translation: "kemungkinan", context: "Possibility is more than mere logical consistency.", contextIndonesian: "Kemungkinan lebih dari sekadar tidak adanya kontradiksi logis." }
   - { word: "temporality", translation: "temporalitas", context: "Temporality penetrates even supposedly permanent objects.", contextIndonesian: "Temporalitas meresapi bahkan benda yang dianggap abadi." }
@@ -20,7 +20,7 @@ vocab:
   - { word: "monism", translation: "monisme", context: "Monism reduces reality to a principle.", contextIndonesian: "Monisme mereduksi kenyataan pada satu prinsip." }
   - { word: "world causality", translation: "kausalitas dunia", context: "World causality comes into need of explanation with freedom.", contextIndonesian: "Kausalitas dunia sulit dijelaskan bersama gagasan kebebasan." }
   - { word: "property", translation: "sifat", context: "The property is not identical with its bearer.", contextIndonesian: "Sifat tidak identik dengan sesuatu yang memilikinya." }
-  - { word: "possibility space", translation: "ruang kemungkinan", context: "The space of possibilities is limited by historical conditions.", contextIndonesian: "Ruang kemungkinan dibatasi oleh kondisi sejarah." }
+  - { word: "possibility space", translation: "ruang kemungkinan", context: "The space of possibilities is limited by historical conditions. (keyword: possibility space)", contextIndonesian: "Ruang kemungkinan dibatasi oleh kondisi sejarah." }
   - { word: "transcendence", translation: "transendensi", context: "Transcendence refers beyond what is empirically given.", contextIndonesian: "Transendensi merujuk melampaui hal yang diberikan secara empiris." }
   - { word: "world", translation: "dunia", context: "The world is not just a container for individual things.", contextIndonesian: "Dunia bukan sekadar wadah bagi benda-benda." }
   - { word: "reason for being", translation: "dasar keberadaan", context: "The reason for being itself remains in need of justification.", contextIndonesian: "Dasar keberadaan itu sendiri masih membutuhkan penjelasan." }

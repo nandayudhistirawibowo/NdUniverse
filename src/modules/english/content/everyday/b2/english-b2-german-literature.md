@@ -13,7 +13,7 @@ vocab:
   - { word: "volume of stories", translation: "kumpulan cerita", context: "The volume of stories contains twelve short texts.", contextIndonesian: "Kumpulan cerita itu berisi dua belas teks pendek." }
   - { word: "literary movement", translation: "aliran sastra", context: "The literary movement influenced many young writers.", contextIndonesian: "Aliran sastra itu memengaruhi banyak penulis muda." }
   - { word: "literary prize", translation: "penghargaan sastra", context: "The literary prize was awarded to a debutante.", contextIndonesian: "Penghargaan sastra itu diberikan kepada penulis debut." }
-  - { word: "proofreading", translation: "penyuntingan naskah", context: "The editing could have shortened the ending.", contextIndonesian: "Penyuntingnya sebenarnya bisa mempersingkat bagian akhir." }
+  - { word: "proofreading", translation: "penyuntingan naskah", context: "The editing could have shortened the ending. (keyword: proofreading)", contextIndonesian: "Penyuntingnya sebenarnya bisa mempersingkat bagian akhir." }
   - { word: "metaphor", translation: "metafora", context: "The metaphor, which appears several times, connects the chapters.", contextIndonesian: "Metafora yang muncul berulang kali itu menghubungkan bab-babnya." }
   - { word: "first edition", translation: "edisi pertama", context: "The first edition was discovered in an archive.", contextIndonesian: "Edisi pertamanya ditemukan di sebuah arsip." }
   - { word: "book market", translation: "pasar buku", context: "The book market is changing through digital editions.", contextIndonesian: "Pasar buku berubah karena edisi digital." }

@@ -5,16 +5,15 @@ track: "Everyday English"
 level: "C2"
 vocab:
   - { word: "emotional order", translation: "tatanan perasaan", context: "Emotional order determines which emotions seem appropriate.", contextIndonesian: "Tatanan perasaan menentukan emosi mana yang dianggap pantas." }
-  - { word: "emotion norm", translation: "norma emosi", context: "Emotional norms are practiced in social situations.", contextIndonesian: "Norma emosi dipelajari dalam situasi sosial." }
+  - { word: "emotion norm", translation: "norma emosi", context: "Emotional norms are practiced in social situations. (keyword: emotion norm)", contextIndonesian: "Norma emosi dipelajari dalam situasi sosial." }
   - { word: "emotional work", translation: "kerja emosional", context: "Emotional work regulates visible and hidden reactions.", contextIndonesian: "Kerja emosional mengatur reaksi yang terlihat maupun tersembunyi." }
   - { word: "affective public", translation: "ruang publik afektif", context: "Affective public sphere forms collective attention.", contextIndonesian: "Ruang publik afektif membentuk perhatian kolektif." }
   - { word: "emotional community", translation: "pembentukan komunitas emosional", context: "Emotional community arises through shared concern.", contextIndonesian: "Pembentukan komunitas emosional muncul dari rasa terdampak bersama." }
-  - { word: "order of shame", translation: "tatanan rasa malu", context: "Shame rules sanction transgressions of social boundaries.", contextIndonesian: "Tatanan rasa malu menyanksi pelanggaran batas sosial." }
-  - { word: "affective bond", translation: "ikatan afektif", context: "Affective commitment stabilizes political affiliation.", contextIndonesian: "Ikatan afektif menstabilkan rasa memiliki secara politis." }
+  - { word: "order of shame", translation: "tatanan rasa malu", context: "Shame rules sanction transgressions of social boundaries. (keyword: order of shame)", contextIndonesian: "Tatanan rasa malu menyanksi pelanggaran batas sosial." }
+  - { word: "affective bond", translation: "ikatan afektif", context: "Affective commitment stabilizes political affiliation. (keyword: affective bond)", contextIndonesian: "Ikatan afektif menstabilkan rasa memiliki secara politis." }
   - { word: "emotional normalization", translation: "normalisasi emosi", context: "Emotional normalization limits legitimate forms of expression.", contextIndonesian: "Normalisasi emosi membatasi bentuk ekspresi yang dianggap sah." }
-  - { word: "feeling rule", translation: "aturan perasaan", context: "Emotional rules would be interpreted differently depending on the milieu.", contextIndonesian: "Aturan perasaan ditafsirkan secara berbeda menurut lingkungan sosial." }
+  - { word: "feeling rule", translation: "aturan perasaan", context: "Emotional rules would be interpreted differently depending on the milieu. (keyword: feeling rule)", contextIndonesian: "Aturan perasaan ditafsirkan secara berbeda menurut lingkungan sosial." }
   - { word: "affective division of labor", translation: "pembagian kerja afektif", context: "Affective division of labor often remains gender-coded.", contextIndonesian: "Pembagian kerja afektif sering tetap dikodekan menurut gender." }
-  - { word: "emotional community", translation: "komunitas emosional", context: "Emotional communities shared memories and interpretations.", contextIndonesian: "Komunitas emosional berbagi ingatan dan tafsir." }
   - { word: "affective circulation", translation: "sirkulasi afektif", context: "Affective circulation links bodies with political signs.", contextIndonesian: "Sirkulasi afektif menghubungkan tubuh dengan tanda-tanda politik." }
   - { word: "emotional distance", translation: "jarak emosional", context: "Emotional distance protects and isolates at the same time.", contextIndonesian: "Jarak emosional sekaligus melindungi dan mengisolasi." }
   - { word: "social mourning", translation: "duka sosial", context: "Social mourning makes unequal recognition of loss visible.", contextIndonesian: "Duka sosial menampakkan pengakuan atas kehilangan yang tak setara." }

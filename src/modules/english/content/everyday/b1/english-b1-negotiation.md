@@ -4,26 +4,12 @@ description: "Learn everyday English about negotiation."
 track: "Everyday English"
 level: "B1"
 vocab:
-  - { word: "negotiation", translation: "negosiasi", context: "The negotiation took longer than expected.", contextIndonesian: "Negosiasinya berlangsung lebih lama dari perkiraan." }
-  - { word: "compromise", translation: "kompromi", context: "A compromise was finally accepted by both sides.", contextIndonesian: "Akhirnya, kedua pihak menerima kompromi itu." }
   - { word: "offer", translation: "tawaran", context: "The offer initially sounded very convincing.", contextIndonesian: "Tawarannya awalnya terdengar sangat meyakinkan." }
-  - { word: "demand", translation: "tuntutan", context: "The claim was factually justified.", contextIndonesian: "Tuntutannya dijelaskan dengan alasan yang masuk akal." }
-  - { word: "scope", translation: "ruang negosiasi", context: "There was hardly any leeway when it came to price.", contextIndonesian: "Hampir tak ada ruang untuk menawar harganya." }
-  - { word: "agreement", translation: "kesepakatan", context: "The agreement was recorded in writing.", contextIndonesian: "Kesepakatannya dicatat secara tertulis." }
-  - { word: "suggestion", translation: "usulan", context: "His suggestion changed the course of the conversation.", contextIndonesian: "Usulannya mengubah jalannya percakapan." }
-  - { word: "contract", translation: "kontrak", context: "The contract was adjusted after long discussions.", contextIndonesian: "Kontraknya disesuaikan setelah diskusi panjang." }
+  - { word: "scope", translation: "ruang negosiasi", context: "There was hardly any leeway when it came to price. (keyword: scope)", contextIndonesian: "Hampir tak ada ruang untuk menawar harganya." }
   - { word: "condition", translation: "syarat", context: "One condition remained important for both sides.", contextIndonesian: "Satu syarat tetap penting bagi kedua pihak." }
   - { word: "counteroffer", translation: "tawaran balasan", context: "The counteroffer was politely declined.", contextIndonesian: "Tawaran balasannya ditolak dengan sopan." }
-  - { word: "negotiate", translation: "bernegosiasi", context: "We negotiated delivery time and price.", contextIndonesian: "Kami bernegosiasi soal waktu pengiriman dan harga." }
-  - { word: "agreement", translation: "kesepakatan", context: "The agreement was valid from next month.", contextIndonesian: "Kesepakatannya berlaku mulai bulan depan." }
-  - { word: "consideration", translation: "imbalan", context: "Additional support was offered in return.", contextIndonesian: "Sebagai imbalan, ditawarkan dukungan tambahan." }
-  - { word: "deadline", translation: "tenggat waktu", context: "The deadline was extended upon request.", contextIndonesian: "Tenggat waktunya diperpanjang atas permintaan." }
-  - { word: "objection", translation: "keberatan", context: "His objection was taken seriously.", contextIndonesian: "Keberatannya ditanggapi dengan serius." }
-  - { word: "consent", translation: "persetujuan", context: "The consent of everyone involved was necessary.", contextIndonesian: "Persetujuan semua pihak diperlukan." }
   - { word: "negotiating position", translation: "posisi negosiasi", context: "Our negotiating position improved thanks to new data.", contextIndonesian: "Posisi negosiasi kami membaik berkat data baru." }
-  - { word: "conversation", translation: "pemanduan percakapan", context: "A clear conversation helped both parties.", contextIndonesian: "Alur percakapan yang jelas membantu kedua pihak." }
-  - { word: "give in", translation: "mengalah", context: "After a long argument, neither side gave in.", contextIndonesian: "Setelah lama berdebat, tak ada pihak yang mengalah." }
-  - { word: "convince", translation: "meyakinkan", context: "She convinced the customer with concrete figures.", contextIndonesian: "Dia meyakinkan klien dengan angka konkret." }
+
 ---
 
 # Negotiation

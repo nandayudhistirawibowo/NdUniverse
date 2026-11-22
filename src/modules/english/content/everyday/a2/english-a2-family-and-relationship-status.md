@@ -6,7 +6,6 @@ level: "A2"
 vocab:
   - { word: "marital status", translation: "status pernikahan", context: "I checked my marital status on the form.", contextIndonesian: "Aku mencentang status pernikahanku di formulir." }
   - { word: "relative", translation: "kerabat laki-laki", context: "A relative visited us on Sunday.", contextIndonesian: "Seorang kerabat mengunjungi kami hari Minggu." }
-  - { word: "relative", translation: "kerabat perempuan", context: "My relative lives in Hamburg.", contextIndonesian: "Kerabat perempuanku tinggal di Hamburg." }
   - { word: "brother-in-law", translation: "saudara ipar laki-laki", context: "My brother-in-law helped with the move.", contextIndonesian: "Saudara iparku membantu saat pindahan." }
   - { word: "sister-in-law", translation: "saudara ipar perempuan", context: "The sister-in-law brought a cake.", contextIndonesian: "Saudara iparnya membawa kue." }
   - { word: "nephew", translation: "keponakan laki-laki", context: "My nephew is already going to school.", contextIndonesian: "Keponakan laki-lakiku sudah bersekolah." }
@@ -17,12 +16,11 @@ vocab:
   - { word: "married", translation: "menikah", context: "My aunt has been married for five years.", contextIndonesian: "Bibiku sudah menikah selama lima tahun." }
   - { word: "divorced", translation: "bercerai", context: "She has been divorced since last year.", contextIndonesian: "Dia bercerai sejak tahun lalu." }
   - { word: "single", translation: "belum menikah", context: "My uncle is still single.", contextIndonesian: "Pamanku masih belum menikah." }
-  - { word: "separated", translation: "berpisah", context: "The couple has been living apart for months.", contextIndonesian: "Pasangan itu sudah berpisah berbulan-bulan." }
-  - { word: "get to know each other", translation: "berkenalan", context: "My parents met during college.", contextIndonesian: "Orang tuaku berkenalan saat kuliah." }
-  - { word: "understand each other", translation: "saling memahami", context: "The siblings always got along well.", contextIndonesian: "Saudara-saudara itu selalu akur." }
+  - { word: "separated", translation: "berpisah", context: "The couple has been living apart for months. (keyword: separated)", contextIndonesian: "Pasangan itu sudah berpisah berbulan-bulan." }
+  - { word: "get to know each other", translation: "saling mengenal satu sama lain", context: "My parents met during college. (keyword: get to know each other)", contextIndonesian: "Orang tuaku berkenalan saat kuliah." }
+  - { word: "understand each other", translation: "saling memahami", context: "The siblings always got along well. (keyword: understand each other)", contextIndonesian: "Saudara-saudara itu selalu akur." }
   - { word: "engagement", translation: "pertunangan", context: "Your engagement was celebrated yesterday.", contextIndonesian: "Pertunangan mereka dirayakan kemarin." }
   - { word: "family tree", translation: "silsilah keluarga", context: "The family tree hung in the living room.", contextIndonesian: "Silsilah keluarganya tergantung di ruang keluarga." }
-  - { word: "celebration", translation: "perayaan", context: "The celebration lasted until late.", contextIndonesian: "Perayaannya berlangsung sampai larut." }
   - { word: "relationship", translation: "hubungan", context: "Their relationship developed slowly.", contextIndonesian: "Hubungan mereka berkembang perlahan." }
 ---
 

@@ -3,8 +3,6 @@ title: "Programming and Hardware"
 description: "Expand the informatics vocabulary to discuss programming, computer components, and technical problem solving."
 jurusan: "Informatika"
 vocab:
-  - { word: "programming language", translation: "bahasa pemrograman", context: "This programming language is taught at the university.", contextIndonesian: "Bahasa pemrograman ini diajarkan di universitas." }
-  - { word: "source code", translation: "kode sumber", context: "The source code is in a shared repository.", contextIndonesian: "Kode sumber ada di repositori bersama." }
   - { word: "variable", translation: "variabel", context: "The variable saves the current value.", contextIndonesian: "Variabel menyimpan nilai saat ini." }
   - { word: "loop", translation: "perulangan", context: "The loop repeats the process ten times.", contextIndonesian: "Perulangan mengulangi proses tersebut sepuluh kali." }
   - { word: "function", translation: "fungsi", context: "The function calculates the sum of the numbers.", contextIndonesian: "Fungsi menghitung jumlah angka." }
@@ -18,11 +16,11 @@ vocab:
   - { word: "main memory", translation: "memori utama", context: "The main memory holds the currently required data.", contextIndonesian: "Memori utama menyimpan data yang dibutuhkan saat ini." }
   - { word: "hard drive", translation: "hard disk", context: "The hard drive stores large amounts of data.", contextIndonesian: "Hard drive menyimpan data dalam jumlah besar." }
   - { word: "graphics card", translation: "kartu grafis", context: "The graphics card processes the visual data.", contextIndonesian: "Kartu grafis memproses data visual." }
-  - { word: "mainboard", translation: "papan induk", context: "The motherboard connects the components of the computer.", contextIndonesian: "Motherboard menghubungkan komponen-komponen komputer." }
+  - { word: "mainboard", translation: "papan induk", context: "The motherboard connects the components of the computer. (keyword: mainboard)", contextIndonesian: "Motherboard menghubungkan komponen-komponen komputer." }
   - { word: "peripheral device", translation: "perangkat periferal", context: "A printer is a peripheral device.", contextIndonesian: "Printer adalah perangkat periferal." }
   - { word: "keyboard", translation: "papan ketik", context: "The keyboard is connected to the computer via USB.", contextIndonesian: "Keyboard terhubung ke komputer melalui USB." }
   - { word: "driver", translation: "driver", context: "The driver enables communication with the device.", contextIndonesian: "Pengemudi mengaktifkan komunikasi dengan perangkat." }
-  - { word: "interface", translation: "antarmuka", context: "The interface connects two software modules.", contextIndonesian: "Antarmuka menghubungkan dua modul perangkat lunak." }
+
 ---
 
 # Programming and Hardware

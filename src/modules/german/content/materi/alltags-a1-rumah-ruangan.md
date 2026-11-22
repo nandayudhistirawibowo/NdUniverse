@@ -72,16 +72,9 @@ vocab:
     indonesian: "lampu"
     context: "Die Lampe steht auf dem Tisch."
     contextIndonesian: "Lampunya ada di atas meja."
-  - german: "sauber"
-    indonesian: "bersih"
-    context: "Das Badezimmer ist wieder sauber."
-    contextIndonesian: "Kamar mandinya sudah bersih lagi."
   - german: "aufräumen"
     indonesian: "merapikan"
-    context: "Ich räume mein Zimmer am Samstag auf."
+    context: "Ich räume mein Zimmer am Samstag auf. (Schlüsselwort: aufräumen)"
     contextIndonesian: "Hari Sabtu aku merapikan kamar."
-  - german: "wohnen"
-    indonesian: "tinggal"
-    context: "Wir wohnen direkt neben dem Park."
-    contextIndonesian: "Kami tinggal persis di sebelah taman."
+
 ---

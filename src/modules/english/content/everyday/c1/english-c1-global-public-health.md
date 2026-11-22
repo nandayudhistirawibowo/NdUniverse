@@ -6,16 +6,15 @@ level: "C1"
 vocab:
   - { word: "burden of disease", translation: "beban penyakit", context: "The burden of disease is recorded regionally.", contextIndonesian: "Beban penyakitnya dicatat menurut wilayah." }
   - { word: "health care", translation: "layanan kesehatan", context: "Health care must be guaranteed across the board.", contextIndonesian: "Layanan kesehatan harus tersedia secara merata." }
-  - { word: "epidemic prevention", translation: "pencegahan wabah", context: "Disease prevention begins with reliable surveillance.", contextIndonesian: "Pencegahan wabah dimulai dari pemantauan yang andal." }
+  - { word: "epidemic prevention", translation: "pencegahan wabah", context: "Disease prevention begins with reliable surveillance. (keyword: epidemic prevention)", contextIndonesian: "Pencegahan wabah dimulai dari pemantauan yang andal." }
   - { word: "vaccine distribution", translation: "distribusi vaksin", context: "The vaccine distribution should be made fairer.", contextIndonesian: "Distribusi vaksinnya perlu dibuat lebih adil." }
   - { word: "health literacy", translation: "literasi kesehatan", context: "Health literacy is systematically promoted.", contextIndonesian: "Literasi kesehatan dikembangkan secara sistematis." }
-  - { word: "pathogen detection", translation: "deteksi patogen", context: "The pathogen is detected within hours.", contextIndonesian: "Patogennya bisa dideteksi dalam hitungan jam." }
+  - { word: "pathogen detection", translation: "deteksi patogen", context: "The pathogen is detected within hours. (keyword: pathogen detection)", contextIndonesian: "Patogennya bisa dideteksi dalam hitungan jam." }
   - { word: "excess mortality", translation: "angka kematian berlebih", context: "Excess mortality has increased significantly.", contextIndonesian: "Angka kematian berlebih meningkat cukup tajam." }
-  - { word: "supply bottleneck", translation: "kelangkaan layanan", context: "The supply shortage was quickly resolved.", contextIndonesian: "Kelangkaan layanan itu segera diatasi." }
+  - { word: "supply bottleneck", translation: "kelangkaan layanan", context: "The supply shortage was quickly resolved. (keyword: supply bottleneck)", contextIndonesian: "Kelangkaan layanan itu segera diatasi." }
   - { word: "disease surveillance", translation: "pemantauan wabah", context: "Disease surveillance must be organized across borders.", contextIndonesian: "Pemantauan wabah perlu diatur lintas negara." }
   - { word: "development of resistance", translation: "pembentukan resistansi", context: "The development of resistance represents a global danger.", contextIndonesian: "Pembentukan resistansi menjadi ancaman global." }
   - { word: "health inequality", translation: "ketimpangan kesehatan", context: "Health inequality should be combated politically.", contextIndonesian: "Ketimpangan kesehatan perlu diatasi lewat kebijakan." }
-  - { word: "emergency plan", translation: "rencana darurat", context: "The emergency plan is tested regularly.", contextIndonesian: "Rencana daruratnya diuji secara berkala." }
   - { word: "data situation", translation: "ketersediaan data", context: "The data situation remains patchy regionally.", contextIndonesian: "Ketersediaan datanya masih belum lengkap di sejumlah wilayah." }
   - { word: "containment measure", translation: "langkah pembatasan", context: "The containment measure was adjusted promptly.", contextIndonesian: "Langkah pembatasannya segera disesuaikan." }
   - { word: "early detection", translation: "deteksi dini", context: "Early detection significantly reduces mortality.", contextIndonesian: "Deteksi dini sangat menurunkan angka kematian." }

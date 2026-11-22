@@ -54,7 +54,7 @@ vocab:
     contextIndonesian: "Pembagian kerja yang dirasialisasi menata jenis pekerjaan dan pengakuan."
   - german: "soziale Weißsein"
     indonesian: "posisi sosial kulit putih"
-    context: "Soziale Weißheit sichere unmarkierte Vorteile."
+    context: "Soziale Weißheit sichere unmarkierte Vorteile. (Schlüsselwort: soziale Weißsein)"
     contextIndonesian: "Keputihan sosial menjaga keuntungan yang tak ditandai."
   - german: "rassistische Wissensordnung"
     indonesian: "tatanan pengetahuan rasialis"

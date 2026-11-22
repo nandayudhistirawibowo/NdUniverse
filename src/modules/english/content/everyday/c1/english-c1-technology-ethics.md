@@ -16,7 +16,6 @@ vocab:
   - { word: "digital dependency", translation: "ketergantungan digital", context: "Digital dependency is rarely discussed.", contextIndonesian: "Ketergantungan digital jarang dibahas." }
   - { word: "precautionary responsibility", translation: "tanggung jawab pencegahan", context: "Precautionary responsibility lies with developers and operators.", contextIndonesian: "Tanggung jawab pencegahan berada pada pengembang dan pengelola." }
   - { word: "technological sovereignty", translation: "kedaulatan teknologi", context: "Technological sovereignty requires open standards.", contextIndonesian: "Kedaulatan teknologi membutuhkan standar terbuka." }
-  - { word: "scope for creativity", translation: "ruang untuk merancang", context: "The scope for design is negotiated democratically.", contextIndonesian: "Ruang untuk merancang teknologi dinegosiasikan secara demokratis." }
   - { word: "digital exclusion", translation: "eksklusi digital", context: "Digital exclusion must be actively prevented.", contextIndonesian: "Eksklusi digital harus dicegah secara aktif." }
   - { word: "technology impact research", translation: "penelitian dampak teknologi", context: "Technology impact research accompanies social changes.", contextIndonesian: "Penelitian dampak teknologi mengikuti perubahan sosial." }
   - { word: "normative guideline", translation: "pedoman normatif", context: "The normative guidelines remain binding.", contextIndonesian: "Pedoman normatifnya tetap mengikat." }

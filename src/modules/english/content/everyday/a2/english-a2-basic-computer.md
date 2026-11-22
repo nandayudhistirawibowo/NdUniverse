@@ -19,7 +19,7 @@ vocab:
   - { word: "save", translation: "menyimpan", context: "Save your work regularly.", contextIndonesian: "Simpan pekerjaanmu secara berkala." }
   - { word: "delete", translation: "menghapus", context: "He accidentally deleted the wrong folder.", contextIndonesian: "Dia tidak sengaja menghapus folder yang salah." }
   - { word: "website", translation: "situs web", context: "The website opened on my phone.", contextIndonesian: "Situs webnya terbuka di ponselku." }
-  - { word: "appendix", translation: "lampiran", context: "The attachment was too large for the email.", contextIndonesian: "Lampirannya terlalu besar untuk email." }
+  - { word: "appendix", translation: "lampiran", context: "The attachment was too large for the email. (keyword: appendix)", contextIndonesian: "Lampirannya terlalu besar untuk email." }
   - { word: "restart", translation: "mulai ulang", context: "After the restart everything worked again.", contextIndonesian: "Setelah dimulai ulang, semuanya berfungsi lagi." }
   - { word: "setting", translation: "pengaturan", context: "I found the setting in the menu.", contextIndonesian: "Aku menemukan pengaturannya di menu." }
   - { word: "username", translation: "nama pengguna", context: "Unfortunately I forgot the username.", contextIndonesian: "Sayangnya aku lupa nama penggunaku." }

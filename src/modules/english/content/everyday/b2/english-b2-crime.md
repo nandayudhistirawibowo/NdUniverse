@@ -10,10 +10,10 @@ vocab:
   - { word: "suspect", translation: "tersangka laki-laki", context: "The suspect was released after questioning.", contextIndonesian: "Tersangkanya dibebaskan setelah diperiksa." }
   - { word: "evidence", translation: "barang bukti", context: "The evidence was examined in the laboratory.", contextIndonesian: "Barang buktinya diperiksa di laboratorium." }
   - { word: "witness statement", translation: "kesaksian", context: "The witness statement contradicted the first report.", contextIndonesian: "Kesaksiannya bertentangan dengan laporan awal." }
-  - { word: "condemnation", translation: "vonis bersalah", context: "The conviction came after a long trial.", contextIndonesian: "Vonis bersalah dijatuhkan setelah proses panjang." }
-  - { word: "probation", translation: "masa percobaan", context: "The sentence was suspended.", contextIndonesian: "Hukumannya ditangguhkan dengan masa percobaan." }
+  - { word: "condemnation", translation: "vonis bersalah", context: "The conviction came after a long trial. (keyword: condemnation)", contextIndonesian: "Vonis bersalah dijatuhkan setelah proses panjang." }
+  - { word: "probation", translation: "masa percobaan", context: "The sentence was suspended. (keyword: probation)", contextIndonesian: "Hukumannya ditangguhkan dengan masa percobaan." }
   - { word: "rehabilitation", translation: "reintegrasi sosial", context: "Rehabilitation should be supported after imprisonment.", contextIndonesian: "Reintegrasi sosial sebaiknya didukung setelah masa tahanan." }
-  - { word: "recidivism rate", translation: "tingkat pengulangan tindak pidana", context: "The relapse rate fell through targeted care.", contextIndonesian: "Tingkat pengulangan tindak pidana turun berkat pendampingan." }
+  - { word: "recidivism rate", translation: "tingkat pengulangan tindak pidana", context: "The relapse rate fell through targeted care. (keyword: recidivism rate)", contextIndonesian: "Tingkat pengulangan tindak pidana turun berkat pendampingan." }
   - { word: "criminal complaint", translation: "laporan pidana", context: "The criminal complaint was posted online.", contextIndonesian: "Laporan pidananya dibuat secara daring." }
   - { word: "pre-trial detention", translation: "penahanan praperadilan", context: "Pre-trial detention was ordered by a judge.", contextIndonesian: "Penahanan praperadilannya diperintahkan hakim." }
   - { word: "juvenile crime", translation: "kriminalitas remaja", context: "Juvenile crime was viewed in a differentiated manner in the report.", contextIndonesian: "Kriminalitas remaja dibahas secara terperinci dalam laporan." }

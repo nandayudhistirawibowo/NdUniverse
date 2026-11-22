@@ -11,7 +11,6 @@ vocab:
   - { word: "uncle", translation: "paman", context: "My uncle is coming to visit today.", contextIndonesian: "Pamanku datang berkunjung hari ini." }
   - { word: "aunt", translation: "bibi", context: "My aunt lives in Berlin.", contextIndonesian: "Bibiku tinggal di Berlin." }
   - { word: "cousin", translation: "sepupu laki-laki", context: "My cousin likes to play football.", contextIndonesian: "Sepupu laki-lakiku suka bermain sepak bola." }
-  - { word: "cousin", translation: "sepupu perempuan", context: "My cousin is already an adult.", contextIndonesian: "Sepupu perempuanku sudah dewasa." }
   - { word: "brother", translation: "saudara laki-laki", context: "My brother is two years younger.", contextIndonesian: "Adik laki-lakiku lebih muda dua tahun." }
   - { word: "sister", translation: "saudara perempuan", context: "My sister lives alone.", contextIndonesian: "Kakak perempuanku tinggal sendiri." }
   - { word: "parents", translation: "orang tua", context: "My parents are coming on Saturday.", contextIndonesian: "Orang tuaku datang hari Sabtu." }
@@ -21,7 +20,7 @@ vocab:
   - { word: "single", translation: "belum menikah", context: "My uncle is still single.", contextIndonesian: "Pamanku masih belum menikah." }
   - { word: "visit", translation: "mengunjungi", context: "We visit our grandparents often.", contextIndonesian: "Kami sering mengunjungi kakek nenek." }
   - { word: "together", translation: "bersama", context: "We eat together on holidays.", contextIndonesian: "Saat hari raya kami makan bersama." }
-  - { word: "festival", translation: "perayaan", context: "The party is at my aunt's.", contextIndonesian: "Perayaannya di rumah bibiku." }
+  - { word: "festival", translation: "perayaan", context: "The party is at my aunt's. (keyword: festival)", contextIndonesian: "Perayaannya di rumah bibiku." }
   - { word: "wedding", translation: "pernikahan", context: "The wedding is in June.", contextIndonesian: "Pernikahannya bulan Juni." }
   - { word: "relatives", translation: "kerabat", context: "Many relatives come to eat.", contextIndonesian: "Banyak kerabat datang untuk makan." }
 ---

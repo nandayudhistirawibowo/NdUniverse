@@ -70,7 +70,7 @@ vocab:
     contextIndonesian: "Proyeksinya disesuaikan setelah muncul data baru."
   - german: "Steuerpolitik"
     indonesian: "kebijakan pajak"
-    context: "Eine Reform, die Familien entlastet, wurde vorgeschlagen."
+    context: "Eine Reform, die Familien entlastet, wurde vorgeschlagen. (Schlüsselwort: Steuerpolitik)"
     contextIndonesian: "Diusulkan reformasi yang meringankan beban keluarga."
   - german: "Export"
     indonesian: "ekspor"

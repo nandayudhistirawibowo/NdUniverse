@@ -20,8 +20,7 @@ vocab:
   - { word: "public consultation", translation: "konsultasi publik", context: "The public consultation is documented online.", contextIndonesian: "Konsultasi publiknya didokumentasikan secara daring." }
   - { word: "data portability", translation: "portabilitas data", context: "Data portability strengthens freedom of choice.", contextIndonesian: "Portabilitas data memperkuat kebebasan memilih." }
   - { word: "digital divide", translation: "kesenjangan digital", context: "The digital divide must be overcome politically.", contextIndonesian: "Kesenjangan digital harus diatasi lewat kebijakan." }
-  - { word: "opinion corridor", translation: "ruang opini", context: "The corridor of opinion should not be narrowed.", contextIndonesian: "Ruang untuk berpendapat tidak boleh dipersempit." }
-  - { word: "accountability", translation: "kewajiban pertanggungjawaban", context: "Accountability also applies to platform operators.", contextIndonesian: "Kewajiban pertanggungjawaban juga berlaku bagi pengelola platform." }
+  - { word: "opinion corridor", translation: "ruang opini", context: "The corridor of opinion should not be narrowed. (keyword: opinion corridor)", contextIndonesian: "Ruang untuk berpendapat tidak boleh dipersempit." }
   - { word: "participation rate", translation: "tingkat partisipasi", context: "The participation rate is surprisingly high.", contextIndonesian: "Tingkat partisipasinya ternyata cukup tinggi." }
   - { word: "digital public", translation: "ruang publik digital", context: "The digital public needs clear protection rules.", contextIndonesian: "Ruang publik digital membutuhkan aturan perlindungan yang jelas." }
 ---

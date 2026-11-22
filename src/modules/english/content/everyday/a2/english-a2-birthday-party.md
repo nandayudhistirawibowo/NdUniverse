@@ -14,14 +14,14 @@ vocab:
   - { word: "surprise", translation: "kejutan", context: "The surprise succeeded despite the rain.", contextIndonesian: "Kejutannya berhasil meski hujan." }
   - { word: "wish", translation: "harapan", context: "Of course she didn't reveal her wish.", contextIndonesian: "Tentu saja dia tidak memberi tahu harapannya." }
   - { word: "celebration", translation: "perayaan", context: "The celebration lasted until after midnight.", contextIndonesian: "Perayaannya berlangsung sampai lewat tengah malam." }
-  - { word: "congratulations", translation: "mengucapkan selamat", context: "Everyone warmly wished her a happy birthday.", contextIndonesian: "Semua mengucapkan selamat ulang tahun dengan hangat." }
+  - { word: "congratulations", translation: "mengucapkan selamat", context: "Everyone warmly wished her a happy birthday. (keyword: congratulations)", contextIndonesian: "Semua mengucapkan selamat ulang tahun dengan hangat." }
   - { word: "invite", translation: "mengundang", context: "He invited his whole class.", contextIndonesian: "Dia mengundang seluruh teman sekelasnya." }
   - { word: "prepare", translation: "menyiapkan", context: "We prepared the meal together.", contextIndonesian: "Kami menyiapkan makanan bersama-sama." }
-  - { word: "bring it with you", translation: "membawa", context: "Everyone brought something to drink.", contextIndonesian: "Semua orang membawa minuman." }
+  - { word: "bring it with you", translation: "membawanya ikut serta", context: "Everyone brought something to drink. (keyword: bring it with you)", contextIndonesian: "Semua orang membawa minuman." }
   - { word: "guest list", translation: "daftar tamu", context: "The guest list was longer than expected.", contextIndonesian: "Daftar tamunya lebih panjang dari perkiraan." }
   - { word: "music", translation: "musik", context: "The music became a little quieter later.", contextIndonesian: "Musiknya kemudian sedikit dikecilkan." }
   - { word: "balloon", translation: "balon", context: "A balloon burst during the game.", contextIndonesian: "Sebuah balon meletus saat permainan." }
-  - { word: "congratulations card", translation: "kartu ucapan", context: "There were kind words on the greeting card.", contextIndonesian: "Kartu ucapannya berisi kata-kata manis." }
+  - { word: "congratulations card", translation: "kartu ucapan", context: "There were kind words on the greeting card. (keyword: congratulations card)", contextIndonesian: "Kartu ucapannya berisi kata-kata manis." }
   - { word: "memory", translation: "kenangan", context: "The photos remain a beautiful memory.", contextIndonesian: "Foto-foto itu jadi kenangan indah." }
   - { word: "host", translation: "tuan rumah laki-laki", context: "The host greeted everyone at the door.", contextIndonesian: "Tuan rumah menyambut semua orang di pintu." }
 ---

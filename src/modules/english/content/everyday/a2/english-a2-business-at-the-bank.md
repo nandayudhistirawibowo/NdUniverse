@@ -10,16 +10,14 @@ vocab:
   - { word: "ATM", translation: "mesin ATM", context: "The ATM is in front of the bank.", contextIndonesian: "Mesin ATM-nya ada di depan bank." }
   - { word: "bank card", translation: "kartu bank", context: "I forgot my bank card at home.", contextIndonesian: "Aku lupa membawa kartu bank dari rumah." }
   - { word: "PIN", translation: "PIN", context: "Please enter your PIN.", contextIndonesian: "Silakan masukkan PIN Anda." }
-  - { word: "bank statement", translation: "rekening koran", context: "I can view the account statement online.", contextIndonesian: "Aku bisa melihat rekening koran secara online." }
+  - { word: "bank statement", translation: "rekening koran", context: "I can view the account statement online. (keyword: bank statement)", contextIndonesian: "Aku bisa melihat rekening koran secara online." }
   - { word: "fee", translation: "biaya", context: "There is no fee for the card.", contextIndonesian: "Tidak ada biaya untuk kartu ini." }
   - { word: "interest rate", translation: "suku bunga", context: "The interest rate has increased this year.", contextIndonesian: "Suku bunganya naik tahun ini." }
   - { word: "cash", translation: "uang tunai", context: "I don't have enough cash with me.", contextIndonesian: "Uang tunai yang kubawa tidak cukup." }
   - { word: "open", translation: "membuka", context: "She opened an account at this bank.", contextIndonesian: "Dia sudah membuka rekening di bank ini." }
-  - { word: "transfer", translation: "mentransfer", context: "Can you transfer the money to me tomorrow?", contextIndonesian: "Bisa transfer uangnya besok?" }
-  - { word: "take off", translation: "menarik uang", context: "I withdrew a hundred euros yesterday.", contextIndonesian: "Kemarin aku menarik seratus euro." }
+  - { word: "take off", translation: "menarik uang", context: "I withdrew a hundred euros yesterday. (keyword: take off)", contextIndonesian: "Kemarin aku menarik seratus euro." }
   - { word: "deposit", translation: "menyetor", context: "He deposited the money at the counter.", contextIndonesian: "Dia menyetor uang di loket." }
-  - { word: "save", translation: "menabung", context: "We're saving for a bigger apartment.", contextIndonesian: "Kami menabung untuk apartemen yang lebih besar." }
-  - { word: "switch", translation: "loket", context: "An employee will help you at the counter.", contextIndonesian: "Petugas akan membantu Anda di loket." }
+  - { word: "switch", translation: "loket", context: "An employee will help you at the counter. (keyword: switch)", contextIndonesian: "Petugas akan membantu Anda di loket." }
   - { word: "signature", translation: "tanda tangan", context: "Your signature is still missing here.", contextIndonesian: "Tanda tangan Anda masih kurang di sini." }
   - { word: "form", translation: "formulir", context: "Please fill out this form.", contextIndonesian: "Tolong isi formulir ini." }
   - { word: "amount", translation: "jumlah uang", context: "The amount was debited twice.", contextIndonesian: "Jumlahnya terpotong dua kali." }

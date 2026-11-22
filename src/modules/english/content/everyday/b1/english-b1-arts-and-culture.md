@@ -5,12 +5,12 @@ track: "Everyday English"
 level: "B1"
 vocab:
   - { word: "exhibition", translation: "pameran", context: "The exhibition was opened by a young artist.", contextIndonesian: "Pamerannya dibuka oleh seniman muda." }
-  - { word: "work of art", translation: "karya seni", context: "The artwork was restored after a debate.", contextIndonesian: "Karya seninya dipugar setelah perdebatan." }
+  - { word: "work of art", translation: "karya seni", context: "The artwork was restored after a debate. (keyword: work of art)", contextIndonesian: "Karya seninya dipugar setelah perdebatan." }
   - { word: "stage", translation: "panggung", context: "The stage was converted for the play.", contextIndonesian: "Panggungnya diubah untuk pertunjukan itu." }
   - { word: "performance", translation: "pertunjukan", context: "The performance ended with great applause.", contextIndonesian: "Pertunjukannya ditutup dengan tepuk tangan meriah." }
   - { word: "cultural funding", translation: "dukungan budaya", context: "Cultural funding was discussed in the city council.", contextIndonesian: "Dukungan budaya dibahas di dewan kota." }
   - { word: "audience", translation: "penonton", context: "The audience reacted surprisingly calmly.", contextIndonesian: "Penontonnya bereaksi dengan tenang di luar dugaan." }
-  - { word: "entry ticket", translation: "tiket masuk", context: "The entrance ticket was cheaper for students.", contextIndonesian: "Tiket masuknya lebih murah untuk mahasiswa." }
+  - { word: "entry ticket", translation: "tiket masuk", context: "The entrance ticket was cheaper for students. (keyword: entry ticket)", contextIndonesian: "Tiket masuknya lebih murah untuk mahasiswa." }
   - { word: "cultural sector", translation: "dunia budaya", context: "The cultural sector recovered only slowly.", contextIndonesian: "Dunia budaya pulih dengan lambat." }
   - { word: "tradition", translation: "tradisi", context: "The tradition was reinterpreted by young people.", contextIndonesian: "Anak muda menafsirkan ulang tradisi itu." }
   - { word: "creativity", translation: "kreativitas", context: "Creativity was evident in every room.", contextIndonesian: "Kreativitas terlihat di setiap ruangan." }

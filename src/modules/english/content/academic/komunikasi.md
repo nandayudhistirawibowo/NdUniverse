@@ -6,7 +6,7 @@ vocab:
   - { word: "target group", translation: "kelompok sasaran", context: "The campaign is aimed at a clearly defined target group.", contextIndonesian: "Kampanye ini ditujukan pada kelompok sasaran yang jelas." }
   - { word: "message", translation: "pesan", context: "The message should be understandable and formulated consistently.", contextIndonesian: "Pesannya harus dapat dimengerti dan dirumuskan secara konsisten." }
   - { word: "communication channel", translation: "saluran komunikasi", context: "A digital communication channel was chosen for the announcement.", contextIndonesian: "Saluran komunikasi digital dipilih untuk pengumuman." }
-  - { word: "range", translation: "jangkauan", context: "The reach of the post increased significantly within a day.", contextIndonesian: "Jangkauan postingan meningkat secara signifikan dalam sehari." }
+  - { word: "range", translation: "jangkauan", context: "The reach of the post increased significantly within a day. (keyword: range)", contextIndonesian: "Jangkauan postingan meningkat secara signifikan dalam sehari." }
   - { word: "press release", translation: "siaran pers", context: "The press release summarizes the most important results.", contextIndonesian: "Siaran pers merangkum hasil-hasil yang paling penting." }
   - { word: "media analysis", translation: "analisis media", context: "Media analysis examines the topics and tone of reporting.", contextIndonesian: "Analisis media mengkaji topik dan nada pemberitaan." }
   - { word: "public relations", translation: "hubungan masyarakat", context: "Public relations informs the population about the project.", contextIndonesian: "Humas memberi informasi kepada masyarakat tentang proyek tersebut." }
@@ -16,10 +16,10 @@ vocab:
   - { word: "communication strategy", translation: "strategi komunikasi", context: "The communication strategy coordinates internal and external measures.", contextIndonesian: "Strategi komunikasi mengoordinasikan tindakan internal dan eksternal." }
   - { word: "medium", translation: "media", context: "The medium is selected to suit the target group.", contextIndonesian: "Media dipilih sesuai dengan kelompok sasaran." }
   - { word: "journalism", translation: "jurnalisme", context: "Independent journalism carefully checks information.", contextIndonesian: "Jurnalisme independen memeriksa informasi dengan cermat." }
-  - { word: "reporting", translation: "pemberitaan", context: "Coverage of the event began early in the morning.", contextIndonesian: "Liputan acara dimulai pagi-pagi sekali." }
+  - { word: "reporting", translation: "pemberitaan", context: "Coverage of the event began early in the morning. (keyword: reporting)", contextIndonesian: "Liputan acara dimulai pagi-pagi sekali." }
   - { word: "content", translation: "isi", context: "The content of the article will be checked before publication.", contextIndonesian: "Isi artikel akan diperiksa sebelum dipublikasikan." }
   - { word: "audience", translation: "audiens", context: "The audience reacted to the announcement with numerous questions.", contextIndonesian: "Penonton bereaksi terhadap pengumuman tersebut dengan banyak pertanyaan." }
-  - { word: "publication", translation: "publikasi", context: "The report is scheduled to be published on Monday.", contextIndonesian: "Laporan tersebut dijadwalkan akan diterbitkan pada hari Senin." }
+  - { word: "publication", translation: "publikasi", context: "The report is scheduled to be published on Monday. (keyword: publication)", contextIndonesian: "Laporan tersebut dijadwalkan akan diterbitkan pada hari Senin." }
   - { word: "brand identity", translation: "identitas merek", context: "A consistent brand identity makes recognition easier.", contextIndonesian: "Identitas merek yang konsisten membuat pengenalan lebih mudah." }
   - { word: "source", translation: "keterangan sumber", context: "Every source reference must be verifiable.", contextIndonesian: "Setiap referensi sumber harus dapat diverifikasi." }
   - { word: "moderation", translation: "moderasi", context: "The moderation ensures a respectful exchange in the forum.", contextIndonesian: "Moderasi memastikan pertukaran yang saling menghormati di forum." }

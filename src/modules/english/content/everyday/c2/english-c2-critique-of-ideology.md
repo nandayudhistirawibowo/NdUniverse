@@ -17,12 +17,12 @@ vocab:
   - { word: "class rule", translation: "dominasi kelas", context: "Class rule is also reproduced culturally.", contextIndonesian: "Dominasi kelas juga direproduksi secara budaya." }
   - { word: "delusion", translation: "pembutaan kesadaran", context: "Delusion makes contradictions appear as constraints.", contextIndonesian: "Pembutaan kesadaran membuat pertentangan tampak sebagai keniscayaan." }
   - { word: "need for legitimacy", translation: "kebutuhan akan legitimasi", context: "The need for legitimacy grows with social inequality.", contextIndonesian: "Kebutuhan akan legitimasi meningkat seiring ketimpangan sosial." }
-  - { word: "power structure", translation: "struktur dominasi", context: "The structure of power is solidified through habit.", contextIndonesian: "Struktur dominasi diperkuat oleh kebiasaan." }
+  - { word: "power structure", translation: "struktur dominasi", context: "The structure of power is solidified through habit. (keyword: power structure)", contextIndonesian: "Struktur dominasi diperkuat oleh kebiasaan." }
   - { word: "ideologization", translation: "ideologisasi", context: "Ideologization transforms particular interests into the common good.", contextIndonesian: "Ideologisasi mengubah kepentingan kelompok menjadi seolah kepentingan umum." }
   - { word: "commodity fetish", translation: "fetisisme komoditas", context: "The commodity fetish obscures the work behind the product.", contextIndonesian: "Fetisisme komoditas menyamarkan kerja di balik produk." }
   - { word: "immanence of criticism", translation: "imanensi kritik", context: "Immanence of criticism examines standards within the criticized system.", contextIndonesian: "Imanensi kritik menguji tolok ukur dari dalam sistem yang dikritik." }
   - { word: "self-enlightenment", translation: "pencerahan diri", context: "Self-enlightenment requires examining one's own prejudices.", contextIndonesian: "Pencerahan diri membutuhkan pemeriksaan prasangka sendiri." }
-  - { word: "creation of meaning", translation: "pemberian makna", context: "Creating meaning is politically contested.", contextIndonesian: "Pemberian makna menjadi ajang perebutan politik." }
+  - { word: "creation of meaning", translation: "pemberian makna", context: "Creating meaning is politically contested. (keyword: creation of meaning)", contextIndonesian: "Pemberian makna menjadi ajang perebutan politik." }
   - { word: "demystification", translation: "demistifikasi", context: "Demystification makes hidden dependencies readable.", contextIndonesian: "Demistifikasi membuat ketergantungan tersembunyi dapat dipahami." }
 ---
 

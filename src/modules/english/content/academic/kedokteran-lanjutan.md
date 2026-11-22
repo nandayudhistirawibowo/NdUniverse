@@ -16,13 +16,13 @@ vocab:
   - { word: "blood", translation: "darah", context: "Blood transports oxygen throughout the body.", contextIndonesian: "Darah mengangkut oksigen ke seluruh tubuh." }
   - { word: "skin", translation: "kulit", context: "The skin protects the body from external influences.", contextIndonesian: "Kulit melindungi tubuh dari pengaruh luar." }
   - { word: "nurse", translation: "tenaga perawat", context: "The nurse takes the patient's temperature.", contextIndonesian: "Perawat mengukur suhu pasien." }
-  - { word: "station", translation: "bangsal", context: "The patient stays on the ward overnight.", contextIndonesian: "Pasien menginap di bangsal semalaman." }
-  - { word: "syringe", translation: "suntikan", context: "The doctor gives the patient an injection.", contextIndonesian: "Dokter memberikan suntikan kepada pasien." }
-  - { word: "x-ray image", translation: "citra rontgen", context: "The x-ray shows a small fracture.", contextIndonesian: "Hasil rontgen menunjukkan patah tulang kecil." }
+  - { word: "station", translation: "bangsal", context: "The patient stays on the ward overnight. (keyword: station)", contextIndonesian: "Pasien menginap di bangsal semalaman." }
+  - { word: "syringe", translation: "suntikan", context: "The doctor gives the patient an injection. (keyword: syringe)", contextIndonesian: "Dokter memberikan suntikan kepada pasien." }
+  - { word: "x-ray image", translation: "citra rontgen", context: "The x-ray shows a small fracture. (keyword: x-ray image)", contextIndonesian: "Hasil rontgen menunjukkan patah tulang kecil." }
   - { word: "operation", translation: "operasi", context: "The operation takes place on Tuesday.", contextIndonesian: "Operasi berlangsung pada hari Selasa." }
-  - { word: "association", translation: "perban", context: "The bandage protects the wound.", contextIndonesian: "Perban melindungi luka." }
+  - { word: "association", translation: "perban", context: "The bandage protects the wound. (keyword: association)", contextIndonesian: "Perban melindungi luka." }
   - { word: "blood pressure", translation: "tekanan darah", context: "The doctor checks the patient's blood pressure.", contextIndonesian: "Dokter memeriksa tekanan darah pasien." }
-  - { word: "investigate", translation: "memeriksa", context: "The doctor examines the patient's knee.", contextIndonesian: "Dokter memeriksa lutut pasien." }
+  - { word: "investigate", translation: "memeriksa", context: "The doctor examines the patient's knee. (keyword: investigate)", contextIndonesian: "Dokter memeriksa lutut pasien." }
 ---
 
 # Anatomy and Hospitals

@@ -4,20 +4,15 @@ description: "Learn everyday English about healthy lifestyle."
 track: "Everyday English"
 level: "B2"
 vocab:
-  - { word: "diet", translation: "pola makan", context: "A balanced diet can promote well-being.", contextIndonesian: "Pola makan seimbang bisa mendukung kesejahteraan." }
-  - { word: "nutrient supply", translation: "asupan nutrisi", context: "The nutrient intake has been individually adjusted.", contextIndonesian: "Asupan nutrisinya disesuaikan untuk setiap orang." }
+  - { word: "nutrient supply", translation: "asupan nutrisi", context: "The nutrient intake has been individually adjusted. (keyword: nutrient supply)", contextIndonesian: "Asupan nutrisinya disesuaikan untuk setiap orang." }
   - { word: "mindfulness", translation: "kesadaran diri", context: "Mindfulness could improve how we deal with stress.", contextIndonesian: "Kesadaran diri bisa membantu mengelola stres." }
-  - { word: "resilience", translation: "ketahanan", context: "Resilience increased after the recovery phase.", contextIndonesian: "Ketahanannya meningkat setelah masa pemulihan." }
-  - { word: "quality of sleep", translation: "kualitas tidur", context: "Sleep quality has been improved with fixed times.", contextIndonesian: "Kualitas tidurnya membaik berkat jadwal yang tetap." }
-  - { word: "health care", translation: "pencegahan kesehatan", context: "Health care is often underestimated.", contextIndonesian: "Upaya pencegahan kesehatan sering diremehkan." }
-  - { word: "movement", translation: "aktivitas fisik", context: "Regular exercise reduces the risk of certain diseases.", contextIndonesian: "Aktivitas fisik rutin mengurangi risiko penyakit tertentu." }
+  - { word: "quality of sleep", translation: "kualitas tidur", context: "Sleep quality has been improved with fixed times. (keyword: quality of sleep)", contextIndonesian: "Kualitas tidurnya membaik berkat jadwal yang tetap." }
+  - { word: "movement", translation: "aktivitas fisik", context: "Regular exercise reduces the risk of certain diseases. (keyword: movement)", contextIndonesian: "Aktivitas fisik rutin mengurangi risiko penyakit tertentu." }
   - { word: "self-care", translation: "perawatan diri", context: "Self-care should not be considered a luxury.", contextIndonesian: "Merawat diri seharusnya tidak dianggap sebagai kemewahan." }
-  - { word: "endurance", translation: "daya tahan", context: "Stamina was built up gradually.", contextIndonesian: "Daya tahannya dibangun secara bertahap." }
+  - { word: "endurance", translation: "daya tahan", context: "Stamina was built up gradually. (keyword: endurance)", contextIndonesian: "Daya tahannya dibangun secara bertahap." }
   - { word: "exhaustion", translation: "kelelahan", context: "The exhaustion that lasted a long time was taken seriously.", contextIndonesian: "Kelelahan yang berlangsung lama itu ditanggapi serius." }
   - { word: "relaxation", translation: "relaksasi", context: "A short relaxation could make everyday life easier.", contextIndonesian: "Relaksasi singkat bisa meringankan keseharian." }
-  - { word: "equalizer", translation: "keseimbangan", context: "A hobby offers balance to a stressful job.", contextIndonesian: "Hobi memberi keseimbangan dari pekerjaan yang penuh tekanan." }
-  - { word: "health literacy", translation: "literasi kesehatan", context: "Health literacy should be promoted early.", contextIndonesian: "Literasi kesehatan sebaiknya dikembangkan sejak dini." }
-  - { word: "overload", translation: "beban berlebihan", context: "The overload could have been prevented by taking breaks.", contextIndonesian: "Beban berlebihan itu sebenarnya bisa dicegah dengan istirahat." }
+  - { word: "equalizer", translation: "keseimbangan", context: "A hobby offers balance to a stressful job. (keyword: equalizer)", contextIndonesian: "Hobi memberi keseimbangan dari pekerjaan yang penuh tekanan." }
   - { word: "habit", translation: "kebiasaan", context: "A new habit takes time and patience.", contextIndonesian: "Kebiasaan baru butuh waktu dan kesabaran." }
   - { word: "fluid intake", translation: "asupan cairan", context: "Fluid intake must be increased in hot weather.", contextIndonesian: "Asupan cairan harus ditambah saat cuaca panas." }
   - { word: "regeneration", translation: "pemulihan", context: "Regeneration is crucial after intensive training.", contextIndonesian: "Pemulihan sangat penting setelah latihan intensif." }

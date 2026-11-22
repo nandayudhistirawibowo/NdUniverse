@@ -10,20 +10,19 @@ vocab:
   - { word: "works council", translation: "dewan pekerja", context: "The works council was involved at an early stage.", contextIndonesian: "Dewan pekerjanya sudah dilibatkan sejak awal." }
   - { word: "industrial action", translation: "aksi perjuangan pekerja", context: "The industrial action has been suspended for the time being.", contextIndonesian: "Aksi perjuangan pekerjanya untuk sementara ditangguhkan." }
   - { word: "continued payment of wages", translation: "pembayaran upah selama sakit", context: "Continued payment of wages is contractually guaranteed.", contextIndonesian: "Pembayaran upah selama sakit dijamin dalam kontrak." }
-  - { word: "job security", translation: "jaminan pekerjaan", context: "Employment security will be negotiated as a priority.", contextIndonesian: "Jaminan pekerjaan menjadi prioritas dalam negosiasi." }
-  - { word: "reduction in working hours", translation: "pengurangan jam kerja", context: "Reducing working hours could prevent layoffs.", contextIndonesian: "Pengurangan jam kerja bisa mencegah pemutusan hubungan kerja." }
+  - { word: "job security", translation: "jaminan pekerjaan", context: "Employment security will be negotiated as a priority. (keyword: job security)", contextIndonesian: "Jaminan pekerjaan menjadi prioritas dalam negosiasi." }
+  - { word: "reduction in working hours", translation: "pengurangan jam kerja", context: "Reducing working hours could prevent layoffs. (keyword: reduction in working hours)", contextIndonesian: "Pengurangan jam kerja bisa mencegah pemutusan hubungan kerja." }
   - { word: "company agreement", translation: "kesepakatan perusahaan", context: "The company agreement applies from the beginning of the month.", contextIndonesian: "Kesepakatan perusahaannya berlaku mulai awal bulan." }
   - { word: "protection against dismissal", translation: "perlindungan dari pemecatan", context: "Protection against dismissal remains unchanged.", contextIndonesian: "Perlindungan dari pemecatan tetap tidak berubah." }
   - { word: "social partnership", translation: "kemitraan sosial", context: "Social partnership requires mutual trust.", contextIndonesian: "Kemitraan sosial membutuhkan rasa saling percaya." }
-  - { word: "balance of interests", translation: "penyeimbangan kepentingan", context: "The reconciliation of interests is still open.", contextIndonesian: "Penyeimbangan kepentingannya masih belum tercapai." }
   - { word: "workforce", translation: "seluruh karyawan", context: "The workforce will be fully informed.", contextIndonesian: "Seluruh karyawan diberi informasi secara menyeluruh." }
   - { word: "arbitration proposal", translation: "usulan mediasi", context: "The arbitration proposal was accepted.", contextIndonesian: "Usulan mediasinya sudah diterima." }
   - { word: "pay transparency", translation: "transparansi upah", context: "Pay transparency is promoted by law.", contextIndonesian: "Transparansi upah didorong lewat undang-undang." }
   - { word: "staff representative", translation: "perwakilan pegawai", context: "The staff representatives must be heard.", contextIndonesian: "Perwakilan pegawai harus dimintai pendapat." }
-  - { word: "readiness to strike", translation: "kesiapan untuk mogok", context: "The willingness to strike continues to increase.", contextIndonesian: "Kesiapan untuk mogok semakin meningkat." }
+  - { word: "readiness to strike", translation: "kesiapan untuk mogok", context: "The willingness to strike continues to increase. (keyword: readiness to strike)", contextIndonesian: "Kesiapan untuk mogok semakin meningkat." }
   - { word: "working relationship", translation: "hubungan kerja", context: "The working relationship will be reorganized.", contextIndonesian: "Hubungan kerjanya sedang ditata ulang." }
   - { word: "wage gap", translation: "kesenjangan upah", context: "The wage gap has fallen significantly.", contextIndonesian: "Kesenjangan upahnya turun cukup banyak." }
-  - { word: "negotiating round", translation: "putaran perundingan", context: "The round of negotiations lasts until the night.", contextIndonesian: "Putaran perundingannya berlangsung sampai malam." }
+  - { word: "negotiating round", translation: "putaran perundingan", context: "The round of negotiations lasts until the night. (keyword: negotiating round)", contextIndonesian: "Putaran perundingannya berlangsung sampai malam." }
 ---
 
 # Industrial Relations

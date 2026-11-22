@@ -5,7 +5,7 @@ track: "Everyday English"
 level: "B2"
 vocab:
   - { word: "draft", translation: "rancangan", context: "The draft was revised after public criticism.", contextIndonesian: "Rancangannya direvisi setelah mendapat kritik publik." }
-  - { word: "urban planning", translation: "perencanaan kota", context: "City planning should take more green spaces into account.", contextIndonesian: "Perencanaan kota sebaiknya mempertimbangkan lebih banyak ruang hijau." }
+  - { word: "urban planning", translation: "perencanaan kota", context: "City planning should take more green spaces into account. (keyword: urban planning)", contextIndonesian: "Perencanaan kota sebaiknya mempertimbangkan lebih banyak ruang hijau." }
   - { word: "public space", translation: "ruang publik", context: "The public space was redesigned together.", contextIndonesian: "Ruang publik ditata ulang bersama." }
   - { word: "building structure", translation: "struktur bangunan", context: "The building structure was checked before the renovation.", contextIndonesian: "Struktur bangunannya diperiksa sebelum renovasi." }
   - { word: "facade design", translation: "desain fasad", context: "The facade design should match the surroundings.", contextIndonesian: "Desain fasadnya sebaiknya sesuai dengan lingkungan sekitar." }
@@ -17,9 +17,9 @@ vocab:
   - { word: "building regulations", translation: "peraturan bangunan", context: "The building regulations have been adapted for new materials.", contextIndonesian: "Peraturan bangunannya disesuaikan dengan bahan baru." }
   - { word: "room layout", translation: "pembagian ruang", context: "The room layout could be made more flexible.", contextIndonesian: "Pembagian ruangnya bisa dibuat lebih fleksibel." }
   - { word: "building material", translation: "bahan bangunan", context: "The building material was made from recycled material.", contextIndonesian: "Bahan bangunannya dibuat dari material daur ulang." }
-  - { word: "compression", translation: "pemadatan", context: "Densification could have reduced green spaces.", contextIndonesian: "Pemadatan itu bisa mengurangi ruang hijau." }
+  - { word: "compression", translation: "pemadatan", context: "Densification could have reduced green spaces. (keyword: compression)", contextIndonesian: "Pemadatan itu bisa mengurangi ruang hijau." }
   - { word: "monument protection requirement", translation: "persyaratan pelestarian bangunan bersejarah", context: "The monument protection requirement limited the renovation.", contextIndonesian: "Persyaratan pelestarian membatasi renovasi." }
-  - { word: "inner courtyard", translation: "halaman dalam", context: "The courtyard was opened to the neighborhood.", contextIndonesian: "Halaman dalamnya dibuka untuk warga sekitar." }
+  - { word: "inner courtyard", translation: "halaman dalam", context: "The courtyard was opened to the neighborhood. (keyword: inner courtyard)", contextIndonesian: "Halaman dalamnya dibuka untuk warga sekitar." }
   - { word: "urban development", translation: "pengembangan kota", context: "The urban development was coordinated in the long term.", contextIndonesian: "Pengembangan kotanya dikoordinasikan untuk jangka panjang." }
   - { word: "use", translation: "pemanfaatan", context: "The use of the building has been reorganized.", contextIndonesian: "Pemanfaatan gedungnya diatur ulang." }
   - { word: "quality of living", translation: "kualitas hunian", context: "The quality of living could decrease due to noise.", contextIndonesian: "Kualitas huniannya bisa menurun karena kebisingan." }

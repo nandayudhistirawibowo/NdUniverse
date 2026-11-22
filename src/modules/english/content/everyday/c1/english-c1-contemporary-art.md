@@ -8,7 +8,7 @@ vocab:
   - { word: "curatorial practice", translation: "praktik kuratorial", context: "Curatorial practice is increasingly being questioned.", contextIndonesian: "Praktik kuratorial semakin banyak dipertanyakan." }
   - { word: "participatory art", translation: "seni partisipatif", context: "Participatory art involves the audience.", contextIndonesian: "Seni partisipatif melibatkan para pengunjung." }
   - { word: "exhibition context", translation: "konteks pameran", context: "The exhibition context determines the reading.", contextIndonesian: "Konteks pamerannya ikut menentukan penafsiran." }
-  - { word: "institutional criticism", translation: "kritik institusional", context: "Criticism of institutions reveals hidden power relationships.", contextIndonesian: "Kritik institusional mengungkap relasi kuasa yang tersembunyi." }
+  - { word: "institutional criticism", translation: "kritik institusional", context: "Criticism of institutions reveals hidden power relationships. (keyword: institutional criticism)", contextIndonesian: "Kritik institusional mengungkap relasi kuasa yang tersembunyi." }
   - { word: "materiality", translation: "materialitas", context: "Materiality consciously comes to the fore.", contextIndonesian: "Aspek materialnya sengaja ditonjolkan." }
   - { word: "artistic intervention", translation: "intervensi artistik", context: "The artistic intervention irritates everyday life.", contextIndonesian: "Intervensi artistiknya mengusik keseharian." }
   - { word: "reception aesthetic", translation: "estetika resepsi", context: "Reception aesthetics put the audience at the center.", contextIndonesian: "Estetika resepsi menempatkan pengunjung sebagai pusat perhatian." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "decolonization", translation: "dekolonisasi", context: "Decolonization changes museum collecting practices.", contextIndonesian: "Dekolonisasi mengubah praktik koleksi museum." }
   - { word: "art intervention", translation: "intervensi seni", context: "The art intervention is temporary.", contextIndonesian: "Intervensi seninya dirancang berlangsung sementara." }
   - { word: "mediation format", translation: "format edukasi", context: "The mediation format will be adapted to different groups.", contextIndonesian: "Format edukasinya disesuaikan untuk kelompok yang berbeda." }
-  - { word: "aesthetic experience", translation: "pengalaman estetis", context: "The aesthetic experience arises in exchange.", contextIndonesian: "Pengalaman estetis muncul melalui interaksi." }
+
 ---
 
 # Contemporary Art

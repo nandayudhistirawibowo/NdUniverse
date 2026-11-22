@@ -4,7 +4,7 @@ description: "Learn everyday English about advanced investment."
 track: "Everyday English"
 level: "B2"
 vocab:
-  - { word: "share", translation: "saham", context: "The stock lost value after missing profits.", contextIndonesian: "Sahamnya turun setelah keuntungan tak tercapai." }
+  - { word: "share", translation: "saham", context: "The stock lost value after missing profits. (keyword: share)", contextIndonesian: "Sahamnya turun setelah keuntungan tak tercapai." }
   - { word: "bond", translation: "obligasi", context: "The bond was in demand despite low interest rates.", contextIndonesian: "Obligasi itu diminati meski bunganya rendah." }
   - { word: "security", translation: "surat berharga", context: "The security is traded on several stock exchanges.", contextIndonesian: "Surat berharga itu diperdagangkan di beberapa bursa." }
   - { word: "portfolio", translation: "portofolio", context: "The portfolio was regularly rebalanced.", contextIndonesian: "Portofolionya rutin diseimbangkan kembali." }
@@ -19,7 +19,7 @@ vocab:
   - { word: "stock market", translation: "bursa saham", context: "New highs were reached on the stock market.", contextIndonesian: "Bursa saham mencapai rekor tertinggi baru." }
   - { word: "transaction fee", translation: "biaya transaksi", context: "The transaction fee was transparently shown in advance.", contextIndonesian: "Biaya transaksinya dicantumkan secara transparan sebelumnya." }
   - { word: "increase in value", translation: "kenaikan nilai", context: "The increase in value only became visible upon sale.", contextIndonesian: "Kenaikan nilainya baru terlihat saat dijual." }
-  - { word: "loss limitation", translation: "pembatasan kerugian", context: "Limiting losses has been made easier through fixed rules.", contextIndonesian: "Pembatasan kerugian terbantu oleh aturan tetap." }
+  - { word: "loss limitation", translation: "pembatasan kerugian", context: "Limiting losses has been made easier through fixed rules. (keyword: loss limitation)", contextIndonesian: "Pembatasan kerugian terbantu oleh aturan tetap." }
   - { word: "asset class", translation: "kelas aset", context: "Every asset class reacts differently to interest rate increases.", contextIndonesian: "Setiap kelas aset bereaksi berbeda terhadap kenaikan bunga." }
   - { word: "performance", translation: "perkembangan nilai", context: "The performance was compared to the market.", contextIndonesian: "Perkembangan nilainya dibandingkan dengan pasar." }
   - { word: "key interest rate", translation: "suku bunga acuan", context: "The key interest rate also influenced bond prices.", contextIndonesian: "Suku bunga acuan juga memengaruhi harga obligasi." }

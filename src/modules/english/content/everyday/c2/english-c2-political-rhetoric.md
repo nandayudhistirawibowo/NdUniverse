@@ -6,14 +6,14 @@ level: "C2"
 vocab:
   - { word: "power of interpretation", translation: "kuasa penafsiran", context: "The power of interpretation helps decide political reality.", contextIndonesian: "Kuasa penafsiran turut menentukan kenyataan politik." }
   - { word: "presupposition", translation: "praanggapan", context: "The presupposition is smuggled in as supposed knowledge.", contextIndonesian: "Praanggapan diselipkan seolah-olah merupakan pengetahuan bersama." }
-  - { word: "enemy image production", translation: "pembentukan citra musuh", context: "Production of enemy images simplifies complex conflicts of interest.", contextIndonesian: "Pembentukan citra musuh menyederhanakan konflik kepentingan yang rumit." }
+  - { word: "enemy image production", translation: "pembentukan citra musuh", context: "Production of enemy images simplifies complex conflicts of interest. (keyword: enemy image production)", contextIndonesian: "Pembentukan citra musuh menyederhanakan konflik kepentingan yang rumit." }
   - { word: "legitimation rhetoric", translation: "retorika legitimasi", context: "Legitimation rhetoric often conceals power asymmetries.", contextIndonesian: "Retorika legitimasi sering menutupi ketimpangan kekuasaan." }
   - { word: "topos", translation: "topos", context: "The topos will be reframed depending on the audience.", contextIndonesian: "Topos itu dibingkai ulang sesuai audiens." }
   - { word: "depoliticization", translation: "depolitisasi", context: "Depoliticization makes political decisions appear without alternative.", contextIndonesian: "Depolitisasi membuat keputusan politik tampak tak punya alternatif." }
   - { word: "us-versus-them rhetoric", translation: "retorika kami-lawan-mereka", context: "The us-versus-them rhetoric mobilizes diffuse fears.", contextIndonesian: "Retorika kami-lawan-mereka mengerahkan ketakutan yang samar." }
   - { word: "argumentative shortening", translation: "penyederhanaan argumentatif", context: "Argumentative shortening deletes crucial intermediate steps.", contextIndonesian: "Penyederhanaan argumentatif menghapus tahapan penting." }
   - { word: "rhetorical commonplace", translation: "klise retoris", context: "The rhetorical commonplace often replaces the justification.", contextIndonesian: "Klise retoris sering menggantikan penjelasan yang beralasan." }
-  - { word: "semantic charge", translation: "pemberian muatan semantis", context: "Semantic loading shifts the meaning of the term.", contextIndonesian: "Pemberian muatan semantis menggeser arti istilah." }
+  - { word: "semantic charge", translation: "pemberian muatan semantis", context: "Semantic loading shifts the meaning of the term. (keyword: semantic charge)", contextIndonesian: "Pemberian muatan semantis menggeser arti istilah." }
   - { word: "moral blackmail", translation: "pemerasan moral", context: "Moral blackmail makes deviant positions appear illegitimate.", contextIndonesian: "Pemerasan moral membuat pandangan berbeda tampak tidak sah." }
   - { word: "counter-speech", translation: "sanggahan", context: "The counter-speech must reveal the implicit framework.", contextIndonesian: "Sanggahan perlu mengungkap kerangka yang tersirat." }
   - { word: "euphemism", translation: "eufemisme", context: "The euphemism glosses over institutional coercion.", contextIndonesian: "Eufemisme itu memperhalus pemaksaan institusional." }
@@ -23,7 +23,7 @@ vocab:
   - { word: "presence rhetoric", translation: "retorika kehadiran", context: "Presence rhetoric sometimes replaces verifiable arguments.", contextIndonesian: "Retorika kehadiran terkadang menggantikan argumen yang dapat diuji." }
   - { word: "consensus fiction", translation: "ilusi konsensus", context: "The consensus fiction makes contradiction appear marginal.", contextIndonesian: "Ilusi konsensus membuat ketidaksetujuan tampak tidak penting." }
   - { word: "affective appeal", translation: "seruan emosional", context: "The affective appeal overshadows the empirical test.", contextIndonesian: "Seruan emosional mengaburkan pemeriksaan empiris." }
-  - { word: "speech act", translation: "tindak tutur", context: "The speech act carries out political affiliation.", contextIndonesian: "Tindak tutur itu mewujudkan keanggotaan politik." }
+
 ---
 
 # Political Rhetoric

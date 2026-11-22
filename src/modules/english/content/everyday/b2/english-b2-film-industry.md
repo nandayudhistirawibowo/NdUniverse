@@ -19,9 +19,9 @@ vocab:
   - { word: "film industry", translation: "industri film", context: "The film industry is recovering only slowly.", contextIndonesian: "Industri film pulih dengan lambat." }
   - { word: "main role", translation: "peran utama", context: "The main role was cast by a young actress.", contextIndonesian: "Peran utamanya diberikan kepada aktris pendatang baru." }
   - { word: "film music", translation: "musik film", context: "The film music was composed specifically for the film.", contextIndonesian: "Musik filmnya digubah khusus untuk film itu." }
-  - { word: "rental", translation: "distributor film", context: "The distributor brought the film to other markets.", contextIndonesian: "Distributor itu membawa filmnya ke pasar lain." }
+  - { word: "rental", translation: "distributor film", context: "The distributor brought the film to other markets. (keyword: rental)", contextIndonesian: "Distributor itu membawa filmnya ke pasar lain." }
   - { word: "streaming platform", translation: "platform streaming", context: "The streaming platform secured the first broadcast.", contextIndonesian: "Platform streaming itu mendapatkan hak tayang perdana." }
-  - { word: "documentation", translation: "film dokumenter", context: "The documentary was nominated for a film award.", contextIndonesian: "Film dokumenter itu dinominasikan untuk penghargaan." }
+  - { word: "documentation", translation: "film dokumenter", context: "The documentary was nominated for a film award. (keyword: documentation)", contextIndonesian: "Film dokumenter itu dinominasikan untuk penghargaan." }
   - { word: "film review", translation: "kritik film", context: "The film review was mixed despite a good cast.", contextIndonesian: "Kritik filmnya beragam meski pemerannya bagus." }
   - { word: "post-processing", translation: "pascaproduksi", context: "The post-processing took longer than planned.", contextIndonesian: "Pascaproduksinya lebih lama dari rencana." }
 ---

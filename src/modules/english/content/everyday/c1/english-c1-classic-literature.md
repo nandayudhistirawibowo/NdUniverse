@@ -14,11 +14,11 @@ vocab:
   - { word: "era", translation: "zaman", context: "The era in which it was created was marked by upheavals.", contextIndonesian: "Zaman saat karya itu muncul ditandai banyak perubahan." }
   - { word: "verse narrative", translation: "kisah berbentuk puisi", context: "The verse narrative combines action and reflection.", contextIndonesian: "Kisah berbentuk puisi itu memadukan alur dan refleksi." }
   - { word: "topos", translation: "topos", context: "The topos will be taken up in new contexts.", contextIndonesian: "Topos itu diangkat kembali dalam konteks baru." }
-  - { word: "figure constellation", translation: "konstelasi tokoh", context: "The constellation of figures reflects social rankings.", contextIndonesian: "Konstelasi tokohnya mencerminkan hierarki sosial." }
+  - { word: "figure constellation", translation: "konstelasi tokoh", context: "The constellation of figures reflects social rankings. (keyword: figure constellation)", contextIndonesian: "Konstelasi tokohnya mencerminkan hierarki sosial." }
   - { word: "estates clause", translation: "aturan kelas dalam drama", context: "The estates clause determined the drama for a long time.", contextIndonesian: "Aturan kelas lama menentukan bentuk drama." }
   - { word: "catharsis", translation: "katarsis", context: "Catharsis is interpreted differently.", contextIndonesian: "Katarsis ditafsirkan dengan beragam cara." }
   - { word: "blank verse", translation: "sajak blank verse", context: "The blank verse gives the dialogue a special rhythm.", contextIndonesian: "Sajak blank verse memberi irama khusus pada dialog." }
-  - { word: "handwriting", translation: "naskah tulisan tangan", context: "The manuscript has been carefully dated.", contextIndonesian: "Naskah tulisan tangannya diberi penanggalan dengan teliti." }
+  - { word: "handwriting", translation: "naskah tulisan tangan", context: "The manuscript has been carefully dated. (keyword: handwriting)", contextIndonesian: "Naskah tulisan tangannya diberi penanggalan dengan teliti." }
   - { word: "intertextuality", translation: "intertekstualitas", context: "Intertextuality links the text with models.", contextIndonesian: "Intertekstualitas menghubungkan teks itu dengan karya-karya terdahulu." }
   - { word: "revision", translation: "revisi", context: "The revision probably took place decades later.", contextIndonesian: "Revisinya mungkin dilakukan beberapa dekade kemudian." }
   - { word: "chivalric novel", translation: "roman kesatria", context: "The chivalric novel combines adventure and morality.", contextIndonesian: "Roman kesatria memadukan petualangan dan pesan moral." }

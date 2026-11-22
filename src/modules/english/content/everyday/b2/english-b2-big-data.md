@@ -5,18 +5,16 @@ track: "Everyday English"
 level: "B2"
 vocab:
   - { word: "data analysis", translation: "analisis data", context: "Data analysis expanded to millions of entries.", contextIndonesian: "Analisis datanya diperluas hingga jutaan entri." }
-  - { word: "data protection", translation: "perlindungan data", context: "Data protection needs to be more strictly controlled.", contextIndonesian: "Perlindungan datanya perlu diawasi lebih ketat." }
   - { word: "data collection", translation: "pengumpulan data", context: "Data collection only took place with consent.", contextIndonesian: "Pengumpulan datanya hanya dilakukan dengan persetujuan." }
-  - { word: "data record", translation: "kumpulan data", context: "The data set was cleaned before evaluation.", contextIndonesian: "Kumpulan datanya dibersihkan sebelum dianalisis." }
+  - { word: "data record", translation: "kumpulan data", context: "The data set was cleaned before evaluation. (keyword: data record)", contextIndonesian: "Kumpulan datanya dibersihkan sebelum dianalisis." }
   - { word: "anonymization", translation: "anonimisasi", context: "Anonymization was carried out before publication.", contextIndonesian: "Anonimisasi dilakukan sebelum datanya diterbitkan." }
   - { word: "data processing", translation: "pemrosesan data", context: "Data processing must be regulated transparently.", contextIndonesian: "Pemrosesan datanya harus diatur secara transparan." }
-  - { word: "algorithm", translation: "algoritma", context: "The algorithm recognized a recurring pattern.", contextIndonesian: "Algoritmanya mengenali pola yang berulang." }
-  - { word: "prediction", translation: "prediksi", context: "The forecast was made using historical data.", contextIndonesian: "Prediksinya dibuat berdasarkan data historis." }
+  - { word: "prediction", translation: "prediksi", context: "The forecast was made using historical data. (keyword: prediction)", contextIndonesian: "Prediksinya dibuat berdasarkan data historis." }
   - { word: "data source", translation: "sumber data", context: "The data source used remained unknown.", contextIndonesian: "Sumber data yang digunakan tetap tidak diketahui." }
   - { word: "consent", translation: "persetujuan", context: "Consent could be revoked at any time.", contextIndonesian: "Persetujuannya bisa dicabut kapan saja." }
   - { word: "amount of data", translation: "volume data", context: "The amount of data is growing faster than the storage capacity.", contextIndonesian: "Volume datanya bertambah lebih cepat daripada kapasitas penyimpanan." }
   - { word: "evaluation", translation: "analisis", context: "The evaluation was checked by experts.", contextIndonesian: "Analisisnya diperiksa oleh para ahli." }
-  - { word: "profile creation", translation: "pembuatan profil", context: "Profiling could disadvantage certain groups.", contextIndonesian: "Pembuatan profil bisa merugikan kelompok tertentu." }
+  - { word: "profile creation", translation: "pembuatan profil", context: "Profiling could disadvantage certain groups. (keyword: profile creation)", contextIndonesian: "Pembuatan profil bisa merugikan kelompok tertentu." }
   - { word: "personal reference", translation: "keterkaitan dengan identitas pribadi", context: "The personal reference was removed before the exchange.", contextIndonesian: "Kaitan dengan identitas pribadi dihapus sebelum data dibagikan." }
   - { word: "database", translation: "basis data", context: "The database has been protected against unauthorized access.", contextIndonesian: "Basis datanya dilindungi dari akses tanpa izin." }
   - { word: "data quality", translation: "kualitas data", context: "Data quality influences every analysis result.", contextIndonesian: "Kualitas data memengaruhi setiap hasil analisis." }

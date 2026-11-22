@@ -8,7 +8,6 @@ vocab:
   - { word: "sun", translation: "matahari", context: "The sun is shining today.", contextIndonesian: "Matahari bersinar hari ini." }
   - { word: "sunny", translation: "cerah", context: "It will be sunny tomorrow.", contextIndonesian: "Besok cuacanya akan cerah." }
   - { word: "rain", translation: "hujan", context: "The rain will stop soon.", contextIndonesian: "Hujannya sebentar lagi reda." }
-  - { word: "rain", translation: "turun hujan", context: "It rains all day.", contextIndonesian: "Hujan turun sepanjang hari." }
   - { word: "snow", translation: "salju", context: "There is snow in the garden.", contextIndonesian: "Ada salju di taman." }
   - { word: "snowing", translation: "turun salju", context: "It's snowing in Berlin today.", contextIndonesian: "Hari ini turun salju di Berlin." }
   - { word: "wind", translation: "angin", context: "The wind is strong today.", contextIndonesian: "Anginnya kencang hari ini." }
@@ -16,8 +15,6 @@ vocab:
   - { word: "warm", translation: "hangat", context: "It's pleasantly warm today.", contextIndonesian: "Hari ini hangat dan nyaman." }
   - { word: "hot", translation: "panas", context: "It is often hot in July.", contextIndonesian: "Bulan Juli sering panas." }
   - { word: "cold", translation: "dingin", context: "It's still cold in the morning.", contextIndonesian: "Pagi-pagi masih dingin." }
-  - { word: "cloud", translation: "awan", context: "A dark cloud is coming.", contextIndonesian: "Awan gelap mulai datang." }
-  - { word: "sky", translation: "langit", context: "The sky is clear today.", contextIndonesian: "Langit hari ini cerah." }
   - { word: "spring", translation: "musim semi", context: "Many flowers bloom in spring.", contextIndonesian: "Banyak bunga mekar saat musim semi." }
   - { word: "summer", translation: "musim panas", context: "We often go swimming in the summer.", contextIndonesian: "Saat musim panas kami sering berenang." }
   - { word: "autumn", translation: "musim gugur", context: "The leaves fall in autumn.", contextIndonesian: "Daun-daun berguguran saat musim gugur." }

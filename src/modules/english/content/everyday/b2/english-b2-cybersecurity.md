@@ -8,7 +8,7 @@ vocab:
   - { word: "encryption", translation: "enkripsi", context: "Encryption protects sensitive messages.", contextIndonesian: "Enkripsi melindungi pesan sensitif." }
   - { word: "malware", translation: "perangkat lunak berbahaya", context: "The malware was detected by a scanner.", contextIndonesian: "Perangkat lunak berbahaya itu terdeteksi oleh pemindai." }
   - { word: "data breach", translation: "pelanggaran data", context: "The data breach was reported to those affected.", contextIndonesian: "Pelanggaran datanya diberitahukan kepada orang-orang terdampak." }
-  - { word: "vulnerability", translation: "celah keamanan", context: "The security hole has been closed with an update.", contextIndonesian: "Celah keamanannya ditutup lewat pembaruan." }
+  - { word: "vulnerability", translation: "celah keamanan", context: "The security hole has been closed with an update. (keyword: vulnerability)", contextIndonesian: "Celah keamanannya ditutup lewat pembaruan." }
   - { word: "access control", translation: "kontrol akses", context: "Access control has been tightened for all accounts.", contextIndonesian: "Kontrol akses diperketat untuk semua akun." }
   - { word: "password", translation: "kata sandi", context: "The password should be renewed regularly.", contextIndonesian: "Kata sandinya sebaiknya diganti secara rutin." }
   - { word: "data backup", translation: "pencadangan data", context: "The data backup was carried out automatically.", contextIndonesian: "Pencadangan datanya dilakukan secara otomatis." }
@@ -17,13 +17,12 @@ vocab:
   - { word: "firewall", translation: "firewall", context: "The firewall blocked suspicious connections.", contextIndonesian: "Firewall memblokir koneksi yang mencurigakan." }
   - { word: "phishing attempt", translation: "upaya phishing", context: "The phishing attempt was detected in time.", contextIndonesian: "Upaya phishing-nya terdeteksi tepat waktu." }
   - { word: "access restriction", translation: "pembatasan akses", context: "The access restriction was adapted to the role.", contextIndonesian: "Pembatasan aksesnya disesuaikan dengan peran." }
-  - { word: "security policy", translation: "kebijakan keamanan", context: "The safety policy was explained to all employees.", contextIndonesian: "Kebijakan keamanannya dijelaskan kepada semua pegawai." }
-  - { word: "data protection", translation: "perlindungan data", context: "Data protection must be guaranteed during all processing.", contextIndonesian: "Perlindungan data harus terjamin dalam setiap pemrosesan." }
+  - { word: "security policy", translation: "kebijakan keamanan", context: "The safety policy was explained to all employees. (keyword: security policy)", contextIndonesian: "Kebijakan keamanannya dijelaskan kepada semua pegawai." }
   - { word: "threat", translation: "ancaman", context: "The threat has been reassessed by experts.", contextIndonesian: "Ancaman itu dinilai ulang oleh para ahli." }
-  - { word: "restoration", translation: "pemulihan", context: "The recovery took several hours.", contextIndonesian: "Pemulihannya memakan waktu beberapa jam." }
+  - { word: "restoration", translation: "pemulihan", context: "The recovery took several hours. (keyword: restoration)", contextIndonesian: "Pemulihannya memakan waktu beberapa jam." }
   - { word: "backup copy", translation: "salinan cadangan", context: "The backup copy was saved in a separate location.", contextIndonesian: "Salinan cadangannya disimpan di lokasi terpisah." }
-  - { word: "identity check", translation: "verifikasi identitas", context: "The identity verification took place before the account change.", contextIndonesian: "Identitas diverifikasi sebelum akun diubah." }
-  - { word: "confidentiality", translation: "kerahasiaan", context: "Confidentiality was guaranteed contractually.", contextIndonesian: "Kerahasiaannya dijamin dalam kontrak." }
+  - { word: "identity check", translation: "verifikasi identitas", context: "The identity verification took place before the account change. (keyword: identity check)", contextIndonesian: "Identitas diverifikasi sebelum akun diubah." }
+
 ---
 
 # Cybersecurity

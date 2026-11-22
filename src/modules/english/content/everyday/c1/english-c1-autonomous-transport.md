@@ -8,7 +8,7 @@ vocab:
   - { word: "vehicle sensors", translation: "sensor kendaraan", context: "The vehicle sensors are designed to be redundant.", contextIndonesian: "Sensor kendaraannya dirancang dengan sistem cadangan." }
   - { word: "perception of the surroundings", translation: "persepsi lingkungan sekitar", context: "Perception of the surroundings must also work in fog.", contextIndonesian: "Persepsi lingkungan sekitar harus tetap berfungsi saat berkabut." }
   - { word: "driving intervention", translation: "intervensi pengemudi", context: "Driving intervention remains possible at any time.", contextIndonesian: "Pengemudi tetap bisa mengambil alih kapan saja." }
-  - { word: "liability question", translation: "persoalan tanggung jawab hukum", context: "The question of liability has not yet been finally clarified.", contextIndonesian: "Persoalan tanggung jawab hukumnya belum sepenuhnya jelas." }
+  - { word: "liability question", translation: "persoalan tanggung jawab hukum", context: "The question of liability has not yet been finally clarified. (keyword: liability question)", contextIndonesian: "Persoalan tanggung jawab hukumnya belum sepenuhnya jelas." }
   - { word: "driving function", translation: "fungsi berkendara", context: "The driving function will be activated gradually.", contextIndonesian: "Fungsi berkendaranya dibuka secara bertahap." }
   - { word: "lidar sensor", translation: "sensor lidar", context: "The lidar sensor measures spatial distances precisely.", contextIndonesian: "Sensor lidarnya mengukur jarak ruang dengan presisi." }
   - { word: "handover delay", translation: "keterlambatan pengambilalihan kendali", context: "The handover delay endangers traffic safety.", contextIndonesian: "Keterlambatan pengambilalihan kendali membahayakan keselamatan lalu lintas." }
@@ -18,10 +18,10 @@ vocab:
   - { word: "operating license", translation: "izin operasi", context: "The operating license is renewed annually.", contextIndonesian: "Izin operasinya diperbarui setiap tahun." }
   - { word: "emergency strategy", translation: "strategi darurat", context: "The emergency strategy must be clearly programmed.", contextIndonesian: "Strategi daruratnya harus diprogram dengan jelas." }
   - { word: "driving data recording", translation: "perekaman data berkendara", context: "Driving data recording is data protection compliant.", contextIndonesian: "Data berkendara direkam sesuai aturan perlindungan privasi." }
-  - { word: "object recognition", translation: "pengenalan objek", context: "Object detection fails with unusual markings.", contextIndonesian: "Pengenalan objeknya gagal saat menemukan marka yang tidak biasa." }
+  - { word: "object recognition", translation: "pengenalan objek", context: "Object detection fails with unusual markings. (keyword: object recognition)", contextIndonesian: "Pengenalan objeknya gagal saat menemukan marka yang tidak biasa." }
   - { word: "vehicle control", translation: "kendali kendaraan", context: "Vehicle control is stabilized through sensor fusion.", contextIndonesian: "Kendali kendaraannya distabilkan lewat penggabungan data sensor." }
   - { word: "transfer interface", translation: "antarmuka pengambilalihan", context: "The transfer interface must be designed to be understandable.", contextIndonesian: "Antarmuka pengambilalihannya harus dirancang agar mudah dipahami." }
-  - { word: "collision avoidance", translation: "pencegahan tabrakan", context: "Avoiding collisions takes priority over saving time.", contextIndonesian: "Pencegahan tabrakan lebih penting daripada menghemat waktu." }
+  - { word: "collision avoidance", translation: "pencegahan tabrakan", context: "Avoiding collisions takes priority over saving time. (keyword: collision avoidance)", contextIndonesian: "Pencegahan tabrakan lebih penting daripada menghemat waktu." }
   - { word: "test site", translation: "area pengujian", context: "The test site recreates complex intersections.", contextIndonesian: "Area pengujiannya meniru persimpangan yang rumit." }
   - { word: "vehicle safety", translation: "keselamatan kendaraan", context: "Vehicle safety is independently certified.", contextIndonesian: "Keselamatan kendaraannya disertifikasi secara independen." }
 ---

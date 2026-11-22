@@ -13,13 +13,12 @@ vocab:
   - { word: "climate policy", translation: "kebijakan iklim", context: "Climate policy was hotly debated in Parliament.", contextIndonesian: "Kebijakan iklim diperdebatkan sengit di parlemen." }
   - { word: "climate protection", translation: "perlindungan iklim", context: "Climate protection should be taken into account in every planning.", contextIndonesian: "Perlindungan iklim sebaiknya dipertimbangkan dalam setiap perencanaan." }
   - { word: "emission", translation: "emisi", context: "Emissions would have to fall by 2030.", contextIndonesian: "Emisi perlu turun sebelum 2030." }
-  - { word: "adjustment", translation: "adaptasi", context: "Adaptation to heat became urgent.", contextIndonesian: "Adaptasi terhadap panas menjadi sangat penting." }
+  - { word: "adjustment", translation: "adaptasi", context: "Adaptation to heat became urgent. (keyword: adjustment)", contextIndonesian: "Adaptasi terhadap panas menjadi sangat penting." }
   - { word: "measure", translation: "langkah", context: "The measure was recommended by experts.", contextIndonesian: "Langkah itu direkomendasikan para ahli." }
   - { word: "CO2 emissions", translation: "emisi karbon dioksida", context: "CO2 emissions were reduced during operation.", contextIndonesian: "Emisi karbon dioksida di perusahaan itu dikurangi." }
   - { word: "energy transition", translation: "transisi energi", context: "The energy transition required high investments.", contextIndonesian: "Transisi energi membutuhkan investasi besar." }
   - { word: "biodiversity", translation: "keanekaragaman hayati", context: "Biodiversity decreased in dry areas.", contextIndonesian: "Keanekaragaman hayati menurun di daerah kering." }
   - { word: "climate conference", translation: "konferensi iklim", context: "The climate conference ended without a binding agreement.", contextIndonesian: "Konferensi iklim berakhir tanpa kesepakatan yang mengikat." }
-  - { word: "responsibility", translation: "tanggung jawab", context: "Everyone is responsible for effective climate protection.", contextIndonesian: "Semua orang bertanggung jawab melindungi iklim." }
   - { word: "sustainability", translation: "keberlanjutan", context: "Sustainability was given greater consideration in the new plan.", contextIndonesian: "Keberlanjutan lebih diperhatikan dalam rencana baru." }
   - { word: "climate escape", translation: "pengungsian akibat iklim", context: "Climate escape increased after severe droughts.", contextIndonesian: "Pengungsian akibat iklim meningkat setelah kekeringan parah." }
   - { word: "weather extremes", translation: "cuaca ekstrem", context: "Weather extremes occurred more frequently in the region.", contextIndonesian: "Cuaca ekstrem lebih sering terjadi di wilayah itu." }

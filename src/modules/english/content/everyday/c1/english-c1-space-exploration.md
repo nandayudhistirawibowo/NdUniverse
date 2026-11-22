@@ -17,13 +17,13 @@ vocab:
   - { word: "launch vehicle", translation: "roket peluncur", context: "The launch vehicle was successfully reused.", contextIndonesian: "Roket peluncurnya berhasil digunakan kembali." }
   - { word: "landing maneuver", translation: "manuver pendaratan", context: "The landing maneuver was automated.", contextIndonesian: "Manuver pendaratannya sudah diotomatisasi." }
   - { word: "extraterrestrial sample", translation: "sampel ekstraterestrial", context: "The extraterrestrial sample is stored sterile.", contextIndonesian: "Sampel ekstraterestrialnya disimpan secara steril." }
-  - { word: "space junk", translation: "sampah antariksa", context: "Space debris endangers active satellites.", contextIndonesian: "Sampah antariksa membahayakan satelit yang masih beroperasi." }
+  - { word: "space junk", translation: "sampah antariksa", context: "Space debris endangers active satellites. (keyword: space junk)", contextIndonesian: "Sampah antariksa membahayakan satelit yang masih beroperasi." }
   - { word: "astrobiology", translation: "astrobiologi", context: "Astrobiology looking for possible traces of life.", contextIndonesian: "Astrobiologi mencari kemungkinan jejak kehidupan." }
-  - { word: "sun sail", translation: "layar surya", context: "The solar sail uses radiation pressure.", contextIndonesian: "Layar surya memanfaatkan tekanan radiasi." }
-  - { word: "repatriation mission", translation: "misi pengambilan sampel", context: "The return mission brings rock samples to Earth.", contextIndonesian: "Misi pengambilan sampel membawa batuan ke Bumi." }
+  - { word: "sun sail", translation: "layar surya", context: "The solar sail uses radiation pressure. (keyword: sun sail)", contextIndonesian: "Layar surya memanfaatkan tekanan radiasi." }
+  - { word: "repatriation mission", translation: "misi pengambilan sampel", context: "The return mission brings rock samples to Earth. (keyword: repatriation mission)", contextIndonesian: "Misi pengambilan sampel membawa batuan ke Bumi." }
   - { word: "lunar station", translation: "stasiun Bulan", context: "The lunar station will be constructed modularly.", contextIndonesian: "Stasiun Bulannya dibangun secara modular." }
   - { word: "planetary exploration", translation: "eksplorasi planet", context: "Planetary exploration expands our understanding of the solar system.", contextIndonesian: "Eksplorasi planet memperluas pemahaman kita tentang tata surya." }
-  - { word: "mission progression", translation: "jalannya misi", context: "The course of the mission is continuously documented.", contextIndonesian: "Jalannya misi didokumentasikan secara terus-menerus." }
+  - { word: "mission progression", translation: "jalannya misi", context: "The course of the mission is continuously documented. (keyword: mission progression)", contextIndonesian: "Jalannya misi didokumentasikan secara terus-menerus." }
 ---
 
 # Space Exploration

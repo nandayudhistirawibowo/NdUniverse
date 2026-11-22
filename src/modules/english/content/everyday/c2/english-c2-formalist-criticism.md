@@ -5,7 +5,6 @@ track: "Everyday English"
 level: "C2"
 vocab:
   - { word: "literary fact", translation: "struktur material karya sastra", context: "Literary facture draws attention to linguistic processes.", contextIndonesian: "Struktur material karya sastra mengarahkan perhatian pada teknik bahasa." }
-  - { word: "alienation", translation: "defamiliarisasi", context: "Alienization makes familiar things perceivable in a new way.", contextIndonesian: "Defamiliarisasi membuat hal biasa dapat dirasakan kembali sebagai sesuatu yang baru." }
   - { word: "dominant function", translation: "fungsi dominan", context: "The dominant function organizes the remaining design means.", contextIndonesian: "Fungsi dominan menata perangkat artistik lainnya." }
   - { word: "aesthetic function", translation: "fungsi estetis", context: "Aesthetic function interrupts the automated use of language.", contextIndonesian: "Fungsi estetis memutus penggunaan bahasa yang otomatis." }
   - { word: "motivation", translation: "motivasi artistik", context: "Motivation makes formal decisions understandable.", contextIndonesian: "Motivasi artistik membuat keputusan bentuk dapat dipahami." }
@@ -18,7 +17,7 @@ vocab:
   - { word: "literary series", translation: "rangkaian sastra", context: "Literary series changed with historical conventions.", contextIndonesian: "Rangkaian sastra berubah mengikuti konvensi historis." }
   - { word: "language function", translation: "fungsi bahasa", context: "Language function is particularly prominent in the work of art.", contextIndonesian: "Fungsi bahasa menonjol secara khusus dalam karya seni." }
   - { word: "formal deviation", translation: "penyimpangan formal", context: "Formal deviations make conventions recognizable in the first place.", contextIndonesian: "Penyimpangan formal justru membuat konvensi dapat dikenali." }
-  - { word: "compositional fit", translation: "perangkaian komposisional", context: "Compositional joining connects heterogeneous elements.", contextIndonesian: "Perangkaian komposisional menyatukan unsur-unsur yang beragam." }
+  - { word: "compositional fit", translation: "perangkaian komposisional", context: "Compositional joining connects heterogeneous elements. (keyword: compositional fit)", contextIndonesian: "Perangkaian komposisional menyatukan unsur-unsur yang beragam." }
   - { word: "semantic layering", translation: "pelapisan semantis", context: "Semantic layering arises from recurring motifs.", contextIndonesian: "Pelapisan semantis terbentuk lewat motif yang berulang." }
   - { word: "literary convention", translation: "konvensi sastra", context: "Literary convention is continued through variation.", contextIndonesian: "Konvensi sastra diteruskan melalui variasi." }
   - { word: "narrative technique", translation: "teknik penceritaan", context: "Narrative technique shapes the perception of the events depicted.", contextIndonesian: "Teknik penceritaan membentuk persepsi terhadap peristiwa yang digambarkan." }
