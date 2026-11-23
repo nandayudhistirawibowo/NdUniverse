@@ -558,10 +558,29 @@ export default function Quiz(props) {
     && correctCount >= requiredCorrect;
   const sessionFailed = isGameOver || (sessionMode && queue.length === 0 && !sessionPassed);
 
+  const repeatAttemptRef = useRef(false);
+
+  useEffect(() => {
+    if (!materialId) {
+      repeatAttemptRef.current = false;
+      return;
+    }
+    if (pillarMode && pillarType) {
+      repeatAttemptRef.current = readSessionPillars(materialId, activeSessionNumber).includes(pillarType);
+      return;
+    }
+    if (sessionMode) {
+      repeatAttemptRef.current = activeSessionNumber <= readCompletedSessions(materialId);
+      return;
+    }
+    repeatAttemptRef.current = false;
+  }, [materialId, activeSessionNumber, pillarMode, pillarType, sessionMode]);
+
   useEffect(() => {
     if (!sessionPassed || !materialId) return;
 
     if (pillarMode && pillarType) {
+      repeatAttemptRef.current = readSessionPillars(materialId, activeSessionNumber).includes(pillarType);
       const sessionPillarKey = saveSessionPillar(
         materialId,
         activeSessionNumber,
@@ -582,25 +601,25 @@ export default function Quiz(props) {
       return;
     }
 
-    const savedCompleted = isAuthenticated ? readCompletedSessions(materialId) : 0;
+    const savedCompleted = readCompletedSessions(materialId);
+    repeatAttemptRef.current = activeSessionNumber <= savedCompleted;
     const completed = Math.max(savedCompleted, activeSessionNumber);
     const sessionsPassed = Array.from({ length: completed }, (_, index) => index + 1);
     completedSessionsRef.current = sessionsPassed;
-    if (isAuthenticated) {
-      try {
-        window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completed} Lulus`);
-      } catch {
-        // The session still syncs to Supabase when available.
-      }
+    try {
+      window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completed} Lulus`);
+    } catch {
+      // The session still syncs to Supabase when available.
     }
     queueProgressUpdate({ sessions_passed: sessionsPassed });
-  }, [sessionPassed, materialId, activeSessionNumber, isAuthenticated, pillarMode, pillarType]);
+  }, [sessionPassed, materialId, activeSessionNumber, isAuthenticated, pillarMode, pillarType, sessionCount, sessionMode]);
 
   useEffect(() => {
     if (queue.length > 0 || isGameOver || finalizedXpRef.current) return;
 
     finalizedXpRef.current = true;
     if (sessionXp <= 0) return;
+    if (repeatAttemptRef.current) return;
     const cappedSessionXp = Math.min(sessionXp, Math.max(0, maxMaterialXp - materialXp));
     if (cappedSessionXp <= 0) return;
 
@@ -629,8 +648,14 @@ export default function Quiz(props) {
 
   function awardXp(amount) {
     setSessionXp((prev) => {
+      const isRepeat = pillarMode && pillarType
+        ? readSessionPillars(materialId, activeSessionNumber).includes(pillarType)
+        : (sessionMode && activeSessionNumber <= readCompletedSessions(materialId));
       const remaining = Math.max(0, maxMaterialXp - materialXp - prev);
-      const gain = Math.max(0, Math.min(Number(amount) || 0, remaining));
+      const gain = isRepeat ? 0 : Math.max(0, Math.min(Number(amount) || 0, remaining));
+      if (import.meta.env.DEV) {
+        console.log(`[XP DEBUG] Current XP: ${materialXp}, Max XP: ${maxMaterialXp}, Awarded: ${gain}`);
+      }
       return gain > 0 ? prev + gain : prev;
     });
   }
