@@ -22,7 +22,9 @@ const VOICE_ACTIVITY_MIN_THRESHOLD = 0.02;
 const VOICE_ACTIVITY_NOISE_MARGIN = 0.03;
 const NOISY_ROOM_THRESHOLD = 0.05;
 const NOISY_ROOM_VOICE_MARGIN = 0.1;
-const SILENCE_GRACE_PERIOD_MS = 1_500;
+const SILENCE_GRACE_PERIOD_MS = 2_500;
+const PRE_ROLL_MS = 1_500;
+const RECORDER_TIMESLICE_MS = 250;
 
 export function stopRecording(): void {
   activeRecording?.stop();
@@ -108,22 +110,6 @@ export async function recordAndTranscribe({
       }
       return Math.sqrt(sumSquares / samples.length);
     };
-    const calibrationSamples: number[] = [];
-    const calibrationEnd = performance.now() + NOISE_CALIBRATION_MS;
-    while (performance.now() < calibrationEnd) {
-      if (cancelled) throw new Error('STT_CANCELLED');
-      calibrationSamples.push(readRms());
-      await new Promise<void>((resolve) => window.setTimeout(resolve, 25));
-    }
-    if (cancelled) throw new Error('STT_CANCELLED');
-    const noiseFloor = calibrationSamples.length > 0
-      ? calibrationSamples.reduce((sum, level) => sum + level, 0) / calibrationSamples.length
-      : 0;
-    const noiseMargin = noiseFloor > NOISY_ROOM_THRESHOLD
-      ? NOISY_ROOM_VOICE_MARGIN
-      : VOICE_ACTIVITY_NOISE_MARGIN;
-    const voiceActivityThreshold = Math.max(VOICE_ACTIVITY_MIN_THRESHOLD, noiseFloor + noiseMargin);
-    onNoiseFloor?.(noiseFloor);
 
     const preferredMimeType = 'audio/webm;codecs=opus';
     const mimeType = MediaRecorder.isTypeSupported(preferredMimeType)
@@ -136,12 +122,35 @@ export async function recordAndTranscribe({
     recorder = mimeType
       ? new MediaRecorder(filteredStream, { mimeType })
       : new MediaRecorder(filteredStream);
-    const chunks: BlobPart[] = [];
+
+    const rollingChunks: Array<{ blob: Blob; ts: number }> = [];
+    const finalChunks: Blob[] = [];
+    let committed = false;
+
+    const trimRolling = () => {
+      const cutoff = performance.now() - PRE_ROLL_MS;
+      while (rollingChunks.length > 1 && rollingChunks[0].ts < cutoff) {
+        rollingChunks.shift();
+      }
+    };
+
+    const commitPreRoll = () => {
+      if (committed) return;
+      committed = true;
+      for (const item of rollingChunks) finalChunks.push(item.blob);
+      rollingChunks.length = 0;
+    };
 
     const recording = new Promise<Blob>((resolve, reject) => {
       rejectRecording = reject;
       recorder?.addEventListener('dataavailable', (event) => {
-        if (event.data.size > 0) chunks.push(event.data);
+        if (event.data.size <= 0) return;
+        if (committed) {
+          finalChunks.push(event.data);
+        } else {
+          rollingChunks.push({ blob: event.data, ts: performance.now() });
+          trimRolling();
+        }
       });
       recorder?.addEventListener('error', () => reject(new Error('Audio recording failed.')), { once: true });
       recorder?.addEventListener('stop', () => {
@@ -149,17 +158,43 @@ export async function recordAndTranscribe({
           reject(new Error('STT_CANCELLED'));
           return;
         }
-        resolve(new Blob(chunks, { type: recorder?.mimeType || mimeType || 'audio/webm' }));
+        const outputChunks = committed ? finalChunks : rollingChunks.map((item) => item.blob);
+        resolve(new Blob(outputChunks, { type: recorder?.mimeType || mimeType || 'audio/webm' }));
       }, { once: true });
     });
 
     let heardSound = false;
     let lastSoundAt = 0;
     let lastVolumeUpdate = 0;
+    let voiceActivityThreshold = VOICE_ACTIVITY_MIN_THRESHOLD;
+    let calibrationDone = false;
+    let noiseFloor = 0;
+
+    const calibrationPromise = (async () => {
+      const calibrationSamples: number[] = [];
+      const calibrationEnd = performance.now() + NOISE_CALIBRATION_MS;
+      while (performance.now() < calibrationEnd) {
+        if (cancelled) throw new Error('STT_CANCELLED');
+        calibrationSamples.push(readRms());
+        await new Promise<void>((resolve) => window.setTimeout(resolve, 25));
+      }
+      if (cancelled) throw new Error('STT_CANCELLED');
+      noiseFloor = calibrationSamples.length > 0
+        ? calibrationSamples.reduce((sum, level) => sum + level, 0) / calibrationSamples.length
+        : 0;
+      const noiseMargin = noiseFloor > NOISY_ROOM_THRESHOLD
+        ? NOISY_ROOM_VOICE_MARGIN
+        : VOICE_ACTIVITY_NOISE_MARGIN;
+      voiceActivityThreshold = Math.max(VOICE_ACTIVITY_MIN_THRESHOLD, noiseFloor + noiseMargin);
+      calibrationDone = true;
+      onNoiseFloor?.(noiseFloor);
+    })();
+
     const monitorAudio = (now: number) => {
       if (recorder?.state !== 'recording') return;
       const rms = readRms();
-      if (rms > voiceActivityThreshold) {
+      if (calibrationDone && rms > voiceActivityThreshold) {
+        if (!heardSound) commitPreRoll();
         heardSound = true;
         lastSoundAt = now;
       }
@@ -167,17 +202,19 @@ export async function recordAndTranscribe({
         onVolume(Math.min(1, rms * 6));
         lastVolumeUpdate = now;
       }
-      if (heardSound && now - lastSoundAt >= SILENCE_GRACE_PERIOD_MS) {
+      if (calibrationDone && heardSound && now - lastSoundAt >= SILENCE_GRACE_PERIOD_MS) {
         session.stop();
         return;
       }
       animationFrame = window.requestAnimationFrame(monitorAudio);
     };
 
-    recorder.start();
+    recorder.start(RECORDER_TIMESLICE_MS);
     animationFrame = window.requestAnimationFrame(monitorAudio);
     maxTimer = window.setTimeout(() => session.stop(), maxMs);
     if (stopRequested) session.stop();
+
+    await calibrationPromise;
 
     const blob = await recording;
     if (cancelled) throw new Error('STT_CANCELLED');

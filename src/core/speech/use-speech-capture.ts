@@ -2,11 +2,15 @@ import { useEffect, useRef, useState } from 'preact/hooks';
 import { createRecognizer, getRecognitionLang } from './stt-engine';
 import { cancelRecording, recordAndTranscribe, stopRecording } from './recorder';
 import {
-  gradeWithAlternatives,
+  grade,
+  gradeKeywords,
+  phoneticSimilarity,
   type GradeResult,
   type GradeWithAlternativesResult,
   type KeywordGradeResult,
 } from './match';
+// @ts-ignore - fuzzy-match.js has no type declarations
+import { isAnswerCorrect, calculateSimilarity } from '../game/fuzzy-match.js';
 
 export type SpeechState = 'idle' | 'listening' | 'processing' | 'feedback' | 'next';
 export type SpeechGrade = GradeResult | KeywordGradeResult | GradeWithAlternativesResult;
@@ -38,6 +42,80 @@ const ERROR_MESSAGES: Record<string, string> = {
   'service-not-allowed': 'STT tidak tersedia di browser ini (coba Chrome/Edge terbaru)',
   timeout: 'Waktu rekaman habis. Coba lagi.',
 };
+
+function gradeUnifiedWithAlternatives(
+  alternatives: Array<{ transcript: string; confidence: number }>,
+  target: string,
+  {
+    singleWord = false,
+    keywords,
+    preserveArticles = false,
+  }: { singleWord?: boolean; keywords?: string[]; preserveArticles?: boolean } = {},
+): GradeWithAlternativesResult {
+  const targetValue = keywords?.length ? keywords.join(' ') : target;
+  const threshold = keywords?.length ? 0.6 : singleWord ? 0.85 : 0.75;
+  const candidates = alternatives.length > 0 ? alternatives : [{ transcript: '', confidence: 0 }];
+
+  let bestResult: GradeWithAlternativesResult | null = null;
+  candidates.forEach((alternative, index) => {
+    const transcript = String(alternative.transcript ?? '').trim();
+    const base = keywords?.length
+      ? gradeKeywords(transcript, keywords, { preserveArticles })
+      : grade(transcript, target, { singleWord, preserveArticles });
+    const fuzzyPass = Boolean(isAnswerCorrect(transcript, targetValue, threshold, { preserveArticles }));
+    const phonScore = phoneticSimilarity(transcript, targetValue, { preserveArticles });
+    const phonPass = phonScore >= 0.85;
+    const pass = fuzzyPass || phonPass;
+    const method: 'exact' | 'phonetic' | 'fuzzy' = phonPass && !fuzzyPass ? 'phonetic' : 'fuzzy';
+    const fuzzyScore = Number(calculateSimilarity(transcript, targetValue));
+    const score = phonPass && !fuzzyPass
+      ? phonScore
+      : Math.max(Number.isFinite(fuzzyScore) ? fuzzyScore : 0, base.score, phonScore);
+
+    const result: GradeWithAlternativesResult = {
+      score,
+      pass,
+      matched: base.matched,
+      missing: base.missing,
+      bestTranscript: transcript,
+      bestAlternative: { transcript, confidence: alternative.confidence ?? 0, index },
+      method,
+    };
+
+    if (!bestResult) {
+      bestResult = result;
+      return;
+    }
+    const bestPass = bestResult.pass ? 1 : 0;
+    const resultPass = result.pass ? 1 : 0;
+    if (resultPass > bestPass) {
+      bestResult = result;
+      return;
+    }
+    if (resultPass === bestPass) {
+      if (result.score > bestResult.score) {
+        bestResult = result;
+        return;
+      }
+      if (
+        result.score === bestResult.score
+        && (alternative.confidence ?? 0) > bestResult.bestAlternative.confidence
+      ) {
+        bestResult = result;
+      }
+    }
+  });
+
+  return bestResult ?? {
+    score: 0,
+    pass: false,
+    matched: [],
+    missing: [],
+    bestTranscript: '',
+    bestAlternative: { transcript: '', confidence: 0, index: -1 },
+    method: 'fuzzy',
+  };
+}
 
 export function useSpeechCapture() {
   const [state, setState] = useState<SpeechState>('idle');
@@ -189,19 +267,37 @@ export function useSpeechCapture() {
       recognizerRef.current = null;
       setVolumeLevel(0);
 
-      const gradeOptions = {
+      const feedbackTarget = keywords?.join(' ') ?? target;
+      const apiTranscript = alternatives[0]?.transcript?.trim() ?? '';
+      if ((source === 'groq' || source === 'speechmatics') && !apiTranscript) {
+        captureActiveRef.current = false;
+        recognizerRef.current = null;
+        setVolumeLevel(0);
+        setMessage('Suara tidak terdeteksi atau terlalu berisik.');
+        setFeedback({
+          transcript: '',
+          target: feedbackTarget,
+          score: 0,
+          pass: false,
+          matched: [],
+          missing: [],
+          source,
+        });
+        setState('feedback');
+        return;
+      }
+
+      const result = gradeUnifiedWithAlternatives(alternatives, target, {
         singleWord,
         keywords,
         preserveArticles,
-      };
-      const result = gradeWithAlternatives(alternatives, target, gradeOptions);
+      });
       const transcript = result.bestAlternative.transcript;
       if (transcript && transcript !== alternatives[0]?.transcript) {
         console.log(
           `[STT] picked alternative #${result.bestAlternative.index + 1}: "${transcript}" (score ${result.score})`,
         );
       }
-      const feedbackTarget = keywords?.join(' ') ?? target;
       const data = {
         transcript,
         target: feedbackTarget,
