@@ -19,66 +19,208 @@ const formatXp = (value: number) => new Intl.NumberFormat(isGerman ? 'de-DE' : '
 const podiumNames = ['first', 'second', 'third'];
 ---
 
-<section class="leaderboard-page" aria-labelledby="leaderboard-title">
+<section class="leaderboard-page" aria-labelledby="leaderboard-title" data-leaderboard-page data-language={language}>
   <header class="leaderboard-heading">
     <p class="leaderboard-eyebrow">PERINGKAT KOMUNITAS</p>
     <h1 id="leaderboard-title">{title}</h1>
     <p>{subtitle}</p>
   </header>
 
-  {unavailable ? (
-    <div class="leaderboard-notice" role="alert">
-      Papan peringkat belum tersedia. Silakan coba lagi nanti.
-    </div>
-  ) : entries.length === 0 ? (
-    <div class="leaderboard-notice">
-      Belum ada data papan peringkat.
-    </div>
-  ) : (
-    <>
-      <section class="podium-section" aria-label="Tiga peringkat teratas">
-        {podium.map((entry, index) => (
-          <article class:list={['podium-card', `podium-${podiumNames[index]}`]}>
-            <span class="podium-rank">PERINGKAT {entry.rank}</span>
-            <span class="podium-medal" aria-hidden="true">{index === 0 ? '✦' : index === 1 ? '◆' : '✧'}</span>
-            <h2>{entry.name}</h2>
-            <span class="podium-level">LEVEL {entry.level}</span>
-            <strong class="podium-xp">{formatXp(entry.xp)} <span>XP</span></strong>
-          </article>
-        ))}
-      </section>
+  <div data-leaderboard-content>
+    {unavailable ? (
+      <div class="leaderboard-notice" role="alert">
+        Papan peringkat belum tersedia. Silakan coba lagi nanti.
+      </div>
+    ) : entries.length === 0 ? (
+      <div class="leaderboard-notice">
+        Belum ada data papan peringkat.
+      </div>
+    ) : (
+      <>
+        <section class="podium-section" aria-label="Tiga peringkat teratas">
+          {podium.map((entry, index) => (
+            <article class:list={['podium-card', `podium-${podiumNames[index]}`]}>
+              <span class="podium-rank">PERINGKAT {entry.rank}</span>
+              <span class="podium-medal" aria-hidden="true">{index === 0 ? '✦' : index === 1 ? '◆' : '✧'}</span>
+              <h2>{entry.name}</h2>
+              <span class="podium-level">LEVEL {entry.level}</span>
+              <strong class="podium-xp">{formatXp(entry.xp)} <span>XP</span></strong>
+            </article>
+          ))}
+        </section>
 
-      {rankedUsers.length > 0 && (
+        {rankedUsers.length > 0 && (
+          <section class="ranked-section" aria-labelledby="ranked-title">
+            <div class="ranked-heading">
+              <h2 id="ranked-title">Peringkat selanjutnya</h2>
+              <span>PERINGKAT 4–100</span>
+            </div>
+            <div class="ranked-list">
+              {rankedUsers.map((entry) => (
+                <article class="ranked-row">
+                  <span class="ranked-number">{String(entry.rank).padStart(2, '0')}</span>
+                  <div class="ranked-name">
+                    <strong>{entry.name}</strong>
+                  </div>
+                  <div class="ranked-metrics">
+                    <span class="ranked-stat">
+                      <small>Level</small>
+                      <strong>{entry.level}</strong>
+                    </span>
+                    <span class="ranked-stat ranked-xp">
+                      <small>XP</small>
+                      <strong>{formatXp(entry.xp)}</strong>
+                    </span>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </section>
+        )}
+      </>
+    )}
+  </div>
+</section>
+
+<script>
+  import { createClient } from '@supabase/supabase-js';
+
+  const root = document.querySelector<HTMLElement>('[data-leaderboard-page]');
+  const content = root?.querySelector<HTMLElement>('[data-leaderboard-content]');
+  const language = (root?.dataset.language === 'de' ? 'de' : 'en') as 'en' | 'de';
+  const locale = language === 'de' ? 'de-DE' : 'en-US';
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+
+  if (root && content && supabaseUrl && supabaseAnonKey) {
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
+    const formatter = new Intl.NumberFormat(locale);
+    const podiumNames = ['first', 'second', 'third'] as const;
+    const medals = ['✦', '◆', '✧'] as const;
+    let refreshTimer: number | undefined;
+    let refreshing = false;
+    let pending = false;
+
+    const escapeHtml = (value: string) =>
+      value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+
+    const renderNotice = (message: string, alert = false) =>
+      `<div class="leaderboard-notice"${alert ? ' role="alert"' : ''}>${escapeHtml(message)}</div>`;
+
+    const renderContent = (entries: Array<{ id: string; name: string; level: string; xp: number | string }>) => {
+      const normalized = entries.slice(0, 100).map((row, index) => ({
+        id: String(row.id ?? ''),
+        name: String(row.name ?? '').trim() || 'Pengguna',
+        level: String(row.level ?? '').trim() || 'A1',
+        xp: Number(row.xp) || 0,
+        rank: index + 1,
+      }));
+
+      if (normalized.length === 0) {
+        content.innerHTML = renderNotice('Belum ada data papan peringkat.');
+        return;
+      }
+
+      const podium = normalized.slice(0, 3);
+      const rankedUsers = normalized.slice(3, 100);
+      const podiumHtml = `
+        <section class="podium-section" aria-label="Tiga peringkat teratas">
+          ${podium
+            .map(
+              (entry, index) => `
+            <article class="podium-card podium-${podiumNames[index] ?? 'third'}">
+              <span class="podium-rank">PERINGKAT ${entry.rank}</span>
+              <span class="podium-medal" aria-hidden="true">${medals[index] ?? '✧'}</span>
+              <h2>${escapeHtml(entry.name)}</h2>
+              <span class="podium-level">LEVEL ${escapeHtml(entry.level)}</span>
+              <strong class="podium-xp">${formatter.format(entry.xp)} <span>XP</span></strong>
+            </article>`,
+            )
+            .join('')}
+        </section>`;
+
+      const rankedHtml =
+        rankedUsers.length > 0
+          ? `
         <section class="ranked-section" aria-labelledby="ranked-title">
           <div class="ranked-heading">
             <h2 id="ranked-title">Peringkat selanjutnya</h2>
             <span>PERINGKAT 4–100</span>
           </div>
           <div class="ranked-list">
-            {rankedUsers.map((entry) => (
+            ${rankedUsers
+              .map(
+                (entry) => `
               <article class="ranked-row">
-                <span class="ranked-number">{String(entry.rank).padStart(2, '0')}</span>
+                <span class="ranked-number">${String(entry.rank).padStart(2, '0')}</span>
                 <div class="ranked-name">
-                  <strong>{entry.name}</strong>
+                  <strong>${escapeHtml(entry.name)}</strong>
                 </div>
                 <div class="ranked-metrics">
                   <span class="ranked-stat">
                     <small>Level</small>
-                    <strong>{entry.level}</strong>
+                    <strong>${escapeHtml(entry.level)}</strong>
                   </span>
                   <span class="ranked-stat ranked-xp">
                     <small>XP</small>
-                    <strong>{formatXp(entry.xp)}</strong>
+                    <strong>${formatter.format(entry.xp)}</strong>
                   </span>
                 </div>
-              </article>
-            ))}
+              </article>`,
+              )
+              .join('')}
           </div>
-        </section>
-      )}
-    </>
-  )}
-</section>
+        </section>`
+          : '';
+
+      content.innerHTML = `${podiumHtml}${rankedHtml}`;
+    };
+
+    const refreshLeaderboard = async () => {
+      if (refreshing) {
+        pending = true;
+        return;
+      }
+      refreshing = true;
+      try {
+        const { data, error } = await supabase.rpc('get_leaderboard', { p_lang: language });
+        if (!error && Array.isArray(data)) {
+          renderContent(data as Array<{ id: string; name: string; level: string; xp: number | string }>);
+        }
+      } finally {
+        refreshing = false;
+        if (pending) {
+          pending = false;
+          void refreshLeaderboard();
+        }
+      }
+    };
+
+    const scheduleRefresh = () => {
+      if (refreshTimer) window.clearTimeout(refreshTimer);
+      refreshTimer = window.setTimeout(() => {
+        void refreshLeaderboard();
+      }, 250);
+    };
+
+    supabase
+      .channel('realtime-leaderboard')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_progress' }, scheduleRefresh)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'user_progress' }, scheduleRefresh)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'profiles' }, scheduleRefresh)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, scheduleRefresh)
+      .subscribe();
+
+    window.addEventListener('nd:progress-updated', () => {
+      scheduleRefresh();
+    });
+  }
+</script>
 
 <style>
   .leaderboard-page {

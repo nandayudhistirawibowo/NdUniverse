@@ -195,6 +195,23 @@ function saveSessionPillar(materialId, sessionNumber, sessionCount, pillar) {
   }
 }
 
+function isSessionFullyComplete(materialId, sessionNumber) {
+  if (!materialId || !sessionNumber) return false;
+  return readSessionPillars(materialId, sessionNumber).length === PILLAR_TYPES.length;
+}
+
+function getAllPassedPillarKeys(materialId, sessionCount) {
+  if (!materialId) return [];
+  const keys = [];
+  const totalSessions = Math.max(1, Number(sessionCount) || 1);
+  for (let session = 1; session <= totalSessions; session += 1) {
+    readSessionPillars(materialId, session).forEach((pillar) => {
+      keys.push(`s${session}-${pillar}`);
+    });
+  }
+  return [...new Set(keys)];
+}
+
 function filterPillarItems(items, pillarType, startIndex = 0, batchSize = 5) {
   if (!PILLAR_TYPES.includes(pillarType)) return items.slice(startIndex, startIndex + batchSize);
   return items.slice(startIndex, startIndex + batchSize);
@@ -560,13 +577,33 @@ export default function Quiz(props) {
 
   const repeatAttemptRef = useRef(false);
 
+  function dispatchProgressUpdated(nextXp = materialXp, pillarsOverride = null) {
+    if (typeof window === 'undefined' || !materialId) return;
+    const pillars = Array.isArray(pillarsOverride)
+      ? pillarsOverride
+      : (pillarMode
+        ? getAllPassedPillarKeys(materialId, sessionCount)
+        : (Array.isArray(completedSessionsRef.current) ? completedSessionsRef.current : []));
+    window.dispatchEvent(new CustomEvent('nd:progress-updated', {
+      detail: {
+        materialSlug: materialId,
+        slug: materialId,
+        languageCode: 'de',
+        xp: Math.max(0, Number(nextXp) || 0),
+        pillars,
+        session: activeSessionNumber,
+        pillar: pillarMode ? pillarType : null,
+      },
+    }));
+  }
+
   useEffect(() => {
     if (!materialId) {
       repeatAttemptRef.current = false;
       return;
     }
     if (pillarMode && pillarType) {
-      repeatAttemptRef.current = readSessionPillars(materialId, activeSessionNumber).includes(pillarType);
+      repeatAttemptRef.current = isSessionFullyComplete(materialId, activeSessionNumber);
       return;
     }
     if (sessionMode) {
@@ -580,7 +617,10 @@ export default function Quiz(props) {
     if (!sessionPassed || !materialId) return;
 
     if (pillarMode && pillarType) {
-      repeatAttemptRef.current = readSessionPillars(materialId, activeSessionNumber).includes(pillarType);
+      const sessionWasFullyComplete = isSessionFullyComplete(materialId, activeSessionNumber);
+      repeatAttemptRef.current = sessionWasFullyComplete;
+      if (sessionWasFullyComplete) return;
+
       const sessionPillarKey = saveSessionPillar(
         materialId,
         activeSessionNumber,
@@ -591,47 +631,65 @@ export default function Quiz(props) {
         setToast({ type: 'error', message: 'Progress sesi tidak dapat disimpan di browser ini.' });
         return;
       }
-      const pillarsPassed = readSessionPillars(materialId, activeSessionNumber).map((p) => `s${activeSessionNumber}-${p}`);
-      completedSessionsRef.current = pillarsPassed;
+      const allPillarsPassed = getAllPassedPillarKeys(materialId, sessionCount);
+      completedSessionsRef.current = allPillarsPassed;
       queueProgressUpdate({
         sessions_passed: [sessionPillarKey],
         session: activeSessionNumber,
         pillar: pillarType,
       });
+      dispatchProgressUpdated(materialXp, allPillarsPassed);
       return;
     }
 
-    const savedCompleted = readCompletedSessions(materialId);
-    repeatAttemptRef.current = activeSessionNumber <= savedCompleted;
-    const completed = Math.max(savedCompleted, activeSessionNumber);
-    const sessionsPassed = Array.from({ length: completed }, (_, index) => index + 1);
-    completedSessionsRef.current = sessionsPassed;
-    try {
-      window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completed} Lulus`);
-    } catch {
-      // The session still syncs to Supabase when available.
+    if (sessionMode) {
+      const savedCompleted = readCompletedSessions(materialId);
+      const sessionWasCompleted = activeSessionNumber <= savedCompleted;
+      repeatAttemptRef.current = sessionWasCompleted;
+      if (sessionWasCompleted) return;
+
+      const completed = Math.max(savedCompleted, activeSessionNumber);
+      const sessionsPassed = Array.from({ length: completed }, (_, index) => index + 1);
+      completedSessionsRef.current = sessionsPassed;
+      try {
+        window.localStorage.setItem(`progress_materi_${materialId}`, `Sesi ${completed} Lulus`);
+      } catch {
+        // The session still syncs to Supabase when available.
+      }
+      queueProgressUpdate({ sessions_passed: sessionsPassed, session: activeSessionNumber });
+      dispatchProgressUpdated(materialXp, sessionsPassed);
     }
-    queueProgressUpdate({ sessions_passed: sessionsPassed });
   }, [sessionPassed, materialId, activeSessionNumber, isAuthenticated, pillarMode, pillarType, sessionCount, sessionMode]);
 
   useEffect(() => {
     if (queue.length > 0 || isGameOver || finalizedXpRef.current) return;
 
     finalizedXpRef.current = true;
-    if (sessionXp <= 0) return;
-    if (repeatAttemptRef.current) return;
+    if (sessionXp <= 0) {
+      dispatchProgressUpdated(materialXp);
+      return;
+    }
+    if (repeatAttemptRef.current) {
+      dispatchProgressUpdated(materialXp);
+      return;
+    }
     const cappedSessionXp = Math.min(sessionXp, Math.max(0, maxMaterialXp - materialXp));
-    if (cappedSessionXp <= 0) return;
+    if (cappedSessionXp <= 0) {
+      dispatchProgressUpdated(materialXp);
+      return;
+    }
 
     earnedXpRef.current += cappedSessionXp;
+    const nextMaterialXp = Math.min(maxMaterialXp, materialXp + cappedSessionXp);
     setXp((total) => total + cappedSessionXp);
-    setMaterialXp((total) => Math.min(maxMaterialXp, total + cappedSessionXp));
+    setMaterialXp(nextMaterialXp);
     queueProgressUpdate({
       xpDelta: cappedSessionXp,
       maxXp: maxMaterialXp,
       session: activeSessionNumber,
       pillar: pillarMode ? pillarType : null,
     });
+    dispatchProgressUpdated(nextMaterialXp);
   }, [queue.length, isGameOver, sessionXp, materialXp, maxMaterialXp, activeSessionNumber, pillarMode, pillarType]);
 
   if (items.length === 0) {
@@ -649,7 +707,7 @@ export default function Quiz(props) {
   function awardXp(amount) {
     setSessionXp((prev) => {
       const isRepeat = pillarMode && pillarType
-        ? readSessionPillars(materialId, activeSessionNumber).includes(pillarType)
+        ? isSessionFullyComplete(materialId, activeSessionNumber)
         : (sessionMode && activeSessionNumber <= readCompletedSessions(materialId));
       const remaining = Math.max(0, maxMaterialXp - materialXp - prev);
       const gain = isRepeat ? 0 : Math.max(0, Math.min(Number(amount) || 0, remaining));

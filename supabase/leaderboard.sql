@@ -80,6 +80,8 @@ as $$
       coalesce(totals.xp, 0)::bigint as xp,
       coalesce(totals.level_points, 0)::bigint as level_points,
       coalesce(profile.nim, '') as nim,
+      lower(coalesce(profile.nama_lengkap, '')) as profile_name_lower,
+      lower(coalesce(profile.nim, '')) as profile_nim_lower,
       case
         when coalesce(totals.level_points, 0) >= 2200 then 'C2 (Mahir)'
         when coalesce(totals.level_points, 0) >= 1800 then 'C1'
@@ -112,11 +114,11 @@ as $$
   from leaderboard_rows as leaderboard
   where p_lang in ('en', 'de')
     and leaderboard.xp > 0
-    and lower(leaderboard.name) not like '%admin%'
-    and lower(coalesce(leaderboard.nim, '')) not like '%admin%'
+    and leaderboard.profile_name_lower not like '%admin%'
+    and leaderboard.profile_nim_lower not like '%admin%'
   order by leaderboard.level_order desc, leaderboard.xp desc, leaderboard.id
   limit 100;
 $$;
 
 revoke all on function public.get_leaderboard(text) from public, anon, authenticated;
-grant execute on function public.get_leaderboard(text) to service_role;
+grant execute on function public.get_leaderboard(text) to anon, authenticated, service_role;
