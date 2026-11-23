@@ -79,6 +79,7 @@ as $$
       coalesce(nullif(btrim(profile.nama_lengkap), ''), 'Pengguna') as name,
       coalesce(totals.xp, 0)::bigint as xp,
       coalesce(totals.level_points, 0)::bigint as level_points,
+      coalesce(profile.role, '') as role,
       case
         when coalesce(totals.level_points, 0) >= 2200 then 'C2 (Mahir)'
         when coalesce(totals.level_points, 0) >= 1800 then 'C1'
@@ -110,6 +111,8 @@ as $$
     leaderboard.xp
   from leaderboard_rows as leaderboard
   where p_lang in ('en', 'de')
+    and coalesce(leaderboard.role, '') not in ('admin', 'superadmin')
+    and leaderboard.xp > 0
   order by leaderboard.level_order desc, leaderboard.xp desc, leaderboard.id
   limit 100;
 $$;
