@@ -181,6 +181,7 @@ const materialXp = Math.min(materialMaxXp, Math.max(0, Number(savedProgress?.xp)
       pillars: string[];
       xp?: number;
     }>).detail;
+    console.log(`[UI DEBUG] Received progress update: xp=${xp}, pillars=${JSON.stringify(pillars)}`);
     if (languageCode !== 'de') return;
 
     document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {
