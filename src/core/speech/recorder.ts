@@ -1,6 +1,8 @@
 export interface RecordAndTranscribeOptions {
   lang: 'en' | 'de';
   maxMs?: number;
+  singleWord?: boolean;
+  targetText?: string;
   onVolume?: (level: number) => void;
   onNoiseFloor?: (level: number) => void;
   onUpload?: () => void;
@@ -22,7 +24,8 @@ const VOICE_ACTIVITY_MIN_THRESHOLD = 0.02;
 const VOICE_ACTIVITY_NOISE_MARGIN = 0.03;
 const NOISY_ROOM_THRESHOLD = 0.05;
 const NOISY_ROOM_VOICE_MARGIN = 0.1;
-const SILENCE_GRACE_PERIOD_MS = 2_500;
+const SINGLE_WORD_SILENCE_GRACE_MS = 800;
+const LONG_SILENCE_GRACE_MS = 2_000;
 const PRE_ROLL_MS = 1_500;
 const RECORDER_TIMESLICE_MS = 250;
 
@@ -37,10 +40,13 @@ export function cancelRecording(): void {
 export async function recordAndTranscribe({
   lang,
   maxMs = 15_000,
+  singleWord = false,
+  targetText,
   onVolume,
   onNoiseFloor,
   onUpload,
 }: RecordAndTranscribeOptions): Promise<TranscriptionResult> {
+  const silenceGraceMs = singleWord ? SINGLE_WORD_SILENCE_GRACE_MS : LONG_SILENCE_GRACE_MS;
   if (!navigator.mediaDevices?.getUserMedia || typeof MediaRecorder === 'undefined') {
     throw new Error('Audio recording is not supported in this browser.');
   }
@@ -87,10 +93,10 @@ export async function recordAndTranscribe({
     const source = audioContext.createMediaStreamSource(stream);
     const highPassFilter = audioContext.createBiquadFilter();
     highPassFilter.type = 'highpass';
-    highPassFilter.frequency.value = 300;
+    highPassFilter.frequency.value = 80;
     const lowPassFilter = audioContext.createBiquadFilter();
     lowPassFilter.type = 'lowpass';
-    lowPassFilter.frequency.value = 4_000;
+    lowPassFilter.frequency.value = 8_000;
     const analyser = audioContext.createAnalyser();
     analyser.fftSize = 512;
     source.connect(highPassFilter);
@@ -202,7 +208,7 @@ export async function recordAndTranscribe({
         onVolume(Math.min(1, rms * 6));
         lastVolumeUpdate = now;
       }
-      if (calibrationDone && heardSound && now - lastSoundAt >= SILENCE_GRACE_PERIOD_MS) {
+      if (calibrationDone && heardSound && now - lastSoundAt >= silenceGraceMs) {
         session.stop();
         return;
       }
@@ -241,6 +247,7 @@ export async function recordAndTranscribe({
     const formData = new FormData();
     formData.append('audio', blob, 'speech.webm');
     formData.append('lang', lang);
+    if (targetText?.trim()) formData.append('targetText', targetText.trim());
     const response = await fetch('/api/transcribe', {
       method: 'POST',
       body: formData,

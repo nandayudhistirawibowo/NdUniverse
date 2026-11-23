@@ -221,8 +221,11 @@ export function useSpeechCapture() {
       let source: SpeechFeedbackData['source'];
 
       try {
+        const targetText = keywords?.length ? keywords.join(' ') : target;
         const transcription = await recordAndTranscribe({
           lang: language,
+          singleWord,
+          targetText,
           onVolume: (level) => {
             if (requestId === requestIdRef.current) setVolumeLevel(level);
           },
@@ -235,7 +238,10 @@ export function useSpeechCapture() {
         });
         alternatives = [{ transcript: transcription.transcript, confidence: 1 }];
         source = transcription.source;
-        if (import.meta.env.DEV) console.info(`[STT] source=${source}`);
+        if (import.meta.env.DEV) {
+          console.info(`[STT] source=${source}`);
+          console.log(`[STT DEBUG] Raw Transcript: "${transcription.transcript}" | Target: "${target}"`);
+        }
       } catch (whisperError) {
         if (requestId !== requestIdRef.current) return;
         if (import.meta.env.DEV) {
@@ -293,6 +299,9 @@ export function useSpeechCapture() {
         preserveArticles,
       });
       const transcript = result.bestAlternative.transcript;
+      if (import.meta.env.DEV) {
+        console.log(`[STT DEBUG] Result: Score ${result.score}, Pass: ${result.pass}, Best: "${result.bestTranscript}"`);
+      }
       if (transcript && transcript !== alternatives[0]?.transcript) {
         console.log(
           `[STT] picked alternative #${result.bestAlternative.index + 1}: "${transcript}" (score ${result.score})`,

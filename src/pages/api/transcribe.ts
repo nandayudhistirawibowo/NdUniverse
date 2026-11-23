@@ -95,7 +95,14 @@ export const POST: APIRoute = async ({ request }) => {
     return jsonResponse({ error: 'Bahasa harus en atau de.' }, 400);
   }
 
-  const groqPrompt = 'Transcribe exactly what the user says. Ignore background music, singing, or crosstalk. If the audio is too noisy to understand, return an empty string.';
+  const targetTextRaw = formData.get('targetText');
+  const targetText = typeof targetTextRaw === 'string'
+    ? targetTextRaw.trim().replace(/\s+/g, ' ').slice(0, 200)
+    : '';
+  const targetHint = targetText
+    ? `The user is trying to say: '${targetText.replace(/'/g, '')}'. `
+    : '';
+  const groqPrompt = `Transcribe exactly what the user says. ${targetHint}Ignore background music, singing, or crosstalk. If the audio is too noisy to understand, return an empty string.`;
 
   const groqApiKey = import.meta.env.GROQ_API_KEY;
   if (groqApiKey) {
