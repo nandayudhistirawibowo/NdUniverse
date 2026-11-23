@@ -104,12 +104,19 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
       ...normalizePassedPillars(updates.sessions_passed),
     ])]
     : existingSessions;
+  const existingXp = Math.max(0, Number(existing?.xp) || 0);
+  const baseXp = updates.xp !== undefined ? Math.max(0, Number(updates.xp) || 0) : existingXp;
+  let targetXp = Math.max(0, baseXp + (Number.isFinite(xpDelta) ? xpDelta : 0));
+  const maxXp = Number(updates.maxXp ?? updates.max_xp);
+  if (Number.isFinite(maxXp) && maxXp >= 0) {
+    targetXp = Math.min(targetXp, Math.max(0, maxXp));
+  }
   const payload = {
     ...(existing?.id !== undefined ? { id: existing.id } : {}),
     user_id: userId,
     material_slug: materialSlug,
     language_code: 'en',
-    xp: Math.max(0, Number(updates.xp ?? existing?.xp ?? 0) + xpDelta),
+    xp: targetXp,
     sessions_passed: mergedSessions,
     notes: updates.notes ?? existing?.notes ?? '',
     updated_at: new Date().toISOString(),
@@ -128,7 +135,7 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
         pilar: normalizePassedPillars(updates.sessions_passed).at(-1) ?? null,
         session: updates.session ?? null,
         pillar: updates.pillar ?? null,
-        xpEarned: Math.max(0, xpDelta),
+        xpEarned: Math.max(0, targetXp - existingXp),
         pillars: mergedSessions,
         xp: payload.xp,
       },

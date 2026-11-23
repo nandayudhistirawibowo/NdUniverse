@@ -197,6 +197,7 @@ export default function Quiz(props) {
     type: pillarType,
   } = props;
   const items = suppliedItems ?? [];
+  const maxMaterialXp = items.length * 4 * 10;
   useEffect(() => {
     items.forEach((item) => {
       [item.german, item.english, item.context, item.listening_audio].forEach((text) => {
@@ -280,18 +281,28 @@ export default function Quiz(props) {
 
   function queueProgressUpdate(updates) {
     if (!materialId) return;
+    const nextUpdates = (updates.xpDelta !== undefined || updates.xp !== undefined)
+      ? { ...updates, maxXp: maxMaterialXp }
+      : updates;
+
+    if (nextUpdates.sessions_passed) {
+      completedSessionsRef.current = normalizePassedPillars([
+        ...(Array.isArray(completedSessionsRef.current) ? completedSessionsRef.current : []),
+        ...normalizePassedPillars(nextUpdates.sessions_passed),
+      ]);
+    }
 
     const userId = progressUserIdRef.current;
     if (!userId) {
-      if (updates.xpDelta) pendingProgressRef.current.xpDelta += updates.xpDelta;
-      if (updates.sessions_passed) {
-        pendingProgressRef.current.sessions_passed = updates.sessions_passed;
+      if (nextUpdates.xpDelta) pendingProgressRef.current.xpDelta += Number(nextUpdates.xpDelta) || 0;
+      if (nextUpdates.sessions_passed) {
+        pendingProgressRef.current.sessions_passed = nextUpdates.sessions_passed;
       }
       return;
     }
 
     progressWriteQueueRef.current = progressWriteQueueRef.current
-      .then(() => upsertUserProgress(progressClientRef.current, userId, materialId, updates))
+      .then(() => upsertUserProgress(progressClientRef.current, userId, materialId, nextUpdates))
       .catch((error) => {
         console.error('Failed to save English quiz progress.', error);
         setToast({ type: 'error', message: 'Progres tidak dapat disimpan. Coba lagi sebentar.' });
@@ -341,21 +352,26 @@ export default function Quiz(props) {
       if (cancelled) return;
 
       const current = rows.find((row) => row.material_slug === materialId);
-      const currentMaterialXp = Math.max(0, Number(current?.xp) || 0);
+      const currentMaterialXp = Math.min(maxMaterialXp, Math.max(0, Number(current?.xp) || 0));
       const remoteTotalXp = rows.reduce((total, row) => total + Math.max(0, Number(row.xp) || 0), 0);
       const legacyXp = remoteTotalXp === 0 && Number.isFinite(localXp)
-        ? Math.max(0, localXp - earnedXpRef.current)
+        ? Math.max(0, Math.min(maxMaterialXp - currentMaterialXp, localXp - earnedXpRef.current))
         : 0;
       const offlineXp = remoteTotalXp > 0
-        ? Math.max(0, localMaterialXp - currentMaterialXp - earnedXpRef.current)
+        ? Math.max(0, Math.min(maxMaterialXp - currentMaterialXp - legacyXp, localMaterialXp - currentMaterialXp - earnedXpRef.current))
         : 0;
       const remoteSessions = normalizePassedSessions(current?.sessions_passed);
       const localCompleted = readCompletedSessions(materialId);
       const completed = Math.max(localCompleted, remoteSessions.at(-1) ?? 0);
       const mergedSessions = Array.from({ length: completed }, (_, index) => index + 1);
+      const pending = pendingProgressRef.current;
+      pendingProgressRef.current = { xpDelta: 0, sessions_passed: null };
+      const baseMaterialXp = Math.min(maxMaterialXp, currentMaterialXp + legacyXp + offlineXp + earnedXpRef.current);
+      const pendingXpDelta = Math.max(0, Math.min(Number(pending.xpDelta) || 0, maxMaterialXp - baseMaterialXp));
+      const cappedMaterialXp = Math.min(maxMaterialXp, baseMaterialXp + pendingXpDelta);
 
-      setXp(remoteTotalXp + legacyXp + offlineXp + earnedXpRef.current);
-      setMaterialXp(currentMaterialXp + legacyXp + offlineXp + earnedXpRef.current);
+      setXp(remoteTotalXp + legacyXp + offlineXp + earnedXpRef.current + pendingXpDelta);
+      setMaterialXp(cappedMaterialXp);
 
       if (completed > 0) {
         completedSessionsRef.current = mergedSessions;
@@ -366,11 +382,9 @@ export default function Quiz(props) {
         }
       }
 
-      const pending = pendingProgressRef.current;
-      pendingProgressRef.current = { xpDelta: 0, sessions_passed: null };
-      if (legacyXp > 0) queueProgressUpdate({ xp: (Number(current?.xp) || 0) + legacyXp });
-      if (offlineXp > 0) queueProgressUpdate({ xpDelta: offlineXp });
-      if (pending.xpDelta > 0) queueProgressUpdate({ xpDelta: pending.xpDelta });
+      if (legacyXp > 0) queueProgressUpdate({ xp: Math.min(maxMaterialXp, currentMaterialXp + legacyXp), maxXp: maxMaterialXp });
+      if (offlineXp > 0) queueProgressUpdate({ xpDelta: offlineXp, maxXp: maxMaterialXp });
+      if (pendingXpDelta > 0) queueProgressUpdate({ xpDelta: pendingXpDelta, maxXp: maxMaterialXp });
       const sessionsToSave = pending.sessions_passed
         ?? (localCompleted > (remoteSessions.at(-1) ?? 0) ? mergedSessions : null);
       if (sessionsToSave) queueProgressUpdate({ sessions_passed: sessionsToSave });
@@ -575,16 +589,19 @@ export default function Quiz(props) {
 
     finalizedXpRef.current = true;
     if (sessionXp <= 0) return;
+    const cappedSessionXp = Math.min(sessionXp, Math.max(0, maxMaterialXp - materialXp));
+    if (cappedSessionXp <= 0) return;
 
-    earnedXpRef.current += sessionXp;
-    setXp((total) => total + sessionXp);
-    setMaterialXp((total) => total + sessionXp);
+    earnedXpRef.current += cappedSessionXp;
+    setXp((total) => total + cappedSessionXp);
+    setMaterialXp((total) => Math.min(maxMaterialXp, total + cappedSessionXp));
     queueProgressUpdate({
-      xpDelta: sessionXp,
+      xpDelta: cappedSessionXp,
+      maxXp: maxMaterialXp,
       session: activeSessionNumber,
       pillar: pillarMode ? pillarType : null,
     });
-  }, [queue.length, isGameOver, sessionXp, activeSessionNumber, pillarMode, pillarType]);
+  }, [queue.length, isGameOver, sessionXp, materialXp, maxMaterialXp, activeSessionNumber, pillarMode, pillarType]);
 
   if (items.length === 0) {
     return (
@@ -599,7 +616,11 @@ export default function Quiz(props) {
   }
 
   function awardXp(amount) {
-    setSessionXp((prev) => prev + amount);
+    setSessionXp((prev) => {
+      const remaining = Math.max(0, maxMaterialXp - materialXp - prev);
+      const gain = Math.max(0, Math.min(Number(amount) || 0, remaining));
+      return gain > 0 ? prev + gain : prev;
+    });
   }
 
   function bookmarkWord(word) {

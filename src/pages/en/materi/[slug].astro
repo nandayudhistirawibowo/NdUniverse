@@ -19,7 +19,6 @@ const { data: savedProgress, error: progressError } = user
   : { data: null, error: null };
 if (progressError) throw progressError;
 const passedPillars = normalizePassedPillars(savedProgress?.sessions_passed);
-const materialXp = Math.max(0, Number(savedProgress?.xp) || 0);
 const vocab = item.data.vocab.map((entry) => ({
   german: entry.word,
   indonesian: entry.translation,
@@ -34,6 +33,8 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   const words = vocab.slice(index * 5, index * 5 + 5);
   return { number: index + 1, words, maxXp: words.length * 10 };
 });
+const materialMaxXp = sessions.reduce((sum, session) => sum + session.maxXp * 4, 0);
+const materialXp = Math.min(materialMaxXp, Math.max(0, Number(savedProgress?.xp) || 0));
 ---
 <DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <article class="material-page">
@@ -42,15 +43,19 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
       <p class="eyebrow">{item.data.track ?? 'Bahasa Inggris Sehari-hari'} · {item.data.level}</p>
       <h1>{item.data.title ?? item.id}</h1>
       <p>{item.data.description}</p>
-      {user && <p class="material-xp-summary">XP materi: <strong data-material-xp data-material-slug={item.id}>{materialXp}</strong> XP</p>}
+      {user && <p class="material-xp-summary">XP materi: <strong data-material-xp data-material-slug={item.id} data-material-max-xp={materialMaxXp}>{materialXp}</strong> / {materialMaxXp} XP</p>}
     </header>
-    {sessions.map((session) => (
+    {sessions.map((session) => {
+      const sessionMaxXp = session.maxXp * 4;
+      const completedPillarCount = passedPillars.filter((key) => key.startsWith(`s${session.number}-`) || (session.number === 1 && ['reading', 'listening', 'writing', 'speaking'].includes(key))).length;
+      const sessionEarnedXp = Math.min(sessionMaxXp, session.maxXp * completedPillarCount);
+      return (
       <section class="session-card">
         <div class="session-heading">
           <h2>Sesi {session.number}</h2>
-          <div class="session-progress" data-session-progress={session.number} data-session-max-xp={session.maxXp * 4}>
-            <progress max={session.maxXp * 4} value={session.maxXp * passedPillars.filter((key) => key.startsWith(`s${session.number}-`) || (session.number === 1 && ['reading', 'listening', 'writing', 'speaking'].includes(key))).length} aria-label={`Progres XP sesi ${session.number}`}></progress>
-            <span data-session-xp-label>{session.maxXp * passedPillars.filter((key) => key.startsWith(`s${session.number}-`) || (session.number === 1 && ['reading', 'listening', 'writing', 'speaking'].includes(key))).length} / {session.maxXp * 4} XP</span>
+          <div class="session-progress" data-session-progress={session.number} data-session-max-xp={sessionMaxXp}>
+            <progress max={sessionMaxXp} value={sessionEarnedXp} aria-label={`Progres XP sesi ${session.number}`}></progress>
+            <span data-session-xp-label>{sessionEarnedXp} / {sessionMaxXp} XP</span>
           </div>
         </div>
         <div class="table-wrap table-scroll" role="region" aria-label="Kosakata dan audio" tabindex="0">
@@ -93,6 +98,8 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
             const label = pillar === 'reading' ? 'Membaca' : pillar === 'listening' ? 'Menyimak' : pillar === 'writing' ? 'Menulis' : 'Berbicara';
             const sessionPillarKey = `s${session.number}-${pillar}`;
             const isComplete = passedPillars.includes(sessionPillarKey) || (session.number === 1 && passedPillars.includes(pillar));
+            const pillarMaxXp = session.maxXp;
+            const pillarEarnedXp = isComplete ? pillarMaxXp : 0;
             return (
               <a
                 href={`/en/materi/latihan?slug=${materialSlug}&type=${pillar}&session=${session.number}`}
@@ -101,19 +108,20 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
                 data-progress-slug={item.id}
                 data-progress-language="en"
                 data-pillar-label={label}
-                data-pillar-max-xp={session.maxXp}
+                data-pillar-max-xp={pillarMaxXp}
                 class={`pillar-card${isComplete ? ' is-complete' : ''}`}
                 title={isComplete ? 'Selesai' : undefined}
               >
                 <span class="pillar-title">{label}</span>
-                <progress max={session.maxXp} value={isComplete ? session.maxXp : 0} aria-label={`Progres ${label}`}></progress>
-                <span class="pillar-status" data-pillar-status>{isComplete ? '[✓] 100% (Selesai)' : `[ ] 0% (Kurang ${session.maxXp} XP lagi)`}</span>
+                <progress max={pillarMaxXp} value={pillarEarnedXp} aria-label={`Progres ${label}`}></progress>
+                <span class="pillar-status" data-pillar-status>{isComplete ? '[✓] 100% (Selesai)' : `[ ] 0% (Kurang ${pillarMaxXp} XP lagi)`}</span>
               </a>
             );
           })}
         </nav>
       </section>
-    ))}
+      );
+    })}
   </article>
 </DashboardLayout>
 <script>
@@ -168,16 +176,21 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
         return pillars.includes(`s${sessionNum}-${pillar}`) || (sessionNum === 1 && pillars.includes(pillar));
       }).length;
       const maxXp = Number(cards[0]?.dataset.pillarMaxXp ?? 0);
-      const earnedXp = maxXp * completedCount;
+      const sessionMaxXp = Number(meter.dataset.sessionMaxXp ?? 0);
+      const earnedXp = Math.min(sessionMaxXp, maxXp * completedCount);
       const progress = meter.querySelector<HTMLProgressElement>('progress');
       if (progress) progress.value = earnedXp;
       const label = meter.querySelector<HTMLElement>('[data-session-xp-label]');
-      if (label) label.textContent = `${earnedXp} / ${Number(meter.dataset.sessionMaxXp)} XP`;
+      if (label) label.textContent = `${earnedXp} / ${sessionMaxXp} XP`;
     });
 
     const xpLabel = document.querySelector<HTMLElement>('[data-material-xp]');
     if (xpLabel?.dataset.materialSlug !== slug) return;
-    if (xpLabel && typeof xp === 'number' && Number.isFinite(xp)) xpLabel.textContent = String(Math.max(0, xp));
+    if (xpLabel && typeof xp === 'number' && Number.isFinite(xp)) {
+      const materialMaxXp = Number(xpLabel.dataset.materialMaxXp ?? 0);
+      const cappedXp = Math.min(materialMaxXp > 0 ? materialMaxXp : xp, Math.max(0, xp));
+      xpLabel.textContent = materialMaxXp > 0 ? `${cappedXp}` : String(cappedXp);
+    }
   });
 
   document.querySelectorAll<HTMLAnchorElement>('[data-session-back]').forEach((link) => {
