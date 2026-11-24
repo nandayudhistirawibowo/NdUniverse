@@ -633,6 +633,11 @@ export default function Quiz(props) {
       }
       const allPillarsPassed = getAllPassedPillarKeys(materialId, sessionCount);
       completedSessionsRef.current = allPillarsPassed;
+      console.log('[DEBUG 1] Kuis selesai. Mengirim payload ke DB:', {
+        material_slug: materialId,
+        xp_didapat: 0,
+        sessions_passed: [sessionPillarKey],
+      });
       queueProgressUpdate({
         sessions_passed: [sessionPillarKey],
         session: activeSessionNumber,
@@ -656,6 +661,11 @@ export default function Quiz(props) {
       } catch {
         // The session still syncs to Supabase when available.
       }
+      console.log('[DEBUG 1] Kuis selesai. Mengirim payload ke DB:', {
+        material_slug: materialId,
+        xp_didapat: 0,
+        sessions_passed: sessionsPassed,
+      });
       queueProgressUpdate({ sessions_passed: sessionsPassed, session: activeSessionNumber });
       dispatchProgressUpdated(materialXp, sessionsPassed);
     }
@@ -684,6 +694,11 @@ export default function Quiz(props) {
     const nextMaterialXp = Math.min(maxMaterialXp, materialXp + cappedSessionXp);
     setXp((total) => total + cappedSessionXp);
     setMaterialXp(nextMaterialXp);
+    console.log('[DEBUG 1] Kuis selesai. Mengirim payload ke DB:', {
+      material_slug: materialId,
+      xp_didapat: cappedSessionXp,
+      sessions_passed: null,
+    });
     queueProgressUpdate({
       xpDelta: cappedSessionXp,
       maxXp: maxMaterialXp,

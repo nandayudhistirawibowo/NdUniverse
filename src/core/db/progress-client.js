@@ -122,14 +122,18 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
     updated_at: new Date().toISOString(),
   };
 
-  if (import.meta.env.DEV) {
-    console.log(`[DB DEBUG] Upserting Progress: user_id=${payload.user_id}, material_slug=${payload.material_slug}, xp=${payload.xp}, sessions_passed=${JSON.stringify(payload.sessions_passed)}`);
-  }
+  console.log('[DEBUG 2] Menulis ke Supabase:', payload);
 
-  const { error } = await client
+  const { data, error } = await client
     .from('user_progress')
-    .upsert(payload, { onConflict: 'user_id,material_slug,language_code' });
-  if (error) throw error;
+    .upsert(payload, { onConflict: 'user_id,material_slug,language_code' })
+    .select('id, user_id, material_slug, language_code, xp, sessions_passed, notes, updated_at')
+    .maybeSingle();
+  console.log('[DEBUG 2.5] Respons Supabase:', data, error);
+  if (error) {
+    console.error('[DEBUG 2.5] Supabase upsert error:', error);
+    throw error;
+  }
 
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('nd:progress-updated', {

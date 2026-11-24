@@ -24,6 +24,7 @@ const { data: savedProgress, error: progressError } = user
     .maybeSingle()
   : { data: null, error: null };
 if (progressError) throw progressError;
+console.log('[DEBUG 3] Render Materi. Data sesi dari DB:', savedProgress?.sessions_passed ?? null);
 const passedPillars = normalizePassedPillars(savedProgress?.sessions_passed);
 const vocab = item.data.vocab.map((entry) => ({
   german: entry.word,
