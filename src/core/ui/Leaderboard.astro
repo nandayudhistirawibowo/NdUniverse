@@ -189,9 +189,20 @@ const podiumNames = ['first', 'second', 'third'];
       refreshing = true;
       try {
         const { data, error } = await supabase.rpc('get_leaderboard', { p_lang: language });
-        if (!error && Array.isArray(data)) {
-          renderContent(data as Array<{ id: string; name: string; level: string; xp: number | string }>);
+        if (error) {
+          console.error('[LEADERBOARD AUDIT] RPC get_leaderboard failed', error);
+          if (!content.querySelector('.leaderboard-notice') && !content.querySelector('.podium-section, .ranked-section')) {
+            content.innerHTML = renderNotice('Papan peringkat belum tersedia. Silakan coba lagi nanti.', true);
+          }
+          return;
         }
+        if (Array.isArray(data)) {
+          renderContent(data as Array<{ id: string; name: string; level: string; xp: number | string }>);
+        } else {
+          console.error('[LEADERBOARD AUDIT] RPC get_leaderboard returned invalid data', data);
+        }
+      } catch (error) {
+        console.error('[LEADERBOARD AUDIT] RPC get_leaderboard exception', error);
       } finally {
         refreshing = false;
         if (pending) {

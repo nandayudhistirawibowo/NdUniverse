@@ -2,6 +2,12 @@
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 import { normalizePassedPillars } from '@core/db/progress-client-en.js';
 import { getCollection } from 'astro:content';
+
+export const prerender = false;
+
+Astro.response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+Astro.response.headers.set('Pragma', 'no-cache');
+
 const slug = Astro.params.slug ?? '';
 const materials = await getCollection('englishEveryday');
 const item = materials.find((entry) => entry.id === slug || entry.id.endsWith(`/${slug}`));
@@ -34,7 +40,16 @@ const sessions = Array.from({ length: Math.ceil(vocab.length / 5) }, (_, index) 
   return { number: index + 1, words, maxXp: words.length * 10 };
 });
 const materialMaxXp = sessions.reduce((sum, session) => sum + session.maxXp * 4, 0);
-const materialXp = Math.min(materialMaxXp, Math.max(0, Number(savedProgress?.xp) || 0));
+const materialXp = Math.min(
+  materialMaxXp,
+  sessions.reduce((sum, session) => {
+    const completedPillarCount = ['reading', 'listening', 'writing', 'speaking'].filter((pillar) => {
+      const sessionPillarKey = `s${session.number}-${pillar}`;
+      return passedPillars.includes(sessionPillarKey) || (session.number === 1 && passedPillars.includes(pillar));
+    }).length;
+    return sum + (session.maxXp * completedPillarCount);
+  }, 0),
+);
 ---
 <DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <article class="material-page">

@@ -1,4 +1,4 @@
-drop function if exists public.get_leaderboard();
+drop function if exists public.get_leaderboard(text);
 
 create or replace function public.get_leaderboard(p_lang text)
 returns table (
@@ -12,12 +12,15 @@ stable
 security definer
 set search_path = public, pg_temp
 as $$
-  with language_progress as (
+  with valid_lang as (
+    select case when p_lang in ('en', 'de') then p_lang else null end as lang
+  ),
+  language_progress as (
     select
       progress.user_id,
-      progress.xp,
-      progress.material_slug,
-      coalesce(sessions.passed, array[]::text[]) as passed,
+      coalesce(progress.xp, 0)::bigint as xp,
+      coalesce(progress.material_slug, '') as material_slug,
+      coalesce(passed.items, array[]::text[]) as passed_items,
       case
         when p_lang = 'en' and progress.material_slug like 'a1/english-a1-%' then 10
         when p_lang = 'en' and progress.material_slug like 'a2/english-a2-%' then 20
@@ -34,89 +37,87 @@ as $$
         else 0
       end as level_points
     from public.user_progress as progress
-    cross join lateral (
-      select array_agg(item.value) as passed
-      from jsonb_array_elements_text(progress.sessions_passed) as item(value)
-    ) as sessions
-    where progress.language_code = p_lang
-      and p_lang in ('en', 'de')
+    join valid_lang on valid_lang.lang = progress.language_code
+    left join lateral (
+      select coalesce(array_agg(lower(btrim(elem.value))), array[]::text[]) as items
+      from jsonb_array_elements_text(coalesce(progress.sessions_passed, '[]'::jsonb)) as elem(value)
+    ) as passed on true
   ),
   completed_progress as (
     select
-      progress.user_id,
-      progress.xp,
-      progress.level_points,
+      language_progress.user_id,
+      language_progress.xp,
+      language_progress.level_points,
       (
-        progress.passed @> array['reading', 'listening', 'writing', 'speaking']::text[]
-        or progress.passed @> array['1', '2', '3', '4']::text[]
-        or progress.passed @> array['Sesi 4']::text[]
-        or progress.passed @> array['Sesi 4 Lulus']::text[]
+        -- Legacy/full-material completion markers
+        language_progress.passed_items @> array['reading', 'listening', 'writing', 'speaking']::text[]
+        or language_progress.passed_items @> array['1', '2', '3', '4']::text[]
+        or language_progress.passed_items @> array['sesi 4']::text[]
+        or language_progress.passed_items @> array['sesi 4 lulus']::text[]
+        -- Any session with all 4 pillars passed (sessions_passed items like s1-reading)
         or exists (
           select 1
-          from unnest(progress.passed) as pillar(value)
-          where pillar.value ~ '^s[0-9]+-reading$'
-            and progress.passed @> array[
-              pillar.value,
-              regexp_replace(pillar.value, '-reading$', '-listening'),
-              regexp_replace(pillar.value, '-reading$', '-writing'),
-              regexp_replace(pillar.value, '-reading$', '-speaking')
+          from unnest(language_progress.passed_items) as item(value)
+          where item.value ~ '^s[0-9]+-reading$'
+            and language_progress.passed_items @> array[
+              item.value,
+              regexp_replace(item.value, '-reading$', '-listening'),
+              regexp_replace(item.value, '-reading$', '-writing'),
+              regexp_replace(item.value, '-reading$', '-speaking')
             ]::text[]
         )
       ) as is_complete
-    from language_progress as progress
+    from language_progress
   ),
   user_totals as (
     select
-      progress.user_id,
-      sum(progress.xp)::bigint as xp,
-      sum(case when progress.is_complete then progress.level_points else 0 end)::bigint as level_points
-    from completed_progress as progress
-    group by progress.user_id
+      completed_progress.user_id,
+      sum(completed_progress.xp)::bigint as total_xp,
+      sum(case when completed_progress.is_complete then completed_progress.level_points else 0 end)::bigint as total_level_points
+    from completed_progress
+    group by completed_progress.user_id
   ),
   leaderboard_rows as (
     select
       profile.id,
       coalesce(nullif(btrim(profile.nama_lengkap), ''), 'Pengguna') as name,
-      coalesce(totals.xp, 0)::bigint as xp,
-      coalesce(totals.level_points, 0)::bigint as level_points,
-      coalesce(profile.nim, '') as nim,
-      lower(coalesce(profile.nama_lengkap, '')) as profile_name_lower,
-      lower(coalesce(profile.nim, '')) as profile_nim_lower,
+      coalesce(totals.total_xp, 0)::bigint as xp,
+      coalesce(totals.total_level_points, 0)::bigint as level_points,
       case
-        when coalesce(totals.level_points, 0) >= 2200 then 'C2 (Mahir)'
-        when coalesce(totals.level_points, 0) >= 1800 then 'C1'
-        when coalesce(totals.level_points, 0) >= 1400 then 'B2'
-        when coalesce(totals.level_points, 0) >= 1000 then 'B1'
-        when coalesce(totals.level_points, 0) >= 700 then 'A2 Lanjutan'
-        when coalesce(totals.level_points, 0) >= 400 then 'A2 Pemula'
-        when coalesce(totals.level_points, 0) >= 200 then 'A1 Lanjutan'
+        when coalesce(totals.total_level_points, 0) >= 2200 then 'C2 (Mahir)'
+        when coalesce(totals.total_level_points, 0) >= 1800 then 'C1'
+        when coalesce(totals.total_level_points, 0) >= 1400 then 'B2'
+        when coalesce(totals.total_level_points, 0) >= 1000 then 'B1'
+        when coalesce(totals.total_level_points, 0) >= 700 then 'A2 Lanjutan'
+        when coalesce(totals.total_level_points, 0) >= 400 then 'A2 Pemula'
+        when coalesce(totals.total_level_points, 0) >= 200 then 'A1 Lanjutan'
         else 'A1 Pemula'
       end as level,
       case
-        when coalesce(totals.level_points, 0) >= 2200 then 8
-        when coalesce(totals.level_points, 0) >= 1800 then 7
-        when coalesce(totals.level_points, 0) >= 1400 then 6
-        when coalesce(totals.level_points, 0) >= 1000 then 5
-        when coalesce(totals.level_points, 0) >= 700 then 4
-        when coalesce(totals.level_points, 0) >= 400 then 3
-        when coalesce(totals.level_points, 0) >= 200 then 2
+        when coalesce(totals.total_level_points, 0) >= 2200 then 8
+        when coalesce(totals.total_level_points, 0) >= 1800 then 7
+        when coalesce(totals.total_level_points, 0) >= 1400 then 6
+        when coalesce(totals.total_level_points, 0) >= 1000 then 5
+        when coalesce(totals.total_level_points, 0) >= 700 then 4
+        when coalesce(totals.total_level_points, 0) >= 400 then 3
+        when coalesce(totals.total_level_points, 0) >= 200 then 2
         else 1
       end as level_order
     from public.profiles as profile
     left join user_totals as totals
       on totals.user_id = profile.id
+    where p_lang in ('en', 'de')
+      and coalesce(totals.total_xp, 0) > 0
+      and position('admin' in lower(coalesce(profile.nama_lengkap, ''))) = 0
+      and position('admin' in lower(coalesce(profile.nim, ''))) = 0
   )
   select
-    leaderboard.id,
-    leaderboard.name,
-    leaderboard.level,
-    leaderboard.xp
-  from leaderboard_rows as leaderboard
-  where p_lang in ('en', 'de')
-    and leaderboard.xp > 0
-    and leaderboard.profile_name_lower not like '%admin%'
-    and leaderboard.profile_nim_lower not like '%admin%'
-  order by leaderboard.level_order desc, leaderboard.xp desc, leaderboard.id
+    leaderboard_rows.id,
+    leaderboard_rows.name,
+    leaderboard_rows.level,
+    leaderboard_rows.xp
+  from leaderboard_rows
+  order by leaderboard_rows.level_order desc, leaderboard_rows.xp desc, leaderboard_rows.id
   limit 100;
 $$;
 

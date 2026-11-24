@@ -5,6 +5,9 @@ import { normalizePassedPillars } from '@core/db/progress-client.js';
 
 export const prerender = false;
 
+Astro.response.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, max-age=0');
+Astro.response.headers.set('Pragma', 'no-cache');
+
 const user = Astro.locals.user;
 if (!user) return Astro.redirect('/login-de');
 
@@ -37,7 +40,16 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   maxXp: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize).length * 10,
 }));
 const materialMaxXp = vocabSessions.reduce((sum, session) => sum + session.maxXp * 4, 0);
-const materialXp = Math.min(materialMaxXp, Math.max(0, Number(savedProgress?.xp) || 0));
+const materialXp = Math.min(
+  materialMaxXp,
+  vocabSessions.reduce((sum, session) => {
+    const completedPillarCount = ['reading', 'listening', 'writing', 'speaking'].filter((pillar) => {
+      const sessionPillarKey = `s${session.sessionNumber}-${pillar}`;
+      return passedPillars.includes(sessionPillarKey) || (session.sessionNumber === 1 && passedPillars.includes(pillar));
+    }).length;
+    return sum + (session.maxXp * completedPillarCount);
+  }, 0),
+);
 ---
 
 <DashboardLayout
