@@ -37,17 +37,18 @@ if (progressError) throw progressError;
 const materials = (await getGermanMaterials())
   .filter((material) => material.data.track === 'Alltagsdeutsch');
 const materialBySlug = new Map(materials.map((material) => [material.id, material]));
+const getMaterialMaxXp = (material: typeof materials[number]) => Math.max(1, Math.ceil((material.data.vocab?.length ?? 0) / 5)) * 200;
 const progressRows = progressData ?? [];
 const progressMaterials = materials.map((material) => ({
   slug: material.id,
   title: material.data.title ?? material.id,
-  maxXp: material.data.vocab.length * PILLAR_COUNT * XP_PER_CORRECT_ANSWER,
+  maxXp: getMaterialMaxXp(material),
 }));
 const completedMaterials = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material) return [];
-  const maxXp = material.data.vocab.length * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
-  const xp = Math.max(0, Number(row.xp) || 0);
+  const maxXp = getMaterialMaxXp(material);
+  const xp = Math.min(maxXp, Math.max(0, Number(row.xp) || 0));
   const completed = maxXp > 0 && xp >= maxXp;
   if (!completed) return [];
   return [{
@@ -59,8 +60,8 @@ const completedMaterials = progressRows.flatMap((row) => {
 const materialProgress = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material) return [];
-  const maxXp = material.data.vocab.length * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
-  const xp = Math.max(0, Number(row.xp) || 0);
+  const maxXp = getMaterialMaxXp(material);
+  const xp = Math.min(maxXp, Math.max(0, Number(row.xp) || 0));
   const completed = maxXp > 0 && xp >= maxXp;
   const percentage = completed
     ? 100
@@ -69,8 +70,9 @@ const materialProgress = progressRows.flatMap((row) => {
   return [{
     slug: material.id.split('/').at(-1) ?? material.id,
     title: material.data.title ?? material.id,
+    xp,
+    maxXp,
     percentage,
-    remainingXp: completed ? 0 : Math.max(0, maxXp - xp),
     completed,
   }];
 });
@@ -204,7 +206,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
                 <span class="completed-item-percent">{material.percentage}%</span>
               </span>
               <span class:list={['completed-item-status', { 'is-completed': material.completed }]}>
-                {material.completed ? 'Selesai (100%)' : `Kurang ${material.remainingXp} XP lagi`}
+                {material.xp} / {material.maxXp} XP
               </span>
             </a>
           </li>
@@ -280,7 +282,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
     const materialProgress = progressMaterials.flatMap((material) => {
       const row = rows.get(material.slug);
       if (!row) return [];
-      const xp = Math.max(0, Number(row.xp) || 0);
+      const xp = Math.min(material.maxXp, Math.max(0, Number(row.xp) || 0));
       const isComplete = material.maxXp > 0 && xp >= material.maxXp;
       const percentage = isComplete
         ? 100
@@ -288,8 +290,9 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
       if (percentage === 0 && xp === 0) return [];
       return [{
         ...material,
+        xp,
+        maxXp: material.maxXp,
         percentage,
-        remainingXp: isComplete ? 0 : Math.max(0, material.maxXp - xp),
         completed: isComplete,
       }];
     });
@@ -368,9 +371,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
         progressRow.append(progressBar, percent);
         const status = document.createElement('span');
         status.className = `completed-item-status${material.completed ? ' is-completed' : ''}`;
-        status.textContent = material.completed
-          ? 'Selesai (100%)'
-          : `Kurang ${material.remainingXp} XP lagi`;
+        status.textContent = `${material.xp} / ${material.maxXp} XP`;
         link.append(heading, progressRow, status);
         item.append(link);
         return item;

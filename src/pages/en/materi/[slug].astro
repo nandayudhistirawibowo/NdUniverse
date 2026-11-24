@@ -127,11 +127,11 @@ const materialXp = Math.min(
                 data-pillar-label={label}
                 data-pillar-max-xp={pillarMaxXp}
                 class={`pillar-card${isComplete ? ' is-complete' : ''}`}
-                title={isComplete ? 'Selesai' : undefined}
+                title={isComplete ? '100%' : '0%'}
               >
                 <span class="pillar-title">{label}</span>
                 <progress max={pillarMaxXp} value={pillarEarnedXp} aria-label={`Progres ${label}`}></progress>
-                <span class="pillar-status" data-pillar-status>{isComplete ? '[✓] 100% (Selesai)' : `[ ] 0% (Kurang ${pillarMaxXp} XP lagi)`}</span>
+                <span class="pillar-status" data-pillar-status>{isComplete ? '100%' : '0%'}</span>
               </a>
             );
           })}
@@ -185,11 +185,12 @@ const materialXp = Math.min(
       const isComplete = pillars.includes(sessionPillarKey) || (sessionNum === 1 && pillars.includes(pillarType));
       const label = link.dataset.pillarLabel ?? '';
       link.classList.toggle('is-complete', isComplete);
-      link.setAttribute('aria-label', `${label}${isComplete ? ' completed, 100% complete' : `, 0% complete, ${link.dataset.pillarMaxXp} XP remaining`}`);
+      link.setAttribute('aria-label', `${label} ${isComplete ? '100%' : '0%'}`);
       const progress = link.querySelector<HTMLProgressElement>('progress');
       if (progress) progress.value = isComplete ? Number(link.dataset.pillarMaxXp) : 0;
       const status = link.querySelector<HTMLElement>('[data-pillar-status]');
-      if (status) status.textContent = isComplete ? '[✓] 100% (Selesai)' : `[ ] 0% (Kurang ${link.dataset.pillarMaxXp} XP lagi)`;
+      link.setAttribute('title', isComplete ? '100%' : '0%');
+      if (status) status.textContent = isComplete ? '100%' : '0%';
     });
 
     document.querySelectorAll<HTMLElement>('[data-session-progress]').forEach((meter) => {
