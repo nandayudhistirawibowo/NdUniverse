@@ -15,5 +15,5 @@ npx playwright test tests/fuzzy-match.spec.ts
 ## Cakupan fitur terkait
 
 - `fuzzy-match.spec.ts` memeriksa toleransi typo, normalisasi artikel untuk soal biasa, serta pemertahanan artikel pada prompt grammar yang memang mengujinya.
-- `dashboard.spec.ts` menguji route dan perilaku dashboard. Untuk memeriksa progress bar, persentase pilar, sisa XP, dan pembaruan setelah kuis, gunakan fixture atau akun tes dengan progress yang diketahui.
+- `dashboard.spec.ts` menguji route dan perilaku dashboard. Untuk memeriksa progress bar/persentase, status pilar biner 100%/0% di halaman materi, tampilan `xp / maxXp XP` (model 50 XP per pilar, 200 XP per sesi, `jumlah sesi × 200 XP`), dan pembaruan setelah kuis, gunakan fixture atau akun tes dengan progress yang diketahui.
 - TTS, kegagalan request CDN, izin mikrofon, dan transkripsi langsung provider memerlukan pemeriksaan browser/integrasi tersendiri; `npm run build` saja tidak membuktikan perilaku runtime tersebut. Hindari credential produksi saat menguji provider.

@@ -161,7 +161,7 @@ RPC leaderboard didefinisikan di `supabase/leaderboard.sql`; file tersebut harus
 - Generator `scripts/generate-tts-en.py` memeriksa keberadaan MP3 secara lokal (tanpa HTTP/HEAD ke jsDelivr saat audit) dan mencakup halaman Grammar/Pronunciation English serta German selain konten Markdown. `scripts/generate-boss-tts.py` menangani voice line Boss Fight. Audio diproduksi dengan Microsoft Edge TTS dan disajikan dari repository `nduniverse-audio` melalui jsDelivr.
 - Dry-run terkini menunjukkan lebih dari 22.000 variasi output teks/voice umum; jumlah mengikuti konten. Pemeriksaan lokal tidak membuktikan bahwa aset sudah dipublikasikan di CDN.
 - Semua artikel (EN `the/a/an`, DE `der/die/das`) telah dihapus dari entri kosakata materi. Normalisasi fuzzy mengabaikan artikel untuk kuis biasa; prompt grammar tertentu dapat mewajibkannya melalui `isArticleQuestion`.
-- Dashboard EN dan DE menampilkan progress bar dan sisa XP. Persentase dihitung dari pilar unik lulus per empat pilar, sedangkan batas XP adalah turunan `jumlah kosakata × 4 × 10`; database tetap menyimpan XP dan `sessions_passed`, bukan nilai presentasi tersebut.
+- Dashboard EN dan DE menampilkan progress bar/persentase dan XP materi dalam format `xp / maxXp XP`. Batas XP materi mengikuti model tetap 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP`; database tetap menyimpan XP dan `sessions_passed`, bukan nilai presentasi tersebut. Halaman materi merender status pilar biner 100%/0% dari `sessions_passed`.
 - STT menggunakan `noiseSuppression`, high-pass 300 Hz, low-pass 4 kHz, dan dynamic VAD berdasarkan noise floor sebelum mencoba Groq Whisper, Speechmatics, lalu Web Speech API.
 
 ## Panduan Perubahan

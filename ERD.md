@@ -63,7 +63,7 @@ erDiagram
 - `xp` menyimpan progres XP kumulatif yang sudah dikomit.
 - `notes` menyimpan catatan belajar pengguna untuk materi tertentu.
 - `updated_at` diperbarui setiap upsert progress.
-- Dashboard pencapaian EN/DE membaca `xp` dan `sessions_passed` untuk membentuk progress bar serta sisa XP. Persentase diturunkan dari jumlah pilar unik yang lulus dibagi empat; batas XP UI dihitung dari jumlah vocab × 4 pilar × 10 XP per jawaban benar. Nilai persentase dan batas XP ini bukan kolom database baru.
+- Dashboard pencapaian EN/DE dan halaman materi membaca `xp` dan `sessions_passed` untuk membentuk progres dan XP materi. Persentase/XP UI diturunkan dari pilar yang lulus: model tetap 50 XP per pilar, 200 XP per sesi (4 pilar), dan batas materi `jumlah sesi × 200 XP` (mis. 800 XP untuk 4 sesi). Pilar ditampilkan biner 100%/0%; dashboard menampilkan `xp / maxXp XP`. Nilai persentase dan batas XP ini bukan kolom database baru, dan XP historis di DB dapat menyimpang.
 - Level dashboard tidak berasal dari satu kolom database; dihitung dari material CEFR yang telah menyelesaikan keempat pilar.
 - Leaderboard berbeda dari level dashboard: RPC `public.get_leaderboard()` menjumlahkan seluruh `user_progress.xp` per pengguna, lalu mengurutkan `profiles.current_level DESC, total XP DESC` dan membatasi hasil ke 100 pengguna.
 - Jalankan `supabase/leaderboard.sql` pada project Supabase setelah tabel `user_progress` dan kolom `profiles.current_level` tersedia. RPC memakai `SECURITY DEFINER` dengan `search_path` terbatas, hanya mengembalikan ID/nama/level/XP, dan hak eksekusinya dicabut dari `public`, `anon`, serta `authenticated`; hanya `service_role` yang dapat memanggilnya.

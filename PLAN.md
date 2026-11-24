@@ -28,7 +28,7 @@ Status: **SELESAI**
 Status: **IMPLEMENTASI TERSEDIA; ekspansi konten dan aset audio berlanjut**
 
 - Generator TTS umum mencakup materi, kuis, ujian, karier, Grammar, dan Pronunciation EN/DE. Audit dry-run memeriksa file lokal, tidak meminta status CDN lewat HTTP/HEAD.
-- Dashboard English dan German sudah menampilkan progress bar pilar, persentase, sisa XP, dan status selesai pada daftar pencapaian.
+- Dashboard English dan German sudah menampilkan progress bar, persentase, dan XP materi dalam format `xp / maxXp XP` pada daftar pencapaian (selaras dengan perhitungan XP materi: 50 XP per pilar, 200 XP per sesi, `jumlah sesi × 200 XP` per materi). Halaman materi menampilkan status pilar biner 100%/0%.
 - Entri artikel telah dihapus dari daftar kosakata materi; `isArticleQuestion` mempertahankan artikel hanya pada prompt yang memang mengujinya.
 
 #### Backlog ekspansi pasca-V4

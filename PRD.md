@@ -35,7 +35,7 @@ Jumlah file materi dan kosakata berubah seiring penambahan konten; dokumen ini t
 - Career: katalog persiapan dunia kerja dengan empat rumpun profesi.
 - Setiap materi memiliki kosakata Jerman, terjemahan Indonesia, konteks Jerman, dan terjemahan konteks.
 - Artikel tata bahasa tidak menjadi entri kosakata tersendiri: daftar materi tidak memuat `the/a/an` atau `der/die/das` sebagai kata target. Artikel tetap dapat muncul dan dinilai pada soal grammar yang memang mengujinya.
-- Kosakata dibagi menjadi **4 sesi**, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20.
+- Kosakata dibagi menjadi sesi, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20. Model progres/XP materi: **50 XP per pilar**, **4 pilar = 200 XP per sesi**, dan batas XP materi = **`jumlah sesi × 200 XP`** (mis. materi 4 sesi = 800 XP).
 - Detail materi menampilkan tabel kosakata per sesi beserta tombol speaker dan tombol latihan keempat pilar.
 - Halaman materi dan latihan tersedia pada route modul German dan English; fitur belajar yang memerlukan akun menggunakan autentikasi Supabase.
 
@@ -52,17 +52,17 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - Tipe soal lama bukan lagi generator acak global; tipe soal disesuaikan dengan pilar aktif.
 - Pengguna bebas memilih sesi yang tersedia dan pilar apa pun tanpa menyelesaikan sesi/pilar sebelumnya. URL latihan membawa `session` dan `type`; keduanya tidak dikunci berdasarkan progres sebelumnya.
 - Setelah kuis selesai, pengguna kembali ke halaman materi; aplikasi tidak mengarahkan ke pilar berikutnya secara paksa.
-- Status penyelesaian tetap dicatat per pasangan sesi-pilar, misalnya `s1-reading` atau `s2-writing`, untuk menampilkan indikator progres. Status ini bukan aturan akses.
+- Status penyelesaian tetap dicatat per pasangan sesi-pilar, misalnya `s1-reading` atau `s2-writing`, untuk menampilkan indikator progres. Status ini bukan aturan akses. Progres pilar di UI bersifat biner: 100% jika tuntas, 0% jika belum. Pasangan pilar yang tuntas digabung (union) saat disimpan agar progres lain tidak tertimpa.
 
 ### Sistem Nyawa, XP, dan Anti-Farming
 
 - Kuis dimulai dengan tiga nyawa.
 - Jawaban salah mengurangi nyawa dan menambahkan kata terkait ke Review Kata Sulit.
-- Jawaban benar menambah 10 XP ke state sesi sementara.
-- XP baru tidak dikomit secara final sebelum sesi mencapai penyelesaian.
+- Jawaban benar menambah XP ke state sesi sementara (run/pilar dibatasi sesuai model tetap: 50 XP per pilar, 200 XP per sesi, dan batas XP materi `jumlah sesi × 200 XP`).
+- XP baru tidak dikomit secara final sebelum sesi/pilar mencapai penyelesaian yang valid.
 - Jika Game Over, XP sementara dibuang dan tidak disimpan.
 - `finalizedXpRef` mencegah finalisasi ganda untuk run kuis yang sama.
-- Sistem anti-farming membatalkan XP sementara dari sesi yang berakhir Game Over dan mencegah finalisasi XP ganda pada run yang sama. Ini bukan deteksi farming lintas akun/perangkat.
+- Anti-farming memblokir pemberian XP ulang hanya ketika sesi tersebut sudah tuntas keempat pilarnya (pengulangan sesi tuntas); penyelesaian pilar pertama di sesi yang belum tuntas tetap dapat memberi XP/progres. Ini bukan deteksi farming lintas akun/perangkat.
 
 ### NdBot v2 — Chatbot Tutor berbasis RAG
 
@@ -91,13 +91,12 @@ Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wa
 
 - Progress disimpan dalam `user_progress.sessions_passed` sebagai JSONB.
 - Format baru menyimpan identitas sesi dan pilar, misalnya `["s1-reading", "s2-writing"]`.
-- Menyelesaikan satu pasangan sesi-pilar menambahkan kuncinya tanpa menghapus progres lain; format tersebut dipakai untuk mencocokkan centang penyelesaian yang tepat.
+- Menyelesaikan satu pasangan sesi-pilar menambahkan kuncinya tanpa menghapus progres lain; progres digabung (union) sebelum upsert agar kunci sesi-pilar lain tidak tertimpa. Format tersebut dipakai untuk mencocokkan centang penyelesaian yang tepat.
 - Format lama berupa nama pilar (`reading`, `listening`, `writing`, `speaking`) atau angka sesi `[1, 2, 3, 4]` masih dinormalisasi saat dibaca untuk kompatibilitas data sebelumnya.
 - Pemilihan sesi/pilar tidak bergantung pada array progres tersebut.
-- Materi baru dianggap selesai hanya jika keempat pilar tercatat sebagai selesai sesuai aturan progress dashboard.
-- Peserta menerima XP kuis per jawaban benar, tetapi kartu materi menampilkan kemajuan 0/4 hingga 4/4 pilar.
-- Daftar pencapaian dashboard English (`/en/dashboard`) dan German (`/dashboard-de`) menampilkan materi yang sudah memiliki progress. Persentase berasal dari jumlah pilar unik yang lulus dibagi empat; ketika satu sesi lengkap keempat pilarnya, progress menjadi 100%.
-- Sisa XP ditampilkan sebagai `max XP materi - XP saat ini`, dibatasi minimum nol, dan dipaksa nol saat materi selesai. Batas XP yang dipakai UI dihitung dari jumlah kosakata × 4 pilar × 10 XP per jawaban benar; nilai ini turunan UI, bukan kolom baru di database.
+- Materi baru dianggap selesai hanya jika keempat pilar pada semua sesi materi tercatat selesai sesuai aturan progress.
+- Tampilan progres pilar bersifat biner: 100% jika pilar tuntas, 0% jika belum.
+- Halaman materi (SSR, no-cache) dan dashboard pencapaian English (`/en/dashboard`) serta German (`/dashboard-de`) menampilkan progres materi yang sudah memiliki XP atau pilar tersimpan. Dashboard menampilkan XP sebagai `xp / maxXp XP`. Batas XP UI memakai model tetap 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP` per materi (mis. 800 XP untuk 4 sesi). Nilai ini turunan UI, bukan kolom baru di database; XP historis di database dapat tetap menyimpang sampai diperbarui/dibersihkan.
 
 ### Level CEFR
 
@@ -206,7 +205,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### Dashboard, Bantuan, dan Admin
 
-- Dashboard EN dan DE menampilkan XP, kemajuan level CEFR, serta daftar progres materi dengan progress bar, persentase pilar, sisa XP, dan status selesai.
+- Dashboard EN dan DE menampilkan XP, kemajuan level CEFR, serta daftar progres materi dengan progress bar, persentase, dan XP materi dalam format `xp / maxXp XP`. Halaman materi menampilkan status pilar biner 100%/0%.
 - Materi Fachdeutsch dan Career tidak menambah poin Level CEFR.
 - Halaman Bantuan, profil, bookmark, dan dashboard dilindungi middleware sesuai akses.
 - Admin mengelola akun melalui portal admin terproteksi.

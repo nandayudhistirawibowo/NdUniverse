@@ -50,7 +50,7 @@ Dashboard German dan English memiliki visual gelap yang selaras: sidebar gelap, 
 
 Sidebar, header, navigasi, label aksi, dan tombol dashboard ditulis dalam Bahasa Indonesia. String UI saat ini hardcoded, bukan diatur oleh i18n; route `/en` dan `/de` mengganti modul belajar, sementara materi dan soal tetap memakai bahasa target.
 
-Bagian Pencapaian menampilkan materi yang sudah memiliki progress. Setiap baris menyusun judul, progress bar emas dengan persentase di sisi kanan, lalu info sisa XP. Materi yang tuntas menampilkan status “Selesai (100%)” berwarna hijau; layout memakai grid min-width-safe agar tidak meluber di layar ponsel.
+Bagian Pencapaian menampilkan materi yang sudah memiliki progress. Setiap baris menyusun judul, progress bar dengan persentase, serta XP materi dalam format `xp / maxXp XP` (mengikuti perhitungan XP materi: 50 XP per pilar, 200 XP per sesi, batas materi `jumlah sesi × 200 XP`). Status pilar pada halaman materi bersifat biner (100%/0%); layout memakai grid min-width-safe agar tidak meluber di layar ponsel.
 
 Card katalog menampilkan nama, ringkasan, progres, dan badge CEFR:
 

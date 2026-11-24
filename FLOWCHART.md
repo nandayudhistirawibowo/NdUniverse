@@ -158,30 +158,29 @@ flowchart TD
     A[Muat progress materi] --> B{Format sessions_passed}
     B -->|Kunci baru sN-pillar| C[Gunakan indikator sesi dan pilar]
     B -->|Format lama| D[Normalisasi nilai lama]
-    C --> E[Gabungkan progres yang telah tersimpan]
+    C --> E[Gabungkan/union progres yang telah tersimpan]
     D --> E
-    E --> F[Tampilkan centang untuk pasangan yang selesai]
+    E --> F[Tampilkan status pilar biner 100%/0% untuk pasangan yang selesai]
     F --> G[Pengguna tetap bebas memilih sesi dan pilar]
-    G --> H[Jika lulus, upsert kunci sesi-pilar]
+    G --> H[Jika lulus, upsert kunci sesi-pilar hasil merge]
 ```
 
 ## Progress Pencapaian Dashboard EN/DE
 
-```mermaid
+`mermaid
 flowchart TD
-    A[Dashboard mengambil xp dan sessions_passed dari user_progress] --> B[Pasangkan baris progress ke materi]
-    B --> C[Hitung pilar unik yang lulus dari empat pilar]
-    C --> D{Satu sesi sudah lulus empat pilar?}
-    D -->|Ya| E[Set progress 100 persen dan sisa XP nol]
-    D -->|Belum| F[Hitung persentase pilar dan max XP dikurangi XP saat ini]
-    E --> G[Tampilkan progress bar dan status selesai]
-    F --> H[Tampilkan progress bar, persentase, dan sisa XP]
-    G --> I[nd:progress-updated memperbarui daftar setelah latihan]
-    H --> I
-```
+    A[Dashboard/materi mengambil xp dan sessions_passed dari user_progress] --> B[Pasangkan baris progress ke materi]
+    B --> C[Hitung pilar lulus per sesi dari sessions_passed]
+    C --> D[Hitung xp dan maxXp materi]
+    D --> E{xp mencapai maxXp materi?}
+    E -->|Ya| F[Tampilkan progres 100% dan xp/maxXp penuh]
+    E -->|Belum| G[Tampilkan progres dan xp / maxXp XP]
+    F --> H[Materi: pilar biner 100%/0%]
+    G --> H
+    H --> I[nd:progress-updated memperbarui tampilan setelah latihan]
+`
 
-Nilai XP maksimal merupakan kalkulasi UI `jumlah vocab × 4 × 10`, bukan kolom tambahan pada database. Daftar hanya menampilkan materi yang sudah memiliki XP atau progress pilar.
-
+Nilai XP maksimal memakai model tetap UI: 50 XP per pilar, 200 XP per sesi (4 pilar), dan jumlah sesi × 200 XP per materi (mis. 800 XP untuk 4 sesi). Ini kalkulasi presentasi, bukan kolom tambahan pada database. Daftar dashboard hanya menampilkan materi yang sudah memiliki XP atau progress pilar.
 ## Grading Artikel dan Fuzzy Matching
 
 ```mermaid

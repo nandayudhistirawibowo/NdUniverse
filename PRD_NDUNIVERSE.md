@@ -80,7 +80,7 @@ Landing page mengenalkan produk dan menyediakan kartu modul yang menautkan langs
 - **Cross-device:** pengalaman harus nyaman di desktop, tablet, dan mobile.
 - **Konsisten:** NdUniverse menjadi identitas induk, sementara modul bahasa memiliki konten dan alur khusus.
 - **Bertahap:** landing mengarahkan user ke login modul, lalu dashboard mengatur perjalanan belajar.
-- **Tampilan pencapaian:** dashboard EN/DE memperlihatkan progress pilar dan sisa XP per materi yang sudah dimulai, termasuk status selesai pada 100%.
+- **Tampilan pencapaian:** dashboard EN/DE memperlihatkan progres materi (persentase) dan XP dalam format `xp / maxXp XP` untuk materi yang sudah dimulai. Halaman materi menampilkan status pilar biner 100%/0%; batas XP materi mengikuti 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP`.
 
 ## Fondasi Teknis
 

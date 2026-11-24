@@ -10,7 +10,7 @@ Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latiha
 
 - **German (`/de`)**: Alltagsdeutsch A1-C2, Fachdeutsch, Goethe, Career, dan Boss Fight.
 - **English (`/en`)**: Everyday dan Academic English, IELTS/TOEFL, serta Career.
-- **Latihan empat pilar**: pilih sesi dan Reading, Listening, Writing, atau Speaking secara bebas. Progres tiap pasangan sesi-pilar disimpan, misalnya `s1-reading`.
+- **Latihan empat pilar**: pilih sesi dan Reading, Listening, Writing, atau Speaking secara bebas. Progres tiap pasangan sesi-pilar disimpan, misalnya `s1-reading`, digabung (union) saat disinkronkan agar progres pilar lain tidak tertimpa. Status pilar di UI biner: 100% jika pilar tuntas, 0% jika belum.
 - **NdBot v2 (RAG)**: Supabase `pgvector` mengambil materi relevan; Cloudflare Workers AI membuat embedding dan Groq membantu penulisan ulang query serta jawaban.
 - **Anti-cheat ujian**: mode fullscreen mencatat pelanggaran; NdBot menampilkan status dan ujian dikirim otomatis pada strike ketiga. NdBot juga mengunci chat pada mode kuis, tanpa mengunci pilihan materi/sesi/pilar berdasarkan progres.
 - **Cinematic Boss Fight**: wawancara karier memakai adegan overlay memenuhi viewport, audio TTS untuk dialog HRD, dan typewriter yang diselaraskan dengan durasi audio.
@@ -18,7 +18,7 @@ Lingkup fitur V4 yang didokumentasikan mencakup modul German dan English, latiha
 - **Noise suppression STT**: browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`; rekaman melewati high-pass 300 Hz dan low-pass 4 kHz. Dynamic VAD mengukur noise floor untuk menentukan ambang suara dan jeda hening.
 - **Grading fleksibel**: kuis dan ujian memakai fuzzy matching untuk toleransi typo; STT juga membandingkan fonetik untuk variasi aksen. Entri artikel `the/a/an` dan `der/die/das` telah dihapus dari daftar kosakata materi. Artikel diabaikan pada soal biasa, tetapi dipertahankan pada soal grammar yang secara spesifik mengujinya.
 - **Futuristic Leaderboard**: podium Top 3 dan daftar hingga 100 pengguna, diurutkan berdasarkan level lalu XP. Data dihitung melalui Supabase RPC server-side yang dibatasi untuk service role agar sesuai dengan kebijakan RLS.
-- **Progress pencapaian**: dashboard EN dan DE menampilkan progress bar pilar, persentase, serta sisa XP per materi yang sudah mulai dipelajari. Status 100% ditampilkan sebagai selesai.
+- **Progress pencapaian**: dashboard EN dan DE menampilkan progress bar pilar biner (100%/0%), persentase progres, dan XP materi dalam format `xp / maxXp XP` untuk materi yang sudah mulai dipelajari. Total XP materi mengikuti perhitungan pilar/sesi di dalam materi (50 XP per pilar, 4 pilar = 200 XP per sesi; materi 4 sesi = 800 XP).
 - **Bendera modul**: landing memakai SVG `public/flags/gb.svg` dan `public/flags/de.svg`, menjaga tampilan konsisten lintas perangkat tanpa dependency emoji flag.
 - **Audio dua aksen**: Microsoft Edge TTS menghasilkan audio `en-US`, `en-GB`, dan German. MP3 serta manifest yang dipublikasikan di repository `nandayudhistirawibowo/nduniverse-audio` disajikan melalui jsDelivr. Web Speech API menjadi fallback saat audio gagal.
 - **Progress dan autentikasi**: Supabase Auth/PostgreSQL/Storage dengan pemisahan progress German dan English.

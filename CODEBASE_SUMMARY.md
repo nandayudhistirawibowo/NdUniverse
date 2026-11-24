@@ -133,7 +133,7 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 
 ### Progress pencapaian dashboard
 
-Dashboard EN (`src/pages/en/dashboard/index.astro`) dan DE (`src/pages/dashboard-de/index.astro`) mengambil `xp` serta `sessions_passed` dari `user_progress`. Daftar progres menghitung persentase pilar unik dari empat pilar, menampilkan XP yang kurang berdasarkan batas turunan `vocab.length × 4 × 10`, dan menetapkan sisa XP nol saat satu sesi lengkap. Perubahan progress dari kuis juga memperbarui daftar tanpa reload.
+Dashboard EN (`src/pages/en/dashboard/index.astro`) dan DE (`src/pages/dashboard-de/index.astro`) mengambil `xp` serta `sessions_passed` dari `user_progress`. Daftar progres menghitung persentase/XA materi dan menampilkan `xp / maxXp XP` dengan batas model tetap 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP`. Halaman materi EN/DE merender progres dari `sessions_passed` (SSR, no-cache) dengan status pilar biner 100%/0% dan memperbarui UI via event `nd:progress-updated`. Perubahan progress dari kuis juga memperbarui tampilan tanpa reload.
 
 ## Panduan Navigasi Developer
 
