@@ -653,6 +653,7 @@ export default function Quiz(props) {
     if (queue.length > 0 || isGameOver || finalizedXpRef.current) return;
 
     finalizedXpRef.current = true;
+    console.log(`[QUIZ AUDIT] State XP: ${materialXp}, Sesi: ${activeSessionNumber}, Pilar: ${pillarMode ? pillarType : 'all'}, IsRepeat: ${repeatAttemptRef.current}`);
     if (sessionXp <= 0) {
       dispatchProgressUpdated(materialXp);
       return;
@@ -699,6 +700,7 @@ export default function Quiz(props) {
         : (sessionMode && activeSessionNumber <= readCompletedSessions(materialId));
       const remaining = Math.max(0, maxMaterialXp - materialXp - prev);
       const gain = isRepeat ? 0 : Math.max(0, Math.min(Number(amount) || 0, remaining));
+      console.log(`[QUIZ AUDIT] State XP: ${materialXp}, Sesi: ${activeSessionNumber}, Pilar: ${pillarMode ? pillarType : 'all'}, IsRepeat: ${isRepeat}`);
       if (import.meta.env.DEV) {
         console.log(`[XP DEBUG] Current XP: ${materialXp}, Max XP: ${maxMaterialXp}, Awarded: ${gain}`);
       }

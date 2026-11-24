@@ -175,13 +175,20 @@ const materialXp = Math.min(materialMaxXp, Math.max(0, Number(savedProgress?.xp)
   } from '@core/db/progress-client.js';
 
   window.addEventListener('nd:progress-updated', (event) => {
-    const { slug, languageCode, pillars, xp } = (event as CustomEvent<{
-      slug: string;
-      languageCode: string;
-      pillars: string[];
+    const detail = (event as CustomEvent<{
+      slug?: string;
+      languageCode?: string;
+      pillars?: string[];
+      sessions_passed?: string[];
       xp?: number;
-    }>).detail;
-    console.log(`[UI DEBUG] Received progress update: xp=${xp}, pillars=${JSON.stringify(pillars)}`);
+    }>).detail ?? {};
+    console.log('[UI AUDIT] Event diterima:', detail);
+    const { slug, languageCode, xp } = detail;
+    const pillars = Array.isArray(detail.pillars)
+      ? detail.pillars
+      : Array.isArray(detail.sessions_passed)
+        ? detail.sessions_passed
+        : [];
     if (languageCode !== 'de') return;
 
     document.querySelectorAll<HTMLAnchorElement>('[data-progress-pillar]').forEach((link) => {

@@ -208,15 +208,21 @@ const podiumNames = ['first', 'second', 'third'];
       }, 250);
     };
 
+    const handleRealtimeChange = () => {
+      console.log('[LEADERBOARD AUDIT] Realtime update fired');
+      scheduleRefresh();
+    };
+
     supabase
       .channel('realtime-leaderboard')
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_progress' }, scheduleRefresh)
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'user_progress' }, scheduleRefresh)
-      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'profiles' }, scheduleRefresh)
-      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, scheduleRefresh)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'user_progress' }, handleRealtimeChange)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'user_progress' }, handleRealtimeChange)
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'profiles' }, handleRealtimeChange)
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, handleRealtimeChange)
       .subscribe();
 
     window.addEventListener('nd:progress-updated', () => {
+      console.log('[LEADERBOARD AUDIT] Local progress event received');
       scheduleRefresh();
     });
   }
