@@ -15,6 +15,24 @@ const STORAGE_KEY = 'sideutsch-xp';
 const BOOKMARKS_KEY = 'sideutsch-bookmarks';
 const PILLAR_TYPES = ['reading', 'listening', 'writing', 'speaking'];
 
+function normalizePassedPillars(value) {
+  const source = Array.isArray(value)
+    ? value
+    : typeof value === 'string'
+      ? [value]
+      : value && typeof value === 'object'
+        ? Object.values(value)
+        : [];
+
+  return Array.from(
+    new Set(
+      source
+        .map((item) => String(item ?? '').trim().toLowerCase())
+        .filter(Boolean)
+    )
+  );
+}
+
 function shuffle(items) {
   const arr = [...items];
 
@@ -369,7 +387,6 @@ export default function Quiz(props) {
       }
 
       setXp(Number.isFinite(localXp) ? localXp : 0);
-      setMaterialXp(Number.isFinite(localMaterialXp) ? localMaterialXp : 0);
       setIsAuthenticated(true);
       setAuthResolved(true);
 
@@ -384,20 +401,17 @@ export default function Quiz(props) {
       const legacyXp = remoteTotalXp === 0 && Number.isFinite(localXp)
         ? Math.max(0, Math.min(maxMaterialXp - currentMaterialXp, localXp - earnedXpRef.current))
         : 0;
-      const offlineXp = remoteTotalXp > 0
-        ? Math.max(0, Math.min(maxMaterialXp - currentMaterialXp - legacyXp, localMaterialXp - currentMaterialXp - earnedXpRef.current))
-        : 0;
       const remoteSessions = normalizePassedSessions(current?.sessions_passed);
       const localCompleted = readCompletedSessions(materialId);
       const completed = Math.max(localCompleted, remoteSessions.at(-1) ?? 0);
       const mergedSessions = Array.from({ length: completed }, (_, index) => index + 1);
       const pending = pendingProgressRef.current;
       pendingProgressRef.current = { xpDelta: 0, sessions_passed: null };
-      const baseMaterialXp = Math.min(maxMaterialXp, currentMaterialXp + legacyXp + offlineXp + earnedXpRef.current);
+      const baseMaterialXp = Math.min(maxMaterialXp, currentMaterialXp + earnedXpRef.current);
       const pendingXpDelta = Math.max(0, Math.min(Number(pending.xpDelta) || 0, maxMaterialXp - baseMaterialXp));
       const cappedMaterialXp = Math.min(maxMaterialXp, baseMaterialXp + pendingXpDelta);
 
-      setXp(remoteTotalXp + legacyXp + offlineXp + earnedXpRef.current + pendingXpDelta);
+      setXp(remoteTotalXp + legacyXp + earnedXpRef.current + pendingXpDelta);
       setMaterialXp(cappedMaterialXp);
 
       if (completed > 0) {
@@ -410,7 +424,6 @@ export default function Quiz(props) {
       }
 
       if (legacyXp > 0) queueProgressUpdate({ xp: Math.min(maxMaterialXp, currentMaterialXp + legacyXp), maxXp: maxMaterialXp });
-      if (offlineXp > 0) queueProgressUpdate({ xpDelta: offlineXp, maxXp: maxMaterialXp });
       if (pendingXpDelta > 0) queueProgressUpdate({ xpDelta: pendingXpDelta, maxXp: maxMaterialXp });
       const sessionsToSave = pending.sessions_passed
         ?? (localCompleted > (remoteSessions.at(-1) ?? 0) ? mergedSessions : null);

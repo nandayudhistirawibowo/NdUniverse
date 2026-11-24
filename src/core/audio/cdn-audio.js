@@ -40,6 +40,15 @@ export function preloadCdnAudioManifest() {
   if (typeof window !== 'undefined') getCdnManifest();
 }
 
+function normalizeAudioKey(key) {
+  if (typeof key !== 'string') return key;
+  return key
+    .replace(/(^|\/)aud_us\//g, '$1tts-en-us/')
+    .replace(/(^|\/)aud_gb\//g, '$1tts-en-gb/')
+    .replace(/-us\.mp3$/i, (match, offset, str) => (str.includes('/tts-en-us/') ? '-us.mp3' : match))
+    .replace(/-gb\.mp3$/i, (match, offset, str) => (str.includes('/tts-en-gb/') ? '-gb.mp3' : match));
+}
+
 function getAudioKey(audioPath) {
   const cdnPrefix = `${AUDIO_REPO_BASE}/`;
   let encodedKey;
@@ -53,7 +62,7 @@ function getAudioKey(audioPath) {
   }
 
   try {
-    const key = decodeURIComponent(encodedKey);
+    const key = normalizeAudioKey(decodeURIComponent(encodedKey));
     return key.split('/').includes('..') ? null : key;
   } catch (error) {
     console.error('Invalid encoded audio path in the TTS manifest.', error);
