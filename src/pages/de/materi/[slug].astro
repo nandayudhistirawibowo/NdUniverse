@@ -35,12 +35,13 @@ const { data: savedProgress, error: progressError } = user
 if (progressError) throw progressError;
 console.log('[DEBUG 3] Render Materi. Data sesi dari DB:', savedProgress?.sessions_passed ?? null);
 const passedPillars = normalizePassedPillars(savedProgress?.sessions_passed);
+const PILLAR_XP = 50;
 const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   sessionNumber: index + 1,
   vocab: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize),
-  maxXp: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize).length * 10,
+  maxXp: PILLAR_XP,
 }));
-const materialMaxXp = vocabSessions.reduce((sum, session) => sum + session.maxXp * 4, 0);
+const materialMaxXp = vocabSessions.length * PILLAR_XP * 4;
 const materialXp = Math.min(
   materialMaxXp,
   vocabSessions.reduce((sum, session) => {
@@ -48,7 +49,7 @@ const materialXp = Math.min(
       const sessionPillarKey = `s${session.sessionNumber}-${pillar}`;
       return passedPillars.includes(sessionPillarKey) || (session.sessionNumber === 1 && passedPillars.includes(pillar));
     }).length;
-    return sum + (session.maxXp * completedPillarCount);
+    return sum + (PILLAR_XP * completedPillarCount);
   }, 0),
 );
 ---

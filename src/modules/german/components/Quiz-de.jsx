@@ -252,7 +252,8 @@ export default function Quiz(props) {
     type: pillarType,
   } = props;
   const items = suppliedQuestions ?? suppliedItems ?? [];
-  const maxMaterialXp = items.length * 4 * 10;
+  const PILLAR_XP = 50;
+  const SESSION_XP = PILLAR_XP * 4;
   useEffect(() => {
     items.forEach((item) => {
       [item.german, item.context, item.hoeren_audio].forEach((text) => {
@@ -263,6 +264,7 @@ export default function Quiz(props) {
   const pillarMode = PILLAR_TYPES.includes(pillarType);
   const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
   const sessionCount = Math.max(1, Math.ceil(items.length / effectiveBatchSize));
+  const maxMaterialXp = sessionCount * SESSION_XP;
   const requestedSession = Math.max(1, Number(session) || Math.floor(startIndex / effectiveBatchSize) + 1);
   const selectedSession = Math.min(requestedSession, sessionCount);
   const sessionStartIndex = (selectedSession - 1) * effectiveBatchSize;
@@ -697,7 +699,8 @@ export default function Quiz(props) {
       dispatchProgressUpdated(materialXp);
       return;
     }
-    const cappedSessionXp = Math.min(sessionXp, Math.max(0, maxMaterialXp - materialXp));
+    const runMaxXp = pillarMode ? PILLAR_XP : (sessionMode ? SESSION_XP : PILLAR_XP);
+    const cappedSessionXp = Math.min(sessionXp, runMaxXp, Math.max(0, maxMaterialXp - materialXp));
     if (cappedSessionXp <= 0) {
       dispatchProgressUpdated(materialXp);
       return;
