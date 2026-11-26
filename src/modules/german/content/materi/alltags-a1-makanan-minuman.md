@@ -80,4 +80,7 @@ vocab:
     indonesian: "lapar"
     context: "Nach dem Spaziergang bin ich hungrig."
     contextIndonesian: "Aku lapar setelah jalan-jalan."
+  - german: "Brötchen"
+    indonesian: "roti kecil"
+    context: "Wir holen morgens frische Brötchen."
 ---

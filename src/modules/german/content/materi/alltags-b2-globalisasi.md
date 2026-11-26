@@ -73,4 +73,16 @@ vocab:
     context: "Die Währung verlor nach der Krise an Wert."
     contextIndonesian: "Nilai mata uangnya turun setelah krisis."
 
+  - german: "Staatsverschuldung"
+    indonesian: "utang negara"
+    context: "Die Staatsverschuldung nahm während der Krise deutlich zu."
+    contextIndonesian: "Utang negara meningkat tajam selama krisis."
+  - german: "Angebot"
+    indonesian: "pasokan"
+    context: "Das Angebot wurde durch Lieferprobleme eingeschränkt."
+    contextIndonesian: "Pasokannya terbatas karena masalah pengiriman."
+  - german: "Auswirkung"
+    indonesian: "dampak"
+    context: "Die Auswirkung wurde erst später sichtbar."
+    contextIndonesian: "Dampaknya baru terlihat belakangan."
 ---

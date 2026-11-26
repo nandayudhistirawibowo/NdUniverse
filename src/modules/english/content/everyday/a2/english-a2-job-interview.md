@@ -21,6 +21,9 @@ vocab:
   - { word: "impression", translation: "kesan", context: "The first impression was very positive.", contextIndonesian: "Kesan pertamanya sangat positif." }
   - { word: "promise", translation: "penerimaan", context: "I received the confirmation after two days. (keyword: promise)", contextIndonesian: "Aku menerima kabar diterima setelah dua hari." }
   - { word: "rejection", translation: "penolakan", context: "The rejection was friendly and quick.", contextIndonesian: "Penolakannya disampaikan dengan ramah dan cepat." }
+  - { word: "apply for", translation: "melamar (untuk posisi)", context: "He applies for a job as a salesman. (keyword: apply for)", contextIndonesian: "Dia melamar untuk posisi sebagai tenaga penjual." }
+  - { word: "experience", translation: "pengalaman", context: "I have experience in customer service.", contextIndonesian: "Saya memiliki pengalaman dalam layanan pelanggan." }
+  - { word: "position", translation: "posisi pekerjaan", context: "The position is available from June.", contextIndonesian: "Posisi itu tersedia mulai bulan Juni." }
 ---
 
 # Job Interview

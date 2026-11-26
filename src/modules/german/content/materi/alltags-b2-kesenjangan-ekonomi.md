@@ -76,4 +76,12 @@ vocab:
     indonesian: "keadilan distribusi"
     context: "Verteilungsgerechtigkeit sollte politisch stärker berücksichtigt werden."
     contextIndonesian: "Keadilan distribusi sebaiknya lebih diperhatikan secara politik."
+  - german: "Konjunktur"
+    indonesian: "kondisi ekonomi"
+    context: "Die Konjunktur erholte sich langsamer als erwartet."
+    contextIndonesian: "Ekonomi pulih lebih lambat dari perkiraan."
+  - german: "Wirtschaftsleistung"
+    indonesian: "kinerja ekonomi"
+    context: "Die Wirtschaftsleistung wurde durch Exporte gestützt."
+    contextIndonesian: "Kinerja ekonomi didukung oleh ekspor."
 ---

@@ -21,6 +21,9 @@ vocab:
   - { word: "human resources department", translation: "departemen personalia", context: "The HR department conducted confidential discussions. (keyword: human resources department)", contextIndonesian: "Departemen personalia mengadakan percakapan tertutup." }
   - { word: "overload", translation: "beban berlebihan", context: "The overload was only recognized late.", contextIndonesian: "Beban berlebihnya baru disadari belakangan." }
   - { word: "job satisfaction", translation: "kepuasan kerja", context: "Job satisfaction increased after the reform.", contextIndonesian: "Kepuasan kerjanya meningkat setelah perubahan." }
+  - { word: "termination", translation: "pemutusan hubungan kerja", context: "The termination was unexpected for the team.", contextIndonesian: "Pemutusan kerjanya mengejutkan tim." }
+  - { word: "promotion", translation: "promosi", context: "The promotion was announced after the project.", contextIndonesian: "Promosinya diumumkan setelah proyek selesai." }
+  - { word: "reliable", translation: "bisa diandalkan", context: "Reliable work brought me further orders.", contextIndonesian: "Kerja yang bisa diandalkan memberiku proyek tambahan." }
 ---
 
 # Advanced Work Environment

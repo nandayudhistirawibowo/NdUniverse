@@ -23,6 +23,7 @@ vocab:
   - { word: "opinion corridor", translation: "ruang opini", context: "The corridor of opinion should not be narrowed. (keyword: opinion corridor)", contextIndonesian: "Ruang untuk berpendapat tidak boleh dipersempit." }
   - { word: "participation rate", translation: "tingkat partisipasi", context: "The participation rate is surprisingly high.", contextIndonesian: "Tingkat partisipasinya ternyata cukup tinggi." }
   - { word: "digital public", translation: "ruang publik digital", context: "The digital public needs clear protection rules.", contextIndonesian: "Ruang publik digital membutuhkan aturan perlindungan yang jelas." }
+  - { word: "social enterprise", translation: "perusahaan sosial", context: "The social enterprise combines impact and profitability.", contextIndonesian: "Perusahaan sosial itu memadukan dampak dan kelayakan ekonomi." }
 ---
 
 # Digital Democracy

@@ -76,4 +76,12 @@ vocab:
     indonesian: "jaminan masa depan ekologis"
     context: "Ökologische Zukunftssicherung verlange verbindliche langfristige Regeln."
     contextIndonesian: "Jaminan masa depan ekologis membutuhkan aturan jangka panjang yang mengikat."
+  - german: "Plattformverantwortung"
+    indonesian: "tanggung jawab platform"
+    context: "Plattformverantwortung ergänzt staatliche Pflichten, ersetzt sie aber nicht."
+    contextIndonesian: "Tanggung jawab platform tak boleh menggantikan kewajiban negara."
+  - german: "digitales Grundrecht"
+    indonesian: "hak dasar digital"
+    context: "Digitale Grundrechte schßtzen die Selbstbestimmung im Netz."
+    contextIndonesian: "Hak dasar digital melindungi penentuan diri di internet."
 ---

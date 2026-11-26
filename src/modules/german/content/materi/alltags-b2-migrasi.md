@@ -76,4 +76,12 @@ vocab:
     indonesian: "kewajiban tinggal di wilayah tertentu"
     context: "Die Wohnsitzauflage wurde gerichtlich überprüft."
     contextIndonesian: "Kewajiban tinggal di wilayah tertentu ditinjau pengadilan."
+  - german: "Demokratie"
+    indonesian: "demokrasi"
+    context: "Die Demokratie lebt von öffentlicher Beteiligung."
+    contextIndonesian: "Demokrasi hidup dari partisipasi publik."
+  - german: "Wahlbeteiligung"
+    indonesian: "partisipasi pemilih"
+    context: "Die Wahlbeteiligung fiel höher als erwartet aus."
+    contextIndonesian: "Partisipasi pemilih lebih tinggi dari perkiraan."
 ---

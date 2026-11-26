@@ -76,4 +76,12 @@ vocab:
     indonesian: "memesan tempat"
     context: "Wir haben Plätze in der ersten Reihe reserviert. (Schlüsselwort: reservieren)"
     contextIndonesian: "Kami sudah memesan tempat di baris depan."
+  - german: "Fotografie"
+    indonesian: "fotografi"
+    context: "Für die Fotografie brauche ich mehr Licht."
+    contextIndonesian: "Aku butuh lebih banyak cahaya untuk fotografi."
+  - german: "Kamera"
+    indonesian: "kamera"
+    context: "Ich habe mir eine neue Kamera gekauft."
+    contextIndonesian: "Aku membeli kamera baru."
 ---

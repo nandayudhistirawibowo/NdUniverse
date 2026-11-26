@@ -80,4 +80,8 @@ vocab:
     indonesian: "metafora ekspresionistis"
     context: "Die expressionistische Metapher verkehre das Gewohnte ins Visionäre."
     contextIndonesian: "Metafora ekspresionistis mengubah hal biasa menjadi sesuatu yang visioner."
+  - german: "Bildsprengung"
+    indonesian: "ledakan citra"
+    context: "Bildsprengung öffne ungeahnte Assoziationsräume."
+    contextIndonesian: "Ledakan citra membuka ruang asosiasi yang tak terbayangkan."
 ---

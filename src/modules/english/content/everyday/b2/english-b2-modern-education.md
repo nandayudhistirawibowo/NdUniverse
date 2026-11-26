@@ -19,6 +19,11 @@ vocab:
   - { word: "competence", translation: "kompetensi", context: "Competence was measured on practical tasks.", contextIndonesian: "Kompetensinya dinilai melalui tugas praktis." }
   - { word: "examination regulations", translation: "peraturan ujian", context: "The examination regulations were changed after a debate.", contextIndonesian: "Peraturan ujiannya diubah setelah perdebatan." }
   - { word: "access to education", translation: "akses pendidikan", context: "Access to education should be independent of where you live.", contextIndonesian: "Akses pendidikan seharusnya tidak bergantung pada tempat tinggal." }
+  - { word: "complaints", translation: "keluhan", context: "The symptoms often get worse in the evening. (keyword: complaints)", contextIndonesian: "Gejala sering memburuk pada malam hari." }
+  - { word: "prescribe", translation: "meresepkan", context: "The doctor prescribes something for the inflammation.", contextIndonesian: "Dokter meresepkan sesuatu untuk peradangannya." }
+  - { word: "treatment", translation: "perawatan", context: "We adapt the treatment to the course of the disease.", contextIndonesian: "Kami menyesuaikan pengobatan dengan perjalanan penyakit." }
+  - { word: "precaution", translation: "tindakan pencegahan", context: "When it comes to precautionary measures, risks can often be identified early on.", contextIndonesian: "Dalam hal tindakan pencegahan, risiko sering kali dapat diidentifikasi sejak dini." }
+  - { word: "recovery", translation: "pemulihan", context: "In order for her to get well again, she needs enough rest. (keyword: recovery)", contextIndonesian: "Agar dia bisa sembuh kembali, dia perlu istirahat yang cukup." }
 ---
 
 # Modern Education

@@ -20,6 +20,10 @@ vocab:
   - { word: "means-end relationship", translation: "relasi tujuan dan sarana", context: "The ends-means relationship is being practically reassessed. (keyword: means-end relationship)", contextIndonesian: "Relasi tujuan dan sarana dinilai ulang dalam praktik." }
   - { word: "plurality", translation: "pluralitas", context: "Plurality enables competing problem solutions.", contextIndonesian: "Pluralitas memungkinkan beragam solusi yang bersaing." }
   - { word: "self-correction", translation: "koreksi diri", context: "Self-correction is at the core of rational investigation.", contextIndonesian: "Koreksi diri merupakan inti penyelidikan rasional." }
+  - { word: "pragmatic test", translation: "uji pragmatis", context: "The pragmatic test evaluates consequences", contextIndonesian: "Uji pragmatis mengevaluasi konsekuensi" }
+  - { word: "fallibilism", translation: "falisibilisme", context: "Fallibilism accepts revision of belief", contextIndonesian: "Falisibilisme menerima revisi keyakinan" }
+  - { word: "practical consequence", translation: "konsekuensi praktis", context: "Practical consequences clarify meaning", contextIndonesian: "Konsekuensi praktis menjelaskan makna" }
+  - { word: "inquiry", translation: "inkuiri", context: "Inquiry begins from a genuine problem", contextIndonesian: "Inkuiri dimulai dari masalah nyata" }
 ---
 
 # Pragmatism

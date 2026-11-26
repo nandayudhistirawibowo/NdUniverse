@@ -18,6 +18,12 @@ vocab:
   - { word: "supply", translation: "pasokan", context: "Power was restored in the evening. (keyword: supply)", contextIndonesian: "Pasokannya pulih kembali malam itu." }
   - { word: "affected", translation: "terdampak", context: "The villages along the river were particularly affected.", contextIndonesian: "Desa-desa di tepi sungai paling terdampak." }
   - { word: "reconstruction", translation: "pembangunan kembali", context: "Reconstruction could take several years.", contextIndonesian: "Pembangunan kembali mungkin memakan waktu beberapa tahun." }
+  - { word: "threatened", translation: "terancam", context: "Some animal species are threatened by the loss of their habitat.", contextIndonesian: "Beberapa spesies hewan terancam akibat hilangnya habitat mereka." }
+  - { word: "work culture", translation: "budaya kerja", context: "The work culture changed after the move.", contextIndonesian: "Budaya kerjanya berubah setelah kantor pindah." }
+  - { word: "workload", translation: "beban kerja", context: "Workload increased before the end of the year.", contextIndonesian: "Beban kerja meningkat menjelang akhir tahun." }
+  - { word: "appreciation", translation: "apresiasi", context: "Appreciation particularly motivated the team.", contextIndonesian: "Apresiasi sangat menyemangati tim." }
+  - { word: "equality", translation: "kesetaraan hak", context: "Equal rights should be a matter of course in the company. (keyword: equality)", contextIndonesian: "Kesetaraan hak seharusnya menjadi hal wajar di kantor." }
+  - { word: "manager", translation: "atasan", context: "The manager listened carefully to all employees.", contextIndonesian: "Atasannya mendengarkan semua pegawai dengan saksama." }
 ---
 
 # Natural Events and Their Impact

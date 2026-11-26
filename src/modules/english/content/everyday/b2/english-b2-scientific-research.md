@@ -19,6 +19,12 @@ vocab:
   - { word: "measurement", translation: "pengukuran", context: "The measurement, which was repeated, gave similar values.", contextIndonesian: "Pengukuran yang diulang itu menghasilkan nilai serupa." }
   - { word: "research funding", translation: "pendanaan penelitian", context: "Research funding was awarded transparently.", contextIndonesian: "Pendanaan penelitiannya diberikan secara transparan." }
 
+  - { word: "research", translation: "penelitian", context: "The research examines a common problem", contextIndonesian: "Penelitian itu meneliti masalah umum" }
+  - { word: "claim", translation: "klaim", context: "The claim requires evidence", contextIndonesian: "Klaim itu memerlukan bukti" }
+  - { word: "method", translation: "metode", context: "They choose a reliable method", contextIndonesian: "Mereka memilih metode yang dapat diandalkan" }
+  - { word: "data", translation: "data", context: "The data supports the conclusion", contextIndonesian: "Data mendukung kesimpulan" }
+  - { word: "analysis", translation: "analisis", context: "Analysis reveals a pattern", contextIndonesian: "Analisis mengungkap pola" }
+  - { word: "experiment", translation: "percobaan", context: "The experiment is repeated", contextIndonesian: "Percobaan itu diulang" }
 ---
 
 # Scientific Research

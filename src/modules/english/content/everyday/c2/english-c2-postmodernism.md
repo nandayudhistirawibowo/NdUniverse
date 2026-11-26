@@ -20,6 +20,10 @@ vocab:
   - { word: "crossing the border", translation: "pelampauan batas", context: "Crossing borders destabilizes established genres. (keyword: crossing the border)", contextIndonesian: "Pelampauan batas menggoyahkan genre yang sudah mapan." }
   - { word: "plurality of meaning", translation: "pluralitas makna", context: "Plurality of meaning does not exclude justified interpretation.", contextIndonesian: "Pluralitas makna tidak menutup kemungkinan penafsiran yang beralasan." }
   - { word: "depth truth", translation: "kebenaran mendasar", context: "The depth truth is revealed as an effect of the narrative.", contextIndonesian: "Kebenaran mendasar disingkap sebagai efek dari narasi." }
+  - { word: "grand narrative", translation: "narasi besar", context: "Postmodernism questions the authority of grand narratives", contextIndonesian: "Postmodernisme mempertanyakan otoritas narasi besar" }
+  - { word: "intertextuality", translation: "intertekstualitas", context: "Intertextuality connects texts across traditions", contextIndonesian: "Intertekstualitas menghubungkan teks lintas tradisi" }
+  - { word: "metafiction", translation: "metafiksi", context: "Metafiction draws attention to narrative construction", contextIndonesian: "Metafiksi menarik perhatian pada konstruksi naratif" }
+  - { word: "simulacrum", translation: "simulakra", context: "The simulacrum replaces the assumed original", contextIndonesian: "Simulakra menggantikan asumsi terhadap yang asli" }
 ---
 
 # Postmodernism

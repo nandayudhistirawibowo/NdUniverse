@@ -19,6 +19,11 @@ vocab:
   - { word: "family reunification", translation: "reunifikasi keluarga", context: "Family reunification was approved after a long wait.", contextIndonesian: "Reunifikasi keluarganya disetujui setelah lama menunggu." }
   - { word: "welcoming culture", translation: "budaya menyambut pendatang", context: "A welcoming culture could reduce prejudices.", contextIndonesian: "Budaya menyambut pendatang bisa mengurangi prasangka." }
   - { word: "residency requirement", translation: "kewajiban tinggal di wilayah tertentu", context: "The residency requirement was reviewed by the court.", contextIndonesian: "Kewajiban tinggal di wilayah tertentu ditinjau pengadilan." }
+  - { word: "epidemic", translation: "epidemi", context: "The epidemic continued to spread despite countermeasures.", contextIndonesian: "Epidemi itu terus menyebar meski sudah ada penanganan." }
+  - { word: "infection rate", translation: "tingkat penularan", context: "The infection rate fell after the measures.", contextIndonesian: "Tingkat penularannya turun setelah langkah-langkah diterapkan." }
+  - { word: "healthcare system", translation: "sistem kesehatan", context: "The health system was heavily strained during the crisis. (keyword: healthcare system)", contextIndonesian: "Sistem kesehatan sangat terbebani selama krisis." }
+  - { word: "precautionary measure", translation: "langkah pencegahan", context: "The precautionary measure could have been introduced earlier.", contextIndonesian: "Langkah pencegahannya sebenarnya bisa diterapkan lebih awal." }
+  - { word: "vaccination rate", translation: "tingkat vaksinasi", context: "The vaccination rate increased after the information campaign.", contextIndonesian: "Tingkat vaksinasinya naik setelah kampanye informasi." }
 ---
 
 # Migration

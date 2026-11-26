@@ -80,4 +80,8 @@ vocab:
     indonesian: "bentuk terbuka"
     context: "Die offene Form verweigere einen endgültigen Abschluss."
     contextIndonesian: "Bentuk terbuka menolak penutupan yang final."
+  - german: "weibliche Subjektivität"
+    indonesian: "subjektivitas perempuan"
+    context: "Der Roman stellt weibliche Subjektivität nicht als einheitliche Erfahrung dar."
+    contextIndonesian: "Subjektivitas perempuan tidak dianggap seragam."
 ---

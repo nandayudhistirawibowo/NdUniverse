@@ -23,6 +23,7 @@ vocab:
   - { word: "festival", translation: "perayaan", context: "The party is at my aunt's. (keyword: festival)", contextIndonesian: "Perayaannya di rumah bibiku." }
   - { word: "wedding", translation: "pernikahan", context: "The wedding is in June.", contextIndonesian: "Pernikahannya bulan Juni." }
   - { word: "relatives", translation: "kerabat", context: "Many relatives come to eat.", contextIndonesian: "Banyak kerabat datang untuk makan." }
+  - { word: "home", translation: "rumah", context: "Our home is open to the family.", contextIndonesian: "Rumah kami terbuka untuk keluarga." }
 ---
 
 # Extended Family

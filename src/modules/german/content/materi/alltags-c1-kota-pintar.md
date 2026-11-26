@@ -76,4 +76,12 @@ vocab:
     indonesian: "kepadatan pengawasan"
     context: "Die Überwachungsdichte müsse demokratisch kontrolliert werden."
     contextIndonesian: "Kepadatan pengawasan harus diawasi secara demokratis."
+  - german: "Städtebau"
+    indonesian: "perencanaan kota"
+    context: "Der Städtebau berücksichtigt zunehmend die Bedürfnisse der Anwohnerinnen und Anwohner."
+    contextIndonesian: "Perencanaan kota dibuat lebih partisipatif."
+  - german: "öffentlicher Raum"
+    indonesian: "ruang publik"
+    context: "Der öffentliche Raum ist für alle zugänglich."
+    contextIndonesian: "Ruang publik harus dapat diakses semua orang."
 ---

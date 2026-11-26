@@ -22,6 +22,8 @@ vocab:
   - { word: "exchange", translation: "pertukaran", context: "The exchange with colleagues was particularly useful.", contextIndonesian: "Bertukar pikiran dengan rekan kerja sangat berguna." }
   - { word: "objective", translation: "penetapan tujuan", context: "The objective was discussed together at the beginning.", contextIndonesian: "Tujuannya dibahas bersama sejak awal." }
   - { word: "follow-up", translation: "tindak lanjut", context: "We did the follow-up after we returned.", contextIndonesian: "Kami mengurus tindak lanjut setelah pulang." }
+  - { word: "rush hour traffic", translation: "lalu lintas jam kerja", context: "We stood in rush hour traffic for almost an hour.", contextIndonesian: "Kami terjebak macet hampir sejam saat jam kerja." }
+  - { word: "traffic jam", translation: "kemacetan", context: "The traffic jam extended to the next exit.", contextIndonesian: "Kemacetannya mengular sampai pintu keluar berikutnya." }
 ---
 
 # Business Trip

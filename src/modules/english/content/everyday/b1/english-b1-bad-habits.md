@@ -22,6 +22,8 @@ vocab:
   - { word: "harmful", translation: "berbahaya", context: "This habit could be harmful in the long run.", contextIndonesian: "Kebiasaan ini bisa berbahaya dalam jangka panjang." }
   - { word: "resolution", translation: "tekad", context: "My good intention lasted longer this time. (keyword: resolution)", contextIndonesian: "Tekad baikku kali ini bertahan lebih lama." }
   - { word: "self-control", translation: "pengendalian diri", context: "With more self-control he managed to break.", contextIndonesian: "Dengan pengendalian diri, dia berhasil berhenti sejenak." }
+  - { word: "eating habit", translation: "kebiasaan makan", context: "My eating habits changed abroad.", contextIndonesian: "Kebiasaan makanku berubah saat di luar negeri." }
+  - { word: "ingredient", translation: "bahan", context: "An important ingredient was forgotten.", contextIndonesian: "Satu bahan penting terlupakan." }
 ---
 
 # Bad Habits

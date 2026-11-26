@@ -22,6 +22,8 @@ vocab:
   - { word: "corporate strategy", translation: "strategi perusahaan", context: "The corporate strategy would have to be adapted to new markets.", contextIndonesian: "Strategi perusahaannya perlu disesuaikan dengan pasar baru." }
   - { word: "liquidity", translation: "likuiditas", context: "Liquidity remained sufficient despite late payments.", contextIndonesian: "Likuiditasnya tetap cukup meski pembayaran terlambat." }
   - { word: "business relationship", translation: "hubungan bisnis", context: "The business relationship was built up over years.", contextIndonesian: "Hubungan bisnisnya dibangun selama bertahun-tahun." }
+  - { word: "professional experience", translation: "pengalaman kerja", context: "The professional experience I had gained helped me.", contextIndonesian: "Pengalaman kerja yang kukumpulkan membantuku." }
+  - { word: "professional competence", translation: "kompetensi profesional", context: "The professional competence was tested using concrete examples.", contextIndonesian: "Kompetensi profesionalnya diuji lewat contoh konkret." }
 ---
 
 # Entrepreneurship

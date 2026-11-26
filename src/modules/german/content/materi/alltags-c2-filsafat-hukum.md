@@ -80,4 +80,8 @@ vocab:
     indonesian: "kritik hukum"
     context: "Rechtskritik frage, wessen Interessen das Gesetz sichere."
     contextIndonesian: "Kritik hukum menanyakan kepentingan siapa yang dilindungi undang-undang."
+  - german: "medizinische Gerechtigkeit"
+    indonesian: "keadilan medis"
+    context: "Medizinische Gerechtigkeit betrifft den Zugang zu Versorgung und deren Qualität."
+    contextIndonesian: "Keadilan medis menyangkut akses dan hasil."
 ---

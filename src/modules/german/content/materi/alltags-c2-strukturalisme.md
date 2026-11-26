@@ -80,4 +80,8 @@ vocab:
     indonesian: "relasi"
     context: "Die Relation gehe dem isolierten Element analytisch voraus."
     contextIndonesian: "Secara analitis, relasi mendahului unsur yang berdiri sendiri."
+  - german: "Metanarration"
+    indonesian: "metanarasi"
+    context: "Die Metanarration verliere ihre legitimierende Kraft."
+    contextIndonesian: "Metanarasi kehilangan daya legitimasinya."
 ---

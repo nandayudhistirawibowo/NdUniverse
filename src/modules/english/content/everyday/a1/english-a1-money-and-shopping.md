@@ -22,6 +22,8 @@ vocab:
   - { word: "save", translation: "menabung", context: "I'm saving for a new bike. (keyword: save)", contextIndonesian: "Aku menabung untuk sepeda baru." }
   - { word: "buy", translation: "membeli", context: "Today I'm buying fresh bread.", contextIndonesian: "Hari ini aku membeli roti segar." }
   - { word: "discount", translation: "diskon", context: "Is there a discount today?", contextIndonesian: "Ada diskon hari ini?" }
+  - { word: "with card", translation: "dengan kartu", context: "She pays by card. (keyword: with card)", contextIndonesian: "Dia bayar pakai kartu." }
+  - { word: "exchange", translation: "menukar barang", context: "Can I exchange the pants next week?", contextIndonesian: "Bisakah saya menukar celana panjang itu minggu depan?" }
 ---
 
 # Money and Shopping

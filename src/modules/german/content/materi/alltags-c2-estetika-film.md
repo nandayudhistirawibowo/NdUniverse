@@ -80,4 +80,8 @@ vocab:
     indonesian: "pengarahan pandangan"
     context: "Blickregie verteile Wissen ungleich."
     contextIndonesian: "Pengarahan pandangan membagi pengetahuan secara tidak merata."
+  - german: "Gebrauchsästhetik"
+    indonesian: "estetika penggunaan"
+    context: "Gebrauchsästhetik verbinde Alltagstauglichkeit und Form."
+    contextIndonesian: "Estetika penggunaan memadukan kepraktisan dan bentuk."
 ---

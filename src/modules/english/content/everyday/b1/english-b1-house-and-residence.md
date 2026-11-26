@@ -17,6 +17,13 @@ vocab:
   - { word: "residential area", translation: "kawasan tempat tinggal", context: "The residential area would be ideal for families.", contextIndonesian: "Kawasan tempat tinggalnya akan ideal untuk keluarga." }
   - { word: "affordable", translation: "terjangkau", context: "Affordable housing was difficult to find.", contextIndonesian: "Apartemen terjangkau sulit ditemukan." }
   - { word: "caretaker", translation: "pengelola gedung", context: "The caretaker took care of the elevator.", contextIndonesian: "Pengelola gedung mengurus lift." }
+  - { word: "work culture", translation: "budaya kerja", context: "The work culture changed after the move.", contextIndonesian: "Budaya kerjanya berubah setelah kantor pindah." }
+  - { word: "workload", translation: "beban kerja", context: "Workload increased before the end of the year.", contextIndonesian: "Beban kerja meningkat menjelang akhir tahun." }
+  - { word: "appreciation", translation: "apresiasi", context: "Appreciation particularly motivated the team.", contextIndonesian: "Apresiasi sangat menyemangati tim." }
+  - { word: "equality", translation: "kesetaraan hak", context: "Equal rights should be a matter of course in the company. (keyword: equality)", contextIndonesian: "Kesetaraan hak seharusnya menjadi hal wajar di kantor." }
+  - { word: "manager", translation: "atasan", context: "The manager listened carefully to all employees.", contextIndonesian: "Atasannya mendengarkan semua pegawai dengan saksama." }
+  - { word: "compatibility", translation: "keselarasan", context: "Balancing work and family remained difficult. (keyword: compatibility)", contextIndonesian: "Menyeimbangkan pekerjaan dan keluarga masih sulit." }
+  - { word: "accessibility", translation: "kemudahan untuk dihubungi", context: "Constant availability put many people under pressure. (keyword: accessibility)", contextIndonesian: "Kemudahan dihubungi setiap saat menekan banyak orang." }
 ---
 
 # House and Residence

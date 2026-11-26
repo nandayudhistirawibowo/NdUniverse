@@ -22,6 +22,8 @@ vocab:
   - { word: "distance", translation: "jarak", context: "The distance was approximately two kilometers.", contextIndonesian: "Jaraknya sekitar dua kilometer." }
   - { word: "footpath", translation: "jalur pejalan kaki", context: "The walk took about ten minutes. (keyword: footpath)", contextIndonesian: "Jalan kaki ke sana sekitar sepuluh menit." }
   - { word: "signage", translation: "rambu petunjuk", context: "The signage helped us along the way.", contextIndonesian: "Rambu petunjuknya membantu kami di jalan." }
+  - { word: "reading room", translation: "ruang baca", context: "You have to be quiet in the reading room.", contextIndonesian: "Di ruang baca kita harus tenang." }
+  - { word: "public", translation: "umum", context: "The reading room is open to the public.", contextIndonesian: "Ruang bacanya terbuka untuk umum." }
 ---
 
 # Directions and Map Reading

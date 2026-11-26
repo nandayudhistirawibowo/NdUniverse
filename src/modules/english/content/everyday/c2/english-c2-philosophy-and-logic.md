@@ -20,6 +20,10 @@ vocab:
   - { word: "opposite position", translation: "posisi tandingan", context: "The opposing position questions the main assumption of the theory. (keyword: opposite position)", contextIndonesian: "Posisi berlawanan mempertanyakan asumsi utama teori." }
   - { word: "mindset", translation: "cara berpikir", context: "Analytical thinking helps us sort through complex problems. (keyword: mindset)", contextIndonesian: "Berpikir analitis membantu kita memilah masalah yang kompleks." }
   - { word: "implication", translation: "implikasi", context: "We should openly discuss the ethical consequences of the thesis. (keyword: implication)", contextIndonesian: "Kita harus mendiskusikan secara terbuka konsekuensi etis dari tesis ini." }
+  - { word: "philosophy of life", translation: "filsafat hidup", context: "Philosophy of life distrusts abstract system formation.", contextIndonesian: "Filsafat hidup mencurigai pembentukan sistem yang abstrak." }
+  - { word: "transcendental philosophy", translation: "filsafat transendental", context: "Transcendental philosophy asks about the conditions of experience.", contextIndonesian: "Filsafat transendental menanyakan syarat-syarat pengalaman." }
+  - { word: "discovery logic", translation: "logika penemuan", context: "Discovery logic cannot be reduced to algorithms.", contextIndonesian: "Logika penemuan tidak dapat direduksi menjadi algoritma." }
+  - { word: "philosophy of technology", translation: "filsafat teknologi", context: "Philosophy of technology asks about the independent life of technical systems.", contextIndonesian: "Filsafat teknologi menanyakan daya gerak mandiri sistem teknis." }
 ---
 
 # Philosophy and Logic

@@ -23,6 +23,7 @@ vocab:
   - { word: "on time", translation: "tepat waktu", context: "The train arrived on time today.", contextIndonesian: "Kereta tiba tepat waktu hari ini." }
   - { word: "valid", translation: "berlaku", context: "The ticket is only valid today.", contextIndonesian: "Tiketnya hanya berlaku hari ini." }
   - { word: "passenger information", translation: "informasi penumpang", context: "The passenger information helps with changes.", contextIndonesian: "Informasi penumpang membantu saat ada perubahan." }
+  - { word: "account", translation: "rekening", context: "I would like to open a new account.", contextIndonesian: "Saya ingin membuka rekening baru." }
 ---
 
 # Buses, Trains and Timetables

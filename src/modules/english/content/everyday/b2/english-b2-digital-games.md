@@ -21,6 +21,9 @@ vocab:
   - { word: "community", translation: "komunitas", context: "The community that met online grew quickly.", contextIndonesian: "Komunitas yang bertemu secara daring itu berkembang pesat." }
   - { word: "game console", translation: "konsol permainan", context: "A function has been added to the game console.", contextIndonesian: "Konsol permainannya dilengkapi fitur tambahan." }
   - { word: "impact", translation: "dampak", context: "The impact on social contacts remained controversial.", contextIndonesian: "Dampaknya pada hubungan sosial masih diperdebatkan." }
+  - { word: "telemedicine", translation: "telemedisin", context: "Telemedicine made access to specialists easier.", contextIndonesian: "Telemedisin memudahkan akses ke dokter spesialis." }
+  - { word: "health platform", translation: "platform kesehatan", context: "The health platform was developed jointly by clinics.", contextIndonesian: "Platform kesehatannya dikembangkan bersama oleh beberapa klinik." }
+  - { word: "wearable", translation: "perangkat wearable", context: "The wearable recorded the pulse during training.", contextIndonesian: "Perangkat wearable itu mencatat denyut nadi saat latihan." }
 ---
 
 # Digital Games

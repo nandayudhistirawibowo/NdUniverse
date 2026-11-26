@@ -80,4 +80,8 @@ vocab:
     indonesian: "pendelegasian wewenang"
     context: "Machtdelegation stärke dezentrale Entscheidungen."
     contextIndonesian: "Pendelegasian wewenang memperkuat keputusan di tingkat lokal."
+  - german: "Kreislaufwirtschaft"
+    indonesian: "ekonomi sirkular"
+    context: "Kreislaufwirtschaft entkopple Wachstum vom Ressourcenverbrauch."
+    contextIndonesian: "Ekonomi sirkular memisahkan pertumbuhan dari konsumsi sumber daya."
 ---

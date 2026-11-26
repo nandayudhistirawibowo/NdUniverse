@@ -17,6 +17,13 @@ vocab:
   - { word: "deviation", translation: "penyimpangan", context: "A deviation from the plan made the trip more exciting.", contextIndonesian: "Perubahan rencana membuat perjalanan lebih seru." }
   - { word: "independent", translation: "mandiri", context: "Traveling independently gave me more freedom.", contextIndonesian: "Bepergian mandiri memberiku lebih banyak kebebasan." }
   - { word: "incident", translation: "insiden", context: "The incident was later quickly resolved.", contextIndonesian: "Insiden itu kemudian cepat diselesaikan." }
+  - { word: "travel insurance", translation: "asuransi perjalanan", context: "Travel insurance would be helpful in this case.", contextIndonesian: "Asuransi perjalanan mungkin akan berguna dalam situasi ini." }
+  - { word: "means of transport", translation: "sarana transportasi", context: "I use different means of transport to get to work.", contextIndonesian: "Saya menggunakan berbagai sarana transportasi untuk pergi bekerja." }
+  - { word: "track", translation: "peron", context: "The train to Hamburg departs from platform three. (keyword: track)", contextIndonesian: "Kereta ke Hamburg berangkat dari jalur tiga." }
+  - { word: "inquire", translation: "mencari informasi", context: "I ask at the counter about a cheaper ticket. (keyword: inquire)", contextIndonesian: "Saya bertanya di loket tentang tiket yang lebih murah." }
+  - { word: "journey time", translation: "durasi perjalanan", context: "The journey time is two hours by express train.", contextIndonesian: "Durasi perjalanan dengan kereta cepat adalah dua jam." }
+  - { word: "book", translation: "memesan", context: "We booked the hotel directly at the train station.", contextIndonesian: "Kami memesan hotel tepat di stasiun." }
+  - { word: "excursion", translation: "perjalanan singkat", context: "The trip would also be possible if it rained. (keyword: excursion)", contextIndonesian: "Jalan-jalannya tetap bisa dilakukan meski hujan." }
 ---
 
 # Independent Travel

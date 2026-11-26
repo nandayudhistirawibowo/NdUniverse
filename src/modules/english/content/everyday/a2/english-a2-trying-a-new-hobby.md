@@ -23,6 +23,7 @@ vocab:
   - { word: "fertilizer", translation: "pupuk", context: "The tomatoes need some fertilizer.", contextIndonesian: "Tomatnya perlu sedikit pupuk." }
   - { word: "harvest", translation: "panen", context: "Our first harvest was pretty good.", contextIndonesian: "Panen pertama kami lumayan bagus." }
   - { word: "hobby gardener", translation: "pekebun hobi", context: "My neighbor is an experienced hobby gardener.", contextIndonesian: "Tetanggaku pekebun hobi yang berpengalaman." }
+  - { word: "hobby", translation: "hobi", context: "I'm having a lot of fun with my new hobby.", contextIndonesian: "Hobi baruku menyenangkan sekali." }
 ---
 
 # Trying a New Hobby

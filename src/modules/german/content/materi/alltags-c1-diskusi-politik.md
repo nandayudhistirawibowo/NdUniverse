@@ -62,4 +62,7 @@ vocab:
     indonesian: "ruang gerak"
     context: "Die Kommunen brauchen mehr Spielraum bei der Umsetzung. (Schlüsselwort: Handlungsspielraum)"
 
+  - german: "öffentliche Debatte"
+    indonesian: "perdebatan publik"
+    context: "Die öffentliche Debatte über die Reform läuft schon seit Monaten."
 ---

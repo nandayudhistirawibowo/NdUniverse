@@ -80,4 +80,8 @@ vocab:
     indonesian: "otoritas gambar"
     context: "Bildautorität entstehe auch durch institutionelle Zirkulation."
     contextIndonesian: "Otoritas gambar juga terbentuk melalui peredaran institusional."
+  - german: "algorithmische Ästhetik"
+    indonesian: "estetika algoritmik"
+    context: "Algorithmische Ästhetik verschiebt die Autorschaft von Menschen zu technischen Prozessen."
+    contextIndonesian: "Estetika algoritmik memindahkan kepengarangan ke dalam proses."
 ---

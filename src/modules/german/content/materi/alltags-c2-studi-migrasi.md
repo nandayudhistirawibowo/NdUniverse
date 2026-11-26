@@ -76,4 +76,12 @@ vocab:
     indonesian: "studi migrasi"
     context: "Migrationsforschung hinterfrage nationale Sesshaftigkeitsannahmen."
     contextIndonesian: "Studi migrasi mempertanyakan anggapan bahwa orang harus menetap di satu negara."
+  - german: "Disability Studies"
+    indonesian: "studi disabilitas"
+    context: "Disability Studies verlagerten den Blick von Defiziten auf Barrieren."
+    contextIndonesian: "Studi disabilitas mengalihkan fokus dari kekurangan ke hambatan."
+  - german: "Ableismuskritik"
+    indonesian: "kritik ableisme"
+    context: "Ableismuskritik untersuche institutionelle Normalitätsannahmen."
+    contextIndonesian: "Kritik ableisme mengkaji asumsi kenormalan kelembagaan."
 ---

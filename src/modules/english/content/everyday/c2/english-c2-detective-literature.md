@@ -23,6 +23,7 @@ vocab:
   - { word: "Enlightenment", translation: "pengungkapan", context: "The Enlightenment simultaneously questions order and trust.", contextIndonesian: "Pengungkapan sekaligus mempertanyakan tatanan dan kepercayaan." }
   - { word: "narrative perspective", translation: "perspektif penceritaan", context: "The narrative perspective limits access to evidence.", contextIndonesian: "Perspektif penceritaan membatasi akses pada bukti." }
   - { word: "social crime scene", translation: "arena kejahatan sosial", context: "The social crime scene extends far beyond the place of discovery.", contextIndonesian: "Arena kejahatan sosial jauh lebih luas daripada lokasi penemuan." }
+  - { word: "exile literature", translation: "sastra eksil", context: "Exile literature bears witness to political violence from a distance.", contextIndonesian: "Sastra eksil memberi kesaksian tentang kekerasan politik dari kejauhan." }
 ---
 
 # Detective Literature

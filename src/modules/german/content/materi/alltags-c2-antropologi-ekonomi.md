@@ -80,4 +80,8 @@ vocab:
     indonesian: "antropologi ekonomi"
     context: "Ökonomische Anthropologie untersuche Austausch in konkreten Lebenswelten."
     contextIndonesian: "Antropologi ekonomi mengkaji pertukaran dalam dunia kehidupan konkret."
+  - german: "Arbeitswertlehre"
+    indonesian: "teori nilai kerja"
+    context: "Die Arbeitswertlehre wird in der Forschung unterschiedlich interpretiert."
+    contextIndonesian: "Teori nilai kerja ditafsirkan dengan beragam cara."
 ---

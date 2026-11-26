@@ -22,6 +22,8 @@ vocab:
   - { word: "order", translation: "memesan", context: "We order soup.", contextIndonesian: "Kami memesan sup." }
   - { word: "delicious", translation: "enak", context: "Your cake tastes really delicious.", contextIndonesian: "Kue buatanmu benar-benar enak." }
   - { word: "hungry", translation: "lapar", context: "I'm hungry after the walk.", contextIndonesian: "Aku lapar setelah jalan-jalan." }
+  - { word: "food", translation: "makanan", context: "We need to buy food for dinner.", contextIndonesian: "Kami perlu membeli makanan untuk makan malam." }
+  - { word: "vegetable", translation: "sayur", context: "Eat one vegetable with every meal.", contextIndonesian: "Makan satu jenis sayur dalam setiap waktu makan." }
 ---
 
 # Food and Drink

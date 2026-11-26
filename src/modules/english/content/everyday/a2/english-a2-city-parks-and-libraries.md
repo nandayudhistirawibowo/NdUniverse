@@ -16,6 +16,14 @@ vocab:
   - { word: "bank", translation: "bangku", context: "We sat on a bench. (keyword: bank)", contextIndonesian: "Kami duduk di sebuah bangku." }
   - { word: "trash can", translation: "tempat sampah", context: "Please throw the bottle in the trash can.", contextIndonesian: "Tolong buang botolnya ke tempat sampah." }
   - { word: "public", translation: "umum", context: "The reading room is open to the public.", contextIndonesian: "Ruang bacanya terbuka untuk umum." }
+  - { word: "city administration", translation: "pemerintah kota", context: "The city administration answered my request.", contextIndonesian: "Pemerintah kota menjawab pertanyaanku." }
+  - { word: "district", translation: "kawasan kota", context: "Our district has become more popular in recent years.", contextIndonesian: "Kawasan kami makin populer beberapa tahun terakhir." }
+  - { word: "town hall", translation: "balai kota", context: "I applied for a new ID card at the town hall.", contextIndonesian: "Aku mengurus kartu identitas baru di balai kota." }
+  - { word: "resident", translation: "penduduk perempuan", context: "A resident showed us the way.", contextIndonesian: "Seorang warga menunjukkan jalan kepada kami." }
+  - { word: "surroundings", translation: "lingkungan sekitar", context: "We explored the area on foot. (keyword: surroundings)", contextIndonesian: "Kami menjelajahi daerah sekitar dengan berjalan kaki." }
+  - { word: "neighborhood", translation: "lingkungan tetangga", context: "There is a playground in the neighborhood.", contextIndonesian: "Ada taman bermain di lingkungan kami." }
+  - { word: "marketplace", translation: "alun-alun pasar", context: "A weekly market took place at the market square. (keyword: marketplace)", contextIndonesian: "Pasar mingguan diadakan di alun-alun." }
+  - { word: "pedestrian zone", translation: "zona pejalan kaki", context: "The pedestrian zone was full on Saturday.", contextIndonesian: "Zona pejalan kaki ramai pada hari Sabtu." }
 ---
 
 # City Parks and Libraries

@@ -18,7 +18,7 @@ const { Content } = await render(item);
 const trackLabel = item.data.track === 'Alltagsdeutsch' ? 'Alltagsdeutsch' : 'Fachdeutsch';
 const levelOrJurusan = item.data.track === 'Alltagsdeutsch' ? item.data.level : item.data.jurusan;
 const batchSize = 5;
-const sessionCount = Math.ceil(item.data.vocab.length / batchSize);
+const sessionCount = 4;
 const notesKey = `catatan_materi_${item.id}`;
 const dashboardReturnHref = '/dashboard-de';
 const publicReturnHref = item.data.track === 'Alltagsdeutsch' ? '/de/alltagsdeutsch' : '/de/fachdeutsch';
@@ -41,7 +41,7 @@ const vocabSessions = Array.from({ length: sessionCount }, (_, index) => ({
   vocab: item.data.vocab.slice(index * batchSize, (index + 1) * batchSize),
   maxXp: PILLAR_XP,
 }));
-const materialMaxXp = vocabSessions.length * PILLAR_XP * 4;
+const materialMaxXp = vocabSessions.filter((session) => session.vocab.length > 0).length * PILLAR_XP * 4;
 const materialXp = Math.min(
   materialMaxXp,
   vocabSessions.reduce((sum, session) => {
@@ -49,7 +49,7 @@ const materialXp = Math.min(
       const sessionPillarKey = `s${session.sessionNumber}-${pillar}`;
       return passedPillars.includes(sessionPillarKey) || (session.sessionNumber === 1 && passedPillars.includes(pillar));
     }).length;
-    return sum + (PILLAR_XP * completedPillarCount);
+    return sum + (session.vocab.length > 0 ? PILLAR_XP * completedPillarCount : 0);
   }, 0),
 );
 ---
@@ -95,14 +95,16 @@ const materialXp = Math.min(
           <section class="sesi-card" aria-labelledby={`session-vocab-${session.sessionNumber}`}>
             <div class="sesi-heading">
               <h3 id={`session-vocab-${session.sessionNumber}`}>
-                Sesi {session.sessionNumber}: Kosakata {((session.sessionNumber - 1) * batchSize) + 1}-{Math.min(session.sessionNumber * batchSize, item.data.vocab.length)}
+                Sesi {session.sessionNumber}{session.vocab.length > 0 && `: Kosakata ${((session.sessionNumber - 1) * batchSize) + 1}-${Math.min(session.sessionNumber * batchSize, item.data.vocab.length)}`}
               </h3>
               <span>{session.vocab.length} kata</span>
             </div>
-            <div class="session-progress" data-session-progress={session.sessionNumber} data-session-max-xp={sessionMaxXp}>
-              <progress max={sessionMaxXp} value={sessionEarnedXp} aria-label={`Progres XP sesi ${session.sessionNumber}`}></progress>
-              <span data-session-xp-label>{sessionEarnedXp} / {sessionMaxXp} XP</span>
-            </div>
+            {session.vocab.length > 0 ? (
+              <div class="session-progress" data-session-progress={session.sessionNumber} data-session-max-xp={sessionMaxXp}>
+                <progress max={sessionMaxXp} value={sessionEarnedXp} aria-label={`Progres XP sesi ${session.sessionNumber}`}></progress>
+                <span data-session-xp-label>{sessionEarnedXp} / {sessionMaxXp} XP</span>
+              </div>
+            ) : <p>Sesi ini belum memiliki kosakata.</p>}
             <div class="table-scroll">
               <table>
                 <thead>
@@ -131,32 +133,34 @@ const materialXp = Math.min(
                 </tbody>
               </table>
             </div>
-            <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
-              {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
-                const label = pillar === 'reading' ? 'Membaca' : pillar === 'listening' ? 'Menyimak' : pillar === 'writing' ? 'Menulis' : 'Berbicara';
-                const sessionPillarKey = `s${session.sessionNumber}-${pillar}`;
-                const isComplete = passedPillars.includes(sessionPillarKey) || (session.sessionNumber === 1 && passedPillars.includes(pillar));
-                const pillarMaxXp = session.maxXp;
-                return (
-                  <a
-                    href={`/de/materi/${item.id}/latihan?type=${pillar}&session=${session.sessionNumber}`}
-                    data-progress-pillar={pillar}
-                    data-progress-session={session.sessionNumber}
-                    data-progress-slug={item.id}
-                    data-progress-language="de"
-                    data-pillar-label={label}
-                    data-pillar-max-xp={pillarMaxXp}
-                    class={`pillar-card${isComplete ? ' is-complete' : ''}`}
-                    aria-label={`${label} ${isComplete ? '100%' : '0%'}`}
-                    title={isComplete ? '100%' : '0%'}
-                  >
-                    <span class="pillar-title">{label}</span>
-                    <progress max={pillarMaxXp} value={isComplete ? pillarMaxXp : 0} aria-label={`Progres ${label}`}></progress>
-                    <span class="pillar-status" data-pillar-status>{isComplete ? '100%' : '0%'}</span>
-                  </a>
-                );
-              })}
-            </div>
+            {session.vocab.length > 0 && (
+              <div class="pillar-buttons" aria-label={`Latihan Sesi ${session.sessionNumber}`}>
+                {(['reading', 'listening', 'writing', 'speaking'] as const).map((pillar) => {
+                  const label = pillar === 'reading' ? 'Membaca' : pillar === 'listening' ? 'Menyimak' : pillar === 'writing' ? 'Menulis' : 'Berbicara';
+                  const sessionPillarKey = `s${session.sessionNumber}-${pillar}`;
+                  const isComplete = passedPillars.includes(sessionPillarKey) || (session.sessionNumber === 1 && passedPillars.includes(pillar));
+                  const pillarMaxXp = session.maxXp;
+                  return (
+                    <a
+                      href={`/de/materi/${item.id}/latihan?type=${pillar}&session=${session.sessionNumber}`}
+                      data-progress-pillar={pillar}
+                      data-progress-session={session.sessionNumber}
+                      data-progress-slug={item.id}
+                      data-progress-language="de"
+                      data-pillar-label={label}
+                      data-pillar-max-xp={pillarMaxXp}
+                      class={`pillar-card${isComplete ? ' is-complete' : ''}`}
+                      aria-label={`${label} ${isComplete ? '100%' : '0%'}`}
+                      title={isComplete ? '100%' : '0%'}
+                    >
+                      <span class="pillar-title">{label}</span>
+                      <progress max={pillarMaxXp} value={isComplete ? pillarMaxXp : 0} aria-label={`Progres ${label}`}></progress>
+                      <span class="pillar-status" data-pillar-status>{isComplete ? '100%' : '0%'}</span>
+                    </a>
+                  );
+                })}
+              </div>
+            )}
           </section>
           );
         })}

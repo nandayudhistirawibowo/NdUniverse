@@ -23,6 +23,7 @@ vocab:
   - { word: "attention", translation: "perhatian", context: "A short example regained attention.", contextIndonesian: "Contoh singkat itu menarik kembali perhatian audiens." }
   - { word: "line of argument", translation: "alur argumentasi", context: "The line of argument remained comprehensible throughout.", contextIndonesian: "Alur argumentasinya tetap mudah diikuti." }
   - { word: "moderation", translation: "moderasi", context: "The moderation ensured a fair exchange.", contextIndonesian: "Moderatornya memastikan diskusi berjalan adil." }
+  - { word: "career", translation: "jenjang karier", context: "She plans her career step by step.", contextIndonesian: "Dia merencanakan kariernya langkah demi langkah." }
 ---
 
 # Business Presentation

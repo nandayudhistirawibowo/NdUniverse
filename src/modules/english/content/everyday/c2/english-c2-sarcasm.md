@@ -21,6 +21,9 @@ vocab:
   - { word: "punchline", translation: "punchline", context: "The punch line only has its effect in the aftermath. (keyword: punchline)", contextIndonesian: "Punchline-nya baru terasa setelah beberapa saat." }
   - { word: "mocking laugher", translation: "tawa mengejek", context: "A sneer of laughter cuts through the solemn silence. (keyword: mocking laugher)", contextIndonesian: "Tawa mengejek memecah keheningan yang khidmat." }
   - { word: "sarcastic exaggeration", translation: "penajaman sarkastis", context: "The sarcastic exaggeration exacerbates the contradiction.", contextIndonesian: "Penajaman sarkastis itu memperuncing pertentangan." }
+  - { word: "ironic inversion", translation: "inversi ironis", context: "Ironic inversion reverses the apparent evaluation", contextIndonesian: "Inversi ironis membalik penilaian yang tampak" }
+  - { word: "insincere praise", translation: "pujian tidak tulus", context: "Insincere praise is a common vehicle for sarcasm", contextIndonesian: "Pujian tidak tulus adalah sarana umum untuk sindiran" }
+  - { word: "dry wit", translation: "humor kering", context: "Dry wit delivers ridicule without overt anger", contextIndonesian: "Humor kering menyampaikan sindiran tanpa kemarahan terang-terangan" }
 ---
 
 # Sarcasm

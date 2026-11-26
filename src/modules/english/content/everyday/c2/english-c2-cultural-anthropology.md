@@ -23,6 +23,7 @@ vocab:
   - { word: "location", translation: "pemposisian", context: "Location is relational and never final.", contextIndonesian: "Pemposisian selalu bersifat relasional dan tidak pernah final." }
   - { word: "gift structure", translation: "jejaring pemberian", context: "The gift structure stabilizes mutual dependence.", contextIndonesian: "Jejaring pemberian menstabilkan ketergantungan timbal balik." }
   - { word: "translation limit", translation: "batas penerjemahan", context: "The translation limit must remain visible.", contextIndonesian: "Batas penerjemahannya harus tetap terlihat." }
+  - { word: "ritual repetition", translation: "pengulangan ritual", context: "Ritual repetition ensures cultural continuity.", contextIndonesian: "Pengulangan ritual menjaga kesinambungan budaya." }
 ---
 
 # Cultural Anthropology

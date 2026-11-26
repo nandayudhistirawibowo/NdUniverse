@@ -76,4 +76,12 @@ vocab:
     indonesian: "integritas ilmiah"
     context: "Wissenschaftliche Redlichkeit verlange den Umgang mit Gegenbelegen."
     contextIndonesian: "Integritas ilmiah menuntut keterbukaan terhadap bukti yang berlawanan."
+  - german: "Sprachmagie"
+    indonesian: "daya magis bahasa"
+    context: "Wiederholungen und Abweichungen erzeugen eine besondere Sprachmagie."
+    contextIndonesian: "Daya magis bahasa muncul dari pengulangan dan penyimpangan."
+  - german: "Sprachgestus"
+    indonesian: "gestur bahasa"
+    context: "Der Sprachgestus schwanke zwischen Gebet und Aufbegehren."
+    contextIndonesian: "Gestur bahasanya berayun antara doa dan pemberontakan."
 ---

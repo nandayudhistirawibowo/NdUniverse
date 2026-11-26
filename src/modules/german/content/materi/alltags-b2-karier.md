@@ -62,4 +62,8 @@ vocab:
     indonesian: "penetapan tujuan"
     context: "Mit klaren Zielen lässt sich das Projekt leichter planen. (Schlüsselwort: Zielsetzung)"
 
+  - german: "Verantwortung"
+    indonesian: "tanggung jawab"
+    context: "Freiheit und Verantwortung gehören zusammen."
+    contextIndonesian: "Pimpinan bertanggung jawab atas keputusan itu."
 ---

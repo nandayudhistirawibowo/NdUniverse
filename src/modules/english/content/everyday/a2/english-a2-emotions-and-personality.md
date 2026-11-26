@@ -23,6 +23,7 @@ vocab:
   - { word: "mood", translation: "suasana hati", context: "After the good news, the mood in the office is much better.", contextIndonesian: "Suasana di kantor jauh lebih baik setelah kabar baik itu." }
   - { word: "get annoyed about", translation: "kesal terhadap", context: "I'm annoyed about the long traffic jam. (keyword: get annoyed about)", contextIndonesian: "Saya kesal karena kemacetan yang panjang." }
   - { word: "curious", translation: "penasaran", context: "The curious child constantly asks questions.", contextIndonesian: "Anak yang penasaran itu terus bertanya." }
+  - { word: "disappointment", translation: "kekecewaan", context: "The cancellation was a big disappointment.", contextIndonesian: "Penolakannya sangat mengecewakan." }
 ---
 
 # Emotions and Personality

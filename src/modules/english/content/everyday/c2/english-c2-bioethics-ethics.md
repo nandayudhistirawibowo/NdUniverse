@@ -23,6 +23,7 @@ vocab:
   - { word: "conflict of interest", translation: "konflik kepentingan", context: "A conflict of interest must be disclosed before the start of the study.", contextIndonesian: "Konflik kepentingan harus diungkap sebelum penelitian dimulai." }
   - { word: "benefit-risk assessment", translation: "penimbangan manfaat dan risiko", context: "The benefit-risk assessment should be updated regularly.", contextIndonesian: "Penimbangan manfaat dan risikonya perlu diperbarui secara berkala." }
   - { word: "need for protection", translation: "kerentanan yang memerlukan perlindungan", context: "Need for protection gives rise to additional procedural guarantees.", contextIndonesian: "Kerentanan membutuhkan jaminan prosedural tambahan." }
+  - { word: "ethics of conviction", translation: "etika keyakinan", context: "Attitude ethics evaluate the attitude regardless of success. (keyword: ethics of conviction)", contextIndonesian: "Etika keyakinan menilai sikap terlepas dari keberhasilannya." }
 ---
 
 # Bioethics Ethics

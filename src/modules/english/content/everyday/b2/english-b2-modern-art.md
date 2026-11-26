@@ -22,6 +22,8 @@ vocab:
   - { word: "provocation", translation: "provokasi", context: "The provocation sparked a wide debate.", contextIndonesian: "Provokasi itu memicu perdebatan luas." }
   - { word: "museum", translation: "museum", context: "The museum has been converted to be barrier-free.", contextIndonesian: "Museumnya direnovasi agar mudah diakses." }
   - { word: "art movement", translation: "aliran seni", context: "The art movement influenced later generations.", contextIndonesian: "Aliran seni itu memengaruhi generasi berikutnya." }
+  - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence is already changing numerous professional fields.", contextIndonesian: "Kecerdasan buatan sudah mengubah banyak bidang pekerjaan." }
+  - { word: "algorithm", translation: "algoritma", context: "The algorithm was trained with new data.", contextIndonesian: "Algoritmanya dilatih dengan data baru." }
 ---
 
 # Modern Art

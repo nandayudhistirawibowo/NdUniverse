@@ -22,6 +22,8 @@ vocab:
   - { word: "attitude", translation: "sikap", context: "Your attitude was shaped by personal experiences.", contextIndonesian: "Sikapnya dibentuk oleh pengalaman pribadi." }
   - { word: "life plan", translation: "rancangan hidup", context: "The life plan could have changed at any time.", contextIndonesian: "Rancangan hidup itu bisa saja berubah kapan pun." }
   - { word: "gratitude", translation: "rasa syukur", context: "Gratitude helped him change his perspective.", contextIndonesian: "Rasa syukur membantunya mengubah cara pandang." }
+  - { word: "curriculum", translation: "kurikulum", context: "The curriculum has been adapted to digital requirements.", contextIndonesian: "Kurikulumnya disesuaikan dengan kebutuhan digital." }
+  - { word: "digitalization", translation: "digitalisasi", context: "Digitalization fundamentally changed teaching.", contextIndonesian: "Digitalisasi mengubah pembelajaran secara mendasar." }
 ---
 
 # Philosophy of Life

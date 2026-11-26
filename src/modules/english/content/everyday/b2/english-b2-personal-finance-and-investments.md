@@ -16,6 +16,14 @@ vocab:
   - { word: "debt", translation: "utang", context: "She wants to reduce her debts step by step.", contextIndonesian: "Dia ingin mengurangi utangnya selangkah demi selangkah." }
   - { word: "diversify", translation: "melakukan diversifikasi", context: "Investors diversify their portfolio so that risks are spread.", contextIndonesian: "Investor mendiversifikasi portofolionya sehingga risiko tersebar." }
   - { word: "long term", translation: "jangka panjang", context: "Anyone who invests for the long term needs patience and a clear plan.", contextIndonesian: "Siapapun yang berinvestasi untuk jangka panjang membutuhkan kesabaran dan rencana yang jelas." }
+  - { word: "income tax", translation: "pajak penghasilan", context: "Income tax is calculated based on income.", contextIndonesian: "Pajak penghasilan dihitung berdasarkan pendapatan." }
+  - { word: "tax return", translation: "laporan pajak", context: "The tax return had to be submitted electronically.", contextIndonesian: "Laporan pajaknya harus diserahkan secara elektronik." }
+  - { word: "tax assessment", translation: "surat ketetapan pajak", context: "The tax notice was delivered after six weeks. (keyword: tax assessment)", contextIndonesian: "Surat ketetapan pajaknya tiba setelah enam minggu." }
+  - { word: "allowance", translation: "batas bebas pajak", context: "The allowance could be adjusted to inflation.", contextIndonesian: "Batas bebas pajaknya bisa disesuaikan dengan inflasi." }
+  - { word: "tax class", translation: "golongan pajak", context: "The tax class was changed after marriage.", contextIndonesian: "Golongan pajaknya berubah setelah menikah." }
+  - { word: "annual financial statements", translation: "laporan keuangan tahunan", context: "The annual financial statements were checked by an auditor.", contextIndonesian: "Laporan tahunan diperiksa oleh auditor perempuan." }
+  - { word: "balance sheet", translation: "neraca", context: "The balance sheet shows how stable the company is.", contextIndonesian: "Neraca menunjukkan seberapa stabil perusahaannya." }
+  - { word: "tax deduction", translation: "potongan pajak", context: "The tax deduction was made directly from the salary.", contextIndonesian: "Potongan pajaknya langsung diambil dari gaji." }
 ---
 
 # Personal Finance and Investments

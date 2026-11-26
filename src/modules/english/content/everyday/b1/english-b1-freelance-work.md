@@ -16,6 +16,14 @@ vocab:
   - { word: "reliable", translation: "bisa diandalkan", context: "Reliable work brought me further orders.", contextIndonesian: "Kerja yang bisa diandalkan memberiku proyek tambahan." }
   - { word: "network", translation: "jaringan", context: "A good network helped me with the search.", contextIndonesian: "Jaringan yang baik membantuku mencari proyek." }
   - { word: "working hours", translation: "jam kerja", context: "I organize my working hours flexibly.", contextIndonesian: "Aku mengatur jam kerjaku dengan fleksibel." }
+  - { word: "work culture", translation: "budaya kerja", context: "The work culture changed after the move.", contextIndonesian: "Budaya kerjanya berubah setelah kantor pindah." }
+  - { word: "compatibility", translation: "keselarasan", context: "Balancing work and family remained difficult. (keyword: compatibility)", contextIndonesian: "Menyeimbangkan pekerjaan dan keluarga masih sulit." }
+  - { word: "social work", translation: "pekerjaan sosial", context: "Social work supported families in difficult situations.", contextIndonesian: "Pekerjaan sosial mendukung keluarga dalam situasi sulit." }
+  - { word: "end of the day", translation: "waktu selesai kerja", context: "After work we often exchanged experiences. (keyword: end of the day)", contextIndonesian: "Sepulang kerja, kami sering bertukar pengalaman." }
+  - { word: "workload", translation: "beban kerja", context: "Workload increased before the end of the year.", contextIndonesian: "Beban kerja meningkat menjelang akhir tahun." }
+  - { word: "appreciation", translation: "apresiasi", context: "Appreciation particularly motivated the team.", contextIndonesian: "Apresiasi sangat menyemangati tim." }
+  - { word: "equality", translation: "kesetaraan hak", context: "Equal rights should be a matter of course in the company. (keyword: equality)", contextIndonesian: "Kesetaraan hak seharusnya menjadi hal wajar di kantor." }
+  - { word: "manager", translation: "atasan", context: "The manager listened carefully to all employees.", contextIndonesian: "Atasannya mendengarkan semua pegawai dengan saksama." }
 ---
 
 # Freelance Work

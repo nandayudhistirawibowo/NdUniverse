@@ -23,6 +23,7 @@ vocab:
   - { word: "technological imperative", translation: "imperatif teknologi", context: "The technological imperative should be critically questioned.", contextIndonesian: "Anggapan bahwa teknologi harus terus maju perlu dipertanyakan." }
   - { word: "digital care", translation: "kepedulian digital", context: "Digital care includes protection against manipulation.", contextIndonesian: "Kepedulian digital mencakup perlindungan dari manipulasi." }
   - { word: "responsibility for innovation", translation: "tanggung jawab atas inovasi", context: "Responsibility for innovation does not end with market launch.", contextIndonesian: "Tanggung jawab atas inovasi tidak berakhir setelah produk diluncurkan." }
+  - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence is changing many professions.", contextIndonesian: "Kecerdasan buatan mengubah banyak profesi." }
 ---
 
 # Technology Ethics

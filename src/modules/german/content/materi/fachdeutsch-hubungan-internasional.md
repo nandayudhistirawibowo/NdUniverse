@@ -61,4 +61,8 @@ vocab:
   - german: "Beobachtermission"
     indonesian: "misi pemantau"
     context: "Die Beobachtermission dokumentiert den Verlauf der Wahl."
+  - german: "Ratifizierung"
+    indonesian: "ratifikasi"
+    context: "Das Abkommen tritt nach der Ratifizierung in Kraft."
+    contextIndonesian: "Perjanjian itu mulai berlaku setelah diratifikasi."
 ---

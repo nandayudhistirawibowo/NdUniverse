@@ -21,6 +21,9 @@ vocab:
   - { word: "dry", translation: "kering", context: "The streets are dry again in the afternoon.", contextIndonesian: "Jalanan akan kering lagi sore nanti." }
   - { word: "probably", translation: "mungkin", context: "It will probably be windy tomorrow.", contextIndonesian: "Besok mungkin akan berangin." }
   - { word: "weather service", translation: "layanan cuaca", context: "The weather service warns of heavy rain.", contextIndonesian: "Layanan cuaca memperingatkan hujan lebat." }
+  - { word: "earthquake", translation: "gempa bumi", context: "The earthquake was felt throughout the region.", contextIndonesian: "Gempa itu terasa di seluruh wilayah." }
+  - { word: "flood", translation: "banjir", context: "The flood reached several houses.", contextIndonesian: "Banjir mencapai beberapa rumah." }
+  - { word: "storm", translation: "badai", context: "The storm damaged many roofs.", contextIndonesian: "Badai merusak banyak atap." }
 ---
 
 # Weather Forecast

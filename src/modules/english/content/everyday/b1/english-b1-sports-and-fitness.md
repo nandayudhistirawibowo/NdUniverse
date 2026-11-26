@@ -15,6 +15,16 @@ vocab:
   - { word: "persevere", translation: "bertahan", context: "Despite being tired, she persevered until the end.", contextIndonesian: "Meski lelah, dia bertahan sampai akhir." }
   - { word: "fair", translation: "adil", context: "The competition was fair and exciting.", contextIndonesian: "Kompetisinya berlangsung adil dan seru." }
 
+  - { word: "fitness", translation: "kebugaran", context: "My fitness improved after a few weeks.", contextIndonesian: "Kebugaranku meningkat setelah beberapa minggu." }
+  - { word: "sports hall", translation: "gedung olahraga", context: "The sports hall remained open during the holidays.", contextIndonesian: "Gedung olahraganya tetap buka selama liburan." }
+  - { word: "sports injury", translation: "cedera olahraga", context: "The sports injury was examined immediately.", contextIndonesian: "Cedera olahraganya langsung diperiksa." }
+  - { word: "warm-up exercise", translation: "gerakan pemanasan", context: "The warm-up exercise was repeated before each round.", contextIndonesian: "Gerakan pemanasan diulang sebelum setiap putaran." }
+  - { word: "muscle", translation: "otot", context: "The muscle was stretched after the run.", contextIndonesian: "Ototnya diregangkan setelah berlari." }
+  - { word: "cycle", translation: "sirkulasi darah", context: "The circulation got going after the walk. (keyword: cycle)", contextIndonesian: "Sirkulasi darahnya lancar setelah berjalan-jalan." }
+  - { word: "sport", translation: "jenis olahraga", context: "The sport should fit into my everyday life.", contextIndonesian: "Jenis olahraganya harus cocok dengan keseharianku." }
+  - { word: "movement break", translation: "jeda untuk bergerak", context: "A break from exercise was good for me in the office. (keyword: movement break)", contextIndonesian: "Jeda untuk bergerak membuatku lebih enak di kantor." }
+  - { word: "bike", translation: "sepeda", context: "The bicycle was used more frequently to get to work. (keyword: bike)", contextIndonesian: "Sepeda lebih sering dipakai untuk perjalanan kerja." }
+  - { word: "electric car", translation: "mobil listrik", context: "The electric car could be charged at home.", contextIndonesian: "Mobil listriknya bisa diisi daya di rumah." }
 ---
 
 # Sports and Fitness

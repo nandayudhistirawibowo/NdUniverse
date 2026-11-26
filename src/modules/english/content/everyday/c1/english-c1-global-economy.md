@@ -23,6 +23,7 @@ vocab:
   - { word: "price spiral", translation: "spiral kenaikan harga", context: "The price spiral has put a heavy burden on households.", contextIndonesian: "Kenaikan harga beruntun sangat membebani rumah tangga." }
   - { word: "increase in prosperity", translation: "peningkatan kesejahteraan", context: "The wealth gain is distributed unevenly. (keyword: increase in prosperity)", contextIndonesian: "Peningkatan kesejahteraannya terbagi tidak merata." }
   - { word: "market integration", translation: "keterkaitan pasar", context: "Market integration makes crises more contagious.", contextIndonesian: "Keterkaitan pasar membuat krisis lebih mudah menyebar." }
+  - { word: "circular economy", translation: "ekonomi sirkular", context: "Circular economy decouples growth from resource consumption.", contextIndonesian: "Ekonomi sirkular memisahkan pertumbuhan dari konsumsi sumber daya." }
 ---
 
 # Global Economy

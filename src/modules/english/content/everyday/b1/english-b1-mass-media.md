@@ -21,6 +21,9 @@ vocab:
   - { word: "opinion-forming", translation: "penggiringan opini", context: "The opinion-making was criticized on the show. (keyword: opinion-forming)", contextIndonesian: "Penggiringan opini dikritik dalam siaran itu." }
   - { word: "comment", translation: "komentar", context: "The comment sparked widespread debate.", contextIndonesian: "Komentarnya memicu perdebatan luas." }
   - { word: "representation", translation: "penggambaran", context: "The portrayal of the conflict remained balanced. (keyword: representation)", contextIndonesian: "Penggambaran konfliknya tetap seimbang." }
+  - { word: "social media", translation: "media sosial", context: "Many people are discussing the topic on social media.", contextIndonesian: "Banyak orang membahas topik itu di media sosial." }
+  - { word: "press conference", translation: "konferensi pers", context: "After the press conference, the speaker answers further questions.", contextIndonesian: "Setelah konferensi pers, juru bicara menjawab pertanyaan tambahan." }
+  - { word: "broadcast", translation: "acara siaran", context: "The show starts every evening at eight o'clock. (keyword: broadcast)", contextIndonesian: "Acara siaran itu dimulai pukul delapan setiap malam." }
 ---
 
 # Mass Media

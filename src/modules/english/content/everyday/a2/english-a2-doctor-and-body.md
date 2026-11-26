@@ -18,6 +18,12 @@ vocab:
   - { word: "sick", translation: "sakit", context: "She is sick and cannot work today.", contextIndonesian: "Dia sakit dan tidak bisa bekerja hari ini." }
   - { word: "healthy", translation: "sehat", context: "Regular exercise is good for your health. (keyword: healthy)", contextIndonesian: "Olahraga teratur baik untuk kesehatanmu." }
   - { word: "pain", translation: "rasa sakit", context: "The knee pain is not as bad today.", contextIndonesian: "Sakit di lutut hari ini tidak separah sebelumnya." }
+  - { word: "prescribe", translation: "meresepkan", context: "The doctor prescribed me tablets.", contextIndonesian: "Dokter meresepkan tablet untukku." }
+  - { word: "investigate", translation: "memeriksa", context: "The doctor examined my foot. (keyword: investigate)", contextIndonesian: "Dokter sudah memeriksa kakiku." }
+  - { word: "treat", translation: "merawat", context: "The doctor treats the injury immediately.", contextIndonesian: "Dokter segera merawat cederanya." }
+  - { word: "pharmacy", translation: "apotek", context: "The pharmacy is open until eight o'clock.", contextIndonesian: "Apoteknya buka sampai pukul delapan." }
+  - { word: "drug", translation: "obat", context: "This medication helped me yesterday. (keyword: drug)", contextIndonesian: "Obat ini membantuku kemarin." }
+  - { word: "painkiller", translation: "obat pereda nyeri", context: "Do you have any painkillers for headaches?", contextIndonesian: "Ada obat pereda sakit kepala?" }
 ---
 
 # Doctor and Body

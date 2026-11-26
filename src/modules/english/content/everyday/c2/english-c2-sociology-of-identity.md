@@ -23,6 +23,7 @@ vocab:
   - { word: "identity crisis", translation: "krisis identitas", context: "An identity crisis shatters familiar self-descriptions.", contextIndonesian: "Krisis identitas mengguncang deskripsi diri yang sudah akrab." }
   - { word: "narrative identity", translation: "identitas naratif", context: "Narrative identity connects disparate life events.", contextIndonesian: "Identitas naratif menghubungkan peristiwa hidup yang terpisah-pisah." }
   - { word: "situational belonging", translation: "rasa memiliki situasional", context: "Situational belonging changes with the social context.", contextIndonesian: "Rasa memiliki situasional berubah mengikuti konteks sosial." }
+  - { word: "sociology of emotions", translation: "sosiologi emosi", context: "Sociology of emotions examines emotions as a social practice.", contextIndonesian: "Sosiologi emosi mengkaji emosi sebagai praktik sosial." }
 ---
 
 # Sociology of Identity

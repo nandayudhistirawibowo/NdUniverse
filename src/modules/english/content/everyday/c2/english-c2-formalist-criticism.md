@@ -23,6 +23,7 @@ vocab:
   - { word: "narrative technique", translation: "teknik penceritaan", context: "Narrative technique shapes the perception of the events depicted.", contextIndonesian: "Teknik penceritaan membentuk persepsi terhadap peristiwa yang digambarkan." }
   - { word: "aesthetic construction", translation: "konstruksi estetis", context: "Aesthetic construction is hidden behind apparent naturalness.", contextIndonesian: "Konstruksi estetis tersembunyi di balik kesan alami." }
   - { word: "formal self-reference", translation: "referensialitas diri formal", context: "Formal self-reference focuses on the medium.", contextIndonesian: "Referensialitas diri formal mengarahkan perhatian pada mediumnya." }
+  - { word: "criticism of representation", translation: "kritik representasi", context: "Criticism of representation asks about the disposal of images.", contextIndonesian: "Kritik representasi mempertanyakan siapa yang menguasai citra." }
 ---
 
 # Formalist Criticism

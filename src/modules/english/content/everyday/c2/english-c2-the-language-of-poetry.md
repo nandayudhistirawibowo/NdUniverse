@@ -15,6 +15,16 @@ vocab:
   - { word: "semantic compression", translation: "pemadatan semantis", context: "Semantic condensation makes every word momentous. (keyword: semantic compression)", contextIndonesian: "Pemadatan semantis membuat setiap kata berdampak." }
   - { word: "language gesture", translation: "gestur bahasa", context: "The language gesture fluctuates between prayer and rebellion.", contextIndonesian: "Gestur bahasanya berayun antara doa dan pemberontakan." }
 
+  - { word: "visual poetry", translation: "puisi visual", context: "Visual poetry allows written bodies to carry meaning.", contextIndonesian: "Puisi visual membuat rupa tulisan membawa makna." }
+  - { word: "poetics of montage", translation: "poetika montase", context: "Montage poetics connect heterogeneous language residues. (keyword: poetics of montage)", contextIndonesian: "Poetika montase menghubungkan serpihan bahasa yang beragam." }
+  - { word: "concrete poetry", translation: "puisi konkret", context: "Concrete poetry treats words as material.", contextIndonesian: "Puisi konkret memperlakukan kata-kata sebagai bahan." }
+  - { word: "language criticism", translation: "kritik bahasa", context: "Criticism of language can be experienced through formal disruption. (keyword: language criticism)", contextIndonesian: "Kritik bahasa dialami melalui gangguan bentuk." }
+  - { word: "language game", translation: "permainan bahasa", context: "The language game follows rules that are rarely explicitly formulated.", contextIndonesian: "Permainan bahasa mengikuti aturan yang jarang dinyatakan secara eksplisit." }
+  - { word: "private language argument", translation: "argumen bahasa privat", context: "The private language argument denies purely private rules of meaning.", contextIndonesian: "Argumen bahasa privat menolak adanya aturan makna yang sepenuhnya pribadi." }
+  - { word: "metalanguage", translation: "metabahasa", context: "Metalanguage describes expressions of an object language.", contextIndonesian: "Metabahasa menjelaskan ungkapan dalam bahasa objek." }
+  - { word: "conceptual work", translation: "penggarapan konsep", context: "Conceptual work exposes implicit assumptions.", contextIndonesian: "Penggarapan konsep menyingkap asumsi yang tersirat." }
+  - { word: "operationalization", translation: "operasionalisasi", context: "The operationalization must be theoretically plausible.", contextIndonesian: "Operasionalisasinya harus masuk akal secara teoretis." }
+  - { word: "range limit", translation: "pembatasan cakupan", context: "A range limitation sharpens the question.", contextIndonesian: "Pembatasan cakupan mempertajam pertanyaan penelitian." }
 ---
 
 # The Language of Poetry

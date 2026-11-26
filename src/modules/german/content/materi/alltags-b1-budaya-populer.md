@@ -77,4 +77,12 @@ vocab:
     context: "Ein Kommentar löste eine lange Debatte aus."
     contextIndonesian: "Sebuah komentar memicu perdebatan panjang."
 
+  - german: "Kulturförderung"
+    indonesian: "dukungan budaya"
+    context: "Die Kulturförderung wurde im Stadtrat diskutiert."
+    contextIndonesian: "Dukungan budaya dibahas di dewan kota."
+  - german: "Kulturbetrieb"
+    indonesian: "dunia budaya"
+    context: "Der Kulturbetrieb erholte sich nur langsam."
+    contextIndonesian: "Dunia budaya pulih dengan lambat."
 ---

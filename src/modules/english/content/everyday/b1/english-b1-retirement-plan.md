@@ -18,6 +18,13 @@ vocab:
   - { word: "savings", translation: "tabungan", context: "The savings were set aside for travel.", contextIndonesian: "Tabungannya disisihkan untuk bepergian." }
   - { word: "transition", translation: "masa peralihan", context: "The transition to retirement was gradual.", contextIndonesian: "Masa peralihan menuju pensiun berlangsung bertahap." }
 
+  - { word: "semester abroad", translation: "semester di luar negeri", context: "A semester abroad would expand my horizons.", contextIndonesian: "Semester di luar negeri akan memperluas wawasanku." }
+  - { word: "study group", translation: "kelompok belajar", context: "In the study group we explained difficult topics.", contextIndonesian: "Kami menjelaskan topik sulit dalam kelompok belajar." }
+  - { word: "sustainability", translation: "keberlanjutan", context: "Sustainability was given greater consideration in the new plan.", contextIndonesian: "Keberlanjutan lebih diperhatikan dalam rencana baru." }
+  - { word: "business plan", translation: "rencana bisnis", context: "The business plan convinced several financiers.", contextIndonesian: "Rencana bisnisnya meyakinkan beberapa penyandang dana." }
+  - { word: "debt advice", translation: "konseling utang", context: "Debt advice helped with the new payment plan.", contextIndonesian: "Konseling utang membantu menyusun rencana pembayaran baru." }
+  - { word: "plan", translation: "rencana", context: "The plan was developed together.", contextIndonesian: "Rencana itu disusun bersama." }
+  - { word: "weekly plan", translation: "rencana mingguan", context: "There were fixed learning times in the weekly plan.", contextIndonesian: "Jadwal mingguan itu memuat waktu belajar tetap." }
 ---
 
 # Retirement Plan

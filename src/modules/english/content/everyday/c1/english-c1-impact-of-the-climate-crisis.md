@@ -22,6 +22,9 @@ vocab:
   - { word: "feedback", translation: "umpan balik", context: "The feedback accelerates warming.", contextIndonesian: "Umpan balik itu mempercepat pemanasan." }
   - { word: "salinization", translation: "salinisasi", context: "Salinization threatens coastal cultivated areas.", contextIndonesian: "Salinisasi mengancam lahan pertanian dekat pesisir." }
 
+  - { word: "climate neutrality", translation: "netralitas iklim", context: "Many cities want to be climate neutral by 2040. (keyword: climate neutrality)", contextIndonesian: "Banyak kota ingin menjadi netral iklim pada tahun 2040." }
+  - { word: "climate policy", translation: "kebijakan iklim", context: "Climate policy must think about the economy and the environment together.", contextIndonesian: "Kebijakan iklim harus mempertimbangkan perekonomian dan lingkungan hidup secara bersamaan." }
+  - { word: "CO2 pricing", translation: "penetapan harga karbon", context: "CO2 pricing is intended to make climate-friendly options more attractive.", contextIndonesian: "Penetapan harga CO2 dimaksudkan untuk membuat pilihan ramah iklim menjadi lebih menarik." }
 ---
 
 # Impact of the Climate Crisis

@@ -14,6 +14,16 @@ vocab:
   - { word: "task", translation: "tugas", context: "The task is not difficult.", contextIndonesian: "Tugasnya tidak sulit." }
   - { word: "write", translation: "menulis", context: "I write down my name.", contextIndonesian: "Aku menulis namaku." }
   - { word: "understand", translation: "mengerti", context: "Do you understand the question?", contextIndonesian: "Kamu mengerti pertanyaannya?" }
+  - { word: "classroom", translation: "ruang kelas", context: "The classroom is bright", contextIndonesian: "Ruang kelas itu terang" }
+  - { word: "instructor", translation: "instruktur", context: "The instructor explains the lesson", contextIndonesian: "Instruktur menjelaskan pelajaran" }
+  - { word: "pupil", translation: "murid", context: "Every pupil has a book", contextIndonesian: "Setiap murid memiliki buku" }
+  - { word: "book", translation: "buku", context: "Please open your book", contextIndonesian: "Silakan buka bukumu" }
+  - { word: "eraser", translation: "penghapus", context: "I use an eraser to correct a mistake.", contextIndonesian: "Saya memakai penghapus untuk membetulkan kesalahan." }
+  - { word: "desk", translation: "meja belajar", context: "My desk is near the window", contextIndonesian: "Meja belajarku dekat jendela" }
+  - { word: "lesson", translation: "pelajaran", context: "The English lesson is fun", contextIndonesian: "Pelajaran bahasa Inggris menyenangkan" }
+  - { word: "homework", translation: "pekerjaan rumah", context: "I finish my homework", contextIndonesian: "Saya menyelesaikan pekerjaan rumah" }
+  - { word: "question", translation: "pertanyaan", context: "The student asks a question", contextIndonesian: "Siswa itu mengajukan pertanyaan" }
+  - { word: "answer", translation: "jawaban", context: "She knows the answer", contextIndonesian: "Dia tahu jawabannya" }
 ---
 
 # School and Study

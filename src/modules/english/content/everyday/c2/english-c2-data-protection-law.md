@@ -23,6 +23,8 @@ vocab:
   - { word: "data security", translation: "keamanan data", context: "Data security includes technical and organizational measures.", contextIndonesian: "Keamanan data mencakup langkah teknis dan organisatoris." }
   - { word: "shared responsibility", translation: "tanggung jawab bersama", context: "Shared responsibility must be clearly distributed.", contextIndonesian: "Tanggung jawab bersama harus dibagi dengan jelas." }
 
+  - { word: "informational self-determination", translation: "penentuan nasib informasi pribadi", context: "Informational self-determination limits state use of data.", contextIndonesian: "Penentuan nasib informasi pribadi membatasi penggunaan data oleh negara." }
+  - { word: "net neutrality", translation: "netralitas jaringan", context: "Net neutrality prevents discriminatory data transmission.", contextIndonesian: "Netralitas jaringan mencegah transmisi data yang diskriminatif." }
 ---
 
 # Data Protection Law

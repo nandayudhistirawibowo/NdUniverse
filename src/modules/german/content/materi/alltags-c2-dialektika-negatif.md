@@ -80,4 +80,8 @@ vocab:
     indonesian: "utopia"
     context: "Utopie dürfe nicht als fertiger Bauplan auftreten."
     contextIndonesian: "Utopia tidak boleh tampil sebagai cetak biru yang sudah jadi."
+  - german: "Theoriebeladenheit"
+    indonesian: "keterikatan pada teori"
+    context: "Theoriebeladenheit präge bereits die Beobachtung."
+    contextIndonesian: "Keterikatan pada teori sudah membentuk pengamatan."
 ---

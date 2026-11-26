@@ -80,4 +80,8 @@ vocab:
     indonesian: "ingatan transkultural"
     context: "Transkulturelle Erinnerung überschreite familiäre Überlieferungen."
     contextIndonesian: "Ingatan transkultural melampaui cerita yang diwariskan dalam keluarga."
+  - german: "erinnerungskulturelle Überformung"
+    indonesian: "pembentukan ulang dalam budaya ingatan"
+    context: "Erinnerungskulturelle Überformung verändert private Erinnerungsbilder."
+    contextIndonesian: "Pembentukan ulang dalam budaya ingatan mengubah gambaran pribadi tentang masa lalu."
 ---

@@ -80,4 +80,8 @@ vocab:
     indonesian: "kehati-hatian"
     context: "Bei solchen Aktivitäten ist Vorsicht besonders wichtig."
     contextIndonesian: "Kehati-hatian sangat penting dalam kegiatan seperti ini."
+  - german: "Sportveranstaltung"
+    indonesian: "acara olahraga"
+    context: "Die Sportveranstaltung wurde weltweit übertragen."
+    contextIndonesian: "Acara olahraganya disiarkan ke seluruh dunia."
 ---

@@ -23,6 +23,8 @@ vocab:
   - { word: "intersection", translation: "persimpangan", context: "The accident happened at a large intersection.", contextIndonesian: "Kecelakaan terjadi di persimpangan besar." }
   - { word: "urgent", translation: "mendesak", context: "She needed urgent medical attention.", contextIndonesian: "Dia sangat membutuhkan bantuan medis." }
 
+  - { word: "emergency force", translation: "petugas tanggap darurat", context: "Many emergency services were sent to the region. (keyword: emergency force)", contextIndonesian: "Banyak petugas dikirim ke wilayah itu." }
+  - { word: "reserve", translation: "dana cadangan", context: "A reserve would have made the emergency easier.", contextIndonesian: "Dana cadangan akan membantu saat keadaan darurat." }
 ---
 
 # Emergency Services

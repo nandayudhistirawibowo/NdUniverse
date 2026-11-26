@@ -23,6 +23,8 @@ vocab:
   - { word: "backup copy", translation: "salinan cadangan", context: "The backup copy was saved in a separate location.", contextIndonesian: "Salinan cadangannya disimpan di lokasi terpisah." }
   - { word: "identity check", translation: "verifikasi identitas", context: "The identity verification took place before the account change. (keyword: identity check)", contextIndonesian: "Identitas diverifikasi sebelum akun diubah." }
 
+  - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence is already changing numerous professional fields.", contextIndonesian: "Kecerdasan buatan sudah mengubah banyak bidang pekerjaan." }
+  - { word: "algorithm", translation: "algoritma", context: "The algorithm was trained with new data.", contextIndonesian: "Algoritmanya dilatih dengan data baru." }
 ---
 
 # Cybersecurity

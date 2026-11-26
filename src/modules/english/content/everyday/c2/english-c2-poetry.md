@@ -21,6 +21,9 @@ vocab:
   - { word: "inversion", translation: "inversi", context: "The inversion brings the predicate to the foreground.", contextIndonesian: "Inversi menonjolkan predikat." }
   - { word: "oxymoron", translation: "oksimoron", context: "The oxymoron keeps the contradiction productively open.", contextIndonesian: "Oksimoron membiarkan pertentangan tetap terbuka secara produktif." }
   - { word: "speaker dance", translation: "instansi penutur", context: "The speaker's dance should not be equated with the author. (keyword: speaker dance)", contextIndonesian: "Instansi penutur tidak dapat disamakan dengan pengarang." }
+  - { word: "visual poetry", translation: "puisi visual", context: "Visual poetry allows written bodies to carry meaning.", contextIndonesian: "Puisi visual membuat rupa tulisan membawa makna." }
+  - { word: "concrete poetry", translation: "puisi konkret", context: "Concrete poetry treats words as material.", contextIndonesian: "Puisi konkret memperlakukan kata-kata sebagai bahan." }
+  - { word: "sound collage", translation: "kolase bunyi", context: "The sound collage breaks down familiar speech rhythms.", contextIndonesian: "Kolase bunyi mengurai irama bahasa yang akrab." }
 ---
 
 # Poetry

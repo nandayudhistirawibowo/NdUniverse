@@ -23,6 +23,8 @@ vocab:
   - { word: "reservation", translation: "reservasi", context: "The reservation was confirmed months in advance.", contextIndonesian: "Reservasinya dikonfirmasi beberapa bulan sebelumnya." }
   - { word: "tour operator", translation: "operator perjalanan", context: "The tour operator adjusted the offer.", contextIndonesian: "Operator perjalanan menyesuaikan penawarannya." }
 
+  - { word: "travel time", translation: "waktu tempuh", context: "Travel time could be reduced through direct connections.", contextIndonesian: "Waktu tempuh bisa berkurang dengan rute langsung." }
+  - { word: "autonomous vehicle", translation: "kendaraan otonom", context: "The autonomous vehicle was tested on public roads.", contextIndonesian: "Kendaraan otonomnya diuji di jalan umum." }
 ---
 
 # Luxury Travel

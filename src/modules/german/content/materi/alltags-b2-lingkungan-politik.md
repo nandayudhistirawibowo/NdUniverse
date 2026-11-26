@@ -76,4 +76,12 @@ vocab:
     indonesian: "kesepakatan"
     context: "Die Vereinbarung wurde trotz unterschiedlicher Interessen erreicht."
     contextIndonesian: "Kesepakatan tercapai meski kepentingannya berbeda."
+  - german: "Energiepolitik"
+    indonesian: "kebijakan energi"
+    context: "Die Energiepolitik sollte verlässliche Ziele enthalten."
+    contextIndonesian: "Kebijakan energinya sebaiknya memuat target yang dapat diandalkan."
+  - german: "Solarenergie"
+    indonesian: "energi surya"
+    context: "Die Solarenergie deckte einen größeren Teil des Bedarfs."
+    contextIndonesian: "Energi surya memenuhi porsi kebutuhan yang lebih besar."
 ---

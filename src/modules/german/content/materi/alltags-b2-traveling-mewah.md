@@ -80,4 +80,8 @@ vocab:
     indonesian: "istirahat"
     context: "Die Erholung stand bei der Planung im Mittelpunkt."
     contextIndonesian: "Istirahat menjadi fokus utama dalam perencanaannya."
+  - german: "autonomes Fahrzeug"
+    indonesian: "kendaraan otonom"
+    context: "Das autonome Fahrzeug wurde auf öffentlichen Straßen getestet."
+    contextIndonesian: "Kendaraan otonomnya diuji di jalan umum."
 ---

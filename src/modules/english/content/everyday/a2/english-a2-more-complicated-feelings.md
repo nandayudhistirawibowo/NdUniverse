@@ -19,6 +19,12 @@ vocab:
   - { word: "be ashamed", translation: "merasa malu", context: "He was ashamed of his behavior. (keyword: be ashamed)", contextIndonesian: "Dia malu dengan perilakunya." }
   - { word: "jealous", translation: "cemburu", context: "He was a little jealous.", contextIndonesian: "Dia agak cemburu." }
 
+  - { word: "feeling", translation: "perasaan", context: "She talks openly about her feelings.", contextIndonesian: "Dia berbicara terbuka tentang perasaannya." }
+  - { word: "looking forward to", translation: "menantikan dengan gembira", context: "I'm looking forward to seeing my friends.", contextIndonesian: "Saya sudah tidak sabar bertemu teman-teman saya." }
+  - { word: "look forward to", translation: "bergembira atas", context: "He is happy about the gift. (keyword: look forward to)", contextIndonesian: "Dia senang atas hadiah itu." }
+  - { word: "disappointed", translation: "kecewa", context: "After the rejection she was really disappointed.", contextIndonesian: "Dia kecewa setelah penolakan itu." }
+  - { word: "nervous", translation: "gugup", context: "I'm pretty nervous before the interview.", contextIndonesian: "Saya cukup gugup sebelum wawancara itu." }
+  - { word: "proud", translation: "bangga", context: "His parents are proud of him.", contextIndonesian: "Orang tuanya bangga kepadanya." }
 ---
 
 # More Complicated Feelings

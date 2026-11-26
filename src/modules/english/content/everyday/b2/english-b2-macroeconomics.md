@@ -22,6 +22,8 @@ vocab:
   - { word: "tax policy", translation: "kebijakan pajak", context: "A reform that relieves the burden on families has been proposed. (keyword: tax policy)", contextIndonesian: "Diusulkan reformasi yang meringankan beban keluarga." }
   - { word: "productivity", translation: "produktivitas", context: "Productivity could be increased through further training.", contextIndonesian: "Produktivitas bisa ditingkatkan lewat pelatihan lanjutan." }
   - { word: "economic downturn", translation: "perlambatan ekonomi", context: "The economic downturn hit small businesses particularly hard.", contextIndonesian: "Perlambatan ekonomi sangat berdampak pada usaha kecil." }
+  - { word: "share", translation: "saham", context: "The stock lost value after missing profits. (keyword: share)", contextIndonesian: "Sahamnya turun setelah keuntungan tak tercapai." }
+  - { word: "bond", translation: "obligasi", context: "The bond was in demand despite low interest rates.", contextIndonesian: "Obligasi itu diminati meski bunganya rendah." }
 ---
 
 # Macroeconomics

@@ -23,6 +23,7 @@ vocab:
   - { word: "assembly sequence", translation: "urutan montase", context: "The montage sequence shifts the moral evaluation. (keyword: assembly sequence)", contextIndonesian: "Urutan montasenya menggeser penilaian moral." }
   - { word: "cinematic autoreflection", translation: "refleksi diri filmis", context: "Filmic auto-reflection exposes the apparatus. (keyword: cinematic autoreflection)", contextIndonesian: "Refleksi diri filmis menyingkap perangkat pembuatannya." }
   - { word: "look direction", translation: "pengarahan pandangan", context: "Blickdirection distributes knowledge unequally. (keyword: look direction)", contextIndonesian: "Pengarahan pandangan membagi pengetahuan secara tidak merata." }
+  - { word: "performance aesthetics", translation: "estetika pertunjukan", context: "Performance aesthetics take fleeting events into account.", contextIndonesian: "Estetika pertunjukan mempertimbangkan peristiwa yang singkat." }
 ---
 
 # Film Aesthetics

@@ -23,6 +23,7 @@ vocab:
   - { word: "memory lane", translation: "jejak ingatan", context: "Every trace of memory points to absence. (keyword: memory lane)", contextIndonesian: "Setiap jejak ingatan menunjuk pada sesuatu yang tak hadir." }
   - { word: "transnational identity", translation: "identitas transnasional", context: "Transnational identity evades clear national classification.", contextIndonesian: "Identitas transnasional tak dapat dilekatkan pada satu bangsa saja." }
   - { word: "forced mobility", translation: "mobilitas yang dipaksakan", context: "Forced mobility leaves biographical breaks.", contextIndonesian: "Mobilitas yang dipaksakan meninggalkan retakan dalam perjalanan hidup." }
+  - { word: "childlike narrative voice", translation: "suara naratif anak", context: "The childish narrative voice contradicts adult certainties. (keyword: childlike narrative voice)", contextIndonesian: "Suara naratif anak menentang kepastian orang dewasa." }
 ---
 
 # Exile Literature

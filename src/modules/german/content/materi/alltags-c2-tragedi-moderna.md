@@ -76,4 +76,12 @@ vocab:
     indonesian: "pemulihan"
     context: "Restitution werde als unmögliche Forderung kenntlich."
     contextIndonesian: "Pemulihan ditampilkan sebagai tuntutan yang mustahil dipenuhi."
+  - german: "Formauflösung"
+    indonesian: "peluruhan bentuk"
+    context: "Die Formauflösung eröffnet neue Wahrnehmungsmöglichkeiten."
+    contextIndonesian: "Peluruhan bentuk membuka ruang persepsi yang tak terduga."
+  - german: "Sprachzertrümmerung"
+    indonesian: "penghancuran bahasa"
+    context: "Sprachzertrümmerung widersetze sich vertrauten Lesemustern."
+    contextIndonesian: "Penghancuran bahasa menentang pola baca yang lazim."
 ---

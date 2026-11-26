@@ -20,6 +20,11 @@ vocab:
   - { word: "reward", translation: "hadiah", context: "After the finish I treated myself to a reward.", contextIndonesian: "Setelah mencapai target, aku menghadiahi diriku." }
   - { word: "equalizer", translation: "keseimbangan", context: "Sport offered me a good balance to the office. (keyword: equalizer)", contextIndonesian: "Olahraga menyeimbangkan keseharianku di kantor." }
 
+  - { word: "resolution", translation: "tekad", context: "My good intention lasted longer this time. (keyword: resolution)", contextIndonesian: "Tekad baikku kali ini bertahan lebih lama." }
+  - { word: "eating habit", translation: "kebiasaan makan", context: "My eating habits changed abroad.", contextIndonesian: "Kebiasaan makanku berubah saat di luar negeri." }
+  - { word: "habit", translation: "kebiasaan", context: "I've wanted to change this habit for a long time.", contextIndonesian: "Aku sudah lama ingin mengubah kebiasaan ini." }
+  - { word: "distraction", translation: "gangguan", context: "Constant distraction made concentrated work impossible.", contextIndonesian: "Gangguan terus-menerus membuatku sulit fokus bekerja." }
+  - { word: "delay", translation: "keterlambatan", context: "Because of his lateness, the team missed the start. (keyword: delay)", contextIndonesian: "Tim melewatkan awal acara karena dia terlambat." }
 ---
 
 # Good Habits

@@ -23,6 +23,7 @@ vocab:
   - { word: "freedom", translation: "kebebasan", context: "Freedom is not an absence of ties.", contextIndonesian: "Kebebasan bukan berarti hidup tanpa keterikatan." }
   - { word: "question of meaning", translation: "pertanyaan tentang makna", context: "The question of meaning comes to a head in action.", contextIndonesian: "Pertanyaan tentang makna menjadi tajam melalui tindakan." }
   - { word: "existential decision", translation: "keputusan eksistensial", context: "The existential decision cannot be delegated.", contextIndonesian: "Keputusan eksistensial tidak dapat diwakilkan." }
+  - { word: "existential anxiety", translation: "kecemasan eksistensial", context: "Existential anxiety arises from radical freedom", contextIndonesian: "Kecemasan eksistensial muncul dari kebebasan radikal" }
 ---
 
 # Existentialism

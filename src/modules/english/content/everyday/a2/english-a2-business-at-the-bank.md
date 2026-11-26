@@ -22,6 +22,8 @@ vocab:
   - { word: "form", translation: "formulir", context: "Please fill out this form.", contextIndonesian: "Tolong isi formulir ini." }
   - { word: "amount", translation: "jumlah uang", context: "The amount was debited twice.", contextIndonesian: "Jumlahnya terpotong dua kali." }
   - { word: "branch", translation: "cabang", context: "The next branch is at the train station.", contextIndonesian: "Cabang terdekat ada di stasiun." }
+  - { word: "Citizens' Office", translation: "kantor layanan warga", context: "The Citizens' Office opened later today.", contextIndonesian: "Kantor layanan warganya buka lebih siang hari ini." }
+  - { word: "swimming pool", translation: "kolam renang umum", context: "The swimming pool was renovated last week.", contextIndonesian: "Kolam renangnya direnovasi minggu lalu." }
 ---
 
 # Business at the Bank

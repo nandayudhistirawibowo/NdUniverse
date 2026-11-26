@@ -23,6 +23,8 @@ vocab:
   - { word: "consumption", translation: "konsumsi", context: "Consumption could be reduced through repairs.", contextIndonesian: "Konsumsi bisa dikurangi dengan memperbaiki pakaian." }
   - { word: "transparency", translation: "transparansi", context: "More transparency would strengthen trust.", contextIndonesian: "Transparansi lebih besar akan meningkatkan kepercayaan." }
 
+  - { word: "trend", translation: "tren", context: "The trend changes every season", contextIndonesian: "Tren berubah setiap musim" }
+  - { word: "designer", translation: "perancang", context: "The designer presents a new collection", contextIndonesian: "Perancang itu mempresentasikan koleksi baru" }
 ---
 
 # Fashion and Fashion

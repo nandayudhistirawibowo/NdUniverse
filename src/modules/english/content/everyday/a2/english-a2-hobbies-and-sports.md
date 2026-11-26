@@ -21,6 +21,9 @@ vocab:
   - { word: "movement", translation: "aktivitas fisik", context: "More exercise is good for my back. (keyword: movement)", contextIndonesian: "Lebih banyak bergerak baik untuk punggungku." }
   - { word: "trainer", translation: "pelatih laki-laki", context: "The trainer explained the new exercise.", contextIndonesian: "Pelatih menjelaskan gerakan baru." }
   - { word: "leisure time", translation: "waktu luang", context: "In my free time I play volleyball. (keyword: leisure time)", contextIndonesian: "Aku bermain voli saat waktu luang." }
+  - { word: "sportswear", translation: "pakaian olahraga", context: "My sports clothes are still in the car. (keyword: sportswear)", contextIndonesian: "Pakaian olahragaku masih ada di mobil." }
+  - { word: "exercise", translation: "latihan", context: "This exercise strengthens your back.", contextIndonesian: "Gerakan ini menguatkan punggungmu." }
+  - { word: "treadmill", translation: "treadmill", context: "I ran three kilometers on the treadmill.", contextIndonesian: "Aku berlari tiga kilometer di treadmill." }
 ---
 
 # Hobbies and Sports

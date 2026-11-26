@@ -20,6 +20,11 @@ vocab:
   - { word: "currency", translation: "mata uang", context: "The currency lost value after the crisis.", contextIndonesian: "Nilai mata uangnya turun setelah krisis." }
   - { word: "export", translation: "ekspor", context: "Exports benefited from new trade routes.", contextIndonesian: "Ekspor terbantu oleh jalur dagang baru." }
 
+  - { word: "global", translation: "global", context: "Global trade connects many regions", contextIndonesian: "Perdagangan global menghubungkan banyak wilayah" }
+  - { word: "interdependence", translation: "saling ketergantungan", context: "Interdependence shapes national economies", contextIndonesian: "Saling ketergantungan membentuk ekonomi nasional" }
+  - { word: "border", translation: "perbatasan", context: "Borders remain significant", contextIndonesian: "Perbatasan tetap penting" }
+  - { word: "integration", translation: "integrasi", context: "Regional integration is expanding", contextIndonesian: "Integrasi regional sedang meluas" }
+  - { word: "multinational", translation: "multinasional", context: "A multinational firm operates worldwide", contextIndonesian: "Perusahaan multinasional beroperasi di seluruh dunia" }
 ---
 
 # Globalization

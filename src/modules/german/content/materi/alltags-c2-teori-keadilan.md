@@ -76,4 +76,12 @@ vocab:
     indonesian: "legitimasi"
     context: "Legitimität wachse nicht allein durch gerechte Ergebnisse."
     contextIndonesian: "Legitimasi tidak tumbuh hanya dari hasil yang adil."
+  - german: "Erschöpfungsregel"
+    indonesian: "aturan habisnya hak distribusi"
+    context: "Erschöpfungsregeln begrenzten nachfolgende Vertriebskontrolle."
+    contextIndonesian: "Aturan habisnya hak distribusi membatasi kendali penjualan berikutnya."
+  - german: "digitales Grundrecht"
+    indonesian: "hak dasar digital"
+    context: "Digitale Grundrechte schßtzen die Selbstbestimmung im Netz."
+    contextIndonesian: "Hak dasar digital melindungi penentuan diri di internet."
 ---

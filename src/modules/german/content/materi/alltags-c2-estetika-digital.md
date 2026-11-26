@@ -80,4 +80,8 @@ vocab:
     indonesian: "realitas virtual"
     context: "Virtuelle Wirklichkeit bleibe technisch und sozial gerahmt."
     contextIndonesian: "Realitas virtual tetap dibingkai secara teknis dan sosial."
+  - german: "Belichtung"
+    indonesian: "pencahayaan"
+    context: "Die Belichtung forme den affektiven Ton des Bildes."
+    contextIndonesian: "Pencahayaan membentuk nuansa emosional gambar."
 ---

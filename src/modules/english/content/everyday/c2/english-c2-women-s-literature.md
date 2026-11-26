@@ -22,6 +22,8 @@ vocab:
   - { word: "patriarchal narrative voice", translation: "suara naratif patriarkal", context: "The patriarchal narrative voice is broken by counter perspectives.", contextIndonesian: "Suara naratif patriarkal dipatahkan oleh sudut pandang tandingan." }
   - { word: "history of female education", translation: "sejarah pendidikan perempuan", context: "Female educational history rarely follows straight paths. (keyword: history of female education)", contextIndonesian: "Sejarah pendidikan perempuan jarang menempuh jalan yang lurus." }
   - { word: "intersectional perspective", translation: "perspektif interseksional", context: "Intersectional perspective differentiates female life situations.", contextIndonesian: "Perspektif interseksional membedakan ragam keadaan hidup perempuan." }
+  - { word: "exile literature", translation: "sastra eksil", context: "Exile literature bears witness to political violence from a distance.", contextIndonesian: "Sastra eksil memberi kesaksian tentang kekerasan politik dari kejauhan." }
+  - { word: "childlike narrative voice", translation: "suara naratif anak", context: "The childish narrative voice contradicts adult certainties. (keyword: childlike narrative voice)", contextIndonesian: "Suara naratif anak menentang kepastian orang dewasa." }
 ---
 
 # Women's Literature

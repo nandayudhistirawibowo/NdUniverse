@@ -77,4 +77,12 @@ vocab:
     context: "Die Identitätsprüfung erfolgte vor der Kontoänderung."
     contextIndonesian: "Identitas diverifikasi sebelum akun diubah."
 
+  - german: "Datenschutz"
+    indonesian: "perlindungan data"
+    context: "Der Datenschutz müsste strenger kontrolliert werden."
+    contextIndonesian: "Perlindungan datanya perlu diawasi lebih ketat."
+  - german: "Datensicherheit"
+    indonesian: "keamanan data"
+    context: "Die Datensicherheit wurde regelmäßig unabhängig geprüft."
+    contextIndonesian: "Keamanan datanya rutin diperiksa secara independen."
 ---

@@ -80,4 +80,8 @@ vocab:
     indonesian: "pemberdayaan sosial"
     context: "Soziale Ermächtigung erweitere kollektive Handlungsspielräume."
     contextIndonesian: "Pemberdayaan sosial memperluas ruang gerak kolektif."
+  - german: "religiöse Sozialform"
+    indonesian: "bentuk sosial keagamaan"
+    context: "Religiöse Sozialformen wandelten sich mit urbanen Lebensweisen."
+    contextIndonesian: "Bentuk sosial keagamaan berubah bersama pola hidup perkotaan."
 ---

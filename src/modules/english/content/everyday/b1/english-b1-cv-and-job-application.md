@@ -23,6 +23,7 @@ vocab:
   - { word: "professional career", translation: "perjalanan karier", context: "Your career began in a small company. (keyword: professional career)", contextIndonesian: "Perjalanan kariernya dimulai di perusahaan kecil." }
   - { word: "invitation", translation: "undangan", context: "The invitation to speak came surprisingly quickly.", contextIndonesian: "Undangan wawancaranya datang dengan cepat." }
   - { word: "rejection", translation: "penolakan", context: "After the rejection he continued looking.", contextIndonesian: "Setelah ditolak, dia terus mencari." }
+  - { word: "dream job", translation: "pekerjaan impian", context: "My dream job changed during my studies.", contextIndonesian: "Pekerjaan impianku berubah selama kuliah." }
 ---
 
 # CV and Job Application

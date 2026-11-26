@@ -80,4 +80,8 @@ vocab:
     indonesian: "objektivitas"
     context: "Sachlichkeit schließe emotionale Klarheit nicht aus."
     contextIndonesian: "Objektivitas tidak menutup kemungkinan untuk berbicara dengan tegas."
+  - german: "Erkenntnistheorie"
+    indonesian: "teori pengetahuan"
+    context: "Die Erkenntnistheorie untersuche die Bedingungen des Wissens."
+    contextIndonesian: "Teori pengetahuan meneliti syarat-syarat untuk mengetahui sesuatu."
 ---

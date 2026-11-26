@@ -76,4 +76,12 @@ vocab:
     indonesian: "penggugatan puitis"
     context: "Poetische Infragestellung richte sich gegen überlieferte Formen."
     contextIndonesian: "Penggugatan puitis menyasar bentuk-bentuk warisan."
+  - german: "Lautsymbolik"
+    indonesian: "simbolisme bunyi"
+    context: "Lautsymbolik suggeriere, was der Text verschweige."
+    contextIndonesian: "Simbolisme bunyi menyiratkan hal yang tidak dikatakan teks."
+  - german: "Klangfigur"
+    indonesian: "figur bunyi"
+    context: "Die Klangfigur verstärke die semantische Ambivalenz."
+    contextIndonesian: "Figur bunyi memperkuat ambiguitas makna."
 ---

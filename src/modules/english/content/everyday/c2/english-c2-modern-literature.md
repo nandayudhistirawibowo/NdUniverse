@@ -19,6 +19,11 @@ vocab:
   - { word: "reception aesthetic", translation: "estetika resepsi", context: "Reception aesthetics give the audience considerable interpretive power.", contextIndonesian: "Estetika resepsi memberi pembaca kuasa penafsiran yang besar." }
   - { word: "break in perspective", translation: "patahan perspektif", context: "A break in perspective causes the narrative instance to suddenly tilt.", contextIndonesian: "Patahan perspektif membuat posisi narator tiba-tiba bergeser." }
   - { word: "metafiction", translation: "metafiksi", context: "Metafiction reveals the fabrication of the plot.", contextIndonesian: "Metafiksi menyingkap bahwa alur cerita memang direka." }
+  - { word: "exile literature", translation: "sastra eksil", context: "Exile literature bears witness to political violence from a distance.", contextIndonesian: "Sastra eksil memberi kesaksian tentang kekerasan politik dari kejauhan." }
+  - { word: "childlike narrative voice", translation: "suara naratif anak", context: "The childish narrative voice contradicts adult certainties. (keyword: childlike narrative voice)", contextIndonesian: "Suara naratif anak menentang kepastian orang dewasa." }
+  - { word: "double addressing", translation: "pengalamatan ganda", context: "Double addressing reaches children and adults at the same time.", contextIndonesian: "Pengalamatan ganda menjangkau anak-anak dan orang dewasa sekaligus." }
+  - { word: "child's perspective", translation: "perspektif anak", context: "A child's perspective makes familiar orders seem strange.", contextIndonesian: "Perspektif anak membuat tatanan yang akrab terasa asing." }
+  - { word: "pedagogical intention", translation: "tujuan pedagogis", context: "Educational intent is undermined by ambiguity. (keyword: pedagogical intention)", contextIndonesian: "Tujuan pedagogis digoyahkan melalui makna yang berlapis." }
 ---
 
 # Modern Literature

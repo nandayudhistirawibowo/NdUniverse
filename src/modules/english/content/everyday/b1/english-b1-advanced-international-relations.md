@@ -23,6 +23,7 @@ vocab:
   - { word: "crisis", translation: "krisis", context: "The crisis was discussed at a special summit.", contextIndonesian: "Krisis itu dibahas dalam pertemuan puncak khusus." }
   - { word: "collaboration", translation: "kerja sama", context: "The collaboration was recorded in the contract.", contextIndonesian: "Kerja samanya dicatat dalam perjanjian." }
   - { word: "responsibility", translation: "tanggung jawab", context: "Several countries were responsible for the reconstruction. (keyword: responsibility)", contextIndonesian: "Beberapa negara bertanggung jawab atas pembangunan kembali." }
+  - { word: "diplomacy", translation: "diplomasi", context: "Diplomacy prevented further escalation.", contextIndonesian: "Diplomasi mencegah konflik makin memanas." }
 ---
 
 # Advanced International Relations

@@ -77,4 +77,12 @@ vocab:
     context: "Ich räume mein Zimmer am Samstag auf. (Schlüsselwort: aufräumen)"
     contextIndonesian: "Hari Sabtu aku merapikan kamar."
 
+  - german: "Geld"
+    indonesian: "uang"
+    context: "Ich habe nicht genug Geld dabei."
+    contextIndonesian: "Uang yang kubawa tidak cukup."
+  - german: "Cent"
+    indonesian: "sen"
+    context: "Der Apfel kostet achtzig Cent."
+    contextIndonesian: "Apelnya seharga delapan puluh sen."
 ---

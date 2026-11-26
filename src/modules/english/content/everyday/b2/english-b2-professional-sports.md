@@ -19,6 +19,11 @@ vocab:
   - { word: "promoting young talent", translation: "pembinaan atlet muda", context: "The promotion of young talent was financed on a long-term basis. (keyword: promoting young talent)", contextIndonesian: "Pembinaan atlet mudanya didanai untuk jangka panjang." }
   - { word: "sports agency", translation: "agensi olahraga", context: "The sports agency negotiated on behalf of the athlete.", contextIndonesian: "Agensi olahraga itu bernegosiasi atas nama atlet tersebut." }
   - { word: "integrity", translation: "integritas", context: "The integrity of the competition has been questioned.", contextIndonesian: "Integritas kompetisinya dipertanyakan." }
+  - { word: "sport climbing", translation: "panjat tebing", context: "Sport climbing requires strength and concentration.", contextIndonesian: "Panjat tebing membutuhkan kekuatan dan konsentrasi." }
+  - { word: "surfing", translation: "selancar", context: "Surfing was canceled due to the storm.", contextIndonesian: "Kegiatan selancarnya dibatalkan karena badai." }
+  - { word: "safety equipment", translation: "perlengkapan keselamatan", context: "The safety equipment was checked before takeoff.", contextIndonesian: "Perlengkapan keselamatannya diperiksa sebelum mulai." }
+  - { word: "risk of injury", translation: "risiko cedera", context: "The risk of injury could be reduced through training.", contextIndonesian: "Risiko cederanya bisa dikurangi dengan latihan." }
+  - { word: "climbing harness", translation: "sabuk panjat", context: "The climbing harness has been carefully fastened.", contextIndonesian: "Sabuk panjatnya dipasang dengan cermat." }
 ---
 
 # Professional Sports

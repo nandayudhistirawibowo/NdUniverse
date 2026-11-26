@@ -80,4 +80,8 @@ vocab:
     indonesian: "seimbang"
     context: "Eine ausgewogene Woche enthält auch freie Zeit."
     contextIndonesian: "Minggu yang seimbang juga punya waktu luang."
+  - german: "Ausgewogenheit"
+    indonesian: "keseimbangan"
+    context: "Eine gute Ausgewogenheit wäre mir wichtig."
+    contextIndonesian: "Keseimbangan yang baik penting buatku."
 ---

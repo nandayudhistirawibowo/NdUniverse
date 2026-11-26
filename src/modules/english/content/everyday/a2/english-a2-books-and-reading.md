@@ -22,6 +22,8 @@ vocab:
   - { word: "boring", translation: "membosankan", context: "I found the beginning a bit boring.", contextIndonesian: "Menurutku bagian awalnya agak membosankan." }
   - { word: "loan period", translation: "masa peminjaman", context: "The loan period has been extended by one week.", contextIndonesian: "Masa peminjamannya diperpanjang seminggu." }
   - { word: "reading group", translation: "kelompok membaca", context: "Our reading group meets every month.", contextIndonesian: "Kelompok baca kami bertemu setiap bulan." }
+  - { word: "map", translation: "peta", context: "The map was on the back seat.", contextIndonesian: "Petanya ada di kursi belakang." }
+  - { word: "city map", translation: "peta kota", context: "I found the museum on the city map.", contextIndonesian: "Aku menemukan museum di peta kota." }
 ---
 
 # Books and Reading

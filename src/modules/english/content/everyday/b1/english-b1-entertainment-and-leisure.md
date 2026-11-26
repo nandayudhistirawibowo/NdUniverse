@@ -18,6 +18,13 @@ vocab:
   - { word: "recommendation", translation: "rekomendasi", context: "The recommendation came from my brother.", contextIndonesian: "Rekomendasinya datang dari kakakku." }
   - { word: "cast", translation: "para pemeran", context: "The cast was praised by critics.", contextIndonesian: "Para pemerannya dipuji oleh kritikus." }
 
+  - { word: "rush hour traffic", translation: "lalu lintas jam kerja", context: "We stood in rush hour traffic for almost an hour.", contextIndonesian: "Kami terjebak macet hampir sejam saat jam kerja." }
+  - { word: "traffic jam", translation: "kemacetan", context: "The traffic jam extended to the next exit.", contextIndonesian: "Kemacetannya mengular sampai pintu keluar berikutnya." }
+  - { word: "tram", translation: "trem", context: "The tram ran irregularly due to construction work.", contextIndonesian: "Tremnya tidak teratur karena ada pekerjaan konstruksi." }
+  - { word: "local transport", translation: "transportasi lokal", context: "Local transport was expanded at the weekend.", contextIndonesian: "Layanan transportasi lokal diperluas saat akhir pekan." }
+  - { word: "bike lane", translation: "jalur sepeda", context: "The bike lane was blocked by cars.", contextIndonesian: "Jalur sepedanya terhalang mobil." }
+  - { word: "construction site", translation: "lokasi konstruksi", context: "The construction site delayed all bus traffic.", contextIndonesian: "Lokasi konstruksi itu memperlambat semua layanan bus." }
+  - { word: "redirection", translation: "pengalihan rute", context: "A detour led through narrow side streets. (keyword: redirection)", contextIndonesian: "Rute pengalihannya melewati jalan-jalan kecil." }
 ---
 
 # Entertainment and Leisure

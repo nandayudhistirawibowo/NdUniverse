@@ -21,6 +21,9 @@ vocab:
   - { word: "need for protection", translation: "kebutuhan akan perlindungan", context: "The need for protection was determined individually.", contextIndonesian: "Kebutuhan perlindungannya ditentukan secara individual." }
   - { word: "account", translation: "pertanggungjawaban", context: "Accountability has been given to the public.", contextIndonesian: "Pertanggungjawaban disampaikan kepada masyarakat." }
   - { word: "pursuit", translation: "persekusi", context: "The persecution was internationally condemned. (keyword: pursuit)", contextIndonesian: "Persekusinya dikecam secara internasional." }
+  - { word: "constitution", translation: "konstitusi", context: "The constitution protects basic democratic rights.", contextIndonesian: "Konstitusi melindungi hak-hak dasar demokratis." }
+  - { word: "epidemic", translation: "epidemi", context: "The epidemic continued to spread despite countermeasures.", contextIndonesian: "Epidemi itu terus menyebar meski sudah ada penanganan." }
+  - { word: "infection rate", translation: "tingkat penularan", context: "The infection rate fell after the measures.", contextIndonesian: "Tingkat penularannya turun setelah langkah-langkah diterapkan." }
 ---
 
 # Human Rights

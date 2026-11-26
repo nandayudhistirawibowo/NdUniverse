@@ -77,4 +77,12 @@ vocab:
     context: "Der Affektappell überlagere die empirische Prüfung."
     contextIndonesian: "Seruan emosional mengaburkan pemeriksaan empiris."
 
+  - german: "Legitimationskette"
+    indonesian: "rantai legitimasi"
+    context: "Die Legitimationskette weist in diesem Fall demokratische Lücken auf."
+    contextIndonesian: "Rantai legitimasinya masih memiliki celah demokratis."
+  - german: "globale Gerechtigkeit"
+    indonesian: "keadilan global"
+    context: "Globale Gerechtigkeit ende nicht an Staatsgrenzen."
+    contextIndonesian: "Keadilan global tidak berhenti di perbatasan negara."
 ---

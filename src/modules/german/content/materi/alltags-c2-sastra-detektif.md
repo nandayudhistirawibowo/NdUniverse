@@ -80,4 +80,7 @@ vocab:
     indonesian: "arena kejahatan sosial"
     context: "Der soziale Tatort reiche weit über den Fundort hinaus."
     contextIndonesian: "Arena kejahatan sosial jauh lebih luas daripada lokasi penemuan."
+  - german: "Erzählstrang"
+    indonesian: "jalur cerita"
+    context: "Der zweite Erzählstrang spielt in der Gegenwart."
 ---

@@ -76,4 +76,12 @@ vocab:
     indonesian: "layanan cuaca"
     context: "Der Wetterdienst warnt vor starkem Regen."
     contextIndonesian: "Layanan cuaca memperingatkan hujan lebat."
+  - german: "Unwetter"
+    indonesian: "cuaca buruk ekstrem"
+    context: "Das Unwetter zog in der Nacht weiter."
+    contextIndonesian: "Cuaca ekstrem itu berlalu malam hari."
+  - german: "Erdbeben"
+    indonesian: "gempa bumi"
+    context: "Das Erdbeben wurde in der ganzen Region gespürt."
+    contextIndonesian: "Gempa itu terasa di seluruh wilayah."
 ---

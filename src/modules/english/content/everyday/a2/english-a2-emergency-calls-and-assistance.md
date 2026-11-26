@@ -23,6 +23,8 @@ vocab:
   - { word: "urgent", translation: "mendesak", context: "She needed urgent medical attention.", contextIndonesian: "Dia sangat membutuhkan bantuan medis." }
   - { word: "operation", translation: "operasi", context: "The operation lasted almost an hour.", contextIndonesian: "Penanganannya berlangsung hampir satu jam." }
 
+  - { word: "emergency plan", translation: "rencana darurat", context: "The emergency plan was discussed together.", contextIndonesian: "Rencana darurat dibahas bersama." }
+  - { word: "emergency service", translation: "layanan darurat", context: "The emergency service distributed water and blankets.", contextIndonesian: "Layanan darurat membagikan air dan selimut." }
 ---
 
 # Emergency Calls and Assistance

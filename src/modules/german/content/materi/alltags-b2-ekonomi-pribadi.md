@@ -61,4 +61,8 @@ vocab:
   - german: "langfristig"
     indonesian: "jangka panjang"
     context: "Wer langfristig anlegt, braucht Geduld und einen klaren Plan."
+  - german: "Konjunktur"
+    indonesian: "kondisi ekonomi"
+    context: "Die Konjunktur erholte sich langsamer als erwartet."
+    contextIndonesian: "Ekonomi pulih lebih lambat dari perkiraan."
 ---

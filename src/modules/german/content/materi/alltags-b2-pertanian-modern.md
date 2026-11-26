@@ -76,4 +76,12 @@ vocab:
     indonesian: "teknologi pertanian"
     context: "Die Landwirtschaftstechnik wurde auf kleinen Höfen erprobt."
     contextIndonesian: "Teknologi pertaniannya diuji di pertanian kecil."
+  - german: "Umwelttechnik"
+    indonesian: "teknologi lingkungan"
+    context: "Die Umwelttechnik half, Abwasser effizienter zu reinigen."
+    contextIndonesian: "Teknologi lingkungan membantu mengolah air limbah lebih efisien."
+  - german: "Digitalisierung"
+    indonesian: "digitalisasi"
+    context: "Die Digitalisierung veränderte, wie Teams zusammenarbeiten."
+    contextIndonesian: "Digitalisasi mengubah cara tim bekerja sama."
 ---

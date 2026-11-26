@@ -76,4 +76,12 @@ vocab:
     indonesian: "kritik musik"
     context: "Die Musikkritik lobte das ungewöhnliche Arrangement."
     contextIndonesian: "Kritik musiknya memuji aransemen yang tidak biasa."
+  - german: "Filmbranche"
+    indonesian: "industri film"
+    context: "Die Filmbranche erholt sich nur langsam."
+    contextIndonesian: "Industri film pulih dengan lambat."
+  - german: "Filmmusik"
+    indonesian: "musik film"
+    context: "Die Filmmusik wurde eigens für den Film komponiert."
+    contextIndonesian: "Musik filmnya digubah khusus untuk film itu."
 ---

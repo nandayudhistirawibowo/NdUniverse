@@ -15,6 +15,15 @@ vocab:
   - { word: "ambivalence", translation: "ambivalensi", context: "Ambivalence combines love and aggression.", contextIndonesian: "Ambivalensi menghubungkan cinta dan agresi." }
   - { word: "analytical interpretation", translation: "tafsir analitis", context: "Analytical interpretation must take its own uncertainty into account.", contextIndonesian: "Tafsir analitis harus memperhitungkan ketidakpastiannya sendiri." }
   - { word: "narcissistic injury", translation: "luka narsistik", context: "Narcissistic insult shatters the illusion of sovereign control. (keyword: narcissistic injury)", contextIndonesian: "Luka narsistik mengguncang ilusi kendali yang berdaulat." }
+  - { word: "criticism of representation", translation: "kritik representasi", context: "Criticism of representation asks about the disposal of images.", contextIndonesian: "Kritik representasi mempertanyakan siapa yang menguasai citra." }
+  - { word: "feminist criticism", translation: "kritik feminis", context: "Feminist criticism combines everyday experience with institutional analysis.", contextIndonesian: "Kritik feminis menghubungkan pengalaman sehari-hari dengan analisis lembaga." }
+  - { word: "feminist practice", translation: "praktik feminis", context: "Feminist practice combines criticism with a demand for change.", contextIndonesian: "Praktik feminis menghubungkan kritik dengan tuntutan perubahan." }
+  - { word: "media criticism", translation: "kritik media", context: "Media criticism must also reveal one's own position.", contextIndonesian: "Kritik media juga harus mengungkap posisi pengkritiknya sendiri." }
+  - { word: "decolonial criticism", translation: "kritik dekolonial", context: "Decolonial criticism reveals ongoing domination.", contextIndonesian: "Kritik dekolonial menyingkap dominasi yang terus berlanjut." }
+  - { word: "gender order", translation: "tatanan gender", context: "Gender order is established and stabilized historically.", contextIndonesian: "Tatanan gender dibentuk dan distabilkan secara historis." }
+  - { word: "patriarchal structure", translation: "struktur patriarkal", context: "Patriarchal structures also shaped seemingly neutral institutions.", contextIndonesian: "Struktur patriarkal turut membentuk lembaga yang tampak netral." }
+  - { word: "sexual division of labor", translation: "pembagian kerja berdasarkan gender", context: "Sexual division of labor is disguised as a natural order.", contextIndonesian: "Pembagian kerja berdasarkan gender disamarkan sebagai tatanan alami." }
+  - { word: "feminist genealogy", translation: "genealogi feminis", context: "Feminist genealogy makes forgotten struggles visible.", contextIndonesian: "Genealogi feminis menampakkan perjuangan yang terlupakan." }
 ---
 
 # Psychoanalytic Criticism

@@ -76,4 +76,12 @@ vocab:
     indonesian: "kompetisi"
     context: "Unser Team gewann den Wettbewerb."
     contextIndonesian: "Tim kami memenangkan kompetisi."
+  - german: "Unterricht"
+    indonesian: "pelajaran"
+    context: "Der Unterricht fällt heute leider aus."
+    contextIndonesian: "Sayangnya pelajaran hari ini ditiadakan."
+  - german: "Mathematik"
+    indonesian: "matematika"
+    context: "In Mathematik haben wir Brüche gelernt."
+    contextIndonesian: "Di matematika kami belajar pecahan."
 ---

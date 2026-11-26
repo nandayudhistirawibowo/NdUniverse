@@ -21,6 +21,9 @@ vocab:
   - { word: "development", translation: "perkembangan", context: "This development surprised even experts.", contextIndonesian: "Perkembangan ini mengejutkan bahkan para ahli." }
   - { word: "investment", translation: "investasi", context: "The investment could secure jobs in the long term.", contextIndonesian: "Investasi itu bisa menjaga lapangan kerja jangka panjang." }
   - { word: "report", translation: "laporan", context: "The report was published last night.", contextIndonesian: "Laporannya diterbitkan tadi malam." }
+  - { word: "press conference", translation: "konferensi pers", context: "After the press conference, the speaker answers further questions.", contextIndonesian: "Setelah konferensi pers, juru bicara menjawab pertanyaan tambahan." }
+  - { word: "broadcast", translation: "acara siaran", context: "The show starts every evening at eight o'clock. (keyword: broadcast)", contextIndonesian: "Acara siaran itu dimulai pukul delapan setiap malam." }
+  - { word: "post", translation: "tulisan", context: "The article explains the background to the conflict. (keyword: post)", contextIndonesian: "Tulisan itu menjelaskan latar belakang konflik tersebut." }
 ---
 
 # Economic News

@@ -21,6 +21,9 @@ vocab:
   - { word: "city", translation: "kota", context: "The city is very beautiful in the evening.", contextIndonesian: "Kotanya indah sekali saat malam." }
   - { word: "place", translation: "alun-alun", context: "We're waiting on the square. (keyword: place)", contextIndonesian: "Kami menunggu di alun-alun." }
   - { word: "go for a walk", translation: "pergi berjalan-jalan santai", context: "After dinner we go for a walk.", contextIndonesian: "Setelah makan kami jalan-jalan." }
+  - { word: "plan", translation: "denah", context: "The city map is in the car. (keyword: plan)", contextIndonesian: "Peta kotanya ada di mobil." }
+  - { word: "left", translation: "kiri", context: "The bakery is on the left.", contextIndonesian: "Toko rotinya ada di kiri." }
+  - { word: "right", translation: "kanan", context: "Turn right here.", contextIndonesian: "Belok kanan di sini." }
 ---
 
 # Places in the City

@@ -80,4 +80,8 @@ vocab:
     indonesian: "saling memahami"
     context: "Mit Gesten gelang die Verständigung trotzdem."
     contextIndonesian: "Meski begitu, kami bisa saling memahami dengan gerakan."
+  - german: "Kulturveranstaltung"
+    indonesian: "acara budaya"
+    context: "Die Kulturveranstaltung wurde gemeinsam organisiert."
+    contextIndonesian: "Acara budayanya diadakan bersama."
 ---

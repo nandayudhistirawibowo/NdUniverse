@@ -18,6 +18,12 @@ vocab:
   - { word: "striped", translation: "bergaris", context: "I found a striped shirt.", contextIndonesian: "Aku menemukan kemeja bergaris." }
   - { word: "dotted", translation: "berbintik", context: "She's wearing a polka dot skirt today. (keyword: dotted)", contextIndonesian: "Hari ini dia memakai rok berbintik." }
   - { word: "saleswoman", translation: "pramuniaga perempuan", context: "The saleswoman helped me a lot.", contextIndonesian: "Pramuniaga itu sangat membantuku." }
+  - { word: "shopping cart", translation: "kereta belanja", context: "The shopping cart is next to the entrance.", contextIndonesian: "Kereta belanjanya ada di dekat pintu masuk." }
+  - { word: "purchasing", translation: "belanjaan", context: "Our shopping was done quickly. (keyword: purchasing)", contextIndonesian: "Belanjaan kami cepat selesai." }
+  - { word: "shopping bag", translation: "tas belanja", context: "I have my shopping bag with me.", contextIndonesian: "Saya membawa tas belanja saya." }
+  - { word: "market stall", translation: "lapak pasar", context: "The market stall opens at six.", contextIndonesian: "Lapaknya buka sejak pukul enam." }
+  - { word: "dealer", translation: "pedagang laki-laki", context: "The merchant offered fresh apples. (keyword: dealer)", contextIndonesian: "Pedagang itu menawarkan apel segar." }
+  - { word: "vegetables", translation: "sayuran", context: "The vegetables come from the region.", contextIndonesian: "Sayurannya berasal dari daerah sekitar." }
 ---
 
 # Clothes Shopping

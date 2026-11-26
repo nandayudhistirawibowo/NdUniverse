@@ -80,4 +80,8 @@ vocab:
     indonesian: "kelompok membaca"
     context: "Unser Lesekreis trifft sich jeden Monat."
     contextIndonesian: "Kelompok baca kami bertemu setiap bulan."
+  - german: "AG"
+    indonesian: "kegiatan ekstrakurikuler"
+    context: "Die AG trifft sich jeden Mittwoch."
+    contextIndonesian: "Klubnya berkumpul setiap hari Rabu."
 ---

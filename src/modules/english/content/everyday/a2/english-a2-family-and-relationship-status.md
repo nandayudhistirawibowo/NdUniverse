@@ -22,6 +22,8 @@ vocab:
   - { word: "engagement", translation: "pertunangan", context: "Your engagement was celebrated yesterday.", contextIndonesian: "Pertunangan mereka dirayakan kemarin." }
   - { word: "family tree", translation: "silsilah keluarga", context: "The family tree hung in the living room.", contextIndonesian: "Silsilah keluarganya tergantung di ruang keluarga." }
   - { word: "relationship", translation: "hubungan", context: "Their relationship developed slowly.", contextIndonesian: "Hubungan mereka berkembang perlahan." }
+  - { word: "origin", translation: "asal-usul", context: "My family has an interesting background. (keyword: origin)", contextIndonesian: "Keluargaku punya asal-usul yang menarik." }
+  - { word: "partner", translation: "pasangan laki-laki", context: "Your partner works in another city.", contextIndonesian: "Pasangannya bekerja di kota lain." }
 ---
 
 # Family and Relationship Status

@@ -21,6 +21,9 @@ vocab:
   - { word: "identity resolution", translation: "peluruhan identitas", context: "Identity dissolution is formally conveyed through changing voices. (keyword: identity resolution)", contextIndonesian: "Peluruhan identitas disampaikan secara formal lewat pergantian suara." }
   - { word: "unreliable narrator", translation: "narator yang tak dapat dipercaya", context: "The unreliable narrator confuses any interpretation.", contextIndonesian: "Narator yang tak dapat dipercaya membuat setiap tafsir goyah." }
   - { word: "open form", translation: "bentuk terbuka", context: "The open form denies a final conclusion.", contextIndonesian: "Bentuk terbuka menolak penutupan yang final." }
+  - { word: "stream of consciousness", translation: "alur kesadaran", context: "The stream of consciousness reveals the character interior", contextIndonesian: "Alur kesadaran mengungkap kehidupan batin tokoh" }
+  - { word: "fragmentation", translation: "fragmentasi", context: "Fragmentation reflects a disrupted social world", contextIndonesian: "Fragmentasi mencerminkan dunia sosial yang terpecah" }
+  - { word: "limited narrator", translation: "narator terbatas", context: "The limited narrator reveals only partial knowledge", contextIndonesian: "Narator terbatas hanya mengungkap pengetahuan parsial" }
 ---
 
 # Modernist Novel

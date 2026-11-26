@@ -23,6 +23,7 @@ vocab:
   - { word: "phenomenality", translation: "fenomenalitas", context: "Phenomenality refers to the way of appearing.", contextIndonesian: "Fenomenalitas merujuk pada cara sesuatu menampakkan diri." }
   - { word: "form of view", translation: "bentuk intuisi", context: "The form of perception structures possible experience. (keyword: form of view)", contextIndonesian: "Bentuk intuisi menyusun pengalaman yang mungkin." }
   - { word: "horizon intentionality", translation: "intensionalitas cakrawala", context: "Horizon intentionality refers to what is also meant.", contextIndonesian: "Intensionalitas cakrawala merujuk pada hal-hal yang turut tersirat." }
+  - { word: "eidetic reduction", translation: "reduksi eidetik", context: "The eidetic reduction isolates essential structures", contextIndonesian: "Reduksi eidetik mengisolasi struktur esensial" }
 ---
 
 # Phenomenology

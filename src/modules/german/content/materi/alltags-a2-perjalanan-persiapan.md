@@ -76,4 +76,12 @@ vocab:
     indonesian: "baju ganti"
     context: "Wechselkleidung legte ich ins Handgepäck."
     contextIndonesian: "Aku memasukkan baju ganti ke tas kabin."
+  - german: "Reise"
+    indonesian: "perjalanan"
+    context: "Wir fahren für eine Woche nach Österreich. (Schlüsselwort: Reise)"
+    contextIndonesian: "Kami pergi ke Austria selama satu minggu."
+  - german: "Fahrplan"
+    indonesian: "jadwal perjalanan"
+    context: "Den Fahrplan findest du online."
+    contextIndonesian: "Kamu bisa melihat jadwal perjalanan secara daring."
 ---

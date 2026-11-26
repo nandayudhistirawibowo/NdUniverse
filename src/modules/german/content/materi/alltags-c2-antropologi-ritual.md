@@ -80,4 +80,8 @@ vocab:
     indonesian: "transformasi ritual"
     context: "Rituelle Transformation mache Veränderung öffentlich anerkennbar."
     contextIndonesian: "Transformasi ritual membuat perubahan dapat diakui secara terbuka."
+  - german: "religiöse Sozialform"
+    indonesian: "bentuk sosial keagamaan"
+    context: "Religiöse Sozialformen wandelten sich mit urbanen Lebensweisen."
+    contextIndonesian: "Bentuk sosial keagamaan berubah bersama pola hidup perkotaan."
 ---

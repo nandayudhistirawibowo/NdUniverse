@@ -80,4 +80,8 @@ vocab:
     indonesian: "referensialitas diri formal"
     context: "Formale Selbstbezüglichkeit richte den Blick auf das Medium."
     contextIndonesian: "Referensialitas diri formal mengarahkan perhatian pada mediumnya."
+  - german: "Ideologiekritik"
+    indonesian: "kritik ideologi"
+    context: "Ideologiekritik lege die verborgenen Voraussetzungen sozialer Ordnung frei."
+    contextIndonesian: "Kritik ideologi mengungkap asumsi tersembunyi dalam tatanan sosial."
 ---

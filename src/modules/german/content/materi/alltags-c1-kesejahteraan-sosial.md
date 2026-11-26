@@ -80,4 +80,7 @@ vocab:
     indonesian: "hak untuk menerima"
     context: "Die Anspruchsberechtigung sei eindeutig geregelt."
     contextIndonesian: "Hak untuk menerima bantuan sudah diatur dengan jelas."
+  - german: "soziale Sicherung"
+    indonesian: "jaminan sosial"
+    context: "Die soziale Sicherung hilft Menschen in schwierigen Lebenslagen."
 ---

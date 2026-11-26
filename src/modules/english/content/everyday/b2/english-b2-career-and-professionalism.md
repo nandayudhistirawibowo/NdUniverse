@@ -20,6 +20,11 @@ vocab:
   - { word: "team-oriented", translation: "berorientasi pada kerja tim", context: "The team-oriented colleague enjoys working with others.", contextIndonesian: "Rekan kerja yang berorientasi pada tim senang bekerja dengan orang lain." }
   - { word: "workload", translation: "beban kerja", context: "Too much workload causes stress in the long run.", contextIndonesian: "Beban kerja yang terlalu banyak menyebabkan stres dalam jangka panjang." }
 
+  - { word: "presentation", translation: "presentasi", context: "The presentation was tailored to the target group.", contextIndonesian: "Presentasinya disesuaikan dengan target audiens." }
+  - { word: "outline", translation: "susunan", context: "The structure, which covers all topics, remained clear. (keyword: outline)", contextIndonesian: "Susunan yang mencakup semua topik itu tetap jelas." }
+  - { word: "core message", translation: "pesan utama", context: "The core message should be conveyed early on.", contextIndonesian: "Pesan utamanya sebaiknya disampaikan sejak awal." }
+  - { word: "target group", translation: "target audiens", context: "The target group was analyzed in detail in advance.", contextIndonesian: "Target audiensnya dianalisis dengan teliti sebelumnya." }
+  - { word: "foil", translation: "slide", context: "The slide has been simplified due to overloaded graphics. (keyword: foil)", contextIndonesian: "Slidenya disederhanakan karena grafiknya terlalu ramai." }
 ---
 
 # Career and Professionalism

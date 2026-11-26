@@ -21,6 +21,9 @@ vocab:
   - { word: "accountability", translation: "kewajiban pertanggungjawaban", context: "Accountability has been enshrined in law.", contextIndonesian: "Kewajiban pertanggungjawaban ditetapkan dalam undang-undang." }
   - { word: "voting decision", translation: "pilihan dalam pemilu", context: "The voting decision was influenced by many factors.", contextIndonesian: "Pilihan pemilih dipengaruhi banyak faktor." }
   - { word: "constitution", translation: "konstitusi", context: "The constitution protects basic democratic rights.", contextIndonesian: "Konstitusi melindungi hak-hak dasar demokratis." }
+  - { word: "epidemic", translation: "epidemi", context: "The epidemic continued to spread despite countermeasures.", contextIndonesian: "Epidemi itu terus menyebar meski sudah ada penanganan." }
+  - { word: "infection rate", translation: "tingkat penularan", context: "The infection rate fell after the measures.", contextIndonesian: "Tingkat penularannya turun setelah langkah-langkah diterapkan." }
+  - { word: "healthcare system", translation: "sistem kesehatan", context: "The health system was heavily strained during the crisis. (keyword: healthcare system)", contextIndonesian: "Sistem kesehatan sangat terbebani selama krisis." }
 ---
 
 # Democracy

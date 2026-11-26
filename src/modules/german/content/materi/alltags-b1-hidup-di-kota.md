@@ -80,4 +80,8 @@ vocab:
     indonesian: "kualitas hidup"
     context: "Grünere Straßen könnten die Lebensqualität erhöhen."
     contextIndonesian: "Jalan yang lebih hijau bisa meningkatkan kualitas hidup."
+  - german: "Stadtplanung"
+    indonesian: "perencanaan kota"
+    context: "Die Stadtplanung berücksichtigte neue Grünflächen."
+    contextIndonesian: "Perencanaan kotanya memperhitungkan ruang hijau baru."
 ---

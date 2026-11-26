@@ -21,6 +21,10 @@ vocab:
   - { word: "search engine", translation: "mesin pencari", context: "I can quickly find the opening times using a search engine.", contextIndonesian: "Saya dapat menemukan jam buka dengan cepat menggunakan mesin pencari." }
   - { word: "terms of use", translation: "ketentuan penggunaan", context: "Before registering you should read the terms of use.", contextIndonesian: "Sebelum mendaftar, sebaiknya orang membaca ketentuan penggunaan." }
 
+  - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence is already changing many professions.", contextIndonesian: "Kecerdasan buatan sudah mengubah banyak pekerjaan." }
+  - { word: "automation", translation: "otomatisasi", context: "Some tasks could be eliminated through automation.", contextIndonesian: "Otomatisasi bisa menghilangkan beberapa jenis tugas." }
+  - { word: "invention", translation: "penemuan", context: "The invention was laughed at years ago.", contextIndonesian: "Penemuan itu dulu sempat dianggap aneh." }
+  - { word: "dependency", translation: "ketergantungan", context: "Greater dependency would be problematic.", contextIndonesian: "Ketergantungan yang lebih besar bisa jadi masalah." }
 ---
 
 # Everyday Technology

@@ -22,6 +22,9 @@ vocab:
   - { word: "ability to truth", translation: "kemampuan bernilai benar", context: "The ability to tell the truth should not be equated with the ability to prove. (keyword: ability to truth)", contextIndonesian: "Kemampuan bernilai benar tidak sama dengan dapat dibuktikan." }
   - { word: "world reference", translation: "hubungan dengan dunia", context: "The relation to the world of linguistic expressions remains controversial. (keyword: world reference)", contextIndonesian: "Hubungan ungkapan bahasa dengan dunia masih diperdebatkan." }
 
+  - { word: "language magic", translation: "daya magis bahasa", context: "Language magic arises from repetition and deviation.", contextIndonesian: "Daya magis bahasa muncul dari pengulangan dan penyimpangan." }
+  - { word: "language gesture", translation: "gestur bahasa", context: "The language gesture fluctuates between prayer and rebellion.", contextIndonesian: "Gestur bahasanya berayun antara doa dan pemberontakan." }
+  - { word: "conceptual work", translation: "penggarapan konsep", context: "Conceptual work exposes implicit assumptions.", contextIndonesian: "Penggarapan konsep menyingkap asumsi yang tersirat." }
 ---
 
 # Philosophy of Language

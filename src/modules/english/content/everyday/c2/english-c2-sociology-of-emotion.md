@@ -23,6 +23,7 @@ vocab:
   - { word: "emotional self-control", translation: "pengendalian diri emosional", context: "Emotional self-control is expected differently in different social settings.", contextIndonesian: "Pengendalian diri emosional dituntut secara berbeda menurut kelompok sosial." }
   - { word: "affective solidarity", translation: "solidaritas afektif", context: "Affective solidarity bridges distant situations.", contextIndonesian: "Solidaritas afektif menjembatani keadaan hidup yang berjauhan." }
   - { word: "sociology of emotions", translation: "sosiologi emosi", context: "Sociology of emotions examines emotions as a social practice.", contextIndonesian: "Sosiologi emosi mengkaji emosi sebagai praktik sosial." }
+  - { word: "intergenerational justice", translation: "keadilan antargenerasi", context: "Intergenerational justice limits current power of disposal.", contextIndonesian: "Keadilan antargenerasi membatasi kuasa generasi masa kini." }
 ---
 
 # Sociology of Emotion

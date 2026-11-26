@@ -80,4 +80,8 @@ vocab:
     indonesian: "kecintaan"
     context: "Aus einem kleinen Hobby wurde eine Leidenschaft."
     contextIndonesian: "Hobi kecil itu berubah menjadi kecintaan."
+  - german: "Lesung"
+    indonesian: "acara pembacaan karya"
+    context: "Die Lesung wurde von einer Diskussion begleitet."
+    contextIndonesian: "Acara baca karya itu diikuti diskusi."
 ---

@@ -76,4 +76,12 @@ vocab:
     indonesian: "bulat"
     context: "Der Ball ist rund."
     contextIndonesian: "Bolanya bulat."
+  - german: "T-Shirt"
+    indonesian: "kaus"
+    context: "Das T-Shirt ist sehr bequem."
+    contextIndonesian: "Kausnya nyaman sekali."
+  - german: "Bluse"
+    indonesian: "blus"
+    context: "Die Bluse gefällt meiner Schwester."
+    contextIndonesian: "Adikku suka blus itu."
 ---

@@ -23,6 +23,7 @@ vocab:
   - { word: "civil infrastructure", translation: "infrastruktur sipil", context: "Civil infrastructure enjoys special protection.", contextIndonesian: "Infrastruktur sipil mendapat perlindungan khusus." }
   - { word: "armed conflict", translation: "konflik bersenjata", context: "Armed conflict does not abrogate fundamental protection obligations.", contextIndonesian: "Konflik bersenjata tidak menghapus kewajiban perlindungan dasar." }
   - { word: "responsibility under international law", translation: "tanggung jawab menurut hukum internasional", context: "Responsibility under international law follows attributable violations.", contextIndonesian: "Tanggung jawab menurut hukum internasional muncul setelah pelanggaran yang dapat diatribusikan." }
+  - { word: "personal data", translation: "data pribadi", context: "Personal data required a clear legal basis.", contextIndonesian: "Data pribadi membutuhkan dasar hukum yang jelas." }
 ---
 
 # Laws of War

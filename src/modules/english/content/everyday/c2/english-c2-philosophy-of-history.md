@@ -17,6 +17,14 @@ vocab:
   - { word: "future expectation", translation: "ekspektasi masa depan", context: "Future expectations structure present-day political decisions.", contextIndonesian: "Ekspektasi masa depan membentuk keputusan politik masa kini." }
   - { word: "historical horizon", translation: "cakrawala sejarah", context: "The historical horizon limits possible interpretations.", contextIndonesian: "Cakrawala sejarah membatasi penafsiran yang mungkin." }
 
+  - { word: "philosophy of life", translation: "filsafat hidup", context: "Philosophy of life distrusts abstract system formation.", contextIndonesian: "Filsafat hidup mencurigai pembentukan sistem yang abstrak." }
+  - { word: "transcendental philosophy", translation: "filsafat transendental", context: "Transcendental philosophy asks about the conditions of experience.", contextIndonesian: "Filsafat transendental menanyakan syarat-syarat pengalaman." }
+  - { word: "freedom of will", translation: "kebebasan kehendak", context: "In moral philosophy we often discuss free will. (keyword: freedom of will)", contextIndonesian: "Dalam filsafat moral kita sering membahas kehendak bebas." }
+  - { word: "philosophy of technology", translation: "filsafat teknologi", context: "Philosophy of technology asks about the independent life of technical systems.", contextIndonesian: "Filsafat teknologi menanyakan daya gerak mandiri sistem teknis." }
+  - { word: "use value", translation: "nilai guna", context: "The use value cannot be fully expressed in the price.", contextIndonesian: "Nilai guna tidak sepenuhnya dapat diungkapkan melalui harga." }
+  - { word: "exchange value", translation: "nilai tukar", context: "The exchange value appears to be a natural property of the commodity.", contextIndonesian: "Nilai tukar tampak seolah sebagai sifat alamiah barang." }
+  - { word: "economic rationality", translation: "rasionalitas ekonomi", context: "Economic rationality does not set all relevant values.", contextIndonesian: "Rasionalitas ekonomi tidak menetapkan semua nilai yang relevan." }
+  - { word: "commodification", translation: "komodifikasi", context: "Commodification transforms social relationships into exchange relationships.", contextIndonesian: "Komodifikasi mengubah hubungan sosial menjadi relasi pertukaran." }
 ---
 
 # Philosophy of History

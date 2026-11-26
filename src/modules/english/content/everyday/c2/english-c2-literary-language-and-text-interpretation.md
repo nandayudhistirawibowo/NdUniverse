@@ -21,6 +21,9 @@ vocab:
   - { word: "level of interpretation", translation: "lapisan interpretasi", context: "The historical allusions open up a further level of interpretation.", contextIndonesian: "Kiasan sejarah membuka tingkat penafsiran lebih lanjut." }
   - { word: "break in style", translation: "perubahan gaya yang mencolok", context: "The sudden break in style shows how unsettled the narrator is.", contextIndonesian: "Perubahan gaya yang tiba-tiba menunjukkan betapa gelisahnya narator." }
   - { word: "choice of words", translation: "pilihan kata", context: "The precise choice of words makes the scene sober and threatening at the same time.", contextIndonesian: "Pilihan kata yang tepat membuat adegan itu tenang dan sekaligus mengancam." }
+  - { word: "argument figure", translation: "pola argumentasi", context: "The argumentation figure is varied several times in the text. (keyword: argument figure)", contextIndonesian: "Pola argumentasinya divariasikan beberapa kali dalam teks." }
+  - { word: "language game", translation: "permainan bahasa", context: "The language game follows rules that are rarely explicitly formulated.", contextIndonesian: "Permainan bahasa mengikuti aturan yang jarang dinyatakan secara eksplisit." }
+  - { word: "private language argument", translation: "argumen bahasa privat", context: "The private language argument denies purely private rules of meaning.", contextIndonesian: "Argumen bahasa privat menolak adanya aturan makna yang sepenuhnya pribadi." }
 ---
 
 # Literary Language and Text Interpretation

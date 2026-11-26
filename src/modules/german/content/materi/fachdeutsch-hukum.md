@@ -58,4 +58,12 @@ vocab:
   - german: "Akte"
     indonesian: "berkas perkara"
     context: "Die Richterin prüft die Akte vor Beginn der Verhandlung."
+  - german: "Vertragspartner"
+    indonesian: "pihak dalam kontrak"
+    context: "Beide Vertragspartner müssen den Änderungen zustimmen."
+    contextIndonesian: "Kedua pihak dalam kontrak harus menyetujui perubahan tersebut."
+  - german: "Widerrufsrecht"
+    indonesian: "hak pembatalan"
+    context: "Das Widerrufsrecht gilt innerhalb der gesetzlichen Frist."
+    contextIndonesian: "Hak pembatalan berlaku dalam tenggat yang ditetapkan undang-undang."
 ---

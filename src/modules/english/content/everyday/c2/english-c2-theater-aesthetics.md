@@ -22,6 +22,8 @@ vocab:
   - { word: "role identity", translation: "identitas peran", context: "Role identity remains shared between actor and character.", contextIndonesian: "Identitas perannya terbagi antara pemeran dan tokoh." }
   - { word: "audience addressing", translation: "pengarahan kepada penonton", context: "Audience addressing breaks the fourth wall.", contextIndonesian: "Pengarahan kepada penonton menembus dinding keempat." }
   - { word: "theatrical autoreflection", translation: "refleksi diri teatrikal", context: "Theatrical auto-reflection makes the createdness of the scene recognizable. (keyword: theatrical autoreflection)", contextIndonesian: "Refleksi diri teatrikal menampakkan bahwa adegannya direkayasa." }
+  - { word: "framing", translation: "pembingkaian gambar", context: "Framing limits what appears to be relevant to the narrative.", contextIndonesian: "Pembingkaian gambar membatasi hal yang tampak penting dalam cerita." }
+  - { word: "plan sequence", translation: "pengambilan gambar panjang tanpa potongan", context: "The plan sequence refuses the relieving cut.", contextIndonesian: "Pengambilan gambar panjang itu menolak potongan yang memberi jeda." }
 ---
 
 # Theater Aesthetics

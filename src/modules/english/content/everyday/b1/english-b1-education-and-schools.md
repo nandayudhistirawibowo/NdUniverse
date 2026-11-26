@@ -19,6 +19,12 @@ vocab:
   - { word: "learning group", translation: "kelompok belajar", context: "Our study group meets every Wednesday. (keyword: learning group)", contextIndonesian: "Kelompok belajar kami bertemu setiap hari Rabu." }
   - { word: "lesson", translation: "pelajaran", context: "Classes are canceled today due to further training. (keyword: lesson)", contextIndonesian: "Pelajaran hari ini ditiadakan karena ada pelatihan lanjutan." }
 
+  - { word: "course", translation: "kursus pelatihan", context: "The course began last fall.", contextIndonesian: "Kursus pelatihannya dimulai musim gugur lalu." }
+  - { word: "participation", translation: "keikutsertaan", context: "Participation was confirmed at the end.", contextIndonesian: "Keikutsertaannya dikonfirmasi pada akhirnya." }
+  - { word: "knowledge", translation: "pengetahuan", context: "I needed good specialist knowledge for the exam.", contextIndonesian: "Aku butuh pengetahuan bidang yang baik untuk ujian." }
+  - { word: "enroll", translation: "mendaftar kuliah", context: "I enrolled in the evening course.", contextIndonesian: "Aku mendaftar untuk kursus malam." }
+  - { word: "learning platform", translation: "platform belajar", context: "All materials have been saved on the learning platform.", contextIndonesian: "Semua materi disimpan di platform belajar." }
+  - { word: "motivation to learn", translation: "motivasi belajar", context: "My learning motivation increased thanks to the learning group. (keyword: motivation to learn)", contextIndonesian: "Motivasi belajarku meningkat karena kelompok belajar." }
 ---
 
 # Education and Schools

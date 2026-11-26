@@ -19,6 +19,11 @@ vocab:
   - { word: "fetishization of goods", translation: "fetisisasi komoditas", context: "Commodity fetishization makes prices appear as natural properties. (keyword: fetishization of goods)", contextIndonesian: "Fetisisasi komoditas membuat harga tampak sebagai sifat alami barang." }
   - { word: "social work", translation: "kerja sosial", context: "Social work is appropriated privately.", contextIndonesian: "Kerja sosial diambil alih untuk kepentingan pribadi." }
   - { word: "emancipatory practice", translation: "praktik emansipatoris", context: "Emancipatory practice combines knowledge with collective change.", contextIndonesian: "Praktik emansipatoris menghubungkan pemahaman dengan perubahan kolektif." }
+  - { word: "criticism of ideology", translation: "kritik ideologi", context: "Criticism of ideology exposes the hidden prerequisites of social order.", contextIndonesian: "Kritik ideologi mengungkap asumsi tersembunyi dalam tatanan sosial." }
+  - { word: "naturalization", translation: "naturalisasi", context: "Naturalization makes historical conditions appear without alternative.", contextIndonesian: "Naturalisasi membuat keadaan historis tampak tak punya alternatif." }
+  - { word: "false consciousness", translation: "kesadaran palsu", context: "False consciousness is stabilized by everyday routines.", contextIndonesian: "Kesadaran palsu diperkuat oleh rutinitas sehari-hari." }
+  - { word: "reification", translation: "reifikasi", context: "Reification makes human relationships appear material.", contextIndonesian: "Reifikasi membuat hubungan manusia tampak seperti hubungan antarbenda." }
+  - { word: "suspicion of ideology", translation: "kecurigaan ideologis", context: "The suspicion of ideology is also directed against one's own position.", contextIndonesian: "Kecurigaan ideologis juga perlu diarahkan pada posisi sendiri." }
 ---
 
 # Marxist Critique

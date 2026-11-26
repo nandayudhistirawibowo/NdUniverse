@@ -21,6 +21,9 @@ vocab:
   - { word: "mental state", translation: "keadaan mental", context: "The mental state cannot be easily localized.", contextIndonesian: "Keadaan mental tidak selalu bisa dilokalisasi." }
   - { word: "ability to experience", translation: "kemampuan mengalami", context: "The ability to experience does not require linguistic articulation.", contextIndonesian: "Kemampuan mengalami tidak mensyaratkan pengungkapan melalui bahasa." }
   - { word: "subjectivity", translation: "subjektivitas", context: "Subjectivity remains an unresolved explanatory residue.", contextIndonesian: "Subjektivitas tetap menjadi sisa persoalan yang belum terjelaskan." }
+  - { word: "philosophy of life", translation: "filsafat hidup", context: "Philosophy of life distrusts abstract system formation.", contextIndonesian: "Filsafat hidup mencurigai pembentukan sistem yang abstrak." }
+  - { word: "transcendental philosophy", translation: "filsafat transendental", context: "Transcendental philosophy asks about the conditions of experience.", contextIndonesian: "Filsafat transendental menanyakan syarat-syarat pengalaman." }
+  - { word: "freedom of will", translation: "kebebasan kehendak", context: "In moral philosophy we often discuss free will. (keyword: freedom of will)", contextIndonesian: "Dalam filsafat moral kita sering membahas kehendak bebas." }
 ---
 
 # Philosophy of Consciousness

@@ -76,4 +76,12 @@ vocab:
     indonesian: "pemeriksaan pajak"
     context: "Die Steuerprüfung wurde frühzeitig angekündigt."
     contextIndonesian: "Pemeriksaan pajaknya diumumkan lebih awal."
+  - german: "Wertpapier"
+    indonesian: "surat berharga"
+    context: "Das Wertpapier wird an mehreren Börsen gehandelt."
+    contextIndonesian: "Surat berharga itu diperdagangkan di beberapa bursa."
+  - german: "Portfolio"
+    indonesian: "portofolio"
+    context: "Das Portfolio wurde regelmäßig neu ausbalanciert."
+    contextIndonesian: "Portofolionya rutin diseimbangkan kembali."
 ---

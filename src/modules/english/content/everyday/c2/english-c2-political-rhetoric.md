@@ -24,6 +24,7 @@ vocab:
   - { word: "consensus fiction", translation: "ilusi konsensus", context: "The consensus fiction makes contradiction appear marginal.", contextIndonesian: "Ilusi konsensus membuat ketidaksetujuan tampak tidak penting." }
   - { word: "affective appeal", translation: "seruan emosional", context: "The affective appeal overshadows the empirical test.", contextIndonesian: "Seruan emosional mengaburkan pemeriksaan empiris." }
 
+  - { word: "concentration of assets", translation: "konsentrasi kekayaan", context: "Wealth concentration undermines political equality. (keyword: concentration of assets)", contextIndonesian: "Konsentrasi kekayaan merusak kesetaraan politik." }
 ---
 
 # Political Rhetoric

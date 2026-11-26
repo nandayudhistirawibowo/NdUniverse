@@ -19,6 +19,11 @@ vocab:
   - { word: "AI regulation", translation: "regulasi AI", context: "AI regulation must balance innovation and protection of fundamental rights.", contextIndonesian: "Regulasi AI perlu menyeimbangkan inovasi dan perlindungan hak dasar." }
   - { word: "algorithmic traceability", translation: "keterlacakan algoritmis", context: "Algorithmic traceability requires complete protocols.", contextIndonesian: "Keterlacakan algoritmis mensyaratkan catatan yang lengkap." }
   - { word: "legal attribution", translation: "atribusi hukum", context: "Legal attribution should not disappear in the system.", contextIndonesian: "Atribusi hukum tidak boleh lenyap di dalam sistem." }
+  - { word: "algorithmic attribution", translation: "atribusi tanggung jawab algoritmik", context: "Algorithmic attribution should not displace human responsibility.", contextIndonesian: "Atribusi tanggung jawab algoritmik tidak boleh menggeser tanggung jawab manusia." }
+  - { word: "explainability", translation: "keterjelasan", context: "Explainability must correspond to the respective level of risk.", contextIndonesian: "Keterjelasannya harus sesuai dengan tingkat risikonya." }
+  - { word: "data distortion", translation: "bias data", context: "Data distortion reproduces historical disadvantage.", contextIndonesian: "Bias data mereproduksi ketidakadilan historis." }
+  - { word: "automation asymmetry", translation: "asimetri otomatisasi", context: "Automation asymmetry shifts decision-making power unnoticed.", contextIndonesian: "Asimetri otomatisasi diam-diam mengalihkan kuasa pengambilan keputusan." }
+  - { word: "human supervision", translation: "pengawasan manusia", context: "Human supervision must remain effective and contestable.", contextIndonesian: "Pengawasan manusia harus efektif dan dapat dipersoalkan." }
 ---
 
 # Law of Artificial Intelligence

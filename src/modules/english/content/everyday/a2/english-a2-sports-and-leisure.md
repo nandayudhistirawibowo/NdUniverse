@@ -16,6 +16,14 @@ vocab:
   - { word: "Listen to music", translation: "mendengarkan musik", context: "I like listening to music while cooking. (keyword: Listen to music)", contextIndonesian: "Saya senang mendengarkan musik saat memasak." }
   - { word: "weekend", translation: "akhir pekan", context: "I'm visiting my friends at the weekend.", contextIndonesian: "Pada akhir pekan saya mengunjungi teman-teman saya." }
   - { word: "popular", translation: "populer", context: "Football is popular in many countries.", contextIndonesian: "Sepak bola populer di banyak negara." }
+  - { word: "club", translation: "klub", context: "I signed up for the sports club.", contextIndonesian: "Aku mendaftar di klub olahraga." }
+  - { word: "leisure time", translation: "waktu luang", context: "In my free time I play volleyball. (keyword: leisure time)", contextIndonesian: "Aku bermain voli saat waktu luang." }
+  - { word: "sportswear", translation: "pakaian olahraga", context: "My sports clothes are still in the car. (keyword: sportswear)", contextIndonesian: "Pakaian olahragaku masih ada di mobil." }
+  - { word: "hobby", translation: "hobi", context: "I'm having a lot of fun with my new hobby.", contextIndonesian: "Hobi baruku menyenangkan sekali." }
+  - { word: "gym", translation: "pusat kebugaran", context: "The gym closed early yesterday.", contextIndonesian: "Pusat kebugarannya tutup lebih awal kemarin." }
+  - { word: "membership", translation: "keanggotaan", context: "My membership is valid until December.", contextIndonesian: "Keanggotaanku berlaku sampai Desember." }
+  - { word: "training", translation: "latihan", context: "The training was strenuous, but good.", contextIndonesian: "Latihannya melelahkan, tapi bagus." }
+  - { word: "team", translation: "tim", context: "Our team won the game.", contextIndonesian: "Tim kami memenangkan pertandingan." }
 ---
 
 # Sports and Leisure

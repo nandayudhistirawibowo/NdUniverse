@@ -80,4 +80,8 @@ vocab:
     indonesian: "celah perlindungan"
     context: "Eine Schutzlücke müsse dringend geschlossen werden."
     contextIndonesian: "Celah perlindungan itu harus segera ditutup."
+  - german: "Kohäsionspolitik"
+    indonesian: "kebijakan kohesi"
+    context: "Kohäsionspolitik gleiche regionale Unterschiede aus."
+    contextIndonesian: "Kebijakan kohesi mengurangi perbedaan antardaerah."
 ---

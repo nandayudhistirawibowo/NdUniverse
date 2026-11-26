@@ -20,6 +20,10 @@ vocab:
   - { word: "charismatization", translation: "karismatisasi", context: "Charismatization gives leadership an extraordinary aura.", contextIndonesian: "Karismatisasi memberi kepemimpinan aura yang luar biasa." }
   - { word: "religious interpretive community", translation: "komunitas penafsiran agama", context: "Religious interpretation communities argued about binding readings. (keyword: religious interpretive community)", contextIndonesian: "Komunitas penafsiran agama berdebat tentang tafsir yang mengikat." }
   - { word: "religious secularity", translation: "sekularitas keagamaan", context: "Religious secularity combines faith with public reason.", contextIndonesian: "Sekularitas keagamaan menghubungkan iman dengan nalar publik." }
+  - { word: "criticism of religion", translation: "kritik agama", context: "Criticism of religion must take its own requirements into account.", contextIndonesian: "Kritik agama perlu mempertimbangkan asumsi-asumsinya sendiri." }
+  - { word: "sociology of emotions", translation: "sosiologi emosi", context: "Sociology of emotions examines emotions as a social practice.", contextIndonesian: "Sosiologi emosi mengkaji emosi sebagai praktik sosial." }
+  - { word: "theodicy", translation: "teodise", context: "Theodicy struggles with the compatibility of suffering and goodness.", contextIndonesian: "Teodise bergulat dengan kesesuaian penderitaan dan kebaikan." }
+  - { word: "revelation", translation: "wahyu", context: "Revelation is always conveyed through tradition.", contextIndonesian: "Wahyu selalu dimediasi melalui tradisi pewarisan." }
 ---
 
 # Sociology of Religion

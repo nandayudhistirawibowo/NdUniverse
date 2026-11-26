@@ -20,6 +20,11 @@ vocab:
   - { word: "household item", translation: "peralatan rumah tangga", context: "The household item was replaced together.", contextIndonesian: "Peralatan rumah tangga itu diganti bersama-sama." }
   - { word: "solution", translation: "solusi", context: "A permanent solution had to be found.", contextIndonesian: "Solusi jangka panjang harus ditemukan." }
 
+  - { word: "rush hour traffic", translation: "lalu lintas jam kerja", context: "We stood in rush hour traffic for almost an hour.", contextIndonesian: "Kami terjebak macet hampir sejam saat jam kerja." }
+  - { word: "traffic jam", translation: "kemacetan", context: "The traffic jam extended to the next exit.", contextIndonesian: "Kemacetannya mengular sampai pintu keluar berikutnya." }
+  - { word: "tram", translation: "trem", context: "The tram ran irregularly due to construction work.", contextIndonesian: "Tremnya tidak teratur karena ada pekerjaan konstruksi." }
+  - { word: "local transport", translation: "transportasi lokal", context: "Local transport was expanded at the weekend.", contextIndonesian: "Layanan transportasi lokal diperluas saat akhir pekan." }
+  - { word: "bike lane", translation: "jalur sepeda", context: "The bike lane was blocked by cars.", contextIndonesian: "Jalur sepedanya terhalang mobil." }
 ---
 
 # Domestic Problems

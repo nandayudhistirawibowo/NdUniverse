@@ -80,4 +80,8 @@ vocab:
     indonesian: "estetika ekologis"
     context: "Ökologische Ästhetik verbinde sinnliche Erfahrung mit Kritik."
     contextIndonesian: "Estetika ekologis menghubungkan pengalaman inderawi dengan kritik."
+  - german: "Werkimmanenz"
+    indonesian: "imanensi karya"
+    context: "Werkimmanenz blende biografische Zuschreibungen methodisch aus."
+    contextIndonesian: "Imanensi karya secara metodis mengesampingkan atribusi biografis."
 ---

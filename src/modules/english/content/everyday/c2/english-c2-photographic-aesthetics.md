@@ -21,6 +21,9 @@ vocab:
   - { word: "eye direction", translation: "pengarahan pandangan", context: "Eye control is achieved through light, contrast and composition. (keyword: eye direction)", contextIndonesian: "Pandangan diarahkan melalui cahaya, kontras, dan komposisi." }
   - { word: "blur", translation: "ketidakfokusan", context: "Blur can show more than maximum precision.", contextIndonesian: "Ketidakfokusan terkadang mengungkap lebih banyak daripada ketajaman maksimal." }
   - { word: "image authority", translation: "otoritas gambar", context: "Image authority also arises through institutional circulation.", contextIndonesian: "Otoritas gambar juga terbentuk melalui peredaran institusional." }
+  - { word: "aesthetics of use", translation: "estetika penggunaan", context: "Practical aesthetics combine suitability for everyday use and form. (keyword: aesthetics of use)", contextIndonesian: "Estetika penggunaan memadukan kepraktisan dan bentuk." }
+  - { word: "algorithmic aesthetics", translation: "estetika algoritmik", context: "Algorithmic aesthetics shift authorship into processes.", contextIndonesian: "Estetika algoritmik memindahkan kepengarangan ke dalam proses." }
+  - { word: "interface aesthetics", translation: "estetika antarmuka", context: "Interface aesthetics prescribe options for action.", contextIndonesian: "Estetika antarmuka lebih dahulu menyusun pilihan tindakan." }
 ---
 
 # Photographic Aesthetics

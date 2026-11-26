@@ -80,4 +80,8 @@ vocab:
     indonesian: "keseimbangan kelembagaan"
     context: "Der institutionelle Ausgleich sichere demokratische Kontrolle."
     contextIndonesian: "Keseimbangan kelembagaannya memastikan adanya pengawasan demokratis."
+  - german: "digitale Teilhabe"
+    indonesian: "partisipasi digital"
+    context: "Digitale Teilhabe wird durch barrierefreie Angebote für alle ermöglicht."
+    contextIndonesian: "Partisipasi digital harus terbuka bagi semua."
 ---

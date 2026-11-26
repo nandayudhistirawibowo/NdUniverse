@@ -23,6 +23,7 @@ vocab:
   - { word: "ecological humility", translation: "kerendahan hati ekologis", context: "Ecological humility recognizes the limits of human predictions.", contextIndonesian: "Kerendahan hati ekologis mengakui batas prediksi manusia." }
   - { word: "natural rights", translation: "hak-hak alam", context: "Natural rights displace the moral community.", contextIndonesian: "Hak-hak alam menggeser batas komunitas moral." }
   - { word: "responsibility for the future", translation: "tanggung jawab terhadap masa depan", context: "Responsibility for the future should not be passed on to later generations.", contextIndonesian: "Tanggung jawab terhadap masa depan tidak boleh dialihkan kepada generasi berikutnya." }
+  - { word: "environmental impact assessment", translation: "analisis dampak lingkungan", context: "Environmental impact assessment takes long-term consequences into account.", contextIndonesian: "Analisis dampak lingkungan mempertimbangkan akibat jangka panjang." }
 ---
 
 # Environmental Ethics

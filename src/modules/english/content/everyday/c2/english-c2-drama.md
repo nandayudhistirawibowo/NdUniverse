@@ -23,6 +23,7 @@ vocab:
   - { word: "dramatic escalation", translation: "penajaman dramatik", context: "The dramatic escalation shifts the moral focus.", contextIndonesian: "Penajaman dramatiknya menggeser fokus moral." }
   - { word: "station drama", translation: "drama stasiun", context: "The station drama refuses continuous development.", contextIndonesian: "Drama stasiun menolak perkembangan yang berkesinambungan." }
   - { word: "aftermath", translation: "epilog", context: "The aftermath puts the previous reconciliation into perspective.", contextIndonesian: "Epilognya merelatifkan rekonsiliasi yang terjadi sebelumnya." }
+  - { word: "lesson", translation: "drama pembelajaran", context: "The lesson examines postures while playing together.", contextIndonesian: "Drama pembelajaran menguji sikap melalui permainan bersama." }
 ---
 
 # Drama

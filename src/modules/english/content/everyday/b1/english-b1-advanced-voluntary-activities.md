@@ -22,6 +22,9 @@ vocab:
   - { word: "challenge", translation: "tantangan", context: "The biggest challenge was the lack of funding.", contextIndonesian: "Tantangan terbesarnya adalah kurangnya dana." }
   - { word: "fundraiser", translation: "penggalangan donasi", context: "The fundraiser was organized in the district center.", contextIndonesian: "Penggalangan donasinya diadakan di pusat kawasan." }
 
+  - { word: "voluntary", translation: "secara sukarela", context: "She worked voluntarily in a counseling center. (keyword: voluntary)", contextIndonesian: "Dia menjadi relawan di pusat konseling." }
+  - { word: "commitment", translation: "keterlibatan", context: "Your commitment was appreciated by everyone.", contextIndonesian: "Keterlibatannya dihargai semua orang." }
+  - { word: "effort", translation: "upaya", context: "Your efforts made a real difference.", contextIndonesian: "Upayanya membawa perubahan nyata." }
 ---
 
 # Advanced Voluntary Activities

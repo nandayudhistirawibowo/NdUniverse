@@ -80,4 +80,8 @@ vocab:
     indonesian: "studi disabilitas"
     context: "Disability Studies verlagerten den Blick von Defiziten auf Barrieren."
     contextIndonesian: "Studi disabilitas mengalihkan fokus dari kekurangan ke hambatan."
+  - german: "Migrationsforschung"
+    indonesian: "studi migrasi"
+    context: "Die Migrationsforschung hinterfragt nationale Vorstellungen von Sesshaftigkeit."
+    contextIndonesian: "Studi migrasi mempertanyakan anggapan bahwa orang harus menetap di satu negara."
 ---

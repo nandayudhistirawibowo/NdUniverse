@@ -18,6 +18,12 @@ vocab:
   - { word: "typical", translation: "khas", context: "The dish was typical of the region.", contextIndonesian: "Hidangan itu khas daerah tersebut." }
   - { word: "unusual", translation: "tidak biasa", context: "The greeting was unfamiliar to me at first. (keyword: unusual)", contextIndonesian: "Awalnya sapaan itu terasa asing bagiku." }
   - { word: "communication", translation: "saling memahami", context: "Communication was still possible with gestures.", contextIndonesian: "Meski begitu, kami bisa saling memahami dengan gerakan." }
+  - { word: "tradition", translation: "tradisi", context: "The tradition was reinterpreted by young people.", contextIndonesian: "Anak muda menafsirkan ulang tradisi itu." }
+  - { word: "exhibition", translation: "pameran", context: "The exhibition was opened by a young artist.", contextIndonesian: "Pamerannya dibuka oleh seniman muda." }
+  - { word: "work of art", translation: "karya seni", context: "The artwork was restored after a debate. (keyword: work of art)", contextIndonesian: "Karya seninya dipugar setelah perdebatan." }
+  - { word: "stage", translation: "panggung", context: "The stage was converted for the play.", contextIndonesian: "Panggungnya diubah untuk pertunjukan itu." }
+  - { word: "performance", translation: "pertunjukan", context: "The performance ended with great applause.", contextIndonesian: "Pertunjukannya ditutup dengan tepuk tangan meriah." }
+  - { word: "cultural funding", translation: "dukungan budaya", context: "Cultural funding was discussed in the city council.", contextIndonesian: "Dukungan budaya dibahas di dewan kota." }
 ---
 
 # Culture and Tradition

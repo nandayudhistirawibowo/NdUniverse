@@ -15,6 +15,16 @@ vocab:
   - { word: "sight", translation: "tempat wisata", context: "The old town is the most famous attraction in the region. (keyword: sight)", contextIndonesian: "Kota tua itu adalah tempat wisata paling terkenal di wilayah tersebut." }
   - { word: "Be considerate", translation: "menghormati", context: "Travelers should be considerate of local residents.", contextIndonesian: "Para pelancong sebaiknya menghormati warga setempat." }
 
+  - { word: "business trip", translation: "perjalanan bisnis", context: "The business trip was extended at short notice.", contextIndonesian: "Perjalanan bisnisnya mendadak diperpanjang." }
+  - { word: "accommodation", translation: "akomodasi", context: "The accommodation was right next to the conference center.", contextIndonesian: "Akomodasinya tepat di sebelah pusat konferensi." }
+  - { word: "travel expenses", translation: "biaya perjalanan", context: "Travel costs were fully reimbursed. (keyword: travel expenses)", contextIndonesian: "Biaya perjalanannya diganti seluruhnya." }
+  - { word: "agenda", translation: "agenda", context: "The agenda was sent before the meeting.", contextIndonesian: "Agendanya dikirim sebelum pertemuan." }
+  - { word: "business partner", translation: "mitra bisnis laki-laki", context: "The business partner came from another branch.", contextIndonesian: "Mitra bisnisnya datang dari cabang lain." }
+  - { word: "meeting", translation: "rapat", context: "The meeting started promptly at nine.", contextIndonesian: "Rapatnya dimulai tepat pukul sembilan." }
+  - { word: "ticket", translation: "tiket perjalanan", context: "I booked the ticket via the company account.", contextIndonesian: "Aku memesan tiketnya lewat akun perusahaan." }
+  - { word: "conference room", translation: "ruang konferensi", context: "The conference room was already reserved.", contextIndonesian: "Ruang konferensinya sudah dipesan." }
+  - { word: "travel expense report", translation: "laporan biaya perjalanan", context: "I submitted the travel expense report later.", contextIndonesian: "Aku menyerahkan laporan biaya perjalanan belakangan." }
+  - { word: "settle", translation: "membuat perhitungan biaya", context: "After returning she accounted for all expenses. (keyword: settle)", contextIndonesian: "Setelah pulang, dia menghitung semua pengeluaran." }
 ---
 
 # Long and Cultural Travels

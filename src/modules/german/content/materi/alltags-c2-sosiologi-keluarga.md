@@ -80,4 +80,8 @@ vocab:
     indonesian: "rasa memiliki dalam keluarga"
     context: "Familiale Zugehörigkeit werde durch Fürsorge praktisch hergestellt."
     contextIndonesian: "Rasa memiliki dalam keluarga dibangun melalui kepedulian nyata."
+  - german: "Sorgeökonomie"
+    indonesian: "ekonomi pengasuhan"
+    context: "Die Sorgeökonomie verteilt unbezahlte Arbeit ungleich."
+    contextIndonesian: "Ekonomi pengasuhan membagi kerja tak berbayar secara timpang."
 ---

@@ -21,6 +21,9 @@ vocab:
   - { word: "bag", translation: "kantong", context: "The bag was made of paper.", contextIndonesian: "Kantongnya terbuat dari kertas." }
   - { word: "purchasing", translation: "belanjaan", context: "Our shopping was done quickly. (keyword: purchasing)", contextIndonesian: "Belanjaan kami cepat selesai." }
   - { word: "weekly market", translation: "pasar mingguan", context: "We bought cheese at the weekly market.", contextIndonesian: "Kami membeli keju di pasar mingguan." }
+  - { word: "shopping bag", translation: "tas belanja", context: "I have my shopping bag with me.", contextIndonesian: "Saya membawa tas belanja saya." }
+  - { word: "supermarket", translation: "supermarket", context: "The supermarket closes at eight o'clock.", contextIndonesian: "Supermarket tutup pukul delapan." }
+  - { word: "costs", translation: "berharga", context: "How much does a kilo of apples cost? (keyword: costs)", contextIndonesian: "Berapa harga satu kilogram apel?" }
 ---
 
 # Shopping at the Market

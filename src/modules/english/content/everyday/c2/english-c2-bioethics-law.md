@@ -17,6 +17,13 @@ vocab:
   - { word: "clinical responsibility", translation: "tanggung jawab klinis", context: "Clinical responsibility also includes institutional consequences.", contextIndonesian: "Tanggung jawab klinis juga mencakup dampak kelembagaan." }
   - { word: "medical justice", translation: "keadilan medis", context: "Medical justice concerns access and outcomes.", contextIndonesian: "Keadilan medis menyangkut akses dan hasil." }
   - { word: "bioethical jurisprudence", translation: "yurisprudensi bioetis", context: "Bioethical jurisprudence responds to medical change.", contextIndonesian: "Yurisprudensi bioetis merespons perubahan dalam bidang medis." }
+  - { word: "digital law enforcement", translation: "penegakan hak digital", context: "Digital law enforcement must work across borders.", contextIndonesian: "Penegakan hak digital harus berfungsi lintas batas." }
+  - { word: "environmental information law", translation: "hak atas informasi lingkungan", context: "Environmental information law enables effective citizen participation.", contextIndonesian: "Hak atas informasi lingkungan memungkinkan partisipasi warga yang efektif." }
+  - { word: "ecological collective action law", translation: "hak gugat organisasi lingkungan", context: "Ecological collective action law represents diffuse community interests.", contextIndonesian: "Hak gugat organisasi lingkungan mewakili kepentingan masyarakat yang tersebar." }
+  - { word: "international environmental law", translation: "hukum lingkungan internasional", context: "International environmental law coordinates obligations between states.", contextIndonesian: "Hukum lingkungan internasional mengoordinasikan kewajiban antarnegara." }
+  - { word: "patent law", translation: "hukum paten", context: "Patent law limits the use of technical inventions.", contextIndonesian: "Hukum paten membatasi penggunaan invensi teknis untuk waktu tertentu." }
+  - { word: "trademark law", translation: "hukum merek", context: "Trademark law distinguishes between origin and commercial identification.", contextIndonesian: "Hukum merek membedakan asal dan penandaan komersial." }
+  - { word: "design law", translation: "hukum desain industri", context: "Design patent law protects the external design. (keyword: design law)", contextIndonesian: "Hukum desain industri melindungi tampilan luar." }
 ---
 
 # Bioethics Law

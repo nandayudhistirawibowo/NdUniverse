@@ -21,6 +21,9 @@ vocab:
   - { word: "origin", translation: "asal mula", context: "The origin of the idea remained unknown.", contextIndonesian: "Asal mula gagasan itu tetap tidak diketahui." }
   - { word: "attitude", translation: "sikap", context: "Her attitude changed after the conversation.", contextIndonesian: "Sikapnya berubah setelah percakapan itu." }
   - { word: "realization", translation: "pemahaman", context: "This realization came much later.", contextIndonesian: "Pemahaman ini baru datang jauh belakangan." }
+  - { word: "law", translation: "undang-undang", context: "The law came into force last month.", contextIndonesian: "Undang-undang itu mulai berlaku bulan lalu." }
+  - { word: "duty", translation: "kewajiban", context: "The obligation was clearly explained in the contract. (keyword: duty)", contextIndonesian: "Kewajibannya dijelaskan dengan jelas dalam kontrak." }
+  - { word: "court", translation: "pengadilan", context: "The case was heard in court.", contextIndonesian: "Kasusnya disidangkan di pengadilan." }
 ---
 
 # Basic Philosophy

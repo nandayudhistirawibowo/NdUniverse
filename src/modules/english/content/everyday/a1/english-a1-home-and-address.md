@@ -21,6 +21,9 @@ vocab:
   - { word: "rent", translation: "menyewa", context: "We would like to rent an apartment.", contextIndonesian: "Kami ingin menyewa sebuah apartemen." }
   - { word: "next to", translation: "di sebelah", context: "The pharmacy is next to the supermarket.", contextIndonesian: "Apotek itu berada di sebelah supermarket." }
   - { word: "neighborhood", translation: "lingkungan tempat tinggal", context: "It's quiet in our neighborhood.", contextIndonesian: "Lingkungan tempat tinggal kami tenang." }
+  - { word: "move out", translation: "melepas pakaian", context: "At home I take off my jacket. (keyword: move out)", contextIndonesian: "Di rumah aku melepas jaket." }
+  - { word: "T-shirt", translation: "kaus", context: "The T-shirt is very comfortable.", contextIndonesian: "Kausnya nyaman sekali." }
+  - { word: "shirt", translation: "kemeja", context: "My shirt is still wet.", contextIndonesian: "Kemejaku masih basah." }
 ---
 
 # Home and Address

@@ -76,4 +76,12 @@ vocab:
     indonesian: "mobilitas yang dipaksakan"
     context: "Erzwungene Mobilität hinterlasse biografische Brüche."
     contextIndonesian: "Mobilitas yang dipaksakan meninggalkan retakan dalam perjalanan hidup."
+  - german: "literarische Unsichtbarkeit"
+    indonesian: "ketakterlihatan sastra"
+    context: "Kanonbildung kann literarische Unsichtbarkeit erzeugen."
+    contextIndonesian: "Ketakterlihatan sastra dihasilkan melalui pembentukan kanon."
+  - german: "literarische Tradition"
+    indonesian: "tradisi sastra"
+    context: "Literarische Tradition erweise sich als umkämpfte Auswahl."
+    contextIndonesian: "Tradisi sastra ternyata merupakan pilihan yang diperebutkan."
 ---

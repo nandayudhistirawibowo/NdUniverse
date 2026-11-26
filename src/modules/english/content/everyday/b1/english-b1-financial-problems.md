@@ -16,6 +16,14 @@ vocab:
   - { word: "financial planning", translation: "perencanaan keuangan", context: "Financial planning gave us more security.", contextIndonesian: "Perencanaan keuangan membuat kami lebih tenang." }
   - { word: "burden", translation: "beban", context: "The financial burden became increasingly greater.", contextIndonesian: "Beban keuangannya makin berat." }
   - { word: "insolvency", translation: "ketidakmampuan membayar", context: "The insolvency had to be reported early.", contextIndonesian: "Ketidakmampuan membayar harus segera dilaporkan." }
+  - { word: "checking account", translation: "rekening giro", context: "The checking account was opened online.", contextIndonesian: "Rekening gironya dibuka secara online." }
+  - { word: "standing order", translation: "transfer otomatis berkala", context: "I set up the standing order last month.", contextIndonesian: "Bulan lalu aku mengatur transfer otomatis." }
+  - { word: "transfer", translation: "transfer", context: "The transfer was carried out yesterday.", contextIndonesian: "Transfernya sudah dilakukan kemarin." }
+  - { word: "account balance", translation: "saldo rekening", context: "My account balance was lower than expected.", contextIndonesian: "Saldo rekeningku lebih rendah dari perkiraan." }
+  - { word: "debit", translation: "pemotongan dana", context: "The debit took place at the beginning of the month.", contextIndonesian: "Dananya dipotong pada awal bulan." }
+  - { word: "fee", translation: "biaya", context: "A fee was charged for the transfer.", contextIndonesian: "Transfernya dikenai biaya." }
+  - { word: "interest rate", translation: "suku bunga", context: "The interest rate could fall next year.", contextIndonesian: "Suku bunganya mungkin turun tahun depan." }
+  - { word: "loan", translation: "kredit", context: "The loan was approved after verification.", contextIndonesian: "Kreditnya disetujui setelah diperiksa." }
 ---
 
 # Financial Problems

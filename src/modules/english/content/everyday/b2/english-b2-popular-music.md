@@ -22,6 +22,8 @@ vocab:
   - { word: "marketing", translation: "pemasaran", context: "Marketing was focused on social media.", contextIndonesian: "Pemasarannya dipusatkan di media sosial." }
   - { word: "appearance", translation: "penampilan", context: "The performance, which was broadcast live, thrilled fans. (keyword: appearance)", contextIndonesian: "Penampilan yang disiarkan langsung itu membuat penggemar senang." }
   - { word: "music criticism", translation: "kritik musik", context: "The music critics praised the unusual arrangement. (keyword: music criticism)", contextIndonesian: "Kritik musiknya memuji aransemen yang tidak biasa." }
+  - { word: "film music", translation: "musik film", context: "The film music was composed specifically for the film.", contextIndonesian: "Musik filmnya digubah khusus untuk film itu." }
+  - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence is already changing numerous professional fields.", contextIndonesian: "Kecerdasan buatan sudah mengubah banyak bidang pekerjaan." }
 ---
 
 # Popular Music

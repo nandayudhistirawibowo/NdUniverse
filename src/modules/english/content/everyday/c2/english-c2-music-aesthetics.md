@@ -21,6 +21,9 @@ vocab:
   - { word: "sound speech", translation: "wacana bunyi", context: "Sound speech opens up rhetorical gestures without words.", contextIndonesian: "Wacana bunyi mengungkap gestur retoris tanpa kata." }
   - { word: "musical experience", translation: "pengalaman musikal", context: "Musical experience defies complete paraphrase.", contextIndonesian: "Pengalaman musikal tidak dapat sepenuhnya diungkapkan dengan parafrasa." }
   - { word: "performance identity", translation: "identitas pertunjukan", context: "Performance identity changes with each performance.", contextIndonesian: "Identitas pertunjukannya berubah setiap kali dibawakan." }
+  - { word: "performance aesthetics", translation: "estetika pertunjukan", context: "Performance aesthetics take fleeting events into account.", contextIndonesian: "Estetika pertunjukan mempertimbangkan peristiwa yang singkat." }
+  - { word: "framing", translation: "pembingkaian gambar", context: "Framing limits what appears to be relevant to the narrative.", contextIndonesian: "Pembingkaian gambar membatasi hal yang tampak penting dalam cerita." }
+  - { word: "plan sequence", translation: "pengambilan gambar panjang tanpa potongan", context: "The plan sequence refuses the relieving cut.", contextIndonesian: "Pengambilan gambar panjang itu menolak potongan yang memberi jeda." }
 ---
 
 # Music Aesthetics

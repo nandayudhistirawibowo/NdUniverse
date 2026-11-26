@@ -24,6 +24,7 @@ vocab:
   - { word: "art intervention", translation: "intervensi seni", context: "The art intervention is temporary.", contextIndonesian: "Intervensi seninya dirancang berlangsung sementara." }
   - { word: "mediation format", translation: "format edukasi", context: "The mediation format will be adapted to different groups.", contextIndonesian: "Format edukasinya disesuaikan untuk kelompok yang berbeda." }
 
+  - { word: "language model", translation: "model bahasa", context: "The language model generates plausible but unsubstantiated statements.", contextIndonesian: "Model bahasa itu menghasilkan pernyataan masuk akal yang belum tentu terbukti." }
 ---
 
 # Contemporary Art

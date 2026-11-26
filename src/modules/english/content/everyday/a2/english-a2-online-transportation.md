@@ -18,6 +18,13 @@ vocab:
   - { word: "travel costs", translation: "biaya perjalanan", context: "We shared the travel costs among ourselves.", contextIndonesian: "Kami membagi biaya perjalanan bersama." }
   - { word: "app", translation: "aplikasi", context: "The app showed the current location.", contextIndonesian: "Aplikasi itu menunjukkan lokasi terkini." }
 
+  - { word: "journey", translation: "perjalanan", context: "We're going to Austria for a week. (keyword: journey)", contextIndonesian: "Kami pergi ke Austria selama satu minggu." }
+  - { word: "vacation", translation: "liburan", context: "I'm going on vacation for two weeks in the summer.", contextIndonesian: "Pada musim panas saya berlibur selama dua minggu." }
+  - { word: "travel destination", translation: "tujuan perjalanan", context: "We want to go to a small town by the sea. (keyword: travel destination)", contextIndonesian: "Kami ingin pergi ke sebuah kota kecil di tepi laut." }
+  - { word: "train station", translation: "stasiun", context: "We'll meet at the train station at nine.", contextIndonesian: "Kami bertemu di stasiun pukul sembilan." }
+  - { word: "platform", translation: "peron", context: "The train to Cologne leaves from platform three.", contextIndonesian: "Kereta ke Köln berangkat dari peron tiga." }
+  - { word: "airport", translation: "bandara", context: "The airport is outside the city.", contextIndonesian: "Bandara terletak di luar kota." }
+  - { word: "flight", translation: "penerbangan", context: "Our flight to Munich takes one hour.", contextIndonesian: "Penerbangan kami ke München berlangsung selama satu jam." }
 ---
 
 # Online Transportation

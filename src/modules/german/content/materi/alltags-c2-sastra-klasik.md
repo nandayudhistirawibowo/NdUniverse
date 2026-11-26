@@ -76,4 +76,12 @@ vocab:
     indonesian: "peralihan zaman"
     context: "Der Epochenbruch sei im Sprachgestus bereits spürbar."
     contextIndonesian: "Peralihan zamannya sudah terasa dalam corak bahasanya."
+  - german: "Peripetie"
+    indonesian: "peripeteia"
+    context: "Die Peripetie verkehre die Erwartung in ihr Gegenteil."
+    contextIndonesian: "Peripeteia membalikkan harapan menjadi kebalikannya."
+  - german: "Anagnorisis"
+    indonesian: "anagnorisis"
+    context: "Die Anagnorisis enthülle die verhängnisvolle Erkenntnis."
+    contextIndonesian: "Anagnorisis menyingkap kesadaran yang membawa petaka."
 ---

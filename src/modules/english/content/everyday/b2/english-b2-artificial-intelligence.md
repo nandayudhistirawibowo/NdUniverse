@@ -23,6 +23,7 @@ vocab:
   - { word: "pattern recognition", translation: "pengenalan pola", context: "Pattern recognition helped with medical evaluation.", contextIndonesian: "Pengenalan pola membantu analisis medis." }
   - { word: "data protection", translation: "perlindungan data", context: "Data protection must be guaranteed for every application.", contextIndonesian: "Perlindungan data harus terjamin di setiap penerapan." }
   - { word: "further development", translation: "pengembangan lanjutan", context: "The further development was discussed publicly.", contextIndonesian: "Pengembangan lanjutannya dibahas secara terbuka." }
+  - { word: "installation", translation: "instalasi seni", context: "The installation was designed specifically for the space.", contextIndonesian: "Instalasi itu dirancang khusus untuk ruangan tersebut." }
 ---
 
 # Artificial Intelligence

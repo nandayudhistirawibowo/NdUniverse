@@ -22,6 +22,8 @@ vocab:
   - { word: "financial planning", translation: "perencanaan keuangan", context: "Financial planning was adjusted to new goals.", contextIndonesian: "Perencanaan keuangannya disesuaikan dengan tujuan baru." }
   - { word: "asset management", translation: "pengelolaan aset", context: "Asset management was transferred to a specialist company.", contextIndonesian: "Pengelolaan asetnya diserahkan kepada perusahaan ahli." }
   - { word: "tax audit", translation: "pemeriksaan pajak", context: "The tax audit was announced early.", contextIndonesian: "Pemeriksaan pajaknya diumumkan lebih awal." }
+  - { word: "tax", translation: "pajak", context: "You may have to pay taxes on capital gains.", contextIndonesian: "Anda mungkin harus membayar pajak atas keuntungan modal." }
+  - { word: "household budget", translation: "anggaran rumah tangga", context: "With a household budget you can keep an eye on your expenses.", contextIndonesian: "Dengan anggaran rumah tangga Anda dapat mengawasi pengeluaran Anda." }
 ---
 
 # Taxes and Finance

@@ -80,4 +80,8 @@ vocab:
     indonesian: "strategi pengoperasian kembali"
     context: "Die Wiederanlaufstrategie werde regelmäßig angepasst."
     contextIndonesian: "Strategi pengoperasian kembalinya disesuaikan secara berkala."
+  - german: "Organisationsentwicklung"
+    indonesian: "pengembangan organisasi"
+    context: "Eine erfolgreiche Organisationsentwicklung braucht regelmäßige Rückmeldungen."
+    contextIndonesian: "Pengembangan organisasi membutuhkan umpan balik yang jelas."
 ---

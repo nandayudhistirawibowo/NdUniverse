@@ -76,4 +76,12 @@ vocab:
     indonesian: "hubungan"
     context: "Ihre Beziehung entwickelte sich langsam."
     contextIndonesian: "Hubungan mereka berkembang perlahan."
+  - german: "Partner"
+    indonesian: "pasangan laki-laki"
+    context: "Ihr Partner arbeitet in einer anderen Stadt."
+    contextIndonesian: "Pasangannya bekerja di kota lain."
+  - german: "Partnerin"
+    indonesian: "pasangan perempuan"
+    context: "Seine Partnerin kommt heute mit."
+    contextIndonesian: "Pasangannya ikut hari ini."
 ---

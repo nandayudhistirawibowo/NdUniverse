@@ -80,4 +80,8 @@ vocab:
     indonesian: "terlambat"
     context: "Der Zug kommt heute spät."
     contextIndonesian: "Kereta itu datang terlambat hari ini."
+  - german: "aufwachen"
+    indonesian: "bangun tidur"
+    context: "Ich wache um sieben Uhr auf. (Schlüsselwort: aufwachen)"
+    contextIndonesian: "Aku bangun pukul tujuh."
 ---

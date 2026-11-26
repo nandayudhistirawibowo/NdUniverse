@@ -80,4 +80,8 @@ vocab:
     indonesian: "intervensi krisis"
     context: "Krisenintervention setze eine sorgfältige Gefährdungseinschätzung voraus."
     contextIndonesian: "Intervensi krisis membutuhkan penilaian risiko yang cermat."
+  - german: "freie Assoziation"
+    indonesian: "asosiasi bebas"
+    context: "Freie Assoziation unterbreche die Kontrolle des Erzählens."
+    contextIndonesian: "Asosiasi bebas memutus kendali atas penceritaan."
 ---

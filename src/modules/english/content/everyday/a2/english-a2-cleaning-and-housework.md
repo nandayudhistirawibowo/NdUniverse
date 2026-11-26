@@ -23,6 +23,7 @@ vocab:
   - { word: "clean", translation: "bersih", context: "The bathroom was clean again.", contextIndonesian: "Kamar mandinya sudah bersih lagi." }
   - { word: "neat", translation: "rapi", context: "Everything was fine after the visit. (keyword: neat)", contextIndonesian: "Setelah tamu pulang, semuanya rapi." }
   - { word: "task", translation: "tugas", context: "Everyone got a different task.", contextIndonesian: "Semua orang mendapat tugas yang berbeda." }
+  - { word: "household", translation: "pekerjaan rumah tangga", context: "We share the household.", contextIndonesian: "Kami berbagi pekerjaan rumah." }
 ---
 
 # Cleaning and Housework

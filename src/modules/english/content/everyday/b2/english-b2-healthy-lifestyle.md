@@ -19,6 +19,11 @@ vocab:
   - { word: "mental health", translation: "kesehatan mental", context: "Mental health has become more of a topic in the workplace.", contextIndonesian: "Kesehatan mental lebih banyak dibahas di tempat kerja." }
   - { word: "preventive examination", translation: "pemeriksaan pencegahan", context: "The preventive examination was arranged on time.", contextIndonesian: "Pemeriksaan pencegahannya dijadwalkan tepat waktu." }
   - { word: "quality of life", translation: "kualitas hidup", context: "The quality of life could increase through small changes.", contextIndonesian: "Kualitas hidup bisa meningkat lewat perubahan kecil." }
+  - { word: "epidemic", translation: "epidemi", context: "The epidemic continued to spread despite countermeasures.", contextIndonesian: "Epidemi itu terus menyebar meski sudah ada penanganan." }
+  - { word: "infection rate", translation: "tingkat penularan", context: "The infection rate fell after the measures.", contextIndonesian: "Tingkat penularannya turun setelah langkah-langkah diterapkan." }
+  - { word: "healthcare system", translation: "sistem kesehatan", context: "The health system was heavily strained during the crisis. (keyword: healthcare system)", contextIndonesian: "Sistem kesehatan sangat terbebani selama krisis." }
+  - { word: "precautionary measure", translation: "langkah pencegahan", context: "The precautionary measure could have been introduced earlier.", contextIndonesian: "Langkah pencegahannya sebenarnya bisa diterapkan lebih awal." }
+  - { word: "vaccination rate", translation: "tingkat vaksinasi", context: "The vaccination rate increased after the information campaign.", contextIndonesian: "Tingkat vaksinasinya naik setelah kampanye informasi." }
 ---
 
 # Healthy Lifestyle

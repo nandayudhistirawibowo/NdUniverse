@@ -23,6 +23,7 @@ vocab:
   - { word: "ecological reversal", translation: "perubahan arah ekologis", context: "Ecological reversal begins with changed perception.", contextIndonesian: "Perubahan arah ekologis dimulai dengan perubahan cara memandang." }
   - { word: "planetary boundary", translation: "batas planetaris", context: "Planetary boundaries made political inaction measurable. (keyword: planetary boundary)", contextIndonesian: "Batas planetaris membuat kelambanan politik dapat diukur." }
   - { word: "ecological aesthetics", translation: "estetika ekologis", context: "Ecological aesthetics combine sensory experience with criticism.", contextIndonesian: "Estetika ekologis menghubungkan pengalaman inderawi dengan kritik." }
+  - { word: "criticism of ideology", translation: "kritik ideologi", context: "Criticism of ideology exposes the hidden prerequisites of social order.", contextIndonesian: "Kritik ideologi mengungkap asumsi tersembunyi dalam tatanan sosial." }
 ---
 
 # Ecological Critique

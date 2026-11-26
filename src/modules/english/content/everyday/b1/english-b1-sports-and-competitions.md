@@ -17,6 +17,13 @@ vocab:
   - { word: "championship", translation: "kejuaraan", context: "The championship took place in our city for the first time.", contextIndonesian: "Kejuaraan itu pertama kali diadakan di kota kami." }
   - { word: "ambition", translation: "ambisi", context: "Her ambition helped her keep going.", contextIndonesian: "Ambisinya membantunya untuk terus maju." }
   - { word: "athlete", translation: "atlet perempuan", context: "The athlete set herself a realistic goal.", contextIndonesian: "Atlet itu menetapkan target yang realistis." }
+  - { word: "sports hall", translation: "gedung olahraga", context: "The sports hall remained open during the holidays.", contextIndonesian: "Gedung olahraganya tetap buka selama liburan." }
+  - { word: "sports injury", translation: "cedera olahraga", context: "The sports injury was examined immediately.", contextIndonesian: "Cedera olahraganya langsung diperiksa." }
+  - { word: "climbing", translation: "panjat tebing", context: "Climbing required a lot of concentration.", contextIndonesian: "Panjat tebing membutuhkan konsentrasi tinggi." }
+  - { word: "parachute jump", translation: "terjun payung", context: "The skydive was postponed due to the wind. (keyword: parachute jump)", contextIndonesian: "Terjun payungnya diundur karena angin." }
+  - { word: "safety equipment", translation: "perlengkapan keselamatan", context: "The safety equipment was checked before takeoff.", contextIndonesian: "Perlengkapan keselamatannya diperiksa sebelum mulai." }
+  - { word: "safety helmet", translation: "helm pelindung", context: "The protective helmet must fit correctly. (keyword: safety helmet)", contextIndonesian: "Helm pelindungnya harus terpasang dengan benar." }
+  - { word: "climbing wall", translation: "dinding panjat", context: "The climbing wall was closed after the accident.", contextIndonesian: "Dinding panjatnya ditutup setelah kecelakaan." }
 ---
 
 # Sports and Competitions

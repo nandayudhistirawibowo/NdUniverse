@@ -56,4 +56,16 @@ vocab:
     indonesian: "mencari bantuan profesional"
     context: "Bei anhaltenden Beschwerden solltest du dir professionelle Hilfe holen. (Schlüsselwort: professionelle Hilfe in Anspruch nehmen)"
 
+  - german: "psychische Gesundheit"
+    indonesian: "kesehatan mental"
+    context: "Psychische Gesundheit wurde am Arbeitsplatz stärker thematisiert."
+    contextIndonesian: "Kesehatan mental lebih banyak dibahas di tempat kerja."
+  - german: "Gesundheitsvorsorge"
+    indonesian: "pencegahan kesehatan"
+    context: "Die Gesundheitsvorsorge wird häufig unterschätzt."
+    contextIndonesian: "Upaya pencegahan kesehatan sering diremehkan."
+  - german: "Gesundheitskompetenz"
+    indonesian: "literasi kesehatan"
+    context: "Die Gesundheitskompetenz sollte früh gefördert werden."
+    contextIndonesian: "Literasi kesehatan sebaiknya dikembangkan sejak dini."
 ---

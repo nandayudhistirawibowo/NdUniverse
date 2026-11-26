@@ -18,6 +18,12 @@ vocab:
   - { word: "How are you?", translation: "Bagaimana kabarmu hari ini?", context: "How are you? I am fine today.", contextIndonesian: "Apa kabar hari ini?" }
   - { word: "good", translation: "baik", context: "Thanks, I'm fine. (keyword: good)", contextIndonesian: "Makasih, kabarku baik." }
   - { word: "greeting", translation: "salam", context: "Many greetings to your family!", contextIndonesian: "Salam untuk keluargamu!" }
+  - { word: "good afternoon", translation: "selamat siang", context: "Good afternoon, teacher.", contextIndonesian: "Selamat siang, guru." }
+  - { word: "good night", translation: "selamat malam", context: "Good night. Sleep well.", contextIndonesian: "Selamat malam. Tidur yang nyenyak." }
+  - { word: "yes", translation: "ya", context: "Yes, I understand.", contextIndonesian: "Ya, saya mengerti." }
+  - { word: "no", translation: "tidak", context: "No, I do not have a pen.", contextIndonesian: "Tidak, saya tidak punya pulpen." }
+  - { word: "my name is", translation: "nama saya adalah", context: "My name is Daniel.", contextIndonesian: "Nama saya Daniel." }
+  - { word: "nice to meet you", translation: "senang bertemu denganmu", context: "Nice to meet you, Anna.", contextIndonesian: "Senang bertemu denganmu, Anna." }
 ---
 
 # Greetings and Greetings

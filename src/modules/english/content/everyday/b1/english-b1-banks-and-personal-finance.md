@@ -23,6 +23,7 @@ vocab:
   - { word: "debt", translation: "utang", context: "He wanted to pay off his debts quickly.", contextIndonesian: "Dia ingin segera melunasi utangnya." }
   - { word: "advice", translation: "konsultasi", context: "The consultation was offered free of charge. (keyword: advice)", contextIndonesian: "Konsultasinya diberikan secara gratis." }
   - { word: "security", translation: "keamanan", context: "Security should be a priority when it comes to online banking.", contextIndonesian: "Keamanan harus diutamakan saat memakai bank online." }
+  - { word: "business trip", translation: "perjalanan bisnis", context: "The business trip was extended at short notice.", contextIndonesian: "Perjalanan bisnisnya mendadak diperpanjang." }
 ---
 
 # Banks and Personal Finance

@@ -20,6 +20,10 @@ vocab:
   - { word: "treatment method", translation: "metode perawatan", context: "The doctor selects the treatment method together with the patient.", contextIndonesian: "Dokter memilih metode pengobatan bersama pasien." }
   - { word: "aftercare", translation: "perawatan lanjutan", context: "Good aftercare will help you continue to recover.", contextIndonesian: "Perawatan setelahnya yang baik akan membantu Anda terus pulih." }
   - { word: "medical history", translation: "riwayat kesehatan", context: "With the medical history we can better assess possible risks.", contextIndonesian: "Dengan riwayat kesehatan kita dapat menilai kemungkinan risiko dengan lebih baik." }
+  - { word: "healthcare system", translation: "sistem kesehatan", context: "The health system was heavily strained during the crisis. (keyword: healthcare system)", contextIndonesian: "Sistem kesehatan sangat terbebani selama krisis." }
+  - { word: "health authority", translation: "otoritas kesehatan", context: "The health authority published updated recommendations.", contextIndonesian: "Otoritas kesehatan menerbitkan anjuran terbaru." }
+  - { word: "health care", translation: "layanan kesehatan", context: "Health care needs to be distributed more fairly.", contextIndonesian: "Layanan kesehatannya perlu dibagi lebih merata." }
+  - { word: "health crisis", translation: "krisis kesehatan", context: "The health crisis revealed structural weaknesses.", contextIndonesian: "Krisis kesehatan mengungkap kelemahan struktural." }
 ---
 
 # Health and Medical Examination

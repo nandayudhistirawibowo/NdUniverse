@@ -80,4 +80,8 @@ vocab:
     indonesian: "draf"
     context: "Der Entwurf ist schon fast fertig."
     contextIndonesian: "Drafnya hampir selesai."
+  - german: "Anruf"
+    indonesian: "panggilan telepon"
+    context: "Ich habe deinen Anruf gestern verpasst."
+    contextIndonesian: "Kemarin aku melewatkan teleponmu."
 ---

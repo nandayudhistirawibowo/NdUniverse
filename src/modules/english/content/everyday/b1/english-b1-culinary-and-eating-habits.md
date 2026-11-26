@@ -21,6 +21,9 @@ vocab:
   - { word: "portion", translation: "porsi", context: "The portion would be enough for two people.", contextIndonesian: "Porsinya cukup untuk dua orang." }
   - { word: "eating habit", translation: "kebiasaan makan", context: "My eating habits changed abroad.", contextIndonesian: "Kebiasaan makanku berubah saat di luar negeri." }
   - { word: "consideration", translation: "tenggang rasa", context: "Consideration was given to vegetarian guests.", contextIndonesian: "Tamu vegetarian juga diperhatikan." }
+  - { word: "habit", translation: "kebiasaan", context: "I've wanted to change this habit for a long time.", contextIndonesian: "Aku sudah lama ingin mengubah kebiasaan ini." }
+  - { word: "distraction", translation: "gangguan", context: "Constant distraction made concentrated work impossible.", contextIndonesian: "Gangguan terus-menerus membuatku sulit fokus bekerja." }
+  - { word: "delay", translation: "keterlambatan", context: "Because of his lateness, the team missed the start. (keyword: delay)", contextIndonesian: "Tim melewatkan awal acara karena dia terlambat." }
 ---
 
 # Culinary and Eating Habits

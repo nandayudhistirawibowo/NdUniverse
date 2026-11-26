@@ -80,4 +80,8 @@ vocab:
     indonesian: "kritik bahasa"
     context: "Sprachkritik prüfe die Grenzen des Sagbaren."
     contextIndonesian: "Kritik bahasa menguji batas dari hal yang dapat dikatakan."
+  - german: "Deutungsmacht"
+    indonesian: "kuasa penafsiran"
+    context: "Deutungsmacht entscheide mit über politische Wirklichkeit."
+    contextIndonesian: "Kuasa penafsiran turut menentukan kenyataan politik."
 ---

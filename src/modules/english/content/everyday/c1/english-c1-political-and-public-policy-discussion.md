@@ -22,6 +22,9 @@ vocab:
   - { word: "reform", translation: "reformasi", context: "The reform is intended to make public services more accessible.", contextIndonesian: "Reformasi dimaksudkan untuk menjadikan pelayanan publik lebih mudah diakses." }
   - { word: "controversial", translation: "kontroversial", context: "Many people are against the planned restrictions. (keyword: controversial)", contextIndonesian: "Banyak orang menentang pembatasan yang direncanakan." }
 
+  - { word: "redistribution", translation: "redistribusi", context: "There is a discussion in Parliament about how public money is distributed. (keyword: redistribution)", contextIndonesian: "Parlemen sedang mendiskusikan bagaimana uang negara didistribusikan." }
+  - { word: "public debate", translation: "perdebatan publik", context: "The public debate about the reform has been going on for months.", contextIndonesian: "Debat publik mengenai reformasi telah berlangsung selama berbulan-bulan." }
+  - { word: "political decision-making", translation: "pembentukan kehendak politik", context: "Free media helps people to form political opinions. (keyword: political decision-making)", contextIndonesian: "Media bebas membantu masyarakat membentuk opini politik." }
 ---
 
 # Political and Public Policy Discussion

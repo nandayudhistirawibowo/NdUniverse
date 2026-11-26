@@ -19,6 +19,11 @@ vocab:
   - { word: "loudspeaker", translation: "pengeras suara", context: "Please put the phone on speaker. (keyword: loudspeaker)", contextIndonesian: "Tolong nyalakan pengeras suara teleponnya." }
   - { word: "mailbox", translation: "kotak pesan suara", context: "I spoke to your voicemail. (keyword: mailbox)", contextIndonesian: "Aku meninggalkan pesan suara untukmu." }
   - { word: "callback", translation: "telepon balik", context: "I'm still waiting for your call back. (keyword: callback)", contextIndonesian: "Aku masih menunggu telepon balik darimu." }
+  - { word: "interview", translation: "wawancara kerja", context: "My interview was yesterday.", contextIndonesian: "Wawancara kerjaku berlangsung kemarin." }
+  - { word: "application", translation: "lamaran kerja", context: "I sent my application last week.", contextIndonesian: "Aku mengirim lamaran kerjaku minggu lalu." }
+  - { word: "CV", translation: "daftar riwayat hidup", context: "The CV was already on the table.", contextIndonesian: "Daftar riwayat hidupnya sudah ada di meja." }
+  - { word: "professional experience", translation: "pengalaman kerja", context: "I needed professional experience for the position.", contextIndonesian: "Aku butuh pengalaman kerja untuk posisi itu." }
+  - { word: "strength", translation: "kelebihan", context: "One of my strengths is teamwork.", contextIndonesian: "Salah satu kelebihanku adalah kerja tim." }
 ---
 
 # Talking on the Phone

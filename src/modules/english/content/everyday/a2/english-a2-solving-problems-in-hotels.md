@@ -21,6 +21,9 @@ vocab:
   - { word: "caretaker", translation: "petugas pemeliharaan", context: "The caretaker came within an hour.", contextIndonesian: "Petugas pemeliharaan datang dalam satu jam." }
   - { word: "apology", translation: "permintaan maaf", context: "The apology sounded sincere.", contextIndonesian: "Permintaan maafnya terdengar tulus." }
   - { word: "stay", translation: "masa menginap", context: "Nevertheless, our stay was pleasant.", contextIndonesian: "Meski begitu, masa menginap kami menyenangkan." }
+  - { word: "journey", translation: "perjalanan", context: "We're going to Austria for a week. (keyword: journey)", contextIndonesian: "Kami pergi ke Austria selama satu minggu." }
+  - { word: "vacation", translation: "liburan", context: "I'm going on vacation for two weeks in the summer.", contextIndonesian: "Pada musim panas saya berlibur selama dua minggu." }
+  - { word: "travel destination", translation: "tujuan perjalanan", context: "We want to go to a small town by the sea. (keyword: travel destination)", contextIndonesian: "Kami ingin pergi ke sebuah kota kecil di tepi laut." }
 ---
 
 # Solving Problems in Hotels

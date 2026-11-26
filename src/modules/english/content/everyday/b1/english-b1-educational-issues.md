@@ -22,6 +22,8 @@ vocab:
   - { word: "class size", translation: "ukuran kelas", context: "Class size has been limited to thirty.", contextIndonesian: "Jumlah murid per kelas dibatasi menjadi tiga puluh." }
   - { word: "way to school", translation: "perjalanan ke sekolah", context: "A safe route to school remained important for parents. (keyword: way to school)", contextIndonesian: "Perjalanan aman ke sekolah tetap penting bagi orang tua." }
   - { word: "education reform", translation: "reformasi pendidikan", context: "Education reform has been discussed for years.", contextIndonesian: "Reformasi pendidikan dibahas selama bertahun-tahun." }
+  - { word: "tuition fee", translation: "biaya kuliah", context: "The tuition fee has been increased for many.", contextIndonesian: "Biaya kuliah naik bagi banyak orang." }
+  - { word: "study place", translation: "tempat kuliah", context: "Despite good grades, a place at university remained unattainable. (keyword: study place)", contextIndonesian: "Tempat kuliah tetap sulit didapat meski nilainya bagus." }
 ---
 
 # Educational Issues

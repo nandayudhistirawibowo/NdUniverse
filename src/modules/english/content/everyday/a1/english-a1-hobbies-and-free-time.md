@@ -21,6 +21,9 @@ vocab:
   - { word: "collect", translation: "mengoleksi", context: "He collects old coins.", contextIndonesian: "Dia mengoleksi koin lama." }
   - { word: "hobby", translation: "hobi", context: "What is your hobby?", contextIndonesian: "Apa hobimu?" }
   - { word: "gladly", translation: "suka", context: "I like playing with friends. (keyword: gladly)", contextIndonesian: "Aku suka bermain bersama teman-teman." }
+  - { word: "wake up", translation: "bangun tidur", context: "I wake up at seven o'clock.", contextIndonesian: "Aku bangun pukul tujuh." }
+  - { word: "get up", translation: "bangun dari tempat tidur", context: "I get up late on Sunday.", contextIndonesian: "Hari Minggu aku bangun kesiangan." }
+  - { word: "shower", translation: "mandi", context: "I take a quick shower in the morning.", contextIndonesian: "Pagi-pagi aku mandi sebentar." }
 ---
 
 # Hobbies and Free Time

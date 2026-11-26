@@ -19,6 +19,12 @@ vocab:
   - { word: "sustainable", translation: "berkelanjutan", context: "Sustainable products would make sense in the long term.", contextIndonesian: "Produk berkelanjutan akan bermanfaat dalam jangka panjang." }
   - { word: "environmentally conscious", translation: "sadar lingkungan", context: "Environmentally conscious behavior was discussed at school.", contextIndonesian: "Perilaku sadar lingkungan dibahas di sekolah." }
 
+  - { word: "environment", translation: "lingkungan", context: "We need to take better care of the environment.", contextIndonesian: "Kita harus lebih menjaga lingkungan." }
+  - { word: "stage of life", translation: "tahap kehidupan", context: "This period of life was pretty exciting. (keyword: stage of life)", contextIndonesian: "Tahap hidup ini cukup seru." }
+  - { word: "quality of life", translation: "kualitas hidup", context: "Greener streets could improve quality of life.", contextIndonesian: "Jalan yang lebih hijau bisa meningkatkan kualitas hidup." }
+  - { word: "work culture", translation: "budaya kerja", context: "The work culture changed after the move.", contextIndonesian: "Budaya kerjanya berubah setelah kantor pindah." }
+  - { word: "workload", translation: "beban kerja", context: "Workload increased before the end of the year.", contextIndonesian: "Beban kerja meningkat menjelang akhir tahun." }
+  - { word: "appreciation", translation: "apresiasi", context: "Appreciation particularly motivated the team.", contextIndonesian: "Apresiasi sangat menyemangati tim." }
 ---
 
 # Environment in Everyday Life

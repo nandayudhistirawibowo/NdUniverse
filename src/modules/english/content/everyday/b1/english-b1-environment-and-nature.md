@@ -19,6 +19,11 @@ vocab:
   - { word: "air quality", translation: "kualitas udara", context: "Less traffic improves air quality in the city.", contextIndonesian: "Lalu lintas yang lebih sedikit meningkatkan kualitas udara di kota." }
   - { word: "environmentally friendly", translation: "ramah lingkungan", context: "Many people use environmentally friendly means of transport.", contextIndonesian: "Banyak orang menggunakan sarana transportasi yang ramah lingkungan." }
   - { word: "local public transport", translation: "transportasi umum lokal", context: "You can often get to the center faster using public transport. (keyword: local public transport)", contextIndonesian: "Dengan transportasi umum, orang sering kali lebih cepat sampai ke pusat kota." }
+  - { word: "nature reserve", translation: "kawasan konservasi", context: "The nature reserve was not allowed to be left.", contextIndonesian: "Pengunjung tidak boleh keluar dari kawasan konservasi." }
+  - { word: "nature guide", translation: "pemandu alam laki-laki", context: "The nature guide explained the animals' tracks.", contextIndonesian: "Pemandu alam menjelaskan jejak-jejak satwa." }
+  - { word: "hike", translation: "pendakian", context: "The hike led through a protected area.", contextIndonesian: "Pendakiannya melewati kawasan lindung." }
+  - { word: "hiking trail", translation: "jalur pendakian", context: "The hiking trail was closed after the storm.", contextIndonesian: "Jalur pendakiannya ditutup setelah badai." }
+  - { word: "landscape", translation: "pemandangan alam", context: "The landscape seemed particularly quiet in the morning light.", contextIndonesian: "Pemandangan alamnya terasa tenang saat pagi." }
 ---
 
 # Environment and Nature

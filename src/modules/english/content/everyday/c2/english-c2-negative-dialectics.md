@@ -22,6 +22,8 @@ vocab:
   - { word: "self-reflection", translation: "refleksi diri", context: "Self-reflection protects thinking from dogmatic hardening.", contextIndonesian: "Refleksi diri mencegah pemikiran membeku menjadi dogma." }
   - { word: "optimism about progress", translation: "optimisme kemajuan", context: "Optimism for progress often ignores the costs of progress. (keyword: optimism about progress)", contextIndonesian: "Optimisme kemajuan sering mengabaikan biaya yang harus dibayar." }
   - { word: "utopia", translation: "utopia", context: "Utopia should not appear as a finished blueprint.", contextIndonesian: "Utopia tidak boleh tampil sebagai cetak biru yang sudah jadi." }
+  - { word: "nonidentity", translation: "ketidakidentisan", context: "Nonidentity resists total conceptual assimilation", contextIndonesian: "Ketidakidentisan menolak asimilasi konseptual total" }
+  - { word: "determinate negation", translation: "negasi determinat", context: "Determinate negation preserves the trace of difference", contextIndonesian: "Negasi determinat mempertahankan jejak perbedaan" }
 ---
 
 # Negative Dialectics

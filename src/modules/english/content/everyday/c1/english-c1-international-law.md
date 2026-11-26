@@ -22,6 +22,8 @@ vocab:
   - { word: "facts of the case", translation: "unsur tindak pidana", context: "The offense must be completely fulfilled. (keyword: facts of the case)", contextIndonesian: "Semua unsur tindak pidananya harus terpenuhi." }
   - { word: "legal interpretation", translation: "penafsiran hukum", context: "The legal interpretation is left to the courts.", contextIndonesian: "Penafsiran hukumnya diserahkan kepada pengadilan." }
   - { word: "mandate", translation: "mandat", context: "The mandate is limited in time.", contextIndonesian: "Mandatnya dibatasi waktu." }
+  - { word: "social enterprise", translation: "perusahaan sosial", context: "The social enterprise combines impact and profitability.", contextIndonesian: "Perusahaan sosial itu memadukan dampak dan kelayakan ekonomi." }
+  - { word: "impact orientation", translation: "orientasi dampak", context: "Impact orientation must be implemented in a measurable way.", contextIndonesian: "Orientasi dampak perlu diterapkan secara terukur." }
 ---
 
 # International Law

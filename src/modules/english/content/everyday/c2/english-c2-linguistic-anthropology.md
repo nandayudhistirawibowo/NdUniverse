@@ -20,6 +20,10 @@ vocab:
   - { word: "language mediation", translation: "mediasi bahasa", context: "Language mediation changes meanings between social worlds.", contextIndonesian: "Mediasi bahasa mengubah makna di antara dunia sosial." }
   - { word: "drawing of linguistic boundaries", translation: "penarikan batas bahasa", context: "Linguistic boundaries mark belonging and exclusion. (keyword: drawing of linguistic boundaries)", contextIndonesian: "Penarikan batas bahasa menandai rasa memiliki dan pengucilan." }
   - { word: "ethnographic linguistic research", translation: "penelitian bahasa etnografis", context: "Ethnographic linguistic research combines observation with precise transcription.", contextIndonesian: "Penelitian bahasa etnografis menghubungkan pengamatan dengan transkripsi terperinci." }
+  - { word: "economic anthropology", translation: "antropologi ekonomi", context: "Economic anthropology examines exchange in concrete living environments.", contextIndonesian: "Antropologi ekonomi mengkaji pertukaran dalam dunia kehidupan konkret." }
+  - { word: "legal anthropology", translation: "antropologi hukum", context: "Legal anthropology examines law in everyday practice.", contextIndonesian: "Antropologi hukum mengkaji hukum dalam praktik sehari-hari." }
+  - { word: "rite of passage", translation: "ritual peralihan", context: "Rites of passage communally ordered biographical thresholds. (keyword: rite of passage)", contextIndonesian: "Ritual peralihan menata ambang kehidupan secara kolektif." }
+  - { word: "ritual effectiveness", translation: "kemanjuran ritual", context: "Ritual effectiveness arises within shared expectations.", contextIndonesian: "Kemanjuran ritual terbentuk dalam harapan yang dibagikan bersama." }
 ---
 
 # Linguistic Anthropology

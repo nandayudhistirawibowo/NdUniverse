@@ -24,6 +24,7 @@ vocab:
   - { word: "electricity tax", translation: "pajak listrik", context: "The electricity tax could be reduced for households.", contextIndonesian: "Pajak listrik rumah tangga bisa diturunkan." }
   - { word: "energy efficiency", translation: "efisiensi energi", context: "Energy efficiency has been increased through new standards.", contextIndonesian: "Efisiensi energi meningkat berkat standar baru." }
 
+  - { word: "work environment", translation: "lingkungan kerja", context: "The work environment has been adapted to hybrid teams.", contextIndonesian: "Lingkungan kerjanya disesuaikan untuk tim hibrida." }
 ---
 
 # Environment and Politics

@@ -80,4 +80,8 @@ vocab:
     indonesian: "masa menginap"
     context: "Trotzdem war unser Aufenthalt angenehm."
     contextIndonesian: "Meski begitu, masa menginap kami menyenangkan."
+  - german: "Einzelzimmer"
+    indonesian: "kamar single"
+    context: "Wir brauchen ein Einzelzimmer für zwei Nächte."
+    contextIndonesian: "Kami butuh kamar single untuk dua malam."
 ---

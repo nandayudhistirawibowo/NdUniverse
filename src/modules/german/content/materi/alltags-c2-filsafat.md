@@ -62,4 +62,8 @@ vocab:
     indonesian: "implikasi"
     context: "Wir sollten die ethischen Folgen der These offen diskutieren. (Schlüsselwort: Implikation)"
 
+  - german: "Privatsprachenargumentation"
+    indonesian: "argumen bahasa privat"
+    context: "Die Privatsprachenargumentation bestreite rein private Bedeutungsregeln."
+    contextIndonesian: "Argumen bahasa privat menolak adanya aturan makna yang sepenuhnya pribadi."
 ---

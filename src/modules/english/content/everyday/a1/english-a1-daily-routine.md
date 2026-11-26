@@ -23,6 +23,7 @@ vocab:
   - { word: "sleep", translation: "tidur", context: "The baby is already sleeping.", contextIndonesian: "Bayinya sudah tidur." }
   - { word: "go to bed", translation: "pergi tidur", context: "I'm going to bed early this morning. (keyword: go to bed)", contextIndonesian: "Hari ini aku tidur lebih awal." }
   - { word: "everyday life", translation: "keseharian", context: "My everyday life is pretty quiet.", contextIndonesian: "Keseharianku lumayan santai." }
+  - { word: "book", translation: "buku", context: "This book is very exciting.", contextIndonesian: "Buku ini seru sekali." }
 ---
 
 # Daily Routine

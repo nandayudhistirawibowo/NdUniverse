@@ -21,6 +21,10 @@ vocab:
   - { word: "ingredient", translation: "bahan", context: "What ingredients are in this salad?", contextIndonesian: "Apa saja bahan di salad ini?" }
   - { word: "drink", translation: "minuman", context: "I have a drink with my meal.", contextIndonesian: "Aku pesan minuman untuk makananku." }
 
+  - { word: "service", translation: "pelayanan", context: "The service quickly improved.", contextIndonesian: "Pelayanannya cepat membaik." }
+  - { word: "court", translation: "hidangan", context: "The dish tasted better than expected. (keyword: court)", contextIndonesian: "Hidangannya lebih enak dari perkiraan." }
+  - { word: "atmosphere", translation: "suasana", context: "The atmosphere was cozy and calm.", contextIndonesian: "Suasananya nyaman dan tenang." }
+  - { word: "portion", translation: "porsi", context: "The portion was too big for me.", contextIndonesian: "Porsinya terlalu besar buatku." }
 ---
 
 # Eating at a Restaurant

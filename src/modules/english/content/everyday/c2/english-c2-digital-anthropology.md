@@ -23,6 +23,7 @@ vocab:
   - { word: "online counterpublic", translation: "ruang publik tandingan daring", context: "Online counterpublics developed their own visibility rules.", contextIndonesian: "Ruang publik tandingan daring mengembangkan aturan keterlihatannya sendiri." }
   - { word: "digital self-staging", translation: "pementasan diri digital", context: "Digital self-staging combines authenticity with control.", contextIndonesian: "Pementasan diri digital menghubungkan keaslian dengan kendali." }
   - { word: "human-technology relationship", translation: "relasi manusia dan teknologi", context: "Human-technology relationships changed in everyday use.", contextIndonesian: "Relasi manusia dan teknologi berubah dalam penggunaan sehari-hari." }
+  - { word: "digital materiality", translation: "materialitas digital", context: "Digital materiality remains tied to energy and hardware.", contextIndonesian: "Materialitas digital tetap bergantung pada energi dan perangkat keras." }
 ---
 
 # Digital Anthropology

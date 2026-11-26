@@ -80,4 +80,8 @@ vocab:
     indonesian: "definisi kesejahteraan"
     context: "Die Wohlstandsdefinition entscheide über politische Prioritäten."
     contextIndonesian: "Definisi kesejahteraan menentukan prioritas politik."
+  - german: "Wertökonomie"
+    indonesian: "ekonomi nilai"
+    context: "Die Wertökonomie macht kulturelle Maßstäbe vergleichbar."
+    contextIndonesian: "Ekonomi nilai membuat tolok ukur budaya dapat dibandingkan."
 ---

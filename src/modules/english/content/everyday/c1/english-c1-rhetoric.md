@@ -22,6 +22,9 @@ vocab:
   - { word: "audience reaction", translation: "reaksi audiens", context: "The audience reaction was more muted.", contextIndonesian: "Reaksi audiensnya ternyata lebih tenang." }
   - { word: "flow of speech", translation: "kelancaran berbicara", context: "The flow of speech stalls despite thorough preparation.", contextIndonesian: "Bicaranya tetap tersendat meski persiapannya matang." }
 
+  - { word: "rhetoric", translation: "retorika", context: "Rhetoric shapes public persuasion", contextIndonesian: "Retorika membentuk persuasi publik" }
+  - { word: "persuasion", translation: "persuasi", context: "Ethical persuasion respects the audience", contextIndonesian: "Persuasi etis menghormati audiens" }
+  - { word: "argumentative", translation: "argumentatif", context: "A strong argumentative structure anticipates objections", contextIndonesian: "Struktur argumentatif yang kuat mengantisipasi sanggahan" }
 ---
 
 # Rhetoric

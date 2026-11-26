@@ -21,6 +21,9 @@ vocab:
   - { word: "harvest time", translation: "masa panen", context: "The harvest time was postponed due to the climate.", contextIndonesian: "Masa panennya bergeser karena perubahan iklim." }
   - { word: "water consumption", translation: "konsumsi air", context: "Water consumption has been significantly reduced.", contextIndonesian: "Konsumsi airnya berhasil dikurangi cukup banyak." }
   - { word: "agricultural technology", translation: "teknologi pertanian", context: "The agricultural technology was tested on small farms.", contextIndonesian: "Teknologi pertaniannya diuji di pertanian kecil." }
+  - { word: "installation", translation: "instalasi seni", context: "The installation was designed specifically for the space.", contextIndonesian: "Instalasi itu dirancang khusus untuk ruangan tersebut." }
+  - { word: "work of art", translation: "karya seni", context: "The work of art that uses light changes its effect.", contextIndonesian: "Karya yang menggunakan cahaya itu berubah kesannya." }
+  - { word: "abstraction", translation: "abstraksi", context: "The abstraction allowed for various interpretations.", contextIndonesian: "Karya abstrak itu membuka ruang untuk berbagai tafsir." }
 ---
 
 # Modern Agriculture

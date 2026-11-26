@@ -20,6 +20,10 @@ vocab:
   - { word: "horizon fusion", translation: "peleburan cakrawala", context: "Merging horizons does not mean consistent harmony. (keyword: horizon fusion)", contextIndonesian: "Peleburan cakrawala tidak berarti tercapainya kesepakatan tanpa pertentangan." }
   - { word: "canon", translation: "kanon", context: "The canon is the result of institutional selection.", contextIndonesian: "Kanon merupakan hasil seleksi institusional." }
   - { word: "text coherence", translation: "koherensi teks", context: "Text coherence also arises through contradictory references.", contextIndonesian: "Koherensi teks juga terbentuk melalui rujukan yang bertentangan." }
+  - { word: "criticism of representation", translation: "kritik representasi", context: "Criticism of representation asks about the disposal of images.", contextIndonesian: "Kritik representasi mempertanyakan siapa yang menguasai citra." }
+  - { word: "feminist criticism", translation: "kritik feminis", context: "Feminist criticism combines everyday experience with institutional analysis.", contextIndonesian: "Kritik feminis menghubungkan pengalaman sehari-hari dengan analisis lembaga." }
+  - { word: "feminist practice", translation: "praktik feminis", context: "Feminist practice combines criticism with a demand for change.", contextIndonesian: "Praktik feminis menghubungkan kritik dengan tuntutan perubahan." }
+  - { word: "literary fact", translation: "struktur material karya sastra", context: "Literary facture draws attention to linguistic processes.", contextIndonesian: "Struktur material karya sastra mengarahkan perhatian pada teknik bahasa." }
 ---
 
 # Literary Criticism

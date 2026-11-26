@@ -21,6 +21,9 @@ vocab:
   - { word: "feeling", translation: "perasaan", context: "I know this feeling well.", contextIndonesian: "Aku kenal betul perasaan ini." }
   - { word: "joy", translation: "kegembiraan", context: "There is great joy today.", contextIndonesian: "Hari ini rasanya senang sekali." }
   - { word: "happiness", translation: "kebahagiaan", context: "Good luck with your exam! (keyword: happiness)", contextIndonesian: "Semoga sukses ujiannya!" }
+  - { word: "glad", translation: "senang", context: "I am glad to see you", contextIndonesian: "Saya senang bertemu denganmu" }
+  - { word: "upset", translation: "sedih", context: "She is upset about the delay", contextIndonesian: "Dia sedih karena keterlambatan" }
+  - { word: "excited", translation: "gembira", context: "We are excited about the trip", contextIndonesian: "Kami gembira dengan perjalanan itu" }
 ---
 
 # Feelings and Emotions

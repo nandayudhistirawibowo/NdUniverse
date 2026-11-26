@@ -80,4 +80,8 @@ vocab:
     indonesian: "pemaknaan setelah kejadian"
     context: "Nachträglichkeit verändere den Sinn vergangener Ereignisse."
     contextIndonesian: "Pemaknaan setelah kejadian mengubah arti peristiwa lampau."
+  - german: "Erinnerungskultur"
+    indonesian: "budaya ingatan"
+    context: "Eine Erinnerungskultur entsteht durch die öffentliche Auseinandersetzung mit der Vergangenheit."
+    contextIndonesian: "Budaya ingatan perlu dinegosiasikan melalui perdebatan."
 ---

@@ -22,6 +22,8 @@ vocab:
   - { word: "diasporic dissenting voice", translation: "suara tandingan diaspora", context: "The diasporic dissenting voice is disrupting national self-assurance.", contextIndonesian: "Suara tandingan diaspora mengusik keyakinan diri nasional." }
   - { word: "decolonization of the canon", translation: "dekolonisasi terhadap kanon sastra", context: "Decolonization of the canon shifts literary standards.", contextIndonesian: "Dekolonisasi kanon menggeser tolok ukur sastra." }
   - { word: "colonial temporality", translation: "temporalitas kolonial", context: "Colonial temporality orders progress according to imperial standards.", contextIndonesian: "Temporalitas kolonial menilai kemajuan menurut tolok ukur imperial." }
+  - { word: "exile literature", translation: "sastra eksil", context: "Exile literature bears witness to political violence from a distance.", contextIndonesian: "Sastra eksil memberi kesaksian tentang kekerasan politik dari kejauhan." }
+  - { word: "childlike narrative voice", translation: "suara naratif anak", context: "The childish narrative voice contradicts adult certainties. (keyword: childlike narrative voice)", contextIndonesian: "Suara naratif anak menentang kepastian orang dewasa." }
 ---
 
 # Postcolonial Literature

@@ -76,4 +76,12 @@ vocab:
     indonesian: "badai petir"
     context: "Heute Abend gibt es ein Gewitter."
     contextIndonesian: "Malam ini akan ada badai petir."
+  - german: "Baum"
+    indonesian: "pohon"
+    context: "Der Baum ist sehr alt."
+    contextIndonesian: "Pohonnya sudah tua sekali."
+  - german: "Blume"
+    indonesian: "bunga"
+    context: "Die Blume riecht gut."
+    contextIndonesian: "Bunganya harum."
 ---

@@ -18,6 +18,12 @@ vocab:
   - { word: "message", translation: "pemberitahuan", context: "The notice was sent to everyone yesterday. (keyword: message)", contextIndonesian: "Pemberitahuan itu dikirim ke semua orang kemarin." }
   - { word: "signature", translation: "tanda tangan", context: "Your signature is required below.", contextIndonesian: "Tanda tangan Anda diperlukan di bagian bawah." }
   - { word: "contact person", translation: "narahubung", context: "Mr. Braun was listed as the contact person in the letter.", contextIndonesian: "Pak Braun tercantum sebagai narahubung di surat." }
+  - { word: "economy", translation: "perekonomian", context: "The economy grew slower than expected.", contextIndonesian: "Perekonomian tumbuh lebih lambat dari perkiraan." }
+  - { word: "inflation", translation: "inflasi", context: "Because of inflation, many products became more expensive.", contextIndonesian: "Banyak barang naik harga karena inflasi." }
+  - { word: "consumer", translation: "konsumen laki-laki", context: "Consumers paid more attention to cheap offers.", contextIndonesian: "Konsumen lebih memperhatikan penawaran murah." }
+  - { word: "demand", translation: "permintaan", context: "Demand for living space remained high.", contextIndonesian: "Permintaan tempat tinggal tetap tinggi." }
+  - { word: "company", translation: "perusahaan", context: "The company announced new positions.", contextIndonesian: "Perusahaan itu mengumumkan lowongan baru." }
+  - { word: "sales", translation: "omzet", context: "Sales fell in the last quarter.", contextIndonesian: "Omzetnya turun pada kuartal terakhir." }
 ---
 
 # Formal Letters and Emails

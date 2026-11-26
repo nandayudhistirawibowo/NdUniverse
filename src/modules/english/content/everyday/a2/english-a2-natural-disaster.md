@@ -20,6 +20,10 @@ vocab:
   - { word: "donation in kind", translation: "donasi barang", context: "Donations in kind were collected at the community center. (keyword: donation in kind)", contextIndonesian: "Donasi barang dikumpulkan di balai warga." }
   - { word: "power failure", translation: "pemadaman listrik", context: "The power outage lasted until midday. (keyword: power failure)", contextIndonesian: "Listrik padam sampai tengah hari." }
   - { word: "insurance", translation: "asuransi", context: "The insurance company checked the damage on site.", contextIndonesian: "Pihak asuransi memeriksa kerusakan di lokasi." }
+  - { word: "beach", translation: "pantai", context: "We spent the whole day on the beach.", contextIndonesian: "Kami menghabiskan seharian di pantai." }
+  - { word: "coast", translation: "pesisir", context: "It's windy on the coast today.", contextIndonesian: "Hari ini berangin di pesisir." }
+  - { word: "mountain", translation: "gunung", context: "The mountain was difficult to reach.", contextIndonesian: "Gunungnya sulit dijangkau." }
+  - { word: "hiking trail", translation: "jalur pendakian", context: "The hiking trail leads through the forest.", contextIndonesian: "Jalur pendakiannya melewati hutan." }
 ---
 
 # Natural Disaster

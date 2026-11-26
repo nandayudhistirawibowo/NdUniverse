@@ -19,6 +19,11 @@ vocab:
   - { word: "relative", translation: "anggota keluarga perempuan", context: "A relative took over temporary care.", contextIndonesian: "Seorang anggota keluarga perempuan mengambil alih pengasuhan sementara." }
   - { word: "care", translation: "kepedulian", context: "Caring should not be attributed to women alone. (keyword: care)", contextIndonesian: "Tugas merawat seharusnya tidak hanya dibebankan pada perempuan." }
   - { word: "family benefit", translation: "tunjangan keluarga", context: "The family benefit was adjusted to inflation.", contextIndonesian: "Tunjangan keluarganya disesuaikan dengan inflasi." }
+  - { word: "precision agriculture", translation: "pertanian presisi", context: "Precision agriculture saves water and fertilizer.", contextIndonesian: "Pertanian presisi menghemat air dan pupuk." }
+  - { word: "useful plant", translation: "tanaman budidaya", context: "The crop has been bred to be more drought-resistant. (keyword: useful plant)", contextIndonesian: "Tanaman budidaya itu dikembangkan agar tahan kekeringan." }
+  - { word: "crop yield", translation: "hasil panen", context: "The crop yield increased despite the smaller area.", contextIndonesian: "Hasil panen meningkat meski lahannya lebih kecil." }
+  - { word: "vertical farming", translation: "pertanian vertikal", context: "Vertical farming requires less arable land.", contextIndonesian: "Pertanian vertikal membutuhkan lebih sedikit lahan." }
+  - { word: "irrigation", translation: "irigasi", context: "Irrigation was controlled using sensors.", contextIndonesian: "Irigasinya dikendalikan menggunakan sensor." }
 ---
 
 # Modern Family

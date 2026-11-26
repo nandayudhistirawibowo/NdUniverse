@@ -23,6 +23,7 @@ vocab:
   - { word: "support for return", translation: "bantuan untuk kepulangan", context: "Support for return must remain voluntary.", contextIndonesian: "Bantuan untuk pulang harus tetap bersifat sukarela." }
   - { word: "integration course", translation: "kursus integrasi", context: "The integration course is in greater demand.", contextIndonesian: "Kursus integrasi semakin banyak diminati." }
   - { word: "protection gap", translation: "celah perlindungan", context: "A protection gap urgently needs to be closed.", contextIndonesian: "Celah perlindungan itu harus segera ditutup." }
+  - { word: "crisis diplomacy", translation: "diplomasi krisis", context: "Crisis diplomacy prevented an escalation.", contextIndonesian: "Diplomasi krisis berhasil mencegah eskalasi." }
 ---
 
 # Migration Crisis

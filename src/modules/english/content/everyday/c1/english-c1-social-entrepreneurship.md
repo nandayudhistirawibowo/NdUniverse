@@ -23,6 +23,7 @@ vocab:
   - { word: "impact transparency", translation: "transparansi dampak", context: "Impact transparency strengthens the trust of funders.", contextIndonesian: "Transparansi dampak memperkuat kepercayaan para pendukung." }
   - { word: "shareholding structure", translation: "struktur kepemilikan", context: "The participation structure ensures co-determination. (keyword: shareholding structure)", contextIndonesian: "Struktur kepemilikannya menjamin hak untuk ikut menentukan." }
   - { word: "scalability", translation: "kemampuan untuk diperluas", context: "Scalability should not displace the target group.", contextIndonesian: "Perluasan usaha tidak boleh mengesampingkan kelompok sasarannya." }
+  - { word: "social inequality", translation: "ketimpangan sosial", context: "Social inequality can also be seen in access to education.", contextIndonesian: "Ketimpangan sosial juga terlihat pada akses terhadap pendidikan." }
 ---
 
 # Social Entrepreneurship

@@ -21,6 +21,9 @@ vocab:
   - { word: "community", translation: "komunitas", context: "The community regularly exchanged ideas.", contextIndonesian: "Komunitas itu rutin bertukar ide." }
   - { word: "pottery course", translation: "kursus tembikar", context: "The pottery course was fully booked faster than expected.", contextIndonesian: "Kursus tembikarnya lebih cepat penuh dari perkiraan." }
   - { word: "passion", translation: "kecintaan", context: "A small hobby became a passion.", contextIndonesian: "Hobi kecil itu berubah menjadi kecintaan." }
+  - { word: "exhibition", translation: "pameran", context: "The exhibition was opened by a young artist.", contextIndonesian: "Pamerannya dibuka oleh seniman muda." }
+  - { word: "work of art", translation: "karya seni", context: "The artwork was restored after a debate. (keyword: work of art)", contextIndonesian: "Karya seninya dipugar setelah perdebatan." }
+  - { word: "stage", translation: "panggung", context: "The stage was converted for the play.", contextIndonesian: "Panggungnya diubah untuk pertunjukan itu." }
 ---
 
 # Creative Hobbies

@@ -23,6 +23,7 @@ vocab:
   - { word: "climate escape", translation: "pengungsian akibat iklim", context: "Climate escape increased after severe droughts.", contextIndonesian: "Pengungsian akibat iklim meningkat setelah kekeringan parah." }
   - { word: "weather extremes", translation: "cuaca ekstrem", context: "Weather extremes occurred more frequently in the region.", contextIndonesian: "Cuaca ekstrem lebih sering terjadi di wilayah itu." }
   - { word: "future", translation: "masa depan", context: "Our future also depends on today's decisions.", contextIndonesian: "Masa depan kita juga bergantung pada keputusan hari ini." }
+  - { word: "climate change", translation: "perubahan iklim", context: "Climate change is leading to longer dry seasons in many regions.", contextIndonesian: "Perubahan iklim menyebabkan musim kering yang lebih panjang di banyak wilayah." }
 ---
 
 # Climate Crisis

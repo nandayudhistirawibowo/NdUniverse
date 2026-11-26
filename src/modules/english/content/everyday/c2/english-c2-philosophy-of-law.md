@@ -22,6 +22,8 @@ vocab:
   - { word: "legal term", translation: "konsep hukum", context: "The legal concept is sharpened by borderline cases. (keyword: legal term)", contextIndonesian: "Konsep hukum dipertajam melalui kasus-kasus batas." }
   - { word: "exception", translation: "pengecualian", context: "The exception reveals the hidden order.", contextIndonesian: "Pengecualian menyingkap tatanan yang tersembunyi." }
   - { word: "legal criticism", translation: "kritik hukum", context: "Legal criticism asks whose interests the law protects.", contextIndonesian: "Kritik hukum menanyakan kepentingan siapa yang dilindungi undang-undang." }
+  - { word: "digital law enforcement", translation: "penegakan hak digital", context: "Digital law enforcement must work across borders.", contextIndonesian: "Penegakan hak digital harus berfungsi lintas batas." }
+  - { word: "environmental information law", translation: "hak atas informasi lingkungan", context: "Environmental information law enables effective citizen participation.", contextIndonesian: "Hak atas informasi lingkungan memungkinkan partisipasi warga yang efektif." }
 ---
 
 # Philosophy of Law

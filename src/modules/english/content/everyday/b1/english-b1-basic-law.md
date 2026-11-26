@@ -18,6 +18,12 @@ vocab:
   - { word: "lawyer", translation: "pengacara laki-laki", context: "A lawyer explained my options to me.", contextIndonesian: "Seorang pengacara menjelaskan pilihan-pilihanku." }
   - { word: "consent", translation: "persetujuan", context: "The consent had to be in writing.", contextIndonesian: "Persetujuannya harus tersedia secara tertulis." }
   - { word: "data protection", translation: "perlindungan data", context: "Data protection has been strengthened in the new law.", contextIndonesian: "Perlindungan data diperkuat dalam undang-undang baru." }
+  - { word: "foreign policy", translation: "kebijakan luar negeri", context: "Foreign policy was critically assessed in Parliament.", contextIndonesian: "Kebijakan luar negerinya dinilai kritis di parlemen." }
+  - { word: "alliance", translation: "aliansi", context: "The alliance was renewed after long discussions.", contextIndonesian: "Aliansinya diperbarui setelah diskusi panjang." }
+  - { word: "contract", translation: "perjanjian", context: "The contract came into force at the beginning of the year.", contextIndonesian: "Perjanjiannya mulai berlaku awal tahun ini." }
+  - { word: "negotiation", translation: "negosiasi", context: "Negotiations have been temporarily suspended.", contextIndonesian: "Negosiasinya dihentikan sementara." }
+  - { word: "mediation", translation: "mediasi", context: "Mediation was offered by neutral states.", contextIndonesian: "Mediasi ditawarkan oleh negara-negara netral." }
+  - { word: "peace mission", translation: "misi perdamaian", context: "The peace mission was extended by one year.", contextIndonesian: "Misi perdamaiannya diperpanjang setahun." }
 ---
 
 # Basic Law

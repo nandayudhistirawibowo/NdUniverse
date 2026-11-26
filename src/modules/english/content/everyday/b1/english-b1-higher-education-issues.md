@@ -15,6 +15,16 @@ vocab:
   - { word: "student advisory service", translation: "konseling studi", context: "The student advisory service offered additional appointments.", contextIndonesian: "Konseling studi menyediakan jadwal tambahan." }
   - { word: "entrance", translation: "akses", context: "Access to laboratories remained restricted. (keyword: entrance)", contextIndonesian: "Akses ke laboratorium masih terbatas." }
 
+  - { word: "course of study", translation: "program studi", context: "The course has been fundamentally revised. (keyword: course of study)", contextIndonesian: "Program studinya dirombak secara menyeluruh." }
+  - { word: "seminar", translation: "seminar", context: "In the seminar we discussed current research.", contextIndonesian: "Kami mendiskusikan penelitian terkini di seminar." }
+  - { word: "department", translation: "bidang akademik", context: "The department moved to a new building.", contextIndonesian: "Fakultasnya pindah ke gedung baru." }
+  - { word: "presence", translation: "kehadiran", context: "Attendance was checked for this course. (keyword: presence)", contextIndonesian: "Kehadiran diperiksa di mata kuliah ini." }
+  - { word: "cafeteria", translation: "kantin kampus", context: "There were cheap vegetarian dishes in the cafeteria.", contextIndonesian: "Kantin kampus menyediakan makanan vegetarian yang murah." }
+  - { word: "campus", translation: "kampus", context: "The campus became more accessible for bicycles.", contextIndonesian: "Kampusnya lebih mudah dijangkau dengan sepeda." }
+  - { word: "school education", translation: "pendidikan sekolah", context: "A good school education opens up many opportunities.", contextIndonesian: "Pendidikan sekolah yang baik membuka banyak kesempatan." }
+  - { word: "pressure to perform", translation: "tekanan prestasi", context: "The pressure to perform increased in higher classes.", contextIndonesian: "Tekanan prestasi meningkat di kelas yang lebih tinggi." }
+  - { word: "education reform", translation: "reformasi pendidikan", context: "Education reform has been discussed for years.", contextIndonesian: "Reformasi pendidikan dibahas selama bertahun-tahun." }
+  - { word: "exam", translation: "ujian", context: "For the exam we have to repeat the most important topics.", contextIndonesian: "Kami harus mengulang topik-topik terpenting untuk ujian." }
 ---
 
 # Higher Education Issues

@@ -76,4 +76,12 @@ vocab:
     indonesian: "moderasi"
     context: "Die Moderation sorgte für einen fairen Austausch."
     contextIndonesian: "Moderatornya memastikan diskusi berjalan adil."
+  - german: "Geschäftsmodell"
+    indonesian: "model bisnis"
+    context: "Das Geschäftsmodell, das sie entwickelte, überzeugte Investoren."
+    contextIndonesian: "Model bisnis yang dia kembangkan meyakinkan para investor."
+  - german: "Businessplan"
+    indonesian: "rencana bisnis"
+    context: "Der Businessplan wurde vor der Präsentation überarbeitet."
+    contextIndonesian: "Rencana bisnisnya direvisi sebelum presentasi."
 ---

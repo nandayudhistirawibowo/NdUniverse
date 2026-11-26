@@ -21,6 +21,9 @@ vocab:
   - { word: "belief", translation: "dogma", context: "The article of faith is interpreted in a tradition-bound manner. (keyword: belief)", contextIndonesian: "Dogma ditafsirkan dalam kerangka tradisi." }
   - { word: "renunciation", translation: "penyangkalan diri", context: "Renunciation could be understood as a practice of freedom.", contextIndonesian: "Penyangkalan diri dapat dipahami sebagai praktik kebebasan." }
   - { word: "reason of faith", translation: "nalar iman", context: "Faithful reason explicitly allows for doubt. (keyword: reason of faith)", contextIndonesian: "Nalar iman secara terbuka memberi ruang bagi keraguan." }
+  - { word: "hermeneutics", translation: "hermeneutika", context: "Hermeneutics opens up meaning in the historical horizon.", contextIndonesian: "Hermeneutika menafsirkan makna dalam cakrawala sejarah." }
+  - { word: "doctrine of salvation", translation: "doktrin keselamatan", context: "The doctrine of salvation is being appropriated for existential purposes.", contextIndonesian: "Doktrin keselamatan dihayati secara eksistensial." }
+  - { word: "sacramentality", translation: "sakramentalitas", context: "Sacramentality connects the visible with the invisible.", contextIndonesian: "Sakramentalitas menghubungkan yang terlihat dengan yang tak terlihat." }
 ---
 
 # Philosophy of Religion

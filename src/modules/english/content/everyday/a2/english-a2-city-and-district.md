@@ -22,6 +22,9 @@ vocab:
   - { word: "move", translation: "pindah rumah", context: "My family moved to another part of town.", contextIndonesian: "Keluargaku pindah ke kawasan lain." }
   - { word: "town center", translation: "pusat kawasan", context: "A new café opened in the center of town. (keyword: town center)", contextIndonesian: "Sebuah kafe baru buka di pusat kawasan." }
 
+  - { word: "city park", translation: "taman kota", context: "We had a picnic in the city park.", contextIndonesian: "Kami piknik di taman kota." }
+  - { word: "reading room", translation: "ruang baca", context: "You have to be quiet in the reading room.", contextIndonesian: "Di ruang baca kita harus tenang." }
+  - { word: "ID card", translation: "kartu identitas", context: "You need ID to register. (keyword: ID card)", contextIndonesian: "Kamu perlu kartu identitas untuk mendaftar." }
 ---
 
 # City and District

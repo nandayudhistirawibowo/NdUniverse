@@ -76,4 +76,12 @@ vocab:
     indonesian: "rumusan kesepakatan"
     context: "Die Einigungsformel bleibe bewusst allgemein."
     contextIndonesian: "Rumusan kesepakatannya sengaja dibuat umum."
+  - german: "Wiederanlaufstrategie"
+    indonesian: "strategi pengoperasian kembali"
+    context: "Das Team überprüft und aktualisiert seine Wiederanlaufstrategie regelmäßig."
+    contextIndonesian: "Strategi pengoperasian kembalinya disesuaikan secara berkala."
+  - german: "Wertschöpfungskette"
+    indonesian: "rantai nilai"
+    context: "Das Unternehmen überprüft seine gesamte Wertschöpfungskette."
+    contextIndonesian: "Rantai nilainya semakin banyak dialihkan ke luar."
 ---

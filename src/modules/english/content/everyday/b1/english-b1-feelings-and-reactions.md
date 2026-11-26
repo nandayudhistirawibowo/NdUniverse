@@ -22,6 +22,8 @@ vocab:
   - { word: "overwhelmed", translation: "kewalahan", context: "I felt overwhelmed with so many tasks.", contextIndonesian: "Aku kewalahan dengan banyaknya tugas." }
   - { word: "hope", translation: "harapan", context: "Hope gave her new strength.", contextIndonesian: "Harapan memberinya semangat baru." }
   - { word: "determination", translation: "tekad", context: "She overcame her fear with determination.", contextIndonesian: "Dengan tekad, dia mengatasi rasa takutnya." }
+  - { word: "open", translation: "terbuka", context: "She spoke openly about her feelings.", contextIndonesian: "Dia terbuka membicarakan perasaannya." }
+  - { word: "checking account", translation: "rekening giro", context: "The checking account was opened online.", contextIndonesian: "Rekening gironya dibuka secara online." }
 ---
 
 # Feelings and Reactions

@@ -23,6 +23,7 @@ vocab:
   - { word: "shortage of raw materials", translation: "kelangkaan bahan mentah", context: "The shortage of raw materials could slow down production.", contextIndonesian: "Kelangkaan bahan mentah bisa menghambat produksi." }
   - { word: "disposal fee", translation: "biaya pembuangan", context: "The disposal fee was shown transparently.", contextIndonesian: "Biaya pembuangannya dicantumkan secara transparan." }
   - { word: "environmental technology", translation: "teknologi lingkungan", context: "Environmental technology helped to clean wastewater more efficiently.", contextIndonesian: "Teknologi lingkungan membantu mengolah air limbah lebih efisien." }
+  - { word: "work environment", translation: "lingkungan kerja", context: "The work environment has been adapted to hybrid teams.", contextIndonesian: "Lingkungan kerjanya disesuaikan untuk tim hibrida." }
 ---
 
 # Environment and Technology

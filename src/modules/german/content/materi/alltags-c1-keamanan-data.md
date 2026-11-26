@@ -80,4 +80,8 @@ vocab:
     indonesian: "akses darurat"
     context: "Der Notfallzugang werde gesondert überwacht."
     contextIndonesian: "Akses daruratnya dipantau secara khusus."
+  - german: "Informationssouveränität"
+    indonesian: "kedaulatan informasi"
+    context: "Informationssouveränität gerate zunehmend unter Druck."
+    contextIndonesian: "Kedaulatan informasi semakin mendapat tekanan."
 ---

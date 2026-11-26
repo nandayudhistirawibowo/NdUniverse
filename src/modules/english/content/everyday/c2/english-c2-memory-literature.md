@@ -22,6 +22,8 @@ vocab:
   - { word: "denial of memory", translation: "penolakan untuk mengingat", context: "Denial of memory protects and hurts at the same time.", contextIndonesian: "Penolakan untuk mengingat sekaligus melindungi dan melukai." }
   - { word: "counter-memory", translation: "ingatan tandingan", context: "Counter-memory contradicts hegemonic images of history.", contextIndonesian: "Ingatan tandingan menentang gambaran sejarah yang dominan." }
   - { word: "reshaping of memory culture", translation: "pembentukan ulang dalam budaya ingatan", context: "Remembrance culture changes private memory images. (keyword: reshaping of memory culture)", contextIndonesian: "Pembentukan ulang dalam budaya ingatan mengubah gambaran pribadi tentang masa lalu." }
+  - { word: "memory of the second generation", translation: "ingatan generasi kedua", context: "The memory of the second generation conveys a foreign past.", contextIndonesian: "Ingatan generasi kedua mewarisi masa lalu yang bukan dialaminya sendiri." }
+  - { word: "migrant memory", translation: "ingatan migran", context: "Migrant memories also preserve contradictory images of origins. (keyword: migrant memory)", contextIndonesian: "Ingatan migran menyimpan gambaran asal-usul yang saling bertentangan." }
 ---
 
 # Memory Literature

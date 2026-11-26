@@ -80,4 +80,8 @@ vocab:
     indonesian: "konstelasi genre"
     context: "Genrekonstellationen verschöben sich mit medialen Umbrüchen."
     contextIndonesian: "Konstelasi genre bergeser seiring perubahan media."
+  - german: "instrumentelle Vernunft"
+    indonesian: "rasionalitas instrumental"
+    context: "Instrumentelle Vernunft ordne Mittel dem kalkulierbaren Zweck unter."
+    contextIndonesian: "Rasionalitas instrumental menundukkan sarana pada tujuan yang dapat dihitung."
 ---

@@ -80,4 +80,8 @@ vocab:
     indonesian: "dividen demografis"
     context: "Die demografische Dividende könne Wachstum fördern."
     contextIndonesian: "Dividen demografis bisa mendorong pertumbuhan."
+  - german: "kulturelle Praxis"
+    indonesian: "praktik budaya"
+    context: "Kulturelle Praxis verändert sich mit jeder Generation."
+    contextIndonesian: "Praktik budaya berubah di setiap generasi."
 ---

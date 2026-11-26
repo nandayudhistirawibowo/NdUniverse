@@ -23,6 +23,7 @@ vocab:
   - { word: "security incident", translation: "insiden keamanan", context: "Every security incident is logged in a comprehensible manner.", contextIndonesian: "Setiap insiden keamanan dicatat agar bisa ditelusuri." }
   - { word: "attack surface", translation: "permukaan serangan", context: "This reduces the attack surface.", contextIndonesian: "Dengan begitu, permukaan serangannya bisa diperkecil." }
   - { word: "emergency access", translation: "akses darurat", context: "Emergency access is monitored separately.", contextIndonesian: "Akses daruratnya dipantau secara khusus." }
+  - { word: "algorithmic bias", translation: "bias algoritmik", context: "Algorithmic bias is examined using the training data.", contextIndonesian: "Bias algoritmiknya diteliti berdasarkan data pelatihan." }
 ---
 
 # Data Security

@@ -80,4 +80,8 @@ vocab:
     indonesian: "identitas pertunjukan"
     context: "Aufführungsidentität verändere sich mit jedem Vollzug."
     contextIndonesian: "Identitas pertunjukannya berubah setiap kali dibawakan."
+  - german: "Gebrauchsästhetik"
+    indonesian: "estetika penggunaan"
+    context: "Gebrauchsästhetik verbinde Alltagstauglichkeit und Form."
+    contextIndonesian: "Estetika penggunaan memadukan kepraktisan dan bentuk."
 ---

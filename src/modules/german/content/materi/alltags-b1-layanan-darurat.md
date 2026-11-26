@@ -81,4 +81,8 @@ vocab:
     context: "Sie brauchte dringend medizinische Hilfe."
     contextIndonesian: "Dia sangat membutuhkan bantuan medis."
 
+  - german: "Notdienst"
+    indonesian: "layanan darurat"
+    context: "Der Notdienst wurde während der Feiertage verstärkt."
+    contextIndonesian: "Layanan darurat diperkuat selama hari libur."
 ---

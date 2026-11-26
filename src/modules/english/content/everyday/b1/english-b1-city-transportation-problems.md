@@ -20,6 +20,10 @@ vocab:
   - { word: "air pollution", translation: "polusi udara", context: "Air pollution increased near the intersection.", contextIndonesian: "Polusi udara meningkat dekat persimpangan." }
   - { word: "connection", translation: "jalur", context: "The connection to the center has been improved.", contextIndonesian: "Jalur menuju pusat kota diperbaiki." }
   - { word: "mobility", translation: "mobilitas", context: "Mobility should remain affordable for everyone.", contextIndonesian: "Transportasi sebaiknya tetap terjangkau untuk semua." }
+  - { word: "passenger", translation: "penumpang", context: "Passengers have been informed of changes.", contextIndonesian: "Para penumpang diberi tahu soal perubahan." }
+  - { word: "rail replacement service", translation: "layanan bus pengganti kereta", context: "The rail replacement service ran every thirty minutes.", contextIndonesian: "Bus pengganti kereta berangkat tiap tiga puluh menit." }
+  - { word: "stop", translation: "halte", context: "The stop has been temporarily relocated.", contextIndonesian: "Haltenya dipindahkan sementara." }
+  - { word: "monthly pass", translation: "kartu bulanan", context: "It would be cheaper with a monthly pass.", contextIndonesian: "Dengan kartu bulanan, biayanya akan lebih murah." }
 ---
 
 # City Transportation Problems

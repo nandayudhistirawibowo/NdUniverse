@@ -80,4 +80,8 @@ vocab:
     indonesian: "sampai jumpa lagi"
     context: "Bis bald, wir sehen uns morgen."
     contextIndonesian: "Sampai jumpa lagi, kita bertemu besok."
+  - german: "Geschwister"
+    indonesian: "saudara kandung"
+    context: "Meine Geschwister und ich essen zusammen."
+    contextIndonesian: "Saudara-saudara saya dan saya makan bersama."
 ---

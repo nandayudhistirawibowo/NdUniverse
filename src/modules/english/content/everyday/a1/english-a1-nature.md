@@ -23,6 +23,7 @@ vocab:
   - { word: "grow", translation: "tumbuh", context: "The flowers grow in the garden.", contextIndonesian: "Bunga-bunga tumbuh di taman." }
   - { word: "bloom", translation: "berbunga", context: "The trees bloom in spring.", contextIndonesian: "Pepohonan berbunga saat musim semi." }
   - { word: "outside", translation: "di luar", context: "The children are outside.", contextIndonesian: "Anak-anak sedang di luar." }
+  - { word: "clock", translation: "jam", context: "It's eight o'clock.", contextIndonesian: "Sekarang pukul delapan." }
 ---
 
 # Nature

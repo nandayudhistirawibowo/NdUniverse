@@ -23,6 +23,7 @@ vocab:
   - { word: "automation bias", translation: "bias otomatisasi", context: "Automation bias weakens critical human review.", contextIndonesian: "Bias otomatisasi melemahkan pemeriksaan kritis manusia." }
   - { word: "attribution of damages", translation: "atribusi kerugian", context: "Damage attribution remains difficult in distributed systems. (keyword: attribution of damages)", contextIndonesian: "Atribusi kerugian tetap sulit pada sistem yang tersebar." }
   - { word: "algorithmic sovereignty", translation: "kedaulatan algoritmik", context: "Algorithmic sovereignty requires public design spaces.", contextIndonesian: "Kedaulatan algoritmik membutuhkan ruang perancangan publik." }
+  - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence does not release organizations from their duty of care.", contextIndonesian: "Kecerdasan buatan tidak membebaskan organisasi dari kewajiban kehati-hatian." }
 ---
 
 # Ethics of Artificial Intelligence

@@ -16,6 +16,15 @@ vocab:
   - { word: "quota", translation: "kuota", context: "The quota was assessed critically by some.", contextIndonesian: "Sebagian orang menilai kuota itu secara kritis." }
   - { word: "debate", translation: "perdebatan", context: "The debate continued at school.", contextIndonesian: "Perdebatan itu berlanjut di sekolah." }
 
+  - { word: "educational opportunity", translation: "kesempatan pendidikan", context: "Educational opportunities should be distributed more fairly. (keyword: educational opportunity)", contextIndonesian: "Kesempatan pendidikan sebaiknya dibagikan lebih adil." }
+  - { word: "pressure to perform", translation: "tekanan prestasi", context: "The pressure to perform increased in higher classes.", contextIndonesian: "Tekanan prestasi meningkat di kelas yang lebih tinggi." }
+  - { word: "cancellation of classes", translation: "kelas yang dibatalkan", context: "The cancellation of classes was announced at short notice.", contextIndonesian: "Kelas yang dibatalkan diumumkan mendadak." }
+  - { word: "equipment", translation: "fasilitas", context: "The equipment in many schools remained outdated.", contextIndonesian: "Fasilitas banyak sekolah masih ketinggalan zaman." }
+  - { word: "learning environment", translation: "lingkungan belajar", context: "A quiet learning environment would be important for everyone.", contextIndonesian: "Lingkungan belajar yang tenang penting bagi semua." }
+  - { word: "inequality", translation: "ketimpangan", context: "The inequality became visible through the study.", contextIndonesian: "Ketimpangan itu terlihat dari hasil penelitian." }
+  - { word: "shortage of teachers", translation: "kekurangan guru", context: "The shortage of teachers put a strain on several schools.", contextIndonesian: "Kekurangan guru membebani beberapa sekolah." }
+  - { word: "funding", translation: "dukungan belajar", context: "The funding was adapted to needs.", contextIndonesian: "Dukungan belajarnya disesuaikan dengan kebutuhan." }
+  - { word: "school fee", translation: "biaya sekolah", context: "Not every family could pay the school fees.", contextIndonesian: "Tidak semua keluarga mampu membayar biaya sekolah." }
 ---
 
 # Gender Issues

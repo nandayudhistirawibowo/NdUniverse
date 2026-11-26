@@ -23,6 +23,7 @@ vocab:
   - { word: "multiple perspective", translation: "sudut pandang majemuk", context: "Multiple perspective correct one-sided historical images.", contextIndonesian: "Sudut pandang majemuk mengoreksi gambaran sejarah yang berat sebelah." }
   - { word: "diaspora generation", translation: "generasi diaspora", context: "Each diaspora generation develops its own forms of belonging.", contextIndonesian: "Setiap generasi diaspora mengembangkan bentuk rasa memiliki sendiri." }
   - { word: "transcultural memory", translation: "ingatan transkultural", context: "Transcultural memory transcends family traditions.", contextIndonesian: "Ingatan transkultural melampaui cerita yang diwariskan dalam keluarga." }
+  - { word: "exile literature", translation: "sastra eksil", context: "Exile literature bears witness to political violence from a distance.", contextIndonesian: "Sastra eksil memberi kesaksian tentang kekerasan politik dari kejauhan." }
 ---
 
 # Diaspora Literature

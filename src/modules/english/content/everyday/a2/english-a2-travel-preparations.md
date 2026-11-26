@@ -19,6 +19,11 @@ vocab:
   - { word: "travel guide", translation: "buku panduan wisata", context: "I found good tips in the travel guide.", contextIndonesian: "Aku menemukan tips bagus di buku panduan." }
   - { word: "departure time", translation: "waktu keberangkatan", context: "The departure time was on my ticket.", contextIndonesian: "Waktu keberangkatan tercantum di tiketku." }
   - { word: "change of clothes", translation: "baju ganti", context: "I put a change of clothes in my hand luggage.", contextIndonesian: "Aku memasukkan baju ganti ke tas kabin." }
+  - { word: "travel destination", translation: "tujuan perjalanan", context: "We want to go to a small town by the sea. (keyword: travel destination)", contextIndonesian: "Kami ingin pergi ke sebuah kota kecil di tepi laut." }
+  - { word: "passenger", translation: "penumpang perempuan", context: "A passenger shared the travel costs.", contextIndonesian: "Seorang penumpang ikut membagi ongkos perjalanan." }
+  - { word: "travel costs", translation: "biaya perjalanan", context: "We shared the travel costs among ourselves.", contextIndonesian: "Kami membagi biaya perjalanan bersama." }
+  - { word: "journey", translation: "perjalanan", context: "We're going to Austria for a week. (keyword: journey)", contextIndonesian: "Kami pergi ke Austria selama satu minggu." }
+  - { word: "vacation", translation: "liburan", context: "I'm going on vacation for two weeks in the summer.", contextIndonesian: "Pada musim panas saya berlibur selama dua minggu." }
 ---
 
 # Travel Preparations

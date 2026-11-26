@@ -20,6 +20,10 @@ vocab:
   - { word: "festival", translation: "festival", context: "The festival was well attended despite the rain.", contextIndonesian: "Festivalnya tetap ramai meski hujan." }
   - { word: "sound check", translation: "uji suara", context: "The sound check started two hours before.", contextIndonesian: "Uji suaranya dimulai dua jam sebelumnya." }
   - { word: "lyrics", translation: "lirik lagu", context: "Almost everyone in the room knew the lyrics.", contextIndonesian: "Hampir semua orang di aula hafal liriknya." }
+  - { word: "folk music", translation: "musik rakyat", context: "Folk music was reinterpreted by young bands.", contextIndonesian: "Band muda menafsirkan ulang musik rakyat." }
+  - { word: "music archive", translation: "arsip musik", context: "The music archive has been made digitally accessible.", contextIndonesian: "Arsip musiknya dibuat bisa diakses secara digital." }
+  - { word: "instrument", translation: "alat musik", context: "The instrument has been passed down through generations.", contextIndonesian: "Alat musik itu diwariskan turun-temurun." }
+  - { word: "melody", translation: "melodi", context: "The melody reminded me of my childhood.", contextIndonesian: "Melodinya mengingatkanku pada masa kecil." }
 ---
 
 # Music and Concerts

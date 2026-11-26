@@ -22,6 +22,9 @@ vocab:
   - { word: "cast", translation: "investasi libidinal", context: "The cast wanders between ideas and objects.", contextIndonesian: "Investasi libidinal berpindah antara gagasan dan objek." }
   - { word: "death instinct", translation: "naluri kematian", context: "The death instinct remains theoretically controversial.", contextIndonesian: "Naluri kematian tetap diperdebatkan secara teoretis." }
 
+  - { word: "psychic conflict", translation: "konflik psikis", context: "Psychic conflict exposes competing desires", contextIndonesian: "Konflik psikis memperlihatkan keinginan yang saling bertentangan" }
+  - { word: "defence mechanism", translation: "mekanisme pertahanan", context: "A defence mechanism regulates distress", contextIndonesian: "Mekanisme pertahanan mengatur distres" }
+  - { word: "transference", translation: "transferensi", context: "Transference displaces earlier relations onto the analyst", contextIndonesian: "Transferensi memindahkan relasi terdahulu kepada analis" }
 ---
 
 # Psychoanalysis

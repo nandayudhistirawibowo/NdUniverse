@@ -23,6 +23,7 @@ vocab:
   - { word: "prevention strategy", translation: "strategi pencegahan", context: "The prevention strategy is based on current data.", contextIndonesian: "Strategi pencegahannya didasarkan pada data terbaru." }
   - { word: "vaccine access", translation: "akses terhadap vaksin", context: "Vaccine access is unequal globally.", contextIndonesian: "Akses terhadap vaksin masih timpang secara global." }
   - { word: "disease transmission", translation: "penularan penyakit", context: "Disease transmission is contained through contact tracing.", contextIndonesian: "Penularan penyakit ditekan lewat pelacakan kontak." }
+  - { word: "public", translation: "masyarakat umum", context: "The public wants to know why the decision was made that way.", contextIndonesian: "Masyarakat ingin mengetahui alasan pengambilan keputusan seperti itu." }
 ---
 
 # Global Public Health

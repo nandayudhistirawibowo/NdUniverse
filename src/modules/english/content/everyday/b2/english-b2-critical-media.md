@@ -23,6 +23,7 @@ vocab:
   - { word: "representation", translation: "penggambaran", context: "The portrayal of the conflict remained unbalanced. (keyword: representation)", contextIndonesian: "Penggambaran konfliknya tetap tidak seimbang." }
   - { word: "source of information", translation: "sumber informasi", context: "The source of the information, which remained anonymous, has been confirmed. (keyword: source of information)", contextIndonesian: "Sumber informasi yang tetap anonim itu dikonfirmasi." }
   - { word: "disinformation", translation: "disinformasi", context: "Disinformation was deliberately spread before the election.", contextIndonesian: "Disinformasi sengaja disebarkan menjelang pemilu." }
+  - { word: "professional experience", translation: "pengalaman kerja", context: "The professional experience I had gained helped me.", contextIndonesian: "Pengalaman kerja yang kukumpulkan membantuku." }
 ---
 
 # Critical Media

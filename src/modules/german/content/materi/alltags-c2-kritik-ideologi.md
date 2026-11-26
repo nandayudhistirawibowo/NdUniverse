@@ -80,4 +80,8 @@ vocab:
     indonesian: "demistifikasi"
     context: "Entmystifizierung mache verborgene Abhängigkeiten lesbar."
     contextIndonesian: "Demistifikasi membuat ketergantungan tersembunyi dapat dipahami."
+  - german: "Repräsentationskritik"
+    indonesian: "kritik representasi"
+    context: "Repräsentationskritik fragt, wer über Bilder und Darstellungen verfügen kann."
+    contextIndonesian: "Kritik representasi mempertanyakan siapa yang menguasai citra."
 ---

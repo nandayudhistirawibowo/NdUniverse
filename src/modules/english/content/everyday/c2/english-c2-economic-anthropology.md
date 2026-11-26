@@ -23,6 +23,7 @@ vocab:
   - { word: "morality of debt", translation: "moralitas utang", context: "Debt morality order repayment and social honor. (keyword: morality of debt)", contextIndonesian: "Moralitas utang menata pelunasan dan kehormatan sosial." }
   - { word: "market presentation", translation: "gagasan tentang pasar", context: "Market ideas are themselves culturally influenced. (keyword: market presentation)", contextIndonesian: "Gagasan tentang pasar juga dibentuk oleh budaya." }
   - { word: "economic anthropology", translation: "antropologi ekonomi", context: "Economic anthropology examines exchange in concrete living environments.", contextIndonesian: "Antropologi ekonomi mengkaji pertukaran dalam dunia kehidupan konkret." }
+  - { word: "economic rationality", translation: "rasionalitas ekonomi", context: "Economic rationality does not set all relevant values.", contextIndonesian: "Rasionalitas ekonomi tidak menetapkan semua nilai yang relevan." }
 ---
 
 # Economic Anthropology

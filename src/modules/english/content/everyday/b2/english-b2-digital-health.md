@@ -21,6 +21,10 @@ vocab:
   - { word: "remote treatment", translation: "perawatan jarak jauh", context: "Remote treatment would be helpful for remote regions.", contextIndonesian: "Perawatan jarak jauh akan membantu daerah terpencil." }
   - { word: "accuracy", translation: "akurasi", context: "The accuracy of the measurement was checked again.", contextIndonesian: "Akurasi pengukurannya diperiksa kembali." }
 
+  - { word: "healthcare system", translation: "sistem kesehatan", context: "The health system was heavily strained during the crisis. (keyword: healthcare system)", contextIndonesian: "Sistem kesehatan sangat terbebani selama krisis." }
+  - { word: "health authority", translation: "otoritas kesehatan", context: "The health authority published updated recommendations.", contextIndonesian: "Otoritas kesehatan menerbitkan anjuran terbaru." }
+  - { word: "health care", translation: "layanan kesehatan", context: "Health care needs to be distributed more fairly.", contextIndonesian: "Layanan kesehatannya perlu dibagi lebih merata." }
+  - { word: "health crisis", translation: "krisis kesehatan", context: "The health crisis revealed structural weaknesses.", contextIndonesian: "Krisis kesehatan mengungkap kelemahan struktural." }
 ---
 
 # Digital Health

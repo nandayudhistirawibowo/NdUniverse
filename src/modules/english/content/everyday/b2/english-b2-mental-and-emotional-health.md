@@ -20,6 +20,10 @@ vocab:
   - { word: "confide in oneself", translation: "mencurahkan isi hati kepada", context: "She confided in a good friend. (keyword: confide in oneself)", contextIndonesian: "Dia curhat pada teman baiknya." }
   - { word: "well-being", translation: "kesejahteraan", context: "Regular exercise is good for your well-being.", contextIndonesian: "Olahraga teratur baik untuk kesehatan Anda." }
   - { word: "seek professional help", translation: "mencari bantuan profesional", context: "If symptoms persist, you should get professional help. (keyword: seek professional help)", contextIndonesian: "Jika gejalanya menetap, Anda harus mencari bantuan profesional." }
+  - { word: "healthcare system", translation: "sistem kesehatan", context: "The health system was heavily strained during the crisis. (keyword: healthcare system)", contextIndonesian: "Sistem kesehatan sangat terbebani selama krisis." }
+  - { word: "health authority", translation: "otoritas kesehatan", context: "The health authority published updated recommendations.", contextIndonesian: "Otoritas kesehatan menerbitkan anjuran terbaru." }
+  - { word: "health care", translation: "layanan kesehatan", context: "Health care needs to be distributed more fairly.", contextIndonesian: "Layanan kesehatannya perlu dibagi lebih merata." }
+  - { word: "health crisis", translation: "krisis kesehatan", context: "The health crisis revealed structural weaknesses.", contextIndonesian: "Krisis kesehatan mengungkap kelemahan struktural." }
 ---
 
 # Mental and Emotional Health

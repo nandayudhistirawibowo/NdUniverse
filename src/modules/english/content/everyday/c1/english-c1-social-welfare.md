@@ -20,6 +20,10 @@ vocab:
   - { word: "social exclusion", translation: "pengucilan sosial", context: "This increases social exclusion.", contextIndonesian: "Pengucilan sosial semakin diperparah oleh hal itu." }
   - { word: "welfare benefit", translation: "layanan kesejahteraan", context: "The welfare benefit is distributed according to needs.", contextIndonesian: "Layanan kesejahteraannya dibagikan sesuai kebutuhan." }
   - { word: "eligibility", translation: "hak untuk menerima", context: "Eligibility is clearly regulated.", contextIndonesian: "Hak untuk menerima bantuan sudah diatur dengan jelas." }
+  - { word: "social enterprise", translation: "perusahaan sosial", context: "The social enterprise combines impact and profitability.", contextIndonesian: "Perusahaan sosial itu memadukan dampak dan kelayakan ekonomi." }
+  - { word: "social return", translation: "imbal hasil sosial", context: "The social return cannot be assessed in the short term.", contextIndonesian: "Imbal hasil sosial sulit dinilai dalam waktu singkat." }
+  - { word: "social added value", translation: "nilai tambah sosial", context: "Social added value is shown transparently.", contextIndonesian: "Nilai tambah sosialnya ditampilkan secara transparan." }
+  - { word: "common good balance sheet", translation: "neraca manfaat publik", context: "The common good balance sheet takes social consequences into account.", contextIndonesian: "Neraca manfaat publiknya mempertimbangkan dampak sosial." }
 ---
 
 # Social Welfare

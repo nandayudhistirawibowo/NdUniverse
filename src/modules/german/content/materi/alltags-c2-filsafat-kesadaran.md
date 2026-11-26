@@ -76,4 +76,12 @@ vocab:
     indonesian: "subjektivitas"
     context: "Subjektivität bleibe ein ungelöster Erklärungsrest."
     contextIndonesian: "Subjektivitas tetap menjadi sisa persoalan yang belum terjelaskan."
+  - german: "Intentionalität"
+    indonesian: "intensionalitas"
+    context: "Intentionalität richte Bewusstsein stets auf etwas."
+    contextIndonesian: "Intensionalitas selalu mengarahkan kesadaran pada sesuatu."
+  - german: "Fremderfahrung"
+    indonesian: "pengalaman atas orang lain"
+    context: "Fremderfahrung bleibt stets durch Analogieschlüsse vermittelt."
+    contextIndonesian: "Pengalaman atas orang lain tetap dimediasi oleh penalaran analogis."
 ---

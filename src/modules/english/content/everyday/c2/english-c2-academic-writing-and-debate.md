@@ -22,6 +22,8 @@ vocab:
   - { word: "controversy", translation: "kontroversi", context: "There is continued debate about the method in the specialist literature. (keyword: controversy)", contextIndonesian: "Masih ada perdebatan mengenai metode ini dalam literatur spesialis." }
   - { word: "discussion leader", translation: "moderator diskusi", context: "The discussion leader ensures an objective and balanced debate.", contextIndonesian: "Pemimpin diskusi memastikan perdebatan objektif dan seimbang." }
   - { word: "publication ethics", translation: "etika publikasi", context: "Publication ethics requires that we disclose conflicts of interest.", contextIndonesian: "Etika publikasi mengharuskan kita mengungkapkan konflik kepentingan." }
+  - { word: "conceptual work", translation: "penggarapan konsep", context: "Conceptual work exposes implicit assumptions.", contextIndonesian: "Penggarapan konsep menyingkap asumsi yang tersirat." }
+  - { word: "operationalization", translation: "operasionalisasi", context: "The operationalization must be theoretically plausible.", contextIndonesian: "Operasionalisasinya harus masuk akal secara teoretis." }
 ---
 
 # Academic Writing and Debate

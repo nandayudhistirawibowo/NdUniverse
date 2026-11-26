@@ -80,4 +80,8 @@ vocab:
     indonesian: "rasa memiliki situasional"
     context: "Situative Zugehörigkeit verändere sich mit dem sozialen Kontext."
     contextIndonesian: "Rasa memiliki situasional berubah mengikuti konteks sosial."
+  - german: "Bewegungsidentität"
+    indonesian: "identitas gerakan"
+    context: "Bewegungsidentität wachse durch gemeinsame Praxis."
+    contextIndonesian: "Identitas gerakan tumbuh melalui praktik bersama."
 ---

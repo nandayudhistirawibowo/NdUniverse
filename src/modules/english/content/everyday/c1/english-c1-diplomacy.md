@@ -23,6 +23,7 @@ vocab:
   - { word: "declaration of intent", translation: "pernyataan niat", context: "The declaration of intent is still non-binding.", contextIndonesian: "Pernyataan niatnya masih belum mengikat." }
   - { word: "diplomatic initiative", translation: "inisiatif diplomatik", context: "The diplomatic initiative is met with resistance.", contextIndonesian: "Inisiatif diplomatiknya mendapat penolakan." }
   - { word: "negotiation corridor", translation: "ruang lingkup perundingan", context: "The negotiation corridor remains narrow.", contextIndonesian: "Ruang lingkup perundingannya tetap terbatas." }
+  - { word: "crisis diplomacy", translation: "diplomasi krisis", context: "Crisis diplomacy prevented an escalation.", contextIndonesian: "Diplomasi krisis berhasil mencegah eskalasi." }
 ---
 
 # Diplomacy

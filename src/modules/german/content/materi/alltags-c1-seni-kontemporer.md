@@ -81,4 +81,8 @@ vocab:
     context: "Das Vermittlungsformat werde an unterschiedliche Gruppen angepasst."
     contextIndonesian: "Format edukasinya disesuaikan untuk kelompok yang berbeda."
 
+  - german: "Instrumentierung"
+    indonesian: "instrumentasi"
+    context: "Die Instrumentierung hebt die Motive der Figuren deutlich hervor."
+    contextIndonesian: "Instrumentasinya menonjolkan motif-motif musik."
 ---

@@ -23,6 +23,7 @@ vocab:
   - { word: "added value", translation: "nilai tambah", context: "What added value could I offer the team?", contextIndonesian: "Nilai tambah apa yang bisa kuberikan kepada tim?" }
   - { word: "reference", translation: "referensi", context: "The reference was contacted after my approval.", contextIndonesian: "Referensinya dihubungi setelah aku memberi persetujuan." }
   - { word: "probationary period", translation: "masa percobaan", context: "The probationary period could serve as a mutual orientation.", contextIndonesian: "Masa percobaan bisa menjadi kesempatan saling mengenal." }
+  - { word: "interview", translation: "wawancara kerja", context: "In the interview she talked about her professional goals.", contextIndonesian: "Dalam wawancara dia berbicara tentang tujuan profesionalnya." }
 ---
 
 # Advanced Job Interview

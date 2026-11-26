@@ -76,4 +76,12 @@ vocab:
     indonesian: "perspektif interseksional"
     context: "Intersektionale Perspektive differenziere weibliche Lebenslagen."
     contextIndonesian: "Perspektif interseksional membedakan ragam keadaan hidup perempuan."
+  - german: "kinderliterarische Kanonbildung"
+    indonesian: "pembentukan kanon sastra anak"
+    context: "Kanonbildung in der Kinderliteratur schließt bestimmte Kindheiten systematisch aus."
+    contextIndonesian: "Pembentukan kanon secara sistematis mengecualikan pengalaman masa kecil tertentu."
+  - german: "kindliche Erzählstimme"
+    indonesian: "suara naratif anak"
+    context: "Die kindliche Erzählstimme widerspricht den Gewissheiten der Erwachsenen."
+    contextIndonesian: "Suara naratif anak menentang kepastian orang dewasa."
 ---

@@ -80,4 +80,8 @@ vocab:
     indonesian: "keberagaman perkotaan"
     context: "Urbane Vielfalt brauche leistbare und zugängliche Räume."
     contextIndonesian: "Keberagaman perkotaan membutuhkan ruang yang terjangkau dan mudah diakses."
+  - german: "Raumwirkung"
+    indonesian: "efek ruang"
+    context: "Licht, Maßstab und Bewegung bestimmen die Raumwirkung eines Bühnenbilds."
+    contextIndonesian: "Efek ruang muncul dari cahaya, skala, dan gerakan."
 ---

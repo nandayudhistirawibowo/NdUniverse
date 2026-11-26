@@ -76,4 +76,12 @@ vocab:
     indonesian: "politik pengetahuan"
     context: "Wissenspolitik verteile Sichtbarkeit, Ressourcen und Glaubwürdigkeit."
     contextIndonesian: "Politik pengetahuan membagi keterlihatan, sumber daya, dan kredibilitas."
+  - german: "Herrschaftslegitimation"
+    indonesian: "legitimasi dominasi"
+    context: "Herrschaftslegitimation stützt sich auf geteilte Deutungen."
+    contextIndonesian: "Legitimasi dominasi bertumpu pada tafsir yang dibagikan bersama."
+  - german: "Legitimitätskrise"
+    indonesian: "krisis legitimasi"
+    context: "Eine Legitimitätskrise erschüttere institutionelle Autorität."
+    contextIndonesian: "Krisis legitimasi mengguncang kewibawaan kelembagaan."
 ---

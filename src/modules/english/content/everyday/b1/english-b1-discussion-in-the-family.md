@@ -15,6 +15,15 @@ vocab:
   - { word: "family visit", translation: "kunjungan keluarga", context: "The family visit was postponed at short notice.", contextIndonesian: "Kunjungan keluarganya mendadak diundur." }
   - { word: "understanding", translation: "penuh pengertian", context: "She responded to my rejection with understanding.", contextIndonesian: "Dia memahami saat aku membatalkan rencana." }
   - { word: "cohesion", translation: "kekompakan", context: "Our solidarity was evident in difficult times. (keyword: cohesion)", contextIndonesian: "Kekompakan kami terlihat saat masa sulit." }
+  - { word: "family celebration", translation: "acara keluarga", context: "The family celebration was spontaneously held in the garden.", contextIndonesian: "Acara keluarga mendadak diadakan di taman." }
+  - { word: "relatives", translation: "kerabat", context: "The relatives came together for the anniversary.", contextIndonesian: "Para kerabat berkumpul untuk perayaan itu." }
+  - { word: "generational conflict", translation: "konflik antargenerasi", context: "The generational conflict was only understood later.", contextIndonesian: "Konflik antargenerasi itu baru dipahami belakangan." }
+  - { word: "expectation", translation: "harapan", context: "The expectations were discussed openly with each other.", contextIndonesian: "Harapan masing-masing dibicarakan secara terbuka." }
+  - { word: "trust", translation: "kepercayaan", context: "Trust had to grow again after the argument.", contextIndonesian: "Kepercayaan harus dibangun lagi setelah pertengkaran." }
+  - { word: "reconciliation", translation: "perdamaian", context: "The reconciliation came after a long conversation.", contextIndonesian: "Mereka berbaikan setelah percakapan panjang." }
+  - { word: "make up", translation: "berbaikan", context: "After the argument they made up again. (keyword: make up)", contextIndonesian: "Mereka berbaikan lagi setelah bertengkar." }
+  - { word: "relative", translation: "anggota keluarga perempuan", context: "A relative accompanied him to the appointment.", contextIndonesian: "Seorang anggota keluarganya menemaninya ke janji temu." }
+  - { word: "care", translation: "kepedulian", context: "Her aunt's care meant a lot to her.", contextIndonesian: "Perhatian bibinya sangat berarti baginya." }
 ---
 
 # Discussion in the Family

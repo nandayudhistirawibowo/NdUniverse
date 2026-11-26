@@ -80,4 +80,8 @@ vocab:
     indonesian: "teknologi lingkungan"
     context: "Die Umwelttechnik half, Abwasser effizienter zu reinigen."
     contextIndonesian: "Teknologi lingkungan membantu mengolah air limbah lebih efisien."
+  - german: "Technikfolgenabschätzung"
+    indonesian: "penilaian dampak teknologi"
+    context: "Eine Technikfolgenabschätzung prüft mögliche gesellschaftliche Auswirkungen frühzeitig."
+    contextIndonesian: "Penilaian dampak teknologinya perlu dimulai sejak awal."
 ---

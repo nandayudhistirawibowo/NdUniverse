@@ -80,4 +80,8 @@ vocab:
     indonesian: "refleksi diri teatrikal"
     context: "Theatrale Autoreflexion mache die Gemachtheit der Szene kenntlich."
     contextIndonesian: "Refleksi diri teatrikal menampakkan bahwa adegannya direkayasa."
+  - german: "Raumwirkung"
+    indonesian: "efek ruang"
+    context: "Licht, Maßstab und Bewegung bestimmen die Raumwirkung eines Bühnenbilds."
+    contextIndonesian: "Efek ruang muncul dari cahaya, skala, dan gerakan."
 ---

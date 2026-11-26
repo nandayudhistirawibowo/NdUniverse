@@ -73,4 +73,16 @@ vocab:
     context: "Wetterextreme traten in der Region häufiger auf."
     contextIndonesian: "Cuaca ekstrem lebih sering terjadi di wilayah itu."
 
+  - german: "Klimawandel"
+    indonesian: "perubahan iklim"
+    context: "Der Klimawandel führt in vielen Regionen zu längeren Trockenzeiten."
+    contextIndonesian: "Perubahan iklim menyebabkan musim kering yang lebih panjang di banyak wilayah."
+  - german: "Energieverbrauch"
+    indonesian: "konsumsi energi"
+    context: "Unser Energieverbrauch sank im vergangenen Winter."
+    contextIndonesian: "Konsumsi energi kami turun musim dingin lalu."
+  - german: "Wiederverwendung"
+    indonesian: "penggunaan kembali"
+    context: "Durch Wiederverwendung entsteht weniger Müll."
+    contextIndonesian: "Penggunaan kembali mengurangi sampah."
 ---

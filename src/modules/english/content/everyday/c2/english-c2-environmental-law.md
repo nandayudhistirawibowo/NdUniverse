@@ -22,6 +22,8 @@ vocab:
   - { word: "ecological burden of proof", translation: "beban pembuktian ekologis", context: "Ecological burden of proof should not overwhelm injured parties.", contextIndonesian: "Beban pembuktian ekologis tak boleh terlalu memberatkan korban." }
   - { word: "international environmental law", translation: "hukum lingkungan internasional", context: "International environmental law coordinates obligations between states.", contextIndonesian: "Hukum lingkungan internasional mengoordinasikan kewajiban antarnegara." }
   - { word: "securing the ecological future", translation: "jaminan masa depan ekologis", context: "Securing the ecological future requires binding long-term rules.", contextIndonesian: "Jaminan masa depan ekologis membutuhkan aturan jangka panjang yang mengikat." }
+  - { word: "environmental ethics", translation: "etika lingkungan", context: "Environmental ethics examine duties towards non-human life.", contextIndonesian: "Etika lingkungan menguji kewajiban terhadap kehidupan nonmanusia." }
+  - { word: "intergenerational justice", translation: "keadilan antargenerasi", context: "Intergenerational justice limits current power of disposal.", contextIndonesian: "Keadilan antargenerasi membatasi kuasa generasi masa kini." }
 ---
 
 # Environmental Law

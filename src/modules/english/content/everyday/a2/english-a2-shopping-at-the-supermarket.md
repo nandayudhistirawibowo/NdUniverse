@@ -14,6 +14,16 @@ vocab:
   - { word: "cheap", translation: "murah", context: "The product is really cheap today.", contextIndonesian: "Produk ini sangat terjangkau hari ini." }
   - { word: "suitable", translation: "sesuai", context: "Do you have a more suitable size for this jacket?", contextIndonesian: "Apakah Anda punya ukuran yang lebih cocok untuk jaket ini?" }
   - { word: "crowd", translation: "jumlah", context: "I need a larger amount of flour for the cake. (keyword: crowd)", contextIndonesian: "Untuk resep ini saya membutuhkan tepung dalam jumlah lebih banyak." }
+  - { word: "shopping cart", translation: "kereta belanja", context: "The shopping cart is next to the entrance.", contextIndonesian: "Kereta belanjanya ada di dekat pintu masuk." }
+  - { word: "purchasing", translation: "belanjaan", context: "Our shopping was done quickly. (keyword: purchasing)", contextIndonesian: "Belanjaan kami cepat selesai." }
+  - { word: "market stall", translation: "lapak pasar", context: "The market stall opens at six.", contextIndonesian: "Lapaknya buka sejak pukul enam." }
+  - { word: "dealer", translation: "pedagang laki-laki", context: "The merchant offered fresh apples. (keyword: dealer)", contextIndonesian: "Pedagang itu menawarkan apel segar." }
+  - { word: "vegetables", translation: "sayuran", context: "The vegetables come from the region.", contextIndonesian: "Sayurannya berasal dari daerah sekitar." }
+  - { word: "strawberry", translation: "stroberi", context: "The strawberries were particularly sweet today. (keyword: strawberry)", contextIndonesian: "Stroberinya manis sekali hari ini." }
+  - { word: "scales", translation: "timbangan", context: "The scales showed two kilos.", contextIndonesian: "Timbangannya menunjukkan dua kilogram." }
+  - { word: "kilo", translation: "kilogram", context: "A kilo of tomatoes costs three euros.", contextIndonesian: "Satu kilogram tomat harganya tiga euro." }
+  - { word: "offer", translation: "penawaran", context: "Offer valid today only.", contextIndonesian: "Penawarannya berlaku hari ini saja." }
+  - { word: "price", translation: "harga", context: "The price was lower than yesterday.", contextIndonesian: "Harganya lebih murah daripada kemarin." }
 ---
 
 # Shopping at the Supermarket

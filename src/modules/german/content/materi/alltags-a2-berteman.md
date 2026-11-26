@@ -80,4 +80,8 @@ vocab:
     indonesian: "jalan-jalan"
     context: "Der Ausflug mit Freunden war sehr lustig."
     contextIndonesian: "Jalan-jalan bersama teman sangat seru."
+  - german: "Bekanntschaft"
+    indonesian: "perkenalan"
+    context: "Unsere Bekanntschaft begann im Sprachkurs."
+    contextIndonesian: "Kami berkenalan di kursus bahasa."
 ---

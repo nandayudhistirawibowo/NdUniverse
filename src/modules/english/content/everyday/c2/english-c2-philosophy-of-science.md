@@ -19,6 +19,11 @@ vocab:
   - { word: "plurality of theories", translation: "pluralitas teori", context: "The plurality of theories can promote advances in knowledge.", contextIndonesian: "Pluralitas teori dapat mendorong kemajuan pengetahuan." }
   - { word: "measurement operation", translation: "operasi pengukuran", context: "The measurement operation must be justified theoretically.", contextIndonesian: "Operasi pengukurannya perlu dibenarkan secara teoretis." }
   - { word: "discovery logic", translation: "logika penemuan", context: "Discovery logic cannot be reduced to algorithms.", contextIndonesian: "Logika penemuan tidak dapat direduksi menjadi algoritma." }
+  - { word: "philosophy of life", translation: "filsafat hidup", context: "Philosophy of life distrusts abstract system formation.", contextIndonesian: "Filsafat hidup mencurigai pembentukan sistem yang abstrak." }
+  - { word: "transcendental philosophy", translation: "filsafat transendental", context: "Transcendental philosophy asks about the conditions of experience.", contextIndonesian: "Filsafat transendental menanyakan syarat-syarat pengalaman." }
+  - { word: "freedom of will", translation: "kebebasan kehendak", context: "In moral philosophy we often discuss free will. (keyword: freedom of will)", contextIndonesian: "Dalam filsafat moral kita sering membahas kehendak bebas." }
+  - { word: "philosophy of technology", translation: "filsafat teknologi", context: "Philosophy of technology asks about the independent life of technical systems.", contextIndonesian: "Filsafat teknologi menanyakan daya gerak mandiri sistem teknis." }
+  - { word: "use value", translation: "nilai guna", context: "The use value cannot be fully expressed in the price.", contextIndonesian: "Nilai guna tidak sepenuhnya dapat diungkapkan melalui harga." }
 ---
 
 # Philosophy of Science

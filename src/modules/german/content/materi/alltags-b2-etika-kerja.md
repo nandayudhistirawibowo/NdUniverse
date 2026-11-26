@@ -76,4 +76,10 @@ vocab:
     indonesian: "kredibilitas"
     context: "Die Glaubwürdigkeit des Teams stand auf dem Spiel."
     contextIndonesian: "Kredibilitas tim sedang dipertaruhkan."
+  - german: "Berufserfahrung"
+    indonesian: "pengalaman kerja"
+    context: "Für die Stelle brauchst du mehrere Jahre Berufserfahrung."
+  - german: "Bewerbung"
+    indonesian: "lamaran kerja"
+    context: "Ihre Bewerbung kam bei der Personalabteilung gut an."
 ---

@@ -19,6 +19,11 @@ vocab:
   - { word: "sexual reproduction", translation: "reproduksi gender", context: "Sexual reproduction occurs through seemingly irrelevant routines.", contextIndonesian: "Reproduksi gender berlangsung lewat rutinitas yang tampak sepele." }
   - { word: "equality policy", translation: "kebijakan kesetaraan", context: "Equality policy must address structural barriers.", contextIndonesian: "Kebijakan kesetaraan perlu mengenali hambatan struktural." }
   - { word: "gender plurality", translation: "kemajemukan gender", context: "Gender plurality expands institutional self-descriptions.", contextIndonesian: "Kemajemukan gender memperluas cara lembaga mendeskripsikan dirinya." }
+  - { word: "affective division of labor", translation: "pembagian kerja afektif", context: "Affective division of labor often remains gender-coded.", contextIndonesian: "Pembagian kerja afektif sering tetap dikodekan menurut gender." }
+  - { word: "sociology of emotions", translation: "sosiologi emosi", context: "Sociology of emotions examines emotions as a social practice.", contextIndonesian: "Sosiologi emosi mengkaji emosi sebagai praktik sosial." }
+  - { word: "emotional order", translation: "tatanan perasaan", context: "Emotional order determines which emotions seem appropriate.", contextIndonesian: "Tatanan perasaan menentukan emosi mana yang dianggap pantas." }
+  - { word: "emotion norm", translation: "norma emosi", context: "Emotional norms are practiced in social situations. (keyword: emotion norm)", contextIndonesian: "Norma emosi dipelajari dalam situasi sosial." }
+  - { word: "emotional work", translation: "kerja emosional", context: "Emotional work regulates visible and hidden reactions.", contextIndonesian: "Kerja emosional mengatur reaksi yang terlihat maupun tersembunyi." }
 ---
 
 # Sociology of Gender

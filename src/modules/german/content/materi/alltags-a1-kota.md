@@ -76,4 +76,12 @@ vocab:
     indonesian: "jalan-jalan"
     context: "Nach dem Essen gehen wir spazieren. (Schlüsselwort: spazieren gehen)"
     contextIndonesian: "Setelah makan kami jalan-jalan."
+  - german: "Nachbarschaft"
+    indonesian: "lingkungan tempat tinggal"
+    context: "Bei uns in der Nachbarschaft ist es ruhig."
+    contextIndonesian: "Lingkungan tempat tinggal kami tenang."
+  - german: "Bad"
+    indonesian: "kamar mandi"
+    context: "Das Bad hat ein großes Fenster."
+    contextIndonesian: "Kamar mandi itu memiliki jendela besar."
 ---

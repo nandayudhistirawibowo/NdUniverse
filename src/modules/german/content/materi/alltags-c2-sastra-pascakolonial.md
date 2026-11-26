@@ -80,4 +80,8 @@ vocab:
     indonesian: "temporalitas kolonial"
     context: "Koloniale Zeitlichkeit ordne Fortschritt nach imperialen Maßstäben."
     contextIndonesian: "Temporalitas kolonial menilai kemajuan menurut tolok ukur imperial."
+  - german: "Werkimmanenz"
+    indonesian: "imanensi karya"
+    context: "Werkimmanenz blende biografische Zuschreibungen methodisch aus."
+    contextIndonesian: "Imanensi karya secara metodis mengesampingkan atribusi biografis."
 ---

@@ -18,6 +18,12 @@ vocab:
   - { word: "political decision-making", translation: "pembentukan kehendak politik", context: "Free media helps people to form political opinions. (keyword: political decision-making)", contextIndonesian: "Media bebas membantu masyarakat membentuk opini politik." }
   - { word: "public services", translation: "penyediaan layanan dasar publik", context: "Public services include, for example, water and buses.", contextIndonesian: "Pelayanan umum mencakup, misalnya, air dan bus." }
   - { word: "redistribution", translation: "redistribusi", context: "There is a discussion in Parliament about how public money is distributed. (keyword: redistribution)", contextIndonesian: "Parlemen sedang mendiskusikan bagaimana uang negara didistribusikan." }
+  - { word: "tax policy", translation: "kebijakan perpajakan", context: "Tax policy is changing how public money is distributed.", contextIndonesian: "Kebijakan perpajakan mengubah cara pendistribusian uang publik." }
+  - { word: "public", translation: "masyarakat umum", context: "The public wants to know why the decision was made that way.", contextIndonesian: "Masyarakat ingin mengetahui alasan pengambilan keputusan seperti itu." }
+  - { word: "reform", translation: "reformasi", context: "The reform is intended to make public services more accessible.", contextIndonesian: "Reformasi dimaksudkan untuk menjadikan pelayanan publik lebih mudah diakses." }
+  - { word: "vote", translation: "pemungutan suara", context: "The proposal received the most votes in the vote.", contextIndonesian: "Proposal mendapat suara terbanyak dalam pemungutan suara." }
+  - { word: "legislation", translation: "proses legislasi", context: "New laws should take changes in society into account. (keyword: legislation)", contextIndonesian: "Undang-undang baru harus mempertimbangkan perubahan yang terjadi di masyarakat." }
+  - { word: "household", translation: "anggaran negara", context: "More money is planned for education in the budget. (keyword: household)", contextIndonesian: "Lebih banyak dana direncanakan untuk pendidikan dalam anggaran." }
 ---
 
 # Social Issues and Public Policy

@@ -20,6 +20,10 @@ vocab:
   - { word: "nature", translation: "alam", context: "I can switch off easily in nature.", contextIndonesian: "Aku bisa bersantai di alam." }
   - { word: "shore", translation: "tepi perairan", context: "We had a picnic on the shore.", contextIndonesian: "Kami piknik di tepi danau." }
   - { word: "island", translation: "pulau", context: "The island can only be reached by boat.", contextIndonesian: "Pulau itu hanya bisa dicapai dengan perahu." }
+  - { word: "journey", translation: "perjalanan", context: "We're going to Austria for a week. (keyword: journey)", contextIndonesian: "Kami pergi ke Austria selama satu minggu." }
+  - { word: "vacation", translation: "liburan", context: "I'm going on vacation for two weeks in the summer.", contextIndonesian: "Pada musim panas saya berlibur selama dua minggu." }
+  - { word: "travel destination", translation: "tujuan perjalanan", context: "We want to go to a small town by the sea. (keyword: travel destination)", contextIndonesian: "Kami ingin pergi ke sebuah kota kecil di tepi laut." }
+  - { word: "train station", translation: "stasiun", context: "We'll meet at the train station at nine.", contextIndonesian: "Kami bertemu di stasiun pukul sembilan." }
 ---
 
 # Vacationing in Nature

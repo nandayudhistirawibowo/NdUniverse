@@ -22,6 +22,8 @@ vocab:
   - { word: "data sovereignty", translation: "kendali atas data", context: "Data sovereignty should remain with the users.", contextIndonesian: "Kendali atas data sebaiknya tetap di tangan pengguna." }
   - { word: "link", translation: "penggabungan", context: "Linking multiple sources made analyzes more accurate.", contextIndonesian: "Penggabungan beberapa sumber membuat analisis lebih akurat." }
   - { word: "data security", translation: "keamanan data", context: "Data security was regularly independently checked.", contextIndonesian: "Keamanan datanya rutin diperiksa secara independen." }
+  - { word: "algorithm", translation: "algoritma", context: "The algorithm was trained with new data.", contextIndonesian: "Algoritmanya dilatih dengan data baru." }
+  - { word: "data basis", translation: "dasar data", context: "The data base that was used was incomplete. (keyword: data basis)", contextIndonesian: "Dasar data yang digunakan ternyata belum lengkap." }
 ---
 
 # Big Data

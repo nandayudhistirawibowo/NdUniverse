@@ -17,6 +17,14 @@ vocab:
   - { word: "music archive", translation: "arsip musik", context: "The music archive has been made digitally accessible.", contextIndonesian: "Arsip musiknya dibuat bisa diakses secara digital." }
   - { word: "ethnic group", translation: "kelompok etnis", context: "Each ethnic group brought their own songs.", contextIndonesian: "Setiap kelompok etnis membawa lagu khasnya." }
 
+  - { word: "musical taste", translation: "selera musik", context: "Our taste in music had hardly changed. (keyword: musical taste)", contextIndonesian: "Selera musik kami hampir tidak berubah." }
+  - { word: "concert", translation: "konser", context: "The concert was canceled due to illness.", contextIndonesian: "Konsernya dibatalkan karena sakit." }
+  - { word: "appearance", translation: "penampilan", context: "Your performance thrilled the entire audience. (keyword: appearance)", contextIndonesian: "Penampilannya membuat seluruh penonton terpukau." }
+  - { word: "performance location", translation: "tempat pertunjukan", context: "The performance location was outside the center.", contextIndonesian: "Tempat pertunjukannya berada di luar pusat kota." }
+  - { word: "encore", translation: "lagu tambahan", context: "The band played an encore.", contextIndonesian: "Band itu memainkan satu lagu tambahan." }
+  - { word: "volume", translation: "tingkat kebisingan", context: "The volume was later reduced slightly.", contextIndonesian: "Suaranya kemudian sedikit dikecilkan." }
+  - { word: "fan", translation: "penggemar", context: "A fan gave the singer flowers.", contextIndonesian: "Seorang penggemar memberi bunga kepada penyanyi itu." }
+  - { word: "recording", translation: "rekaman", context: "The recording was released that same evening.", contextIndonesian: "Rekamannya dirilis malam itu juga." }
 ---
 
 # Traditional Music

@@ -76,4 +76,12 @@ vocab:
     indonesian: "kebenaran mendasar"
     context: "Die Tiefenwahrheit werde als Effekt der Erzählung entlarvt."
     contextIndonesian: "Kebenaran mendasar disingkap sebagai efek dari narasi."
+  - german: "Signifikat"
+    indonesian: "petanda"
+    context: "Das Signifikat erhält seine Bedeutung in Beziehung zu anderen Zeichen."
+    contextIndonesian: "Petanda terbentuk secara relasional dalam sistem tanda."
+  - german: "Opposition"
+    indonesian: "oposisi"
+    context: "Die Opposition strukturiere die Bedeutungsdifferenz."
+    contextIndonesian: "Oposisi menyusun perbedaan makna."
 ---

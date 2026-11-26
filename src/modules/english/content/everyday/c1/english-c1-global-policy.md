@@ -22,6 +22,8 @@ vocab:
   - { word: "scope", translation: "dampak luas", context: "The significance of this decision is underestimated. (keyword: scope)", contextIndonesian: "Dampak luas keputusan ini masih diremehkan." }
   - { word: "advocacy group", translation: "perwakilan kepentingan", context: "Interest groups should be heard at an early stage. (keyword: advocacy group)", contextIndonesian: "Perwakilan kepentingan perlu didengar sejak awal." }
   - { word: "obligation", translation: "sifat mengikat", context: "Without commitment, promises had no effect. (keyword: obligation)", contextIndonesian: "Tanpa sifat mengikat, janji hanya jadi formalitas." }
+  - { word: "development of resistance", translation: "pembentukan resistansi", context: "The development of resistance represents a global danger.", contextIndonesian: "Pembentukan resistansi menjadi ancaman global." }
+  - { word: "tax policy", translation: "kebijakan perpajakan", context: "Tax policy is changing how public money is distributed.", contextIndonesian: "Kebijakan perpajakan mengubah cara pendistribusian uang publik." }
 ---
 
 # Global Policy

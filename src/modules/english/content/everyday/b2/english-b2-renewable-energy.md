@@ -22,6 +22,8 @@ vocab:
   - { word: "energy policy", translation: "kebijakan energi", context: "Energy policy should contain reliable targets.", contextIndonesian: "Kebijakan energinya sebaiknya memuat target yang dapat diandalkan." }
   - { word: "funding measure", translation: "program dukungan", context: "The funding measure was opened to small businesses.", contextIndonesian: "Program dukungannya dibuka untuk usaha kecil." }
   - { word: "energy mix", translation: "bauran energi", context: "The energy mix gradually became more climate-friendly.", contextIndonesian: "Bauran energinya bertahap menjadi lebih ramah iklim." }
+  - { word: "renewable energy", translation: "energi terbarukan", context: "Renewable energy met greater demand.", contextIndonesian: "Energi terbarukan memenuhi kebutuhan yang lebih besar." }
+  - { word: "energy transition", translation: "transisi energi", context: "The energy transition would hardly make any progress without grid expansion.", contextIndonesian: "Transisi energi sulit maju tanpa perluasan jaringan." }
 ---
 
 # Renewable Energy

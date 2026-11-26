@@ -76,4 +76,12 @@ vocab:
     indonesian: "hubungan bisnis"
     context: "Die Geschäftsbeziehung wurde über Jahre aufgebaut."
     contextIndonesian: "Hubungan bisnisnya dibangun selama bertahun-tahun."
+  - german: "Präsentation"
+    indonesian: "presentasi"
+    context: "Die Präsentation wurde auf die Zielgruppe zugeschnitten."
+    contextIndonesian: "Presentasinya disesuaikan dengan target audiens."
+  - german: "Gliederung"
+    indonesian: "susunan"
+    context: "Die Gliederung, die alle Themen abdeckt, blieb übersichtlich."
+    contextIndonesian: "Susunan yang mencakup semua topik itu tetap jelas."
 ---

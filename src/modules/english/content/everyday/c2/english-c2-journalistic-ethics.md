@@ -22,6 +22,8 @@ vocab:
   - { word: "media ethics", translation: "etika media", context: "Media ethics require a comprehensible classification.", contextIndonesian: "Etika media menuntut penempatan konteks yang dapat dipahami." }
   - { word: "prejudgment", translation: "penghakiman dini", context: "Prejudice undermines the presumption of innocence. (keyword: prejudgment)", contextIndonesian: "Penghakiman dini merusak asas praduga tak bersalah." }
   - { word: "public relevance", translation: "relevansi publik", context: "Public relevance must be weighed against privacy.", contextIndonesian: "Relevansi publik perlu ditimbang terhadap privasi." }
+  - { word: "ethics of conviction", translation: "etika keyakinan", context: "Attitude ethics evaluate the attitude regardless of success. (keyword: ethics of conviction)", contextIndonesian: "Etika keyakinan menilai sikap terlepas dari keberhasilannya." }
+  - { word: "ethic of responsibility", translation: "etika tanggung jawab", context: "Ethics of responsibility takes foreseeable consequences into account. (keyword: ethic of responsibility)", contextIndonesian: "Etika tanggung jawab mempertimbangkan akibat yang dapat diperkirakan." }
 ---
 
 # Journalistic Ethics

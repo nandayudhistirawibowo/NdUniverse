@@ -80,4 +80,8 @@ vocab:
     indonesian: "rasa syukur"
     context: "Dankbarkeit half ihm, den Blick zu verändern."
     contextIndonesian: "Rasa syukur membantunya mengubah cara pandang."
+  - german: "Selbstbestimmung"
+    indonesian: "penentuan pilihan sendiri"
+    context: "Die Selbstbestimmung könnte durch Technik erweitert werden."
+    contextIndonesian: "Kebebasan menentukan pilihan bisa diperluas oleh teknologi."
 ---

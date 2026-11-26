@@ -22,6 +22,9 @@ vocab:
   - { word: "spectator", translation: "penonton laki-laki", context: "The audience applauded loudly. (keyword: spectator)", contextIndonesian: "Para penonton bertepuk tangan dengan meriah." }
   - { word: "break", translation: "istirahat", context: "We get drinks during the break.", contextIndonesian: "Saat jeda kami membeli minuman." }
 
+  - { word: "birthday party", translation: "pesta ulang tahun", context: "The birthday party started at six.", contextIndonesian: "Pesta ulang tahunnya dimulai pukul enam." }
+  - { word: "birthday child", translation: "orang yang berulang tahun", context: "The birthday child opened all the presents.", contextIndonesian: "Yang berulang tahun membuka semua hadiah." }
+  - { word: "gift", translation: "hadiah", context: "She made the gift herself.", contextIndonesian: "Dia membuat sendiri hadiahnya." }
 ---
 
 # Movies, Concerts and Entertainment

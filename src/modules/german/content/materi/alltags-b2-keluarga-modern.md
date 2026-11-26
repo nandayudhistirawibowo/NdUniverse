@@ -76,4 +76,12 @@ vocab:
     indonesian: "tunjangan keluarga"
     context: "Die Familienleistung wurde an die Inflation angepasst."
     contextIndonesian: "Tunjangan keluarganya disesuaikan dengan inflasi."
+  - german: "Alleinerziehende"
+    indonesian: "orang tua tunggal"
+    context: "Alleinerziehende brauchen oft flexible Betreuungsangebote."
+    contextIndonesian: "Orang tua tunggal sering membutuhkan layanan pengasuhan yang fleksibel."
+  - german: "Vereinbarkeit"
+    indonesian: "keselarasan"
+    context: "Die Vereinbarkeit von Beruf und Familie ist ein wichtiges Thema."
+    contextIndonesian: "Keselarasan antara pekerjaan dan keluarga merupakan topik penting."
 ---

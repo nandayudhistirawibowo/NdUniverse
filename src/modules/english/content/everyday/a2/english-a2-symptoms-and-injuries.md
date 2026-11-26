@@ -17,6 +17,13 @@ vocab:
   - { word: "treat", translation: "merawat", context: "The doctor treats the injury immediately.", contextIndonesian: "Dokter segera merawat cederanya." }
   - { word: "carefully", translation: "berhati-hati", context: "You should move your arm carefully.", contextIndonesian: "Sebaiknya gerakkan lenganmu dengan hati-hati." }
   - { word: "crutch", translation: "kruk", context: "After the accident he needed a crutch.", contextIndonesian: "Setelah kecelakaan dia perlu memakai kruk." }
+  - { word: "cold", translation: "pilek", context: "He stayed at home because of the cold.", contextIndonesian: "Dia di rumah karena pilek." }
+  - { word: "sore throat", translation: "sakit tenggorokan", context: "The sore throat was worse today.", contextIndonesian: "Sakit tenggorokannya lebih parah hari ini." }
+  - { word: "back pain", translation: "sakit punggung", context: "After moving, I had back pain.", contextIndonesian: "Punggungku sakit setelah pindahan." }
+  - { word: "temperature", translation: "suhu tubuh", context: "My temperature was thirty-eight degrees.", contextIndonesian: "Suhu tubuhku mencapai tiga puluh delapan derajat." }
+  - { word: "improvement", translation: "perbaikan", context: "An improvement was visible after two days.", contextIndonesian: "Perbaikan terlihat setelah dua hari." }
+  - { word: "pharmacy", translation: "apotek", context: "The pharmacy is open until eight o'clock.", contextIndonesian: "Apoteknya buka sampai pukul delapan." }
+  - { word: "drug", translation: "obat", context: "This medication helped me yesterday. (keyword: drug)", contextIndonesian: "Obat ini membantuku kemarin." }
 ---
 
 # Symptoms and Injuries

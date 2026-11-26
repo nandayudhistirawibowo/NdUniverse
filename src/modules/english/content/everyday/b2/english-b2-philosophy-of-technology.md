@@ -17,6 +17,13 @@ vocab:
   - { word: "technology assessment", translation: "penilaian dampak teknologi", context: "The technology assessment would have to start early.", contextIndonesian: "Penilaian dampak teknologinya perlu dimulai sejak awal." }
   - { word: "privacy", translation: "privasi", context: "Privacy should not become a luxury.", contextIndonesian: "Privasi seharusnya tidak menjadi barang mewah." }
   - { word: "future", translation: "masa depan", context: "Which future we choose remains a social question.", contextIndonesian: "Masa depan seperti apa yang dipilih tetap menjadi pertanyaan bersama." }
+  - { word: "environmental technology", translation: "teknologi lingkungan", context: "Environmental technology helped to clean wastewater more efficiently.", contextIndonesian: "Teknologi lingkungan membantu mengolah air limbah lebih efisien." }
+  - { word: "electronic waste", translation: "limbah elektronik", context: "The electronic waste was collected separately.", contextIndonesian: "Limbah elektroniknya dikumpulkan secara terpisah." }
+  - { word: "recycling", translation: "daur ulang", context: "Recycling has been improved through new processes.", contextIndonesian: "Daur ulangnya ditingkatkan lewat proses baru." }
+  - { word: "circular economy", translation: "ekonomi sirkular", context: "The circular economy could secure valuable raw materials.", contextIndonesian: "Ekonomi sirkular bisa menjaga ketersediaan bahan baku berharga." }
+  - { word: "raw material", translation: "bahan mentah", context: "The raw material was obtained from old devices.", contextIndonesian: "Bahan mentahnya diperoleh dari perangkat lama." }
+  - { word: "disposal", translation: "pembuangan", context: "Disposal must be carried out in an environmentally friendly manner.", contextIndonesian: "Pembuangannya harus dilakukan dengan ramah lingkungan." }
+  - { word: "lifespan", translation: "masa pakai", context: "Lifespan extended through repairs.", contextIndonesian: "Masa pakainya diperpanjang lewat perbaikan." }
 ---
 
 # Philosophy of Technology

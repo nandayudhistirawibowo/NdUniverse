@@ -76,4 +76,12 @@ vocab:
     indonesian: "masa depan"
     context: "Welche Zukunft wir wählen, bleibt eine gesellschaftliche Frage."
     contextIndonesian: "Masa depan seperti apa yang dipilih tetap menjadi pertanyaan bersama."
+  - german: "Ethik"
+    indonesian: "etika"
+    context: "Ethische Fragen sollten im Alltag nicht fehlen. (Schlüsselwort: Ethik)"
+    contextIndonesian: "Pertanyaan etika sebaiknya tidak diabaikan dalam keseharian."
+  - german: "Lebenssinn"
+    indonesian: "makna hidup"
+    context: "Der Lebenssinn wurde in vielen Kulturen unterschiedlich verstanden."
+    contextIndonesian: "Makna hidup dipahami secara berbeda di banyak budaya."
 ---

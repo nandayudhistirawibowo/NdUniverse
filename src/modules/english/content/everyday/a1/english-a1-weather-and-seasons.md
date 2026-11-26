@@ -21,6 +21,9 @@ vocab:
   - { word: "winter", translation: "musim dingin", context: "I wear a coat in winter.", contextIndonesian: "Saat musim dingin aku memakai mantel." }
   - { word: "season", translation: "musim", context: "What season do you like?", contextIndonesian: "Kamu suka musim apa?" }
   - { word: "thunderstorm", translation: "badai petir", context: "There's a thunderstorm this evening.", contextIndonesian: "Malam ini akan ada badai petir." }
+  - { word: "tree", translation: "pohon", context: "The tree is very old.", contextIndonesian: "Pohonnya sudah tua sekali." }
+  - { word: "flower", translation: "bunga", context: "The flower smells lovely.", contextIndonesian: "Bunganya harum." }
+  - { word: "mountain", translation: "gunung", context: "The mountain is covered in snow today.", contextIndonesian: "Gunungnya putih sekali hari ini." }
 ---
 
 # Weather and Seasons

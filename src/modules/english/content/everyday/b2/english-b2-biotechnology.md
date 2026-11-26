@@ -23,6 +23,7 @@ vocab:
   - { word: "laboratory safety", translation: "keselamatan laboratorium", context: "Laboratory safety was regularly checked.", contextIndonesian: "Keselamatan laboratoriumnya diperiksa secara rutin." }
   - { word: "research result", translation: "hasil penelitian", context: "The research result was independently confirmed.", contextIndonesian: "Hasil penelitiannya dikonfirmasi secara independen." }
   - { word: "long-term effect", translation: "dampak jangka panjang", context: "The long-term effects initially remained unclear.", contextIndonesian: "Dampak jangka panjangnya awalnya belum jelas." }
+  - { word: "artificial intelligence", translation: "kecerdasan buatan", context: "Artificial intelligence is already changing numerous professional fields.", contextIndonesian: "Kecerdasan buatan sudah mengubah banyak bidang pekerjaan." }
 ---
 
 # Biotechnology

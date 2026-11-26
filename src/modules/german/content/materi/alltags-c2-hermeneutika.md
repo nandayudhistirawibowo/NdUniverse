@@ -80,4 +80,8 @@ vocab:
     indonesian: "pengujian teks melalui pertanyaan"
     context: "Textbefragung setze geduldiges Lesen voraus."
     contextIndonesian: "Pengujian teks melalui pertanyaan membutuhkan pembacaan yang tekun."
+  - german: "Hermeneutik"
+    indonesian: "hermeneutika"
+    context: "Hermeneutik erschließe den Sinn im geschichtlichen Horizont."
+    contextIndonesian: "Hermeneutika menafsirkan makna dalam cakrawala sejarah."
 ---

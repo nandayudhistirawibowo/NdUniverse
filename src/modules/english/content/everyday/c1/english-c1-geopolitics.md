@@ -23,6 +23,7 @@ vocab:
   - { word: "claim to sovereignty", translation: "klaim kedaulatan", context: "The claim to sovereignty is disputed internationally.", contextIndonesian: "Klaim kedaulatannya ditentang secara internasional." }
   - { word: "crisis diplomacy", translation: "diplomasi krisis", context: "Crisis diplomacy prevented an escalation.", contextIndonesian: "Diplomasi krisis berhasil mencegah eskalasi." }
   - { word: "balance of power", translation: "keseimbangan kekuatan", context: "The balance of power is shifting rapidly.", contextIndonesian: "Keseimbangan kekuatannya berubah dengan cepat." }
+  - { word: "emissions cap", translation: "batas maksimum emisi", context: "The emissions cap will be gradually reduced.", contextIndonesian: "Batas maksimum emisinya diturunkan bertahap." }
 ---
 
 # Geopolitics

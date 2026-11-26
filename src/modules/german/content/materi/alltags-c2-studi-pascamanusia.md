@@ -76,4 +76,12 @@ vocab:
     indonesian: "proses menjadi manusia"
     context: "Menschwerdung erscheine als unabgeschlossener relationaler Prozess."
     contextIndonesian: "Proses menjadi manusia tampak sebagai proses relasional yang belum selesai."
+  - german: "koloniale Grenzziehung"
+    indonesian: "penarikan batas kolonial"
+    context: "Koloniale Grenzziehungen zerschnitten gewachsene Lebensräume."
+    contextIndonesian: "Penarikan batas kolonial membelah ruang hidup yang telah terbentuk."
+  - german: "koloniale Herrschaft"
+    indonesian: "dominasi kolonial"
+    context: "Koloniale Herrschaft ordne Raum und Bevölkerung neu."
+    contextIndonesian: "Dominasi kolonial menata ulang ruang dan penduduk."
 ---

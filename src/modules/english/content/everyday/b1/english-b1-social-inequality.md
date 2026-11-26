@@ -12,6 +12,18 @@ vocab:
   - { word: "income gap", translation: "kesenjangan pendapatan", context: "The income gap was clear in the report.", contextIndonesian: "Kesenjangan pendapatan terlihat jelas dalam laporan." }
   - { word: "integration", translation: "integrasi", context: "Integration worked particularly well there.", contextIndonesian: "Integrasi berjalan sangat baik di sana." }
   - { word: "solidarity", translation: "solidaritas", context: "Great solidarity was shown during the crisis.", contextIndonesian: "Solidaritas besar terlihat saat krisis." }
+  - { word: "social work", translation: "pekerjaan sosial", context: "Social work supported families in difficult situations.", contextIndonesian: "Pekerjaan sosial mendukung keluarga dalam situasi sulit." }
+  - { word: "social worker", translation: "pekerja sosial perempuan", context: "The social worker accompanied the young person to the appointment.", contextIndonesian: "Pekerja sosial itu menemani remaja tersebut ke janji temu." }
+  - { word: "homelessness", translation: "tunawisma", context: "Homelessness increased during the crisis.", contextIndonesian: "Jumlah tunawisma meningkat selama krisis." }
+  - { word: "advice center", translation: "pusat konsultasi", context: "The advice center offered free consultations.", contextIndonesian: "Pusat konsultasinya menyediakan sesi gratis." }
+  - { word: "follower", translation: "pengikut", context: "His channel quickly gained new followers.", contextIndonesian: "Kanalnya cepat mendapat pengikut baru." }
+  - { word: "privacy", translation: "privasi", context: "Privacy should be better protected.", contextIndonesian: "Privasi sebaiknya lebih dilindungi." }
+  - { word: "profile", translation: "profil", context: "Your profile has been made public.", contextIndonesian: "Profilnya dijadikan publik." }
+  - { word: "delete", translation: "menghapus", context: "He deleted the offensive comment.", contextIndonesian: "Dia menghapus komentar yang menghina." }
+  - { word: "block", translation: "memblokir", context: "The user was blocked after several complaints.", contextIndonesian: "Pengguna itu diblokir setelah beberapa keluhan." }
+  - { word: "log in", translation: "masuk ke akun", context: "I logged in on someone else's device. (keyword: log in)", contextIndonesian: "Aku masuk dari perangkat orang lain." }
+  - { word: "dependent", translation: "kecanduan", context: "Many felt dependent on cell phones.", contextIndonesian: "Banyak orang merasa kecanduan ponsel." }
+  - { word: "screen recording", translation: "rekaman layar", context: "The screen recording was shared without permission.", contextIndonesian: "Rekaman layarnya dibagikan tanpa izin." }
 ---
 
 # Social Inequality

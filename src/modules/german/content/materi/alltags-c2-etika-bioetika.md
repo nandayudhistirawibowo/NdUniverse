@@ -80,4 +80,8 @@ vocab:
     indonesian: "kerentanan yang memerlukan perlindungan"
     context: "Schutzbedürftigkeit begründe zusätzliche Verfahrensgarantien."
     contextIndonesian: "Kerentanan membutuhkan jaminan prosedural tambahan."
+  - german: "klinische Verantwortung"
+    indonesian: "tanggung jawab klinis"
+    context: "Klinische Verantwortung umfasst auch die Folgen institutioneller Entscheidungen."
+    contextIndonesian: "Tanggung jawab klinis juga mencakup dampak kelembagaan."
 ---

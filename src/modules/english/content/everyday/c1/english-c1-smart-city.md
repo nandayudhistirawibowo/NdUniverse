@@ -21,6 +21,9 @@ vocab:
   - { word: "local public transport", translation: "transportasi umum", context: "Local public transport will be adapted to meet needs.", contextIndonesian: "Transportasi umumnya disesuaikan dengan kebutuhan." }
   - { word: "urban planning", translation: "perencanaan kota", context: "City planning will take digital twins into account in the future. (keyword: urban planning)", contextIndonesian: "Perencanaan kota kelak mempertimbangkan replika digital." }
   - { word: "monitoring density", translation: "kepadatan pengawasan", context: "The density of surveillance must be controlled democratically. (keyword: monitoring density)", contextIndonesian: "Kepadatan pengawasan harus diawasi secara demokratis." }
+  - { word: "language model", translation: "model bahasa", context: "The language model generates plausible but unsubstantiated statements.", contextIndonesian: "Model bahasa itu menghasilkan pernyataan masuk akal yang belum tentu terbukti." }
+  - { word: "algorithmic bias", translation: "bias algoritmik", context: "Algorithmic bias is examined using the training data.", contextIndonesian: "Bias algoritmiknya diteliti berdasarkan data pelatihan." }
+  - { word: "explainability", translation: "keterjelasan", context: "Explainability must be guaranteed in high-risk systems.", contextIndonesian: "Sistem berisiko tinggi harus bisa dijelaskan." }
 ---
 
 # Smart City

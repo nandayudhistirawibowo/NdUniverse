@@ -22,6 +22,8 @@ vocab:
   - { word: "debt economy", translation: "ekonomi berbasis utang", context: "Debt economy shifts consumption into the future.", contextIndonesian: "Ekonomi berbasis utang memindahkan konsumsi ke masa depan." }
   - { word: "exploitation logic", translation: "logika eksploitasi nilai", context: "Exploitation logic increasingly covers public goods.", contextIndonesian: "Logika eksploitasi nilai semakin menjangkau barang publik." }
   - { word: "distribution conflict", translation: "konflik distribusi", context: "The distribution conflict has been politically exacerbated.", contextIndonesian: "Konflik distribusinya diperuncing secara politis." }
+  - { word: "power of interpretation", translation: "kuasa penafsiran", context: "The power of interpretation helps decide political reality.", contextIndonesian: "Kuasa penafsiran turut menentukan kenyataan politik." }
+  - { word: "depoliticization", translation: "depolitisasi", context: "Depoliticization makes political decisions appear without alternative.", contextIndonesian: "Depolitisasi membuat keputusan politik tampak tak punya alternatif." }
 ---
 
 # Political Economy

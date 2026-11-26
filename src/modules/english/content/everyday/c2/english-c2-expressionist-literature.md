@@ -23,6 +23,7 @@ vocab:
   - { word: "feeling of the world", translation: "perasaan tentang dunia", context: "The feeling of the world fluctuates between ecstasy and despair.", contextIndonesian: "Perasaan tentang dunia berayun antara ekstase dan keputusasaan." }
   - { word: "dynamization", translation: "dinamisasi", context: "Dynamization transforms immobile things into fields of force.", contextIndonesian: "Dinamisasi mengubah benda yang diam menjadi medan kekuatan." }
   - { word: "expressionist metaphor", translation: "metafora ekspresionistis", context: "The expressionist metaphor turns the usual into visionary.", contextIndonesian: "Metafora ekspresionistis mengubah hal biasa menjadi sesuatu yang visioner." }
+  - { word: "exile literature", translation: "sastra eksil", context: "Exile literature bears witness to political violence from a distance.", contextIndonesian: "Sastra eksil memberi kesaksian tentang kekerasan politik dari kejauhan." }
 ---
 
 # Expressionist Literature

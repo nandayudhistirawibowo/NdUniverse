@@ -15,6 +15,16 @@ vocab:
   - { word: "risk", translation: "risiko", context: "The risk was higher than originally thought.", contextIndonesian: "Risikonya lebih tinggi dari perkiraan awal." }
   - { word: "innovation", translation: "inovasi", context: "Innovation differentiated the company from others.", contextIndonesian: "Inovasi itu membedakan usahanya dari yang lain." }
 
+  - { word: "foreign policy", translation: "kebijakan luar negeri", context: "Foreign policy was critically assessed in Parliament.", contextIndonesian: "Kebijakan luar negerinya dinilai kritis di parlemen." }
+  - { word: "alliance", translation: "aliansi", context: "The alliance was renewed after long discussions.", contextIndonesian: "Aliansinya diperbarui setelah diskusi panjang." }
+  - { word: "contract", translation: "perjanjian", context: "The contract came into force at the beginning of the year.", contextIndonesian: "Perjanjiannya mulai berlaku awal tahun ini." }
+  - { word: "negotiation", translation: "negosiasi", context: "Negotiations have been temporarily suspended.", contextIndonesian: "Negosiasinya dihentikan sementara." }
+  - { word: "mediation", translation: "mediasi", context: "Mediation was offered by neutral states.", contextIndonesian: "Mediasi ditawarkan oleh negara-negara netral." }
+  - { word: "peace mission", translation: "misi perdamaian", context: "The peace mission was extended by one year.", contextIndonesian: "Misi perdamaiannya diperpanjang setahun." }
+  - { word: "sanction", translation: "sanksi", context: "The sanctions were gradually lifted.", contextIndonesian: "Sanksinya dicabut secara bertahap." }
+  - { word: "partnership", translation: "kemitraan", context: "The partnership strengthened cultural exchange.", contextIndonesian: "Kemitraan itu memperkuat pertukaran budaya." }
+  - { word: "summit", translation: "pertemuan puncak", context: "The summit ended with a joint declaration.", contextIndonesian: "Pertemuan puncaknya berakhir dengan pernyataan bersama." }
+  - { word: "delegation", translation: "delegasi", context: "The delegation arrived early in the morning.", contextIndonesian: "Delegasinya tiba pagi-pagi." }
 ---
 
 # Entrepreneurship

@@ -18,6 +18,13 @@ vocab:
   - { word: "project completion", translation: "penyelesaian proyek", context: "The project completion was evaluated together.", contextIndonesian: "Penyelesaian proyeknya dievaluasi bersama." }
   - { word: "amendment", translation: "permohonan perubahan", context: "The change request was approved by the client. (keyword: amendment)", contextIndonesian: "Permohonan perubahannya disetujui klien." }
 
+  - { word: "responsibility", translation: "tanggung jawab", context: "I was responsible for the project. (keyword: responsibility)", contextIndonesian: "Aku bertanggung jawab atas proyek itu." }
+  - { word: "objective", translation: "penetapan tujuan", context: "The objectives were agreed upon together before the project.", contextIndonesian: "Tujuannya disepakati bersama sebelum proyek dimulai." }
+  - { word: "leadership position", translation: "posisi kepemimpinan", context: "After a few years he got a management position. (keyword: leadership position)", contextIndonesian: "Setelah beberapa tahun dia mendapat posisi manajemen." }
+  - { word: "promotion", translation: "promosi jabatan", context: "After the project he got a promotion.", contextIndonesian: "Setelah proyek dia mendapat promosi." }
+  - { word: "independence", translation: "kemandirian", context: "Independence was promoted through project work.", contextIndonesian: "Kemandirian didukung melalui pengerjaan proyek." }
+  - { word: "club management", translation: "manajemen klub", context: "The club management had to disclose its expenses.", contextIndonesian: "Manajemen klub harus mengungkapkan pengeluarannya." }
+  - { word: "asset management", translation: "pengelolaan aset", context: "Asset management was transferred to a specialist company.", contextIndonesian: "Pengelolaan asetnya diserahkan kepada perusahaan ahli." }
 ---
 
 # Project Management

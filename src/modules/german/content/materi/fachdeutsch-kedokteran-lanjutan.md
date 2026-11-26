@@ -53,4 +53,16 @@ vocab:
     indonesian: "memeriksa"
     context: "Der Arzt untersucht das Knie der Patientin. (Schlüsselwort: untersuchen)"
 
+  - german: "Anamnese"
+    indonesian: "anamnesis"
+    context: "Während der Anamnese fragt die Ärztin nach früheren Erkrankungen."
+  - german: "Entzündung"
+    indonesian: "peradangan"
+    context: "Die Entzündung verursacht Schmerzen und eine erhöhte Temperatur."
+  - german: "Blutuntersuchung"
+    indonesian: "pemeriksaan darah"
+    context: "Eine Blutuntersuchung kann Hinweise auf einen Infekt geben."
+  - german: "Symptom"
+    indonesian: "gejala"
+    context: "Das Symptom trat erstmals vor drei Tagen auf."
 ---

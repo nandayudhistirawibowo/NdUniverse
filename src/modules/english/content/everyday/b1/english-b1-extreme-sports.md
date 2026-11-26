@@ -19,6 +19,11 @@ vocab:
   - { word: "mountain rescue", translation: "tim penyelamat gunung", context: "The mountain rescue service was alerted in the afternoon.", contextIndonesian: "Tim penyelamat gunung dihubungi sore hari." }
   - { word: "protective clothing", translation: "pakaian pelindung", context: "The protective clothing was selected appropriately.", contextIndonesian: "Pakaian pelindungnya dipilih dengan ukuran yang pas." }
   - { word: "caution", translation: "kehati-hatian", context: "Caution is particularly important during such activities.", contextIndonesian: "Kehati-hatian sangat penting dalam kegiatan seperti ini." }
+  - { word: "sports hall", translation: "gedung olahraga", context: "The sports hall remained open during the holidays.", contextIndonesian: "Gedung olahraganya tetap buka selama liburan." }
+  - { word: "sports injury", translation: "cedera olahraga", context: "The sports injury was examined immediately.", contextIndonesian: "Cedera olahraganya langsung diperiksa." }
+  - { word: "team", translation: "tim", context: "The team won despite injured players.", contextIndonesian: "Timnya menang meski beberapa pemain cedera." }
+  - { word: "record", translation: "rekor", context: "The record was broken after ten years.", contextIndonesian: "Rekor itu dipecahkan setelah sepuluh tahun." }
+  - { word: "defeat", translation: "kekalahan", context: "After the defeat, the team analyzed its mistakes.", contextIndonesian: "Setelah kalah, tim itu menganalisis kesalahan." }
 ---
 
 # Extreme Sports

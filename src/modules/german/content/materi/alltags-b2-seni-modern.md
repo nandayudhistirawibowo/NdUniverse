@@ -80,4 +80,8 @@ vocab:
     indonesian: "aliran seni"
     context: "Die Kunstrichtung beeinflusste spätere Generationen."
     contextIndonesian: "Aliran seni itu memengaruhi generasi berikutnya."
+  - german: "Filmproduktion"
+    indonesian: "produksi film"
+    context: "Die Filmproduktion wurde wegen des Wetters unterbrochen."
+    contextIndonesian: "Produksi filmnya terhenti karena cuaca."
 ---

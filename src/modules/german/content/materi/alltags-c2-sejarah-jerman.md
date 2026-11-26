@@ -76,4 +76,12 @@ vocab:
     indonesian: "tanggung jawab historis"
     context: "Historische Verantwortung ende nicht mit dem Gedenken."
     contextIndonesian: "Tanggung jawab historis tidak berakhir pada peringatan."
+  - german: "Erinnerungspolitik"
+    indonesian: "politik ingatan"
+    context: "Erinnerungspolitik ordne Vergangenheit nach gegenwärtigen Konflikten."
+    contextIndonesian: "Politik ingatan menata masa lalu menurut konflik masa kini."
+  - german: "historischer Materialismus"
+    indonesian: "materialisme historis"
+    context: "Der historische Materialismus untersucht die materiellen Bedingungen des gesellschaftlichen Wandels."
+    contextIndonesian: "Materialisme historis meneliti kondisi material perubahan."
 ---

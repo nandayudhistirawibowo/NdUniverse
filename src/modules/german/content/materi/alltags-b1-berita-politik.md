@@ -76,4 +76,12 @@ vocab:
     indonesian: "kritik"
     context: "Nach der Kritik wurde der Entwurf geändert."
     contextIndonesian: "Rancangannya diubah setelah mendapat kritik."
+  - german: "Wirtschaft"
+    indonesian: "perekonomian"
+    context: "Die Wirtschaft wuchs langsamer als erwartet."
+    contextIndonesian: "Perekonomian tumbuh lebih lambat dari perkiraan."
+  - german: "Inflation"
+    indonesian: "inflasi"
+    context: "Wegen der Inflation wurden viele Produkte teurer."
+    contextIndonesian: "Banyak barang naik harga karena inflasi."
 ---

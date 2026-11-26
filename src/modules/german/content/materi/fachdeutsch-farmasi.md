@@ -56,4 +56,13 @@ vocab:
     indonesian: "pembuatan"
     context: "Die Herstellung des Arzneimittels unterliegt strengen Qualitätskontrollen."
 
+  - german: "Anamnese"
+    indonesian: "anamnesis"
+    context: "Während der Anamnese fragt die Ärztin nach früheren Erkrankungen."
+  - german: "Entzündung"
+    indonesian: "peradangan"
+    context: "Die Entzündung verursacht Schmerzen und eine erhöhte Temperatur."
+  - german: "Blutuntersuchung"
+    indonesian: "pemeriksaan darah"
+    context: "Eine Blutuntersuchung kann Hinweise auf einen Infekt geben."
 ---

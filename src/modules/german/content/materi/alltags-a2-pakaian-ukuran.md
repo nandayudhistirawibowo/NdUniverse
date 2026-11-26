@@ -80,4 +80,8 @@ vocab:
     indonesian: "nyaman"
     context: "Die Schuhe waren bequem und leicht."
     contextIndonesian: "Sepatunya nyaman dan ringan."
+  - german: "Sonderangebot"
+    indonesian: "penawaran khusus"
+    context: "Dieses T-Shirt ist gerade im Sonderangebot."
+    contextIndonesian: "Kaos ini sedang ada penawaran khusus."
 ---

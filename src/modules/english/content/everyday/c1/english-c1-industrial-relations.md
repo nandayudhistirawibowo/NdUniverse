@@ -23,6 +23,7 @@ vocab:
   - { word: "working relationship", translation: "hubungan kerja", context: "The working relationship will be reorganized.", contextIndonesian: "Hubungan kerjanya sedang ditata ulang." }
   - { word: "wage gap", translation: "kesenjangan upah", context: "The wage gap has fallen significantly.", contextIndonesian: "Kesenjangan upahnya turun cukup banyak." }
   - { word: "negotiating round", translation: "putaran perundingan", context: "The round of negotiations lasts until the night. (keyword: negotiating round)", contextIndonesian: "Putaran perundingannya berlangsung sampai malam." }
+  - { word: "enzyme technology", translation: "teknik enzim", context: "Enzyme technology accelerates industrial processes.", contextIndonesian: "Teknik enzim mempercepat proses industri." }
 ---
 
 # Industrial Relations

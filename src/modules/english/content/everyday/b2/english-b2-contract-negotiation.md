@@ -21,6 +21,9 @@ vocab:
   - { word: "signature", translation: "tanda tangan", context: "The signature was only made after the last check.", contextIndonesian: "Kontrak ditandatangani setelah pemeriksaan terakhir." }
   - { word: "dispute resolution", translation: "penyelesaian sengketa", context: "The dispute settlement was agreed out of court. (keyword: dispute resolution)", contextIndonesian: "Penyelesaian sengketa disepakati di luar pengadilan." }
   - { word: "addendum", translation: "adendum", context: "The addendum regulated additional services.", contextIndonesian: "Adendumnya mengatur layanan tambahan." }
+  - { word: "negotiation", translation: "negosiasi", context: "We negotiated the salary for almost an hour. (keyword: negotiation)", contextIndonesian: "Kami menegosiasikan gaji selama hampir satu jam." }
+  - { word: "sponsorship contract", translation: "kontrak sponsor", context: "The sponsorship contract was canceled after the scandal.", contextIndonesian: "Kontrak sponsornya diputus setelah skandal." }
+  - { word: "athlete", translation: "atlet perempuan", context: "The athlete who broke the record received a contract.", contextIndonesian: "Atlet yang memecahkan rekor itu mendapat kontrak." }
 ---
 
 # Contract Negotiation

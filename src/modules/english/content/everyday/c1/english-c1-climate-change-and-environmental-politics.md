@@ -19,6 +19,11 @@ vocab:
   - { word: "emissions trading", translation: "perdagangan emisi", context: "In emissions trading, there is an upper limit for certain emissions.", contextIndonesian: "Perdagangan emisi mempunyai batas atas emisi tertentu." }
   - { word: "climate justice", translation: "keadilan iklim", context: "Climate justice also means: Some countries are hit harder by change.", contextIndonesian: "Keadilan iklim juga berarti: Beberapa negara terkena dampak yang lebih parah akibat perubahan." }
   - { word: "sustainability strategy", translation: "strategi keberlanjutan", context: "The sustainability strategy combines social, ecological and economic goals.", contextIndonesian: "Strategi keberlanjutan menggabungkan tujuan sosial, ekologi dan ekonomi." }
+  - { word: "environmental impact assessment", translation: "analisis dampak lingkungan", context: "The environmental impact assessment was rescheduled.", contextIndonesian: "Analisis dampak lingkungannya dilakukan belakangan." }
+  - { word: "climate adaptation", translation: "adaptasi iklim", context: "Climate adaptation will be anchored in municipalities.", contextIndonesian: "Adaptasi iklim diterapkan di tingkat pemerintah daerah." }
+  - { word: "environmental justice", translation: "keadilan lingkungan", context: "Environmental justice should not be neglected.", contextIndonesian: "Keadilan lingkungan tidak boleh diabaikan." }
+  - { word: "environmental regulation", translation: "persyaratan lingkungan", context: "The environmental requirement was confirmed by the court. (keyword: environmental regulation)", contextIndonesian: "Persyaratan lingkungannya ditegaskan oleh pengadilan." }
+  - { word: "environmental tax", translation: "pungutan lingkungan", context: "An environmental tax could divert investments.", contextIndonesian: "Pungutan lingkungan bisa mengalihkan arah investasi." }
 ---
 
 # Climate Change and Environmental Politics

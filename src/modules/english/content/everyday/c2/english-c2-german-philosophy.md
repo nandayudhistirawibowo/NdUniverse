@@ -22,6 +22,8 @@ vocab:
   - { word: "negativity", translation: "negativitas", context: "Negativity pushes the term beyond itself.", contextIndonesian: "Negativitas mendorong konsep itu melampaui dirinya." }
   - { word: "historicity", translation: "kesejarahan", context: "Historicity permeates even seemingly timeless concepts.", contextIndonesian: "Kesejarahan meresapi bahkan konsep yang tampak abadi." }
   - { word: "immediacy", translation: "keberlangsungan langsung", context: "Immediacy turns out to be mediated upon closer examination.", contextIndonesian: "Setelah diperiksa, hal yang tampak langsung ternyata dimediasi." }
+  - { word: "freedom of will", translation: "kebebasan kehendak", context: "In moral philosophy we often discuss free will. (keyword: freedom of will)", contextIndonesian: "Dalam filsafat moral kita sering membahas kehendak bebas." }
+  - { word: "philosophy of technology", translation: "filsafat teknologi", context: "Philosophy of technology asks about the independent life of technical systems.", contextIndonesian: "Filsafat teknologi menanyakan daya gerak mandiri sistem teknis." }
 ---
 
 # German Philosophy
