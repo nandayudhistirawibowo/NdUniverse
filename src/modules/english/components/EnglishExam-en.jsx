@@ -392,6 +392,14 @@ export default function EnglishExam({ exam, type, level }) {
                           const value = event.currentTarget.value;
                           setWritingAnswers((current) => ({ ...current, [task.id]: value }));
                         }}
+                        onKeyDown={(event) => {
+                          if (event.key !== 'Enter' || event.shiftKey) return;
+                          event.preventDefault();
+                          if (writingAnswers[task.id]?.trim()) {
+                            playSound('click');
+                            advanceModule();
+                          }
+                        }}
                         placeholder="Tulis jawabanmu di sini"
                         rows={10}
                       />
@@ -422,6 +430,14 @@ export default function EnglishExam({ exam, type, level }) {
                         onInput={(event) => {
                           const value = event.currentTarget.value;
                           setSpeakingAnswers((current) => ({ ...current, [part.id]: value }));
+                        }}
+                        onKeyDown={(event) => {
+                          if (event.key !== 'Enter' || event.shiftKey) return;
+                          event.preventDefault();
+                          if (speakingAnswers[part.id]?.trim()) {
+                            playSound('click');
+                            advanceModule();
+                          }
                         }}
                         placeholder="Hasil pengenalan suara akan muncul di sini. Kamu juga dapat mengetik."
                         rows={4}

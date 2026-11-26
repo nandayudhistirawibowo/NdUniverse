@@ -407,6 +407,13 @@ export default function BossFight({
                           if (!answer) playSound('click');
                           setAnswer(event.currentTarget.value);
                         }}
+                        onKeyDown={(event) => {
+                          if (event.key !== 'Enter' || event.shiftKey) return;
+                          event.preventDefault();
+                          if (answer.trim() && speechCapture.state !== 'listening' && speechCapture.state !== 'processing' && speechCapture.state !== 'feedback') {
+                            submitAnswer();
+                          }
+                        }}
                         placeholder="Jawab dalam bahasa Jerman..."
                       />
                       <button

@@ -378,6 +378,13 @@ export default function GoetheExam({ level, tasks, available = true }) {
                         rows={activeModule === 'schreiben' ? '8' : '4'}
                         value={answers[`${activeModule}-${index}`] ?? ''}
                         onInput={(event) => chooseAnswer(activeModule, index, event.currentTarget.value)}
+                        onKeyDown={(event) => {
+                          if (event.key !== 'Enter' || event.shiftKey) return;
+                          event.preventDefault();
+                          if (!answers[`${activeModule}-${index}`]?.trim()) return;
+                          if (activeModule === 'sprechen') submitExam();
+                          else finishCurrentModule();
+                        }}
                         placeholder={activeModule === 'schreiben' ? 'Tulis jawaban dalam Bahasa Inggris...' : 'Hasil rekaman atau jawaban tertulis...'}
                       />
                       {activeModule === 'sprechen' && <SpeechFeedback feedback={speechCapture.feedback} state={speechCapture.state} message={speechCapture.message} volumeLevel={speechCapture.volumeLevel} noiseFloor={speechCapture.noiseFloor} onStop={speechCapture.stop} />}

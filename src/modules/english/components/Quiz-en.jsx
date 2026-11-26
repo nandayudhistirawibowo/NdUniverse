@@ -1019,6 +1019,12 @@ export default function Quiz(props) {
     else handleTextSubmit();
   }
 
+  function handleAnswerKeyDown(event) {
+    if (event.key !== 'Enter' || event.shiftKey) return;
+    event.preventDefault();
+    if (userAnswer.trim()) handleQuestionAction();
+  }
+
   const questionNumber = Math.max(1, Math.min((currentBatchItems.length - queue.length) + 1, currentBatchItems.length || 1));
   const progress = currentBatchItems.length === 0 ? 0 : Math.round((attemptedCount / currentBatchItems.length) * 100);
   const accuracy = attemptedCount === 0 ? 0 : Math.round((correctCount / attemptedCount) * 100);
@@ -1254,6 +1260,7 @@ export default function Quiz(props) {
                     <textarea
                       value={userAnswer}
                       onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                      onKeyDown={handleAnswerKeyDown}
                       placeholder="Tulis jawabanmu di sini"
                       aria-label="Jawaban tertulis"
                       disabled={checkedResult !== null}
@@ -1301,6 +1308,7 @@ export default function Quiz(props) {
                       type="text"
                       value={userAnswer}
                       onInput={(event) => setUserAnswer(event.currentTarget.value)}
+                      onKeyDown={handleAnswerKeyDown}
                       placeholder="Ketik kata kunci dari jawabanmu"
                       aria-label="Jawaban kata kunci"
                       disabled={checkedResult !== null}
@@ -1329,12 +1337,7 @@ export default function Quiz(props) {
                         type="text"
                         value={userAnswer}
                         onInput={(event) => setUserAnswer(event.currentTarget.value)}
-                        onKeyDown={(event) => {
-                          if (event.key === 'Enter' && userAnswer.trim()) {
-                            event.preventDefault();
-                            handleQuestionAction();
-                          }
-                        }}
+                        onKeyDown={handleAnswerKeyDown}
                         placeholder="Ketik jawaban dalam Bahasa Inggris"
                         aria-label="Jawaban dalam Bahasa Inggris"
                         autoComplete="off"

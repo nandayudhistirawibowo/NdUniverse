@@ -208,6 +208,11 @@ export default function MockExam({ level, tasks, unavailable = false }) {
                     playSound('click');
                     chooseAnswer(index, event.currentTarget.value);
                   }}
+                  onKeyDown={(event) => {
+                    if (event.key !== 'Enter' || event.shiftKey) return;
+                    event.preventDefault();
+                    if (!finished && answers[index]?.trim()) submitExam();
+                  }}
                   disabled={finished}
                   placeholder={task.kind === 'writing' ? 'Tulis jawaban dalam Bahasa Inggris...' : 'Hasil rekaman atau jawaban tertulis...'}
                 />
