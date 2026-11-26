@@ -1,6 +1,7 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 import { hasCompletedPillarSession, normalizePassedPillars } from '@core/db/progress-client-en.js';
+import { clampMaterialXp } from '@core/db/progress-xp.js';
 import { getCollection } from 'astro:content';
 
 const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
@@ -34,11 +35,16 @@ const { data: progressData, error: progressError } = user
   : { data: [], error: null };
 if (progressError) throw progressError;
 
-const getMaterialMaxXp = (material: typeof materials[number]) => Math.max(1, Math.ceil(material.data.vocab.length / 5)) * 200;
+const getMaterialMaxXp = (material: typeof materials[number]) => clampMaterialXp(
+  Math.max(1, Math.ceil(material.data.vocab.length / 5)) * 200,
+);
 const materials = (await getCollection('englishEveryday'))
   .filter((material) => material.data.track === 'Everyday English');
 const materialBySlug = new Map(materials.map((material) => [material.id, material]));
-const progressRows = progressData ?? [];
+const progressRows = (progressData ?? []).map((row) => ({
+  ...row,
+  xp: clampMaterialXp(row.xp),
+}));
 const progressMaterials = materials.map((material) => ({
   slug: material.id,
   title: material.data.title ?? material.id,
@@ -48,7 +54,7 @@ const completedMaterials = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material) return [];
   const maxXp = getMaterialMaxXp(material);
-  const xp = Math.min(maxXp, Math.max(0, Number(row.xp) || 0));
+  const xp = clampMaterialXp(row.xp, maxXp);
   const completed = maxXp > 0 && xp >= maxXp;
   if (!completed) return [];
   return [{
@@ -61,7 +67,7 @@ const materialProgress = progressRows.flatMap((row) => {
   const material = materialBySlug.get(row.material_slug);
   if (!material) return [];
   const maxXp = getMaterialMaxXp(material);
-  const xp = Math.min(maxXp, Math.max(0, Number(row.xp) || 0));
+  const xp = clampMaterialXp(row.xp, maxXp);
   const completed = maxXp > 0 && xp >= maxXp;
   const percentage = completed
     ? 100
@@ -77,7 +83,7 @@ const materialProgress = progressRows.flatMap((row) => {
   }];
 });
 const totalXp = progressRows.reduce(
-  (total, row) => total + Math.max(0, Number(row.xp) || 0),
+  (total, row) => total + clampMaterialXp(row.xp),
   0,
 );
 const totalPoints = completedMaterials.reduce(
@@ -221,6 +227,7 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
 
 <script>
   import { hasCompletedPillarSession, normalizePassedPillars } from '@core/db/progress-client-en.js';
+  import { clampMaterialXp } from '@core/db/progress-xp.js';
 
   const POINTS_PER_LEVEL = { A1: 10, A2: 20, B1: 30, B2: 40, C1: 50, C2: 60 };
   const PILLAR_COUNT = 4;
@@ -248,10 +255,11 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
         sessions_passed: unknown;
       }>).map((row) => [row.material_slug, row]),
     );
-    rows.set(slug, { material_slug: slug, language_code: 'en', xp, sessions_passed: pillars });
+    const cappedXp = clampMaterialXp(xp);
+    rows.set(slug, { material_slug: slug, language_code: 'en', xp: cappedXp, sessions_passed: pillars });
     dashboard.dataset.progressRows = JSON.stringify([...rows.values()]);
     const totalXp = [...rows.values()].reduce(
-      (total, row) => total + Math.max(0, Number(row.xp) || 0),
+      (total, row) => total + clampMaterialXp(row.xp),
       0,
     );
 
@@ -276,13 +284,13 @@ const levelProgressPercent = currentLevel.nextThreshold !== null
       const row = rows.get(material.slug);
       if (!row) return false;
       const maxXp = progressMaterialBySlug.get(material.slug)?.maxXp ?? 0;
-      const xp = Math.max(0, Number(row.xp) || 0);
+      const xp = clampMaterialXp(row.xp, maxXp);
       return maxXp > 0 && xp >= maxXp;
     });
     const materialProgress = progressMaterials.flatMap((material) => {
       const row = rows.get(material.slug);
       if (!row) return [];
-      const xp = Math.min(material.maxXp, Math.max(0, Number(row.xp) || 0));
+      const xp = clampMaterialXp(row.xp, material.maxXp);
       const isComplete = material.maxXp > 0 && xp >= material.maxXp;
       const percentage = isComplete
         ? 100

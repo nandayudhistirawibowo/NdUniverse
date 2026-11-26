@@ -1,6 +1,7 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
 import { normalizePassedPillars } from '@core/db/progress-client-en.js';
+import { clampMaterialXp } from '@core/db/progress-xp.js';
 import { getCollection } from 'astro:content';
 
 export const prerender = false;
@@ -41,16 +42,19 @@ const sessions = Array.from({ length: 4 }, (_, index) => {
   const words = vocab.slice(index * 5, index * 5 + 5);
   return { number: index + 1, words, maxXp: PILLAR_XP };
 });
-const materialMaxXp = sessions.filter((session) => session.words.length > 0).length * PILLAR_XP * 4;
-const materialXp = Math.min(
-  materialMaxXp,
-  sessions.reduce((sum, session) => {
+const materialMaxXp = clampMaterialXp(
+  sessions.filter((session) => session.words.length > 0).length * PILLAR_XP * 4,
+);
+const pillarEarnedXp = sessions.reduce((sum, session) => {
     const completedPillarCount = ['reading', 'listening', 'writing', 'speaking'].filter((pillar) => {
       const sessionPillarKey = `s${session.number}-${pillar}`;
       return passedPillars.includes(sessionPillarKey) || (session.number === 1 && passedPillars.includes(pillar));
     }).length;
     return sum + (session.words.length > 0 ? PILLAR_XP * completedPillarCount : 0);
-  }, 0),
+}, 0);
+const materialXp = clampMaterialXp(
+  Math.max(clampMaterialXp(savedProgress?.xp), pillarEarnedXp),
+  materialMaxXp,
 );
 ---
 <DashboardLayout title={`${item.data.title ?? item.id} | NdUniverse`} description={item.data.description ?? ''} active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
@@ -146,6 +150,7 @@ const materialXp = Math.min(
   </article>
 </DashboardLayout>
 <script>
+  import { clampMaterialXp, MAX_MATERIAL_XP } from '@core/db/progress-xp.js';
   import { playAudioTTS, preloadEnglishTtsAudio } from '../../../modules/english/config/english-speech.js';
 
   const bindVocabularyAudio = () => {
@@ -218,7 +223,10 @@ const materialXp = Math.min(
     if (xpLabel?.dataset.materialSlug !== slug) return;
     if (xpLabel && typeof xp === 'number' && Number.isFinite(xp)) {
       const materialMaxXp = Number(xpLabel.dataset.materialMaxXp ?? 0);
-      const cappedXp = Math.min(materialMaxXp > 0 ? materialMaxXp : xp, Math.max(0, xp));
+      const cappedXp = clampMaterialXp(
+        xp,
+        materialMaxXp > 0 ? materialMaxXp : MAX_MATERIAL_XP,
+      );
       xpLabel.textContent = materialMaxXp > 0 ? `${cappedXp}` : String(cappedXp);
     }
   });

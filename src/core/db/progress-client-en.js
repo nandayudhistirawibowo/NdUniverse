@@ -1,4 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr';
+import { clampMaterialXp, MAX_MATERIAL_XP } from './progress-xp.js';
 
 let browserClient;
 const progressWriteQueues = new Map();
@@ -104,13 +105,16 @@ async function writeUserProgress(client, userId, materialSlug, updates) {
       ...normalizePassedPillars(updates.sessions_passed),
     ])]
     : existingSessions;
-  const existingXp = Math.max(0, Number(existing?.xp) || 0);
-  const baseXp = updates.xp !== undefined ? Math.max(0, Number(updates.xp) || 0) : existingXp;
-  let targetXp = Math.max(0, baseXp + (Number.isFinite(xpDelta) ? xpDelta : 0));
-  const maxXp = Number(updates.maxXp ?? updates.max_xp);
-  if (Number.isFinite(maxXp) && maxXp >= 0) {
-    targetXp = Math.min(targetXp, Math.max(0, maxXp));
-  }
+  const existingXp = clampMaterialXp(existing?.xp);
+  const baseXp = updates.xp !== undefined ? clampMaterialXp(updates.xp) : existingXp;
+  const requestedMaxXp = Number(updates.maxXp ?? updates.max_xp);
+  const maxXp = Number.isFinite(requestedMaxXp) && requestedMaxXp >= 0
+    ? Math.min(MAX_MATERIAL_XP, requestedMaxXp)
+    : MAX_MATERIAL_XP;
+  const targetXp = clampMaterialXp(
+    baseXp + (Number.isFinite(xpDelta) ? xpDelta : 0),
+    maxXp,
+  );
   const payload = {
     ...(existing?.id !== undefined ? { id: existing.id } : {}),
     user_id: userId,

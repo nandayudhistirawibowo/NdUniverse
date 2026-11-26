@@ -4,6 +4,7 @@ import { playSound } from '@core/game/quiz-sounds.js';
 import { isAnswerCorrect, isArticleQuestion } from '@core/game/fuzzy-match.js';
 import { SpeechFeedback, useSpeechCapture } from '@core/speech/index.ts';
 import NdBot from '@core/ui/NdBot.jsx';
+import { clampMaterialXp, MAX_MATERIAL_XP } from '@core/db/progress-xp.js';
 import {
   fetchAllUserProgress,
   getProgressClient,
@@ -246,7 +247,7 @@ export default function Quiz(props) {
   const pillarMode = PILLAR_TYPES.includes(pillarType);
   const effectiveBatchSize = Math.max(1, batchSize ?? (sessionMode ? 5 : items.length || 1));
   const sessionCount = Math.max(1, Math.ceil(items.length / effectiveBatchSize));
-  const maxMaterialXp = sessionCount * SESSION_XP;
+  const maxMaterialXp = Math.min(MAX_MATERIAL_XP, sessionCount * SESSION_XP);
   const requestedSession = Math.max(1, Number(session) || Math.floor(startIndex / effectiveBatchSize) + 1);
   const selectedSession = Math.min(requestedSession, sessionCount);
   const sessionStartIndex = (selectedSession - 1) * effectiveBatchSize;
@@ -371,25 +372,29 @@ export default function Quiz(props) {
       try {
         localXp = Number(window.localStorage.getItem(STORAGE_KEY) || '0');
         localMaterialXp = materialId
-          ? Number(window.localStorage.getItem(`progress_xp_${materialId}`) || '0')
+          ? clampMaterialXp(Number(window.localStorage.getItem(`progress_xp_${materialId}`) || '0'), maxMaterialXp)
           : 0;
+        if (materialId) {
+          window.localStorage.setItem(`progress_xp_${materialId}`, String(localMaterialXp));
+        }
       } catch {
         localXp = 0;
         localMaterialXp = 0;
       }
 
-      setXp(Number.isFinite(localXp) ? localXp : 0);
-      setIsAuthenticated(true);
-      setAuthResolved(true);
-
-      if (!materialId) return;
+      if (!materialId) {
+        setXp(Number.isFinite(localXp) ? localXp : 0);
+        setIsAuthenticated(true);
+        setAuthResolved(true);
+        return;
+      }
 
       const rows = await fetchAllUserProgress(client, user.id);
       if (cancelled) return;
 
       const current = rows.find((row) => row.material_slug === materialId);
-      const currentMaterialXp = Math.min(maxMaterialXp, Math.max(0, Number(current?.xp) || 0));
-      const remoteTotalXp = rows.reduce((total, row) => total + Math.max(0, Number(row.xp) || 0), 0);
+      const currentMaterialXp = clampMaterialXp(current?.xp, maxMaterialXp);
+      const remoteTotalXp = rows.reduce((total, row) => total + clampMaterialXp(row.xp), 0);
       const legacyXp = remoteTotalXp === 0 && Number.isFinite(localXp)
         ? Math.max(0, Math.min(maxMaterialXp - currentMaterialXp, localXp - earnedXpRef.current))
         : 0;
@@ -399,12 +404,14 @@ export default function Quiz(props) {
       const mergedSessions = Array.from({ length: completed }, (_, index) => index + 1);
       const pending = pendingProgressRef.current;
       pendingProgressRef.current = { xpDelta: 0, sessions_passed: null };
-      const baseMaterialXp = Math.min(maxMaterialXp, currentMaterialXp + earnedXpRef.current);
+      const baseMaterialXp = clampMaterialXp(currentMaterialXp + earnedXpRef.current, maxMaterialXp);
       const pendingXpDelta = Math.max(0, Math.min(Number(pending.xpDelta) || 0, maxMaterialXp - baseMaterialXp));
-      const cappedMaterialXp = Math.min(maxMaterialXp, baseMaterialXp + pendingXpDelta);
+      const cappedMaterialXp = clampMaterialXp(baseMaterialXp + pendingXpDelta, maxMaterialXp);
 
       setXp(remoteTotalXp + legacyXp + earnedXpRef.current + pendingXpDelta);
       setMaterialXp(cappedMaterialXp);
+      setIsAuthenticated(true);
+      setAuthResolved(true);
 
       if (completed > 0) {
         completedSessionsRef.current = mergedSessions;
