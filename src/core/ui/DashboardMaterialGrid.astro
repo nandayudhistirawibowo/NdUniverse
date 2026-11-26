@@ -1,6 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { normalizePassedPillars } from '@core/db/progress-client.js';
+import { clampMaterialXp, MAX_MATERIAL_XP } from '@core/db/progress-xp.js';
 
 type ProgressRow = {
   material_slug: string;
@@ -18,16 +18,11 @@ const { materials = [], progressRows = [], materialHrefPrefix = '/materi' } = As
 const progressBySlug = new Map<string, ProgressRow>(
   progressRows.map((row) => [row.material_slug, row])
 );
-const PILLAR_COUNT = 4;
-const XP_PER_CORRECT_ANSWER = 10;
 const cards = materials.map((material) => {
   const row = progressBySlug.get(material.id);
-  const vocabCount = material.data.vocab?.length ?? 0;
-  const maxXp = vocabCount * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
-  const xp = Math.max(0, Number(row?.xp) || 0);
-  const percentage = maxXp > 0
-    ? (xp >= maxXp ? 100 : Math.min(99, Math.round((xp / maxXp) * 100)))
-    : 0;
+  const maxXp = MAX_MATERIAL_XP;
+  const xp = clampMaterialXp(row?.xp);
+  const percentage = Math.round((xp / maxXp) * 100);
 
   return {
     material,
@@ -54,7 +49,7 @@ const cards = materials.map((material) => {
       <div class="progress-copy">
         <span
           data-progress-copy
-        >{xp >= maxXp && maxXp > 0 ? 'Selesai (100%)' : (xp === 0 ? 'Belum dimulai' : `${xp} / ${maxXp} XP`)}</span>
+        >{xp >= maxXp ? 'Selesai (100%)' : (xp === 0 ? 'Belum dimulai' : `${xp} / ${maxXp} XP`)}</span>
         <span>{material.data.vocab.length} kosakata</span>
       </div>
       <div
@@ -74,24 +69,28 @@ const cards = materials.map((material) => {
 </div>
 
 <script>
+  import { MAX_MATERIAL_XP } from '@core/db/progress-xp.js';
+
   window.addEventListener('nd:progress-updated', (event) => {
-    const { slug, languageCode, pillars } = (event as CustomEvent<{
+    const { slug, languageCode, xp } = (event as CustomEvent<{
       slug: string;
       languageCode: string;
-      pillars: string[];
+      xp: number;
     }>).detail;
     if (languageCode !== 'de') return;
 
     document.querySelectorAll<HTMLElement>('[data-progress-slug]').forEach((card) => {
       if (card.dataset.progressSlug !== slug) return;
-      const passedCount = pillars.length;
-      const percentage = Math.round((passedCount / 4) * 100);
+      const currentXp = Math.min(MAX_MATERIAL_XP, Math.max(0, Number(xp) || 0));
+      const percentage = Math.round((currentXp / MAX_MATERIAL_XP) * 100);
       const copy = card.querySelector<HTMLElement>('[data-progress-copy]');
       const percent = card.querySelector<HTMLElement>('[data-progress-percent]');
       const bar = card.querySelector<HTMLElement>('[data-progress-bar]');
       const fill = card.querySelector<HTMLElement>('[data-progress-fill]');
       if (copy) {
-        copy.textContent = passedCount === 0 ? 'Belum dimulai' : `${passedCount}/4 pilar`;
+        copy.textContent = currentXp >= MAX_MATERIAL_XP
+          ? 'Selesai (100%)'
+          : (currentXp === 0 ? 'Belum dimulai' : `${currentXp} / ${MAX_MATERIAL_XP} XP`);
       }
       if (percent) percent.textContent = `${percentage}%`;
       if (bar) bar.setAttribute('aria-valuenow', String(percentage));

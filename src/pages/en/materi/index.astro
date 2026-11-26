@@ -1,5 +1,6 @@
 ---
 import DashboardLayout from '@core/ui/DashboardLayout-en.astro';
+import { clampMaterialXp, MAX_MATERIAL_XP } from '@core/db/progress-xp.js';
 import { getCollection } from 'astro:content';
 
 export const prerender = false;
@@ -18,14 +19,12 @@ const { data: progressData } = user
 
 const xpBySlug = new Map<string, number>();
 for (const row of (progressData ?? [])) {
-  const xp = Math.max(0, Number(row.xp) || 0);
+  const xp = clampMaterialXp(row.xp);
   xpBySlug.set(row.material_slug, xp);
   const short = row.material_slug.split('/').at(-1);
   if (short && !xpBySlug.has(short)) xpBySlug.set(short, xp);
 }
 
-const PILLAR_COUNT = 4;
-const XP_PER_CORRECT_ANSWER = 10;
 ---
 <DashboardLayout title="Katalog Materi | NdUniverse" description="Katalog materi belajar bahasa Inggris." active="catalog" user={Astro.locals.user} profile={Astro.locals.profile}>
   <section class="catalog-content">
@@ -39,13 +38,11 @@ const XP_PER_CORRECT_ANSWER = 10;
           {items.length ? (
             <div class="material-grid">
               {items.map((item) => {
-                const vocabCount = item.data.vocab?.length ?? 0;
-                const maxXp = vocabCount * PILLAR_COUNT * XP_PER_CORRECT_ANSWER;
                 const shortSlug = item.id.split('/').at(-1) ?? item.id;
                 const currentXp = xpBySlug.get(item.id) ?? xpBySlug.get(shortSlug) ?? 0;
-                const percentage = maxXp > 0
-                  ? (currentXp >= maxXp ? 100 : Math.min(99, Math.round((currentXp / maxXp) * 100)))
-                  : 0;
+                const percentage = currentXp >= MAX_MATERIAL_XP
+                  ? 100
+                  : Math.round((currentXp / MAX_MATERIAL_XP) * 100);
                 return (
                   <a class="material-card" data-level={level} href={`/en/materi/${item.id.split('/').at(-1)}`}>
                     <span class="track-tag">{item.data.track ?? 'Bahasa Inggris Sehari-hari'}</span>
