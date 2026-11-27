@@ -97,11 +97,11 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 3. Untuk retrieval RAG, pertanyaan dapat dirapikan oleh model Groq query-rewriter, lalu diubah menjadi embedding 384 dimensi oleh Cloudflare Workers AI (`bge-small-en-v1.5`).
 4. Endpoint memanggil fungsi Supabase `match_documents` melalui klien service role. Fungsi SQL ini mencari potongan terdekat di tabel `documents` menggunakan vector similarity; definisi tabel dan RPC ada di `supabase/setup_rag.sql`. Proses ingest konten dijalankan lewat `scripts/ingest-rag.py`.
 5. Potongan materi yang ditemukan ditambahkan sebagai konteks system prompt. Endpoint mengirim riwayat dan konteks ke Groq Chat Completions, mencoba beberapa model cadangan, lalu mengirim jawaban ke UI.
-6. Prompt persona, aturan jawaban, filter soal, dan prompt perapihan query berada di bagian atas `src/pages/api/chat.ts`. Ubah bagian tersebut bila ingin menyesuaikan perilaku/prompt AI.
+6. Prompt persona, guardrail yang melarang pengungkapan kode/arsitektur, pengarahan keluhan teknis ke WhatsApp Admin, aturan jawaban, filter soal, dan prompt perapihan query berada di `src/pages/api/chat.ts`. Ubah bagian tersebut bila ingin menyesuaikan perilaku/prompt AI.
 
 ### Audio TTS English dan German
 
-1. `scripts/generate-tts-en.py` memakai Microsoft Edge TTS untuk mengaudit konten materi, kuis, ujian, karier, serta teks tombol audio pada halaman Grammar/Pronunciation EN/DE. `scripts/generate-boss-tts.py` menghasilkan voice line Boss Fight. TTS umum menghasilkan English US/UK dan German; hash-nya mengikuti resolver runtime, sementara Boss Fight memakai MD5.
+1. `scripts/generate-tts-en.py` memakai Microsoft Edge TTS untuk mengaudit konten materi, kuis, ujian, karier, serta teks tombol audio pada halaman Grammar/Pronunciation EN/DE. `scripts/generate-boss-tts.py` menghasilkan voice line Boss Fight. TTS umum menghasilkan English US/UK dan German dengan SHA-256 teks ternormalisasi; Boss Fight memakai MD5.
 2. Mode dry-run memeriksa keberadaan output dengan file lokal dan tidak melakukan HTTP/HEAD ke jsDelivr. Pemeriksaan CDN melalui HTTP dihindari agar audit tidak terkena `403 Rate Limit`; generation tetap mengakses Edge TTS untuk membuat file baru. Inventaris output umum saat ini melampaui 22.000 variasi teks/voice dan terus berubah bersama konten.
 3. `src/core/audio/cdn-audio.js` menyediakan utilitas shared untuk memuat peta path-ke-URL dari `manifest-cdn.json`, menyelesaikan path audio, dan membuat URL TTS German/English dari hash teks yang dinormalisasi. TTS English memilih direktori hash sesuai aksen.
 4. Modul speech English/German menangani pemutaran di kuis, halaman materi, ujian, grammar, dan pronunciation. Jika audio MP3 gagal atau 404, Web Speech API (`window.speechSynthesis`) menjadi fallback dengan locale `en-US` untuk English US, `en-GB` untuk aksen UK, atau `de-DE` untuk German. Error dicatat jika fallback tidak tersedia.
@@ -111,7 +111,7 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 
 1. `src/core/speech/use-speech-capture.ts` mengoordinasikan input ucapan untuk kuis, Speaking, dan Boss Fight. Locale browser mengikuti route (`en-US` atau `de-DE`).
 2. `recorder.ts` meminta izin mikrofon, merekam melalui `MediaRecorder`, dan mengakhiri rekaman saat tombol Stop ditekan, terdeteksi senyap setelah suara, atau batas waktu tercapai. Audio dikirim ke `POST /api/transcribe`.
-3. `recorder.ts` meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`, memfilter audio dengan high-pass 300 Hz dan low-pass 4 kHz, lalu memakai dynamic VAD berdasarkan kalibrasi noise floor dan jeda hening.
+3. `recorder.ts` meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`, memfilter audio dengan high-pass 80 Hz dan low-pass 8 kHz, menyimpan pre-roll 1.500 ms sebelum VAD aktif, lalu memakai dynamic VAD berdasarkan noise floor dengan hangover 800 ms untuk kata tunggal atau 2.000 ms untuk kalimat.
 4. Endpoint memvalidasi format/ukuran, membatasi permintaan per IP, lalu mencoba Groq Whisper (`whisper-large-v3-turbo`) dan Speechmatics Batch API. Jika keduanya tidak tersedia/gagal, hook memakai Web Speech API.
 5. `match.ts` menilai kata kunci dan alternatif transkrip menggunakan exact, phonetic, dan fuzzy matching. `SpeechFeedback.jsx` menampilkan hasil, skor, dan sumber transkrip.
 6. Credential Groq dan Speechmatics hanya dibaca server dari environment. Lihat `.env.example`, `src/pages/api/transcribe.ts`, dan `TESTING.md` untuk setup serta pengujian.
@@ -128,12 +128,14 @@ Variabel publik Supabase dipakai di browser/server; kunci service role hanya unt
 ### Leaderboard
 
 1. Route `/en/leaderboard` dan `/de/leaderboard` dilindungi middleware autentikasi dan dirender server-side.
-2. `src/core/db/leaderboard.ts` memanggil RPC Supabase `get_leaderboard` dengan service-role client. RPC dalam `supabase/leaderboard.sql` menggabungkan profil dengan progress, menjumlahkan XP, mengurutkan level lalu XP menurun, dan membatasi hasil ke 100 pengguna.
-3. `src/core/ui/Leaderboard.astro` menampilkan Top 3 sebagai podium dan peringkat 4–100 sebagai daftar responsif. SQL harus diterapkan pada project Supabase tujuan sebelum RPC tersedia.
+2. `src/core/db/leaderboard.ts` memanggil RPC Supabase `get_leaderboard` dengan service-role client. RPC dalam `supabase/leaderboard.sql` menggabungkan profil dengan progress, menjumlahkan XP, mengecualikan total XP 0 dan nama/NIM yang mengandung `admin`, mengurutkan level lalu XP menurun, dan membatasi hasil ke 100 pengguna. SQL memberikan grant execute kepada `anon`, `authenticated`, dan `service_role`, meski aplikasi menggunakan service-role client server-side.
+3. `src/core/ui/Leaderboard.astro` menampilkan Top 3 sebagai podium dan peringkat 4–100 sebagai daftar responsif, serta memuat ulang melalui Realtime `postgres_changes` pada progress/profil. SQL harus diterapkan pada project Supabase tujuan sebelum RPC tersedia.
 
 ### Progress pencapaian dashboard
 
-Dashboard EN (`src/pages/en/dashboard/index.astro`) dan DE (`src/pages/dashboard-de/index.astro`) mengambil `xp` serta `sessions_passed` dari `user_progress`. Daftar progres menghitung persentase/XA materi dan menampilkan `xp / maxXp XP` dengan batas model tetap 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP`. Halaman materi EN/DE merender progres dari `sessions_passed` (SSR, no-cache) dengan status pilar biner 100%/0% dan memperbarui UI via event `nd:progress-updated`. Perubahan progress dari kuis juga memperbarui tampilan tanpa reload.
+Standar materi adalah 4 sesi × 5 kosakata (20) dengan maksimum 800 XP; Alltagsdeutsch dan Everyday English memenuhi 20 kata, sementara sebagian Academic English masih 17–19. Dashboard EN (`src/pages/en/dashboard/index.astro`) dan DE (`src/pages/dashboard-de/index.astro`) membaca `user_progress.xp`, mencapnya pada 800, lalu menghitung persentase XP hingga maksimum 100%. XP aplikasi/UI dibatasi 800; `supabase/cap_user_progress_xp.sql` adalah cleanup satu kali, bukan CHECK maksimum database. Kuis tidak memberi XP pada pengulangan sesi yang seluruh empat pilarnya sudah selesai. Halaman materi EN/DE membaca `sessions_passed` (SSR, no-cache), menampilkan tiap pilar biner 100%/0%, dan memperbarui UI melalui event `nd:progress-updated`.
+
+Semua text box kuis/ujian mendukung Enter-to-submit; Shift+Enter membuat baris baru di textarea. Filter level katalog EN/DE bekerja tanpa reload dan membandingkan A1–C2 secara case-insensitive.
 
 ## Panduan Navigasi Developer
 
@@ -147,7 +149,8 @@ Dashboard EN (`src/pages/en/dashboard/index.astro`) dan DE (`src/pages/dashboard
 - **Mau mengubah tampilan/login?** Rute di `src/pages/login-en.astro` / `login-de.astro`; UI dan alur sign-in/sign-up bersama di `src/core/auth/AuthPortal.astro`.
 - **Mau mengubah proteksi dashboard/admin?** Lihat `src/core/auth/middleware.ts` (dipasang oleh `src/middleware.ts`) dan `src/core/auth/admin.ts`.
 - **Mau mengubah penyimpanan progres?** Gunakan `src/core/db/progress-client-en.js` atau `progress-client.js`; perubahan skema tabel terkait juga perlu ditinjau di `supabase/`.
-- **Mau mengubah daftar progress pencapaian dashboard?** Lihat `src/pages/en/dashboard/index.astro` dan `src/pages/dashboard-de/index.astro`; persen diturunkan dari pilar lulus dan XP maksimal dihitung dari jumlah kosakata.
+- **Mau mengubah daftar progress pencapaian dashboard?** Lihat `src/pages/en/dashboard/index.astro`, `src/pages/dashboard-de/index.astro`, dan `src/core/db/progress-xp.js`; persentase XP memakai kolom `user_progress.xp` dengan cap 800.
+- **Mau mengubah Enter-to-submit atau filter level katalog?** Periksa komponen kuis/ujian EN/DE dan halaman `src/pages/en/everyday-english/index.astro` serta `src/pages/de/alltagsdeutsch/index.astro`.
 - **Mau mengubah leaderboard?** Periksa `src/core/db/leaderboard.ts`, `src/core/ui/Leaderboard.astro`, route EN/DE, dan `supabase/leaderboard.sql`.
 - **Mau mengubah transkripsi atau pencocokan ucapan?** Mulai dari `src/core/speech/use-speech-capture.ts`; endpoint/provider ada di `src/pages/api/transcribe.ts`, engine browser di `stt-engine.ts`, dan phonetic matching di `match.ts`.
 - **Mau mengubah prompt atau perilaku NdBot?** Buka `src/pages/api/chat.ts`. Untuk tampilan chat, buka `src/core/ui/NdBot.jsx`.

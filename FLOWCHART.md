@@ -73,7 +73,7 @@ flowchart TD
 flowchart TD
     A[User pilih pilar latihan] --> B[Ambil query type dan session]
     B --> C[Filter maksimal lima kosakata berdasarkan session]
-    C --> D[Generate lima soal sesuai pilar]
+    C --> D[Generate maksimal lima soal sesuai pilar]
     D --> E{Mulai nyawa}
     E --> F[Kerjakan Reading Listening Writing atau Speaking]
     F --> G{Jawaban benar?}
@@ -87,13 +87,15 @@ flowchart TD
     H --> N
     N -->|Ya| F
     N -->|Tidak| O[Sesi selesai]
-    O --> P[Finalisasi XP sekali untuk run ini]
-    P --> Q[Pengguna login]
-    Q --> R[Upsert XP dan pilar lulus ke Supabase]
-    R --> T[Perbarui total progress dan level]
+    O --> P{Empat pilar sesi ini sudah tuntas sebelumnya?}
+    P -->|Ya| Q[Tidak memberi XP ulang]
+    P -->|Tidak| R[Finalisasi XP sekali untuk run ini]
+    R --> S[Cap XP materi pada 800]
+    S --> T[Upsert XP dan pilar lulus ke Supabase]
+    T --> U[Perbarui total progress dan level]
 ```
 
-Reading memakai teks dan pilihan ganda; Listening memakai audio/TTS dan pilihan ganda; Writing memakai text box fuzzy matching; Speaking memakai microphone atau text box. Anti-farming membuang XP sementara saat Game Over dan menggunakan guard finalisasi run agar XP tidak dikomit dua kali.
+Standar materi adalah 4 sesi × 5 kosakata. Jawaban benar bernilai 10 XP, maksimal 50 XP per pilar dan 200 XP per sesi, dengan batas 800 XP per materi. Reading memakai teks dan pilihan ganda; Listening memakai audio/TTS dan pilihan ganda; Writing memakai text box fuzzy matching; Speaking memakai microphone atau text box. XP sementara dibuang saat Game Over, run hanya difinalisasi sekali, dan pengulangan sesi yang seluruh empat pilarnya sudah selesai tidak memberi XP tambahan.
 
 ## Pemilihan Sesi dan Pilar Kuis
 
@@ -167,20 +169,24 @@ flowchart TD
 
 ## Progress Pencapaian Dashboard EN/DE
 
-`mermaid
+```mermaid
 flowchart TD
-    A[Dashboard/materi mengambil xp dan sessions_passed dari user_progress] --> B[Pasangkan baris progress ke materi]
-    B --> C[Hitung pilar lulus per sesi dari sessions_passed]
-    C --> D[Hitung xp dan maxXp materi]
-    D --> E{xp mencapai maxXp materi?}
-    E -->|Ya| F[Tampilkan progres 100% dan xp/maxXp penuh]
-    E -->|Belum| G[Tampilkan progres dan xp / maxXp XP]
-    F --> H[Materi: pilar biner 100%/0%]
-    G --> H
-    H --> I[nd:progress-updated memperbarui tampilan setelah latihan]
-`
+    A[Dashboard membaca xp dari user_progress] --> B[Cap xp saat membaca menjadi maksimum 800]
+    B --> C[Hitung persen: round xp / 800 × 100]
+    C --> D{xp mencapai 800?}
+    D -->|Ya| E[Tampilkan 100% dan progress bar penuh]
+    D -->|Belum| F[Tampilkan persen hasil hitung]
+    E --> G[Halaman materi: tiap pilar 0% atau 100%]
+    F --> G
+    G --> H[nd:progress-updated memperbarui tampilan setelah latihan]
+```
 
-Nilai XP maksimal memakai model tetap UI: 50 XP per pilar, 200 XP per sesi (4 pilar), dan jumlah sesi × 200 XP per materi (mis. 800 XP untuk 4 sesi). Ini kalkulasi presentasi, bukan kolom tambahan pada database. Daftar dashboard hanya menampilkan materi yang sudah memiliki XP atau progress pilar.
+Nilai dashboard/katalog memakai kolom `user_progress.xp` yang di-cap 800, lalu menghitung `Math.round((currentXp / 800) * 100)`. Model kurikulum standar menghasilkan 800 XP dari 4 sesi × 5 kosakata × 4 pilar × 10 XP. XP dicap oleh aplikasi/UI; schema DB tidak memiliki constraint maksimum 800. Sebagian materi Academic English yang masih memiliki 17–19 kosakata merupakan pengecualian konten dan belum mencapai cap melalui materi tersebut.
+
+## Input Kuis/Ujian dan Filter Katalog
+
+- Enter pada text box jawaban menjalankan aksi periksa/kirim/lanjut dengan validasi yang sama seperti tombol; Enter pada textarea mencegah baris baru, sedangkan Shift+Enter tetap membuat baris baru.
+- Dropdown level katalog memfilter kartu langsung tanpa reload. `Semua Level` menampilkan semua kartu; nilai A1–C2 dicocokkan case-insensitive setelah normalisasi.
 ## Grading Artikel dan Fuzzy Matching
 
 ```mermaid
@@ -254,7 +260,7 @@ flowchart TD
     M --> N[Tampilkan transkrip, keyword, skor, dan sumber]
 ```
 
-Sebelum merekam, browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`. Rekaman melalui high-pass 300 Hz dan low-pass 4 kHz; dynamic VAD mengukur noise floor untuk menentukan ambang suara dan mendeteksi hening. Engine memakai locale `en-US` atau `de-DE` sesuai route. Endpoint membatasi ukuran audio hingga 10 MB dan permintaan hingga 30 per IP per menit. Setelah feedback, kuis melanjutkan pertanyaan berikutnya sesuai alur komponennya.
+Sebelum merekam, browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`. Filter band-pass memakai high-pass 80 Hz dan low-pass 8 kHz. Pre-roll buffer 1.500 ms merekam audio sebelum VAD aktif agar awal ucapan tidak terpotong; dynamic VAD mengukur noise floor dan memakai hangover 800 ms untuk kata tunggal atau 2.000 ms untuk kalimat. Engine memakai locale `en-US` atau `de-DE` sesuai route. Endpoint membatasi ukuran audio hingga 10 MB dan permintaan hingga 30 per IP per menit. Setelah feedback, kuis melanjutkan pertanyaan berikutnya sesuai alur komponennya.
 
 ## Alur Leaderboard
 
@@ -265,11 +271,14 @@ flowchart TD
     C --> D[Halaman SSR memanggil fetchLeaderboard]
     D --> E[Service-role client memanggil RPC get_leaderboard]
     E --> F[Agregasi profil dan total XP di Supabase]
-    F --> G[Urut level DESC lalu XP DESC; batasi 100]
-    G --> H[Tampilkan podium Top 3 dan list peringkat 4–100]
+    F --> G[Kecualikan nama/NIM berisi admin dan total XP 0]
+    G --> H[Urut level DESC lalu XP DESC; batasi 100]
+    H --> I[Tampilkan podium Top 3 dan list peringkat 4–100]
+    I --> J[Realtime postgres_changes pada progress dan profil]
+    J --> D
 ```
 
-RPC didefinisikan di `supabase/leaderboard.sql`, mengembalikan hanya ID/nama/level/XP, dan hak eksekusinya hanya diberikan kepada `service_role`. Jalankan SQL tersebut pada Supabase sebelum memakai halaman leaderboard.
+RPC didefinisikan di `supabase/leaderboard.sql`, mengecualikan nama/NIM yang mengandung `admin` tanpa membedakan kapitalisasi serta pengguna dengan XP 0, dan mengembalikan hanya ID/nama/level/XP. SQL memberi grant execute ke `anon`, `authenticated`, dan `service_role`; aplikasi memanggil RPC server-side menggunakan service-role client. Jalankan SQL tersebut pada Supabase sebelum memakai halaman leaderboard.
 
 ## Alur Mock Exam 22 Soal
 

@@ -28,7 +28,8 @@ Status: **SELESAI**
 Status: **IMPLEMENTASI TERSEDIA; ekspansi konten dan aset audio berlanjut**
 
 - Generator TTS umum mencakup materi, kuis, ujian, karier, Grammar, dan Pronunciation EN/DE. Audit dry-run memeriksa file lokal, tidak meminta status CDN lewat HTTP/HEAD.
-- Dashboard English dan German sudah menampilkan progress bar, persentase, dan XP materi dalam format `xp / maxXp XP` pada daftar pencapaian (selaras dengan perhitungan XP materi: 50 XP per pilar, 200 XP per sesi, `jumlah sesi × 200 XP` per materi). Halaman materi menampilkan status pilar biner 100%/0%.
+- Dashboard English dan German membaca XP dari `user_progress.xp`, mencapnya pada 800, dan menampilkan persentase `Math.round((currentXp / 800) * 100)` serta `currentXp / 800 XP`; pada 800 bar selalu 100% penuh. Standar materi adalah 4 sesi × 5 kosakata, 10 XP per kosakata per pilar, 50 XP per pilar, 200 XP per sesi, dan maksimal 800 XP. Bar pilar tetap biner 100%/0%. Data Alltagsdeutsch dan Everyday English memiliki 20 kata per materi; beberapa Academic English masih 17–19.
+- Pengulangan sesi yang seluruh empat pilarnya telah selesai tidak menghasilkan XP tambahan. Runtime/UI mencap XP 800; migration `supabase/cap_user_progress_xp.sql` hanya cleanup data lama satu kali, bukan CHECK maksimum database.
 - Entri artikel telah dihapus dari daftar kosakata materi; `isArticleQuestion` mempertahankan artikel hanya pada prompt yang memang mengujinya.
 
 #### Backlog ekspansi pasca-V4
@@ -42,7 +43,7 @@ Status: **IMPLEMENTASI TERSEDIA; ekspansi konten dan aset audio berlanjut**
 Status: **PIPELINE STT SUDAH DIIMPLEMENTASIKAN; penyempurnaan produk tetap backlog**
 
 - Capture memakai Groq Whisper, fallback Speechmatics Batch API dan Web Speech API; matching alternatif mendukung exact, phonetic, dan fuzzy.
-- Rekaman menerapkan noise suppression browser, band-pass high-pass 300 Hz/low-pass 4 kHz, dan dynamic VAD berdasarkan noise floor.
+- Rekaman menerapkan noise suppression browser, band-pass high-pass 80 Hz/low-pass 8 kHz, pre-roll 1.500 ms sebelum VAD aktif, dan hangover dinamis 800 ms untuk kata tunggal atau 2.000 ms untuk kalimat.
 - Locale Speech Recognition mengikuti bahasa: German `de-DE`, English `en-US`. Speaking tetap mendukung input teks; menjadikan suara satu-satunya cara menjawab masih merupakan keputusan produk yang belum diterapkan.
 - Fuzzy matching sudah tersedia di `src/core/game/fuzzy-match.js` dan digunakan pada latihan serta beberapa ujian. Tinjau hasil grading untuk memastikan ambang cocok dengan tiap jenis jawaban sebelum mengubahnya.
 
@@ -51,6 +52,7 @@ Status: **PIPELINE STT SUDAH DIIMPLEMENTASIKAN; penyempurnaan produk tetap backl
 Status: **UI DAN RPC SUDAH DIIMPLEMENTASIKAN; penerapan database perlu diverifikasi per project**
 
 - Halaman EN/DE menyajikan podium Top 3 dan peringkat hingga Top 100, urut level menurun lalu XP menurun.
+- RPC mengecualikan nama/NIM yang mengandung `admin` dan total XP 0; `Leaderboard.astro` berlangganan Realtime `postgres_changes` pada progress/profil. SQL memberi grant execute `anon`, `authenticated`, `service_role`, sementara aplikasi memanggilnya server-side dengan service-role client.
 - Terapkan `supabase/leaderboard.sql` setelah schema progress dan `profiles.current_level` tersedia. Keberadaan migration di repository bukan bukti bahwa database deployment telah diperbarui.
 
 ## Fase 2.6 — Standarisasi Grading Ujian

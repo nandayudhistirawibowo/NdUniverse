@@ -35,7 +35,7 @@ Jumlah file materi dan kosakata berubah seiring penambahan konten; dokumen ini t
 - Career: katalog persiapan dunia kerja dengan empat rumpun profesi.
 - Setiap materi memiliki kosakata Jerman, terjemahan Indonesia, konteks Jerman, dan terjemahan konteks.
 - Artikel tata bahasa tidak menjadi entri kosakata tersendiri: daftar materi tidak memuat `the/a/an` atau `der/die/das` sebagai kata target. Artikel tetap dapat muncul dan dinilai pada soal grammar yang memang mengujinya.
-- Kosakata dibagi menjadi sesi, dengan **maksimal 5 kosakata per sesi** sehingga satu sesi mencakup kosakata 1–5, 6–10, 11–15, atau 16–20. Model progres/XP materi: **50 XP per pilar**, **4 pilar = 200 XP per sesi**, dan batas XP materi = **`jumlah sesi × 200 XP`** (mis. materi 4 sesi = 800 XP).
+- Standar kurikulum materi adalah **4 sesi × 5 kosakata = 20 kosakata**. Setiap kosakata memberi 10 XP pada satu pilar, sehingga batasnya 50 XP per pilar, 200 XP per sesi, dan **800 XP per materi** (4 pilar × 4 sesi). Seluruh Alltagsdeutsch dan Everyday English saat ini memenuhi 20 kata; beberapa materi Academic English masih 17–19 kata dan merupakan pengecualian konten yang belum mencapai 800 XP.
 - Detail materi menampilkan tabel kosakata per sesi beserta tombol speaker dan tombol latihan keempat pilar.
 - Halaman materi dan latihan tersedia pada route modul German dan English; fitur belajar yang memerlukan akun menggunakan autentikasi Supabase.
 
@@ -53,16 +53,18 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - Pengguna bebas memilih sesi yang tersedia dan pilar apa pun tanpa menyelesaikan sesi/pilar sebelumnya. URL latihan membawa `session` dan `type`; keduanya tidak dikunci berdasarkan progres sebelumnya.
 - Setelah kuis selesai, pengguna kembali ke halaman materi; aplikasi tidak mengarahkan ke pilar berikutnya secara paksa.
 - Status penyelesaian tetap dicatat per pasangan sesi-pilar, misalnya `s1-reading` atau `s2-writing`, untuk menampilkan indikator progres. Status ini bukan aturan akses. Progres pilar di UI bersifat biner: 100% jika tuntas, 0% jika belum. Pasangan pilar yang tuntas digabung (union) saat disimpan agar progres lain tidak tertimpa.
+- Semua input jawaban teks mendukung Enter untuk memeriksa/mengirim atau melanjutkan jawaban menggunakan aturan validasi yang sama dengan tombol; pada textarea, Shift+Enter membuat baris baru.
+- Dropdown filter level katalog EN/DE bekerja tanpa reload: `Semua Level` menampilkan semua kartu; A1–C2 dicocokkan case-insensitive.
 
 ### Sistem Nyawa, XP, dan Anti-Farming
 
 - Kuis dimulai dengan tiga nyawa.
 - Jawaban salah mengurangi nyawa dan menambahkan kata terkait ke Review Kata Sulit.
-- Jawaban benar menambah XP ke state sesi sementara (run/pilar dibatasi sesuai model tetap: 50 XP per pilar, 200 XP per sesi, dan batas XP materi `jumlah sesi × 200 XP`).
+- Jawaban benar menambah XP ke state sesi sementara (10 XP per jawaban benar; maksimal 50 XP per pilar dan 200 XP per sesi; total materi di-cap pada 800 XP).
 - XP baru tidak dikomit secara final sebelum sesi/pilar mencapai penyelesaian yang valid.
 - Jika Game Over, XP sementara dibuang dan tidak disimpan.
 - `finalizedXpRef` mencegah finalisasi ganda untuk run kuis yang sama.
-- Anti-farming memblokir pemberian XP ulang hanya ketika sesi tersebut sudah tuntas keempat pilarnya (pengulangan sesi tuntas); penyelesaian pilar pertama di sesi yang belum tuntas tetap dapat memberi XP/progres. Ini bukan deteksi farming lintas akun/perangkat.
+- Anti-farming memblokir XP ketika pengguna mengulang sesi yang keempat pilarnya sudah tuntas. Ini bukan deteksi farming lintas akun/perangkat. XP aplikasi/UI di-cap 800; schema database hanya memeriksa XP non-negatif, sedangkan `supabase/cap_user_progress_xp.sql` adalah cleanup satu kali untuk data lama, bukan CHECK maksimum permanen.
 
 ### NdBot v2 — Chatbot Tutor berbasis RAG
 
@@ -71,6 +73,7 @@ Pilihan pilar dikirim sebagai query `type` dan batch kosakata dikirim sebagai qu
 - Cloudflare Workers AI menghasilkan embedding `@cf/baai/bge-small-en-v1.5` berdimensi 384. Supabase `pgvector` mencari hingga tiga potongan materi dengan ambang kemiripan 0.35.
 - Potongan materi yang relevan diberikan ke model Groq untuk menyusun jawaban tutor. Ingest mengambil Markdown German dan English dari direktori konten modul serta subset dokumentasi proyek yang dikonfigurasi di `scripts/ingest-rag.py`.
 - Pembaruan materi tidak otomatis memperbarui indeks. Jalankan proses ingest penuh sesuai panduan di `HANDOVER.md`; script menghapus seluruh baris `documents` sebelum memasukkan kembali indeks.
+- Guardrail persona melarang NdBot membahas atau membocorkan kode dan arsitektur internal. Keluhan teknis diarahkan ke WhatsApp Admin; ini aturan percakapan pada prompt, bukan kontrol akses data.
 
 ### Career dan Boss Fight
 
@@ -96,7 +99,7 @@ Setelah sepuluh pertanyaan selesai, aplikasi menampilkan layar hasil khusus **Wa
 - Pemilihan sesi/pilar tidak bergantung pada array progres tersebut.
 - Materi baru dianggap selesai hanya jika keempat pilar pada semua sesi materi tercatat selesai sesuai aturan progress.
 - Tampilan progres pilar bersifat biner: 100% jika pilar tuntas, 0% jika belum.
-- Halaman materi (SSR, no-cache) dan dashboard pencapaian English (`/en/dashboard`) serta German (`/dashboard-de`) menampilkan progres materi yang sudah memiliki XP atau pilar tersimpan. Dashboard menampilkan XP sebagai `xp / maxXp XP`. Batas XP UI memakai model tetap 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP` per materi (mis. 800 XP untuk 4 sesi). Nilai ini turunan UI, bukan kolom baru di database; XP historis di database dapat tetap menyimpang sampai diperbarui/dibersihkan.
+- Halaman materi (SSR, no-cache) dan dashboard pencapaian English (`/en/dashboard`) serta German (`/dashboard-de`) menampilkan materi yang memiliki XP atau progres pilar. Dashboard/catalog mengambil `user_progress.xp`, mencapnya pada 800, lalu menghitung `Math.round((currentXp / 800) * 100)`; jika XP >= 800, persentase 100% dan bar penuh. Halaman materi memakai status pilar biner 100%/0%. XP maksimum di aplikasi/UI; schema DB tidak memiliki constraint atas 800 dan data lama perlu dibersihkan melalui migration satu kali.
 
 ### Level CEFR
 
@@ -118,7 +121,8 @@ Total level dihitung berdasarkan materi yang sudah lulus seluruh pilar. Materi F
 - Halaman leaderboard terproteksi tersedia untuk modul English (`/en/leaderboard`) dan German (`/de/leaderboard`).
 - Top 3 ditampilkan sebagai podium; daftar dilanjutkan hingga maksimal 100 pengguna.
 - Supabase RPC `get_leaderboard` menjumlahkan XP dari `user_progress` per pengguna, lalu mengurutkan `profiles.current_level` menurun dan total XP menurun.
-- RPC hanya dipanggil server-side dengan service-role client dan hanya mengembalikan ID, nama, level, serta XP. Terapkan `supabase/leaderboard.sql` pada database tujuan; file migration di repository bukan bukti bahwa database live sudah diperbarui.
+- RPC mengecualikan pengguna total XP 0 dan profil dengan nama atau NIM yang mengandung `admin` tanpa membedakan kapitalisasi; hasil dibatasi maksimal 100 dan hanya mengembalikan ID, nama, level, serta XP.
+- `Leaderboard.astro` berlangganan Supabase Realtime `postgres_changes` untuk INSERT/UPDATE pada `user_progress` dan `profiles`. SQL memberi grant execute ke `anon`, `authenticated`, dan `service_role`, sedangkan halaman aplikasi memanggil RPC dengan service-role client di server. Terapkan `supabase/leaderboard.sql` pada database tujuan; file migration di repository bukan bukti database live sudah diperbarui.
 
 ### Mock Exam 22 Soal
 
@@ -170,18 +174,18 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 - Audio dibuat dengan Microsoft Edge TTS. Audio English mendukung aksen US (`en-US`) dan UK (`en-GB`); German menggunakan `de-DE`. MP3 dan manifest yang dipublikasikan di repository terpisah `nandayudhistirawibowo/nduniverse-audio` diakses melalui jsDelivr.
 - `scripts/generate-tts-en.py` mengumpulkan teks dari konten materi/ujian/karier dan halaman Grammar/Pronunciation EN/DE; `scripts/generate-boss-tts.py` menangani voice line Boss Fight. Dry-run memeriksa file lokal, bukan mengirim request HTTP/HEAD ke jsDelivr. Inventaris generator umum saat ini melampaui 22.000 output teks/voice dan berubah saat konten diperbarui; dry-run bukan verifikasi publikasi CDN.
-- URL TTS umum berbasis hash dan resolver berada di `src/core/audio/cdn-audio.js`; audio statis dapat di-resolve dari manifest CDN.
+- URL TTS umum memakai SHA-256 dari teks ternormalisasi; Boss Fight memakai MD5. Resolver ada di `src/core/audio/cdn-audio.js`; MP3/manifest terbit di jsDelivr dan audio statis di-resolve melalui manifest.
 - Boss Fight menggunakan voice acting audio TTS untuk dialog HRD; generatornya tersedia melalui `npm run generate:tts:boss`.
 - Jika MP3 gagal dimuat atau menghasilkan 404, pemutar menggunakan Web Speech API (`window.speechSynthesis`) dengan `en-US` untuk English US dan `de-DE` untuk German; rute aksen UK memakai `en-GB`. Jika browser tidak mendukung fallback, error dicatat.
-- Rekaman microphone memakai `MediaRecorder` dan dikirim ke endpoint server `POST /api/transcribe` (maksimal 10 MB; 30 permintaan/IP/menit). Browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`; rekaman melewati high-pass 300 Hz dan low-pass 4 kHz. Dynamic VAD mengukur noise floor untuk menentukan ambang suara dan menghentikan rekaman setelah hening.
+- Rekaman microphone memakai `MediaRecorder` dan dikirim ke endpoint server `POST /api/transcribe` (maksimal 10 MB; 30 permintaan/IP/menit). Browser meminta `noiseSuppression`, `echoCancellation`, dan `autoGainControl`; band-pass memakai high-pass 80 Hz dan low-pass 8 kHz. Pre-roll buffer 1.500 ms merekam sebelum VAD aktif; dynamic VAD mengukur noise floor dan memakai hangover 800 ms untuk kata tunggal atau 2.000 ms untuk kalimat.
 - Endpoint mencoba Groq Whisper (`whisper-large-v3-turbo`), lalu Speechmatics Batch API; bila keduanya gagal, capture hook menggunakan browser Web Speech API. `src/core/speech/match.ts` mendukung exact, phonetic, dan fuzzy matching, termasuk variasi bunyi umum pada aksen Indonesia. Locale pengenalan mengikuti route: `en-US` dan `de-DE`.
 - API keys `GROQ_API_KEY` dan `SPEECHMATICS_API_KEY` harus disimpan di environment server, tidak di client bundle. Header `Permissions-Policy` pada `vercel.json` mengizinkan microphone pada origin sendiri.
 
 ### Leaderboard
 
 - Halaman terproteksi tersedia di `/en/leaderboard` dan `/de/leaderboard`, dengan podium Top 3 dan daftar maksimal 100 pengguna.
-- Supabase RPC `get_leaderboard` menjumlahkan XP dari `user_progress` per pengguna, lalu mengurutkan `profiles.current_level DESC` dan total XP `DESC`.
-- RPC hanya dapat dipanggil melalui server service-role client dan mengembalikan kolom terbatas; jalankan `supabase/leaderboard.sql` pada Supabase project target. File SQL di repository tidak membuktikan schema live sudah diterapkan.
+- Supabase RPC `get_leaderboard` menjumlahkan XP, mengecualikan total XP 0 dan nama/NIM yang mengandung `admin` secara case-insensitive, lalu mengurutkan `profiles.current_level DESC` dan total XP `DESC`.
+- UI berlangganan Realtime `postgres_changes` untuk INSERT/UPDATE pada `user_progress` dan `profiles`. SQL memberi grant execute kepada `anon`, `authenticated`, dan `service_role`; aplikasi memanggil RPC server-side menggunakan service-role client. Jalankan `supabase/leaderboard.sql` pada project target. File SQL di repository tidak membuktikan schema live sudah diterapkan.
 
 ### Landing dan SVG Flags
 
@@ -205,7 +209,7 @@ Status `nduniverse-goethe-[level]` disimpan di `localStorage`. Sertifikat lulus 
 
 ### Dashboard, Bantuan, dan Admin
 
-- Dashboard EN dan DE menampilkan XP, kemajuan level CEFR, serta daftar progres materi dengan progress bar, persentase, dan XP materi dalam format `xp / maxXp XP`. Halaman materi menampilkan status pilar biner 100%/0%.
+- Dashboard EN dan DE menampilkan XP, kemajuan level CEFR, serta daftar progres materi dengan progress bar, persentase berdasarkan XP dari `user_progress.xp` (cap 800), dan XP dalam format `xp / 800 XP`. Halaman materi menampilkan status pilar biner 100%/0%.
 - Materi Fachdeutsch dan Career tidak menambah poin Level CEFR.
 - Halaman Bantuan, profil, bookmark, dan dashboard dilindungi middleware sesuai akses.
 - Admin mengelola akun melalui portal admin terproteksi.

@@ -161,8 +161,12 @@ RPC leaderboard didefinisikan di `supabase/leaderboard.sql`; file tersebut harus
 - Generator `scripts/generate-tts-en.py` memeriksa keberadaan MP3 secara lokal (tanpa HTTP/HEAD ke jsDelivr saat audit) dan mencakup halaman Grammar/Pronunciation English serta German selain konten Markdown. `scripts/generate-boss-tts.py` menangani voice line Boss Fight. Audio diproduksi dengan Microsoft Edge TTS dan disajikan dari repository `nduniverse-audio` melalui jsDelivr.
 - Dry-run terkini menunjukkan lebih dari 22.000 variasi output teks/voice umum; jumlah mengikuti konten. Pemeriksaan lokal tidak membuktikan bahwa aset sudah dipublikasikan di CDN.
 - Semua artikel (EN `the/a/an`, DE `der/die/das`) telah dihapus dari entri kosakata materi. Normalisasi fuzzy mengabaikan artikel untuk kuis biasa; prompt grammar tertentu dapat mewajibkannya melalui `isArticleQuestion`.
-- Dashboard EN dan DE menampilkan progress bar/persentase dan XP materi dalam format `xp / maxXp XP`. Batas XP materi mengikuti model tetap 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP`; database tetap menyimpan XP dan `sessions_passed`, bukan nilai presentasi tersebut. Halaman materi merender status pilar biner 100%/0% dari `sessions_passed`.
-- STT menggunakan `noiseSuppression`, high-pass 300 Hz, low-pass 4 kHz, dan dynamic VAD berdasarkan noise floor sebelum mencoba Groq Whisper, Speechmatics, lalu Web Speech API.
+- Standar kurikulum Alltagsdeutsch dan Everyday English adalah 4 sesi × 5 kosakata (20), dengan 50 XP per pilar, 200 XP per sesi, dan maksimum 800 XP per materi. Kuis tidak memberi XP saat mengulang sesi yang keempat pilarnya sudah tuntas; UI menampilkan XP yang di-cap 800 dan progres pilar biner 0%/100%. Semua materi DE dan Everyday English saat ini berisi 20 kosakata; sebagian Academic English masih 17–19.
+- XP runtime di-cap oleh `src/core/db/progress-xp.js`; migration `supabase/cap_user_progress_xp.sql` membersihkan nilai lama di atas 800. Schema `user_progress.xp` hanya memeriksa nilai non-negatif, bukan upper bound 800.
+- STT memakai `noiseSuppression`, `echoCancellation`, `autoGainControl`, band-pass high-pass 80 Hz/low-pass 8 kHz, pre-roll 1.500 ms sebelum VAD aktif, dan hangover dinamis 800 ms (kata tunggal) atau 2.000 ms (kalimat), lalu mencoba Groq Whisper dan Speechmatics sebelum fallback Web Speech.
+- Kuis/ujian teks mendukung Enter-to-submit dan Shift+Enter untuk baris baru di textarea. Filter katalog EN/DE membandingkan level secara case-insensitive; handler berada di halaman Everyday English dan Alltagsdeutsch.
+- NdBot memiliki prompt guardrails yang melarang pembahasan/kebocoran kode dan arsitektur serta mengarahkan keluhan teknis ke WhatsApp Admin.
+- RPC leaderboard mengecualikan total XP 0 dan profil dengan nama/NIM yang mengandung `admin`; UI berlangganan Supabase Realtime `postgres_changes` untuk `user_progress` dan `profiles`.
 
 ## Panduan Perubahan
 

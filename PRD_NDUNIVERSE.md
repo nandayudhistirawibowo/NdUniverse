@@ -80,7 +80,9 @@ Landing page mengenalkan produk dan menyediakan kartu modul yang menautkan langs
 - **Cross-device:** pengalaman harus nyaman di desktop, tablet, dan mobile.
 - **Konsisten:** NdUniverse menjadi identitas induk, sementara modul bahasa memiliki konten dan alur khusus.
 - **Bertahap:** landing mengarahkan user ke login modul, lalu dashboard mengatur perjalanan belajar.
-- **Tampilan pencapaian:** dashboard EN/DE memperlihatkan progres materi (persentase) dan XP dalam format `xp / maxXp XP` untuk materi yang sudah dimulai. Halaman materi menampilkan status pilar biner 100%/0%; batas XP materi mengikuti 50 XP per pilar, 200 XP per sesi, dan `jumlah sesi × 200 XP`.
+- **Kurikulum dan XP:** standar materi adalah 4 sesi × 5 kosakata = 20, menghasilkan maksimal 800 XP (10 XP per kosakata per pilar; 4 pilar). Alltagsdeutsch dan Everyday English sudah 20 kata per materi; sebagian Academic English masih 17–19 kata. XP di-cap 800 di runtime/UI dan pengguna tidak mendapat XP saat mengulang sesi yang sudah menuntaskan empat pilarnya; progress pilar biner 0%/100%.
+- **Tampilan pencapaian:** dashboard/katalog EN/DE mengambil XP dari `user_progress.xp`, menerapkan `Math.min(800, db_xp)`, lalu menampilkan `Math.round((current_xp / 800) * 100)` dan `current_xp / 800 XP`. Saat cap tercapai, nilai wajib 100% dan bar penuh.
+- **Interaksi:** Enter mengirim/memeriksa jawaban teks dan Shift+Enter membuat baris baru pada textarea. Filter level katalog EN/DE case-insensitive dan berjalan tanpa reload.
 
 ## Fondasi Teknis
 
@@ -90,11 +92,13 @@ Landing page mengenalkan produk dan menyediakan kartu modul yang menautkan langs
 - Platform menggunakan Supabase untuk auth, database, storage, dan progress; audio yang dikonfigurasi CDN disajikan melalui jsDelivr.
 - Chatbot memakai Supabase `pgvector` untuk retrieval, Cloudflare Workers AI untuk embedding, dan Groq untuk query rewrite serta jawaban berbasis materi.
 - Input speaking memakai Groq Whisper, fallback Speechmatics Batch API, lalu Web Speech API; phonetic matching memberi toleransi pada variasi pengucapan.
-- STT memakai browser noise suppression, filter high-pass 300 Hz + low-pass 4 kHz, dan dynamic VAD berdasarkan kalibrasi noise floor.
+- STT memakai browser noise suppression/echo cancellation/auto gain, band-pass high-pass 80 Hz + low-pass 8 kHz, pre-roll buffer 1.500 ms sebelum VAD aktif, dan hangover dinamis 800 ms (kata tunggal) atau 2.000 ms (kalimat).
 - Penilaian teks memakai fuzzy matching untuk typo. Artikel `the/a/an` dan `der/die/das` tidak lagi menjadi entri kosakata; prompt grammar yang dikenali `isArticleQuestion` tetap mensyaratkan artikel.
 - Microsoft Edge TTS menghasilkan audio English US/UK, German, dan voice line Boss Fight. Generator umum memeriksa ketersediaan file secara lokal dan mencakup halaman Grammar/Pronunciation; MP3 yang dipublikasikan di-host pada `nduniverse-audio` melalui jsDelivr. Dry-run tidak melakukan HTTP/HEAD ke jsDelivr.
-- Leaderboard EN/DE menampilkan Top 100 berdasarkan level dan XP melalui Supabase RPC server-side; `supabase/leaderboard.sql` harus diterapkan pada project tujuan.
+- Leaderboard EN/DE menampilkan Top 100 berdasarkan level dan XP melalui RPC yang mengecualikan nama/NIM berisi `admin` dan pengguna 0 XP; UI realtime memakai Supabase `postgres_changes`. `supabase/leaderboard.sql` memberi grant kepada `anon`, `authenticated`, dan `service_role`, tetapi aplikasi memanggilnya server-side menggunakan service-role client; terapkan SQL pada project tujuan.
+- NdBot memiliki prompt guardrails terhadap pembahasan/kebocoran kode dan arsitektur; keluhan teknis diarahkan ke WhatsApp Admin. Ini kebijakan prompt, bukan kontrol akses data.
 - XP kuis sementara dibatalkan saat Game Over dan dilindungi dari finalisasi ganda pada run yang sama.
+- Schema `user_progress.xp` memiliki batas bawah non-negatif, tetapi tidak memiliki constraint maksimum 800; migration cap membersihkan data lama sekali, sedangkan runtime/UI tetap melakukan clamp.
 - UI Indonesian-first: Bahasa Indonesia hardcoded tanpa sistem i18n. Dashboard dan NdBot menggunakan Bahasa Indonesia penuh; landing/portal/login masih memiliki sisa English copy yang masuk backlog audit. Materi belajar tetap memakai bahasa target.
 - Kuis mengizinkan pemilihan sesi dan pilar tanpa prasyarat atau urutan wajib; `sessions_passed` hanya menandai progres.
 - SEO: landing `index, follow` dan canonical; dashboard `noindex, nofollow` serta dikecualikan dari sitemap.

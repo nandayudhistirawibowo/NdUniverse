@@ -50,9 +50,9 @@ Dashboard German dan English memiliki visual gelap yang selaras: sidebar gelap, 
 
 Sidebar, header, navigasi, label aksi, dan tombol dashboard ditulis dalam Bahasa Indonesia. String UI saat ini hardcoded, bukan diatur oleh i18n; route `/en` dan `/de` mengganti modul belajar, sementara materi dan soal tetap memakai bahasa target.
 
-Bagian Pencapaian menampilkan materi yang sudah memiliki progress. Setiap baris menyusun judul, progress bar dengan persentase, serta XP materi dalam format `xp / maxXp XP` (mengikuti perhitungan XP materi: 50 XP per pilar, 200 XP per sesi, batas materi `jumlah sesi × 200 XP`). Status pilar pada halaman materi bersifat biner (100%/0%); layout memakai grid min-width-safe agar tidak meluber di layar ponsel.
+Bagian Pencapaian menampilkan materi yang sudah memiliki progress. Setiap baris menyusun judul, progress bar dengan persentase XP (`Math.round((min(800, xp) / 800) * 100)`), serta XP dalam format `xp / 800 XP`; nilai 800 memastikan bar penuh dan 100% saat cap tercapai. Kurikulum standar adalah 4 sesi × 5 kosakata, 50 XP per pilar, dan 200 XP per sesi. Status pilar di halaman materi bersifat biner (100%/0%); layout memakai grid min-width-safe agar tidak meluber di layar ponsel. Data Alltagsdeutsch dan Everyday English telah berisi 20 kata per materi; sebagian Academic English masih 17–19.
 
-Card katalog menampilkan nama, ringkasan, progres, dan badge CEFR:
+Card katalog menampilkan nama, ringkasan, progres, badge CEFR, dan dropdown filter level case-insensitive (Semua Level/A1–C2) yang langsung menyaring kartu tanpa reload:
 
 | Level | Latar badge | Teks |
 | --- | --- | --- |
@@ -78,7 +78,9 @@ Kuis latihan empat pilar menampilkan progres pengerjaan dan sesi. Countdown time
 
 Jawaban teks memakai fuzzy matching untuk toleransi typo. Artikel `the/a/an` dan `der/die/das` tidak ditampilkan sebagai entri kosakata materi; normalisasi kuis biasa mengabaikan artikel, sedangkan soal grammar yang dikenali `isArticleQuestion()` meminta artikel tetap sesuai target.
 
-Audio MP3 menggunakan Microsoft Edge TTS dan CDN jsDelivr. Bila MP3 gagal atau 404, Web Speech API menjadi fallback dengan locale `en-US` untuk English, `de-DE` untuk German (serta `en-GB` pada playback aksen UK). STT menerapkan browser noise suppression, band-pass (high-pass 300 Hz dan low-pass 4 kHz), serta dynamic VAD berdasarkan noise floor.
+Semua text box kuis/ujian mendukung Enter untuk memeriksa/mengirim jawaban dengan validasi tombol yang sama. Pada textarea, Enter mengirim dan Shift+Enter membuat baris baru.
+
+Audio MP3 menggunakan Microsoft Edge TTS; TTS umum menggunakan nama hash SHA-256 dari teks ternormalisasi, sedangkan Boss Fight memakai MD5. MP3 yang dipublikasikan di jsDelivr memakai Web Speech API sebagai fallback saat gagal/404. STT menerapkan browser noise suppression, band-pass high-pass 80 Hz/low-pass 8 kHz, pre-roll buffer 1.500 ms sebelum deteksi VAD, serta hangover dinamis 800 ms (kata tunggal) atau 2.000 ms (kalimat).
 
 ## NdBot (AI Assistant)
 
@@ -87,6 +89,8 @@ NdBot adalah karakter tutor dengan FAB dan panel percakapan. Bentuk karakter mem
 - `study`: chat tutor tersedia; bubble sapaan dapat muncul berkala.
 - `quiz`: chat dinonaktifkan dan panel tertutup selama kuis.
 - `exam`: chat dinonaktifkan; warna FAB menunjukkan tingkat strike.
+
+Prompt NdBot melarang pengungkapan atau pembahasan detail kode dan arsitektur aplikasi. Keluhan/masalah teknis diarahkan ke WhatsApp Admin; aturan prompt ini merupakan guardrail percakapan, bukan mekanisme otorisasi data.
 
 **Catatan typewriter:** konsep visual bubble dapat memakai efek typewriter, tetapi implementasi saat ini mengganti teks bubble secara utuh, bukan mengetik huruf demi huruf.
 
