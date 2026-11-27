@@ -97,9 +97,9 @@ const XP_PER_CORRECT_ANSWER = 10;
 </DashboardLayout>
 
 <script>
-	const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
 	const applyFilter = () => {
-		const selected = filter?.value ?? 'ALL';
+		const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
+		const selected = (filter?.value ?? 'ALL').trim().toUpperCase();
 		document.querySelectorAll<HTMLAnchorElement>('[data-exam-link]').forEach((examLink) => {
 			const examType = examLink.dataset.examType;
 			if (!examType) return;
@@ -110,10 +110,15 @@ const XP_PER_CORRECT_ANSWER = 10;
 			examLink.textContent = selected === 'ALL' ? examLabel : `${examLabel} ${selected}`;
 		});
 		document.querySelectorAll<HTMLElement>('.material-card[data-level]').forEach((card) => {
-			card.hidden = selected !== 'ALL' && card.dataset.level !== selected;
+			const materialLevel = (card.dataset.level ?? '').trim().toUpperCase();
+			card.hidden = selected !== 'ALL' && materialLevel !== selected;
 		});
 	};
-	filter?.addEventListener('change', applyFilter);
+	document.addEventListener('change', (event) => {
+		if (event.target instanceof HTMLSelectElement && event.target.matches('[data-level-filter]')) {
+			applyFilter();
+		}
+	});
 	document.addEventListener('astro:page-load', applyFilter);
 	applyFilter();
 </script>

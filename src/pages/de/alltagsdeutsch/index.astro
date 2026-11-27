@@ -138,9 +138,9 @@ const XP_PER_CORRECT_ANSWER = 10;
   }
 </style>
 <script>
-  const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
   const applyFilter = () => {
-    const selected = filter?.value ?? 'ALL';
+    const filter = document.querySelector<HTMLSelectElement>('[data-level-filter]');
+    const selected = (filter?.value ?? 'ALL').trim().toUpperCase();
     const examLink = document.querySelector<HTMLAnchorElement>('[data-exam-link]');
     if (examLink) {
       examLink.href = selected === 'ALL'
@@ -150,10 +150,16 @@ const XP_PER_CORRECT_ANSWER = 10;
         ? 'Ujian Goethe'
         : `Ujian Goethe ${selected}`;
     }
-    document.querySelectorAll<HTMLElement>('[data-level]').forEach((section) => {
-      section.hidden = selected !== 'ALL' && section.dataset.level !== selected;
+    document.querySelectorAll<HTMLElement>('.material-card[data-level]').forEach((card) => {
+      const materialLevel = (card.dataset.level ?? '').trim().toUpperCase();
+      card.hidden = selected !== 'ALL' && materialLevel !== selected;
     });
   };
-  filter?.addEventListener('change', applyFilter);
+  document.addEventListener('change', (event) => {
+    if (event.target instanceof HTMLSelectElement && event.target.matches('[data-level-filter]')) {
+      applyFilter();
+    }
+  });
+  document.addEventListener('astro:page-load', applyFilter);
   applyFilter();
 </script>
