@@ -2,6 +2,7 @@
 import { ClientRouter } from 'astro:transitions';
 import './audio-controls.css';
 import { createAvatarSignedUrl } from '@core/auth/avatar';
+import { normalizeCefrLevel } from '@core/db/level-points.js';
 import FeedbackModal from '@core/ui/FeedbackModal.jsx';
 import NdBot from '@core/ui/NdBot.jsx';
 
@@ -25,9 +26,9 @@ const botUserName = profile?.nama_lengkap
   || user?.user_metadata?.nama_lengkap
   || user?.email?.split('@')[0]
   || 'teman';
-const botUserLevel = profile?.cefr_level
-  || user?.user_metadata?.cefr_level
-  || 'A1 Pemula';
+const botUserLevel = normalizeCefrLevel(
+  profile?.cefr_level || user?.user_metadata?.cefr_level,
+);
 const accountInitial = accountName.slice(0, 1).toUpperCase();
 const accountAvatarUrl = await createAvatarSignedUrl(Astro.locals.supabase, profile?.avatar_url);
 const isAdminArea = Astro.url.pathname.startsWith('/admin');

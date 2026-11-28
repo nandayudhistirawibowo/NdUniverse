@@ -13,6 +13,7 @@
  */
 
 import { useEffect, useRef, useState } from 'preact/hooks';
+import { normalizeCefrLevel } from '@core/db/level-points.js';
 
 // ── Konstanta ───────────────────────────────────────────────────────────────
 
@@ -111,7 +112,7 @@ export default function NdBot({
   mode = 'study',
   strikeLevel = 0,
   userName = 'teman',
-  userLevel = 'A1 Pemula',
+  userLevel = 'A1',
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
@@ -120,7 +121,7 @@ export default function NdBot({
   const [bubbleIndex, setBubbleIndex] = useState(STUDY_BUBBLES.length - 1);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
   const [messages, setMessages] = useState([
-    { role: 'assistant', content: getWelcomeMessage(userName, userLevel) },
+    { role: 'assistant', content: getWelcomeMessage(userName, normalizeCefrLevel(userLevel)) },
   ]);
   const messagesEndRef = useRef(null);
 

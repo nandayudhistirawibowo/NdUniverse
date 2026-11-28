@@ -1,6 +1,6 @@
 drop function if exists public.get_leaderboard(text);
 
-create or replace function public.get_leaderboard(p_lang text)
+create function public.get_leaderboard(p_lang text)
 returns table (
   id uuid,
   name text,
@@ -12,97 +12,89 @@ stable
 security definer
 set search_path = public, pg_temp
 as $$
-  with valid_lang as (
-    select case when p_lang in ('en', 'de') then p_lang else null end as lang
+  with valid_language as (
+    select p_lang as language_code
+    where p_lang in ('en', 'de')
+  ),
+  -- Keep these counts aligned with the published Everyday English and Alltagsdeutsch content.
+  material_level_counts(language_code, level_code, material_count, level_order) as (
+    values
+      ('en', 'A1', 27, 1),
+      ('en', 'A2', 52, 2),
+      ('en', 'B1', 103, 3),
+      ('en', 'B2', 52, 4),
+      ('en', 'C1', 52, 5),
+      ('en', 'C2', 105, 6),
+      ('de', 'A1', 25, 1),
+      ('de', 'A2', 52, 2),
+      ('de', 'B1', 103, 3),
+      ('de', 'B2', 52, 4),
+      ('de', 'C1', 52, 5),
+      ('de', 'C2', 127, 6)
+  ),
+  cumulative_level_targets as (
+    select
+      counts.language_code,
+      counts.level_code,
+      counts.level_order,
+      sum(counts.material_count * 800) over (
+        partition by counts.language_code
+        order by counts.level_order
+      )::bigint as cumulative_xp_target
+    from material_level_counts as counts
   ),
   language_progress as (
     select
       progress.user_id,
-      coalesce(progress.xp, 0)::bigint as xp,
-      coalesce(progress.material_slug, '') as material_slug,
-      coalesce(passed.items, array[]::text[]) as passed_items,
+      least(greatest(coalesce(progress.xp, 0), 0), 800)::bigint as capped_xp,
       case
-        when p_lang = 'en' and progress.material_slug like 'a1/english-a1-%' then 10
-        when p_lang = 'en' and progress.material_slug like 'a2/english-a2-%' then 20
-        when p_lang = 'en' and progress.material_slug like 'b1/english-b1-%' then 30
-        when p_lang = 'en' and progress.material_slug like 'b2/english-b2-%' then 40
-        when p_lang = 'en' and progress.material_slug like 'c1/english-c1-%' then 50
-        when p_lang = 'en' and progress.material_slug like 'c2/english-c2-%' then 60
-        when p_lang = 'de' and progress.material_slug like 'alltags-a1-%' then 10
-        when p_lang = 'de' and progress.material_slug like 'alltags-a2-%' then 20
-        when p_lang = 'de' and progress.material_slug like 'alltags-b1-%' then 30
-        when p_lang = 'de' and progress.material_slug like 'alltags-b2-%' then 40
-        when p_lang = 'de' and progress.material_slug like 'alltags-c1-%' then 50
-        when p_lang = 'de' and progress.material_slug like 'alltags-c2-%' then 60
-        else 0
-      end as level_points
+        when progress.language_code = 'en' and progress.material_slug like 'a1/english-a1-%' then 'A1'
+        when progress.language_code = 'en' and progress.material_slug like 'a2/english-a2-%' then 'A2'
+        when progress.language_code = 'en' and progress.material_slug like 'b1/english-b1-%' then 'B1'
+        when progress.language_code = 'en' and progress.material_slug like 'b2/english-b2-%' then 'B2'
+        when progress.language_code = 'en' and progress.material_slug like 'c1/english-c1-%' then 'C1'
+        when progress.language_code = 'en' and progress.material_slug like 'c2/english-c2-%' then 'C2'
+        when progress.language_code = 'de' and progress.material_slug like 'alltags-a1-%' then 'A1'
+        when progress.language_code = 'de' and progress.material_slug like 'alltags-a2-%' then 'A2'
+        when progress.language_code = 'de' and progress.material_slug like 'alltags-b1-%' then 'B1'
+        when progress.language_code = 'de' and progress.material_slug like 'alltags-b2-%' then 'B2'
+        when progress.language_code = 'de' and progress.material_slug like 'alltags-c1-%' then 'C1'
+        when progress.language_code = 'de' and progress.material_slug like 'alltags-c2-%' then 'C2'
+        else null
+      end as cefr_level
     from public.user_progress as progress
-    join valid_lang on valid_lang.lang = progress.language_code
-    left join lateral (
-      select coalesce(array_agg(lower(btrim(elem.value))), array[]::text[]) as items
-      from jsonb_array_elements_text(coalesce(progress.sessions_passed, '[]'::jsonb)) as elem(value)
-    ) as passed on true
-  ),
-  completed_progress as (
-    select
-      language_progress.user_id,
-      language_progress.xp,
-      language_progress.level_points,
-      (
-        -- Legacy/full-material completion markers
-        language_progress.passed_items @> array['reading', 'listening', 'writing', 'speaking']::text[]
-        or language_progress.passed_items @> array['1', '2', '3', '4']::text[]
-        or language_progress.passed_items @> array['sesi 4']::text[]
-        or language_progress.passed_items @> array['sesi 4 lulus']::text[]
-        -- Any session with all 4 pillars passed (sessions_passed items like s1-reading)
-        or exists (
-          select 1
-          from unnest(language_progress.passed_items) as item(value)
-          where item.value ~ '^s[0-9]+-reading$'
-            and language_progress.passed_items @> array[
-              item.value,
-              regexp_replace(item.value, '-reading$', '-listening'),
-              regexp_replace(item.value, '-reading$', '-writing'),
-              regexp_replace(item.value, '-reading$', '-speaking')
-            ]::text[]
-        )
-      ) as is_complete
-    from language_progress
+    join valid_language
+      on valid_language.language_code = progress.language_code
   ),
   user_totals as (
     select
-      completed_progress.user_id,
-      sum(completed_progress.xp)::bigint as total_xp,
-      sum(case when completed_progress.is_complete then completed_progress.level_points else 0 end)::bigint as total_level_points
-    from completed_progress
-    group by completed_progress.user_id
+      progress.user_id,
+      sum(progress.capped_xp)::bigint as total_xp,
+      sum(progress.capped_xp) filter (where progress.cefr_level is not null)::bigint as cefr_xp
+    from language_progress as progress
+    group by progress.user_id
   ),
   leaderboard_rows as (
     select
       profile.id,
       coalesce(nullif(btrim(profile.nama_lengkap), ''), 'Pengguna') as name,
       coalesce(totals.total_xp, 0)::bigint as xp,
-      coalesce(totals.total_level_points, 0)::bigint as level_points,
-      case
-        when coalesce(totals.total_level_points, 0) >= 2200 then 'C2 (Mahir)'
-        when coalesce(totals.total_level_points, 0) >= 1800 then 'C1'
-        when coalesce(totals.total_level_points, 0) >= 1400 then 'B2'
-        when coalesce(totals.total_level_points, 0) >= 1000 then 'B1'
-        when coalesce(totals.total_level_points, 0) >= 700 then 'A2 Lanjutan'
-        when coalesce(totals.total_level_points, 0) >= 400 then 'A2 Pemula'
-        when coalesce(totals.total_level_points, 0) >= 200 then 'A1 Lanjutan'
-        else 'A1 Pemula'
-      end as level,
-      case
-        when coalesce(totals.total_level_points, 0) >= 2200 then 8
-        when coalesce(totals.total_level_points, 0) >= 1800 then 7
-        when coalesce(totals.total_level_points, 0) >= 1400 then 6
-        when coalesce(totals.total_level_points, 0) >= 1000 then 5
-        when coalesce(totals.total_level_points, 0) >= 700 then 4
-        when coalesce(totals.total_level_points, 0) >= 400 then 3
-        when coalesce(totals.total_level_points, 0) >= 200 then 2
-        else 1
-      end as level_order
+      coalesce((
+        select target.level_code
+        from cumulative_level_targets as target
+        where target.language_code = p_lang
+          and coalesce(totals.cefr_xp, 0) < target.cumulative_xp_target
+        order by target.level_order
+        limit 1
+      ), 'C2') as level,
+      coalesce((
+        select target.level_order
+        from cumulative_level_targets as target
+        where target.language_code = p_lang
+          and coalesce(totals.cefr_xp, 0) < target.cumulative_xp_target
+        order by target.level_order
+        limit 1
+      ), 6) as level_order
     from public.profiles as profile
     left join user_totals as totals
       on totals.user_id = profile.id

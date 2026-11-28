@@ -258,7 +258,7 @@ const { currentLevel, currentPoints, targetPoints, percentage: levelProgressPerc
     if (percentLabel) percentLabel.textContent = `${percentage}%`;
     if (summary) {
       summary.textContent = currentLevel.nextLabel === null
-        ? 'Kamu telah mencapai C2 Mahir. Terus berlatih untuk mempertahankan kemampuanmu.'
+        ? 'Kamu telah mencapai level C2. Terus berlatih untuk mempertahankan kemampuanmu.'
         : `${currentPoints} / ${targetPoints} poin untuk level ${currentLevel.code}`;
     }
 
