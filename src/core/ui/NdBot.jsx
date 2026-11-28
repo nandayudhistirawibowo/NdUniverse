@@ -120,8 +120,9 @@ export default function NdBot({
   const [examFlash, setExamFlash] = useState(false);
   const [bubbleIndex, setBubbleIndex] = useState(STUDY_BUBBLES.length - 1);
   const [isBubbleVisible, setIsBubbleVisible] = useState(false);
-  const [messages, setMessages] = useState([
-    { role: 'assistant', content: getWelcomeMessage(userName, normalizeCefrLevel(userLevel)) },
+  const [currentUserLevel, setCurrentUserLevel] = useState(() => normalizeCefrLevel(userLevel));
+  const [messages, setMessages] = useState(() => [
+    { role: 'assistant', content: getWelcomeMessage(userName, currentUserLevel) },
   ]);
   const messagesEndRef = useRef(null);
 
@@ -130,6 +131,29 @@ export default function NdBot({
   const isLocked = isExamMode || isQuizMode;
   const clampedStrike = Math.min(Math.max(Number(strikeLevel) || 0, 0), 3);
   const strikeInfo = STRIKE_COLORS[clampedStrike];
+
+  useEffect(() => {
+    const updateUserLevel = (level) => {
+      const normalizedLevel = normalizeCefrLevel(level);
+      setCurrentUserLevel(normalizedLevel);
+      setMessages((current) => {
+        const greeting = getWelcomeMessage(userName, normalizedLevel);
+        if (current[0]?.role === 'assistant') {
+          return [{ ...current[0], content: greeting }, ...current.slice(1)];
+        }
+        return [{ role: 'assistant', content: greeting }, ...current];
+      });
+    };
+    const handleLevelUpdate = (event) => {
+      if (typeof event.detail?.level === 'string') {
+        updateUserLevel(event.detail.level);
+      }
+    };
+
+    updateUserLevel(userLevel);
+    window.addEventListener('nd:user-level-updated', handleLevelUpdate);
+    return () => window.removeEventListener('nd:user-level-updated', handleLevelUpdate);
+  }, [userLevel, userName]);
 
   // Auto-tutup window kalau tiba-tiba masuk exam atau quiz mode
   useEffect(() => {
@@ -166,6 +190,15 @@ export default function NdBot({
       setExamFlash(true);
       setTimeout(() => setExamFlash(false), 1800);
       return;
+    }
+    if (!isOpen) {
+      setMessages((current) => {
+        const greeting = getWelcomeMessage(userName, currentUserLevel);
+        if (current[0]?.role === 'assistant') {
+          return [{ ...current[0], content: greeting }, ...current.slice(1)];
+        }
+        return [{ role: 'assistant', content: greeting }, ...current];
+      });
     }
     setIsOpen((o) => !o);
   }

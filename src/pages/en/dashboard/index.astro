@@ -234,6 +234,9 @@ const { currentLevel, currentPoints, targetPoints, percentage: levelProgressPerc
     });
     const { currentLevel, currentPoints, targetPoints, percentage } =
       calculateLevelProgress(materials, [...rows.values()]);
+    window.dispatchEvent(new CustomEvent('nd:user-level-updated', {
+      detail: { level: currentLevel.code },
+    }));
     const label = dashboard.querySelector<HTMLElement>('[data-level-label]');
     const points = dashboard.querySelector<HTMLElement>('[data-level-points]');
     const progress = dashboard.querySelector<HTMLElement>('[data-level-progress]');
