@@ -13,21 +13,58 @@ const { level: levelParam } = Astro.params;
 const level = String(levelParam ?? '').toUpperCase();
 const user = Astro.locals.user;
 const profile = Astro.locals.profile;
-const userName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Peserta siDeutsch';
+const rawUserName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || profile?.nim || user?.user_metadata?.nim || 'Peserta siDeutsch';
+const userName = String(rawUserName)
+  .toLocaleLowerCase('id-ID')
+  .replace(/(^|[\s'-])\p{L}/gu, (character) => character.toLocaleUpperCase('id-ID'));
 ---
 
 <DashboardLayout title={`Sertifikat Goethe ${level} | siDeutsch`} description={`Sertifikat Simulate Goethe-Zertifikat ${level}.`}>
   <main class="certificate-shell" data-certificate-level={level}>
     <section id="certificate" class="certificate">
       <div class="certificate-border">
-        <p class="brand">siDeutsch</p>
-        <p class="eyebrow">Sertifikat Kelulusan Goethe Simulation</p>
-        <h1>Simulate Goethe-Zertifikat {level}</h1>
-        <p class="presented">Dengan ini menyatakan bahwa</p>
-        <p class="recipient">{userName}</p>
-        <p class="result">telah lulus seluruh modul Lesen, Hören, Schreiben, dan Sprechen.</p>
-        <p class="date">Tanggal kelulusan: <strong data-certificate-date>-</strong></p>
-        <p class="signature">siDeutsch Learning Platform</p>
+        <header class="certificate-header">
+          <div class="brand">
+            <img src="/logo-nduniverse.png" alt="NdUniverse" />
+            <span>NdUniverse</span>
+          </div>
+          <p class="eyebrow">Sertifikat Simulasi Goethe-Zertifikat</p>
+          <h1>Goethe-Zertifikat {level}</h1>
+          <p class="presented">Diberikan kepada</p>
+          <p class="recipient">{userName}</p>
+          <p class="date">Tanggal ujian: <strong data-certificate-date>-</strong></p>
+        </header>
+        <section class="score-report" aria-label="Nilai ujian Goethe">
+          <div class="score-grid">
+            <div class="grid-heading"><span>Modul</span><span>Nilai</span></div>
+            <div id="module-scores"></div>
+          </div>
+          <div class="overall-score">
+            <span>Total nilai</span>
+            <strong id="overall-score">—</strong>
+            <small id="overall-rating">Skala 0–100</small>
+          </div>
+        </section>
+        <footer class="certificate-footer">
+          <div class="signature-block">
+            <svg class="certificate-seal" viewBox="0 0 120 120" role="img" aria-label="Stempel NdUniverse Learning Team">
+              <circle cx="60" cy="60" r="53" />
+              <circle cx="60" cy="60" r="46" />
+              <path d="M37 67h46M42 67V53l18-13 18 13v14M48 67V55h24v12M54 67v-8h12v8" />
+              <text x="60" y="85" text-anchor="middle">NDUNIVERSE</text>
+            </svg>
+            <div>
+              <span class="signature-mark">NdUniverse</span>
+              <span class="signature-rule"></span>
+              <span class="signature-caption">NdUniverse Learning Team</span>
+            </div>
+          </div>
+          <div class="certificate-meta">
+            <span>Nomor sertifikat</span>
+            <strong id="certificate-number">-</strong>
+            <span class="disclaimer">Hasil simulasi pembelajaran, bukan sertifikat resmi Goethe-Institut.</span>
+          </div>
+        </footer>
       </div>
     </section>
     <div class="certificate-actions">
@@ -47,6 +84,7 @@ const userName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || p
   const statusElement = document.querySelector('#certificate-status');
   const downloadButton = document.querySelector('#download-certificate');
   const dateElement = document.querySelector('[data-certificate-date]');
+  const moduleScoresElement = document.querySelector('#module-scores');
   let savedResult = null;
   try {
     savedResult = getExamResult('goethe', level);
@@ -65,6 +103,45 @@ const userName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || p
     dateElement.textContent = Number.isNaN(completedAt.getTime())
       ? new Date().toLocaleDateString('id-ID')
       : completedAt.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+    const certificateYear = Number.isNaN(completedAt.getTime()) ? new Date().getFullYear() : completedAt.getFullYear();
+    const certificateSuffix = String(Math.floor(100000 + Math.random() * 900000));
+    document.querySelector('#certificate-number').textContent = `NDU-GOETHE-${certificateYear}-${certificateSuffix}`;
+
+    const modules = [
+      ['lesen', 'Lesen'],
+      ['hoeren', 'Hören'],
+      ['schreiben', 'Schreiben'],
+      ['sprechen', 'Sprechen'],
+    ];
+    const moduleResults = Array.isArray(savedResult.modules) ? savedResult.modules : [];
+    modules.forEach(([moduleId, label]) => {
+      const moduleResult = moduleResults.find((item) => item?.id === moduleId);
+      const row = document.createElement('div');
+      row.className = 'score-row';
+      const moduleName = document.createElement('span');
+      moduleName.textContent = label;
+      const score = document.createElement('strong');
+      const moduleScore = Number(moduleResult?.percent);
+      score.textContent = Number.isFinite(moduleScore) && moduleScore >= 0 && moduleScore <= 100
+        ? `${moduleScore} / 100`
+        : '—';
+      row.append(moduleName, score);
+      moduleScoresElement.append(row);
+    });
+
+    const totalScore = Number(savedResult.totalPoints);
+    if (Number.isFinite(totalScore) && totalScore >= 0 && totalScore <= 100) {
+      document.querySelector('#overall-score').textContent = `${Math.round(totalScore)} / 100`;
+      document.querySelector('#overall-rating').textContent = totalScore >= 90
+        ? 'Sehr gut'
+        : totalScore >= 80
+          ? 'Gut'
+          : totalScore >= 70
+            ? 'Befriedigend'
+            : totalScore >= 60
+              ? 'Ausreichend'
+              : 'Nicht bestanden';
+    }
   }
 
   downloadButton?.addEventListener('click', async () => {
@@ -79,14 +156,15 @@ const userName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || p
     downloadButton.disabled = true;
     const previousStatus = statusElement.textContent;
     statusElement.textContent = 'Sedang menyiapkan PDF...';
+    certificateElement.classList.add('pdf-export');
     try {
       const html2pdf = html2pdfModule.default ?? html2pdfModule;
       await html2pdf()
         .set({
-          margin: 8,
+          margin: 0,
           filename: `Sertifikat-Goethe-${level}-siDeutsch.pdf`,
           image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 2, useCORS: true },
+          html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
           jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
         })
         .from(certificateElement)
@@ -97,23 +175,81 @@ const userName = profile?.nama_lengkap || user?.user_metadata?.nama_lengkap || p
       statusElement.textContent = previousStatus;
       alert('Gagal mengunduh PDF. Silakan coba lagi.');
     } finally {
+      certificateElement.classList.remove('pdf-export');
       downloadButton.disabled = false;
     }
   });
 </script>
 
 <style>
-  .certificate-shell { width:min(1000px,calc(100% - 2rem)); margin:2rem auto 4rem; }
-  .certificate { width:100%; aspect-ratio:1.414/1; box-sizing:border-box; padding:1.25rem; background:#f9f4e7; border:1px solid #d9c58e; }
-  .certificate-border { height:100%; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:3rem; border:4px double var(--accent-gold); color:#2d2a24; background:linear-gradient(135deg,#fff 0%,#fffaf0 100%); }
-  .brand { margin:0 0 1rem; font-size:1.4rem; font-weight:800; color:var(--accent-red); }
-  .eyebrow { margin:.25rem 0; text-transform:uppercase; letter-spacing:.12em; font-weight:800; color:#966313; }
-  .certificate h1 { margin:.75rem 0 1.25rem; font-size:clamp(1.7rem,4vw,3rem); }
-  .presented,.result,.date { margin:.35rem 0; line-height:1.55; }
-  .recipient { margin:.5rem 0; min-width:55%; padding:.25rem 1rem; border-bottom:2px solid var(--accent-gold); font-family:Georgia,serif; font-size:clamp(1.5rem,3vw,2.4rem); font-weight:700; }
-  .signature { margin-top:2rem; font-weight:800; }
+  .certificate-shell { width:min(1120px,calc(100% - 2rem)); margin:2rem auto 4rem; }
+  .certificate { width:100%; aspect-ratio:297 / 210; box-sizing:border-box; padding:1rem; overflow:hidden; background:#f9f4e7; border:1px solid #d9c58e; color:#2d2a24; }
+  .certificate-border { height:100%; box-sizing:border-box; display:flex; flex-direction:column; justify-content:space-between; gap:.75rem; padding:1rem 1.5rem; border:4px double var(--accent-gold); background:linear-gradient(135deg,#fff 0%,#fffaf0 100%); }
+  .certificate-header { display:grid; justify-items:center; text-align:center; }
+  .brand { display:flex; align-items:center; justify-content:center; gap:.5rem; margin:0 0 .45rem; color:#2d2a24; font-family:Arial,sans-serif; font-size:1rem; font-weight:800; }
+  .brand img { width:42px; height:42px; object-fit:contain; }
+  .eyebrow { margin:.1rem 0; color:#966313; font-size:.65rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
+  .certificate h1 { margin:.1rem 0 .35rem; font-family:Georgia,serif; font-size:clamp(1.5rem,3vw,2.2rem); }
+  .presented,.date { margin:.1rem 0; font-size:.78rem; line-height:1.4; }
+  .recipient { max-width:100%; margin:.1rem 0; overflow-wrap:anywhere; border-bottom:1px solid var(--accent-gold); font-family:Georgia,serif; font-size:clamp(1.25rem,2.6vw,1.9rem); font-weight:700; }
+  .score-report { display:grid; grid-template-columns:1.3fr .7fr; align-items:center; gap:1.5rem; }
+  .score-grid { border:1px solid #d7dce2; font-family:Arial,sans-serif; }
+  .grid-heading,.score-row { display:grid; grid-template-columns:1fr auto; gap:.75rem; padding:.35rem .65rem; }
+  .grid-heading { background:#f6f3eb; font-size:.65rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .score-row { font-size:.8rem; }
+  .score-row + .score-row { border-top:1px solid #e3e5e8; }
+  .score-row strong { font-variant-numeric:tabular-nums; }
+  .overall-score { display:grid; justify-items:center; gap:.2rem; text-align:center; }
+  .overall-score span { font-family:Arial,sans-serif; font-size:.75rem; font-weight:800; letter-spacing:.08em; text-transform:uppercase; }
+  .overall-score strong { font-family:Georgia,serif; font-size:2.6rem; line-height:1.05; }
+  .overall-score small { color:#66717e; font-family:Arial,sans-serif; font-size:.78rem; font-weight:700; }
+  .certificate-footer { display:flex; align-items:flex-end; justify-content:space-between; gap:1rem; padding-top:.45rem; border-top:1px solid #d7dce2; }
+  .signature-block { display:flex; align-items:center; gap:.55rem; }
+  .certificate-seal { width:60px; height:60px; flex:none; fill:none; stroke:var(--accent-gold); stroke-width:1.5; }
+  .certificate-seal text { fill:#2d2a24; stroke:none; font-family:Arial,sans-serif; font-size:7px; font-weight:700; letter-spacing:.3px; }
+  .signature-block > div { display:grid; gap:.15rem; }
+  .signature-mark { color:#966313; font-family:Georgia,serif; font-size:1.1rem; font-style:italic; }
+  .signature-rule { width:140px; border-top:1px solid #2d2a24; }
+  .signature-caption,.certificate-meta { font-family:Arial,sans-serif; font-size:.65rem; }
+  .certificate-meta { display:grid; justify-items:end; gap:.15rem; text-align:right; }
+  .certificate-meta > span:first-child { color:#66717e; font-weight:700; }
+  .certificate-meta strong { font-variant-numeric:tabular-nums; }
+  .disclaimer { max-width:280px; color:#66717e; font-size:.58rem; }
   .certificate-actions { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:.75rem; margin-top:1rem; }
   .certificate-actions button,.certificate-actions a { border:0; border-radius:.65rem; padding:.75rem 1rem; background:var(--accent-red); color:#fff; text-decoration:none; font-weight:800; cursor:pointer; }
   .certificate-actions button:disabled { opacity:.55; cursor:not-allowed; }
-  @media(max-width:700px){ .certificate { aspect-ratio:auto; min-height:520px; } .certificate-border { padding:1.25rem; } }
+  @media(max-width:700px){
+    .certificate { aspect-ratio:auto; min-height:620px; }
+    .certificate-border { padding:1rem; }
+    .score-report { grid-template-columns:1fr; gap:.8rem; }
+    .overall-score { order:-1; }
+    .certificate-footer { align-items:flex-start; flex-direction:column; }
+    .certificate-meta { justify-items:start; text-align:left; }
+  }
+  @page { size:A4 landscape; margin:0; }
+  @media print {
+    .certificate-shell { width:297mm; margin:0; }
+    .certificate {
+      width:297mm;
+      height:210mm;
+      padding:20mm;
+      aspect-ratio:auto;
+      overflow:hidden;
+      border:1px solid #d9c58e;
+    }
+    .certificate-border { padding:5mm 8mm; }
+    .certificate-actions { display:none !important; }
+  }
+  .certificate.pdf-export {
+    width:297mm;
+    height:210mm;
+    padding:20mm;
+    aspect-ratio:auto;
+    overflow:hidden;
+  }
+  .certificate.pdf-export .certificate-border { padding:5mm 8mm; }
+  .certificate.pdf-export .score-report { grid-template-columns:1.3fr .7fr; gap:1.5rem; }
+  .certificate.pdf-export .overall-score { order:initial; }
+  .certificate.pdf-export .certificate-footer { align-items:flex-end; flex-direction:row; }
+  .certificate.pdf-export .certificate-meta { justify-items:end; text-align:right; }
 </style>

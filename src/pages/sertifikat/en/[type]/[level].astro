@@ -72,7 +72,7 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
           <strong id="test-date"></strong>
         </div>
         <div>
-          <span class="field-label">Candidate number</span>
+          <span class="field-label">Certificate number</span>
           <strong id="candidate-number"></strong>
         </div>
       </section>
@@ -146,15 +146,17 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
     }).format(date);
   }
 
-  function createCandidateNumber(level) {
-    const today = new Date();
-    const dateCode = [
-      String(today.getFullYear()).slice(-2),
-      String(today.getMonth() + 1).padStart(2, '0'),
-      String(today.getDate()).padStart(2, '0'),
-    ].join('');
+  function toTitleCase(value) {
+    return String(value ?? '')
+      .toLocaleLowerCase('id-ID')
+      .replace(/(^|[\s'-])\p{L}/gu, (character) => character.toLocaleUpperCase('id-ID'));
+  }
+
+  function createCertificateNumber(examType, completedAt) {
+    const parsedDate = new Date(completedAt);
+    const year = Number.isNaN(parsedDate.getTime()) ? new Date().getFullYear() : parsedDate.getFullYear();
     const randomCode = String(Math.floor(100000 + Math.random() * 900000));
-    return `ND-${dateCode}-${randomCode}-${level}`;
+    return `NDU-${examType.toUpperCase()}-${year}-${randomCode}`;
   }
 
   try {
@@ -189,18 +191,18 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
         : hasScoreBreakdown
           ? getToeflTotalScore(scores)
           : totalScore;
-      document.querySelector('#candidate-name').textContent = page.dataset.candidateName;
+      document.querySelector('#candidate-name').textContent = toTitleCase(page.dataset.candidateName);
       document.querySelector('#test-date').textContent = examDate;
-      document.querySelector('#candidate-number').textContent = createCandidateNumber(level);
+      document.querySelector('#candidate-number').textContent = createCertificateNumber(examType, result?.completedAt);
       document.querySelector('#overall-label').textContent = examType === 'ielts'
         ? 'Overall Band Score'
         : 'Total Score';
       document.querySelector('#overall-score').textContent = examType === 'ielts'
-        ? overallScore
+        ? `Band ${overallScore}`
         : `${Math.round(overallScore)} / 120`;
       document.querySelector('#overall-caption').textContent = examType === 'ielts'
-        ? 'Estimated from the NdUniverse module scores'
-        : 'Practice score out of 120';
+        ? 'Estimated from the NdUniverse module scores · IELTS band scale 1.0–9.0'
+        : 'Estimated iBT score · 0–120 points';
 
       const scoreContainer = document.querySelector('#module-scores');
       modules.forEach((module, index) => {
@@ -209,7 +211,13 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
         const moduleName = document.createElement('span');
         moduleName.textContent = module.charAt(0).toUpperCase() + module.slice(1);
         const score = document.createElement('strong');
-        score.textContent = Number.isFinite(scores[index]) ? `${scores[index]}%` : '—';
+        if (!Number.isFinite(scores[index])) {
+          score.textContent = '—';
+        } else if (examType === 'ielts') {
+          score.textContent = `Band ${getIeltsBandScore([scores[index]]).toFixed(1)}`;
+        } else {
+          score.textContent = `${Math.round(scores[index] * 0.3)} / 30`;
+        }
         row.append(moduleName, score);
         scoreContainer.append(row);
       });
@@ -220,11 +228,12 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
       downloadButton.addEventListener('click', async () => {
         downloadButton.disabled = true;
         statusElement.textContent = 'Preparing your PDF...';
+        certificate.classList.add('pdf-export');
         try {
           const html2pdf = html2pdfModule.default ?? html2pdfModule;
           await html2pdf()
             .set({
-              margin: 8,
+              margin: 0,
               filename: `NdUniverse-${examType.toUpperCase()}-${level}-simulation-report.pdf`,
               image: { type: 'jpeg', quality: 0.98 },
               html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff' },
@@ -237,6 +246,7 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
           console.error('Failed to generate the English simulation certificate PDF.', error);
           statusElement.textContent = 'The PDF could not be generated. Please try again.';
         } finally {
+          certificate.classList.remove('pdf-export');
           downloadButton.disabled = false;
         }
       });
@@ -270,6 +280,7 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
   .certificate-container {
     box-sizing:border-box;
     width:100%;
+    aspect-ratio:297 / 210;
     min-height:190mm;
     padding:clamp(1.25rem, 3.5vw, 2.5rem);
     border:1px solid var(--report-ink);
@@ -278,6 +289,7 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
     background:var(--report-paper);
     color:var(--report-ink);
     font-family:Georgia, 'Times New Roman', serif;
+    overflow:hidden;
   }
   .report-header { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; padding-bottom:1rem; border-bottom:1px solid var(--report-line); }
   .brand { display:flex; align-items:center; gap:.7rem; font-family:Arial, sans-serif; font-size:1.05rem; font-weight:800; }
@@ -313,15 +325,39 @@ const reportTitle = examType === 'ielts' ? 'Test Report Form' : 'Score Report';
   .download-button { min-height:46px; padding:.7rem 1.1rem; border:0; border-radius:6px; background:var(--accent-gold); color:var(--text-main); font:inherit; font-weight:800; cursor:pointer; }
   .download-button:disabled { opacity:.55; cursor:not-allowed; }
   @media(max-width:700px) {
+    .certificate-container { aspect-ratio:auto; min-height:0; }
     .candidate-details { grid-template-columns:1fr 1fr; }
     .score-report { grid-template-columns:1fr; gap:1.25rem; }
     .overall-score { order:-1; }
     .report-footer { align-items:flex-start; flex-direction:column; }
     .disclaimer { max-width:100%; text-align:left; }
   }
+  @page { size:A4 landscape; margin:0; }
   @media print {
-    .report-toolbar,.download-actions { display:none; }
-    .report-page { width:100%; margin:0; padding:0; }
-    .certificate-container { min-height:0; border:1px solid #202a35; outline-color:#c59b47; }
+    .report-toolbar,.download-actions { display:none !important; }
+    .report-page { width:297mm; height:210mm; margin:0; padding:0; }
+    .certificate-container {
+      width:297mm;
+      height:210mm;
+      min-height:0;
+      padding:20mm;
+      aspect-ratio:auto;
+      border:1px solid #202a35;
+      outline-color:#c59b47;
+      overflow:hidden;
+    }
   }
+  .certificate-container.pdf-export {
+    width:297mm;
+    height:210mm;
+    min-height:0;
+    padding:20mm;
+    aspect-ratio:auto;
+    overflow:hidden;
+  }
+  .certificate-container.pdf-export .candidate-details { grid-template-columns:1.5fr 1fr 1fr; }
+  .certificate-container.pdf-export .score-report { grid-template-columns:1.3fr .7fr; gap:2rem; }
+  .certificate-container.pdf-export .overall-score { order:initial; }
+  .certificate-container.pdf-export .report-footer { align-items:flex-end; flex-direction:row; }
+  .certificate-container.pdf-export .disclaimer { max-width:42%; text-align:right; }
 </style>
